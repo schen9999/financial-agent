@@ -1,0 +1,11 @@
+anthropic
+langchain-anthropic
+langchain
+langchain-community
+langchain-core
+yfinance
+sec-edgar-downloader
+streamlit
+python-dotenv
+pytest
+requests
