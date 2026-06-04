@@ -33,3 +33,31 @@ def get_stock_data(ticker: str) -> dict:
         }
     except Exception as e:
         return {"error": f"Failed to fetch stock data for {ticker}: {str(e)}"}
+    
+@tool
+def get_price_history(ticker: str) -> dict:
+    """
+    Fetches 12 months of historical closing prices for a given ticker.
+    Use this to provide price trend context in the investment brief.
+    """
+    try:
+        stock = yf.Ticker(ticker)
+        hist = stock.history(period="1y")
+
+        if hist.empty:
+            return {"error": f"No price history found for {ticker}"}
+
+        dates = hist.index.strftime("%Y-%m-%d").tolist()
+        prices = [round(float(p), 2) for p in hist["Close"].tolist()]
+
+        return {
+            "ticker": ticker.upper(),
+            "dates": dates,
+            "prices": prices,
+            "start_price": prices[0],
+            "end_price": prices[-1],
+            "change_pct": round(((prices[-1] - prices[0]) / prices[0]) * 100, 2)
+        }
+
+    except Exception as e:
+        return {"error": f"Failed to fetch price history for {ticker}: {str(e)}"}
