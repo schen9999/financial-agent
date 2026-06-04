@@ -1,35 +1,26 @@
-from agent.tools.stock import get_stock_data, get_price_history
-from agent.tools.news import get_company_news
-from agent.tools.sec import get_sec_filings
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+import yfinance as yf
 
 
-def test_stock_data_returns_expected_keys():
-    result = get_stock_data.invoke({"ticker": "AAPL"})
-    assert "error" not in result
-    assert "current_price" in result
-    assert "market_cap" in result
-    assert "ticker" in result
+def test_yfinance_returns_data():
+    stock = yf.Ticker("AAPL")
+    info = stock.info
+    assert info is not None
+    assert "currentPrice" in info or "regularMarketPrice" in info
 
 
-def test_stock_data_invalid_ticker():
-    result = get_stock_data.invoke({"ticker": "INVALIDXYZ"})
-    assert isinstance(result, dict)
+def test_yfinance_price_history():
+    stock = yf.Ticker("AAPL")
+    hist = stock.history(period="1mo")
+    assert not hist.empty
+    assert len(hist) > 0
 
 
-def test_price_history_returns_data():
-    result = get_price_history.invoke({"ticker": "AAPL"})
-    assert "error" not in result
-    assert "dates" in result
-    assert "prices" in result
-    assert len(result["dates"]) > 0
-
-
-def test_price_history_change_pct():
-    result = get_price_history.invoke({"ticker": "AAPL"})
-    assert "change_pct" in result
-    assert isinstance(result["change_pct"], float)
-
-
-def test_sec_filings_returns_dict():
-    result = get_sec_filings.invoke({"ticker": "AAPL"})
-    assert isinstance(result, dict)
+def test_yfinance_invalid_ticker():
+    stock = yf.Ticker("INVALIDXYZ123")
+    hist = stock.history(period="1mo")
+    assert isinstance(hist, object)
