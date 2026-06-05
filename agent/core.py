@@ -7,11 +7,12 @@ from langsmith.wrappers import wrap_anthropic
 from agent.tools.stock import get_stock_data, get_price_history
 from agent.tools.news import get_company_news
 from agent.tools.sec import get_sec_filings
+from agent.tools.rag import query_sec_filing
 import anthropic
 
 load_dotenv()
 
-tools = [get_stock_data, get_company_news, get_sec_filings]
+tools = [get_stock_data, get_company_news, get_sec_filings, query_sec_filing]
 
 SYSTEM_PROMPT = """You are a professional financial research analyst.
 When given a stock ticker, you will use your tools to:
