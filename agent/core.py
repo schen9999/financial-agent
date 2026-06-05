@@ -1,56 +1,17 @@
 import os
-import json
-import anthropic
 from dotenv import load_dotenv
-from agent.tools.stock import get_stock_data
+from langchain_anthropic import ChatAnthropic
+from langgraph.prebuilt import create_react_agent
+from langchain_core.messages import HumanMessage
+from langsmith.wrappers import wrap_anthropic
+from agent.tools.stock import get_stock_data, get_price_history
 from agent.tools.news import get_company_news
 from agent.tools.sec import get_sec_filings
+import anthropic
 
 load_dotenv()
 
-client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
-
-tools = [
-    {
-        "name": "get_stock_data",
-        "description": "Fetches current stock price, key financials, and company info for a given ticker symbol.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "ticker": {"type": "string", "description": "Stock ticker symbol e.g. AAPL"}
-            },
-            "required": ["ticker"]
-        }
-    },
-    {
-        "name": "get_company_news",
-        "description": "Fetches the 5 most recent news articles about a company. Pass the full company name.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "company_name": {"type": "string", "description": "Full company name e.g. Apple"}
-            },
-            "required": ["company_name"]
-        }
-    },
-    {
-        "name": "get_sec_filings",
-        "description": "Downloads the most recent 10-K and 10-Q SEC filings for a given ticker.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "ticker": {"type": "string", "description": "Stock ticker symbol e.g. AAPL"}
-            },
-            "required": ["ticker"]
-        }
-    }
-]
-
-tool_functions = {
-    "get_stock_data": lambda args: get_stock_data.invoke(args),
-    "get_company_news": lambda args: get_company_news.invoke(args),
-    "get_sec_filings": lambda args: get_sec_filings.invoke(args),
-}
+tools = [get_stock_data, get_company_news, get_sec_filings]
 
 SYSTEM_PROMPT = """You are a professional financial research analyst.
 When given a stock ticker, you will use your tools to:
@@ -87,52 +48,40 @@ Key takeaways from the most recent annual or quarterly report.
 """
 
 
+def create_graph():
+    """Creates and returns a LangGraph ReAct agent graph."""
+    llm = ChatAnthropic(
+        model="claude-opus-4-5",
+        api_key=os.getenv("ANTHROPIC_API_KEY"),
+        temperature=0.2,
+    )
+    graph = create_react_agent(
+        llm,
+        tools=tools,
+        prompt=SYSTEM_PROMPT,
+    )
+    return graph
+
+
 def run_research(ticker: str) -> str:
     """
     Main entry point. Takes a ticker symbol and returns
-    a formatted investment brief.
+    a formatted investment brief using a LangGraph ReAct agent.
     """
-    messages = [
-        {"role": "user", "content": f"Research the stock {ticker.upper()} and produce a full investment brief."}
-    ]
+    graph = create_graph()
 
-    print(f"\nResearching {ticker.upper()}...\n")
+    print(f"\nResearching {ticker.upper()} with LangGraph...\n")
 
-    while True:
-        response = client.messages.create(
-            model="claude-opus-4-5",
-            max_tokens=4096,
-            system=SYSTEM_PROMPT,
-            tools=tools,
-            messages=messages
-        )
+    result = graph.invoke({
+        "messages": [
+            HumanMessage(content=f"Research the stock {ticker.upper()} and produce a full investment brief.")
+        ]
+    })
 
-        # Add assistant response to messages
-        messages.append({"role": "assistant", "content": response.content})
-
-        # If no tool calls, we have the final response
-        if response.stop_reason == "end_turn":
-            for block in response.content:
-                if hasattr(block, "text"):
-                    return block.text
-
-        # Process tool calls
-        tool_results = []
-        for block in response.content:
-            if block.type == "tool_use":
-                print(f"Calling tool: {block.name} with {block.input}")
-                func = tool_functions.get(block.name)
-                if func:
-                    result = func(block.input)
-                    tool_results.append({
-                        "type": "tool_result",
-                        "tool_use_id": block.id,
-                        "content": json.dumps(result)
-                    })
-
-        if tool_results:
-            messages.append({"role": "user", "content": tool_results})
-        else:
-            break
+    # Extract final message from graph output
+    messages = result.get("messages", [])
+    for message in reversed(messages):
+        if hasattr(message, "content") and isinstance(message.content, str) and len(message.content) > 100:
+            return message.content
 
     return "Research could not be completed."
