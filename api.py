@@ -2,6 +2,8 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from agent.core import run_research
 from agent.tools.stock import get_stock_data, get_price_history
+from celery.result import AsyncResult
+from celery_worker import celery_app, research_task
 import uvicorn
 
 app = FastAPI(
@@ -66,6 +68,32 @@ def research_stock(request: ResearchRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/research/async")
+def research_stock_async(request: ResearchRequest):
+    """
+    Submits a stock research job to the Celery task queue.
+    Returns a job ID immediately — use /research/status/{job_id} to poll.
+    """
+    task = research_task.delay(request.ticker.upper())
+    return {"job_id": task.id, "status": "queued", "ticker": request.ticker.upper()}
+
+
+@app.get("/research/status/{job_id}")
+def get_research_status(job_id: str):
+    """
+    Polls the status of an async research job.
+    Returns status: queued | processing | complete | error
+    """
+    result = AsyncResult(job_id, app=celery_app)
+
+    if result.state == "PENDING":
+        return {"job_id": job_id, "status": "queued"}
+    elif result.state == "PROGRESS":
+        return {"job_id": job_id, "status": "processing", "meta": result.info}
+    elif result.state == "SUCCESS":
+        return {"job_id": job_id, "status": "complete", "result": result.result}
+    else:
+        return {"job_id": job_id, "status": "error", "error": str(result.info)}
 
 if __name__ == "__main__":
     uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=True)
