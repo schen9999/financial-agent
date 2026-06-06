@@ -3,13 +3,11 @@ from dotenv import load_dotenv
 from langchain_anthropic import ChatAnthropic
 from langgraph.prebuilt import create_react_agent
 from langchain_core.messages import HumanMessage
-from langsmith.wrappers import wrap_anthropic
-from agent.tools.stock import get_stock_data, get_price_history
+from agent.tools.stock import get_stock_data
 from agent.tools.news import get_company_news
 from agent.tools.sec import get_sec_filings
 from agent.tools.rag import query_sec_filing
 from cache import get_cached_response, set_cached_response
-import anthropic
 
 load_dotenv()
 
@@ -50,19 +48,18 @@ Key takeaways from the most recent annual or quarterly report.
 """
 
 
-def create_graph():
-    """Creates and returns a LangGraph ReAct agent graph."""
+def _build_graph():
     llm = ChatAnthropic(
-        model="claude-opus-4-5",
+        model="claude-sonnet-4-6",
         api_key=os.getenv("ANTHROPIC_API_KEY"),
         temperature=0.2,
+        streaming=False,
     )
-    graph = create_react_agent(
-        llm,
-        tools=tools,
-        prompt=SYSTEM_PROMPT,
-    )
-    return graph
+    return create_react_agent(llm, tools=tools, prompt=SYSTEM_PROMPT)
+
+
+# Build once at import time — reused across all run_research calls
+_graph = _build_graph()
 
 
 def run_research(ticker: str) -> str:
@@ -77,10 +74,9 @@ def run_research(ticker: str) -> str:
         return cached["result"]
 
     # Cache miss — run the full agent
-    graph = create_graph()
     print(f"\nResearching {ticker.upper()} with LangGraph...\n")
 
-    result = graph.invoke({
+    result = _graph.invoke({
         "messages": [
             HumanMessage(content=f"Research the stock {ticker.upper()} and produce a full investment brief.")
         ]
