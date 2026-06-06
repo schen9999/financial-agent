@@ -11,8 +11,8 @@ app = FastAPI(
     title="Financial Research Agent API",
     description="REST API for autonomous stock research using Claude AI",
     version="1.0.0"
-    init_db()
 )
+init_db()
 
 
 class ResearchRequest(BaseModel):

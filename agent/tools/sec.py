@@ -42,17 +42,23 @@ def _get_cik(ticker: str) -> str | None:
         text = response.text
         cik_start = text.find("CIK=") + 4
         cik_end = text.find("&", cik_start)
-        if cik_start > 4 and cik_end > cik_start:
+        if cik_start > 3 and cik_end > cik_start:
             return text[cik_start:cik_end].zfill(10)
     except Exception:
         pass
 
-    # Fallback: use EDGAR company search
+    # Fallback: use EDGAR full-text search index
     try:
         response = requests.get(
             "https://efts.sec.gov/LATEST/search-index?q=%22{}%22&forms=10-K".format(ticker.upper()),
             headers=headers
         )
+        data = response.json()
+        hits = data.get("hits", {}).get("hits", [])
+        if hits:
+            entity_id = hits[0].get("_source", {}).get("entity_id")
+            if entity_id:
+                return str(entity_id).zfill(10)
     except Exception:
         pass
 

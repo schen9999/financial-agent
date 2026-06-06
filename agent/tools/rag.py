@@ -93,8 +93,8 @@ def _fetch_filing_text(ticker: str, form_type: str) -> str | None:
                         return clean[start:start + 15000]
                     return clean[:15000]
 
-    except Exception as e:
-        return f"Error fetching filing: {str(e)}"
+    except Exception:
+        return None
 
     return None
 

@@ -5,7 +5,9 @@ load_dotenv()
 from celery import Celery
 
 REDIS_URL = os.getenv("REDIS_URL")
-REDIS_URL_WITH_SSL = REDIS_URL + "?ssl_cert_reqs=CERT_NONE"
+if not REDIS_URL:
+    raise ValueError("REDIS_URL environment variable is not set")
+REDIS_URL_WITH_SSL = REDIS_URL + "?ssl_cert_reqs=CERT_NONE" if "?" not in REDIS_URL else REDIS_URL + "&ssl_cert_reqs=CERT_NONE"
 
 celery_app = Celery(
     "financial_agent",
@@ -33,4 +35,5 @@ def research_task(self, ticker: str) -> dict:
         result = run_research(ticker)
         return {"status": "complete", "ticker": ticker, "brief": result}
     except Exception as e:
-        return {"status": "error", "ticker": ticker, "error": str(e)}
+        self.update_state(state="FAILURE", meta={"error": str(e)})
+        raise

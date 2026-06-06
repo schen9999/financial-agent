@@ -10,6 +10,8 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 load_dotenv()
 
 REDIS_URL = os.getenv("REDIS_URL")
+if not REDIS_URL:
+    raise ValueError("REDIS_URL environment variable is not set")
 CACHE_TTL = 60 * 60 * 24  # 24 hours
 SIMILARITY_THRESHOLD = 0.92  # Cosine similarity threshold for cache hit
 
@@ -29,7 +31,10 @@ def _cosine_similarity(a: list, b: list) -> float:
     """Computes cosine similarity between two vectors."""
     a = np.array(a)
     b = np.array(b)
-    return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
+    norm = np.linalg.norm(a) * np.linalg.norm(b)
+    if norm == 0:
+        return 0.0
+    return float(np.dot(a, b) / norm)
 
 
 def _get_query_embedding(query: str) -> list:
@@ -45,30 +50,37 @@ def get_cached_response(ticker: str) -> dict | None:
     query = f"financial research brief for {ticker.upper()}"
     query_embedding = _get_query_embedding(query)
 
-    # Scan all cache keys for this type
-    keys = redis_client.keys("research:*")
+    # Scan all cache keys for this type (SCAN is non-blocking unlike KEYS)
+    keys = []
+    cursor = 0
+    while True:
+        cursor, batch = redis_client.scan(cursor, match="research:*", count=100)
+        keys.extend(batch)
+        if cursor == 0:
+            break
 
     best_match = None
     best_score = 0.0
 
-    for key in keys:
-        try:
-            cached = redis_client.get(key)
-            if not cached:
+    if keys:
+        values = redis_client.mget(keys)
+        for cached in values:
+            try:
+                if not cached:
+                    continue
+
+                data = json.loads(cached.decode("utf-8"))
+                cached_embedding = data.get("embedding")
+                if not cached_embedding:
+                    continue
+
+                score = _cosine_similarity(query_embedding, cached_embedding)
+                if score > best_score:
+                    best_score = score
+                    best_match = data
+
+            except Exception:
                 continue
-
-            data = json.loads(cached.decode("utf-8"))
-            cached_embedding = data.get("embedding")
-            if not cached_embedding:
-                continue
-
-            score = _cosine_similarity(query_embedding, cached_embedding)
-            if score > best_score:
-                best_score = score
-                best_match = data
-
-        except Exception:
-            continue
 
     if best_score >= SIMILARITY_THRESHOLD and best_match:
         print(f"Cache HIT for {ticker} (similarity: {best_score:.3f})")
