@@ -1,3 +1,4 @@
+import time
 import streamlit as st
 import plotly.graph_objects as go
 from concurrent.futures import ThreadPoolExecutor
@@ -65,15 +66,19 @@ if st.button("Generate Brief", type="primary", disabled=not ticker):
             # Data fetch phase — show live status so the user isn't staring at a blank screen
             with st.status("Gathering data...", expanded=True) as status:
                 status.write("📊 Fetching stock data...")
+                t0 = time.perf_counter()
                 stock_data = get_stock_data.invoke({"ticker": ticker})
+                print(f"[timing:{ticker}] stock_data={time.perf_counter()-t0:.2f}s")
                 company_name = stock_data.get("company_name", ticker)
 
                 status.write("📰 Fetching news and SEC filings...")
+                t1 = time.perf_counter()
                 with ThreadPoolExecutor(max_workers=2) as executor:
                     f_news = executor.submit(get_company_news.invoke, {"company_name": company_name})
                     f_sec = executor.submit(get_sec_filings.invoke, {"ticker": ticker})
                     news_data = f_news.result()
                     sec_data = f_sec.result()
+                print(f"[timing:{ticker}] news+SEC(parallel)={time.perf_counter()-t1:.2f}s")
 
                 status.update(label="Data ready — generating brief...", state="complete", expanded=False)
 
