@@ -4,7 +4,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
 from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import SystemMessage, HumanMessage
+from langchain_core.messages import HumanMessage
 from agent.tools.stock import get_stock_data
 from agent.tools.news import get_company_news
 from agent.tools.sec import get_sec_filings
@@ -12,40 +12,7 @@ from cache import get_cached_response, set_cached_response
 
 load_dotenv()
 
-SYSTEM_PROMPT = """You are a professional financial research analyst.
-When given a stock ticker, you will use your tools to:
-1. Fetch current stock data and key financials
-2. Search for recent news about the company
-3. Retrieve the latest SEC filings
-4. Synthesize everything into a structured investment brief
-
-Format your final response exactly like this:
-
-## [Company Name] ([TICKER]) — Investment Brief
-
-### Executive Summary
-2-3 sentence overview of the company and current situation.
-
-### Financial Health
-Key metrics: price, market cap, P/E ratio, revenue, profit margin.
-Brief assessment of financial strength.
-
-### Recent Developments
-Summarize the most relevant recent news and what it means for investors.
-
-### SEC Filing Highlights
-Key takeaways from the most recent annual or quarterly report.
-
-### Risk Factors
-2-3 primary risks an investor should be aware of.
-
-### Outlook
-1 paragraph forward-looking assessment based on all gathered data.
-
----
-*This brief is for informational purposes only and does not constitute financial advice.*
-"""
-
+# Sonnet: executive summary + outlook — quality matters here
 _llm = ChatAnthropic(
     model="claude-sonnet-4-6",
     api_key=os.getenv("ANTHROPIC_API_KEY"),
@@ -53,18 +20,112 @@ _llm = ChatAnthropic(
     streaming=False,
 )
 
+# Haiku: parallel section generation — fast and cheap for data-heavy sections
+_haiku = ChatAnthropic(
+    model="claude-haiku-4-5-20251001",
+    api_key=os.getenv("ANTHROPIC_API_KEY"),
+    temperature=0.1,
+    streaming=False,
+)
 
-def _build_prompt(ticker: str, stock_data: dict, news_data, sec_data: dict) -> str:
-    return (
-        f"Research {ticker.upper()} and write a full investment brief using this data:\n\n"
-        f"## Stock Data\n{json.dumps(stock_data, indent=2)}\n\n"
-        f"## Recent News\n{json.dumps(news_data, indent=2)}\n\n"
-        f"## SEC Filings\n{json.dumps(sec_data, indent=2)}"
+
+# --- #6: Input trimming — strip fields the LLM ignores ---
+
+def _trim_stock(data: dict) -> dict:
+    keep = {"ticker", "company_name", "current_price", "currency", "market_cap",
+            "pe_ratio", "forward_pe", "week_52_high", "week_52_low",
+            "revenue", "net_income", "profit_margin", "dividend_yield",
+            "sector", "industry"}
+    return {k: v for k, v in data.items() if k in keep and v is not None}
+
+
+def _trim_news(data: list) -> list:
+    if not isinstance(data, list):
+        return data
+    return [
+        {"title": a.get("title"), "source": a.get("source"),
+         "published_at": a.get("published_at"), "description": a.get("description")}
+        for a in data if isinstance(a, dict) and "error" not in a
+    ][:5]
+
+
+def _trim_sec(data: dict) -> dict:
+    trimmed = {}
+    for form_type, filing in data.items():
+        if isinstance(filing, dict) and "summary" in filing:
+            trimmed[form_type] = {
+                "form_type": filing.get("form_type"),
+                "filing_date": filing.get("filing_date"),
+                "summary": (filing.get("summary") or "")[:800],
+            }
+        else:
+            trimmed[form_type] = filing
+    return trimmed
+
+
+def _data_context(stock: dict, news: list, sec: dict) -> str:
+    return f"Stock: {json.dumps(stock)}\nNews: {json.dumps(news)}\nSEC: {json.dumps(sec)}"
+
+
+# --- #4: Parallel section generation with Haiku ---
+
+_SECTIONS = [
+    ("### Financial Health",
+     "Key metrics: price, market cap, P/E ratio, revenue, profit margin. Brief financial assessment. 3-5 sentences."),
+    ("### Recent Developments",
+     "Summarize the most relevant news and what it means for investors. 3-5 sentences."),
+    ("### SEC Filing Highlights",
+     "Key takeaways from the most recent 10-K or 10-Q. 3-5 sentences."),
+    ("### Risk Factors",
+     "2-3 primary risks an investor should be aware of, as a bullet list."),
+]
+
+
+def _haiku_section(heading: str, instruction: str, company: str, ticker: str, context: str) -> str:
+    prompt = (
+        f"Write ONLY the '{heading}' section for a {company} ({ticker}) investment brief.\n"
+        f"{instruction}\nStart with the markdown heading. Be concise.\n\nData:\n{context}"
     )
+    return _haiku.invoke([HumanMessage(content=prompt)]).content
 
+
+def _parallel_sections(ticker: str, company: str, context: str) -> list[str]:
+    """Generate the 4 data-heavy sections concurrently using Haiku."""
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        futures = [
+            executor.submit(_haiku_section, heading, instruction, company, ticker, context)
+            for heading, instruction in _SECTIONS
+        ]
+        return [f.result() for f in futures]
+
+
+def _synthesis_prompt(ticker: str, company: str, sections: list[str]) -> str:
+    section_block = "\n\n".join(sections)
+    return f"""Complete this investment brief for {company} ({ticker.upper()}) by writing the Executive Summary and Outlook. The four middle sections are already written below — include them verbatim.
+
+Pre-written sections:
+{section_block}
+
+Write the full brief in this exact format:
+
+## {company} ({ticker.upper()}) — Investment Brief
+
+### Executive Summary
+[2-3 sentence overview of the company and current situation]
+
+{section_block}
+
+### Outlook
+[1 paragraph forward-looking assessment]
+
+---
+*This brief is for informational purposes only and does not constitute financial advice.*"""
+
+
+# --- Public API ---
 
 def fetch_research_data(ticker: str) -> tuple[dict, list, dict]:
-    """Fetch stock, news, and SEC data with per-stage timing logged to stdout."""
+    """Fetch stock, news, and SEC data with per-stage timing."""
     t0 = time.perf_counter()
     stock_data = get_stock_data.invoke({"ticker": ticker})
     print(f"[timing:{ticker}] stock_data={time.perf_counter() - t0:.2f}s")
@@ -83,26 +144,33 @@ def fetch_research_data(ticker: str) -> tuple[dict, list, dict]:
 
 
 def stream_synthesis(ticker: str, stock_data: dict, news_data, sec_data: dict):
-    """Generator: streams LLM response chunks and caches the full brief on completion."""
-    messages = [
-        SystemMessage(content=SYSTEM_PROMPT),
-        HumanMessage(content=_build_prompt(ticker, stock_data, news_data, sec_data)),
-    ]
+    """Generator: Haiku generates 4 sections in parallel; Sonnet writes exec summary +
+    outlook with the pre-written sections in context. Caches the full brief on completion."""
+    stock = _trim_stock(stock_data)
+    news = _trim_news(news_data)
+    sec = _trim_sec(sec_data)
+    company = stock.get("company_name", ticker)
+    context = _data_context(stock, news, sec)
 
     t0 = time.perf_counter()
+    sections = _parallel_sections(ticker, company, context)
+    print(f"[timing:{ticker}] haiku_sections(parallel)={time.perf_counter() - t0:.2f}s")
+
+    t1 = time.perf_counter()
     full_response = []
-    for chunk in _llm.stream(messages):
+    for chunk in _llm.stream([HumanMessage(content=_synthesis_prompt(ticker, company, sections))]):
         if chunk.content:
             full_response.append(chunk.content)
             yield chunk.content
 
     brief = "".join(full_response)
-    print(f"[timing:{ticker}] llm_stream={time.perf_counter() - t0:.2f}s  chars={len(brief)}")
+    print(f"[timing:{ticker}] sonnet_stream={time.perf_counter() - t1:.2f}s  chars={len(brief)}")
+    print(f"[timing:{ticker}] total_llm={time.perf_counter() - t0:.2f}s")
     set_cached_response(ticker, brief)
 
 
 def run_research(ticker: str) -> str:
-    """Non-streaming path — used by FastAPI and Celery workers."""
+    """Non-streaming path used by FastAPI and Celery workers."""
     t_total = time.perf_counter()
 
     t0 = time.perf_counter()
@@ -114,15 +182,21 @@ def run_research(ticker: str) -> str:
     print(f"\nResearching {ticker.upper()}...\n")
     stock_data, news_data, sec_data = fetch_research_data(ticker)
 
+    stock = _trim_stock(stock_data)
+    news = _trim_news(news_data)
+    sec = _trim_sec(sec_data)
+    company = stock.get("company_name", ticker)
+    context = _data_context(stock, news, sec)
+
+    t_sections = time.perf_counter()
+    sections = _parallel_sections(ticker, company, context)
+    print(f"[timing:{ticker}] haiku_sections(parallel)={time.perf_counter() - t_sections:.2f}s")
+
     t_llm = time.perf_counter()
-    response = _llm.invoke([
-        SystemMessage(content=SYSTEM_PROMPT),
-        HumanMessage(content=_build_prompt(ticker, stock_data, news_data, sec_data)),
-    ])
-    print(f"[timing:{ticker}] llm_invoke={time.perf_counter() - t_llm:.2f}s")
+    response = _llm.invoke([HumanMessage(content=_synthesis_prompt(ticker, company, sections))])
+    print(f"[timing:{ticker}] sonnet_invoke={time.perf_counter() - t_llm:.2f}s")
 
     brief = response.content
     set_cached_response(ticker, brief)
-
     print(f"[timing:{ticker}] total={time.perf_counter() - t_total:.2f}s")
     return brief
