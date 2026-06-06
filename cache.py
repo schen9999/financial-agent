@@ -14,10 +14,11 @@ CACHE_TTL = 60 * 60 * 24  # 24 hours
 SIMILARITY_THRESHOLD = 0.92  # Cosine similarity threshold for cache hit
 
 # Initialize Redis client
+REDIS_URL_SAFE = REDIS_URL + "?ssl_cert_reqs=CERT_NONE" if "?" not in REDIS_URL else REDIS_URL + "&ssl_cert_reqs=CERT_NONE"
+
 redis_client = redis.from_url(
-    REDIS_URL,
-    decode_responses=False,
-    ssl_cert_reqs=ssl.CERT_NONE
+    REDIS_URL_SAFE,
+    decode_responses=False
 )
 
 # Initialize embedding model
