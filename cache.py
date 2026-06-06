@@ -1,10 +1,9 @@
 import os
 import json
 import hashlib
-import ssl
 import numpy as np
 import redis
-from urllib.parse import urlparse, urlencode, parse_qs, urlunparse
+from urllib.parse import urlparse, parse_qs
 from dotenv import load_dotenv
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
@@ -43,10 +42,7 @@ def _make_redis_client(url: str) -> redis.Redis:
         retry_on_timeout=True,
     )
     if needs_ssl:
-        _ssl_ctx = ssl.create_default_context()
-        _ssl_ctx.check_hostname = False
-        _ssl_ctx.verify_mode = ssl.CERT_NONE
-        return redis.Redis(**common, ssl=True, ssl_context=_ssl_ctx)
+        return redis.Redis(**common, ssl=True, ssl_cert_reqs=None, ssl_check_hostname=False)
     return redis.Redis(**common)
 
 
