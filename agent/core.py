@@ -1,17 +1,15 @@
 import os
+import json
+from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
 from langchain_anthropic import ChatAnthropic
-from langgraph.prebuilt import create_react_agent
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import SystemMessage, HumanMessage
 from agent.tools.stock import get_stock_data
 from agent.tools.news import get_company_news
 from agent.tools.sec import get_sec_filings
-from agent.tools.rag import query_sec_filing
 from cache import get_cached_response, set_cached_response
 
 load_dotenv()
-
-tools = [get_stock_data, get_company_news, get_sec_filings, query_sec_filing]
 
 SYSTEM_PROMPT = """You are a professional financial research analyst.
 When given a stock ticker, you will use your tools to:
@@ -47,47 +45,50 @@ Key takeaways from the most recent annual or quarterly report.
 *This brief is for informational purposes only and does not constitute financial advice.*
 """
 
-
-def _build_graph():
-    llm = ChatAnthropic(
-        model="claude-sonnet-4-6",
-        api_key=os.getenv("ANTHROPIC_API_KEY"),
-        temperature=0.2,
-        streaming=False,
-    )
-    return create_react_agent(llm, tools=tools, prompt=SYSTEM_PROMPT)
-
-
-# Build once at import time — reused across all run_research calls
-_graph = _build_graph()
+_llm = ChatAnthropic(
+    model="claude-sonnet-4-6",
+    api_key=os.getenv("ANTHROPIC_API_KEY"),
+    temperature=0.2,
+    streaming=False,
+)
 
 
 def run_research(ticker: str) -> str:
     """
-    Main entry point. Takes a ticker symbol and returns
-    a formatted investment brief using a LangGraph ReAct agent.
-    Checks semantic cache first before calling the LLM.
+    Fetches stock, news, and SEC data in parallel, then makes a single
+    LLM call to synthesize the investment brief. Much faster than a
+    ReAct agent loop which makes 5-8 sequential LLM round-trips.
     """
-    # Check semantic cache first
     cached = get_cached_response(ticker)
     if cached:
         return cached["result"]
 
-    # Cache miss — run the full agent
-    print(f"\nResearching {ticker.upper()} with LangGraph...\n")
+    print(f"\nResearching {ticker.upper()}...\n")
 
-    result = _graph.invoke({
-        "messages": [
-            HumanMessage(content=f"Research the stock {ticker.upper()} and produce a full investment brief.")
-        ]
-    })
+    # Step 1: stock data first — needed to get the proper company name for news search
+    stock_data = get_stock_data.invoke({"ticker": ticker})
+    company_name = stock_data.get("company_name", ticker)
 
-    # Extract final message
-    messages = result.get("messages", [])
-    for message in reversed(messages):
-        if hasattr(message, "content") and isinstance(message.content, str) and len(message.content) > 100:
-            # Store in semantic cache
-            set_cached_response(ticker, message.content)
-            return message.content
+    # Step 2: news and SEC fetched in parallel — they're independent of each other
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        f_news = executor.submit(get_company_news.invoke, {"company_name": company_name})
+        f_sec = executor.submit(get_sec_filings.invoke, {"ticker": ticker})
+        news_data = f_news.result()
+        sec_data = f_sec.result()
 
-    return "Research could not be completed."
+    # Step 3: single LLM synthesis call with all gathered data
+    prompt = (
+        f"Research {ticker.upper()} and write a full investment brief using this data:\n\n"
+        f"## Stock Data\n{json.dumps(stock_data, indent=2)}\n\n"
+        f"## Recent News\n{json.dumps(news_data, indent=2)}\n\n"
+        f"## SEC Filings\n{json.dumps(sec_data, indent=2)}"
+    )
+
+    response = _llm.invoke([
+        SystemMessage(content=SYSTEM_PROMPT),
+        HumanMessage(content=prompt),
+    ])
+    brief = response.content
+
+    set_cached_response(ticker, brief)
+    return brief

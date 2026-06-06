@@ -12,16 +12,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
-def _configure_settings():
-    """Configure LlamaIndex to use Anthropic LLM and local embeddings."""
-    Settings.llm = Anthropic(
-        model="claude-haiku-4-5-20251001",
-        api_key=os.getenv("ANTHROPIC_API_KEY"),
-    )
-    Settings.embed_model = HuggingFaceEmbedding(
-        model_name="BAAI/bge-small-en-v1.5"
-    )
+# Configure once at import time instead of on every tool invocation
+Settings.llm = Anthropic(
+    model="claude-haiku-4-5-20251001",
+    api_key=os.getenv("ANTHROPIC_API_KEY"),
+)
+Settings.embed_model = HuggingFaceEmbedding(
+    model_name="BAAI/bge-small-en-v1.5"
+)
 
 
 def _get_pinecone_index(index_name: str):
@@ -114,9 +112,6 @@ def query_sec_filing(input: str) -> str:
         ticker, question = input.split(":", 1)
         ticker = ticker.strip().upper()
         question = question.strip()
-
-        # Configure LlamaIndex
-        _configure_settings()
 
         # Use a sanitized index name
         index_name = f"sec-filings"
