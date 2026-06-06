@@ -18,23 +18,35 @@ SIMILARITY_THRESHOLD = 0.92  # Cosine similarity threshold for cache hit
 
 
 def _make_redis_client(url: str) -> redis.Redis:
-    """Build a Redis client, stripping legacy ssl_cert_reqs URL params that
-    newer redis-py rejects, and passing SSL settings via ssl_context instead."""
+    """Build a Redis client by parsing the URL into components and calling
+    redis.Redis() directly, bypassing redis.from_url()/parse_url() entirely.
+    This avoids ValueError from legacy ssl_cert_reqs query params and
+    non-standard URL schemes that newer redis-py rejects."""
     parsed = urlparse(url)
     query_params = parse_qs(parsed.query)
-    needs_ssl = parsed.scheme == "rediss" or "ssl_cert_reqs" in query_params
+    needs_ssl = parsed.scheme.lower() == "rediss" or "ssl_cert_reqs" in query_params
 
-    query_params.pop("ssl_cert_reqs", None)
-    clean_query = urlencode({k: v[0] for k, v in query_params.items()})
-    scheme = "rediss" if needs_ssl else parsed.scheme
-    clean_url = urlunparse(parsed._replace(scheme=scheme, query=clean_query))
+    host = parsed.hostname or "localhost"
+    port = parsed.port or (6380 if needs_ssl else 6379)
+    password = parsed.password or None
+    username = parsed.username or None
+    try:
+        db = int(parsed.path.strip("/")) if parsed.path.strip("/") else 0
+    except ValueError:
+        db = 0
 
     if needs_ssl:
         _ssl_ctx = ssl.create_default_context()
         _ssl_ctx.check_hostname = False
         _ssl_ctx.verify_mode = ssl.CERT_NONE
-        return redis.from_url(clean_url, decode_responses=False, ssl_context=_ssl_ctx)
-    return redis.from_url(clean_url, decode_responses=False)
+        return redis.Redis(
+            host=host, port=port, password=password, username=username,
+            db=db, ssl=True, ssl_context=_ssl_ctx, decode_responses=False,
+        )
+    return redis.Redis(
+        host=host, port=port, password=password, username=username,
+        db=db, decode_responses=False,
+    )
 
 
 # Initialize Redis client

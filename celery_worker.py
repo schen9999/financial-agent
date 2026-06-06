@@ -1,6 +1,6 @@
 import os
 import ssl
-from urllib.parse import urlparse, urlencode, parse_qs, urlunparse
+from urllib.parse import urlparse, parse_qs
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -12,14 +12,14 @@ if not REDIS_URL:
 
 
 def _clean_redis_url(url: str) -> tuple[str, bool]:
-    """Strip legacy ssl_cert_reqs query param; return (clean_url, needs_ssl)."""
+    """Rebuild a clean Redis URL from parsed components, dropping any query
+    params (e.g. legacy ssl_cert_reqs) that newer redis-py rejects."""
     parsed = urlparse(url)
     query_params = parse_qs(parsed.query)
-    needs_ssl = parsed.scheme == "rediss" or "ssl_cert_reqs" in query_params
-    query_params.pop("ssl_cert_reqs", None)
-    clean_query = urlencode({k: v[0] for k, v in query_params.items()})
-    scheme = "rediss" if needs_ssl else parsed.scheme
-    clean_url = urlunparse(parsed._replace(scheme=scheme, query=clean_query))
+    needs_ssl = parsed.scheme.lower() == "rediss" or "ssl_cert_reqs" in query_params
+    scheme = "rediss" if needs_ssl else "redis"
+    # Reconstruct without query string; DB number stays in path (e.g. /0)
+    clean_url = f"{scheme}://{parsed.netloc}{parsed.path}"
     return clean_url, needs_ssl
 
 
