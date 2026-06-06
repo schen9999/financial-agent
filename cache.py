@@ -35,18 +35,19 @@ def _make_redis_client(url: str) -> redis.Redis:
     except ValueError:
         db = 0
 
+    common = dict(
+        host=host, port=port, password=password, username=username,
+        db=db, decode_responses=False,
+        socket_keepalive=True,
+        health_check_interval=30,
+        retry_on_timeout=True,
+    )
     if needs_ssl:
         _ssl_ctx = ssl.create_default_context()
         _ssl_ctx.check_hostname = False
         _ssl_ctx.verify_mode = ssl.CERT_NONE
-        return redis.Redis(
-            host=host, port=port, password=password, username=username,
-            db=db, ssl=True, ssl_context=_ssl_ctx, decode_responses=False,
-        )
-    return redis.Redis(
-        host=host, port=port, password=password, username=username,
-        db=db, decode_responses=False,
-    )
+        return redis.Redis(**common, ssl=True, ssl_context=_ssl_ctx)
+    return redis.Redis(**common)
 
 
 # Initialize Redis client
@@ -75,75 +76,78 @@ def get_cached_response(ticker: str) -> dict | None:
     """
     Checks Redis for a semantically similar cached research brief.
     Returns cached result if similarity exceeds threshold, else None.
+    Falls back to None on any Redis error so the app keeps working.
     """
-    query = f"financial research brief for {ticker.upper()}"
-    query_embedding = _get_query_embedding(query)
+    try:
+        query = f"financial research brief for {ticker.upper()}"
+        query_embedding = _get_query_embedding(query)
 
-    # Scan all cache keys for this type (SCAN is non-blocking unlike KEYS)
-    keys = []
-    cursor = 0
-    while True:
-        cursor, batch = redis_client.scan(cursor, match="research:*", count=100)
-        keys.extend(batch)
-        if cursor == 0:
-            break
+        # Scan all cache keys for this type (SCAN is non-blocking unlike KEYS)
+        keys = []
+        cursor = 0
+        while True:
+            cursor, batch = redis_client.scan(cursor, match="research:*", count=100)
+            keys.extend(batch)
+            if cursor == 0:
+                break
 
-    best_match = None
-    best_score = 0.0
+        best_match = None
+        best_score = 0.0
 
-    if keys:
-        values = redis_client.mget(keys)
-        for cached in values:
-            try:
-                if not cached:
+        if keys:
+            values = redis_client.mget(keys)
+            for cached in values:
+                try:
+                    if not cached:
+                        continue
+                    data = json.loads(cached.decode("utf-8"))
+                    cached_embedding = data.get("embedding")
+                    if not cached_embedding:
+                        continue
+                    score = _cosine_similarity(query_embedding, cached_embedding)
+                    if score > best_score:
+                        best_score = score
+                        best_match = data
+                except Exception:
                     continue
 
-                data = json.loads(cached.decode("utf-8"))
-                cached_embedding = data.get("embedding")
-                if not cached_embedding:
-                    continue
+        if best_score >= SIMILARITY_THRESHOLD and best_match:
+            print(f"Cache HIT for {ticker} (similarity: {best_score:.3f})")
+            return {
+                "result": best_match["result"],
+                "ticker": best_match["ticker"],
+                "cache_hit": True,
+                "similarity_score": best_score,
+            }
 
-                score = _cosine_similarity(query_embedding, cached_embedding)
-                if score > best_score:
-                    best_score = score
-                    best_match = data
+        print(f"Cache MISS for {ticker} (best similarity: {best_score:.3f})")
+        return None
 
-            except Exception:
-                continue
-
-    if best_score >= SIMILARITY_THRESHOLD and best_match:
-        print(f"Cache HIT for {ticker} (similarity: {best_score:.3f})")
-        return {
-            "result": best_match["result"],
-            "ticker": best_match["ticker"],
-            "cache_hit": True,
-            "similarity_score": best_score
-        }
-
-    print(f"Cache MISS for {ticker} (best similarity: {best_score:.3f})")
-    return None
+    except Exception as e:
+        print(f"Cache lookup failed, falling through to LLM: {e}")
+        return None
 
 
 def set_cached_response(ticker: str, result: str):
     """
     Stores a research brief and its embedding in Redis.
+    Silently skips on any Redis error — caching is best-effort.
     """
-    query = f"financial research brief for {ticker.upper()}"
-    embedding = _get_query_embedding(query)
+    try:
+        query = f"financial research brief for {ticker.upper()}"
+        embedding = _get_query_embedding(query)
 
-    cache_key = f"research:{ticker.upper()}"
-    data = {
-        "ticker": ticker.upper(),
-        "result": result,
-        "embedding": embedding
-    }
+        cache_key = f"research:{ticker.upper()}"
+        data = {
+            "ticker": ticker.upper(),
+            "result": result,
+            "embedding": embedding,
+        }
 
-    redis_client.setex(
-        cache_key,
-        CACHE_TTL,
-        json.dumps(data)
-    )
-    print(f"Cached response for {ticker.upper()}")
+        redis_client.setex(cache_key, CACHE_TTL, json.dumps(data))
+        print(f"Cached response for {ticker.upper()}")
+    except Exception as e:
+        print(f"Cache write failed (non-fatal): {e}")
 
 
 def get_cache_stats() -> dict:
