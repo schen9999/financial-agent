@@ -8,6 +8,7 @@ from agent.tools.stock import get_stock_data, get_price_history
 from agent.tools.news import get_company_news
 from agent.tools.sec import get_sec_filings
 from agent.tools.rag import query_sec_filing
+from cache import get_cached_response, set_cached_response
 import anthropic
 
 load_dotenv()
@@ -68,9 +69,15 @@ def run_research(ticker: str) -> str:
     """
     Main entry point. Takes a ticker symbol and returns
     a formatted investment brief using a LangGraph ReAct agent.
+    Checks semantic cache first before calling the LLM.
     """
-    graph = create_graph()
+    # Check semantic cache first
+    cached = get_cached_response(ticker)
+    if cached:
+        return cached["result"]
 
+    # Cache miss — run the full agent
+    graph = create_graph()
     print(f"\nResearching {ticker.upper()} with LangGraph...\n")
 
     result = graph.invoke({
@@ -79,10 +86,12 @@ def run_research(ticker: str) -> str:
         ]
     })
 
-    # Extract final message from graph output
+    # Extract final message
     messages = result.get("messages", [])
     for message in reversed(messages):
         if hasattr(message, "content") and isinstance(message.content, str) and len(message.content) > 100:
+            # Store in semantic cache
+            set_cached_response(ticker, message.content)
             return message.content
 
     return "Research could not be completed."
