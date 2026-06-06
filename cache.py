@@ -3,6 +3,7 @@ import json
 import hashlib
 import numpy as np
 import redis
+import ssl
 from dotenv import load_dotenv
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
@@ -16,7 +17,7 @@ SIMILARITY_THRESHOLD = 0.92  # Cosine similarity threshold for cache hit
 redis_client = redis.from_url(
     REDIS_URL,
     decode_responses=False,
-    ssl_cert_reqs=None
+    ssl_cert_reqs=ssl.CERT_NONE
 )
 
 # Initialize embedding model
