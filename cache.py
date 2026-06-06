@@ -1,9 +1,10 @@
 import os
 import json
 import hashlib
+import ssl
 import numpy as np
 import redis
-import ssl
+from urllib.parse import urlparse, urlencode, parse_qs, urlunparse
 from dotenv import load_dotenv
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
@@ -15,14 +16,29 @@ if not REDIS_URL:
 CACHE_TTL = 60 * 60 * 24  # 24 hours
 SIMILARITY_THRESHOLD = 0.92  # Cosine similarity threshold for cache hit
 
+
+def _make_redis_client(url: str) -> redis.Redis:
+    """Build a Redis client, stripping legacy ssl_cert_reqs URL params that
+    newer redis-py rejects, and passing SSL settings via ssl_context instead."""
+    parsed = urlparse(url)
+    query_params = parse_qs(parsed.query)
+    needs_ssl = parsed.scheme == "rediss" or "ssl_cert_reqs" in query_params
+
+    query_params.pop("ssl_cert_reqs", None)
+    clean_query = urlencode({k: v[0] for k, v in query_params.items()})
+    scheme = "rediss" if needs_ssl else parsed.scheme
+    clean_url = urlunparse(parsed._replace(scheme=scheme, query=clean_query))
+
+    if needs_ssl:
+        _ssl_ctx = ssl.create_default_context()
+        _ssl_ctx.check_hostname = False
+        _ssl_ctx.verify_mode = ssl.CERT_NONE
+        return redis.from_url(clean_url, decode_responses=False, ssl_context=_ssl_ctx)
+    return redis.from_url(clean_url, decode_responses=False)
+
+
 # Initialize Redis client
-if REDIS_URL.startswith("rediss://"):
-    _ssl_ctx = ssl.create_default_context()
-    _ssl_ctx.check_hostname = False
-    _ssl_ctx.verify_mode = ssl.CERT_NONE
-    redis_client = redis.from_url(REDIS_URL, decode_responses=False, ssl_context=_ssl_ctx)
-else:
-    redis_client = redis.from_url(REDIS_URL, decode_responses=False)
+redis_client = _make_redis_client(REDIS_URL)
 
 # Initialize embedding model
 embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
