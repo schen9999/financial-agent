@@ -1,4 +1,5 @@
 import os
+import ssl
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -7,12 +8,11 @@ from celery import Celery
 REDIS_URL = os.getenv("REDIS_URL")
 if not REDIS_URL:
     raise ValueError("REDIS_URL environment variable is not set")
-REDIS_URL_WITH_SSL = REDIS_URL + "?ssl_cert_reqs=CERT_NONE" if "?" not in REDIS_URL else REDIS_URL + "&ssl_cert_reqs=CERT_NONE"
 
 celery_app = Celery(
     "financial_agent",
-    broker=REDIS_URL_WITH_SSL,
-    backend=REDIS_URL_WITH_SSL,
+    broker=REDIS_URL,
+    backend=REDIS_URL,
 )
 
 celery_app.conf.update(
@@ -21,6 +21,13 @@ celery_app.conf.update(
     accept_content=["json"],
     task_track_started=True,
 )
+
+if REDIS_URL.startswith("rediss://"):
+    _ssl_opts = {"ssl_cert_reqs": ssl.CERT_NONE}
+    celery_app.conf.update(
+        broker_use_ssl=_ssl_opts,
+        redis_backend_use_ssl=_ssl_opts,
+    )
 
 
 @celery_app.task(bind=True)

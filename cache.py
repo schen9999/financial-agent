@@ -16,12 +16,13 @@ CACHE_TTL = 60 * 60 * 24  # 24 hours
 SIMILARITY_THRESHOLD = 0.92  # Cosine similarity threshold for cache hit
 
 # Initialize Redis client
-REDIS_URL_SAFE = REDIS_URL + "?ssl_cert_reqs=CERT_NONE" if "?" not in REDIS_URL else REDIS_URL + "&ssl_cert_reqs=CERT_NONE"
-
-redis_client = redis.from_url(
-    REDIS_URL_SAFE,
-    decode_responses=False
-)
+if REDIS_URL.startswith("rediss://"):
+    _ssl_ctx = ssl.create_default_context()
+    _ssl_ctx.check_hostname = False
+    _ssl_ctx.verify_mode = ssl.CERT_NONE
+    redis_client = redis.from_url(REDIS_URL, decode_responses=False, ssl_context=_ssl_ctx)
+else:
+    redis_client = redis.from_url(REDIS_URL, decode_responses=False)
 
 # Initialize embedding model
 embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
