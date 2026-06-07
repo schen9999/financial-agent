@@ -8,6 +8,7 @@ from langchain_core.messages import HumanMessage
 from agent.tools.stock import get_stock_data
 from agent.tools.news import get_company_news
 from agent.tools.sec import get_sec_filings
+from agent.tools.rag import query_sec_filing
 from cache import get_cached_response, set_cached_response
 
 load_dotenv()
@@ -27,6 +28,9 @@ _haiku = ChatAnthropic(
     temperature=0.1,
     streaming=False,
 )
+
+_RAG_ENABLED = bool(os.getenv("PINECONE_API_KEY"))
+_RAG_FAILURE_PREFIXES = ("RAG query failed", "Could not retrieve")
 
 
 # --- #6: Input trimming — strip fields the LLM ignores ---
@@ -67,6 +71,34 @@ def _data_context(stock: dict, news: list, sec: dict) -> str:
     return f"Stock: {json.dumps(stock)}\nNews: {json.dumps(news)}\nSEC: {json.dumps(sec)}"
 
 
+def _rag_contexts(ticker: str) -> tuple[str | None, str | None]:
+    """Run SEC highlights and risk-factor RAG queries concurrently.
+    Returns (highlights_text, risks_text); either is None on failure or when RAG is disabled."""
+    if not _RAG_ENABLED:
+        return None, None
+    try:
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            f_highlights = executor.submit(
+                query_sec_filing.invoke,
+                f"{ticker}: Summarize the key takeaways from the latest 10-K and 10-Q"
+            )
+            f_risks = executor.submit(
+                query_sec_filing.invoke,
+                f"{ticker}: What are the primary risk factors disclosed?"
+            )
+            highlights = f_highlights.result()
+            risks = f_risks.result()
+
+        def _ok(result: str) -> str | None:
+            if not result or any(result.startswith(p) for p in _RAG_FAILURE_PREFIXES):
+                return None
+            return result
+
+        return _ok(highlights), _ok(risks)
+    except Exception:
+        return None, None
+
+
 # --- #4: Parallel section generation with Haiku ---
 
 _SECTIONS = [
@@ -90,10 +122,26 @@ def _haiku_section(heading: str, instruction: str, company: str, ticker: str, co
 
 
 def _parallel_sections(ticker: str, company: str, context: str) -> list[str]:
-    """Generate the 4 data-heavy sections concurrently using Haiku."""
+    """Generate the 4 data-heavy sections concurrently using Haiku.
+    SEC Filing Highlights and Risk Factors use RAG-grounded context when available,
+    falling back to the raw data context if RAG is disabled or fails."""
+    t_rag = time.perf_counter()
+    rag_highlights, rag_risks = _rag_contexts(ticker)
+    print(f"[timing:{ticker}] rag_sections={time.perf_counter() - t_rag:.2f}s")
+
+    section_contexts = {
+        "### Financial Health": context,
+        "### Recent Developments": context,
+        "### SEC Filing Highlights": rag_highlights or context,
+        "### Risk Factors": rag_risks or context,
+    }
+
     with ThreadPoolExecutor(max_workers=4) as executor:
         futures = [
-            executor.submit(_haiku_section, heading, instruction, company, ticker, context)
+            executor.submit(
+                _haiku_section, heading, instruction, company, ticker,
+                section_contexts[heading]
+            )
             for heading, instruction in _SECTIONS
         ]
         return [f.result() for f in futures]
