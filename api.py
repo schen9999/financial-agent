@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from agent.core import run_research
+from agent.react_agent import answer_question
 from agent.tools.stock import get_stock_data, get_price_history
 from celery.result import AsyncResult
 from celery_worker import celery_app, research_task
@@ -22,6 +23,11 @@ class ResearchRequest(BaseModel):
 class ResearchResponse(BaseModel):
     ticker: str
     brief: str
+
+
+class AskRequest(BaseModel):
+    ticker: str
+    question: str
 
 
 class HealthResponse(BaseModel):
@@ -132,6 +138,23 @@ def get_research_status(job_id: str):
         return {"job_id": job_id, "status": "complete", "result": result.result}
     else:
         return {"job_id": job_id, "status": "error", "error": str(result.info)}
+
+@app.post("/ask")
+def ask_question(request: AskRequest):
+    """
+    Answer a free-form question about a stock using the ReAct agent.
+    The agent selects whichever tools it needs (stock data, news, SEC filings, RAG).
+    """
+    try:
+        answer = answer_question(request.ticker.upper(), request.question)
+        return {
+            "ticker": request.ticker.upper(),
+            "question": request.question,
+            "answer": answer,
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 if __name__ == "__main__":
     uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=True)

@@ -6,6 +6,7 @@ from agent.tools.stock import get_price_history, get_stock_data
 from agent.tools.news import get_company_news
 from agent.tools.sec import get_sec_filings
 from agent.core import stream_synthesis
+from agent.react_agent import answer_question
 from cache import get_cached_response
 
 st.set_page_config(
@@ -53,7 +54,7 @@ if st.button("Generate Brief", type="primary", disabled=not ticker):
                     xaxis=dict(showgrid=False),
                     yaxis=dict(showgrid=True, gridcolor="rgba(128,128,128,0.2)")
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width="stretch")
         except Exception as e:
             st.warning(f"Could not load price chart: {str(e)}")
 
@@ -87,6 +88,22 @@ if st.button("Generate Brief", type="primary", disabled=not ticker):
 
         except Exception as e:
             st.error(f"Something went wrong: {str(e)}")
+
+if ticker:
+    st.divider()
+    st.subheader("💬 Ask a follow-up question")
+    followup = st.text_input(
+        "Question about this stock",
+        placeholder="e.g. How does revenue compare year over year?",
+        key="followup_input",
+    )
+    if st.button("Ask", key="ask_btn", disabled=not followup):
+        with st.spinner(f"Researching {ticker}..."):
+            try:
+                answer = answer_question(ticker, followup)
+                st.markdown(answer)
+            except Exception as e:
+                st.error(f"Something went wrong: {str(e)}")
 
 st.divider()
 st.caption("⚠️ This tool is for informational purposes only and does not constitute financial advice.")
