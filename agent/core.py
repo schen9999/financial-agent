@@ -29,6 +29,9 @@ _haiku = ChatAnthropic(
     streaming=False,
 )
 
+_synthesis_llm = _llm
+_synthesis_label = "sonnet"
+
 _RAG_ENABLED = bool(os.getenv("PINECONE_API_KEY"))
 _RAG_FAILURE_PREFIXES = ("RAG query failed", "Could not retrieve")
 
@@ -154,17 +157,30 @@ def _synthesis_prompt(ticker: str, company: str, sections: list[str]) -> str:
 Pre-written sections:
 {section_block}
 
+GROUNDING RULES — follow strictly:
+- Cite a specific number ONLY if it appears explicitly in the pre-written sections above. Do NOT invent, estimate, or extrapolate any numeric figure.
+- Never fabricate price targets, future revenue or run-rate projections, P/E targets, or numeric valuation thresholds of any kind.
+- Write the Outlook as qualitative direction: name the key variables an investor should watch (e.g. "watch services-margin trend and China exposure") and describe what conditions would strengthen or weaken the thesis — without attaching invented numeric targets to any of them.
+
+### Executive Summary  (2-3 sentences)
+Sentence 1: What the company does and its market position; you may reference financial figures that appear explicitly in the pre-written sections.
+Sentence 2: The current investment situation and why the stock is notable now.
+Sentence 3: The single most important near-term variable that will shape the outcome.
+
+### Outlook  (1 paragraph)
+Describe the directional outlook — tailwinds, headwinds, and the key variables an investor should monitor. State a directional lean (e.g. cautiously constructive, neutral, cautious) and what would change that view. No price targets, revenue forecasts, or numeric valuation thresholds.
+
 Write the full brief in this exact format:
 
 ## {company} ({ticker.upper()}) — Investment Brief
 
 ### Executive Summary
-[2-3 sentence overview of the company and current situation]
+[your 2-3 sentences here]
 
 {section_block}
 
 ### Outlook
-[1 paragraph forward-looking assessment]
+[your 1 paragraph here]
 
 ---
 *This brief is for informational purposes only and does not constitute financial advice.*"""
@@ -206,13 +222,13 @@ def stream_synthesis(ticker: str, stock_data: dict, news_data, sec_data: dict):
 
     t1 = time.perf_counter()
     full_response = []
-    for chunk in _llm.stream([HumanMessage(content=_synthesis_prompt(ticker, company, sections))]):
+    for chunk in _synthesis_llm.stream([HumanMessage(content=_synthesis_prompt(ticker, company, sections))]):
         if chunk.content:
             full_response.append(chunk.content)
             yield chunk.content
 
     brief = "".join(full_response)
-    print(f"[timing:{ticker}] sonnet_stream={time.perf_counter() - t1:.2f}s  chars={len(brief)}")
+    print(f"[timing:{ticker}] {_synthesis_label}_stream={time.perf_counter() - t1:.2f}s  chars={len(brief)}")
     print(f"[timing:{ticker}] total_llm={time.perf_counter() - t0:.2f}s")
     set_cached_response(ticker, brief)
 
@@ -241,8 +257,8 @@ def run_research(ticker: str) -> str:
     print(f"[timing:{ticker}] haiku_sections(parallel)={time.perf_counter() - t_sections:.2f}s")
 
     t_llm = time.perf_counter()
-    response = _llm.invoke([HumanMessage(content=_synthesis_prompt(ticker, company, sections))])
-    print(f"[timing:{ticker}] sonnet_invoke={time.perf_counter() - t_llm:.2f}s")
+    response = _synthesis_llm.invoke([HumanMessage(content=_synthesis_prompt(ticker, company, sections))])
+    print(f"[timing:{ticker}] {_synthesis_label}_invoke={time.perf_counter() - t_llm:.2f}s")
 
     brief = response.content
     set_cached_response(ticker, brief)
