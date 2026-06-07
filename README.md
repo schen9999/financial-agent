@@ -1,6 +1,6 @@
 # 📈 Financial Research Agent
 
-An AI agent that researches stocks and generates structured investment briefs using live financial data, news, and SEC filings.
+An AI agent that researches stocks and answers follow-up questions using live financial data, news, and SEC filings.
 
 **Live Demo:** [financial-research-agent.streamlit.app](https://financial-research-agent.streamlit.app)
 
@@ -8,13 +8,14 @@ An AI agent that researches stocks and generates structured investment briefs us
 
 ## What It Does
 
-Enter a stock ticker and the agent:
-1. Fetches live price data and key financials (yfinance)
-2. Retrieves recent news articles about the company (NewsAPI)
-3. Downloads and parses the latest SEC 10-K and 10-Q filings (SEC EDGAR)
-4. Synthesizes everything into a structured investment brief using Claude AI
+**Generate Brief** — enter a ticker and the app produces a structured investment brief:
+1. Fetches stock data (yfinance), news (NewsAPI), and SEC filing summaries (EDGAR) — stock first, then news + SEC in parallel
+2. Runs two concurrent Pinecone RAG queries to ground the SEC Filing Highlights and Risk Factors sections in actual filing text
+3. Generates the four middle sections (Financial Health, Recent Developments, SEC Highlights, Risk Factors) in parallel using Claude Haiku
+4. Streams the Executive Summary and Outlook from Claude Sonnet, which receives the pre-written sections as context
+5. Caches the completed brief in Redis (semantic similarity) and PostgreSQL
 
-Data sources are fetched in parallel and fed into a single LLM synthesis call, keeping response time around 30–45 seconds.
+**Ask a follow-up** — type a free-form question below the brief and a LangGraph ReAct agent answers it, selecting whichever tools it needs (stock data, news, SEC filings, or RAG search).
 
 ---
 
@@ -22,11 +23,13 @@ Data sources are fetched in parallel and fed into a single LLM synthesis call, k
 
 | Layer | Technology |
 |---|---|
-| LLM | Claude Sonnet (Anthropic API via LangChain) |
+| LLM — section generation | Claude Haiku 4.5 (4 sections in parallel) |
+| LLM — synthesis + ReAct agent | Claude Sonnet 4.6 (exec summary, outlook, /ask) |
+| Agent framework | LangGraph `create_react_agent` |
 | Financial data | yfinance |
 | News | NewsAPI |
 | SEC filings | SEC EDGAR REST API |
-| RAG | LlamaIndex + Pinecone + HuggingFace embeddings |
+| SEC RAG | LlamaIndex + Pinecone + HuggingFace `bge-small-en-v1.5` |
 | Semantic cache | Redis (cosine similarity on brief embeddings) |
 | Persistence | PostgreSQL via SQLAlchemy |
 | Async tasks | Celery + Redis |
@@ -38,31 +41,61 @@ Data sources are fetched in parallel and fed into a single LLM synthesis call, k
 
 ## Architecture
 
+### Brief pipeline
+
 ```
-User enters ticker
+"Generate Brief"
        │
        ▼
- Redis semantic cache ──hit──► return cached brief
+Redis semantic cache ──hit──► cached brief
        │ miss
        ▼
-┌─────────────────────────────┐
-│  get_stock_data             │  (sequential — company name needed for news)
-└─────────────────────────────┘
+get_stock_data  (yfinance — sequential, company name needed for news)
        │
        ▼
-┌──────────────────┐  ┌──────────────────┐
-│  get_company_news│  │  get_sec_filings  │  (parallel)
-└──────────────────┘  └──────────────────┘
-       │                      │
-       └──────────┬───────────┘
-                  ▼
-         Claude LLM synthesis
-                  │
-                  ▼
-         Investment brief ──► Redis cache + PostgreSQL
+┌──────────────────┐  ┌─────────────────┐
+│ get_company_news │  │ get_sec_filings  │  parallel
+└──────────────────┘  └─────────────────┘
+       │                       │
+       └───────────┬───────────┘
+                   │
+       ┌───────────▼───────────┐
+       │   Pinecone RAG (×2)   │  concurrent
+       │  · SEC highlights     │
+       │  · Risk factors       │
+       └───────────┬───────────┘
+                   │
+   ┌───────────────┼───────────────────────┐
+   ▼               ▼               ▼       ▼
+Haiku           Haiku           Haiku   Haiku      4 parallel calls
+Financial       Recent          SEC     Risk
+Health          Developments    Highl.† Factors†   † RAG-grounded
+   │               │               │       │
+   └───────────────┴───────────────┴───────┘
+                   │
+       ┌───────────▼───────────┐
+       │  Sonnet: Exec Summary │  streams to browser
+       │  + Outlook            │
+       └───────────┬───────────┘
+                   │
+       Redis cache + PostgreSQL
 ```
 
-The FastAPI layer also exposes async research jobs via Celery, allowing non-blocking research requests with status polling.
+### Follow-up questions
+
+```
+"Ask" (free-form question)
+       │
+       ▼
+LangGraph ReAct agent  (claude-sonnet-4-6)
+  ├─ get_stock_data
+  ├─ get_company_news
+  ├─ get_sec_filings
+  └─ query_sec_filing  (Pinecone RAG)
+       │
+       ▼
+     answer
+```
 
 ---
 
@@ -71,7 +104,8 @@ The FastAPI layer also exposes async research jobs via Celery, allowing non-bloc
 ```
 financial-agent/
 ├── agent/
-│   ├── core.py            # Parallel fetch + LLM synthesis
+│   ├── core.py            # Brief pipeline: parallel fetch + Haiku sections + Sonnet stream
+│   ├── react_agent.py     # LangGraph ReAct agent for follow-up questions
 │   └── tools/
 │       ├── stock.py       # yfinance wrapper
 │       ├── news.py        # NewsAPI wrapper
@@ -144,34 +178,9 @@ celery -A celery_worker worker --loglevel=info
 | `POST` | `/research` | Generate brief (synchronous) |
 | `POST` | `/research/async` | Submit research job (returns job ID) |
 | `GET` | `/research/status/{job_id}` | Poll async job status |
+| `POST` | `/ask` | Answer a free-form question via ReAct agent |
 | `GET` | `/history/{ticker}` | Past briefs for a ticker |
 | `GET` | `/history` | 10 most recent briefs |
-
----
-
-## Example Output
-
-```
-## NVDA (NVDA) — Investment Brief
-
-### Executive Summary
-...
-
-### Financial Health
-...
-
-### Recent Developments
-...
-
-### SEC Filing Highlights
-...
-
-### Risk Factors
-...
-
-### Outlook
-...
-```
 
 ---
 
