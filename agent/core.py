@@ -9,6 +9,7 @@ from agent.tools.stock import get_stock_data
 from agent.tools.news import get_company_news
 from agent.tools.sec import get_sec_filings
 from agent.tools.rag import query_sec_filing
+from agent.tracing import traceable
 from cache import get_cached_response, set_cached_response
 
 load_dotenv()
@@ -74,6 +75,7 @@ def _data_context(stock: dict, news: list, sec: dict) -> str:
     return f"Stock: {json.dumps(stock)}\nNews: {json.dumps(news)}\nSEC: {json.dumps(sec)}"
 
 
+@traceable(run_type="retriever", name="rag_contexts", tags=["full_brief", "rag_retrieval"])
 def _rag_contexts(ticker: str) -> tuple[str | None, str | None]:
     """Run SEC highlights and risk-factor RAG queries concurrently.
     Returns (highlights_text, risks_text); either is None on failure or when RAG is disabled."""
@@ -116,6 +118,8 @@ _SECTIONS = [
 ]
 
 
+@traceable(run_type="chain", name="haiku_section", tags=["full_brief", "haiku"],
+           metadata={"model": "claude-haiku-4-5-20251001"})
 def _haiku_section(heading: str, instruction: str, company: str, ticker: str, context: str) -> str:
     prompt = (
         f"Write ONLY the '{heading}' section for a {company} ({ticker}) investment brief.\n"
@@ -124,6 +128,7 @@ def _haiku_section(heading: str, instruction: str, company: str, ticker: str, co
     return _haiku.invoke([HumanMessage(content=prompt)]).content
 
 
+@traceable(run_type="chain", name="parallel_sections", tags=["full_brief"])
 def _parallel_sections(ticker: str, company: str, context: str) -> list[str]:
     """Generate the 4 data-heavy sections concurrently using Haiku.
     SEC Filing Highlights and Risk Factors use RAG-grounded context when available,
@@ -207,6 +212,9 @@ def fetch_research_data(ticker: str) -> tuple[dict, list, dict]:
     return stock_data, news_data, sec_data
 
 
+@traceable(run_type="chain", name="stream_synthesis", tags=["full_brief", "streaming"],
+           metadata={"request_type": "full_brief", "synthesis_model": "claude-sonnet-4-6",
+                     "section_model": "claude-haiku-4-5-20251001"})
 def stream_synthesis(ticker: str, stock_data: dict, news_data, sec_data: dict):
     """Generator: Haiku generates 4 sections in parallel; Sonnet writes exec summary +
     outlook with the pre-written sections in context. Caches the full brief on completion."""
@@ -233,6 +241,9 @@ def stream_synthesis(ticker: str, stock_data: dict, news_data, sec_data: dict):
     set_cached_response(ticker, brief)
 
 
+@traceable(run_type="chain", name="run_research", tags=["full_brief"],
+           metadata={"request_type": "full_brief", "synthesis_model": "claude-sonnet-4-6",
+                     "section_model": "claude-haiku-4-5-20251001"})
 def run_research(ticker: str) -> str:
     """Non-streaming path used by FastAPI and Celery workers."""
     t_total = time.perf_counter()

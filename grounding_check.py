@@ -1,32 +1,53 @@
 #!/usr/bin/env python3
 """
-grounding_check.py
+grounding_check.py — LLM-as-judge grounding eval with reranking A/B arms.
 
-For AAPL, NVDA, JPM — tests the constrained synthesis prompt from core.py
-against BOTH Haiku and Sonnet as the synthesis model:
-  1. Generates the brief using _synthesis_prompt from core.py.
-  2. Assembles the exact source context the model had (trimmed stock,
-     news, SEC summaries, RAG results, and the 4 pre-written sections).
-  3. Runs a Claude Sonnet judge (temperature=0) that audits every
-     specific quantitative claim, price target, and forward-looking
-     figure in the Executive Summary and Outlook and labels each:
-       SUPPORTED   — traceable to the source context
-       UNSUPPORTED — not in the context (likely model-generated)
-       INFERENCE   — reasonable extrapolation, not a verbatim figure
-  4. Prints findings per ticker plus a supported/unsupported count.
-  5. Prints a summary table for each synthesis model.
+Runs the constrained Sonnet synthesis pipeline from core.py across a set of
+tickers under up to three retrieval arms and audits grounding with a Sonnet
+judge (temperature=0). The headline comparison holds the final chunk count
+constant (baseline top_k=3  vs.  retrieve-20 -> rerank -> top-3); the optional
+top-5 arm only measures the effect of added context.
 
-Do NOT change core.py defaults or commit this file.
+  ARMS
+    baseline   RERANKING_ENABLED=false, top_k=3            (today's behaviour)
+    rerank3    retrieve 20 -> cross-encoder rerank -> 3    (headline vs baseline)
+    rerank5    retrieve 20 -> cross-encoder rerank -> 5    (added-context arm)
+
+For each (ticker, arm) it records:
+  - grounding: SUPPORTED / UNSUPPORTED / INFERENCE counts over the Exec Summary
+    and Outlook (every quantitative / forward-looking claim)
+  - retrieval latency: wall time of the two SEC RAG queries
+  - pipeline latency: retrieval + Haiku sections + Sonnet synthesis
+    (shared data-fetch is excluded — it is network-bound and identical per arm)
+
+The Redis semantic cache is bypassed (BYPASS_CACHE=true) so no arm can return
+another arm's cached brief; base stock/news/SEC data is fetched once per ticker
+and reused across arms so only the retrieval stage varies.
+
+This is a dev harness — it does not change core.py defaults. Reranking stays
+off in production unless RERANKING_ENABLED=true.
+
+Usage:
+  python grounding_check.py                       # all 10 tickers, all 3 arms
+  python grounding_check.py --arms baseline rerank3
+  python grounding_check.py --tickers AAPL NVDA --verbose
 """
 import sys
 import os
 import json
 import re
 import time
+import argparse
+from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
+# Bypass the Redis semantic cache for the whole run BEFORE importing anything
+# that touches it, so A/B arms never collide on a cached brief.
+os.environ["BYPASS_CACHE"] = "true"
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -43,7 +64,24 @@ from agent.core import (
     _synthesis_prompt,
 )
 
-TICKERS = ["AAPL", "NVDA", "JPM", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "V", "WMT"]
+ALL_TICKERS = ["AAPL", "NVDA", "JPM", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "V", "WMT"]
+
+# Retrieval arms: env overrides applied per arm. Config in core/rag/reranker is
+# read at call-time, so toggling these in-process re-routes the next query.
+ARMS = {
+    "baseline": {
+        "label": "Baseline (top_k=3, no rerank)",
+        "env": {"RERANKING_ENABLED": "false", "RERANK_CANDIDATES": "3", "RERANK_TOP_N": "3"},
+    },
+    "rerank3": {
+        "label": "Rerank 20 -> 3",
+        "env": {"RERANKING_ENABLED": "true", "RERANK_CANDIDATES": "20", "RERANK_TOP_N": "3"},
+    },
+    "rerank5": {
+        "label": "Rerank 20 -> 5",
+        "env": {"RERANKING_ENABLED": "true", "RERANK_CANDIDATES": "20", "RERANK_TOP_N": "5"},
+    },
+}
 
 # Dedicated judge LLM — temperature=0 for deterministic factual evaluation.
 _judge_llm = ChatAnthropic(
@@ -52,6 +90,23 @@ _judge_llm = ChatAnthropic(
     temperature=0,
     streaming=False,
 )
+
+
+# ── Resilience ──────────────────────────────────────────────────────────────────
+
+def _retry(fn, *args, _attempts=4, _base=3.0, **kwargs):
+    """Retry a call with exponential backoff. A long A/B run makes many LLM/API
+    calls; a single transient connection error shouldn't waste the whole run."""
+    for i in range(_attempts):
+        try:
+            return fn(*args, **kwargs)
+        except Exception as e:
+            if i == _attempts - 1:
+                raise
+            wait = _base * (2 ** i)
+            print(f"    transient error ({type(e).__name__}): retry {i+1}/{_attempts-1} in {wait:.0f}s...",
+                  flush=True)
+            time.sleep(wait)
 
 
 # ── Judge helpers ──────────────────────────────────────────────────────────────
@@ -120,6 +175,36 @@ def _extract_exec_and_outlook(brief: str) -> str:
     return "\n\n".join(result)
 
 
+FINDINGS_DIR = Path(__file__).parent / "eval_findings"
+
+
+def _extract_claims(findings: str, label: str) -> list[str]:
+    """Pull the quoted CLAIM text for every entry the judge gave `label`.
+    Tolerates both plain and bold (**...**) judge formatting."""
+    out = []
+    for block in re.split(r"\*{0,2}CLAIM:\*{0,2}", findings)[1:]:
+        m = re.search(r"\*{0,2}LABEL:\*{0,2}\s*([A-Za-z]+)", block)
+        if m and m.group(1).upper() == label.upper():
+            claim = block.split("\n", 1)[0].strip().strip('"').strip()
+            if claim:
+                out.append(claim)
+    return out
+
+
+def _save_findings(ticker: str, arm: str, exec_and_outlook: str, findings: str):
+    """Persist the audited text + judge findings so a run's per-claim evidence
+    survives (the printed counts alone can't be re-derived without the judge)."""
+    try:
+        FINDINGS_DIR.mkdir(exist_ok=True)
+        (FINDINGS_DIR / f"{ticker}_{arm}.md").write_text(
+            f"# {ticker} — {arm}\n\n## Audited (Exec Summary + Outlook)\n\n"
+            f"{exec_and_outlook}\n\n## Judge findings\n\n{findings}\n",
+            encoding="utf-8",
+        )
+    except Exception as e:
+        print(f"    (could not save findings for {ticker}/{arm}: {e})", flush=True)
+
+
 def _count_labels(text: str) -> dict[str, int]:
     # Matches both plain "LABEL: X" and bold "**LABEL:** X" judge formatting.
     return {
@@ -129,22 +214,43 @@ def _count_labels(text: str) -> dict[str, int]:
     }
 
 
-# ── Per-ticker pipeline ────────────────────────────────────────────────────────
+# ── Data fetch (shared across arms) ─────────────────────────────────────────────
 
-def _fetch_ticker_data(ticker: str) -> tuple:
-    """Fetch and trim all data for a ticker; returns (company, context, sections, source_context)."""
-    print(f"[{ticker}] Fetching stock / news / SEC...", flush=True)
-    stock_data, news_data, sec_data = fetch_research_data(ticker)
+def fetch_base(ticker: str) -> dict:
+    """Fetch and trim stock/news/SEC data once. Reused across all arms so only
+    the retrieval stage differs between them (and to save network round-trips)."""
+    print(f"[{ticker}] Fetching stock / news / SEC (shared across arms)...", flush=True)
+    stock_data, news_data, sec_data = _retry(fetch_research_data, ticker)
     stock   = _trim_stock(stock_data)
     news    = _trim_news(news_data)
     sec     = _trim_sec(sec_data)
     company = stock.get("company_name", ticker)
     context = _data_context(stock, news, sec)
+    return {
+        "company": company,
+        "context": context,
+        "stock": stock,
+        "news": news,
+        "sec": sec,
+    }
 
-    print(f"[{ticker}] Running RAG...", flush=True)
+
+# ── Per-arm pipeline ────────────────────────────────────────────────────────────
+
+def _apply_arm_env(arm: str):
+    for k, v in ARMS[arm]["env"].items():
+        os.environ[k] = v
+
+
+def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
+    _apply_arm_env(arm)
+    company = base["company"]
+    context = base["context"]
+
+    print(f"  [{ticker} | {arm}] RAG retrieval...", flush=True)
     t_rag = time.perf_counter()
-    rag_highlights, rag_risks = _rag_contexts(ticker)
-    print(f"[{ticker}] RAG done in {time.perf_counter()-t_rag:.2f}s", flush=True)
+    rag_highlights, rag_risks = _retry(_rag_contexts, ticker)
+    retrieval_s = time.perf_counter() - t_rag
 
     section_contexts = {
         "### Financial Health":      context,
@@ -153,92 +259,193 @@ def _fetch_ticker_data(ticker: str) -> tuple:
         "### Risk Factors":          rag_risks or context,
     }
 
-    print(f"[{ticker}] Generating Haiku sections...", flush=True)
+    t_sec = time.perf_counter()
     with ThreadPoolExecutor(max_workers=4) as executor:
         futures = [
             executor.submit(
-                _haiku_section, heading, instr, company, ticker, section_contexts[heading]
+                _retry, _haiku_section, heading, instr, company, ticker, section_contexts[heading]
             )
             for heading, instr in _SECTIONS
         ]
         sections = [f.result() for f in futures]
+    sections_s = time.perf_counter() - t_sec
+
+    t_syn = time.perf_counter()
+    brief = _retry(
+        _sonnet.invoke,
+        [HumanMessage(content=_synthesis_prompt(ticker, company, sections))],
+    ).content
+    synth_s = time.perf_counter() - t_syn
+
+    pipeline_s = retrieval_s + sections_s + synth_s
 
     source_context = "\n\n".join([
-        f"STOCK DATA:\n{json.dumps(stock, indent=2)}",
-        f"NEWS ARTICLES:\n{json.dumps(news, indent=2)}",
-        f"SEC FILING SUMMARIES:\n{json.dumps(sec, indent=2)}",
+        f"STOCK DATA:\n{json.dumps(base['stock'], indent=2)}",
+        f"NEWS ARTICLES:\n{json.dumps(base['news'], indent=2)}",
+        f"SEC FILING SUMMARIES:\n{json.dumps(base['sec'], indent=2)}",
         f"RAG — SEC HIGHLIGHTS:\n{rag_highlights or '(not available)'}",
         f"RAG — RISK FACTORS:\n{rag_risks or '(not available)'}",
     ])
-    return company, context, sections, source_context
-
-
-def run_ticker(ticker: str, company: str, sections: list[str], source_context: str) -> dict:
-    SEP = "=" * 72
-    print(f"\n{SEP}", flush=True)
-    print(f"  {ticker}  [sonnet]", flush=True)
-    print(SEP, flush=True)
-
-    print(f"[{ticker}] Running constrained Sonnet synthesis...", flush=True)
-    t_syn = time.perf_counter()
-    brief = _sonnet.invoke(
-        [HumanMessage(content=_synthesis_prompt(ticker, company, sections))]
-    ).content
-    print(f"[{ticker}] Synthesis done in {time.perf_counter()-t_syn:.2f}s ({len(brief)} chars)", flush=True)
 
     exec_and_outlook = _extract_exec_and_outlook(brief)
     section_block    = "\n\n".join(sections)
 
-    print(f"[{ticker}] Running Sonnet judge (temperature=0)...", flush=True)
-    t_judge = time.perf_counter()
-    findings = _judge_llm.invoke([
+    print(f"  [{ticker} | {arm}] judging...", flush=True)
+    findings = _retry(_judge_llm.invoke, [
         SystemMessage(content=_JUDGE_SYSTEM),
         HumanMessage(content=_judge_user_prompt(source_context, section_block, exec_and_outlook)),
     ]).content
-    print(f"[{ticker}] Judge done in {time.perf_counter()-t_judge:.2f}s", flush=True)
+
+    _save_findings(ticker, arm, exec_and_outlook, findings)
 
     counts = _count_labels(findings)
-    counts["total"] = sum(counts.values())
+    counts["total"] = counts["supported"] + counts["unsupported"] + counts["inference"]
 
-    return {"ticker": ticker, "brief": brief, "findings": findings, **counts}
+    s, u, i, t = counts["supported"], counts["unsupported"], counts["inference"], counts["total"]
+    print(
+        f"  [{ticker} | {arm}] {s} SUP  {u} UNSUP  {i} INF  ({t} claims)  "
+        f"retrieval={retrieval_s:.2f}s  pipeline={pipeline_s:.2f}s",
+        flush=True,
+    )
+    if verbose:
+        print(findings, flush=True)
 
-
-# ── Main ───────────────────────────────────────────────────────────────────────
-
-all_results = []
-
-for ticker in TICKERS:
-    company, context, sections, source_context = _fetch_ticker_data(ticker)
-    result = run_ticker(ticker, company, sections, source_context)
-    all_results.append(result)
-
-    print(f"\n{'='*72}", flush=True)
-    print(f"  JUDGE FINDINGS — {result['ticker']}", flush=True)
-    print(f"{'='*72}", flush=True)
-    print(result["findings"], flush=True)
-    s, u, i, t = result["supported"], result["unsupported"], result["inference"], result["total"]
-    print(f"\n  [ {s} SUPPORTED  {u} UNSUPPORTED  {i} INFERENCE  —  {t} total claims ]", flush=True)
+    return {
+        "ticker": ticker, "arm": arm,
+        "retrieval_s": retrieval_s, "pipeline_s": pipeline_s,
+        "inference_claims": _extract_claims(findings, "INFERENCE"),
+        **counts,
+    }
 
 
-# ── Summary table ─────────────────────────────────────────────────────────────
+# ── Summary tables ──────────────────────────────────────────────────────────────
 
-W = 12
-print(f"\n\n{'='*72}", flush=True)
-print("  GROUNDING SUMMARY — Sonnet + constrained prompt  (10 tickers)", flush=True)
-print(f"{'='*72}", flush=True)
-print(f"  {'Ticker':<8}  {'Supported':>{W}}  {'Unsupported':>{W}}  {'Inference':>{W}}  {'Total':>6}", flush=True)
-print(f"  {'-'*8}  {'-'*W}  {'-'*W}  {'-'*W}  {'-'*6}", flush=True)
+def _balanced_tickers(results: list[dict], arms: list[str]) -> set:
+    """Tickers that completed *every* requested arm — so the comparison stays
+    apples-to-apples even if a run was cut short (e.g. by an API outage or
+    credit limit) and some tickers only finished a subset of arms."""
+    by_arm = {arm: {r["ticker"] for r in results if r["arm"] == arm} for arm in arms}
+    if not by_arm or any(not v for v in by_arm.values()):
+        return set()
+    return set.intersection(*by_arm.values())
 
-agg = {k: 0 for k in ("supported", "unsupported", "inference", "total")}
-for r in all_results:
-    print(f"  {r['ticker']:<8}  {r['supported']:>{W}}  {r['unsupported']:>{W}}  {r['inference']:>{W}}  {r['total']:>6}", flush=True)
-    for k in agg:
-        agg[k] += r[k]
 
-print(f"  {'-'*8}  {'-'*W}  {'-'*W}  {'-'*W}  {'-'*6}", flush=True)
-print(f"  {'TOTAL':<8}  {agg['supported']:>{W}}  {agg['unsupported']:>{W}}  {agg['inference']:>{W}}  {agg['total']:>6}", flush=True)
+def _aggregate(results: list[dict], arm: str, only: set | None = None) -> dict:
+    rows = [r for r in results if r["arm"] == arm and (only is None or r["ticker"] in only)]
+    n = len(rows)
+    agg = {k: sum(r[k] for r in rows) for k in ("supported", "unsupported", "inference", "total")}
+    agg["tickers"] = n
+    agg["grounding_pct"] = (agg["supported"] / agg["total"] * 100) if agg["total"] else 0.0
+    agg["unsupported_pct"] = (agg["unsupported"] / agg["total"] * 100) if agg["total"] else 0.0
+    agg["retrieval_s"] = (sum(r["retrieval_s"] for r in rows) / n) if n else 0.0
+    agg["pipeline_s"] = (sum(r["pipeline_s"] for r in rows) / n) if n else 0.0
+    return agg
 
-total = max(agg["total"], 1)
-print(f"\n  Grounding rate    (Supported / Total):   {agg['supported']  / total * 100:.0f}%", flush=True)
-print(f"  Unsupported rate  (Unsupported / Total): {agg['unsupported'] / total * 100:.0f}%", flush=True)
-print(flush=True)
+
+def print_comparison(results: list[dict], arms: list[str]):
+    # Restrict the comparison to tickers that completed every arm, so a partial
+    # run still yields an honest apples-to-apples table.
+    balanced = _balanced_tickers(results, arms)
+    all_tickers = {r["ticker"] for r in results}
+    excluded = sorted(all_tickers - balanced)
+
+    print(f"\n\n{'='*100}", flush=True)
+    print("  BEFORE / AFTER — RERANKING A/B  (LLM-as-judge grounding)", flush=True)
+    print(f"{'='*100}", flush=True)
+    print(f"  Balanced over {len(balanced)} ticker(s) completing all arms: "
+          f"{', '.join(sorted(balanced)) or '(none)'}", flush=True)
+    if excluded:
+        print(f"  Excluded (incomplete arms): {', '.join(excluded)}", flush=True)
+    header = (
+        f"  {'Arm':<30} {'Tk':>3} {'Sup':>5} {'Uns':>5} {'Inf':>5} {'Tot':>5} "
+        f"{'Ground%':>8} {'Unsup%':>7} {'Retr(s)':>8} {'Pipe(s)':>8}"
+    )
+    print(header, flush=True)
+    print(f"  {'-'*100}", flush=True)
+    for arm in arms:
+        a = _aggregate(results, arm, only=balanced)
+        print(
+            f"  {ARMS[arm]['label']:<30} {a['tickers']:>3} {a['supported']:>5} "
+            f"{a['unsupported']:>5} {a['inference']:>5} {a['total']:>5} "
+            f"{a['grounding_pct']:>7.1f}% {a['unsupported_pct']:>6.1f}% "
+            f"{a['retrieval_s']:>8.2f} {a['pipeline_s']:>8.2f}",
+            flush=True,
+        )
+
+    # Headline delta: baseline vs rerank3 (final chunk count held constant).
+    if "baseline" in arms and "rerank3" in arms:
+        b = _aggregate(results, "baseline", only=balanced)
+        r = _aggregate(results, "rerank3", only=balanced)
+        print(f"\n  HEADLINE (chunk count held at 3): baseline -> rerank3", flush=True)
+        print(
+            f"    unsupported claims : {b['unsupported']} -> {r['unsupported']} "
+            f"({b['unsupported_pct']:.1f}% -> {r['unsupported_pct']:.1f}%)", flush=True,
+        )
+        print(
+            f"    grounding rate     : {b['grounding_pct']:.1f}% -> {r['grounding_pct']:.1f}%",
+            flush=True,
+        )
+        print(
+            f"    retrieval latency  : {b['retrieval_s']:.2f}s -> {r['retrieval_s']:.2f}s "
+            f"(+{r['retrieval_s'] - b['retrieval_s']:.2f}s)", flush=True,
+        )
+        print(
+            f"    pipeline latency   : {b['pipeline_s']:.2f}s -> {r['pipeline_s']:.2f}s "
+            f"(+{r['pipeline_s'] - b['pipeline_s']:.2f}s)", flush=True,
+        )
+    print(flush=True)
+
+
+# ── Main ─────────────────────────────────────────────────────────────────────────
+
+def main():
+    parser = argparse.ArgumentParser(description="Grounding eval with reranking A/B arms.")
+    parser.add_argument("--arms", nargs="+", default=["baseline", "rerank3", "rerank5"],
+                        choices=list(ARMS.keys()), help="Which retrieval arms to run.")
+    parser.add_argument("--tickers", nargs="+", default=ALL_TICKERS,
+                        help="Which tickers to evaluate.")
+    parser.add_argument("--verbose", action="store_true",
+                        help="Print full per-claim judge findings.")
+    args = parser.parse_args()
+
+    print(f"BYPASS_CACHE={os.getenv('BYPASS_CACHE')} — Redis semantic cache disabled for this run.",
+          flush=True)
+    print(f"Arms: {', '.join(args.arms)}   Tickers: {', '.join(args.tickers)}\n", flush=True)
+
+    results = []
+    skipped = []
+    for ticker in args.tickers:
+        print(f"\n{'='*72}\n  {ticker}\n{'='*72}", flush=True)
+        try:
+            base = fetch_base(ticker)
+            for arm in args.arms:
+                results.append(run_arm(ticker, base, arm, args.verbose))
+        except Exception as e:
+            # After retries, a ticker still failed — skip it so the rest of the
+            # run (and the comparison table) still completes.
+            print(f"  [{ticker}] SKIPPED after retries: {type(e).__name__}: {e}", flush=True)
+            skipped.append(ticker)
+
+    print_comparison(results, args.arms)
+    if skipped:
+        print(f"  NOTE: {len(skipped)} ticker(s) skipped after retries: {', '.join(skipped)}",
+              flush=True)
+
+    # Sample of INFERENCE-labeled claims from the rerank arms — lets you verify
+    # the "denominator effect" (more inference claims, not more fabrication).
+    rerank_arms = [a for a in args.arms if a != "baseline"]
+    samples = [
+        (r["ticker"], r["arm"], c)
+        for r in results if r["arm"] in rerank_arms
+        for c in r.get("inference_claims", [])
+    ]
+    if samples:
+        print(f"\n  INFERENCE claims in rerank arms (sample of up to 10 of {len(samples)}):",
+              flush=True)
+        for ticker, arm, claim in samples[:10]:
+            print(f"    [{ticker}|{arm}] {claim}", flush=True)
+    print(f"\n  Full per-claim judge findings saved to: {FINDINGS_DIR}", flush=True)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,5 +1,6 @@
 import os
 import re
+import time
 import requests
 import hashlib
 from langchain.tools import tool
@@ -9,6 +10,14 @@ from llama_index.llms.anthropic import Anthropic
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from pinecone import Pinecone, ServerlessSpec
 from dotenv import load_dotenv
+
+from agent.tracing import traceable
+from agent.tools.reranker import (
+    reranking_enabled,
+    rerank_candidates,
+    rerank_top_n,
+    query_engine_kwargs,
+)
 
 load_dotenv()
 
@@ -97,7 +106,37 @@ def _fetch_filing_text(ticker: str, form_type: str) -> str | None:
     return None
 
 
+def _run_rag_query(index, question: str):
+    """Query the index through the configured retrieval pipeline, logging
+    retrieval latency so the reranking on/off cost is always visible.
+
+    Reranking OFF: single-stage top-3 cosine retrieval (original behaviour).
+    Reranking ON:  over-retrieve `RERANK_CANDIDATES`, then a cross-encoder
+                   reranks down to `RERANK_TOP_N`.
+    """
+    enabled = reranking_enabled()
+    query_engine = index.as_query_engine(**query_engine_kwargs())
+
+    t0 = time.perf_counter()
+    response = query_engine.query(question)
+    elapsed = time.perf_counter() - t0
+
+    if enabled:
+        print(
+            f"[rag] retrieval reranking=ON {elapsed:.3f}s "
+            f"candidates={rerank_candidates()} top_n={rerank_top_n()}"
+        )
+    else:
+        print(f"[rag] retrieval reranking=OFF {elapsed:.3f}s candidates=3 top_n=3")
+    return response
+
+
 @tool
+@traceable(
+    run_type="retriever",
+    name="query_sec_filing",
+    tags=["rag_retrieval"],
+)
 def query_sec_filing(input: str) -> str:
     """
     Uses RAG with Pinecone vector store to answer specific questions about
@@ -132,8 +171,7 @@ def query_sec_filing(input: str) -> str:
                     namespace=namespace
                 )
             )
-            query_engine = index.as_query_engine(similarity_top_k=3)
-            response = query_engine.query(question)
+            response = _run_rag_query(index, question)
 
             if str(response) and len(str(response)) > 50:
                 return f"[From Pinecone cache] {str(response)}"
@@ -163,8 +201,7 @@ def query_sec_filing(input: str) -> str:
             storage_context=ns_storage_context
         )
 
-        query_engine = index.as_query_engine(similarity_top_k=3)
-        response = query_engine.query(question)
+        response = _run_rag_query(index, question)
 
         return f"[Indexed to Pinecone] {str(response)}"
 

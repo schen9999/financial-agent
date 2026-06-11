@@ -4,6 +4,8 @@ from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, AIMessage
 from langgraph.prebuilt import create_react_agent
 
+from agent.tracing import traceable
+
 load_dotenv()
 
 _SYSTEM_PROMPT = """You are a financial research assistant with access to real-time data and SEC filings.
@@ -39,6 +41,8 @@ def _build_graph():
     )
 
 
+@traceable(run_type="chain", name="answer_question", tags=["follow_up"],
+           metadata={"request_type": "follow_up", "model": "claude-sonnet-4-6"})
 def answer_question(ticker: str, question: str) -> str:
     """Run the ReAct agent to answer a free-form question about a stock.
     The agent selects and calls whichever tools it needs, then returns a

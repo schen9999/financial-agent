@@ -73,7 +73,12 @@ def get_cached_response(ticker: str) -> dict | None:
     Checks Redis for a semantically similar cached research brief.
     Returns cached result if similarity exceeds threshold, else None.
     Falls back to None on any Redis error so the app keeps working.
+    When BYPASS_CACHE is set (used by the eval harness for clean A/B arms),
+    always reports a miss so a run never returns another arm's cached answer.
     """
+    if os.getenv("BYPASS_CACHE", "false").strip().lower() == "true":
+        print(f"Cache BYPASS (read) for {ticker} — BYPASS_CACHE=true")
+        return None
     try:
         query = f"financial research brief for {ticker.upper()}"
         query_embedding = _get_query_embedding(query)
@@ -128,7 +133,12 @@ def set_cached_response(ticker: str, result: str):
     """
     Stores a research brief and its embedding in Redis.
     Silently skips on any Redis error — caching is best-effort.
+    Skips writing entirely when BYPASS_CACHE is set so eval runs never pollute
+    the live cache with arm-specific briefs.
     """
+    if os.getenv("BYPASS_CACHE", "false").strip().lower() == "true":
+        print(f"Cache BYPASS (write) for {ticker.upper()} — BYPASS_CACHE=true")
+        return
     try:
         query = f"financial research brief for {ticker.upper()}"
         embedding = _get_query_embedding(query)

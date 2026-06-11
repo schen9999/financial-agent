@@ -55,7 +55,19 @@ def research_task(self, ticker: str) -> dict:
     try:
         self.update_state(state="PROGRESS", meta={"status": f"Researching {ticker}..."})
         from agent.core import run_research
-        result = run_research(ticker)
+        from agent.tracing import tracing_enabled
+
+        if tracing_enabled():
+            from langsmith import trace
+            with trace(
+                name="research_task",
+                run_type="chain",
+                tags=["full_brief", "async"],
+                metadata={"request_type": "full_brief", "async": True, "ticker": ticker},
+            ):
+                result = run_research(ticker)
+        else:
+            result = run_research(ticker)
         return {"status": "complete", "ticker": ticker, "brief": result}
     except Exception as e:
         self.update_state(state="FAILURE", meta={"error": str(e)})
