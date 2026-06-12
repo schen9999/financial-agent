@@ -305,6 +305,61 @@ isn't needed for this pipeline, rather than assuming it would help.
   conservative by design — it keeps `SUPPORTED` strictly verbatim — but it means
   `Grounding%` understates how much of each brief is trivially data-derived.
 
+## LoRA Fine-Tuning Experiment
+
+Can a small, locally-served open model match Haiku on section generation at lower
+cost? This experiment fine-tunes **Qwen2.5-1.5B-Instruct** (Apache-2.0) with
+QLoRA and benchmarks it as a drop-in for Haiku on the parallel section step.
+
+**Scope.** The fine-tuned model serves **3 of the 4** sections — Financial
+Health, SEC Filing Highlights, Risk Factors — gated by `USE_LOCAL_MODEL`
+(default off). Recent Developments always stays with Haiku (its news data was
+too sparse to build grounded training targets). Sonnet synthesis is untouched.
+
+**Dataset (deterministic, Claude-free).** Training targets are built
+*deterministically* from the project's own data — no LLM is called, so there's
+no dependence on Claude outputs:
+
+| Section | Builder | Coverage (78 tickers) |
+|---|---|---|
+| Financial Health | real figures into rotating templates | 100% |
+| SEC Filing Highlights | figure-biased extraction from Item 7 (MD&A) | 81% |
+| Risk Factors | leading risk sentences from Item 1A | 53% |
+
+Two stages: `scripts/build_raw_data.py` harvests raw stock/news + raw 10-K Item 7
+/ Item 1A text locally; the construction pipeline (`scripts/build_dataset.py`,
+mirrored inline in the notebook) turns it into 182 instruction/target pairs.
+
+**Training.** `fine_tune_financial.ipynb` (Colab T4): shows the construction
+pipeline inline, halts for a 5-sample review, then QLoRA-trains (r=16, α=32,
+all-linear targets, 4-bit NF4, gradient checkpointing, per-epoch checkpoints,
+loss curve) and saves the adapter to `/adapters/financial-lora/`.
+
+**Serving.** Merge adapter → GGUF (`q4_K_M`) → Ollama. `agent/tools/local_model.py`
+wraps Ollama behind the same `.invoke(messages).content` interface as Haiku;
+`USE_LOCAL_MODEL=true` routes the 3 trained sections to it.
+
+**Benchmark.** A `local-model` arm in `grounding_check.py` reports grounding,
+unsupported, and inference rates, latency, and an **honest hybrid cost**: the 3
+local sections cost **$0.00**, only Recent Developments hits Haiku, versus all 4
+sections on Haiku for the baseline.
+
+```bash
+# after training (Colab) + serving (ollama serve + model loaded):
+python grounding_check.py --arms baseline rerank3 local-model \
+    --tickers AAPL NVDA JPM MSFT XOM        # NVDA = extreme-figures outlier
+```
+
+> **Results pending the training run** — fill the `local-model` row from the
+> benchmark output once the adapter is trained and served.
+
+**Known limitations.** Risk Factors training coverage is 53% (some filings'
+Item 1A doesn't yield enough clean sentences); a 1.5B model may reproduce the
+section *format* but is more prone to figure errors than Haiku — which is exactly
+what the grounding/unsupported metrics will measure; and CPU inference of the 3
+local sections is slower than the Haiku API, so the headline comparison is
+**grounding-quality + cost**, not latency.
+
 ## Disclaimer
 
 This tool is for informational purposes only and does not constitute financial advice.

@@ -85,16 +85,49 @@ ARMS = {
         "label": "Rerank 20 -> 5",
         "env": {"RERANKING_ENABLED": "true", "RERANK_CANDIDATES": "20", "RERANK_TOP_N": "5"},
     },
+    "local-model": {
+        # Fine-tuned Qwen2.5-1.5B (Ollama) serves the 3 trained sections; Haiku
+        # keeps Recent Developments. Requires `ollama serve` + the model loaded.
+        "label": "Local model (3 sec) + Haiku",
+        "env": {"RERANKING_ENABLED": "false", "BASELINE_TOP_K": "3", "USE_LOCAL_MODEL": "true"},
+    },
 }
 
 # Every arm explicitly sets the flags it depends on so values can't leak across
 # arms within one process. Fill in the ones an arm leaves unset with inert
-# defaults (e.g. a baseline arm still resets RERANKING_ENABLED, a rerank arm
-# still resets BASELINE_TOP_K).
+# defaults (e.g. a baseline arm still resets RERANKING_ENABLED / USE_LOCAL_MODEL).
 _ARM_ENV_DEFAULTS = {
     "RERANKING_ENABLED": "false", "BASELINE_TOP_K": "3",
-    "RERANK_CANDIDATES": "20", "RERANK_TOP_N": "3",
+    "RERANK_CANDIDATES": "20", "RERANK_TOP_N": "3", "USE_LOCAL_MODEL": "false",
 }
+
+# Haiku 4.5 pricing (USD per million tokens) for the cost estimate. Update if
+# rates change; cost is reported as an estimate from char/4 token approximation.
+_HAIKU_IN_PER_MTOK = 1.00
+_HAIKU_OUT_PER_MTOK = 5.00
+_LOCAL_SECTIONS = {"### Financial Health", "### SEC Filing Highlights", "### Risk Factors"}
+
+
+def _est_tokens(text: str) -> int:
+    return max(1, len(text) // 4)
+
+
+def _brief_haiku_cost(arm: str, company: str, ticker: str,
+                      section_contexts: dict, sections: list[str]) -> float:
+    """Estimated Haiku $/brief: only sections actually served by Haiku cost
+    money. In the local-model arm the 3 trained sections are local ($0.00) and
+    only Recent Developments hits Haiku; other arms pay Haiku for all 4."""
+    local = ARMS[arm]["env"].get("USE_LOCAL_MODEL") == "true"
+    in_tok = out_tok = 0
+    for (heading, instr), out in zip(_SECTIONS, sections):
+        if local and heading in _LOCAL_SECTIONS:
+            continue  # served by the local model — $0.00
+        prompt = (f"Write ONLY the '{heading}' section for a {company} ({ticker}) investment brief.\n"
+                  f"{instr}\nStart with the markdown heading. Be concise.\n\nData:\n"
+                  f"{section_contexts[heading]}")
+        in_tok += _est_tokens(prompt)
+        out_tok += _est_tokens(out)
+    return in_tok / 1e6 * _HAIKU_IN_PER_MTOK + out_tok / 1e6 * _HAIKU_OUT_PER_MTOK
 
 # Dedicated judge LLM — temperature=0 for deterministic factual evaluation.
 _judge_llm = ChatAnthropic(
@@ -296,6 +329,7 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
     synth_s = time.perf_counter() - t_syn
 
     pipeline_s = retrieval_s + sections_s + synth_s
+    haiku_cost = _brief_haiku_cost(arm, company, ticker, section_contexts, sections)
 
     source_context = "\n\n".join([
         f"STOCK DATA:\n{json.dumps(base['stock'], indent=2)}",
@@ -322,7 +356,7 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
     s, u, i, t = counts["supported"], counts["unsupported"], counts["inference"], counts["total"]
     print(
         f"  [{ticker} | {arm}] {s} SUP  {u} UNSUP  {i} INF  ({t} claims)  "
-        f"retrieval={retrieval_s:.2f}s  pipeline={pipeline_s:.2f}s",
+        f"retrieval={retrieval_s:.2f}s  pipeline={pipeline_s:.2f}s  haiku_cost=${haiku_cost:.5f}",
         flush=True,
     )
     if verbose:
@@ -330,7 +364,7 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
 
     return {
         "ticker": ticker, "arm": arm,
-        "retrieval_s": retrieval_s, "pipeline_s": pipeline_s,
+        "retrieval_s": retrieval_s, "pipeline_s": pipeline_s, "haiku_cost": haiku_cost,
         "inference_claims": _extract_claims(findings, "INFERENCE"),
         **counts,
     }
@@ -357,6 +391,7 @@ def _aggregate(results: list[dict], arm: str, only: set | None = None) -> dict:
     agg["unsupported_pct"] = (agg["unsupported"] / agg["total"] * 100) if agg["total"] else 0.0
     agg["retrieval_s"] = (sum(r["retrieval_s"] for r in rows) / n) if n else 0.0
     agg["pipeline_s"] = (sum(r["pipeline_s"] for r in rows) / n) if n else 0.0
+    agg["haiku_cost"] = (sum(r["haiku_cost"] for r in rows) / n) if n else 0.0
     return agg
 
 
@@ -376,17 +411,17 @@ def print_comparison(results: list[dict], arms: list[str]):
         print(f"  Excluded (incomplete arms): {', '.join(excluded)}", flush=True)
     header = (
         f"  {'Arm':<30} {'Tk':>3} {'Sup':>5} {'Uns':>5} {'Inf':>5} {'Tot':>5} "
-        f"{'Ground%':>8} {'Unsup%':>7} {'Retr(s)':>8} {'Pipe(s)':>8}"
+        f"{'Ground%':>8} {'Unsup%':>7} {'Retr(s)':>8} {'Pipe(s)':>8} {'Haiku$/brief':>13}"
     )
     print(header, flush=True)
-    print(f"  {'-'*100}", flush=True)
+    print(f"  {'-'*114}", flush=True)
     for arm in arms:
         a = _aggregate(results, arm, only=balanced)
         print(
             f"  {ARMS[arm]['label']:<30} {a['tickers']:>3} {a['supported']:>5} "
             f"{a['unsupported']:>5} {a['inference']:>5} {a['total']:>5} "
             f"{a['grounding_pct']:>7.1f}% {a['unsupported_pct']:>6.1f}% "
-            f"{a['retrieval_s']:>8.2f} {a['pipeline_s']:>8.2f}",
+            f"{a['retrieval_s']:>8.2f} {a['pipeline_s']:>8.2f} {a['haiku_cost']:>12.5f}",
             flush=True,
         )
 
