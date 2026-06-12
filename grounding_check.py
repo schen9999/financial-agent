@@ -105,7 +105,7 @@ _ARM_ENV_DEFAULTS = {
 # rates change; cost is reported as an estimate from char/4 token approximation.
 _HAIKU_IN_PER_MTOK = 1.00
 _HAIKU_OUT_PER_MTOK = 5.00
-_LOCAL_SECTIONS = {"### Financial Health", "### SEC Filing Highlights", "### Risk Factors"}
+from agent.tools.local_model import LOCAL_SECTIONS as _LOCAL_SECTIONS  # canonical routing set
 
 
 def _est_tokens(text: str) -> int:

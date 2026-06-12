@@ -4,10 +4,11 @@ The QLoRA-fine-tuned Qwen2.5-1.5B (see fine_tune_financial.ipynb) is served by
 Ollama; `LocalChat` wraps Ollama's chat endpoint behind the same minimal
 interface the agent uses for Haiku: `.invoke(messages).content`.
 
-Routing is gated by USE_LOCAL_MODEL (default off). Only the three sections the
-model was trained on are routed to it; Recent Developments always stays with
-Haiku (its training data was too sparse — see the dataset notes). When the flag
-is off, nothing changes and Haiku serves every section exactly as before.
+Routing is gated by USE_LOCAL_MODEL (default off). Only the two sections the
+model was trained on are routed to it. Recent Developments and SEC Filing
+Highlights always stay with Haiku — deterministic targets couldn't be built for
+them (sparse news; table-bound MD&A figures). When the flag is off, nothing
+changes and Haiku serves every section exactly as before.
 """
 import os
 
@@ -17,7 +18,6 @@ import requests
 # LOCAL_SECTIONS in scripts/build_dataset.py (the set the model is trained on).
 LOCAL_SECTIONS = frozenset({
     "### Financial Health",
-    "### SEC Filing Highlights",
     "### Risk Factors",
 })
 

@@ -33,11 +33,12 @@ def test_use_local_model_flag():
     assert use_local_model() is True
 
 
-def test_local_sections_are_the_three_trained():
+def test_local_sections_are_the_two_trained():
     assert is_local_section("### Financial Health")
-    assert is_local_section("### SEC Filing Highlights")
     assert is_local_section("### Risk Factors")
-    # Recent Developments stays with Haiku.
+    # SEC Highlights (table-bound figures) and Recent Developments (sparse news)
+    # stay with Haiku.
+    assert not is_local_section("### SEC Filing Highlights")
     assert not is_local_section("### Recent Developments")
 
 

@@ -95,16 +95,16 @@ def _full_filing_text(ticker: str, form: str) -> str | None:
     return clean or None
 
 
-def _extract_item(full: str, start_re: str, end_res: list[str]) -> str | None:
+def _extract_item(full: str, start_re: str, end_res: list[str], cap: int = _SECTION_CAP) -> str | None:
     """Pull the Item region: longest span from a start anchor to the next section
-    header. Defaults to a full _SECTION_CAP window so a missed end-header still
-    yields the body; the +1000 offset skips the intro so inline 'see Item 8'
-    references in the first sentence can't truncate the span."""
+    header. Defaults to a `cap`-char window so a missed end-header still yields
+    the body; the +1000 offset skips the intro so inline 'see Item 8' references
+    in the first sentence can't truncate the span."""
     low = full.lower()
     best = ""
     for m in re.finditer(start_re, low):
         s = m.start()
-        e = s + _SECTION_CAP  # full-window fallback
+        e = s + cap  # full-window fallback
         for er in end_res:
             em = re.search(er, low[s + 1000:])
             if em:
@@ -112,7 +112,31 @@ def _extract_item(full: str, start_re: str, end_res: list[str]) -> str | None:
         seg = full[s:e]
         if len(seg) > len(best):
             best = seg
-    return best[:_SECTION_CAP] if len(best) > 200 else None
+    return best[:cap] if len(best) > 200 else None
+
+
+# Anchors marking the start of the Results-of-Operations discussion inside Item 7
+# (where "net sales / revenue increased X% ..." lives), vs the descriptive
+# overview that opens the section.
+_MDA_RESULTS_ANCHORS = [
+    r"results of operations", r"net sales", r"net revenue", r"total revenues?",
+    r"revenues?\s+(?:increased|decreased)", r"comparison of",
+]
+
+
+def _extract_mda(full: str) -> str | None:
+    """Item 7 narrowed to the Results-of-Operations discussion. Grabs a large
+    Item 7 window, then starts the kept text at the first results anchor (after
+    the Item 7 title) so the descriptive overview is skipped."""
+    item7 = _extract_item(full, _MDA_START, _MDA_END, cap=60000)
+    if not item7:
+        return None
+    low = item7.lower()
+    starts = [300 + re.search(p, low[300:]).start()  # skip the title's "results of operations"
+              for p in _MDA_RESULTS_ANCHORS if re.search(p, low[300:])]
+    start = min(starts) if starts else 0
+    seg = item7[start:start + _SECTION_CAP]
+    return seg if len(seg) > 200 else item7[:_SECTION_CAP]
 
 
 def _fetch_sec_sections(ticker: str) -> dict:
@@ -125,7 +149,7 @@ def _fetch_sec_sections(ticker: str) -> dict:
         time.sleep(0.3)
         if not full:
             continue
-        mda = _extract_item(full, _MDA_START, _MDA_END)
+        mda = _extract_mda(full)
         risk = _extract_item(full, _RISK_START, _RISK_END)
         if mda or risk:
             return {"form": form, "mda": mda, "risk_factors": risk}

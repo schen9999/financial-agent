@@ -210,6 +210,11 @@ _BOILERPLATE = (
     "unless otherwise stated", "all information presented", "fiscal calendar",
     "accompanying notes", "in conjunction with", "should be read", "refer to the",
     "is not an indication", "the discussion of", "set forth below", "described below",
+    # Descriptive / non-analytical sentences (company profile, products, channels)
+    # that score on financial terms but carry no analytical value.
+    "fiscal year is", "week period", "founded in", "develop and support",
+    "sells its products", "resells", "directly to customers", "retail and online",
+    "distribution channels", "our products include", "wholly-owned",
 )
 
 
@@ -291,15 +296,41 @@ def build_sec_highlights(sec_raw: dict) -> str | None:
     sents = _sentences(text)
     if not sents:
         return None
-    # Financial highlights should carry figures — bonus for $/%/digits.
-    def hl(s):
-        return _score(s, _HIGHLIGHT_TERMS) + (2 if re.search(r"[\$%]|\b\d", s) else 0)
-    ranked = sorted(enumerate(sents), key=lambda p: hl(p[1]), reverse=True)
-    top = [p for p in ranked if hl(p[1]) >= 3][:4]
+    # An analytical highlight is either rich in financial terms (>=3) or a
+    # figure-bearing result sentence (a real $/% amount with >=1 term). A bare
+    # year/count no longer counts: descriptive sentences (fiscal-year
+    # definitions, founding statements, distribution channels, product listings)
+    # carry few financial terms and no $/%, so they fail both gates — and the
+    # named ones are also caught by _BOILERPLATE. NB: many 10-Ks keep figures in
+    # tables (flattened to number-soup, dropped by _sentences), so a hard
+    # figure-only gate would wrongly discard whole sections.
+    def has_figure(s):
+        return bool(re.search(r"\$\s?\d|\d+(?:\.\d+)?\s?%|\bpercent\b", s))
+
+    def qualifies(s):
+        sc = _score(s, _HIGHLIGHT_TERMS)
+        return sc >= 3 or (has_figure(s) and sc >= 1)
+
+    def rank(s):  # prefer figure-bearing, term-rich sentences
+        return _score(s, _HIGHLIGHT_TERMS) + (2 if has_figure(s) else 0)
+
+    cands = [(i, s) for i, s in enumerate(sents) if qualifies(s)]
+    cands.sort(key=lambda p: rank(p[1]), reverse=True)
+    top = cands[:4]
     if len(top) < 2:
         return None
     top.sort(key=lambda p: p[0])  # restore document order
     return "### SEC Filing Highlights\n" + " ".join(s for _, s in top)
+
+
+# Modal/risk-framing words that mark a real risk statement (vs a product
+# description). A sentence qualifies as a risk bullet if it is risk-term-dense
+# (>=2) OR has >=1 risk term AND a modal — so declarative risks like "the
+# markets are highly competitive" (score 2) stay, single-weak-term product
+# descriptions like the AppleCare bullet ("...theft and loss...", score 1, no
+# modal) are dropped, and single-term-with-modal risks recover coverage.
+_RISK_MODALS = ("could", "may", "might", "would", "adversely", "adverse",
+                "subject to", "risk", "uncertain", "materially", "fail")
 
 
 def build_risk_factors(sec_raw: dict) -> str | None:
@@ -308,8 +339,17 @@ def build_risk_factors(sec_raw: dict) -> str | None:
     if not text:
         return None
     sents = _sentences(text)
-    ranked = sorted(enumerate(sents), key=lambda p: _score(p[1], _RISK_TERMS), reverse=True)
-    top = [p for p in ranked if _score(p[1], _RISK_TERMS) >= 1][:3]
+
+    def is_risk(s):
+        sc = _score(s, _RISK_TERMS)
+        if sc >= 2:
+            return True
+        sl = s.lower()
+        return sc >= 1 and any(m in sl for m in _RISK_MODALS)
+
+    cands = [(i, s) for i, s in enumerate(sents) if is_risk(s)]
+    cands.sort(key=lambda p: _score(p[1], _RISK_TERMS), reverse=True)
+    top = cands[:3]
     if len(top) < 2:
         return None
     top.sort(key=lambda p: p[0])
@@ -324,12 +364,14 @@ _BUILDERS = {
     "### Risk Factors":          lambda r: build_risk_factors(r["sec_raw"]),
 }
 
-# Sections the fine-tuned local model is trained on and serves. Recent
-# Developments is deliberately excluded — NewsAPI coverage is too sparse (18%)
-# to train a grounded target — so Haiku keeps that section regardless of the
-# USE_LOCAL_MODEL flag. This list is the single source of truth for the
-# inference router and the benchmark cost split.
-LOCAL_SECTIONS = ["### Financial Health", "### SEC Filing Highlights", "### Risk Factors"]
+# Sections the fine-tuned local model is trained on and serves. Two sections are
+# deliberately excluded and kept on Haiku because deterministic extraction can't
+# build grounded targets for them:
+#   - Recent Developments: NewsAPI coverage is too sparse (18%).
+#   - SEC Filing Highlights: MD&A figures are table-bound (flatten to number-soup)
+#     and the remaining prose is descriptive, not analytical.
+# Keep this list in sync with LOCAL_SECTIONS in agent/tools/local_model.py.
+LOCAL_SECTIONS = ["### Financial Health", "### Risk Factors"]
 
 
 # ── input context (mirrors _data_context but with raw, Claude-free SEC text) ─────
@@ -393,7 +435,7 @@ def main():
         by_section[ex["section"]] = by_section.get(ex["section"], 0) + 1
     n = len(rows)
     print(f"Built {len(examples)} examples from {n} tickers -> {args.out}")
-    print(f"(Recent Developments excluded - Haiku keeps that section.)")
+    print(f"(Recent Developments + SEC Filing Highlights excluded - Haiku keeps those.)")
     print(f"\nPer-section coverage (tickers producing an example / {n}):")
     for h in LOCAL_SECTIONS:
         c = by_section.get(h, 0)
@@ -408,7 +450,7 @@ def main():
     for row in rows:
         s = row["sec_raw"]
         mc = clean_sentence_count(s.get("mda"), _HIGHLIGHT_TERMS, 2)
-        rc = clean_sentence_count(s.get("risk_factors"), _RISK_TERMS, 1)
+        rc = clean_sentence_count(s.get("risk_factors"), _RISK_TERMS, 2)
         mda_counts.append(mc)
         risk_counts.append(rc)
         print(f"  {row['ticker']:<8} {mc:>10} {rc:>10}")
