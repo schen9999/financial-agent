@@ -1,0 +1,16 @@
+# Secrets — never commit
+.env
+.streamlit/secrets.toml
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Eval artifacts
+eval_findings/
+
+# Cached SEC filing text
+sec_filings/
