@@ -11,7 +11,7 @@ from agent.tools import reranker
 # Reranking config is read from the environment on every call. These vars are
 # global process state, so save/restore them around each test and reset the
 # cached cross-encoder instance so tests don't leak into one another.
-_VARS = ["RERANKING_ENABLED", "RERANK_CANDIDATES", "RERANK_TOP_N", "RERANK_MODEL"]
+_VARS = ["RERANKING_ENABLED", "RERANK_CANDIDATES", "RERANK_TOP_N", "RERANK_MODEL", "BASELINE_TOP_K"]
 
 
 @pytest.fixture(autouse=True)
@@ -81,6 +81,20 @@ def test_off_path_is_single_stage_top3():
     # Reranking off: original behaviour, no postprocessor, top-3 cosine.
     kwargs = reranker.query_engine_kwargs()
     assert kwargs == {"similarity_top_k": 3}
+    assert "node_postprocessors" not in kwargs
+
+
+def test_baseline_top_k_default_and_override():
+    assert reranker.baseline_top_k() == 3
+    os.environ["BASELINE_TOP_K"] = "5"
+    assert reranker.baseline_top_k() == 5
+
+
+def test_off_path_honors_baseline_top_k():
+    # The no-rerank arm can retrieve a wider top-k without a postprocessor.
+    os.environ["BASELINE_TOP_K"] = "5"
+    kwargs = reranker.query_engine_kwargs()
+    assert kwargs == {"similarity_top_k": 5}
     assert "node_postprocessors" not in kwargs
 
 

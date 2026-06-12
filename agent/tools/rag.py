@@ -16,6 +16,7 @@ from agent.tools.reranker import (
     reranking_enabled,
     rerank_candidates,
     rerank_top_n,
+    baseline_top_k,
     query_engine_kwargs,
 )
 
@@ -127,7 +128,8 @@ def _run_rag_query(index, question: str):
             f"candidates={rerank_candidates()} top_n={rerank_top_n()}"
         )
     else:
-        print(f"[rag] retrieval reranking=OFF {elapsed:.3f}s candidates=3 top_n=3")
+        k = baseline_top_k()
+        print(f"[rag] retrieval reranking=OFF {elapsed:.3f}s candidates={k} top_n={k}")
     return response
 
 

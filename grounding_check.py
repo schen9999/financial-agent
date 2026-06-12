@@ -71,7 +71,11 @@ ALL_TICKERS = ["AAPL", "NVDA", "JPM", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "
 ARMS = {
     "baseline": {
         "label": "Baseline (top_k=3, no rerank)",
-        "env": {"RERANKING_ENABLED": "false", "RERANK_CANDIDATES": "3", "RERANK_TOP_N": "3"},
+        "env": {"RERANKING_ENABLED": "false", "BASELINE_TOP_K": "3"},
+    },
+    "context5": {
+        "label": "Plain top-5 (no rerank)",
+        "env": {"RERANKING_ENABLED": "false", "BASELINE_TOP_K": "5"},
     },
     "rerank3": {
         "label": "Rerank 20 -> 3",
@@ -81,6 +85,15 @@ ARMS = {
         "label": "Rerank 20 -> 5",
         "env": {"RERANKING_ENABLED": "true", "RERANK_CANDIDATES": "20", "RERANK_TOP_N": "5"},
     },
+}
+
+# Every arm explicitly sets the flags it depends on so values can't leak across
+# arms within one process. Fill in the ones an arm leaves unset with inert
+# defaults (e.g. a baseline arm still resets RERANKING_ENABLED, a rerank arm
+# still resets BASELINE_TOP_K).
+_ARM_ENV_DEFAULTS = {
+    "RERANKING_ENABLED": "false", "BASELINE_TOP_K": "3",
+    "RERANK_CANDIDATES": "20", "RERANK_TOP_N": "3",
 }
 
 # Dedicated judge LLM — temperature=0 for deterministic factual evaluation.
@@ -191,14 +204,16 @@ def _extract_claims(findings: str, label: str) -> list[str]:
     return out
 
 
-def _save_findings(ticker: str, arm: str, exec_and_outlook: str, findings: str):
-    """Persist the audited text + judge findings so a run's per-claim evidence
-    survives (the printed counts alone can't be re-derived without the judge)."""
+def _save_findings(ticker: str, arm: str, source_context: str, exec_and_outlook: str, findings: str):
+    """Persist the retrieved source context + audited text + judge findings so a
+    run's per-claim evidence survives (the printed counts alone can't be
+    re-derived without the judge, and auditing a label needs the source it saw)."""
     try:
         FINDINGS_DIR.mkdir(exist_ok=True)
         (FINDINGS_DIR / f"{ticker}_{arm}.md").write_text(
-            f"# {ticker} — {arm}\n\n## Audited (Exec Summary + Outlook)\n\n"
-            f"{exec_and_outlook}\n\n## Judge findings\n\n{findings}\n",
+            f"# {ticker} — {arm}\n\n## Retrieved source context\n\n{source_context}\n\n"
+            f"## Audited (Exec Summary + Outlook)\n\n{exec_and_outlook}\n\n"
+            f"## Judge findings\n\n{findings}\n",
             encoding="utf-8",
         )
     except Exception as e:
@@ -238,7 +253,10 @@ def fetch_base(ticker: str) -> dict:
 # ── Per-arm pipeline ────────────────────────────────────────────────────────────
 
 def _apply_arm_env(arm: str):
-    for k, v in ARMS[arm]["env"].items():
+    # Reset every controlled flag to its inert default, then apply this arm's
+    # overrides — so no flag leaks from the previously-run arm.
+    env = {**_ARM_ENV_DEFAULTS, **ARMS[arm]["env"]}
+    for k, v in env.items():
         os.environ[k] = v
 
 
@@ -296,7 +314,7 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
         HumanMessage(content=_judge_user_prompt(source_context, section_block, exec_and_outlook)),
     ]).content
 
-    _save_findings(ticker, arm, exec_and_outlook, findings)
+    _save_findings(ticker, arm, source_context, exec_and_outlook, findings)
 
     counts = _count_labels(findings)
     counts["total"] = counts["supported"] + counts["unsupported"] + counts["inference"]
@@ -400,7 +418,8 @@ def print_comparison(results: list[dict], arms: list[str]):
 
 def main():
     parser = argparse.ArgumentParser(description="Grounding eval with reranking A/B arms.")
-    parser.add_argument("--arms", nargs="+", default=["baseline", "rerank3", "rerank5"],
+    parser.add_argument("--arms", nargs="+",
+                        default=["baseline", "context5", "rerank3", "rerank5"],
                         choices=list(ARMS.keys()), help="Which retrieval arms to run.")
     parser.add_argument("--tickers", nargs="+", default=ALL_TICKERS,
                         help="Which tickers to evaluate.")
@@ -433,7 +452,7 @@ def main():
 
     # Sample of INFERENCE-labeled claims from the rerank arms — lets you verify
     # the "denominator effect" (more inference claims, not more fabrication).
-    rerank_arms = [a for a in args.arms if a != "baseline"]
+    rerank_arms = [a for a in args.arms if a.startswith("rerank")]
     samples = [
         (r["ticker"], r["arm"], c)
         for r in results if r["arm"] in rerank_arms

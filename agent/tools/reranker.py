@@ -47,6 +47,16 @@ def rerank_model() -> str:
     return os.getenv("RERANK_MODEL", _DEFAULT_MODEL)
 
 
+def baseline_top_k() -> int:
+    """Top-k for the single-stage (no-rerank) path. Defaults to 3 so production
+    behaviour is unchanged; the eval harness can set BASELINE_TOP_K to compare a
+    plain top-5 retrieval against reranking-to-5."""
+    try:
+        return int(os.getenv("BASELINE_TOP_K", "3"))
+    except ValueError:
+        return 3
+
+
 def get_reranker() -> SentenceTransformerRerank:
     """Lazily build and cache the cross-encoder reranker. The model is loaded
     only on first call (i.e. only when reranking is enabled). top_n is refreshed
@@ -74,4 +84,4 @@ def query_engine_kwargs() -> dict:
             "similarity_top_k": rerank_candidates(),
             "node_postprocessors": [get_reranker()],
         }
-    return {"similarity_top_k": 3}
+    return {"similarity_top_k": baseline_top_k()}

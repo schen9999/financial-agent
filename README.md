@@ -240,50 +240,70 @@ LANGSMITH_PROJECT=financial-agent
 
 ## Evaluation: Reranking A/B
 
-`grounding_check.py` runs the LLM-as-judge grounding suite across three
-retrieval arms and prints a before/after table. The judge (Sonnet, temperature 0)
-audits every quantitative and forward-looking claim in the Executive Summary and
+`grounding_check.py` runs the LLM-as-judge grounding suite across four retrieval
+arms and prints a comparison table. The judge (Sonnet, temperature 0) audits
+every quantitative and forward-looking claim in the Executive Summary and
 Outlook and labels it `SUPPORTED` / `UNSUPPORTED` / `INFERENCE`. The headline
 comparison holds the final chunk count constant (baseline top-3 vs.
-retrieve-20→rerank→top-3); a third arm tests the effect of added context
-(top-5). The Redis semantic cache is bypassed (`BYPASS_CACHE=true`) so no arm
-returns another arm's cached brief.
+retrieve-20→rerank→top-3); a **plain top-5 (no rerank)** arm isolates added
+context from reranking, and a rerank→5 arm tests added context *with* reranking.
+The Redis semantic cache is bypassed (`BYPASS_CACHE=true`) so no arm returns
+another arm's cached brief, and per-claim judge findings (with retrieved source
+context) are persisted to `eval_findings/` for auditing.
 
 ```bash
-python grounding_check.py                       # all 10 tickers, all 3 arms
+python grounding_check.py                                  # 10 tickers, all 4 arms
 python grounding_check.py --arms baseline rerank3
 ```
 
 ### Results
 
-Balanced over the 6 tickers that completed all three arms (AAPL, NVDA, JPM,
-MSFT, GOOGL, AMZN). The judge labels every quantitative/forward-looking claim;
-`Unsupported%` is the hallucination-risk metric, `Grounding%` is
-`SUPPORTED / total claims`. Latencies are per-ticker means.
+All 10 tickers, every arm. `Unsupported%` is the hallucination-risk metric;
+`Grounding%` is `SUPPORTED / total claims`. Latencies are per-ticker means.
 
-| Arm | Claims | Grounding (SUP) | **Unsupported** | Inference | Retrieval | Pipeline |
+| Arm | Claims | Grounding (SUP) | Unsupported | Inference | Retrieval | Pipeline |
 |---|---:|---:|---:|---:|---:|---:|
-| **Baseline** (top-3, no rerank) | 36 | 91.7% | **2.8%** | 5.6% | 3.94 s | 24.32 s |
-| **Rerank 20→3** (headline) | 48 | 79.2% | **2.1%** | 18.8% | 10.33 s | 30.06 s |
-| Rerank 20→5 | 37 | 81.1% | **0.0%** | 18.9% | 9.30 s | 30.37 s |
+| Baseline (top-3, no rerank) | 66 | 92.4% | 0.0% | 7.6% | 4.11 s | 25.25 s |
+| Plain top-5 (no rerank) | 74 | 86.5% | **1.4%** | 12.2% | 4.46 s | 25.39 s |
+| Rerank 20→3 (headline) | 84 | 78.6% | 0.0% | 21.4% | 20.65 s | 41.54 s |
+| Rerank 20→5 | 69 | 85.5% | 0.0% | 14.5% | 20.44 s | 41.42 s |
 
-**Reading it honestly:** on this pipeline reranking did **not** meaningfully
-reduce hallucinations — the unsupported rate was already low (2.8%) thanks to
-the constrained synthesis prompt, and reranking moved it only marginally
-(2.8% → 2.1% → 0.0%). The apparent drop in `Grounding%` is a denominator
-effect: reranked context led Sonnet to make *more* inference-type statements
-(2 → 9 claims), inflating the total without adding fabrications. Reranking also
-added ~6 s of retrieval latency (cross-encoder scoring 20 candidates on CPU).
+**What the arms show:**
 
-**Takeaway:** for an already well-grounded pipeline the latency cost isn't
-justified by a grounding gain — which is exactly why reranking ships as a
-default-**off**, A/B-able flag rather than always-on. The value here is the
-*measurement*: the eval harness makes the trade-off visible per-arm.
+- **Hallucination (~0%) is controlled by the constrained synthesis prompt, not
+  by retrieval depth or reranking.** It stays at zero across nearly every arm
+  and is stable across repeated runs — retrieval changes don't move it.
+- **The grounding ratio (78.6–92.4%) is run-to-run noisy** at synthesis
+  temperature 0.2 and this eval scale. Across two full runs the same arm swung
+  by ~10 points (e.g. rerank→5 was 95.2% in one run, 85.5% in the next), so the
+  arm-to-arm differences sit *inside* the noise band and are not reliably
+  interpretable as a ranking.
+- **Reranking adds no grounding benefit over plain added context:** rerank→5
+  (85.5%) ≈ plain top-5 (86.5%). Any top-5 effect is an added-context effect,
+  not a reranking effect.
+- **The single hallucination in the entire study came from the plain top-5 arm,
+  not from any rerank arm** — added context, not reranking, introduced the only
+  failure.
+- **Reranking's only consistent effect is latency:** ~+16 s retrieval (4–5×
+  baseline), worst on large filings (e.g. WMT ~50 s vs NVDA ~4 s). No grounding
+  benefit justifies this cost.
 
-> The full 10-ticker run was cut short by an Anthropic credit limit (TSLA, V,
-> WMT, and META's rerank arms were skipped); rerun `python grounding_check.py`
-> after topping up credits for the complete set. The harness auto-balances the
-> table to the tickers that finished every arm.
+**Conclusion:** reranking ships **default-off**. It does not reduce
+hallucinations (already ~0%) and shows no reliable grounding gain over plain
+top-k, while imposing a large latency penalty. The deliverable of value here is
+the *measurement framework* — the A/B harness is what demonstrates the feature
+isn't needed for this pipeline, rather than assuming it would help.
+
+**Known limitations:**
+
+- The grounding ratio is noisy at this claim count and synthesis temperature; a
+  future run should lower the synthesis temperature and/or expand the claim set
+  (more tickers, multiple briefs per ticker) before reading arm differences as
+  signal.
+- The judge rubric labels rounded numerics (e.g. "$840B" from a source
+  market_cap of 839,999,946,752) as `INFERENCE` rather than `SUPPORTED`. This is
+  conservative by design — it keeps `SUPPORTED` strictly verbatim — but it means
+  `Grounding%` understates how much of each brief is trivially data-derived.
 
 ## Disclaimer
 
