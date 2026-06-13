@@ -305,6 +305,96 @@ isn't needed for this pipeline, rather than assuming it would help.
   conservative by design — it keeps `SUPPORTED` strictly verbatim — but it means
   `Grounding%` understates how much of each brief is trivially data-derived.
 
+## LoRA Fine-Tuning Experiment
+
+Can a small, locally-served open model match Haiku on section generation at lower
+cost? This experiment fine-tunes **Qwen2.5-1.5B-Instruct** (Apache-2.0) with
+QLoRA and benchmarks it as a drop-in for Haiku on the parallel section step.
+
+**Scope.** The fine-tuned model serves **2 of the 4** sections — Financial
+Health and Risk Factors — gated by `USE_LOCAL_MODEL` (default off). SEC Filing
+Highlights and Recent Developments stay with Haiku: deterministic Claude-free
+targets couldn't be built for them (MD&A figures are table-bound and flatten to
+unusable number-soup; NewsAPI coverage is only ~18%). Sonnet synthesis is
+untouched.
+
+**Dataset (deterministic, Claude-free).** Training targets are built
+*deterministically* from the project's own data — no LLM is called, so there's
+no dependence on Claude outputs:
+
+| Section | Builder | Coverage (78 tickers) |
+|---|---|---|
+| Financial Health | real figures into rotating templates | 100% |
+| Risk Factors | risk-term + modal filtered sentences from Item 1A | 33% |
+
+(SEC Filing Highlights was attempted via Item 7 MD&A extraction but dropped — for
+large-caps the quantified results are entirely table-bound, leaving only
+descriptive prose. That's a documented finding, not a gap to paper over.)
+
+Two stages: `scripts/build_raw_data.py` harvests raw stock + raw 10-K Item 1A
+text locally; the construction pipeline (`scripts/build_dataset.py`, mirrored
+inline in the notebook) turns it into 104 instruction/target pairs.
+
+**Training.** `fine_tune_financial.ipynb` (Colab T4): shows the construction
+pipeline inline, halts for a 5-sample review, then QLoRA-trains (r=16, α=32,
+all-linear targets, 4-bit NF4, gradient checkpointing, per-epoch checkpoints,
+loss curve) and saves the adapter to `/adapters/financial-lora/`.
+
+**Serving.** Merge adapter → GGUF (`q4_K_M`) → Ollama. `agent/tools/local_model.py`
+wraps Ollama behind the same `.invoke(messages).content` interface as Haiku;
+`USE_LOCAL_MODEL=true` routes the 2 trained sections to it.
+
+**Benchmark.** A `local-model` arm in `grounding_check.py` reports grounding,
+unsupported, and inference rates, latency, and an **honest hybrid cost**: the 2
+local sections cost **$0.00**, while SEC Highlights and Recent Developments still
+hit Haiku, versus all 4 sections on Haiku for the baseline.
+
+```bash
+# after training (Colab) + serving (ollama serve + model loaded):
+python grounding_check.py --arms baseline rerank3 local-model \
+    --tickers AAPL NVDA JPM MSFT XOM        # NVDA = extreme-figures outlier
+```
+
+### Results (5 tickers: AAPL, NVDA, JPM, MSFT, XOM)
+
+| Arm | Claims | Grounding | Unsupported | Inference | Retrieval | Pipeline | Cost/brief |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Baseline (top-3, no rerank) | 35 | 88.6% | 0.0% | 11.4% | 4.57 s | 24.76 s | $0.00538 |
+| Rerank 20→3 | 40 | 92.5% | 0.0% | 7.5% | 14.32 s | 34.89 s | $0.00550 |
+| **Local model + Haiku (hybrid)** | 41 | **85.4%** | **2.4%** | 12.2% | 4.15 s | **89.78 s** | **$0.00248** |
+
+**Conclusions:**
+
+- **Grounding:** the local model's grounding (85.4%) is lower than baseline
+  (88.6%) — expected for a 1.5B model fine-tuned on 104 examples versus a
+  frontier model.
+- **The one unsupported claim (XOM)** was a forward-looking analyst-synthesis
+  statement, not a fabricated figure — the model generated from memory rather
+  than grounding in the source data. (Full audit:
+  `eval_findings/XOM_local-model.md`.)
+- **Cost:** the hybrid is **54% cheaper** ($0.00248 vs $0.00538/brief) — 2
+  sections at $0.00 local + 2 sections (SEC Highlights, Recent Developments) on
+  Haiku.
+- **Latency:** 89.78 s pipeline vs 24.76 s baseline — local CPU inference is
+  ~3.6× slower. Acceptable for **async Celery background tasks**, not for
+  interactive use.
+- **Rerank3** shows 92.5% grounding vs 88.6% baseline in this run, but Phase 1
+  measured ±10-point run-to-run noise at this scale — treat as **within the
+  noise band**, not a reliable improvement.
+
+**Known limitations:**
+
+- Fine-tuned on **2 of 4 sections** (Financial Health + Risk Factors only); SEC
+  Highlights and Recent Developments stay on Haiku due to data-quality
+  constraints documented in the notebook (table-bound MD&A figures; sparse news).
+- Risk Factors trained on **26/78 tickers (33% coverage)** — the stricter
+  risk-term + modal filter trades coverage for quality (it excludes product/
+  service descriptions mentioning a weak term like "loss"), the same
+  quality-over-quantity principle that dropped the other two sections.
+- **MAX_LEN=1024 with SEC_CONTEXT_CAP=500** — prompts were truncated to fit T4
+  memory; longer context would require a larger GPU.
+- **CPU inference via Ollama adds ~65 s** to the pipeline versus the Haiku API.
+
 ## Disclaimer
 
 This tool is for informational purposes only and does not constitute financial advice.

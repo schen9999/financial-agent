@@ -9,6 +9,7 @@ from agent.tools.stock import get_stock_data
 from agent.tools.news import get_company_news
 from agent.tools.sec import get_sec_filings
 from agent.tools.rag import query_sec_filing
+from agent.tools.local_model import use_local_model, is_local_section, LocalChat
 from agent.tracing import traceable
 from cache import get_cached_response, set_cached_response
 
@@ -118,14 +119,22 @@ _SECTIONS = [
 ]
 
 
-@traceable(run_type="chain", name="haiku_section", tags=["full_brief", "haiku"],
-           metadata={"model": "claude-haiku-4-5-20251001"})
+def _section_llm(heading: str):
+    """Pick the generator for a section. When USE_LOCAL_MODEL is on, the three
+    trained sections route to the local fine-tuned model; Recent Developments
+    (and everything when the flag is off) stays with Haiku."""
+    if use_local_model() and is_local_section(heading):
+        return LocalChat(temperature=0.1)
+    return _haiku
+
+
+@traceable(run_type="chain", name="haiku_section", tags=["full_brief"])
 def _haiku_section(heading: str, instruction: str, company: str, ticker: str, context: str) -> str:
     prompt = (
         f"Write ONLY the '{heading}' section for a {company} ({ticker}) investment brief.\n"
         f"{instruction}\nStart with the markdown heading. Be concise.\n\nData:\n{context}"
     )
-    return _haiku.invoke([HumanMessage(content=prompt)]).content
+    return _section_llm(heading).invoke([HumanMessage(content=prompt)]).content
 
 
 @traceable(run_type="chain", name="parallel_sections", tags=["full_brief"])

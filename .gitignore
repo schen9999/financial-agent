@@ -14,3 +14,8 @@ eval_findings/
 
 # Cached SEC filing text
 sec_filings/
+
+# Fine-tuned model artifacts (large — produced by fine_tune_financial.ipynb)
+adapters/
+*.gguf
+*-merged/
