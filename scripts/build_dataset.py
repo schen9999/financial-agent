@@ -36,7 +36,8 @@ DATA_DIR = Path(__file__).parent.parent / "data"
 RAW_PATH = DATA_DIR / "raw_research.jsonl"
 OUT_PATH = DATA_DIR / "sections_dataset.jsonl"
 
-SEC_CONTEXT_CAP = 3500  # chars of raw filing text put into the input context
+SEC_CONTEXT_CAP = 500  # chars of raw filing text put into the input context
+# (matches the actual T4 training run; larger caps truncate under T4 memory)
 
 
 # ── number formatting ───────────────────────────────────────────────────────────
