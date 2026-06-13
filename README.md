@@ -355,21 +355,45 @@ python grounding_check.py --arms baseline rerank3 local-model \
     --tickers AAPL NVDA JPM MSFT XOM        # NVDA = extreme-figures outlier
 ```
 
-> **Results pending the training run** — fill the `local-model` row from the
-> benchmark output once the adapter is trained and served.
+### Results (5 tickers: AAPL, NVDA, JPM, MSFT, XOM)
 
-**Known limitations.** The experiment narrowed to 2 of 4 sections because
-deterministic extraction can't produce grounded targets for the other two
-(table-bound MD&A figures; sparse news) — an honest finding about the data, not
-a shortcut. Risk Factors trained on **26/78 tickers (33%)**: the stricter
-risk-term + modal filter trades coverage for quality (it excludes product/
-service descriptions that merely mention a weak term like "loss"), the same
-quality-over-quantity principle that dropped the other two sections. A 1.5B
-model may reproduce the section *format* but
-is more prone to figure errors than Haiku — which is exactly what the
-grounding/unsupported metrics will measure; and CPU inference of the 2 local
-sections is slower than the Haiku API, so the headline comparison is
-**grounding-quality + cost**, not latency.
+| Arm | Claims | Grounding | Unsupported | Inference | Retrieval | Pipeline | Cost/brief |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Baseline (top-3, no rerank) | 35 | 88.6% | 0.0% | 11.4% | 4.57 s | 24.76 s | $0.00538 |
+| Rerank 20→3 | 40 | 92.5% | 0.0% | 7.5% | 14.32 s | 34.89 s | $0.00550 |
+| **Local model + Haiku (hybrid)** | 41 | **85.4%** | **2.4%** | 12.2% | 4.15 s | **89.78 s** | **$0.00248** |
+
+**Conclusions:**
+
+- **Grounding:** the local model's grounding (85.4%) is lower than baseline
+  (88.6%) — expected for a 1.5B model fine-tuned on 104 examples versus a
+  frontier model.
+- **The one unsupported claim (XOM)** was a forward-looking analyst-synthesis
+  statement, not a fabricated figure — the model generated from memory rather
+  than grounding in the source data. (Full audit:
+  `eval_findings/XOM_local-model.md`.)
+- **Cost:** the hybrid is **54% cheaper** ($0.00248 vs $0.00538/brief) — 2
+  sections at $0.00 local + 2 sections (SEC Highlights, Recent Developments) on
+  Haiku.
+- **Latency:** 89.78 s pipeline vs 24.76 s baseline — local CPU inference is
+  ~3.6× slower. Acceptable for **async Celery background tasks**, not for
+  interactive use.
+- **Rerank3** shows 92.5% grounding vs 88.6% baseline in this run, but Phase 1
+  measured ±10-point run-to-run noise at this scale — treat as **within the
+  noise band**, not a reliable improvement.
+
+**Known limitations:**
+
+- Fine-tuned on **2 of 4 sections** (Financial Health + Risk Factors only); SEC
+  Highlights and Recent Developments stay on Haiku due to data-quality
+  constraints documented in the notebook (table-bound MD&A figures; sparse news).
+- Risk Factors trained on **26/78 tickers (33% coverage)** — the stricter
+  risk-term + modal filter trades coverage for quality (it excludes product/
+  service descriptions mentioning a weak term like "loss"), the same
+  quality-over-quantity principle that dropped the other two sections.
+- **MAX_LEN=1024 with SEC_CONTEXT_CAP=500** — prompts were truncated to fit T4
+  memory; longer context would require a larger GPU.
+- **CPU inference via Ollama adds ~65 s** to the pipeline versus the Haiku API.
 
 ## Disclaimer
 
