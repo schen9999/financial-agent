@@ -8,6 +8,7 @@ from agent.tools.sec import get_sec_filings
 from agent.core import stream_synthesis
 from agent.react_agent import answer_question
 from cache import get_cached_response
+from display_utils import strip_source_citations, strip_source_citations_stream
 
 st.set_page_config(
     page_title="Financial Research Agent",
@@ -61,7 +62,7 @@ if st.button("Generate Brief", type="primary", disabled=not ticker):
     # Investment brief
     cached = get_cached_response(ticker)
     if cached:
-        st.markdown(cached["result"])
+        st.markdown(strip_source_citations(cached["result"]))
     else:
         try:
             # Data fetch phase — show live status so the user isn't staring at a blank screen
@@ -83,8 +84,13 @@ if st.button("Generate Brief", type="primary", disabled=not ticker):
 
                 status.update(label="Data ready — generating brief...", state="complete", expanded=False)
 
-            # LLM phase — stream tokens directly to the page as they arrive
-            st.write_stream(stream_synthesis(ticker, stock_data, news_data, sec_data))
+            # LLM phase — stream tokens directly to the page as they arrive,
+            # stripping inline source-citation markup so the brief reads as prose
+            st.write_stream(
+                strip_source_citations_stream(
+                    stream_synthesis(ticker, stock_data, news_data, sec_data)
+                )
+            )
 
         except Exception as e:
             st.error(f"Something went wrong: {str(e)}")
