@@ -31,11 +31,33 @@ def test_removes_multiple_citations_and_tidies_punctuation():
     assert " ," not in out and " ." not in out
 
 
-def test_unwraps_non_field_inline_code():
-    # A stray inline-code span that isn't a field:value citation is unwrapped,
-    # not deleted, so no content is lost and nothing renders as monospace.
+def test_removes_inline_code_span_and_content():
+    # The whole inline-code span (delimiters + content) is removed, not unwrapped.
     out = strip_source_citations("The ticker `AAPL` is notable.")
-    assert out == "The ticker AAPL is notable."
+    assert "`" not in out
+    assert out == "The ticker is notable."
+
+
+def test_removes_backtick_span_with_inner_markdown():
+    # The real bug: citation spans whose content is itself markdown. Removing the
+    # whole span prevents the inner **bold** from leaking into the rendered prose.
+    text = ("commanding a market capitalization of `**$5.15 trillion**` and "
+            "robust revenue of `**$253.5 billion**`.")
+    out = strip_source_citations(text)
+    assert "`" not in out
+    assert "$5.15 trillion" not in out and "$253.5 billion" not in out
+    assert "**" not in out  # no stray bold markers left behind
+    assert out == "commanding a market capitalization of and robust revenue of."
+
+
+def test_preserves_legit_bold_but_removes_backtick_bold():
+    # Legitimate **bold** (risk headers) is untouched; only backtick-wrapped
+    # content is stripped.
+    text = "- **Competition** is intense `competitor_count: 5`."
+    out = strip_source_citations(text)
+    assert "**Competition**" in out      # legit bold preserved
+    assert "competitor_count" not in out  # backtick citation removed
+    assert "`" not in out
 
 
 def test_leaves_clean_prose_untouched():
