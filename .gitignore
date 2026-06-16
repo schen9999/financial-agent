@@ -19,3 +19,5 @@ sec_filings/
 adapters/
 *.gguf
 *-merged/
+*.zip
+financial-lora-build/
