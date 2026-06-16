@@ -52,6 +52,8 @@ I fine-tuned **Qwen2.5-1.5B-Instruct** with QLoRA on 104 deterministic, Claude-f
 
 **54% cost reduction at slightly lower grounding.** Shipped default-off -- the tradeoff isn't worth it for most users, but the benchmark is there for anyone who needs the cost savings.
 
+I also re-implemented the same fine-tune with a hand-written PyTorch training loop (`fine_tune_pytorch_loop.ipynb`) -- custom `Dataset`, manual gradient accumulation and `optimizer.step()`, no Hugging Face `Trainer` -- and benchmarked its loss curve against the `Trainer` version side by side.
+
 ---
 
 ## What It Does
