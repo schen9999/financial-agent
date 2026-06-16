@@ -8,7 +8,14 @@ from agent.tools.sec import get_sec_filings
 from agent.core import stream_synthesis
 from agent.react_agent import answer_question
 from cache import get_cached_response
-from display_utils import strip_source_citations, strip_source_citations_stream
+
+
+def _escape_dollars(text: str) -> str:
+    """Escape '$' so Streamlit's Markdown doesn't interpret '$...$' as LaTeX math
+    (math mode silently strips spaces inside dollar amounts, corrupting figures
+    like '$5.15 trillion and ... $253.5 billion')."""
+    return text.replace("$", "\\$") if text else text
+
 
 st.set_page_config(
     page_title="Financial Research Agent",
@@ -62,7 +69,7 @@ if st.button("Generate Brief", type="primary", disabled=not ticker):
     # Investment brief
     cached = get_cached_response(ticker)
     if cached:
-        st.markdown(strip_source_citations(cached["result"]))
+        st.markdown(_escape_dollars(cached["result"]))
     else:
         try:
             # Data fetch phase — show live status so the user isn't staring at a blank screen
@@ -84,13 +91,10 @@ if st.button("Generate Brief", type="primary", disabled=not ticker):
 
                 status.update(label="Data ready — generating brief...", state="complete", expanded=False)
 
-            # LLM phase — stream tokens directly to the page as they arrive,
-            # stripping inline source-citation markup so the brief reads as prose
-            st.write_stream(
-                strip_source_citations_stream(
-                    stream_synthesis(ticker, stock_data, news_data, sec_data)
-                )
-            )
+            # LLM phase — render the full brief as one markdown block, escaping
+            # '$' so Streamlit doesn't parse dollar amounts as LaTeX math.
+            brief = "".join(stream_synthesis(ticker, stock_data, news_data, sec_data))
+            st.markdown(_escape_dollars(brief))
 
         except Exception as e:
             st.error(f"Something went wrong: {str(e)}")
@@ -107,7 +111,7 @@ if ticker:
         with st.spinner(f"Researching {ticker}..."):
             try:
                 answer = answer_question(ticker, followup)
-                st.markdown(answer)
+                st.markdown(_escape_dollars(answer))
             except Exception as e:
                 st.error(f"Something went wrong: {str(e)}")
 
