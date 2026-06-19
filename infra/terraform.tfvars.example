@@ -1,0 +1,4 @@
+# Copy to terraform.tfvars (gitignored) and set your real values.
+# Your IP stays out of the public repo this way.
+
+allowed_ip = "1.2.3.4/32" # your public IP from whatismyip.com, as a /32 CIDR

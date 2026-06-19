@@ -21,3 +21,13 @@ adapters/
 *-merged/
 *.zip
 financial-lora-build/
+
+# Terraform — state holds the RDS password; tfvars holds your IP
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+crash.log
+crash.*.log
+infra/terraform.tfvars
+# keep .terraform.lock.hcl and *.tf committed

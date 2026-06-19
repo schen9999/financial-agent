@@ -1,0 +1,47 @@
+# Secrets — never bake into the image
+.env
+.env.*
+*.env
+
+# VCS / CI / infra (not needed at runtime)
+.git
+.gitignore
+.github/
+infra/
+
+# Python caches / local venv
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Notebooks, data, models, eval artifacts
+*.ipynb
+data/
+docs/
+adapters/
+*.gguf
+*-merged/
+*.zip
+financial-lora-build/
+sec_filings/
+eval_findings/
+
+# Frontend + dev/eval scripts not used by the API
+app.py
+.streamlit/
+scripts/
+tests/
+grounding_check.py
+benchmark_timing.py
+compare_synthesis.py
+
+# Docs + the UTF-16 full freeze (image uses requirements-api.txt)
+README.md
+*.md
+requirements.txt
+
+# Docker files themselves
+Dockerfile
+.dockerignore
