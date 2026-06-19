@@ -42,3 +42,26 @@ output "user_filled_secret_names" {
   description = "Set real values for these after apply"
   value       = [for k in var.user_filled_secrets : "${var.project}/${k}"]
 }
+
+# ── ECS (used by the Phase 4 deploy workflow) ────────────────────────────────
+
+output "ecs_cluster_name" {
+  value = aws_ecs_cluster.main.name
+}
+
+output "ecs_service_name" {
+  value = aws_ecs_service.api.name
+}
+
+output "task_definition_family" {
+  value = aws_ecs_task_definition.api.family
+}
+
+output "container_name" {
+  description = "Container name in the task definition (the deploy workflow patches this container's image)"
+  value       = "api"
+}
+
+output "log_group" {
+  value = aws_cloudwatch_log_group.api.name
+}
