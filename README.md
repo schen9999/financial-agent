@@ -91,6 +91,9 @@ I also re-implemented the same fine-tune with a hand-written PyTorch training lo
 | Async tasks | Celery + Redis |
 | REST API | FastAPI |
 | Frontend | Streamlit |
+| Cloud (backend) | AWS ECS Fargate, RDS PostgreSQL, Secrets Manager, ECR |
+| Infrastructure as Code | Terraform |
+| CI/CD | GitHub Actions → ECR → ECS (OIDC, no static keys) |
 | Development | Claude Code |
 
 ---
@@ -147,6 +150,57 @@ LangGraph ReAct agent (claude-sonnet-4-6)
        ▼
      answer
 ```
+
+---
+
+## AWS Deployment
+
+The FastAPI backend is containerized and runs on **AWS ECS Fargate**, with a real
+**RDS PostgreSQL** database, secrets in **AWS Secrets Manager**, and a
+**GitHub Actions** pipeline that deploys on every push to `main`. The whole
+footprint is defined in **Terraform** (`infra/`). The Streamlit frontend stays on
+Streamlit Cloud; Redis/Celery are stubbed in this environment (the cache no-ops
+and the async endpoint is disabled).
+
+```
+push to main
+     │
+     ▼
+GitHub Actions ──OIDC (no long-lived AWS keys)──► assume scoped IAM role
+  1. pytest (CI gate)
+  2. docker build → push image (latest + commit SHA) → Amazon ECR
+  3. register new task-def revision → update ECS service (wait for stable)
+     │
+     ▼
+ECS Fargate task  (public subnet, public IP, security group locked to my IP)
+  FastAPI container (uvicorn, single worker; bge-small model baked into image)
+     │                                   │
+     ▼                                   ▼
+RDS PostgreSQL (t3.micro)        Secrets Manager
+  research_briefs table            ANTHROPIC / NEWS / PINECONE / LANGSMITH keys,
+  (private, SG-locked to           DATABASE_URL, REDIS_URL — injected as task
+   the task's SG)                  env vars by the execution role
+```
+
+**Design choices**
+
+- **Terraform, end to end** — ECR, RDS, Secrets Manager, IAM roles, security
+  groups, the ECS cluster/task-def/service, and the GitHub OIDC provider are all
+  in `infra/`. Local state; `terraform.tfvars` (with my IP) is gitignored.
+- **No static cloud credentials** — GitHub Actions authenticates via **OIDC**,
+  assuming a repo-scoped IAM role with just enough permission to push to ECR and
+  deploy the service. Nothing long-lived is stored in the repo.
+- **Secrets never in the image or git** — they live in Secrets Manager and are
+  injected into the task as environment variables at runtime via the execution
+  role.
+- **Cost-aware** — RDS `t3.micro` on the free tier; Fargate runs in a **public
+  subnet with a public IP (no NAT gateway)** to avoid NAT cost; the task's
+  security group is locked to a single IP, so the unauthenticated API isn't open
+  to the world.
+- **Image** — `python:3.13-slim` with the embedding model baked in so cold start
+  doesn't hit the HuggingFace Hub; built in CI (no local Docker needed).
+
+See [`infra/README.md`](infra/README.md) for the apply steps.
 
 ---
 
