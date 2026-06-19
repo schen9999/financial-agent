@@ -200,6 +200,28 @@ RDS PostgreSQL (t3.micro)        Secrets Manager
 - **Image** — `python:3.13-slim` with the embedding model baked in so cold start
   doesn't hit the HuggingFace Hub; built in CI (no local Docker needed).
 
+### Pausing to save cost
+
+Fargate bills while a task runs, so I park it when I'm not demoing and bring it
+back for an interview:
+
+```bash
+infra/ecs-scale.sh 0   # pause  — stop the task (no Fargate compute cost; RDS stays free-tier)
+infra/ecs-scale.sh 1   # resume — launch a fresh task (~1-2 min to start)
+infra/ecs-ip.sh        # print the running task's public IP + base URL
+```
+
+Or the raw one-liner:
+
+```bash
+aws ecs update-service --cluster financial-agent-cluster --service financial-agent-api \
+  --desired-count 1 --region us-east-1     # 0 to pause
+```
+
+There's no load balancer, so the task gets a **new public IP** on each resume
+(`infra/ecs-ip.sh` fetches it). The service ignores `desired_count` in Terraform,
+so scaling this way doesn't fight `terraform apply`.
+
 See [`infra/README.md`](infra/README.md) for the apply steps.
 
 ---
