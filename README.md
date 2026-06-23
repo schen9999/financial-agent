@@ -137,7 +137,7 @@ is not worth its cost.
 |---|---|
 | LLM -- section generation | Claude Haiku 4.5 (4 sections in parallel) |
 | LLM -- synthesis + ReAct agent | Claude Sonnet 4.6 |
-| Agent framework | LangGraph — `create_react_agent` (follow-ups) + a supervisor `StateGraph` (optional multi-agent brief pipeline) |
+| Agent framework | LangGraph -- `create_react_agent` (follow-ups) + a supervisor `StateGraph` (optional multi-agent brief pipeline) |
 | Financial data | yfinance |
 | News | NewsAPI |
 | SEC filings | SEC EDGAR REST API |
@@ -212,8 +212,8 @@ LangGraph ReAct agent (claude-sonnet-4-6)
 ### Multi-agent brief pipeline (optional, `MULTI_AGENT_ENABLED=true`)
 
 The single-agent brief pipeline can be swapped for a supervisor-orchestrated
-graph. It's off by default — the single-agent path stays the production default
-and the A/B control — and produces the **same brief schema and API response**, so
+graph. It's off by default -- the single-agent path stays the production default
+and the A/B control -- and produces the **same brief schema and API response**, so
 nothing downstream changes. Toggle the flag to compare the two paths.
 
 ```
@@ -228,7 +228,7 @@ nothing downstream changes. Toggle the flag to compare the two paths.
    │ Research │  reuses the EXISTING retrieval + model-routing + synthesis code;
    └────┬─────┘  revision passes re-synthesise Exec Summary + Outlook only
         ▼
-   ┌──────────────────┐  the existing LLM-as-judge, promoted to an inline node —
+   ┌──────────────────┐  the existing LLM-as-judge, promoted to an inline node --
    │ Grounding-critic │  scores the draft for source-grounding (one judge, shared
    └────┬─────────────┘  with the offline eval; `agent/grounding.py`)
         ▼
@@ -240,7 +240,7 @@ nothing downstream changes. Toggle the flag to compare the two paths.
 ```
 
 - **One judge, two callers.** The inline critic and the offline grounding eval
-  both call `agent/grounding.py:grade_brief()` — there's a single definition of
+  both call `agent/grounding.py:grade_brief()` -- there's a single definition of
   the judge prompt and scoring, not two copies that can drift.
 - **Schema-safe revisions.** Revision passes reuse the already-grounded middle
   sections and only re-write the Executive Summary + Outlook through the same
