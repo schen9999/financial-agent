@@ -1,6 +1,13 @@
 import requests
 from langchain.tools import tool
 
+from agent.tools.sec_common import (
+    SEC_USER_AGENT,
+    SEC_TIMEOUT,
+    clean_filing_html,
+    skip_front_matter,
+)
+
 
 @tool
 def get_sec_filings(ticker: str) -> dict:
@@ -29,14 +36,13 @@ def get_sec_filings(ticker: str) -> dict:
 
 def _get_cik(ticker: str) -> str | None:
     """Looks up the SEC CIK number for a given ticker."""
-    url = "https://efts.sec.gov/LATEST/search-index?q=%22{}%22&dateRange=custom&startdt=2020-01-01&enddt=2025-12-31&forms=10-K".format(ticker.upper())
-
-    headers = {"User-Agent": "FinancialAgent agent@financial.com"}
+    headers = {"User-Agent": SEC_USER_AGENT}
 
     try:
         response = requests.get(
             f"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&ticker={ticker}&type=10-K&dateb=&owner=include&count=1&search_text=&output=atom",
-            headers=headers
+            headers=headers,
+            timeout=SEC_TIMEOUT,
         )
         # Extract CIK from response
         text = response.text
@@ -51,7 +57,8 @@ def _get_cik(ticker: str) -> str | None:
     try:
         response = requests.get(
             "https://efts.sec.gov/LATEST/search-index?q=%22{}%22&forms=10-K".format(ticker.upper()),
-            headers=headers
+            headers=headers,
+            timeout=SEC_TIMEOUT,
         )
         data = response.json()
         hits = data.get("hits", {}).get("hits", [])
@@ -67,10 +74,10 @@ def _get_cik(ticker: str) -> str | None:
 
 def _get_latest_filing(cik: str, form_type: str) -> dict:
     """Fetches the most recent filing of a given type for a CIK."""
-    headers = {"User-Agent": "FinancialAgent agent@financial.com"}
+    headers = {"User-Agent": SEC_USER_AGENT}
 
     url = f"https://data.sec.gov/submissions/CIK{cik}.json"
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers, timeout=SEC_TIMEOUT)
 
     if response.status_code != 200:
         return {"error": f"Could not fetch filings for CIK {cik}"}
@@ -100,16 +107,18 @@ def _get_latest_filing(cik: str, form_type: str) -> dict:
 
 
 def _extract_filing_summary(url: str, headers: dict) -> str:
-    """Fetches and returns the first 2000 characters of a filing."""
+    """Fetches a filing and returns ~2000 chars of real narrative content.
+
+    The raw first 2000 chars are almost always cover-page / table-of-contents
+    boilerplate, so we skip the front matter the same way the RAG path does
+    (shared skip_front_matter helper): offset past the start and anchor on the
+    first Item 1A / Item 7 section marker when present.
+    """
     try:
-        response = requests.get(url, headers=headers, timeout=10)
-        text = response.text
+        response = requests.get(url, headers=headers, timeout=SEC_TIMEOUT)
+        clean = clean_filing_html(response.text)
 
-        # Strip HTML tags roughly
-        import re
-        clean = re.sub(r'<[^>]+>', ' ', text)
-        clean = re.sub(r'\s+', ' ', clean).strip()
-
-        return clean[:2000] + "..." if len(clean) > 2000 else clean
+        summary = skip_front_matter(clean, 2000)
+        return summary + "..." if len(clean) > len(summary) else summary
     except Exception as e:
         return f"Could not extract filing text: {str(e)}"

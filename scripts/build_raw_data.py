@@ -40,8 +40,9 @@ load_dotenv()
 from agent.tools.stock import get_stock_data
 from agent.tools.news import get_company_news
 from agent.core import _trim_stock, _trim_news
+from agent.tools.sec_common import SEC_USER_AGENT
 
-_HEADERS = {"User-Agent": "FinancialAgent agent@financial.com"}
+_HEADERS = {"User-Agent": SEC_USER_AGENT}
 _SECTION_CAP = 12000  # chars kept per extracted Item region
 
 # Anchors for the two narrative sections we want as training targets. We take the

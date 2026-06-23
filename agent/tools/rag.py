@@ -12,6 +12,7 @@ from pinecone import Pinecone, ServerlessSpec
 from dotenv import load_dotenv
 
 from agent.tracing import traceable
+from agent.tools.sec_common import SEC_USER_AGENT, clean_filing_html, skip_front_matter
 from agent.tools.reranker import (
     reranking_enabled,
     rerank_candidates,
@@ -22,14 +23,27 @@ from agent.tools.reranker import (
 
 load_dotenv()
 
-# Configure once at import time instead of on every tool invocation
-Settings.llm = Anthropic(
-    model="claude-haiku-4-5-20251001",
-    api_key=os.getenv("ANTHROPIC_API_KEY"),
-)
-Settings.embed_model = HuggingFaceEmbedding(
-    model_name="BAAI/bge-small-en-v1.5"
-)
+_settings_configured = False
+
+
+def _ensure_settings():
+    """Configure the llama_index LLM + embedding model once, on first use.
+
+    Done lazily (not at import time) so importing this module stays cheap and
+    does not download the HuggingFace embedding model, matching the lazy pattern
+    used for the judge LLM in agent/grounding.py and the planner in agent/graph.py.
+    """
+    global _settings_configured
+    if _settings_configured:
+        return
+    Settings.llm = Anthropic(
+        model="claude-haiku-4-5-20251001",
+        api_key=os.getenv("ANTHROPIC_API_KEY"),
+    )
+    Settings.embed_model = HuggingFaceEmbedding(
+        model_name="BAAI/bge-small-en-v1.5"
+    )
+    _settings_configured = True
 
 
 def _get_pinecone_index(index_name: str):
@@ -50,7 +64,7 @@ def _get_pinecone_index(index_name: str):
 
 def _fetch_filing_text(ticker: str, form_type: str) -> str | None:
     """Fetches narrative text from SEC filing for a given ticker and form type."""
-    headers = {"User-Agent": "FinancialAgent agent@financial.com"}
+    headers = {"User-Agent": SEC_USER_AGENT}
 
     try:
         response = requests.get(
@@ -94,12 +108,10 @@ def _fetch_filing_text(ticker: str, form_type: str) -> str | None:
 
                 if doc_url:
                     filing_response = requests.get(doc_url, headers=headers, timeout=15)
-                    clean = re.sub(r'<[^>]+>', ' ', filing_response.text)
-                    clean = re.sub(r'\s+', ' ', clean).strip()
-                    if len(clean) > 5000:
-                        start = min(3000, len(clean) // 10)
-                        return clean[start:start + 15000]
-                    return clean[:15000]
+                    clean = clean_filing_html(filing_response.text)
+                    # Skip cover-page front matter (shared with sec.py); short
+                    # filings under 5000 chars are returned whole.
+                    return skip_front_matter(clean, 15000, min_len_to_skip=5000)
 
     except Exception:
         return None
@@ -153,6 +165,9 @@ def query_sec_filing(input: str) -> str:
         ticker, question = input.split(":", 1)
         ticker = ticker.strip().upper()
         question = question.strip()
+
+        # Build the LLM + embedding model on first use rather than at import.
+        _ensure_settings()
 
         # Use a sanitized index name
         index_name = f"sec-filings"
