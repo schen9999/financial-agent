@@ -58,6 +58,64 @@ I also re-implemented the same fine-tune with a hand-written PyTorch training lo
 
 ![Native PyTorch QLoRA loop -- micro-batch loss vs the smoother optimizer-step loss](docs/native_loop_detail.png)
 
+### Multi-Agent Orchestration Experiment
+
+Does breaking the single agent into a supervisor-orchestrated team improve
+grounding, or just add cost?
+
+I refactored the brief pipeline into a supervisor graph: a **planner** decomposes
+the ticker into SEC retrieval sub-questions and coverage points, a **research**
+agent executes the plan against the existing RAG and model-routing code, an inline
+**grounding-critic** scores the drafted brief with the same LLM-as-judge used by
+the offline eval, and a **supervisor** sends the brief back for revision (bounded
+at 2 passes) until it clears a grounding threshold. It is flag-gated behind
+`MULTI_AGENT_ENABLED` (default off), with the original single-agent pipeline kept
+as the A/B control. The inline critic and the offline judge share one definition,
+so there is a single source of truth for grounding.
+
+I ran both paths over the standard 10-ticker set, scored by the same
+temperature-0 Sonnet judge, with retrieval held at baseline (reranking off, top-3)
+on both sides so the only differences were the planner-driven queries and the
+critic loop. Critic threshold: 5% unsupported.
+
+| Path | Claims | Unsupported | $/brief | Latency/brief | Revisions/brief |
+|---|---:|---:|---:|---:|---:|
+| Single-agent (control) | 73 | 1 (1.4%) | $0.0269 | 26.1s | 0.00 |
+| Multi-agent | 71 | 0 (0.0%) | $0.0515 | 43.9s | 0.00 |
+| Delta | | -1.4 pts | +92% | +68% | n/a |
+
+Two findings, stated plainly:
+
+1. **The critic fired 0 revisions across all 10 real drafts.** The base pipeline
+   already drives unsupported claims to roughly 3% overall and effectively 0 on the
+   Executive Summary and Outlook sections this eval scores, so the critic looked at
+   every first draft, found nothing to fix, and passed it. There was no headroom
+   for the revision loop to recover.
+
+2. **The one single-agent unsupported claim did not reproduce.** Across 73
+   single-agent claims exactly one was flagged (on WMT). Re-running WMT produced a
+   different draft with zero unsupported claims, confirming the lone flag was
+   temperature-0.2 generation variance, not a systematic weakness in the base
+   synthesis prompt.
+
+The orchestration cost roughly **+92% per brief and +68% latency** (the planner
+adds a Haiku call, and the inline critic adds a Sonnet judge to every brief) for a
+grounding benefit that, on this workload, was null.
+
+**Conclusion: it ships default-off.** On this workload the multi-agent path showed
+no grounding benefit because the single-agent baseline was already at the
+grounding floor, leaving nothing for the critic to recover. That is a statement
+about this corpus, not a general claim about multi-agent orchestration. The
+revision loop itself is verified working (an injected bad draft with a fabricated
+price target is caught by the live judge, sent back, and cleaned on the second
+pass); it is dormant in practice, not broken. The harness is retained to
+re-measure if a harder corpus, thinner retrieval, a weaker base model, or longer
+briefs ever create real grounding headroom. If that happens, a three-way
+comparison (baseline / planner-only / planner+critic) is the documented next step
+to attribute any gain to the planner versus the critic. As with the reranking
+experiment, the deliverable is the measurement that shows when the feature is and
+is not worth its cost.
+
 ---
 
 ## What It Does
@@ -79,7 +137,7 @@ I also re-implemented the same fine-tune with a hand-written PyTorch training lo
 |---|---|
 | LLM -- section generation | Claude Haiku 4.5 (4 sections in parallel) |
 | LLM -- synthesis + ReAct agent | Claude Sonnet 4.6 |
-| Agent framework | LangGraph `create_react_agent` |
+| Agent framework | LangGraph -- `create_react_agent` (follow-ups) + a supervisor `StateGraph` (optional multi-agent brief pipeline) |
 | Financial data | yfinance |
 | News | NewsAPI |
 | SEC filings | SEC EDGAR REST API |
@@ -150,6 +208,47 @@ LangGraph ReAct agent (claude-sonnet-4-6)
        ▼
      answer
 ```
+
+### Multi-agent brief pipeline (optional, `MULTI_AGENT_ENABLED=true`)
+
+The single-agent brief pipeline can be swapped for a supervisor-orchestrated
+graph. It's off by default -- the single-agent path stays the production default
+and the A/B control -- and produces the **same brief schema and API response**, so
+nothing downstream changes. Toggle the flag to compare the two paths.
+
+```
+"Generate Brief"  (MULTI_AGENT_ENABLED=true)
+       │
+       ▼
+   ┌─────────┐  decomposes the ticker into a research plan: the SEC RAG
+   │ Planner │  sub-questions that ground the filing-based sections + coverage
+   └────┬────┘
+        ▼
+   ┌──────────┐ ◄──── revise (critic feedback prepended to the synthesis prompt)
+   │ Research │  reuses the EXISTING retrieval + model-routing + synthesis code;
+   └────┬─────┘  revision passes re-synthesise Exec Summary + Outlook only
+        ▼
+   ┌──────────────────┐  the existing LLM-as-judge, promoted to an inline node --
+   │ Grounding-critic │  scores the draft for source-grounding (one judge, shared
+   └────┬─────────────┘  with the offline eval; `agent/grounding.py`)
+        ▼
+   ┌────────────┐  unsupported% ≤ CRITIC_MAX_UNSUPPORTED_PCT → done; else send
+   │ Supervisor │  back to Research, bounded at MAX_REVISIONS passes
+   └────┬───────┘
+        ▼
+   final brief
+```
+
+- **One judge, two callers.** The inline critic and the offline grounding eval
+  both call `agent/grounding.py:grade_brief()` -- there's a single definition of
+  the judge prompt and scoring, not two copies that can drift.
+- **Schema-safe revisions.** Revision passes reuse the already-grounded middle
+  sections and only re-write the Executive Summary + Outlook through the same
+  `_synthesis_prompt`, so the brief format can't break.
+- **Bounded loop.** `MAX_REVISIONS` (default 2) caps the critic→research retries;
+  the supervisor accepts the best effort if the budget is exhausted.
+- **Tracing.** Each node (planner / research / critic / supervisor) is its own
+  LangSmith span.
 
 ---
 

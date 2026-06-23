@@ -35,7 +35,6 @@ Usage:
 import sys
 import os
 import json
-import re
 import time
 import argparse
 from pathlib import Path
@@ -51,8 +50,7 @@ os.environ["BYPASS_CACHE"] = "true"
 from dotenv import load_dotenv
 load_dotenv()
 
-from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage
 
 from agent.core import (
     fetch_research_data,
@@ -62,6 +60,11 @@ from agent.core import (
     _trim_stock, _trim_news, _trim_sec, _data_context,
     _llm as _sonnet,
     _synthesis_prompt,
+)
+from agent.grounding import (  # single source of truth for the judge
+    extract_exec_and_outlook,
+    get_judge_llm,
+    grade_brief,
 )
 
 ALL_TICKERS = ["AAPL", "NVDA", "JPM", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "V", "WMT"]
@@ -129,13 +132,8 @@ def _brief_haiku_cost(arm: str, company: str, ticker: str,
         out_tok += _est_tokens(out)
     return in_tok / 1e6 * _HAIKU_IN_PER_MTOK + out_tok / 1e6 * _HAIKU_OUT_PER_MTOK
 
-# Dedicated judge LLM — temperature=0 for deterministic factual evaluation.
-_judge_llm = ChatAnthropic(
-    model="claude-sonnet-4-6",
-    api_key=os.getenv("ANTHROPIC_API_KEY"),
-    temperature=0,
-    streaming=False,
-)
+# The judge LLM, prompt, and claim-parsing now live in agent/grounding.py so the
+# offline harness and the inline grounding-critic share one definition.
 
 
 # ── Resilience ──────────────────────────────────────────────────────────────────
@@ -156,85 +154,10 @@ def _retry(fn, *args, _attempts=4, _base=3.0, **kwargs):
 
 
 # ── Judge helpers ──────────────────────────────────────────────────────────────
-
-_JUDGE_SYSTEM = """\
-You are a financial accuracy auditor. Your task is to verify whether specific \
-claims in an AI-generated investment brief are grounded in the source data the \
-model was given.
-
-Evaluate ONLY the Executive Summary and Outlook sections. For every specific \
-quantitative figure, price target, threshold, ratio, metric, percentage, named \
-product milestone, or forward-looking number in those sections, output one entry \
-in this exact format:
-
-CLAIM: "<exact quoted text>"
-LABEL: SUPPORTED | UNSUPPORTED | INFERENCE
-REASON: <one sentence — if SUPPORTED, cite the source figure; if UNSUPPORTED, \
-state it does not appear in the context; if INFERENCE, explain the derivation>
-
-Definitions:
-  SUPPORTED   — the exact number or fact is explicitly present in the source \
-data or pre-written sections below.
-  UNSUPPORTED — a specific number, price target, threshold, or named milestone \
-that does NOT appear in the source data and cannot be derived from it.
-  INFERENCE   — a directional conclusion, rounded/scaled figure, or reasonable \
-extrapolation that follows logically from the data but is not verbatim in it.
-
-Be exhaustive — do not skip any quantitative or forward-looking claim.\
-"""
-
-
-def _judge_user_prompt(source_context: str, brief: str, exec_and_outlook: str) -> str:
-    return f"""BACKGROUND: An AI wrote the Executive Summary and Outlook using the \
-four pre-written sections as its primary input. The raw source data below is what \
-those sections were originally generated from.
-
-=== RAW SOURCE DATA ===
-{source_context}
-
-=== PRE-WRITTEN SECTIONS (direct input to the synthesis model) ===
-{brief}
-
-=== EXECUTIVE SUMMARY AND OUTLOOK TO AUDIT ===
-{exec_and_outlook}
-"""
-
-
-def _extract_exec_and_outlook(brief: str) -> str:
-    """Pull only the Executive Summary and Outlook text from the full brief."""
-    target_headings = {"Executive Summary", "Outlook"}
-    result, current, buf = [], None, []
-
-    for line in brief.split("\n"):
-        if line.startswith("### "):
-            if current in target_headings:
-                result.append(f"### {current}\n" + "\n".join(buf).strip())
-            current = line[4:].strip()
-            buf = []
-        else:
-            if current in target_headings:
-                buf.append(line)
-
-    if current in target_headings:
-        result.append(f"### {current}\n" + "\n".join(buf).strip())
-
-    return "\n\n".join(result)
-
+# The judge prompt, claim parsing, and scoring live in agent/grounding.py. Only
+# the harness-specific findings persistence stays local.
 
 FINDINGS_DIR = Path(__file__).parent / "eval_findings"
-
-
-def _extract_claims(findings: str, label: str) -> list[str]:
-    """Pull the quoted CLAIM text for every entry the judge gave `label`.
-    Tolerates both plain and bold (**...**) judge formatting."""
-    out = []
-    for block in re.split(r"\*{0,2}CLAIM:\*{0,2}", findings)[1:]:
-        m = re.search(r"\*{0,2}LABEL:\*{0,2}\s*([A-Za-z]+)", block)
-        if m and m.group(1).upper() == label.upper():
-            claim = block.split("\n", 1)[0].strip().strip('"').strip()
-            if claim:
-                out.append(claim)
-    return out
 
 
 def _save_findings(ticker: str, arm: str, source_context: str, exec_and_outlook: str, findings: str):
@@ -251,15 +174,6 @@ def _save_findings(ticker: str, arm: str, source_context: str, exec_and_outlook:
         )
     except Exception as e:
         print(f"    (could not save findings for {ticker}/{arm}: {e})", flush=True)
-
-
-def _count_labels(text: str) -> dict[str, int]:
-    # Matches both plain "LABEL: X" and bold "**LABEL:** X" judge formatting.
-    return {
-        "supported":   len(re.findall(r"\*{0,2}LABEL:\*{0,2}\s+SUPPORTED\b",   text, re.I)),
-        "unsupported": len(re.findall(r"\*{0,2}LABEL:\*{0,2}\s+UNSUPPORTED\b", text, re.I)),
-        "inference":   len(re.findall(r"\*{0,2}LABEL:\*{0,2}\s+INFERENCE\b",   text, re.I)),
-    }
 
 
 # ── Data fetch (shared across arms) ─────────────────────────────────────────────
@@ -339,33 +253,37 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
         f"RAG — RISK FACTORS:\n{rag_risks or '(not available)'}",
     ])
 
-    exec_and_outlook = _extract_exec_and_outlook(brief)
+    exec_and_outlook = extract_exec_and_outlook(brief)
     section_block    = "\n\n".join(sections)
 
     print(f"  [{ticker} | {arm}] judging...", flush=True)
-    findings = _retry(_judge_llm.invoke, [
-        SystemMessage(content=_JUDGE_SYSTEM),
-        HumanMessage(content=_judge_user_prompt(source_context, section_block, exec_and_outlook)),
-    ]).content
+    # Shared judge; retry-wrap the LLM call so one transient error can't waste a
+    # long A/B run.
+    grade = grade_brief(
+        source_context, section_block, exec_and_outlook,
+        invoker=lambda messages: _retry(get_judge_llm().invoke, messages),
+    )
 
-    _save_findings(ticker, arm, source_context, exec_and_outlook, findings)
+    _save_findings(ticker, arm, source_context, exec_and_outlook, grade.findings)
 
-    counts = _count_labels(findings)
-    counts["total"] = counts["supported"] + counts["unsupported"] + counts["inference"]
+    counts = {
+        "supported": grade.supported, "unsupported": grade.unsupported,
+        "inference": grade.inference, "total": grade.total,
+    }
 
-    s, u, i, t = counts["supported"], counts["unsupported"], counts["inference"], counts["total"]
+    s, u, i, t = grade.supported, grade.unsupported, grade.inference, grade.total
     print(
         f"  [{ticker} | {arm}] {s} SUP  {u} UNSUP  {i} INF  ({t} claims)  "
         f"retrieval={retrieval_s:.2f}s  pipeline={pipeline_s:.2f}s  haiku_cost=${haiku_cost:.5f}",
         flush=True,
     )
     if verbose:
-        print(findings, flush=True)
+        print(grade.findings, flush=True)
 
     return {
         "ticker": ticker, "arm": arm,
         "retrieval_s": retrieval_s, "pipeline_s": pipeline_s, "haiku_cost": haiku_cost,
-        "inference_claims": _extract_claims(findings, "INFERENCE"),
+        "inference_claims": grade.inference_claims,
         **counts,
     }
 

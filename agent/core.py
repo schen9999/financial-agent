@@ -76,21 +76,32 @@ def _data_context(stock: dict, news: list, sec: dict) -> str:
     return f"Stock: {json.dumps(stock)}\nNews: {json.dumps(news)}\nSEC: {json.dumps(sec)}"
 
 
+# Default SEC RAG sub-questions for the two grounded sections. The multi-agent
+# planner can override these per ticker; the single-agent path uses them as-is.
+DEFAULT_HIGHLIGHTS_QUERY = "Summarize the key takeaways from the latest 10-K and 10-Q"
+DEFAULT_RISKS_QUERY = "What are the primary risk factors disclosed?"
+
+
 @traceable(run_type="retriever", name="rag_contexts", tags=["full_brief", "rag_retrieval"])
-def _rag_contexts(ticker: str) -> tuple[str | None, str | None]:
+def _rag_contexts(ticker: str, highlights_query: str | None = None,
+                  risks_query: str | None = None) -> tuple[str | None, str | None]:
     """Run SEC highlights and risk-factor RAG queries concurrently.
-    Returns (highlights_text, risks_text); either is None on failure or when RAG is disabled."""
+    Returns (highlights_text, risks_text); either is None on failure or when RAG is disabled.
+    The two sub-questions default to the standard highlights/risks prompts but can be
+    overridden (e.g. by the multi-agent planner) to tailor retrieval per ticker."""
     if not _RAG_ENABLED:
         return None, None
+    highlights_query = highlights_query or DEFAULT_HIGHLIGHTS_QUERY
+    risks_query = risks_query or DEFAULT_RISKS_QUERY
     try:
         with ThreadPoolExecutor(max_workers=2) as executor:
             f_highlights = executor.submit(
                 query_sec_filing.invoke,
-                f"{ticker}: Summarize the key takeaways from the latest 10-K and 10-Q"
+                f"{ticker}: {highlights_query}"
             )
             f_risks = executor.submit(
                 query_sec_filing.invoke,
-                f"{ticker}: What are the primary risk factors disclosed?"
+                f"{ticker}: {risks_query}"
             )
             highlights = f_highlights.result()
             risks = f_risks.result()
@@ -227,6 +238,16 @@ def fetch_research_data(ticker: str) -> tuple[dict, list, dict]:
 def stream_synthesis(ticker: str, stock_data: dict, news_data, sec_data: dict):
     """Generator: Haiku generates 4 sections in parallel; Sonnet writes exec summary +
     outlook with the pre-written sections in context. Caches the full brief on completion."""
+    # Multi-agent path (flag-gated): run the supervisor graph to completion and
+    # stream the final brief once (final-only — a draft may be revised by the
+    # critic, so it can't stream token-by-token). Preserves the generator contract.
+    from agent.graph import multi_agent_enabled, run_multi_agent
+    if multi_agent_enabled():
+        brief = run_multi_agent(ticker, stock_data, news_data, sec_data)
+        set_cached_response(ticker, brief)
+        yield brief
+        return
+
     stock = _trim_stock(stock_data)
     news = _trim_news(news_data)
     sec = _trim_sec(sec_data)
@@ -262,6 +283,15 @@ def run_research(ticker: str) -> str:
     print(f"[timing:{ticker}] cache_check={time.perf_counter() - t0:.2f}s")
     if cached:
         return cached["result"]
+
+    # Multi-agent path (flag-gated): the supervisor graph fetches data, plans,
+    # researches, and runs the inline grounding critic. Same brief schema out.
+    from agent.graph import multi_agent_enabled, run_multi_agent
+    if multi_agent_enabled():
+        brief = run_multi_agent(ticker)
+        set_cached_response(ticker, brief)
+        print(f"[timing:{ticker}] total(multi_agent)={time.perf_counter() - t_total:.2f}s")
+        return brief
 
     print(f"\nResearching {ticker.upper()}...\n")
     stock_data, news_data, sec_data = fetch_research_data(ticker)
