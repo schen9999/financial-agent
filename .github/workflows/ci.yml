@@ -25,4 +25,8 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
+          # cache.py raises at import if REDIS_URL is unset; tests mock all Redis
+          # usage and redis.Redis() does not connect at construction, so a dummy
+          # URL just lets the import chain (agent.core -> cache) succeed in CI.
+          REDIS_URL: redis://localhost:6379
         run: pytest tests/ -v
