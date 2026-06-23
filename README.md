@@ -125,7 +125,7 @@ is not worth its cost.
 2. Runs two concurrent Pinecone RAG queries to ground the SEC Filing Highlights and Risk Factors sections in actual filing text
 3. Generates four middle sections in parallel using Claude Haiku
 4. Streams the Executive Summary and Outlook from Claude Sonnet, which receives the pre-written sections as context
-5. Caches the completed brief in Redis (semantic similarity) and PostgreSQL
+5. Caches the completed brief in Redis (exact key `research:{TICKER}`) and PostgreSQL
 
 **Ask a follow-up** -- a LangGraph ReAct agent answers free-form questions, selecting whichever tools it needs (stock data, news, SEC filings, or RAG search).
 
@@ -144,7 +144,7 @@ is not worth its cost.
 | SEC RAG | LlamaIndex + Pinecone + HuggingFace `bge-small-en-v1.5` |
 | Reranking (optional) | Cross-encoder `BAAI/bge-reranker-base` |
 | Observability | LangSmith (tool calls, tokens, latency, cost) |
-| Semantic cache | Redis (cosine similarity on brief embeddings) |
+| Brief cache | Redis (exact key per ticker, `research:{TICKER}`) |
 | Persistence | PostgreSQL via SQLAlchemy |
 | Async tasks | Celery + Redis |
 | REST API | FastAPI |
@@ -164,7 +164,7 @@ is not worth its cost.
 "Generate Brief"
        │
        ▼
-Redis semantic cache ──hit──► cached brief
+Redis cache (research:TICKER) ──hit──► cached brief
        │ miss
        ▼
 get_stock_data  (yfinance)
