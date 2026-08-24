@@ -1,0 +1,84 @@
+# FastAPI backend. init_db() runs at import, so an init container waits for
+# Postgres before uvicorn starts (cleaner than crash-looping into it).
+# envFrom order matters: app-secrets (.env) < infra-secrets (DATABASE_URL)
+# < app-config (REDIS_URL, flags) — later sources win on duplicate keys.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/name: api
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: api
+        app.kubernetes.io/part-of: financial-agent
+    spec:
+      initContainers:
+        - name: wait-for-postgres
+          image: postgres:16-alpine
+          command: ["sh", "-c", "until pg_isready -h postgres -p 5432 -U agent; do echo waiting for postgres; sleep 2; done"]
+      containers:
+        - name: api
+          image: financial-agent-app:local
+          imagePullPolicy: Never # loaded via `kind load docker-image`
+          command: ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]
+          ports:
+            - containerPort: 8000
+              name: http
+          envFrom:
+            - secretRef:
+                name: app-secrets
+            - secretRef:
+                name: infra-secrets
+            - configMapRef:
+                name: app-config
+          resources:
+            requests:
+              cpu: 300m
+              memory: 900Mi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+          # Import chain loads torch + the embedding model — slow first boot.
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 30 # up to 5 min to come up
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 20
+            timeoutSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/name: api
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: api
+  ports:
+    - port: 8000
+      targetPort: http
+      nodePort: 30080

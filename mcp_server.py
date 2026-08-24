@@ -55,7 +55,15 @@ from agent.tools.sec import get_sec_filings as _get_sec_filings
 
 load_dotenv()
 
-mcp = FastMCP("financial-research-agent")
+# Bind address/port for the HTTP transports (streamable-http / sse). Defaults
+# preserve the original behaviour (loopback:8000); the K8s deployment sets
+# MCP_HOST=0.0.0.0 so the pod is reachable on its pod IP. Passed as constructor
+# kwargs because this mcp SDK version does not read FASTMCP_* env vars.
+mcp = FastMCP(
+    "financial-research-agent",
+    host=os.getenv("MCP_HOST", "127.0.0.1"),
+    port=int(os.getenv("MCP_PORT", "8000")),
+)
 
 # Wrapper-layer call guard: wall-clock timeout + stdout->stderr redirect.
 _TOOL_TIMEOUT = float(os.getenv("MCP_TOOL_TIMEOUT", "30"))

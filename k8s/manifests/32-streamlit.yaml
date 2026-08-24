@@ -1,0 +1,87 @@
+# Streamlit UI, deployed exactly as it runs everywhere else: the agent pipeline
+# runs IN-PROCESS inside this pod (app.py imports agent.core directly — there is
+# no Streamlit→FastAPI hop, by design; see README "Two execution paths").
+# app.py is unchanged; the live Streamlit Cloud deployment is untouched.
+# Consequence: this pod needs the same secrets and memory headroom as the API.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streamlit
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/name: streamlit
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: streamlit
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: streamlit
+        app.kubernetes.io/part-of: financial-agent
+    spec:
+      containers:
+        - name: streamlit
+          image: financial-agent-app:local
+          imagePullPolicy: Never
+          command:
+            - streamlit
+            - run
+            - app.py
+            - --server.port=8501
+            - --server.address=0.0.0.0
+            - --server.headless=true
+            - --server.fileWatcherType=none
+          ports:
+            - containerPort: 8501
+              name: http
+          envFrom:
+            - secretRef:
+                name: app-secrets
+            - secretRef:
+                name: infra-secrets
+            - configMapRef:
+                name: app-config
+          resources:
+            requests:
+              cpu: 200m
+              memory: 700Mi
+            limits:
+              cpu: 1500m
+              memory: 2Gi
+          startupProbe:
+            httpGet:
+              path: /_stcore/health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 30
+          readinessProbe:
+            httpGet:
+              path: /_stcore/health
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /_stcore/health
+              port: http
+            periodSeconds: 20
+            timeoutSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: streamlit
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/name: streamlit
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: streamlit
+  ports:
+    - port: 8501
+      targetPort: http
+      nodePort: 30501

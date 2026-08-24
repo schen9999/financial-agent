@@ -69,6 +69,10 @@ def research_task(self, ticker: str) -> dict:
         else:
             result = run_research(ticker)
         return {"status": "complete", "ticker": ticker, "brief": result}
-    except Exception as e:
-        self.update_state(state="FAILURE", meta={"error": str(e)})
+    except Exception:
+        # Just re-raise: Celery records FAILURE with proper exception metadata.
+        # Manually calling update_state(state="FAILURE", meta={...}) writes a
+        # non-exception payload into the result backend; Celery's own failure
+        # handler then can't decode it (KeyError: 'exc_type'), which masks the
+        # real traceback and makes every later status read raise ValueError.
         raise

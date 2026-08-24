@@ -1,0 +1,63 @@
+# Celery worker — consumes research_task from the Redis broker. This is the
+# first environment where the designed async path actually runs end-to-end
+# (ECS deployed no worker; see docs/PHASE0_AUDIT.md "Deployed vs. designed").
+# Concurrency 1: each prefork child lazily imports the heavy agent stack on its
+# first task, and the single-node cluster is memory-bound.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/name: worker
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: worker
+        app.kubernetes.io/part-of: financial-agent
+    spec:
+      containers:
+        - name: worker
+          image: financial-agent-app:local
+          imagePullPolicy: Never
+          command: ["celery", "-A", "celery_worker.celery_app", "worker", "--loglevel=info", "--concurrency=1"]
+          envFrom:
+            - secretRef:
+                name: app-secrets
+            - secretRef:
+                name: infra-secrets
+            - configMapRef:
+                name: app-config
+          resources:
+            requests:
+              cpu: 200m
+              memory: 900Mi
+            limits:
+              cpu: 1500m
+              memory: 2Gi
+          # `inspect ping` targets this pod's own worker node name (celery@<hostname>).
+          # It spawns a short-lived celery client — cheap (celery_worker.py's import
+          # chain is light; the agent stack loads lazily inside the task).
+          startupProbe:
+            exec:
+              command: ["sh", "-c", "celery -A celery_worker.celery_app inspect ping -d celery@$HOSTNAME --timeout 10 | grep -q pong"]
+            periodSeconds: 10
+            timeoutSeconds: 15
+            failureThreshold: 30
+          livenessProbe:
+            exec:
+              command: ["sh", "-c", "celery -A celery_worker.celery_app inspect ping -d celery@$HOSTNAME --timeout 10 | grep -q pong"]
+            periodSeconds: 60
+            timeoutSeconds: 20
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command: ["sh", "-c", "celery -A celery_worker.celery_app inspect ping -d celery@$HOSTNAME --timeout 10 | grep -q pong"]
+            periodSeconds: 30
+            timeoutSeconds: 20

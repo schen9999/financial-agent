@@ -1,0 +1,33 @@
+# Non-secret runtime config. This ConfigMap is listed LAST in every pod's
+# envFrom, so the in-cluster service addresses here override the developer's
+# .env values (which point at Upstash/localhost) carried in by app-secrets.
+#
+# The feature flags are restated at their production defaults on purpose: the
+# flag surface stays visible in cluster config, and toggling one is a
+# ConfigMap edit + rollout, not an image rebuild. Defaults preserved from the
+# Phase 0 audit — reranking and the multi-agent graph ship off because evals
+# showed no grounding gain; the local model ships off (85.4% vs 88.6%
+# grounding). Do not flip them here without re-running the evals.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/part-of: financial-agent
+data:
+  # ── In-cluster services (override .env values) ──
+  REDIS_URL: redis://redis:6379/0
+  # DATABASE_URL comes from infra-secrets (generated password), not from here.
+
+  # ── Feature flags at audited production defaults ──
+  RERANKING_ENABLED: "false"
+  USE_LOCAL_MODEL: "false"
+  MULTI_AGENT_ENABLED: "false"
+  # Sub-knobs (only read when their parent flag is on)
+  RERANK_CANDIDATES: "20"
+  RERANK_TOP_N: "3"
+  CRITIC_MAX_UNSUPPORTED_PCT: "5"
+  MAX_REVISIONS: "2"
+  # LOCAL_MODEL_URL is intentionally unset while USE_LOCAL_MODEL=false.
+  # Phase 3 points it at the vLLM Service.

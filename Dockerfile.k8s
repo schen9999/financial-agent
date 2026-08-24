@@ -1,0 +1,50 @@
+# One image for every app component of the K8s stack (api / celery worker /
+# streamlit / mcp) — the manifests differ only in `command`. Built from the FULL
+# requirements.txt (the ECS image's requirements-api.txt lacks streamlit + mcp).
+# The ECS Dockerfile is untouched; this one exists for the kind cluster.
+# Uses Dockerfile.k8s.dockerignore (BuildKit per-Dockerfile ignore), which
+# keeps app.py + .streamlit + grounding_check.py that the ECS ignore excludes.
+FROM python:3.13-slim
+
+# libgomp1: OpenMP runtime for torch / scikit-learn. curl: pod debugging.
+RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 curl \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    HF_HOME=/opt/hf-cache \
+    HF_HUB_DISABLE_TELEMETRY=1 \
+    TOKENIZERS_PARALLELISM=false \
+    TRANSFORMERS_VERBOSITY=error
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+# CPU-only torch FIRST, from the PyTorch CPU wheel index: the default Linux
+# wheel bundles CUDA (~4-5 GB larger) that a CPU-only kind cluster can't use.
+# Fallback range covers the pinned version not existing on the CPU index.
+RUN pip install --index-url https://download.pytorch.org/whl/cpu torch==2.12.0 \
+    || pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.6,<2.13"
+
+# Then everything else; torch already satisfied so pip keeps the CPU build.
+RUN grep -vE "^torch==" requirements.txt > /tmp/requirements-notorch.txt \
+    && pip install -r /tmp/requirements-notorch.txt
+
+# Bake the bge-small embedding model so pod start never hits the HF Hub.
+RUN mkdir -p /opt/hf-cache && \
+    python -c "from llama_index.embeddings.huggingface import HuggingFaceEmbedding; HuggingFaceEmbedding(model_name='BAAI/bge-small-en-v1.5')"
+
+# The celery CLI imports the app module with cwd on sys.path only TEMPORARILY
+# (import_from_cwd), so task-body imports like `from agent.core import ...`
+# fail in the prefork child without this. uvicorn happens to insert cwd
+# permanently, which is why the API works either way. Set late in the file so
+# editing it never invalidates the pip/model layers.
+ENV PYTHONPATH=/app
+
+COPY . .
+
+EXPOSE 8000 8501
+
+# Default command is the API; worker/streamlit/mcp override in their manifests.
+CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]
