@@ -22,7 +22,7 @@ I built an evaluation framework that audits every quantitative and forward-looki
 
 **Early results: 49% unsupported claim rate.** Nearly half of what the agent said wasn't backed by anything it retrieved.
 
-After iterating on prompt constraints and forcing generation to stay grounded in source material: **3% unsupported claim rate.**
+After iterating on prompt constraints and forcing generation to stay grounded in source material: **3% unsupported claim rate** — and on the latest full re-measure (Aug 2026, 10 tickers, 84 claims): **0 unsupported claims (0.0%)**. See [docs/PHASE0_AUDIT.md](docs/PHASE0_AUDIT.md) for the audited numbers of record.
 
 The prompt engineering work -- not the retrieval architecture -- was what actually moved the needle.
 
@@ -128,6 +128,8 @@ is not worth its cost.
 5. Caches the completed brief in Redis (exact key `research:{TICKER}`) and PostgreSQL
 
 **Ask a follow-up** -- a LangGraph ReAct agent answers free-form questions, selecting whichever tools it needs (stock data, news, SEC filings, or RAG search).
+
+**Two execution paths, by design:** the Streamlit UI imports the agent and runs the pipeline **in-process** (so the hosted demo needs no backend and can stream tokens directly), while the FastAPI app runs the same `agent/` code behind REST endpoints for programmatic consumers (and is what ECS/Kubernetes deploy). Same pipeline, two entry points -- there is no Streamlit→FastAPI hop.
 
 ---
 

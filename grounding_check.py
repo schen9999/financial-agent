@@ -89,9 +89,10 @@ ARMS = {
         "env": {"RERANKING_ENABLED": "true", "RERANK_CANDIDATES": "20", "RERANK_TOP_N": "5"},
     },
     "local-model": {
-        # Fine-tuned Qwen2.5-1.5B (Ollama) serves the 3 trained sections; Haiku
-        # keeps Recent Developments. Requires `ollama serve` + the model loaded.
-        "label": "Local model (3 sec) + Haiku",
+        # Fine-tuned Qwen2.5-1.5B (Ollama) serves the 2 trained sections
+        # (Financial Health, Risk Factors); Haiku keeps Recent Developments and
+        # SEC Filing Highlights. Requires `ollama serve` + the model loaded.
+        "label": "Local model (2 sec) + Haiku",
         "env": {"RERANKING_ENABLED": "false", "BASELINE_TOP_K": "3", "USE_LOCAL_MODEL": "true"},
     },
 }
@@ -118,8 +119,9 @@ def _est_tokens(text: str) -> int:
 def _brief_haiku_cost(arm: str, company: str, ticker: str,
                       section_contexts: dict, sections: list[str]) -> float:
     """Estimated Haiku $/brief: only sections actually served by Haiku cost
-    money. In the local-model arm the 3 trained sections are local ($0.00) and
-    only Recent Developments hits Haiku; other arms pay Haiku for all 4."""
+    money. In the local-model arm the 2 trained sections (Financial Health,
+    Risk Factors) are local ($0.00) and Recent Developments + SEC Filing
+    Highlights hit Haiku; other arms pay Haiku for all 4."""
     local = ARMS[arm]["env"].get("USE_LOCAL_MODEL") == "true"
     in_tok = out_tok = 0
     for (heading, instr), out in zip(_SECTIONS, sections):
