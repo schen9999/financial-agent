@@ -52,6 +52,17 @@ I fine-tuned **Qwen2.5-1.5B-Instruct** with QLoRA on 104 deterministic, Claude-f
 
 **54% cost reduction at slightly lower grounding.** Shipped default-off -- the tradeoff isn't worth it for most users, but the benchmark is there for anyone who needs the cost savings.
 
+**Aug 2026 re-measure ([benchmarks.md](benchmarks.md)):** the 54% figure is the
+*sections-only* (Haiku) spend. Measured at full-brief level with the Phase 2
+cost harness, Sonnet synthesis dominates and the hybrid saves ~$0.002/brief --
+within run-to-run variance, i.e. no measurable full-brief saving. The grounding
+regression reproduced in direction (86.2% hosted vs 77.8% hybrid on that
+judge pass). The local model is now servable through an OpenAI-compatible
+backend (`LOCAL_MODEL_BACKEND=openai` -- vLLM on AVX-512 hardware via
+`make vllm-deploy`, or Ollama's `/v1` endpoint on this machine; the prebuilt
+vLLM CPU image SIGILLs on this AVX2-only CPU -- gap documented in
+benchmarks.md). Still default-off.
+
 I also re-implemented the same fine-tune with a hand-written PyTorch training loop (`fine_tune_pytorch_loop.ipynb`) -- custom `Dataset`, manual gradient accumulation and `optimizer.step()`, hand-written cosine LR, no Hugging Face `Trainer`. Benchmarked against the `Trainer` on identical data and config (`adamw_torch`, cosine schedule, grad-accum 8), the two loss curves track each other closely over 21 optimizer steps -- both start around 1.4--1.5 and trend down together, finishing at **0.50 (native)** and **0.35 (Trainer)**. The curves cross repeatedly, so that final-step gap sits within the run-to-run noise at this scale (~7 optimizer steps/epoch, plus shuffle order and 4-bit-kernel non-determinism) rather than a systematic difference -- confirming the hand-written loop reproduces the Trainer's training dynamics at the gradient-accumulation and optimizer-step level.
 
 ![Native PyTorch loop vs HF Trainer -- training loss over 21 optimizer steps, same data and config](docs/native_loop_vs_trainer.png)

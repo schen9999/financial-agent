@@ -11,7 +11,7 @@ from agent.tools.local_model import use_local_model, is_local_section, LocalChat
 
 @pytest.fixture(autouse=True)
 def _clean_env():
-    saved = {k: os.environ.get(k) for k in ("USE_LOCAL_MODEL", "LOCAL_MODEL_NAME", "LOCAL_MODEL_URL")}
+    saved = {k: os.environ.get(k) for k in ("USE_LOCAL_MODEL", "LOCAL_MODEL_NAME", "LOCAL_MODEL_URL", "LOCAL_MODEL_BACKEND")}
     for k in saved:
         os.environ.pop(k, None)
     yield
@@ -95,3 +95,39 @@ def test_model_and_url_from_env():
     chat = LocalChat()
     assert chat.model == "my-model"
     assert chat.url == "http://host:9999"  # trailing slash stripped
+
+
+# ── OpenAI-compatible backend (vLLM) ─────────────────────────────────────────
+
+def test_backend_defaults_to_ollama():
+    assert local_model.local_model_backend() == "ollama"
+
+
+def test_invoke_openai_backend_posts_chat_completions(monkeypatch):
+    os.environ["LOCAL_MODEL_BACKEND"] = "openai"
+    captured = {}
+
+    class _Resp:
+        def raise_for_status(self):
+            pass
+
+        def json(self):
+            return {"choices": [{"message": {"content": "### Risk Factors\nstub"}}]}
+
+    def fake_post(url, json=None, timeout=None):
+        captured["url"] = url
+        captured["json"] = json
+        return _Resp()
+
+    monkeypatch.setattr(local_model.requests, "post", fake_post)
+
+    chat = LocalChat(model="financial-lora", url="http://vllm:8000")
+    out = chat.invoke([HumanMessage("write the section")])
+
+    assert out.content == "### Risk Factors\nstub"
+    assert captured["url"].endswith("/v1/chat/completions")
+    assert captured["json"]["model"] == "financial-lora"
+    assert captured["json"]["messages"][0]["role"] == "user"
+    # OpenAI schema: temperature is top-level, no Ollama "options"/"stream" keys
+    assert "options" not in captured["json"]
+    assert captured["json"]["temperature"] == pytest.approx(0.1)

@@ -96,3 +96,23 @@ eval-run: ## Submit the grounding eval workflow now and follow it to completion
 
 cost-report: ## Re-runnable cost/brief measurement (runs locally; needs .env)
 	python scripts/cost_report.py
+
+# ── vLLM (CPU mode — backs the default-off USE_LOCAL_MODEL flag) ─────────────
+
+VLLM_IMAGE ?= public.ecr.aws/q9t5s3a7/vllm-cpu-release-repo:v0.10.2
+
+vllm-deploy: ## Copy the merged model into the kind node and deploy vLLM
+	docker pull -q $(VLLM_IMAGE)
+	kind load docker-image $(VLLM_IMAGE) --name $(CLUSTER)
+	docker exec $(CLUSTER)-control-plane sh -c 'test -d /opt/models/financial-lora' || \
+		{ docker exec $(CLUSTER)-control-plane mkdir -p /opt/models; \
+		  docker cp financial-lora-merged $(CLUSTER)-control-plane:/opt/models/financial-lora; }
+	kubectl apply -f k8s/vllm/vllm.yaml
+	kubectl -n $(NAMESPACE) rollout status deployment/vllm --timeout=900s
+	@echo "vLLM up. In-cluster URL: http://vllm:8000  (port-forward: kubectl -n $(NAMESPACE) port-forward svc/vllm 18000:8000)"
+
+vllm-down: ## Remove the vLLM deployment (frees ~4.5GB on the node)
+	kubectl delete -f k8s/vllm/vllm.yaml --ignore-not-found
+
+vllm-bench: ## Benchmark the vLLM endpoint (expects port-forward on :18000)
+	python scripts/vllm_benchmark.py --url http://localhost:18000 --json-out /tmp/vllm_bench.json

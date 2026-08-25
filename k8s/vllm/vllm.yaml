@@ -1,0 +1,100 @@
+# vLLM serving the QLoRA-fine-tuned Qwen2.5-1.5B (merged fp16 checkpoint) as an
+# OpenAI-compatible endpoint. Deployed SEPARATELY from k8s/manifests/ because it
+# backs a default-off feature (USE_LOCAL_MODEL=false) and holds ~4.5GB: deploy
+# with `make vllm-deploy`, remove with `make vllm-down`.
+#
+# CPU MODE — this machine has no GPU. vLLM runs its CPU backend inside WSL2;
+# throughput/latency here say NOTHING about GPU serving (see benchmarks.md).
+#
+# The model is copied into the kind node at /opt/models/financial-lora
+# (`make vllm-deploy` does the docker cp) and mounted via hostPath — node-local
+# ext4, not the slow 9p /mnt/c mount.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/name: vllm
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate # two replicas cannot fit in memory on this node
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vllm
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vllm
+        app.kubernetes.io/part-of: financial-agent
+    spec:
+      containers:
+        - name: vllm
+          image: public.ecr.aws/q9t5s3a7/vllm-cpu-release-repo:v0.10.2
+          imagePullPolicy: Never # kind-loaded
+          args:
+            - vllm
+            - serve
+            - /models/financial-lora
+            - --served-model-name=financial-lora
+            - --dtype=bfloat16
+            - --max-model-len=4096
+            - --max-num-seqs=8
+            - --host=0.0.0.0
+            - --port=8000
+          env:
+            - name: VLLM_CPU_KVCACHE_SPACE # GB reserved for KV cache
+              value: "2"
+          ports:
+            - containerPort: 8000
+              name: http
+          volumeMounts:
+            - name: model
+              mountPath: /models/financial-lora
+              readOnly: true
+          resources:
+            requests:
+              cpu: "1"
+              memory: 4Gi
+            limits:
+              cpu: "4"
+              memory: 6Gi
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 60 # CPU model load + graph warmup can take minutes
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 30
+            timeoutSeconds: 10
+      volumes:
+        - name: model
+          hostPath:
+            path: /opt/models/financial-lora
+            type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vllm
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/name: vllm
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  selector:
+    app.kubernetes.io/name: vllm
+  ports:
+    - port: 8000
+      targetPort: http
