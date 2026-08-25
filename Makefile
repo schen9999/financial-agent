@@ -8,7 +8,8 @@ NAMESPACE ?= financial-agent
 IMAGE     ?= financial-agent-app:local
 ENV_FILE  ?= .env
 
-.PHONY: cluster-up deploy smoke-test cluster-down status logs
+.PHONY: cluster-up deploy smoke-test cluster-down status logs \
+        argo-install argo-deploy eval-run cost-report
 
 cluster-up: ## Create the single-node kind cluster (or restart its stopped node)
 	@if kind get clusters 2>/dev/null | grep -qx $(CLUSTER); then \
@@ -63,3 +64,35 @@ status: ## Pods, services, and recent events
 
 logs: ## Tail logs: make logs C=api|worker|streamlit|mcp|redis|postgres
 	kubectl -n $(NAMESPACE) logs deployment/$(C) --tail=100 -f
+
+# ── Argo Workflows (batch/eval — request-time async stays on Celery) ─────────
+
+ARGO_VERSION ?= v3.7.18
+
+argo-install: ## Install Argo Workflows (controller + server) into the cluster
+	kubectl create namespace argo --dry-run=client -o yaml | kubectl apply -f -
+	kubectl apply -n argo -f https://github.com/argoproj/argo-workflows/releases/download/$(ARGO_VERSION)/install.yaml
+	kubectl -n argo rollout status deploy/workflow-controller --timeout=300s
+	kubectl -n argo rollout status deploy/argo-server --timeout=300s
+
+argo-deploy: ## Apply eval workflow RBAC, WorkflowTemplate, and nightly CronWorkflow
+	kubectl apply -f argo/rbac.yaml -f argo/eval-workflow.yaml -f argo/eval-cron.yaml
+	@echo "Nightly eval scheduled: $$(kubectl -n $(NAMESPACE) get cronworkflow grounding-eval-nightly -o jsonpath='{.spec.schedule} {.spec.timezone}')"
+
+eval-run: ## Submit the grounding eval workflow now and follow it to completion
+	@WF=$$(kubectl -n $(NAMESPACE) create -f argo/eval-run.yaml -o name | sed 's|.*/||'); \
+	echo "submitted workflow: $$WF"; \
+	while :; do \
+		phase=$$(kubectl -n $(NAMESPACE) get workflow $$WF -o jsonpath='{.status.phase}' 2>/dev/null); \
+		prog=$$(kubectl -n $(NAMESPACE) get workflow $$WF -o jsonpath='{.status.progress}' 2>/dev/null); \
+		echo "  [$$(date +%H:%M:%S)] phase=$$phase progress=$$prog"; \
+		case "$$phase" in Succeeded|Failed|Error) break;; esac; \
+		sleep 20; \
+	done; \
+	echo; echo "=== aggregate step output ==="; \
+	AGG=$$(kubectl -n $(NAMESPACE) get pods -l workflows.argoproj.io/workflow=$$WF -o name | grep aggregate | head -1); \
+	test -n "$$AGG" && kubectl -n $(NAMESPACE) logs $$AGG -c main --tail=80 || echo "(aggregate pod not found)"; \
+	test "$$(kubectl -n $(NAMESPACE) get workflow $$WF -o jsonpath='{.status.phase}')" = Succeeded
+
+cost-report: ## Re-runnable cost/brief measurement (runs locally; needs .env)
+	python scripts/cost_report.py

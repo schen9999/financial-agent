@@ -366,6 +366,59 @@ streamlit run app.py
 
 ---
 
+## Kubernetes, and the Celery vs. Argo split
+
+The full designed topology — FastAPI, Celery worker, Redis, Postgres, Streamlit,
+MCP server — runs on a single-node [kind](https://kind.sigs.k8s.io/) cluster
+(`make cluster-up && make deploy && make smoke-test`; see
+[`k8s/README.md`](k8s/README.md)). Per the Phase 0 audit this is the first
+environment where that topology runs complete: the smoke test asserts an
+end-to-end brief, a Celery task finishing, and an exact-key cache hit plus a
+different-ticker miss.
+
+**Two schedulers, deliberately:**
+
+| | Celery (+ Redis) | Argo Workflows |
+|---|---|---|
+| Used for | Request-time async: `POST /research/async` | Batch/eval: nightly grounding eval, ad-hoc eval runs |
+| Unit of work | One function call (`research_task`) | A DAG of pods (fan-out per ticker → aggregate → gate) |
+| Latency profile | Seconds matter; job starts immediately off a live request | Minutes are fine; runs on a schedule or on demand |
+| Failure semantics | Retry/report per request | The *workflow* fails if the aggregate quality gate fails |
+| Why not the other one | An eval suite is a DAG with fan-out, per-step containers, and a pass/fail verdict — modeling that in Celery means hand-building orchestration Argo already provides | Spinning up a pod per API request would add cold-start latency and K8s API load to the hot path that a resident worker avoids |
+
+The eval workflow (`argo/eval-workflow.yaml`) fans out one pod per ticker
+(bounded parallelism — each pod carries the torch/embedding stack), aggregates
+grounding scores in a final step (`scripts/eval_aggregate.py`), and **fails the
+workflow** if the unsupported-claim rate breaches the threshold, any ticker was
+skipped, or too few claims were audited to be meaningful. A `CronWorkflow` runs
+it nightly at 03:30 America/New_York. Eval pods force `BYPASS_CACHE=true` — they
+never touch the live exact-key brief cache.
+
+**The gate fired on its first real run — and that was variance, measured.** The
+first full workflow run scored 5.62% unsupported (gate: ≤5%), driven entirely by
+one NVDA draft with 5 flagged claims. Re-measuring NVDA immediately produced
+0 unsupported of 10 (and the same morning's full-suite run had scored 0 of 84).
+Single-draft scores fluctuate at temperature 0.2 — the same behaviour as the
+WMT flag in the multi-agent experiment. The threshold stays at 5% rather than
+being widened to make red nights rarer: the documented response to a red night
+is to re-run the flagged ticker(s) and compare drafts — one outlier draft that
+doesn't reproduce is variance; a repeated or multi-ticker breach is a real
+regression.
+
+**Cost measurement is re-runnable, not folklore:** `scripts/cost_report.py`
+runs the production pipeline with token accounting on every LLM call (exact
+API-reported usage for the LangChain calls; tokenizer-estimated for the RAG-
+internal calls, labeled as such) and prices them from
+`scripts/model_prices.json`. Measured 2026-08-24 (3-ticker mean):
+**$0.0336/brief** = $0.0272 exact (4 Haiku sections + Sonnet synthesis) +
+$0.0064 RAG-internal estimate. Any cost number quoted for this project comes
+from re-running that harness — the earlier $0.0269 figure is historical (its
+harness was never committed; it matches the exact-only portion almost to the
+cent, which suggests it never counted the RAG-internal calls either; see
+`docs/PHASE0_AUDIT.md`).
+
+---
+
 ## MCP Server
 
 The agent's tools are also exposed over the **Model Context Protocol** via the

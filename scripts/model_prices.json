@@ -1,0 +1,10 @@
+{
+  "_comment": "USD per million tokens (Anthropic first-party API rates, checked 2026-08-24). The cost harness (scripts/cost_report.py) prices measured token counts from this table — update here when rates change; no code change needed. cache_read tokens are priced at 10% of input; cache_creation at 125% of input (Anthropic ephemeral cache pricing).",
+  "models": {
+    "claude-sonnet-4-6": { "input_per_mtok": 3.0, "output_per_mtok": 15.0 },
+    "claude-haiku-4-5-20251001": { "input_per_mtok": 1.0, "output_per_mtok": 5.0 },
+    "claude-haiku-4-5": { "input_per_mtok": 1.0, "output_per_mtok": 5.0 }
+  },
+  "cache_read_multiplier": 0.1,
+  "cache_creation_multiplier": 1.25
+}

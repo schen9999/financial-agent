@@ -1,0 +1,38 @@
+# ServiceAccount + minimal RBAC for workflow pods in the financial-agent
+# namespace. The Argo executor (wait container) reports step results by
+# creating/patching WorkflowTaskResults — that is the only permission needed.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: argo-workflow
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/part-of: financial-agent
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: argo-workflow-executor
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/part-of: financial-agent
+rules:
+  - apiGroups: ["argoproj.io"]
+    resources: ["workflowtaskresults"]
+    verbs: ["create", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argo-workflow-executor
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/part-of: financial-agent
+subjects:
+  - kind: ServiceAccount
+    name: argo-workflow
+    namespace: financial-agent
+roleRef:
+  kind: Role
+  name: argo-workflow-executor
+  apiGroup: rbac.authorization.k8s.io

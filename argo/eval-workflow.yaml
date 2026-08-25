@@ -1,0 +1,124 @@
+# Grounding-eval as an Argo Workflow: fan the eval cases (tickers) out as
+# parallel pods, aggregate grounding scores in a final step, and FAIL the
+# workflow if the unsupported-claim rate breaches the threshold.
+#
+# Batch/eval runs on Argo; request-time async stays on Celery — see the README
+# section "Celery vs. Argo" for the reasoning.
+#
+# Fan-out results travel as output PARAMETERS (small JSON per ticker), so no
+# artifact repository (S3/MinIO) is needed on the local cluster. parallelism=2
+# bounds concurrent eval pods: each one imports the torch/embedding stack
+# (~1 GB RSS) and the single kind node has ~8 GB.
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: grounding-eval
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  entrypoint: main
+  serviceAccountName: argo-workflow
+  parallelism: 2
+  activeDeadlineSeconds: 3600
+  ttlStrategy:
+    secondsAfterCompletion: 86400 # keep a day of history for debugging
+  arguments:
+    parameters:
+      - name: tickers
+        value: '["AAPL","NVDA","JPM","MSFT","GOOGL","AMZN","META","TSLA","V","WMT"]'
+      - name: max-unsupported-pct
+        value: "5"
+      - name: min-claims
+        value: "30"
+  templates:
+    - name: main
+      dag:
+        tasks:
+          - name: eval-ticker
+            template: eval-one
+            arguments:
+              parameters:
+                - name: ticker
+                  value: "{{item}}"
+            withParam: "{{workflow.parameters.tickers}}"
+          - name: aggregate
+            depends: eval-ticker
+            template: aggregate
+            arguments:
+              parameters:
+                - name: results
+                  # Aggregated JSON array of every fan-out pod's result parameter.
+                  value: "{{tasks.eval-ticker.outputs.parameters.result}}"
+
+    - name: eval-one
+      inputs:
+        parameters:
+          - name: ticker
+      activeDeadlineSeconds: 1200
+      retryStrategy:
+        limit: "1" # one retry per ticker for transient upstream flakiness
+        retryPolicy: OnFailure
+      container:
+        image: financial-agent-app:local
+        imagePullPolicy: Never
+        command: ["python", "grounding_check.py"]
+        args:
+          - --tickers
+          - "{{inputs.parameters.ticker}}"
+          - --arms
+          - baseline
+          - --json-out
+          - /tmp/result.json
+        env:
+          # The harness sets this itself; restated for visibility. Eval pods
+          # must NEVER read or write the live exact-key cache.
+          - name: BYPASS_CACHE
+            value: "true"
+        envFrom:
+          - secretRef:
+              name: app-secrets
+          - secretRef:
+              name: infra-secrets
+          - configMapRef:
+              name: app-config
+        resources:
+          requests:
+            cpu: 300m
+            memory: 900Mi
+          limits:
+            cpu: 1500m
+            memory: 2Gi
+      outputs:
+        parameters:
+          - name: result
+            valueFrom:
+              path: /tmp/result.json
+
+    - name: aggregate
+      inputs:
+        parameters:
+          - name: results
+        artifacts:
+          - name: results-json
+            path: /tmp/all_results.json
+            raw:
+              data: "{{inputs.parameters.results}}"
+      container:
+        image: financial-agent-app:local
+        imagePullPolicy: Never
+        command: ["python", "scripts/eval_aggregate.py"]
+        args:
+          - --input
+          - /tmp/all_results.json
+          - --max-unsupported-pct
+          - "{{workflow.parameters.max-unsupported-pct}}"
+          - --min-claims
+          - "{{workflow.parameters.min-claims}}"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi

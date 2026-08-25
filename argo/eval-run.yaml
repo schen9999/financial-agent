@@ -1,0 +1,13 @@
+# One-off run of the grounding-eval WorkflowTemplate (what the nightly
+# CronWorkflow submits on schedule). Submit with `make eval-run` or:
+#   kubectl -n financial-agent create -f argo/eval-run.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: grounding-eval-
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  workflowTemplateRef:
+    name: grounding-eval

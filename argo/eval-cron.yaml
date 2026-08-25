@@ -1,0 +1,19 @@
+# Nightly grounding eval: runs the grounding-eval WorkflowTemplate every night
+# at 03:30 America/New_York. Forbid concurrent runs; keep a short history.
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: grounding-eval-nightly
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  schedule: "30 3 * * *"
+  timezone: America/New_York
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 3600
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  workflowSpec:
+    workflowTemplateRef:
+      name: grounding-eval

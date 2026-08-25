@@ -37,11 +37,13 @@ sec_filings/
 eval_findings/
 .devcontainer/
 
-# Dev/eval scripts not needed in the running pods (grounding_check.py IS kept)
+# Dev/eval scripts not needed in the running pods. grounding_check.py and
+# scripts/ ARE kept — the Argo eval workflow runs grounding_check.py per ticker
+# and scripts/eval_aggregate.py in its final step; scripts/cost_report.py +
+# model_prices.json make cost/brief re-runnable in-cluster.
 tests/
 benchmark_timing.py
 compare_synthesis.py
-scripts/
 
 # Docs + alternate requirements (this image uses requirements.txt)
 README.md

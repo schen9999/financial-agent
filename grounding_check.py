@@ -380,6 +380,10 @@ def main():
                         help="Which tickers to evaluate.")
     parser.add_argument("--verbose", action="store_true",
                         help="Print full per-claim judge findings.")
+    parser.add_argument("--json-out", default=None, metavar="PATH",
+                        help="Write per-(ticker,arm) results + per-arm aggregates as JSON. "
+                             "Used by the Argo eval workflow to fan out one ticker per pod "
+                             "and aggregate in a final step.")
     args = parser.parse_args()
 
     print(f"BYPASS_CACHE={os.getenv('BYPASS_CACHE')} — Redis semantic cache disabled for this run.",
@@ -419,6 +423,18 @@ def main():
         for ticker, arm, claim in samples[:10]:
             print(f"    [{ticker}|{arm}] {claim}", flush=True)
     print(f"\n  Full per-claim judge findings saved to: {FINDINGS_DIR}", flush=True)
+
+    if args.json_out:
+        balanced = _balanced_tickers(results, args.arms)
+        payload = {
+            "arms": args.arms,
+            "tickers": args.tickers,
+            "skipped": skipped,
+            "results": results,
+            "aggregate": {arm: _aggregate(results, arm, only=balanced) for arm in args.arms},
+        }
+        Path(args.json_out).write_text(json.dumps(payload, indent=2), encoding="utf-8")
+        print(f"  JSON results written to: {args.json_out}", flush=True)
 
 
 if __name__ == "__main__":
