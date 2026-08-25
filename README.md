@@ -162,6 +162,9 @@ is not worth its cost.
 | Async tasks | Celery + Redis |
 | REST API | FastAPI |
 | Frontend | Streamlit |
+| Local orchestration | Kubernetes (kind, single node in WSL2) — full topology incl. worker + MCP |
+| Batch / eval orchestration | Argo Workflows v3.7 (fan-out eval DAG, nightly CronWorkflow, quality gate) |
+| Local model serving | OpenAI-compatible backend: vLLM manifests (AVX-512 hosts) / Ollama `/v1` (this machine) — see [benchmarks.md](benchmarks.md) |
 | Cloud (backend) | AWS ECS Fargate, RDS PostgreSQL, Secrets Manager, ECR |
 | Infrastructure as Code | Terraform |
 | CI/CD | GitHub Actions → ECR → ECS (OIDC, no static keys) |
@@ -170,6 +173,43 @@ is not worth its cost.
 ---
 
 ## Architecture
+
+### Deployment topology (Kubernetes)
+
+The full designed topology runs on a single-node kind cluster (see
+[k8s/README.md](k8s/README.md) and the audit in
+[docs/PHASE0_AUDIT.md](docs/PHASE0_AUDIT.md)):
+
+```mermaid
+flowchart LR
+    subgraph cluster["kind cluster (WSL2, single node)"]
+        ST["Streamlit UI<br/>(runs the pipeline in-process,<br/>app.py unchanged)"]
+        API["FastAPI<br/>:30080"]
+        WK["Celery worker"]
+        RD[("Redis<br/>exact-key cache research:{TICKER}<br/>+ Celery broker/backend")]
+        PG[("PostgreSQL<br/>research_briefs (PVC)")]
+        MCP["MCP server<br/>streamable-HTTP :30800"]
+        subgraph argo["Argo Workflows"]
+            WF["nightly grounding eval<br/>fan-out per ticker → aggregate<br/>→ FAIL below threshold"]
+        end
+    end
+    EXT["Anthropic API · NewsAPI · SEC EDGAR<br/>· yfinance · Pinecone · LangSmith"]
+    LOCAL["Local model (default-off)<br/>OpenAI-compatible endpoint:<br/>vLLM (AVX-512 hosts) / Ollama (this machine)"]
+
+    API -->|"cache + enqueue"| RD
+    API -->|"briefs"| PG
+    WK -->|"consume + cache"| RD
+    ST -->|"cache"| RD
+    API & WK & ST & MCP & WF --> EXT
+    API & WK -.->|"USE_LOCAL_MODEL=true"| LOCAL
+```
+
+- **Celery vs. Argo:** request-time async stays on Celery; batch/eval runs on
+  Argo (reasoning in the [Celery vs. Argo section](#kubernetes-and-the-celery-vs-argo-split)).
+- **Eval pods** force `BYPASS_CACHE=true` and never touch the live cache.
+- **Feature flags** are restated at their audited defaults in the ConfigMap;
+  reranking, multi-agent, and the local model all ship off, each for a
+  measured reason.
 
 ### Brief pipeline
 
@@ -361,6 +401,29 @@ pip install -r requirements.txt
 ```bash
 streamlit run app.py
 ```
+
+**Or run the full topology on Kubernetes** (Linux/WSL2 with docker + kind +
+kubectl; see [k8s/README.md](k8s/README.md) for setup):
+
+```bash
+make cluster-up      # single-node kind cluster
+make deploy          # build image, secrets from .env, deploy all six services
+make smoke-test      # end-to-end: brief, Celery async, cache hit/miss, MCP, UI
+make argo-install    # Argo Workflows (pinned v3.7.18)
+make argo-deploy     # eval WorkflowTemplate + nightly CronWorkflow
+make eval-run        # run the gated grounding eval now
+make cluster-down    # tear down
+```
+
+### Benchmark summary (details + caveats in [benchmarks.md](benchmarks.md))
+
+| Measurement | Result |
+|---|---|
+| Grounding, current baseline (10 tickers, 84 claims, temp-0 judge) | **0 unsupported claims (0.0%)** — down from 49% pre-fix |
+| Cost/brief, hosted (exact API tokens + RAG estimate) | **$0.0316** (re-runnable: `make cost-report`) |
+| Grounding, hosted vs local-hybrid (9-ticker balanced A/B) | 86.2% vs 77.8% — expected regression, local stays default-off |
+| Cost/brief, hosted vs local-hybrid | $0.0316 vs $0.0321 — no measurable full-brief saving (Sonnet dominates) |
+| Local CPU serving (environment-limited: 2-core AVX2 laptop) | ~7.7 tok/s aggregate saturation; NOT comparable to GPU/hosted |
 
 ---
 
