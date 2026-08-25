@@ -59,7 +59,7 @@ the K8s cluster (which deploys the worker and Redis they require).
 | `RERANKING_ENABLED` | `false` | `agent/tools/reranker.py` | Cross-encoder rerank stage. Default-off **by evidence**: the 4-arm eval showed 4–5x retrieval latency for no grounding gain. |
 | `RERANK_CANDIDATES` / `RERANK_TOP_N` / `RERANK_MODEL` | `20` / `3` / `BAAI/bge-reranker-base` | reranker.py | Rerank stage config; read per-call so eval arms can toggle in-process. |
 | `BASELINE_TOP_K` | `3` | reranker.py | Single-stage top-k (eval knob). |
-| `USE_LOCAL_MODEL` | `false` | `agent/tools/local_model.py` | Routes the 2 trained sections (Financial Health, Risk Factors) to the local fine-tuned Qwen2.5-1.5B. Default-off: 54% cheaper but 85.4% vs 88.6% grounding. |
+| `USE_LOCAL_MODEL` | `false` | `agent/tools/local_model.py` | Routes the 2 trained sections (Financial Health, Risk Factors) to the local fine-tuned Qwen2.5-1.5B. Default-off: sections-only cost saving (the Phase 3 full-brief re-measure found no measurable total reduction — see benchmarks.md) at 85.4% vs 88.6% grounding as recorded at the time. |
 | `LOCAL_MODEL_NAME` / `LOCAL_MODEL_URL` | `financial-lora` / `http://localhost:11434` | local_model.py | Which model/endpoint `LocalChat` hits (Ollama chat API). Phase 3's vLLM backend swaps in here. |
 | `MULTI_AGENT_ENABLED` | `false` | `agent/graph.py` | Supervisor graph (planner→research→critic→supervisor). Default-off **by evidence**: +92% cost, +68% latency, null grounding benefit on this corpus. |
 | `CRITIC_MAX_UNSUPPORTED_PCT` / `MAX_REVISIONS` | `5` / `2` | graph.py | Critic threshold and revision budget. |
@@ -97,7 +97,7 @@ all flags at production defaults, temperature-0 Sonnet judge — per-claim evide
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | 10/10 | 84 | 65 | **0** | 19 | **0.0%** | 5.38s | **26.29s** | $0.00592 |
 
-**The number of record going forward: 49% unsupported pre-fix → 0.0% measured today**
+**The number of record going forward: 49% unsupported pre-fix → 0/84 unsupported (0.0%) measured today**
 (the previously recorded 3% has improved; run-to-run generation variance means small
 non-zero rates can recur — the earlier single WMT flag was already shown to be
 temperature variance). Note the judge splits non-supported claims into UNSUPPORTED

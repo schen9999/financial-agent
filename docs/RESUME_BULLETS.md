@@ -43,13 +43,15 @@ variance because synthesis-model tokens dominate.
 > callbacks don't propagate into the ThreadPoolExecutor running the parallel
 > section calls — the callback attaches directly to the chat-model objects.
 
-**4.** Served a QLoRA-fine-tuned Qwen2.5-1.5B behind an OpenAI-compatible
-serving abstraction (vLLM Kubernetes manifests for AVX-512 hosts; Ollama's
-/v1 endpoint on AVX2-only hardware after root-causing vLLM's prebuilt CPU
-image SIGILL to its AVX-512 requirement) and benchmarked it honestly:
-~7.7 tok/s aggregate CPU saturation across concurrency 1→8, and 86.2% vs
-77.8% grounding against the hosted API on a balanced 9-ticker suite — an
-expected, reported regression that keeps the feature default-off.
+**4.** Built a pluggable OpenAI-compatible serving backend
+(`LOCAL_MODEL_BACKEND`) for a QLoRA-fine-tuned Qwen2.5-1.5B — vLLM Kubernetes
+manifests committed for AVX-512-capable hardware after root-causing the
+prebuilt vLLM CPU image's SIGILL to its AVX-512 requirement on AVX2-only
+hardware, with the code path validated end-to-end via Ollama's /v1 endpoint —
+and benchmarked it honestly: ~7.7 tok/s aggregate CPU saturation across
+concurrency 1→8 (environment-limited, labeled not comparable to GPU/hosted),
+and 86.2% vs 77.8% grounding against the hosted API on a balanced 9-ticker
+suite — an expected, reported regression that keeps the feature default-off.
 
 > Deep-dive backup: benchmarks.md (CPU-mode caveat up front; latency marked
 > environment-limited), k8s/vllm/vllm.yaml, agent/tools/local_model.py
@@ -61,7 +63,7 @@ expected, reported regression that keeps the feature default-off.
 
 | Number | Where it comes from |
 |---|---|
-| 49% → 0.0% unsupported (84 claims, 10 tickers) | Phase 0 re-measure, docs/PHASE0_AUDIT.md §4 |
+| 49% pre-fix → 0/84 unsupported in current eval (10 tickers) | Phase 0 re-measure, docs/PHASE0_AUDIT.md §4 |
 | $0.0316/brief hosted; $0.0321 hybrid | scripts/cost_report.py runs, benchmarks.md |
 | 86.2% vs 77.8% grounding (9-ticker balanced) | grounding A/B run, benchmarks.md |
 | 5.62% gate failure → variance | Argo run + NVDA re-measure (0/10), README |

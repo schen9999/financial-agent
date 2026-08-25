@@ -22,7 +22,7 @@ I built an evaluation framework that audits every quantitative and forward-looki
 
 **Early results: 49% unsupported claim rate.** Nearly half of what the agent said wasn't backed by anything it retrieved.
 
-After iterating on prompt constraints and forcing generation to stay grounded in source material: **3% unsupported claim rate** — and on the latest full re-measure (Aug 2026, 10 tickers, 84 claims): **0 unsupported claims (0.0%)**. See [docs/PHASE0_AUDIT.md](docs/PHASE0_AUDIT.md) for the audited numbers of record.
+After iterating on prompt constraints and forcing generation to stay grounded in source material: **3% unsupported claim rate** — and the framing of record today is **49% pre-fix → 0/84 unsupported in the current eval** (Aug 2026 full re-measure, 10 tickers). See [docs/PHASE0_AUDIT.md](docs/PHASE0_AUDIT.md) for the audited numbers of record.
 
 The prompt engineering work -- not the retrieval architecture -- was what actually moved the needle.
 
@@ -45,23 +45,26 @@ Can a small local model replace Claude Haiku on section generation at lower cost
 
 I fine-tuned **Qwen2.5-1.5B-Instruct** with QLoRA on 104 deterministic, Claude-free training pairs built from real SEC filings and financial data. The fine-tuned model serves 2 of 4 brief sections (Financial Health and Risk Factors); the other two stay on Haiku because deterministic targets couldn't be built for them -- an honest finding about the data, not a gap to paper over.
 
-| | Cost per brief | Grounding |
+| | Section-generation (Haiku) cost | Grounding |
 |---|---:|---:|
 | Baseline (all Haiku) | $0.00538 | 88.6% |
 | Hybrid (local model for 2 sections) | $0.00248 | 85.4% |
 
-**54% cost reduction at slightly lower grounding.** Shipped default-off -- the tradeoff isn't worth it for most users, but the benchmark is there for anyone who needs the cost savings.
+**Sections-only saving at slightly lower grounding -- no measurable full-brief
+cost reduction.** The table above is the *section-generation* (Haiku) spend
+only. Measured at full-brief level with the committed cost harness
+(`scripts/cost_report.py`; details in [benchmarks.md](benchmarks.md)), Sonnet
+synthesis dominates: hosted **$0.0316/brief** vs hybrid $0.0321/brief -- the
+~$0.002 sections saving is within run-to-run variance. Shipped default-off.
 
-**Aug 2026 re-measure ([benchmarks.md](benchmarks.md)):** the 54% figure is the
-*sections-only* (Haiku) spend. Measured at full-brief level with the Phase 2
-cost harness, Sonnet synthesis dominates and the hybrid saves ~$0.002/brief --
-within run-to-run variance, i.e. no measurable full-brief saving. The grounding
-regression reproduced in direction (86.2% hosted vs 77.8% hybrid on that
-judge pass). The local model is now servable through an OpenAI-compatible
-backend (`LOCAL_MODEL_BACKEND=openai` -- vLLM on AVX-512 hardware via
-`make vllm-deploy`, or Ollama's `/v1` endpoint on this machine; the prebuilt
-vLLM CPU image SIGILLs on this AVX2-only CPU -- gap documented in
-benchmarks.md). Still default-off.
+**Aug 2026 re-measure ([benchmarks.md](benchmarks.md)):** the grounding
+regression reproduced in direction (86.2% hosted vs 77.8% hybrid on that judge
+pass). The local model runs behind a pluggable OpenAI-compatible backend
+(`LOCAL_MODEL_BACKEND=openai`): vLLM manifests are committed for
+AVX-512-capable hardware (`make vllm-deploy` -- not verifiable on this machine,
+where the prebuilt vLLM CPU image SIGILLs, root-caused to its AVX-512
+requirement on this AVX2-only CPU), and the code path is validated end-to-end
+via Ollama's `/v1` endpoint. Still default-off.
 
 I also re-implemented the same fine-tune with a hand-written PyTorch training loop (`fine_tune_pytorch_loop.ipynb`) -- custom `Dataset`, manual gradient accumulation and `optimizer.step()`, hand-written cosine LR, no Hugging Face `Trainer`. Benchmarked against the `Trainer` on identical data and config (`adamw_torch`, cosine schedule, grad-accum 8), the two loss curves track each other closely over 21 optimizer steps -- both start around 1.4--1.5 and trend down together, finishing at **0.50 (native)** and **0.35 (Trainer)**. The curves cross repeatedly, so that final-step gap sits within the run-to-run noise at this scale (~7 optimizer steps/epoch, plus shuffle order and 4-bit-kernel non-determinism) rather than a systematic difference -- confirming the hand-written loop reproduces the Trainer's training dynamics at the gradient-accumulation and optimizer-step level.
 
@@ -89,16 +92,22 @@ temperature-0 Sonnet judge, with retrieval held at baseline (reranking off, top-
 on both sides so the only differences were the planner-driven queries and the
 critic loop. Critic threshold: 5% unsupported.
 
-| Path | Claims | Unsupported | $/brief | Latency/brief | Revisions/brief |
+| Path | Claims | Unsupported | Cost/brief (relative)* | Latency/brief | Revisions/brief |
 |---|---:|---:|---:|---:|---:|
-| Single-agent (control) | 73 | 1 (1.4%) | $0.0269 | 26.1s | 0.00 |
-| Multi-agent | 71 | 0 (0.0%) | $0.0515 | 43.9s | 0.00 |
+| Single-agent (control) | 73 | 1 (1.4%) | 1.00x | 26.1s | 0.00 |
+| Multi-agent | 71 | 0 (0.0%) | 1.92x | 43.9s | 0.00 |
 | Delta | | -1.4 pts | +92% | +68% | n/a |
+
+\* Absolute costs from this experiment came from an uncommitted harness and are
+recorded as historical in [docs/PHASE0_AUDIT.md](docs/PHASE0_AUDIT.md); the
+current re-runnable cost of record for the single-agent pipeline is
+**$0.0316/brief** (`scripts/cost_report.py`).
 
 Two findings, stated plainly:
 
 1. **The critic fired 0 revisions across all 10 real drafts.** The base pipeline
-   already drives unsupported claims to roughly 3% overall and effectively 0 on the
+   already drives unsupported claims to the floor (roughly 3% at the time of this
+   experiment; 0/84 unsupported in the current eval) on the
    Executive Summary and Outlook sections this eval scores, so the critic looked at
    every first draft, found nothing to fix, and passed it. There was no headroom
    for the revision loop to recover.
@@ -194,7 +203,7 @@ flowchart LR
         end
     end
     EXT["Anthropic API · NewsAPI · SEC EDGAR<br/>· yfinance · Pinecone · LangSmith"]
-    LOCAL["Local model (default-off)<br/>OpenAI-compatible endpoint:<br/>vLLM (AVX-512 hosts) / Ollama (this machine)"]
+    LOCAL["Local model (default-off)<br/>OpenAI-compatible endpoint:<br/>vLLM manifests (AVX-512 hosts) / Ollama (this machine)"]
 
     API -->|"cache + enqueue"| RD
     API -->|"briefs"| PG
@@ -419,7 +428,7 @@ make cluster-down    # tear down
 
 | Measurement | Result |
 |---|---|
-| Grounding, current baseline (10 tickers, 84 claims, temp-0 judge) | **0 unsupported claims (0.0%)** — down from 49% pre-fix |
+| Grounding (10 tickers, temp-0 judge) | **49% pre-fix → 0/84 unsupported in current eval** |
 | Cost/brief, hosted (exact API tokens + RAG estimate) | **$0.0316** (re-runnable: `make cost-report`) |
 | Grounding, hosted vs local-hybrid (9-ticker balanced A/B) | 86.2% vs 77.8% — expected regression, local stays default-off |
 | Cost/brief, hosted vs local-hybrid | $0.0316 vs $0.0321 — no measurable full-brief saving (Sonnet dominates) |
@@ -486,10 +495,10 @@ internal calls, labeled as such) and prices them from
 `scripts/model_prices.json`. Measured 2026-08-24 (3-ticker mean):
 **$0.0336/brief** = $0.0272 exact (4 Haiku sections + Sonnet synthesis) +
 $0.0064 RAG-internal estimate. Any cost number quoted for this project comes
-from re-running that harness — the earlier $0.0269 figure is historical (its
-harness was never committed; it matches the exact-only portion almost to the
-cent, which suggests it never counted the RAG-internal calls either; see
-`docs/PHASE0_AUDIT.md`).
+from re-running that harness — the earlier headline cost figure is historical
+(its harness was never committed; it matches the harness's exact-only portion
+almost to the cent, which suggests it never counted the RAG-internal calls
+either; the reconciliation is in `docs/PHASE0_AUDIT.md`).
 
 ---
 
