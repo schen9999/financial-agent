@@ -1,14 +1,11 @@
 # vLLM serving the QLoRA-fine-tuned Qwen2.5-1.5B (merged fp16 checkpoint) as an
-# OpenAI-compatible endpoint. Deployed SEPARATELY from k8s/manifests/ because it
-# backs a default-off feature (USE_LOCAL_MODEL=false) and holds ~4.5GB: deploy
-# with `make vllm-deploy`, remove with `make vllm-down`.
+# OpenAI-compatible endpoint. Deployed SEPARATELY from the app tree because it
+# backs a default-off feature (USE_LOCAL_MODEL=false): deploy with
+# `make vllm-deploy`, remove with `make vllm-down`.
 #
-# CPU MODE — this machine has no GPU. vLLM runs its CPU backend inside WSL2;
-# throughput/latency here say NOTHING about GPU serving (see benchmarks.md).
-#
-# The model is copied into the kind node at /opt/models/financial-lora
-# (`make vllm-deploy` does the docker cp) and mounted via hostPath — node-local
-# ext4, not the slow 9p /mnt/c mount.
+# Env-agnostic base — the image is a placeholder every overlay MUST rewrite,
+# and backend specifics (CPU vs A10 GPU: resources, model volume, env) live in
+# overlays/kind-cpu and overlays/oke-gpu. Never apply this base directly.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,7 +17,7 @@ metadata:
 spec:
   replicas: 1
   strategy:
-    type: Recreate # two replicas cannot fit in memory on this node
+    type: Recreate # one model volume / one GPU — never run two pods against it
   selector:
     matchLabels:
       app.kubernetes.io/name: vllm
@@ -32,8 +29,8 @@ spec:
     spec:
       containers:
         - name: vllm
-          image: public.ecr.aws/q9t5s3a7/vllm-cpu-release-repo:v0.10.2
-          imagePullPolicy: Never # kind-loaded
+          image: vllm-backend # placeholder — overlays rewrite via `images:` (CPU or CUDA build)
+          imagePullPolicy: IfNotPresent
           args:
             - vllm
             - serve
@@ -44,9 +41,6 @@ spec:
             - --max-num-seqs=8
             - --host=0.0.0.0
             - --port=8000
-          env:
-            - name: VLLM_CPU_KVCACHE_SPACE # GB reserved for KV cache
-              value: "2"
           ports:
             - containerPort: 8000
               name: http
@@ -54,13 +48,7 @@ spec:
             - name: model
               mountPath: /models/financial-lora
               readOnly: true
-          resources:
-            requests:
-              cpu: "1"
-              memory: 4Gi
-            limits:
-              cpu: "4"
-              memory: 6Gi
+          # resources come from the overlay (CPU quotas vs nvidia.com/gpu)
           startupProbe:
             httpGet:
               path: /health
@@ -78,11 +66,7 @@ spec:
               port: http
             periodSeconds: 30
             timeoutSeconds: 10
-      volumes:
-        - name: model
-          hostPath:
-            path: /opt/models/financial-lora
-            type: Directory
+      # the `model` volume source comes from the overlay (kind: hostPath; oke: PVC)
 ---
 apiVersion: v1
 kind: Service

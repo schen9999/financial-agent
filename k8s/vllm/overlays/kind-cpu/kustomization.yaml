@@ -1,0 +1,46 @@
+# CPU MODE on the local kind cluster — this machine has no GPU. vLLM runs its
+# CPU backend inside WSL2; throughput/latency here say NOTHING about GPU
+# serving (see benchmarks.md). Reconstructs the pre-kustomize vllm.yaml exactly
+# (verified by scripts/render_diff.py).
+#
+# The model is copied into the kind node at /opt/models/financial-lora
+# (`make vllm-deploy` does the docker cp) and mounted via hostPath — node-local
+# ext4, not the slow 9p /mnt/c mount.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+
+images:
+  - name: vllm-backend
+    newName: public.ecr.aws/q9t5s3a7/vllm-cpu-release-repo
+    newTag: v0.10.2
+
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: vllm
+        namespace: financial-agent
+      spec:
+        template:
+          spec:
+            containers:
+              - name: vllm
+                imagePullPolicy: Never # kind-loaded
+                env:
+                  - name: VLLM_CPU_KVCACHE_SPACE # GB reserved for KV cache
+                    value: "2"
+                resources:
+                  requests:
+                    cpu: "1"
+                    memory: 4Gi
+                  limits:
+                    cpu: "4"
+                    memory: 6Gi
+            volumes:
+              - name: model
+                hostPath:
+                  path: /opt/models/financial-lora
+                  type: Directory

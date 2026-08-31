@@ -1,0 +1,55 @@
+# OKE overlay — Phase 2 target; NOT applied until OCI access lands.
+# CHANGEME values come from terraform outputs (ocir_app_repo_url) after the
+# Phase 2 image push; applying with them unset fails loudly at pull time.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+
+# Rewrites financial-agent-app everywhere it appears (api/worker/streamlit/mcp).
+images:
+  - name: financial-agent-app
+    newName: iad.ocir.io/CHANGEME_NAMESPACE/financial-agent/app
+    newTag: CHANGEME_TAG
+
+patches:
+  # ── Exposure: streamlit + api get OCI flexible LBs (10 Mbps floor); mcp
+  #    stays ClusterIP — reach it with kubectl port-forward for the demo.
+  - patch: |-
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: api
+        namespace: financial-agent
+        annotations:
+          service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+          service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
+          service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "10"
+      spec:
+        type: LoadBalancer
+  - patch: |-
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: streamlit
+        namespace: financial-agent
+        annotations:
+          service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+          service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
+          service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "10"
+      spec:
+        type: LoadBalancer
+
+  # ── Postgres on the Terraform-created Block Volume class; 50Gi is the OCI
+  #    block volume minimum. Name must match terraform var storage_class_name.
+  - patch: |-
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: postgres-data
+        namespace: financial-agent
+      spec:
+        storageClassName: financial-agent-bv
+        resources:
+          requests:
+            storage: 50Gi

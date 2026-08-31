@@ -30,7 +30,7 @@ deploy: ## Build the app image, load it into kind, apply manifests, wait for rol
 	@test -f $(ENV_FILE) || { echo "ERROR: $(ENV_FILE) not found — copy .env.example and fill in keys"; exit 1; }
 	docker build -f Dockerfile.k8s -t $(IMAGE) .
 	kind load docker-image $(IMAGE) --name $(CLUSTER)
-	kubectl apply -f k8s/manifests/00-namespace.yaml
+	kubectl apply -f k8s/base/00-namespace.yaml
 	@# infra-secrets: random Postgres password, generated once, lives only in-cluster
 	@kubectl -n $(NAMESPACE) get secret infra-secrets >/dev/null 2>&1 || { \
 		PGPASS=$$(openssl rand -hex 16); \
@@ -41,7 +41,7 @@ deploy: ## Build the app image, load it into kind, apply manifests, wait for rol
 	@# app-secrets: developer API keys from the local .env (never committed)
 	kubectl -n $(NAMESPACE) create secret generic app-secrets \
 		--from-env-file=$(ENV_FILE) --dry-run=client -o yaml | kubectl apply -f -
-	kubectl apply -f k8s/manifests/
+	kubectl apply -k k8s/overlays/kind
 	@# restart app deployments so an updated image/secrets take effect on redeploy
 	kubectl -n $(NAMESPACE) rollout restart deployment/api deployment/worker deployment/streamlit deployment/mcp 2>/dev/null || true
 	kubectl -n $(NAMESPACE) rollout status deployment/redis    --timeout=180s
@@ -76,7 +76,7 @@ argo-install: ## Install Argo Workflows (controller + server) into the cluster
 	kubectl -n argo rollout status deploy/argo-server --timeout=300s
 
 argo-deploy: ## Apply eval workflow RBAC, WorkflowTemplate, and nightly CronWorkflow
-	kubectl apply -f argo/rbac.yaml -f argo/eval-workflow.yaml -f argo/eval-cron.yaml
+	kubectl apply -k argo/overlays/kind
 	@echo "Nightly eval scheduled: $$(kubectl -n $(NAMESPACE) get cronworkflow grounding-eval-nightly -o jsonpath='{.spec.schedule} {.spec.timezone}')"
 
 eval-run: ## Submit the grounding eval workflow now and follow it to completion
@@ -107,12 +107,12 @@ vllm-deploy: ## Copy the merged model into the kind node and deploy vLLM
 	docker exec $(CLUSTER)-control-plane sh -c 'test -d /opt/models/financial-lora' || \
 		{ docker exec $(CLUSTER)-control-plane mkdir -p /opt/models; \
 		  docker cp financial-lora-merged $(CLUSTER)-control-plane:/opt/models/financial-lora; }
-	kubectl apply -f k8s/vllm/vllm.yaml
+	kubectl apply -k k8s/vllm/overlays/kind-cpu
 	kubectl -n $(NAMESPACE) rollout status deployment/vllm --timeout=900s
 	@echo "vLLM up. In-cluster URL: http://vllm:8000  (port-forward: kubectl -n $(NAMESPACE) port-forward svc/vllm 18000:8000)"
 
 vllm-down: ## Remove the vLLM deployment (frees ~4.5GB on the node)
-	kubectl delete -f k8s/vllm/vllm.yaml --ignore-not-found
+	kubectl delete -k k8s/vllm/overlays/kind-cpu --ignore-not-found
 
 vllm-bench: ## Benchmark the vLLM endpoint (expects port-forward on :18000)
 	python scripts/vllm_benchmark.py --url http://localhost:18000 --json-out /tmp/vllm_bench.json

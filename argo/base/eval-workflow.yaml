@@ -61,7 +61,7 @@ spec:
         retryPolicy: OnFailure
       container:
         image: financial-agent-app:local
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent # kind overlay: Never; oke overlay rewrites the image
         command: ["python", "grounding_check.py"]
         args:
           - --tickers
@@ -106,7 +106,7 @@ spec:
               data: "{{inputs.parameters.results}}"
       container:
         image: financial-agent-app:local
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent # kind overlay: Never; oke overlay rewrites the image
         command: ["python", "scripts/eval_aggregate.py"]
         args:
           - --input

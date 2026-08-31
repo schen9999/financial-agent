@@ -25,7 +25,7 @@ spec:
       containers:
         - name: worker
           image: financial-agent-app:local
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent # kind overlay: Never (kind-loaded); oke overlay: OCIR image
           command: ["celery", "-A", "celery_worker.celery_app", "worker", "--loglevel=info", "--concurrency=1"]
           envFrom:
             - secretRef:

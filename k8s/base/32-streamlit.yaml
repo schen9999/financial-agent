@@ -25,7 +25,7 @@ spec:
       containers:
         - name: streamlit
           image: financial-agent-app:local
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent # kind overlay: Never (kind-loaded); oke overlay: OCIR image
           command:
             - streamlit
             - run
@@ -78,10 +78,9 @@ metadata:
     app.kubernetes.io/name: streamlit
     app.kubernetes.io/part-of: financial-agent
 spec:
-  type: NodePort
+  # ClusterIP in base; exposure is per-overlay (kind: NodePort 30501, oke: LoadBalancer)
   selector:
     app.kubernetes.io/name: streamlit
   ports:
     - port: 8501
       targetPort: http
-      nodePort: 30501
