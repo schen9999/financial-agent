@@ -10,8 +10,8 @@ retired ECS deployment and stays untouched.
 |---|---|
 | VCN | 10.0.0.0/16; public api (10.0.0.0/28) + lb (10.0.2.0/24) subnets, private workers (10.0.1.0/24); IGW, NAT, service gateway |
 | OKE cluster | `BASIC_CLUSTER`, flannel overlay CNI, public API endpoint |
-| App node pool | 2x VM.Standard.E4.Flex, 4 OCPUs / 32 GB each (= 16 vCPU / 64 GB schedulable) |
-| GPU node pool | 1x VM.GPU.A10.1 (A10 24 GB) for vLLM; OKE GPU image auto-taints `nvidia.com/gpu:NoSchedule` |
+| App node pool | 2x VM.Standard.E4.Flex, 4 OCPUs / 32 GB each (= 16 vCPU / 64 GB schedulable), 50 GB boot volumes |
+| GPU node pool | 1x VM.GPU.A10.1 (A10 24 GB) for vLLM, 200 GB boot volume; OKE GPU image auto-taints `nvidia.com/gpu:NoSchedule` |
 | OCIR | `financial-agent/app` private repo (one image serves api/worker/streamlit/mcp + Argo eval templates) |
 | Object Storage | `financial-agent-eval-artifacts` bucket, versioned, private |
 | StorageClass | `financial-agent-bv` (Block Volume CSI, WaitForFirstConsumer, expandable) — PVCs must request >= 50Gi (OCI block volume minimum) |
@@ -46,6 +46,7 @@ terraform -chdir=terraform/oci validate
 ## Known deltas from CLAUDE.md
 
 - CLAUDE.md budgets "~400 GB block total" and PVCs for "Postgres/Redis".
-  Redis is deliberately ephemeral (no PVC — see k8s/manifests/20-redis.yaml),
-  so today only Postgres claims a volume. Boot volumes (2x100 + 250 GB) plus a
-  50 GB Postgres PVC land at ~400 GB total.
+  Redis is deliberately ephemeral (no PVC — a rebuildable exact-key cache; see
+  the redis manifest), so today only Postgres claims a volume. Block total:
+  2x50 GB app boots + 200 GB GPU boot + 50 GB Postgres PVC = 350 GB, inside
+  the ~400 GB budget.

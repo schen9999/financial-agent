@@ -53,7 +53,7 @@ resource "oci_containerengine_node_pool" "app" {
   node_source_details {
     source_type             = "IMAGE"
     image_id                = local.app_node_image_ids[0]
-    boot_volume_size_in_gbs = 100
+    boot_volume_size_in_gbs = 50
   }
 
   node_config_details {
@@ -95,7 +95,7 @@ resource "oci_containerengine_node_pool" "gpu" {
   node_source_details {
     source_type             = "IMAGE"
     image_id                = local.gpu_node_image_ids[0]
-    boot_volume_size_in_gbs = 250
+    boot_volume_size_in_gbs = 200
   }
 
   node_config_details {
