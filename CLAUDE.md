@@ -17,7 +17,7 @@ Migrate to OCI for a hiring demo (deadline: demo Fri Sep 18, 2026):
 - GPU node pool: 1x VM.GPU.A10.1 (1x A10 24 GB, 15 OCPUs, 240 GB) running vLLM
   serving fine-tuned Qwen2.5-1.5B via LOCAL_MODEL_BACKEND
 - Storage: OCI Block Volume CSI storage class for Postgres/Redis PVCs (50 GB min
-  per volume), ~400 GB block total, Object Storage bucket for eval artifacts
+  per volume), 350 GB block total, Object Storage bucket for eval artifacts
 - Images pushed to OCI Container Registry (OCIR)
 
 ## Hard constraints
@@ -25,7 +25,9 @@ Migrate to OCI for a hiring demo (deadline: demo Fri Sep 18, 2026):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The 704-line pytest suite (41 tests) must pass on every commit.
+3. The 737-line pytest suite (43 tests) must pass on every commit. Canonical
+   command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
+   tests/ as well).
 4. Celery stays request-time async; Argo owns eval orchestration. Do not merge them.
 5. Ollama remains the committed fallback backend until vLLM demonstrably serves
    on the A10.
