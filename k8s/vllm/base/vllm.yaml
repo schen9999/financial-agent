@@ -4,7 +4,7 @@
 # `make vllm-deploy`, remove with `make vllm-down`.
 #
 # Env-agnostic base — the image is a placeholder every overlay MUST rewrite,
-# and backend specifics (CPU vs A10 GPU: resources, model volume, env) live in
+# and backend specifics (CPU vs A10 GPU: resources, model source env) live in
 # overlays/kind-cpu and overlays/oke-gpu. Never apply this base directly.
 apiVersion: apps/v1
 kind: Deployment
@@ -27,6 +27,34 @@ spec:
         app.kubernetes.io/name: vllm
         app.kubernetes.io/part-of: financial-agent
     spec:
+      # Model delivery: fetch-model curls each file in MODEL_FILES from
+      # MODEL_BASE_URL into the shared emptyDir before vLLM starts. Overlays
+      # supply the env — kind-cpu points at a small public HF model (so the
+      # delivery logic is exercisable locally); oke-gpu points at an OCI
+      # Object Storage pre-authenticated request (PAR) for the fine-tuned
+      # checkpoint: a scoped, expiring URL set at deploy time and never
+      # committed — no cluster secrets, no IAM policies.
+      initContainers:
+        - name: fetch-model
+          image: curlimages/curl:8.10.1
+          command: ["sh", "-c"]
+          args:
+            - |
+              set -e
+              dst=/models/financial-lora
+              if [ -e "$dst/.download-complete" ]; then
+                echo "model already present, skipping download"
+                exit 0
+              fi
+              for f in $MODEL_FILES; do
+                echo "fetching $f"
+                curl -fSL --retry 3 --retry-delay 5 -o "$dst/$f" "$MODEL_BASE_URL/$f"
+              done
+              touch "$dst/.download-complete"
+              echo "model download complete"
+          volumeMounts:
+            - name: model
+              mountPath: /models/financial-lora
       containers:
         - name: vllm
           image: vllm-backend # placeholder — overlays rewrite via `images:` (CPU or CUDA build)
@@ -66,7 +94,10 @@ spec:
               port: http
             periodSeconds: 30
             timeoutSeconds: 10
-      # the `model` volume source comes from the overlay (kind: hostPath; oke: PVC)
+      volumes:
+        - name: model
+          emptyDir:
+            sizeLimit: 10Gi # weights land here at pod start (fetch-model)
 ---
 apiVersion: v1
 kind: Service

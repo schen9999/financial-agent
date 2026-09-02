@@ -1,11 +1,13 @@
 # CPU MODE on the local kind cluster — this machine has no GPU. vLLM runs its
 # CPU backend inside WSL2; throughput/latency here say NOTHING about GPU
-# serving (see benchmarks.md). Reconstructs the pre-kustomize vllm.yaml exactly
-# (verified by scripts/render_diff.py).
+# serving (see benchmarks.md).
 #
-# The model is copied into the kind node at /opt/models/financial-lora
-# (`make vllm-deploy` does the docker cp) and mounted via hostPath — node-local
-# ext4, not the slow 9p /mnt/c mount.
+# Model delivery is exercised locally with a SMALL PUBLIC model
+# (Qwen2.5-0.5B-Instruct, no token needed): the fetch-model init container
+# downloads it into the emptyDir exactly as oke-gpu will fetch the fine-tuned
+# checkpoint from Object Storage. It is a delivery stand-in, not the
+# fine-tune — vLLM cannot run on this CPU anyway (no AVX-512), and the
+# fine-tuned model is served locally via Ollama (the committed fallback).
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -26,6 +28,13 @@ patches:
       spec:
         template:
           spec:
+            initContainers:
+              - name: fetch-model
+                env:
+                  - name: MODEL_BASE_URL
+                    value: https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct/resolve/main
+                  - name: MODEL_FILES
+                    value: "config.json generation_config.json model.safetensors tokenizer.json tokenizer_config.json"
             containers:
               - name: vllm
                 imagePullPolicy: Never # kind-loaded
@@ -39,8 +48,3 @@ patches:
                   limits:
                     cpu: "4"
                     memory: 6Gi
-            volumes:
-              - name: model
-                hostPath:
-                  path: /opt/models/financial-lora
-                  type: Directory

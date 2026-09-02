@@ -101,12 +101,9 @@ cost-report: ## Re-runnable cost/brief measurement (runs locally; needs .env)
 
 VLLM_IMAGE ?= public.ecr.aws/q9t5s3a7/vllm-cpu-release-repo:v0.10.2
 
-vllm-deploy: ## Copy the merged model into the kind node and deploy vLLM
+vllm-deploy: ## Deploy vLLM (CPU mode); the fetch-model init container downloads the model at pod start
 	docker pull -q $(VLLM_IMAGE)
 	kind load docker-image $(VLLM_IMAGE) --name $(CLUSTER)
-	docker exec $(CLUSTER)-control-plane sh -c 'test -d /opt/models/financial-lora' || \
-		{ docker exec $(CLUSTER)-control-plane mkdir -p /opt/models; \
-		  docker cp financial-lora-merged $(CLUSTER)-control-plane:/opt/models/financial-lora; }
 	kubectl apply -k k8s/vllm/overlays/kind-cpu
 	kubectl -n $(NAMESPACE) rollout status deployment/vllm --timeout=900s
 	@echo "vLLM up. In-cluster URL: http://vllm:8000  (port-forward: kubectl -n $(NAMESPACE) port-forward svc/vllm 18000:8000)"

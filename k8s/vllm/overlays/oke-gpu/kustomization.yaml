@@ -9,14 +9,17 @@
 # node nvidia.com/gpu:NoSchedule — hence the toleration + pool selector, which
 # keep vLLM off the app pool and everything else off the GPU node.
 #
-# Model delivery is a Phase 2 task: the vllm-model PVC must be prepopulated
-# with the merged checkpoint (e.g. one-shot Job pulling from the eval-artifacts
-# Object Storage bucket) before vLLM can become Ready.
+# Model delivery (Phase 2): upload the six files of financial-lora-merged/ to
+# the Object Storage bucket under a financial-lora/ prefix, create a read-only
+# pre-authenticated request (PAR) scoped to that prefix, and set
+# MODEL_BASE_URL below to the PAR URL at deploy time — locally, uncommitted
+# (a PAR is a bearer URL; treat it like terraform.tfvars). The fetch-model
+# init container then pulls the weights into the emptyDir at pod start:
+# no cluster secrets, no IAM policies.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ../../base
-  - vllm-model-pvc.yaml
 
 images:
   - name: vllm-backend
@@ -39,6 +42,13 @@ patches:
               - key: nvidia.com/gpu
                 operator: Exists
                 effect: NoSchedule
+            initContainers:
+              - name: fetch-model
+                env:
+                  - name: MODEL_BASE_URL
+                    value: CHANGEME_PAR_URL # Phase 2, set locally at deploy time — never commit a real PAR
+                  - name: MODEL_FILES
+                    value: "chat_template.jinja config.json generation_config.json model.safetensors tokenizer.json tokenizer_config.json"
             containers:
               - name: vllm
                 resources:
@@ -50,10 +60,6 @@ patches:
                     cpu: "8"
                     memory: 32Gi
                     nvidia.com/gpu: "1"
-            volumes:
-              - name: model
-                persistentVolumeClaim:
-                  claimName: vllm-model
   # KV-cache budget for the 24 GB card (append, keep base args intact)
   - target:
       group: apps
