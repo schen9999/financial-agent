@@ -57,6 +57,16 @@ All OCI infrastructure is authored in `terraform/oci/` (fmt + validate
 pass). **No step below has been executed — there are no OCI credentials
 yet.** Execute in order once access lands.
 
+**Optional free-trial dry run — NOT the demo tenancy.** Before the demo
+tenancy's credentials arrive, steps 1–7 can be rehearsed against an OCI
+free-trial tenancy with `enable_gpu_pool = false` in terraform.tfvars
+(trials carry no GPU quota; everything except the A10 pool applies, so
+vLLM steps 8–9 are excluded). If trial service limits bite on the app
+pool, trim `app_pool_size` / `app_node_ocpus` in tfvars. Nothing from a
+trial run counts as a demo-tenancy result: no numbers, no "deployed on
+OKE" claims — tear it down (`terraform destroy`) when done and re-run
+everything for real on the demo tenancy.
+
 1. **[Phase 2 — NOT YET EXECUTED]** Auth + variables:
    `cp terraform/oci/terraform.tfvars.example terraform/oci/terraform.tfvars`,
    fill in tenancy/compartment OCIDs; confirm the pinned

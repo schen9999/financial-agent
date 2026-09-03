@@ -34,6 +34,6 @@ output "app_node_pool_id" {
 }
 
 output "gpu_node_pool_id" {
-  description = "GPU node pool OCID"
-  value       = oci_containerengine_node_pool.gpu.id
+  description = "GPU node pool OCID (null when enable_gpu_pool = false)"
+  value       = one(oci_containerengine_node_pool.gpu[*].id)
 }

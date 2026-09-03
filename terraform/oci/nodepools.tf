@@ -84,7 +84,10 @@ resource "oci_containerengine_node_pool" "app" {
 # OKE auto-taints GPU-image nodes with nvidia.com/gpu:NoSchedule, so the vLLM
 # deployment (and nothing else) needs the matching toleration + selector; that
 # lands in the k8s oke overlay. Boot volume sized for the CUDA image + model.
+# count: enable_gpu_pool=false skips just this pool for free-trial dry runs.
 resource "oci_containerengine_node_pool" "gpu" {
+  count = var.enable_gpu_pool ? 1 : 0
+
   cluster_id         = oci_containerengine_cluster.oke.id
   compartment_id     = var.compartment_ocid
   name               = "${var.project}-gpu-pool"

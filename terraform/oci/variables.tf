@@ -82,6 +82,12 @@ variable "app_node_memory_gbs" {
   default     = 32
 }
 
+variable "enable_gpu_pool" {
+  description = "Create the VM.GPU.A10.1 node pool. Set false to dry-run everything else against an OCI free-trial tenancy (trials carry no GPU quota) before the demo tenancy's credentials land. The demo itself runs with this true."
+  type        = bool
+  default     = true
+}
+
 variable "gpu_pool_size" {
   description = "Number of GPU nodes (VM.GPU.A10.1: 1x A10 24 GB, 15 OCPUs, 240 GB)"
   type        = number
