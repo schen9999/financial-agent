@@ -9,7 +9,8 @@ IMAGE     ?= financial-agent-app:local
 ENV_FILE  ?= .env
 
 .PHONY: cluster-up deploy smoke-test cluster-down status logs \
-        argo-install argo-deploy eval-run cost-report
+        argo-install argo-deploy eval-run cost-report \
+        vm-images vm-up vm-eval
 
 cluster-up: ## Create the single-node kind cluster (or restart its stopped node)
 	@if kind get clusters 2>/dev/null | grep -qx $(CLUSTER); then \
@@ -94,6 +95,51 @@ eval-run: ## Submit the grounding eval workflow now and follow it to completion
 
 cost-report: ## Re-runnable cost/brief measurement (runs locally; needs .env)
 	python scripts/cost_report.py
+
+# ── Single-VM path (k3s on the OCI A10 box — docs/deploy-runbook.md) ─────────
+# These targets run ON the VM over ssh, not on the dev machine. The app image
+# and the Argo workflow pods share ONE image (financial-agent-app: one image,
+# four commands, plus both eval containers) — vm-images imports that single
+# artifact into k3s containerd and lists what both roles will run.
+
+VM_IMAGE_TAR ?= /tmp/financial-agent-app.tar
+
+vm-images: ## Build the app+workflow image and import it into k3s containerd
+	docker build -f Dockerfile.k8s -t $(IMAGE) .
+	docker save $(IMAGE) -o $(VM_IMAGE_TAR)
+	sudo k3s ctr images import $(VM_IMAGE_TAR)
+	rm -f $(VM_IMAGE_TAR)
+	@echo "── images now in k3s containerd (this one serves the app Deployments AND the Argo workflow pods):"
+	@sudo k3s ctr images ls | grep financial-agent || { echo "ERROR: financial-agent image not found after import"; exit 1; }
+
+vm-up: ## Apply the k3s overlays in order: app (+secrets), Argo, vLLM
+	@test -f $(ENV_FILE) || { echo "ERROR: $(ENV_FILE) not found — copy .env.example and fill in keys"; exit 1; }
+	kubectl apply -f k8s/base/00-namespace.yaml
+	@kubectl -n $(NAMESPACE) get secret infra-secrets >/dev/null 2>&1 || { \
+		PGPASS=$$(openssl rand -hex 16); \
+		kubectl -n $(NAMESPACE) create secret generic infra-secrets \
+			--from-literal=POSTGRES_PASSWORD=$$PGPASS \
+			--from-literal=DATABASE_URL=postgresql://agent:$$PGPASS@postgres:5432/financial_agent; \
+		echo "created infra-secrets (random Postgres password)"; }
+	kubectl -n $(NAMESPACE) create secret generic app-secrets \
+		--from-env-file=$(ENV_FILE) --dry-run=client -o yaml | kubectl apply -f -
+	kubectl apply -k k8s/overlays/k3s
+	kubectl -n $(NAMESPACE) rollout status deployment/redis     --timeout=180s
+	kubectl -n $(NAMESPACE) rollout status deployment/postgres  --timeout=300s
+	kubectl -n $(NAMESPACE) rollout status deployment/api       --timeout=600s
+	kubectl -n $(NAMESPACE) rollout status deployment/worker    --timeout=600s
+	kubectl -n $(NAMESPACE) rollout status deployment/streamlit --timeout=600s
+	kubectl -n $(NAMESPACE) rollout status deployment/mcp       --timeout=600s
+	kubectl apply -k argo/install
+	kubectl -n argo rollout status deploy/workflow-controller --timeout=300s
+	kubectl -n argo rollout status deploy/argo-server --timeout=300s
+	kubectl apply -k argo/overlays/k3s
+	@# vLLM last: weights must already be at /home/ubuntu/models/qwen-ft (runbook)
+	kubectl apply -k k8s/vllm/overlays/k3s-gpu
+	kubectl -n $(NAMESPACE) rollout status deployment/vllm --timeout=900s
+	@echo "Up. Tunnel from the laptop: ssh -L 30080:localhost:30080 -L 30501:localhost:30501 -L 30880:localhost:30880 ubuntu@<vm-ip>"
+
+vm-eval: eval-run ## Run the grounding eval DAG on the VM (same submit/follow as eval-run)
 
 # ── vLLM (CPU mode — backs the default-off USE_LOCAL_MODEL flag) ─────────────
 
