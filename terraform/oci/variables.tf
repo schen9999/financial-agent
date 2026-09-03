@@ -54,6 +54,12 @@ variable "api_allowed_cidr" {
   default     = "0.0.0.0/0"
 }
 
+variable "lb_allowed_cidrs" {
+  description = "CIDRs allowed to reach the public LoadBalancers (streamlit/api, ports 80+443). DEFAULT EMPTY = deny all: the LBs serve nothing until you allowlist (e.g. [\"1.2.3.4/32\"]) in terraform.tfvars. Trade-off documented in docs/deploy-runbook.md."
+  type        = list(string)
+  default     = []
+}
+
 # --- Node pools ---
 # App pool per CLAUDE.md: 2x VM.Standard.E4.Flex, 4 OCPUs / 32 GB each.
 # 1 OCPU = 2 vCPUs, so the pool totals 16 vCPU / 64 GB for K8s requests/limits.

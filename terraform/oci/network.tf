@@ -210,26 +210,28 @@ resource "oci_core_security_list" "workers" {
   }
 }
 
+# The exposed services carry no auth of their own, so this seclist IS the
+# access control: ingress only from var.lb_allowed_cidrs (default [] = deny
+# all). The k8s oke overlay sets security-list-management-mode "None" on the
+# LB services so the OKE cloud controller cannot re-open 0.0.0.0/0 here —
+# Terraform is the single authority on LB ingress.
 resource "oci_core_security_list" "lb" {
   compartment_id = var.compartment_ocid
   vcn_id         = oci_core_vcn.main.id
   display_name   = "${var.project}-seclist-lb"
 
-  ingress_security_rules {
-    protocol = "6"
-    source   = "0.0.0.0/0"
-    tcp_options {
-      min = 80
-      max = 80
+  dynamic "ingress_security_rules" {
+    for_each = {
+      for pair in setproduct(var.lb_allowed_cidrs, [80, 443]) :
+      "${pair[0]}-${pair[1]}" => pair
     }
-  }
-
-  ingress_security_rules {
-    protocol = "6"
-    source   = "0.0.0.0/0"
-    tcp_options {
-      min = 443
-      max = 443
+    content {
+      protocol = "6"
+      source   = ingress_security_rules.value[0]
+      tcp_options {
+        min = ingress_security_rules.value[1]
+        max = ingress_security_rules.value[1]
+      }
     }
   }
 

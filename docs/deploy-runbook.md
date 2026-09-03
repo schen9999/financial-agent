@@ -94,6 +94,18 @@ yet.** Execute in order once access lands.
    `kubectl apply -k k8s/overlays/oke`. Verify: Postgres PVC binds on
    `financial-agent-bv` at 50Gi, all probes green, streamlit/api
    LoadBalancers get external IPs.
+
+   **LoadBalancer ingress is deny-all by default.** Streamlit and the
+   API carry no authentication, so the Terraform security list on the LB
+   subnet is the only gate: `lb_allowed_cidrs` defaults to `[]` and the
+   LBs serve nothing until you allowlist CIDRs in terraform.tfvars. The
+   LB services pin `security-list-management-mode: "None"` so the OKE
+   cloud controller cannot re-open `0.0.0.0/0` on its own. Trade-off:
+   for a demo to an audience off your network you must either add their
+   egress CIDR, or temporarily allowlist `0.0.0.0/0` — accepting that
+   an unauthenticated research UI (and its API-key spend) is then
+   world-reachable — and revert immediately after. The mcp service is
+   never exposed; use `kubectl port-forward`.
 7. **[Phase 2 — NOT YET EXECUTED]** `make argo-install`, then
    `kubectl apply -k argo/overlays/oke`; run the eval DAG end-to-end
    against hosted models first. To turn on eval artifact archival

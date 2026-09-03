@@ -30,6 +30,10 @@ patches:
 
   # ── Exposure: streamlit + api get OCI flexible LBs (10 Mbps floor); mcp
   #    stays ClusterIP — reach it with kubectl port-forward for the demo.
+  #    security-list-management-mode "None": the exposed services have no
+  #    auth, so LB ingress is governed solely by the Terraform seclist
+  #    (var.lb_allowed_cidrs, default deny-all) — without "None" the OKE
+  #    cloud controller would punch 0.0.0.0/0 back into the seclist.
   - patch: |-
       apiVersion: v1
       kind: Service
@@ -40,6 +44,7 @@ patches:
           service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
           service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
           service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "10"
+          service.beta.kubernetes.io/oci-load-balancer-security-list-management-mode: "None"
       spec:
         type: LoadBalancer
   - patch: |-
@@ -52,6 +57,7 @@ patches:
           service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
           service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
           service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "10"
+          service.beta.kubernetes.io/oci-load-balancer-security-list-management-mode: "None"
       spec:
         type: LoadBalancer
 
