@@ -67,11 +67,9 @@ logs: ## Tail logs: make logs C=api|worker|streamlit|mcp|redis|postgres
 
 # ── Argo Workflows (batch/eval — request-time async stays on Celery) ─────────
 
-ARGO_VERSION ?= v3.7.18
-
-argo-install: ## Install Argo Workflows (controller + server) into the cluster
-	kubectl create namespace argo --dry-run=client -o yaml | kubectl apply -f -
-	kubectl apply -n argo -f https://github.com/argoproj/argo-workflows/releases/download/$(ARGO_VERSION)/install.yaml
+# Argo version is pinned in argo/install/kustomization.yaml (single source of truth).
+argo-install: ## Install Argo Workflows (controller + server), pinned via argo/install
+	kubectl apply -k argo/install
 	kubectl -n argo rollout status deploy/workflow-controller --timeout=300s
 	kubectl -n argo rollout status deploy/argo-server --timeout=300s
 

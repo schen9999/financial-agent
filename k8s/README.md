@@ -35,6 +35,7 @@ k8s/
     overlays/kind-cpu/    # today's committed CPU mode (WSL2, no GPU)
     overlays/oke-gpu/     # A10 target — Phase 2, unverified until it runs there
 argo/                     # eval DAG: same pattern; eval-run.yaml stays outside
+  install/                #   controller+server install, version-pinned (apply -k)
   base/                   #   kustomize (one-shot Workflow, references the template)
   overlays/{kind,oke}/
 Dockerfile.k8s            # one app image for api/worker/streamlit/mcp (CPU torch)

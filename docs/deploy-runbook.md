@@ -18,7 +18,8 @@ make cluster-up      # create the single-node kind cluster (idempotent;
 make deploy          # build image, kind load, secrets from .env,
                      # kubectl apply -k k8s/overlays/kind, wait for rollouts
 make smoke-test      # sync brief, async Celery brief, cache hit+miss, MCP
-make argo-install    # Argo Workflows controller + server (pinned version)
+make argo-install    # Argo controller + server (kubectl apply -k argo/install,
+                     # version pinned in that kustomization)
 make argo-deploy     # kubectl apply -k argo/overlays/kind
                      # (RBAC, grounding-eval WorkflowTemplate, nightly cron)
 make eval-run        # submit the eval DAG now and follow it to completion
