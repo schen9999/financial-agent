@@ -59,9 +59,13 @@ spec:
         - name: vllm
           image: vllm-backend # placeholder — overlays rewrite via `images:` (CPU or CUDA build)
           imagePullPolicy: IfNotPresent
+          # Explicit command overrides each image's ENTRYPOINT. vllm/vllm-openai's
+          # entrypoint is already the OpenAI api server, so passing "vllm serve"
+          # as args crashes with "unrecognized arguments: serve ..." (hit on the
+          # VM, 2026-09-03). `vllm serve` starts that same server in every vLLM
+          # image, CPU or CUDA.
+          command: ["vllm", "serve"]
           args:
-            - vllm
-            - serve
             - /models/financial-lora
             - --served-model-name=financial-lora
             - --dtype=bfloat16

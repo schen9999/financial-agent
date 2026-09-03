@@ -68,8 +68,17 @@ k3s** — with exactly the committed oke-gpu args (`--dtype bfloat16
 `--served-model-name financial-lora`): model load 2.89 GiB, 16.72 GiB
 KV cache available, 200 OK on `/v1/models` and `/v1/chat/completions`,
 port bound to 127.0.0.1 only. This validates the serving image, tag,
-and args that the k3s-gpu and oke-gpu overlays commit to. The k3s
-deployment itself (steps 3–4 and 6–8) is not yet executed.
+and args that the k3s-gpu and oke-gpu overlays commit to.
+
+**Validated 2026-09-03 (confirmed from the box):** `make vm-up` brought
+the app topology up green on k3s — all six app deployments rolled out,
+Postgres PVC bound on `local-path`, Argo controller/server rolled out,
+eval WorkflowTemplate + CronWorkflow applied. vLLM crashlooped on a
+base-manifest bug (args `vllm serve ...` fed to `vllm/vllm-openai`,
+whose entrypoint is already the api server → "unrecognized arguments");
+fixed in the base by moving `vllm serve` to `command:`. **vLLM-on-k3s
+and vm-eval remain NOT YET EXECUTED** — re-apply the vLLM overlay after
+pulling the fix.
 
 1. **[Phase 1.75 — NOT YET EXECUTED] Network baseline — before any
    NodePort exists.** Verify the VCN security list on the VM's subnet
@@ -85,12 +94,16 @@ deployment itself (steps 3–4 and 6–8) is not yet executed.
    container toolkit: install Docker and `nvidia-container-toolkit`, run
    `sudo nvidia-ctk runtime configure --runtime=docker` + restart
    docker; verify `nvidia-smi` (host) shows both A10s.
-3. **[Phase 1.75 — NOT YET EXECUTED]** k3s:
+3. **[EXECUTED 2026-09-03 — entailed by the green vm-up: six app
+   rollouts on k3s and the PVC bound on local-path]** k3s:
    `curl -sfL https://get.k3s.io | sh -` (single node; bundles the
    `local-path` StorageClass the Postgres PVC uses). With the toolkit
    already installed, k3s configures the nvidia containerd runtime on
    its own.
-4. **[Phase 1.75 — NOT YET EXECUTED]** NVIDIA device plugin, pinned:
+4. **[EXECUTED 2026-09-03 — entailed by the vLLM crashloop itself: the
+   pod was scheduled with nvidia.com/gpu granted and its container
+   started; the failure was an args bug, not scheduling or runtime]**
+   NVIDIA device plugin, pinned:
    `kubectl apply -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.17.0/deployments/static/nvidia-device-plugin.yml`;
    verify `kubectl describe node | grep nvidia.com/gpu` reports 2.
 5. **[EXECUTED 2026-09-02 — weights are on the VM and load: 2.89 GiB
@@ -113,7 +126,10 @@ deployment itself (steps 3–4 and 6–8) is not yet executed.
    already fixed; the repo's `financial-lora-merged/` is **untracked
    and still carries the list-form key**, so apply this edit at the
    source before any future rsync/upload or it will re-break the VM.
-6. **[Phase 1.75 — NOT YET EXECUTED]** `make vm-images && make vm-up`
+6. **[PARTIALLY EXECUTED 2026-09-03 — vm-images + vm-up ran: app
+   topology, Argo, and eval CRDs green (see Validated above); the vLLM
+   rollout is the unexecuted remainder after the base args fix]**
+   `make vm-images && make vm-up`
    (on the VM, from the repo checkout). Expect the first `vm-up` to sit
    in ContainerCreating for several minutes: `vllm/vllm-openai:v0.10.2`
    is a multi-GB CUDA image. Optional pre-pull to front-load that wait:
