@@ -1,0 +1,107 @@
+# Single-VM validation target (Phase 1.75): the full app topology on
+# single-node k3s on the VM.GPU.A10.2 — the oke overlay's shape with only
+# environmental deltas. NOT YET RUN on the VM; nothing may claim it ran
+# until confirmed from the box.
+#
+# Deltas vs oke:
+#   - NodePort instead of OCI LoadBalancers, reached via ssh -L tunnels only
+#     (the VM binds nothing publicly); mcp stays ClusterIP exactly as on oke.
+#   - Image is the localhost-built tag (financial-agent-app:local from base)
+#     imported into k3s containerd by `make vm-images` (docker build + save +
+#     k3s ctr images import); imagePullPolicy Never so a missing import fails
+#     loudly instead of pulling docker.io/library/financial-agent-app.
+#   - No ocir-pull-secret — nothing pulls from OCIR.
+#   - Postgres PVC on k3s's bundled local-path StorageClass, same 50Gi claim
+#     as oke (backed by the VM's 1 TB disk).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+
+patches:
+  # ── imagePullPolicy: Never — image exists only in the node's containerd
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: api
+        namespace: financial-agent
+      spec:
+        template:
+          spec:
+            containers:
+              - name: api
+                imagePullPolicy: Never
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: worker
+        namespace: financial-agent
+      spec:
+        template:
+          spec:
+            containers:
+              - name: worker
+                imagePullPolicy: Never
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: streamlit
+        namespace: financial-agent
+      spec:
+        template:
+          spec:
+            containers:
+              - name: streamlit
+                imagePullPolicy: Never
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: mcp
+        namespace: financial-agent
+      spec:
+        template:
+          spec:
+            containers:
+              - name: mcp
+                imagePullPolicy: Never
+
+  # ── NodePorts (tunnel with: ssh -L 30080:localhost:30080 etc.)
+  - patch: |-
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: api
+        namespace: financial-agent
+      spec:
+        type: NodePort
+        ports:
+          - port: 8000
+            nodePort: 30080
+  - patch: |-
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: streamlit
+        namespace: financial-agent
+      spec:
+        type: NodePort
+        ports:
+          - port: 8501
+            nodePort: 30501
+
+  # ── Postgres on k3s local-path, same claim size as oke
+  - patch: |-
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: postgres-data
+        namespace: financial-agent
+      spec:
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 50Gi
