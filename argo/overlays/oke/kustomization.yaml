@@ -22,3 +22,9 @@ patches:
       - op: replace
         path: /spec/templates/2/container/image
         value: iad.ocir.io/CHANGEME_NAMESPACE/financial-agent/app:CHANGEME_TAG
+      # Workflow-level pull secret: Argo passes it to every pod the workflow
+      # spawns; the nightly CronWorkflow inherits it via workflowTemplateRef.
+      - op: add
+        path: /spec/imagePullSecrets
+        value:
+          - name: ocir-pull-secret

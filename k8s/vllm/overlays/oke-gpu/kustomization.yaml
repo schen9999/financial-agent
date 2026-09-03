@@ -36,6 +36,11 @@ patches:
       spec:
         template:
           spec:
+            # vLLM's image is public docker.io today, but every oke Deployment
+            # carries the pull secret so a later mirror into OCIR needs no
+            # manifest change.
+            imagePullSecrets:
+              - name: ocir-pull-secret
             nodeSelector:
               pool: gpu
             tolerations:

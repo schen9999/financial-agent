@@ -13,6 +13,21 @@ images:
     newTag: CHANGEME_TAG
 
 patches:
+  # ── OCIR is a private registry: every Deployment pulls with
+  #    ocir-pull-secret (created imperatively from an auth token in Phase 2 —
+  #    see docs/deploy-runbook.md; never committed). Harmless on the
+  #    docker.io-sourced pods (redis/postgres) — a dockerconfigjson entry is
+  #    only consulted for the registry it names.
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+    patch: |-
+      - op: add
+        path: /spec/template/spec/imagePullSecrets
+        value:
+          - name: ocir-pull-secret
+
   # ── Exposure: streamlit + api get OCI flexible LBs (10 Mbps floor); mcp
   #    stays ClusterIP — reach it with kubectl port-forward for the demo.
   - patch: |-

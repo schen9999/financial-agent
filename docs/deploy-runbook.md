@@ -74,10 +74,25 @@ yet.** Execute in order once access lands.
 5. **[Phase 2 — NOT YET EXECUTED]** Replace the `CHANGEME` OCIR values in
    `k8s/overlays/oke/kustomization.yaml` and
    `argo/overlays/oke/kustomization.yaml` with the pushed image ref.
-6. **[Phase 2 — NOT YET EXECUTED]** Create secrets in the cluster (same
-   two-secret scheme as kind), then `kubectl apply -k k8s/overlays/oke`.
-   Verify: Postgres PVC binds on `financial-agent-bv` at 50Gi, all probes
-   green, streamlit/api LoadBalancers get external IPs.
+6. **[Phase 2 — NOT YET EXECUTED]** Create secrets in the cluster: the
+   same two-secret scheme as kind (`app-secrets`, `infra-secrets`), plus
+   the OCIR pull secret every oke Deployment and the Argo workflow pods
+   reference. Generate an **auth token** for your user (Console → User
+   Settings → Auth tokens — it is not your console password; never
+   commit it), then:
+
+   ```bash
+   kubectl -n financial-agent create secret docker-registry ocir-pull-secret \
+     --docker-server=<region-key>.ocir.io \
+     --docker-username='<tenancy-namespace>/<username>' \
+     --docker-password='<auth-token>'
+   ```
+
+   (Federated/IDCS users: the username is
+   `<tenancy-namespace>/oracleidentitycloudservice/<email>`.) Then
+   `kubectl apply -k k8s/overlays/oke`. Verify: Postgres PVC binds on
+   `financial-agent-bv` at 50Gi, all probes green, streamlit/api
+   LoadBalancers get external IPs.
 7. **[Phase 2 — NOT YET EXECUTED]** `make argo-install`, then
    `kubectl apply -k argo/overlays/oke`; run the eval DAG end-to-end
    against hosted models first.
