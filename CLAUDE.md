@@ -83,9 +83,10 @@ flip to executed only on confirmed terminal output from the box):
 - 2026-09-02 validated: vLLM v0.10.2 served the fine-tune on one A10 with the
   oke-gpu args, in plain Docker (runbook "Validated so far").
 - 2026-09-03 validated: vm-up green on k3s — six app deployments, local-path
-  PVC, Argo controller/server, eval WorkflowTemplate/CronWorkflow. vLLM
-  crashlooped on a base args bug (entrypoint vs "vllm serve"), fixed by
-  moving vllm serve to command:. vLLM-on-k3s and vm-eval remain not executed.
+  PVC, Argo controller/server, eval WorkflowTemplate/CronWorkflow. vLLM base
+  fixes from the box, in order: "vllm serve" moved to command: (entrypoint
+  collision), enableServiceLinks: false (VLLM_PORT injection), 2Gi Memory
+  emptyDir at /dev/shm. vLLM-on-k3s and vm-eval remain not executed.
 - k3s overlays for all three trees (k8s/overlays/k3s, argo/overlays/k3s,
   k8s/vllm/overlays/k3s-gpu): the oke shape with environmental deltas only —
   NodePorts behind ssh tunnels (mcp stays ClusterIP), imported local image

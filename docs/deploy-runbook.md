@@ -76,9 +76,20 @@ Postgres PVC bound on `local-path`, Argo controller/server rolled out,
 eval WorkflowTemplate + CronWorkflow applied. vLLM crashlooped on a
 base-manifest bug (args `vllm serve ...` fed to `vllm/vllm-openai`,
 whose entrypoint is already the api server → "unrecognized arguments");
-fixed in the base by moving `vllm serve` to `command:`. **vLLM-on-k3s
+fixed in the base by moving `vllm serve` to `command:`. The re-run then
+hit the two k8s gotchas below (also fixed in the base). **vLLM-on-k3s
 and vm-eval remain NOT YET EXECUTED** — re-apply the vLLM overlay after
-pulling the fix.
+pulling the fixes.
+
+**Known k8s gotchas (vLLM — fixed in the base, apply to every overlay):**
+- **Service links inject `VLLM_PORT`.** Because the Service is named
+  `vllm`, Kubernetes' legacy service links put
+  `VLLM_PORT=tcp://<ip>:8000` into the pod env, and vLLM's
+  `get_vllm_port` crashes parsing it. The base sets
+  `enableServiceLinks: false` on the pod spec.
+- **`/dev/shm` too small.** The container default is 64Mi shm; vLLM's
+  multi-process engine needs real shared memory. The base mounts an
+  emptyDir (`medium: Memory`, `sizeLimit: 2Gi`) at `/dev/shm`.
 
 1. **[Phase 1.75 — NOT YET EXECUTED] Network baseline — before any
    NodePort exists.** Verify the VCN security list on the VM's subnet

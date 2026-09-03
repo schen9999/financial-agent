@@ -27,6 +27,10 @@ spec:
         app.kubernetes.io/name: vllm
         app.kubernetes.io/part-of: financial-agent
     spec:
+      # Service links OFF: the Service below is named `vllm`, so Kubernetes
+      # would inject VLLM_PORT=tcp://<ip>:8000 into the pod env — vLLM's
+      # get_vllm_port crashes parsing it (hit on the VM, 2026-09-03).
+      enableServiceLinks: false
       # Model delivery: fetch-model curls each file in MODEL_FILES from
       # MODEL_BASE_URL into the shared emptyDir before vLLM starts. Overlays
       # supply the env — kind-cpu points at a small public HF model (so the
@@ -80,6 +84,8 @@ spec:
             - name: model
               mountPath: /models/financial-lora
               readOnly: true
+            - name: shm
+              mountPath: /dev/shm
           # resources come from the overlay (CPU quotas vs nvidia.com/gpu)
           startupProbe:
             httpGet:
@@ -98,10 +104,15 @@ spec:
               port: http
             periodSeconds: 30
             timeoutSeconds: 10
+      # `model` must stay volumes[0] — k3s-gpu replaces it by index (JSON6902)
       volumes:
         - name: model
           emptyDir:
             sizeLimit: 10Gi # weights land here at pod start (fetch-model)
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 2Gi # default 64Mi shm is too small for vLLM's multi-process engine
 ---
 apiVersion: v1
 kind: Service
