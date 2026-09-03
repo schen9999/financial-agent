@@ -43,10 +43,9 @@ terraform -chdir=terraform/oci validate
 5. Push the image: see `ocir_app_repo_url` / `ocir_login_hint` outputs
    (password is an auth token, not the console password).
 
-## Known deltas from CLAUDE.md
+## Storage accounting
 
-- CLAUDE.md budgets "~400 GB block total" and PVCs for "Postgres/Redis".
-  Redis is deliberately ephemeral (no PVC — a rebuildable exact-key cache; see
-  the redis manifest), so today only Postgres claims a volume. Block total:
-  2x50 GB app boots + 200 GB GPU boot + 50 GB Postgres PVC = 350 GB, inside
-  the ~400 GB budget.
+- Only Postgres claims a block volume — Redis is deliberately ephemeral (no
+  PVC — a rebuildable exact-key cache; see the redis manifest). Block total,
+  matching CLAUDE.md: 2x50 GB app boots + 200 GB GPU boot + 50 GB Postgres
+  PVC = 350 GB.

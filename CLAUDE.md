@@ -16,8 +16,11 @@ Migrate to OCI for a hiring demo (deadline: demo Fri Sep 18, 2026):
   size K8s requests/limits in vCPU terms: 16 vCPU / 64 GB total across the pool)
 - GPU node pool: 1x VM.GPU.A10.1 (1x A10 24 GB, 15 OCPUs, 240 GB) running vLLM
   serving fine-tuned Qwen2.5-1.5B via LOCAL_MODEL_BACKEND
-- Storage: OCI Block Volume CSI storage class for Postgres/Redis PVCs (50 GB min
-  per volume), 350 GB block total, Object Storage bucket for eval artifacts
+- Storage: OCI Block Volume CSI storage class for the Postgres PVC (50 GB
+  minimum per volume). Redis is deliberately PVC-less on every target — a
+  rebuildable exact-key cache and short-lived Celery results earn no volume.
+  Block total 350 GB: 2x50 app boot + 200 GPU boot + 50 Postgres PVC.
+  Object Storage bucket for eval artifacts and the vLLM model weights.
 - Images pushed to OCI Container Registry (OCIR)
 
 ## Hard constraints

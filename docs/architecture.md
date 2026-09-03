@@ -59,8 +59,9 @@ flowchart LR
   (`POST /research/async` → Redis broker → worker); Argo owns batch/eval
   orchestration. They are never merged (CLAUDE.md constraint 4).
 - **The Redis cache is an exact-key cache** — key `research:{TICKER}`,
-  24h TTL. It is not a semantic cache. Redis is PVC-less on purpose: the
-  cache is rebuildable and Celery results are short-lived.
+  24h TTL. It is not a semantic cache. Redis is PVC-less on purpose, on
+  every deploy target (kind and OKE alike): the cache is rebuildable and
+  Celery results are short-lived, so a restart costs only a cold cache.
 - **The LLM seam**: hosted Claude serves everything by default. With
   `USE_LOCAL_MODEL=true`, only the two sections the fine-tuned
   Qwen2.5-1.5B was trained on (Financial Health, Risk Factors) route to
