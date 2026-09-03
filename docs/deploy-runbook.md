@@ -57,9 +57,19 @@ Validation target: one OCI VM.GPU.A10.2 (2x A10 24 GB, 30-core Xeon,
 472 GB RAM, 1 TB disk, Ubuntu 22.04, NVIDIA driver 570 preinstalled),
 reachable by ssh only. Purpose: rehearse the full topology and validate
 the committed A10 vLLM serving args before OKE exists — and serve as the
-demo target if it doesn't (see the CLAUDE.md checkpoint). **No step below
-has been executed on the VM; per the honesty rules, nothing may claim
-otherwise until confirmed from the box.**
+demo target if it doesn't (see the CLAUDE.md checkpoint). Steps are
+marked EXECUTED only after the run is confirmed from the box with
+terminal output; everything else stays NOT YET EXECUTED.
+
+**Validated so far (2026-09-02, confirmed from the box):** vLLM v0.10.2
+served the merged fine-tune on one A10 in **plain Docker — not yet via
+k3s** — with exactly the committed oke-gpu args (`--dtype bfloat16
+--max-model-len 4096 --max-num-seqs 8 --gpu-memory-utilization 0.90`,
+`--served-model-name financial-lora`): model load 2.89 GiB, 16.72 GiB
+KV cache available, 200 OK on `/v1/models` and `/v1/chat/completions`,
+port bound to 127.0.0.1 only. This validates the serving image, tag,
+and args that the k3s-gpu and oke-gpu overlays commit to. The k3s
+deployment itself (steps 3–4 and 6–8) is not yet executed.
 
 1. **[Phase 1.75 — NOT YET EXECUTED] Network baseline — before any
    NodePort exists.** Verify the VCN security list on the VM's subnet
@@ -70,8 +80,9 @@ otherwise until confirmed from the box.**
    directly in iptables and can route around host firewalls, so ufw is
    defense-in-depth, not the guarantee. NodePorts will bind on the VM,
    but nothing is publicly reachable while the seclist admits only 22.
-2. **[Phase 1.75 — NOT YET EXECUTED]** Docker + NVIDIA container
-   toolkit: install Docker and `nvidia-container-toolkit`, run
+2. **[EXECUTED 2026-09-02 — proven by the Docker smoke test above:
+   `docker run --gpus '"device=0"'` served on GPU 0]** Docker + NVIDIA
+   container toolkit: install Docker and `nvidia-container-toolkit`, run
    `sudo nvidia-ctk runtime configure --runtime=docker` + restart
    docker; verify `nvidia-smi` (host) shows both A10s.
 3. **[Phase 1.75 — NOT YET EXECUTED]** k3s:
@@ -82,7 +93,8 @@ otherwise until confirmed from the box.**
 4. **[Phase 1.75 — NOT YET EXECUTED]** NVIDIA device plugin, pinned:
    `kubectl apply -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.17.0/deployments/static/nvidia-device-plugin.yml`;
    verify `kubectl describe node | grep nvidia.com/gpu` reports 2.
-5. **[Phase 1.75 — NOT YET EXECUTED]** Weights to
+5. **[EXECUTED 2026-09-02 — weights are on the VM and load: 2.89 GiB
+   into VRAM per the smoke test above]** Weights to
    `/home/ubuntu/models/qwen-ft`. Primary path — rsync straight from the
    dev machine (the merged checkpoint `financial-lora-merged/`, six
    files, exists only there; nothing leaves your machines):
@@ -91,6 +103,16 @@ otherwise until confirmed from the box.**
    checkpoint to a **private** HF repo (`huggingface-cli upload`), then
    on the VM `huggingface-cli login` (token, never committed) and
    `huggingface-cli download <org>/<repo> --local-dir /home/ubuntu/models/qwen-ft`.
+
+   **Known fix (hit on the VM, 2026-09-02):** the checkpoint's
+   `tokenizer_config.json` ships `extra_special_tokens` as a JSON
+   **list** (newer transformers layout); the transformers bundled in
+   vllm v0.10.2 crashes on it with `'list' object has no attribute
+   'keys'`. Fix: delete the `extra_special_tokens` key — the special
+   tokens remain fully defined in `tokenizer.json`. The VM's copy is
+   already fixed; the repo's `financial-lora-merged/` is **untracked
+   and still carries the list-form key**, so apply this edit at the
+   source before any future rsync/upload or it will re-break the VM.
 6. **[Phase 1.75 — NOT YET EXECUTED]** `make vm-images && make vm-up`
    (on the VM, from the repo checkout). Expect the first `vm-up` to sit
    in ContainerCreating for several minutes: `vllm/vllm-openai:v0.10.2`
