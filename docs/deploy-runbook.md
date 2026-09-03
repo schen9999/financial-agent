@@ -171,13 +171,26 @@ has yet run against vLLM itself.
    `kubectl -n financial-agent port-forward svc/mcp 30800:8000` and add
    `-L 31800:localhost:30800` to the tunnel.
 
-**Eval against the in-cluster vLLM — NOT YET EXECUTED.** The eval pods
-already read `app-config` (envFrom), which on k3s carries the pointer
-values (`LOCAL_MODEL_BACKEND=openai`, `LOCAL_MODEL_URL` at the vllm
-Service, `LOCAL_MODEL_NAME=financial-lora`). But the harness pins
-`USE_LOCAL_MODEL` **per A/B arm by design** (no flag leakage between
-arms), so the ConfigMap flag can never route an eval — it governs the
-app services only. The switches are therefore:
+**Eval against the in-cluster vLLM — EXECUTED 2026-09-03, GATE FAILED.**
+`grounding-eval-local-dkghz` ran the `local-model` arm on the VM with
+vLLM confirmed serving (20 POST `/v1/chat/completions`, 2 sections × 10
+tickers, no retries): 10/10 tickers, 65 claims, 48 sup / 8 uns / 9 inf,
+**12.31% unsupported vs the 5% gate — FAILED**. The same-day baseline
+(`grounding-eval-6zwqf`, ~40 min earlier, same VM) passed at 3.03%.
+See the dated A/B in eval-methodology.md; the fine-tune serves but does
+not clear the gate on its two sections, so `USE_LOCAL_MODEL` stays off.
+(Process note: that run's `make argo-deploy` applied the **kind** argo
+overlay — the target was hardcoded. The actual diff from the k3s render
+is **none**: the two overlays render semantically identical resources,
+verified with `render_diff.py` (5/5). `argo-deploy` is now
+overlay-aware: `ARGO_OVERLAY`, default `kind`; `vm-up` passes `k3s`.)
+
+Mechanics: the eval pods read `app-config` (envFrom), which on k3s
+carries the pointer values (`LOCAL_MODEL_BACKEND=openai`,
+`LOCAL_MODEL_URL` at the vllm Service, `LOCAL_MODEL_NAME=financial-lora`).
+The harness pins `USE_LOCAL_MODEL` **per A/B arm by design** (no flag
+leakage between arms), so the ConfigMap flag never routes an eval — it
+governs the app services only. The switches are therefore:
 
 - Eval vs vLLM: `make eval-run EVAL_RUN_FILE=argo/eval-run-local.yaml`
   — submits the `local-model` arm (fine-tune serves Financial Health +

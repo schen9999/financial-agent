@@ -74,8 +74,11 @@ argo-install: ## Install Argo Workflows (controller + server), pinned via argo/i
 	kubectl -n argo rollout status deploy/workflow-controller --timeout=300s
 	kubectl -n argo rollout status deploy/argo-server --timeout=300s
 
+# Which argo overlay to apply (kind locally; vm-* targets pass k3s).
+ARGO_OVERLAY ?= kind
+
 argo-deploy: ## Apply eval workflow RBAC, WorkflowTemplate, and nightly CronWorkflow
-	kubectl apply -k argo/overlays/kind
+	kubectl apply -k argo/overlays/$(ARGO_OVERLAY)
 	@echo "Nightly eval scheduled: $$(kubectl -n $(NAMESPACE) get cronworkflow grounding-eval-nightly -o jsonpath='{.spec.schedule} {.spec.timezone}')"
 
 # Override to submit a different one-shot Workflow, e.g. the local-model arm:
@@ -137,7 +140,7 @@ vm-up: ## Apply the k3s overlays in order: app (+secrets), Argo, vLLM
 	kubectl apply -k argo/install
 	kubectl -n argo rollout status deploy/workflow-controller --timeout=300s
 	kubectl -n argo rollout status deploy/argo-server --timeout=300s
-	kubectl apply -k argo/overlays/k3s
+	$(MAKE) argo-deploy ARGO_OVERLAY=k3s
 	@# vLLM last: weights must already be at /home/ubuntu/models/qwen-ft (runbook)
 	kubectl apply -k k8s/vllm/overlays/k3s-gpu
 	kubectl -n $(NAMESPACE) rollout status deployment/vllm --timeout=900s

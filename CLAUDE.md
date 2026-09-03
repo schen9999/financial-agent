@@ -6,8 +6,9 @@ Postgres, Streamlit, MCP server (stdio + streamable-HTTP). Eval harness runs as 
 gated Argo Workflows DAG with a nightly CronWorkflow. Pluggable OpenAI-compatible
 LOCAL_MODEL_BACKEND (currently Ollama; vLLM v0.10.2 validated serving the merged
 fine-tune pinned to one A10 on the Phase 1.75 VM — plain Docker 2026-09-02,
-in-cluster on k3s 2026-09-03. OKE serving and eval-against-vLLM still pending;
-the dev CPU cannot run vLLM, no AVX-512).
+in-cluster on k3s 2026-09-03, eval A/B against it 2026-09-03: gate FAILED at
+12.31% vs baseline 3.03%, so hosted models stay the production path. OKE
+serving still pending; the dev CPU cannot run vLLM, no AVX-512).
 
 Current deploy target: single-node kind K8s with probes and resource bounds.
 
@@ -47,11 +48,12 @@ Migrate to OCI for a hiring demo (deadline: demo Fri Sep 18, 2026):
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
 4. Celery stays request-time async; Argo owns eval orchestration. Do not merge them.
-5. Ollama remains the committed fallback backend until vLLM serves in-cluster
-   and the eval DAG passes against it. (Hardware and in-cluster serving are
-   settled — Docker 2026-09-02, k3s rollout + /v1 2026-09-03, both on the VM.
-   The remaining gate is an eval DAG run against vLLM itself,
-   USE_LOCAL_MODEL path.)
+5. SETTLED 2026-09-03: the fine-tune serves in-cluster (vLLM on the VM) but
+   FAILS the grounding gate on the two sections it owns — 12.31% unsupported
+   vs the 5% gate; same-day baseline 3.03% (dated A/B in
+   docs/eval-methodology.md). USE_LOCAL_MODEL therefore ships off and hosted
+   models remain the production path; Ollama stays the fallback for local
+   serving demos. State it as measured-and-declined, not unfinished.
 6. Work on branch `oci-migration`. Small commits, imperative messages.
 
 ## Phases
@@ -89,7 +91,10 @@ vm-eval all green; steps flipped only on confirmed terminal output):
   injection), 2Gi Memory emptyDir at /dev/shm. Then: vLLM rollout green with
   /v1/models on the NodePort, and vm-eval Succeeded — 10/10 tickers, 66
   claims, 3.03% unsupported, gate passed (hosted models; not a
-  numbers-of-record re-run; no eval against vLLM itself yet).
+  numbers-of-record re-run).
+- 2026-09-03 later: local-model arm ran against in-cluster vLLM (20 confirmed
+  /v1 requests) and FAILED the gate — 12.31% vs baseline 3.03% same day.
+  Dated A/B recorded in docs/eval-methodology.md; constraint 5 settled.
 - k3s overlays for all three trees (k8s/overlays/k3s, argo/overlays/k3s,
   k8s/vllm/overlays/k3s-gpu): the oke shape with environmental deltas only —
   NodePorts behind ssh tunnels (mcp stays ClusterIP), imported local image
@@ -138,8 +143,11 @@ Phase 3 — demo polish:
   to one A10 with the committed serving args — in plain Docker (2026-09-02)
   and in-cluster on single-node k3s via the k3s-gpu overlay (2026-09-03,
   green rollout + /v1/models on the NodePort), both confirmed from the box.
-  Still gated: serving on OKE, and any eval DAG run against vLLM itself —
-  update this line when those actually run.
+  Also legitimate: the eval DAG ran against the in-cluster vLLM on
+  2026-09-03 (local-model arm, 20 confirmed /v1 requests) and FAILED the
+  grounding gate at 12.31% vs the same-day 3.03% baseline — cite it with
+  both numbers. Still gated: serving on OKE — update this line when that
+  actually runs.
 - Cross-encoder reranking and the multi-agent supervisor shipped default-off
   because evals showed no grounding gain at higher cost/latency. State it that way.
 - Any new number in docs must come from a committed, re-runnable harness.

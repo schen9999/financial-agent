@@ -71,8 +71,27 @@ main (DAG)
   `baseline` — the gate arm the nightly cron runs). The harness pins the
   model-routing flags per arm so A/B arms can't leak into each other;
   `argo/eval-run-local.yaml` submits the `local-model` arm
-  (`make eval-run EVAL_RUN_FILE=argo/eval-run-local.yaml`). No eval has
-  yet run against the in-cluster vLLM.
+  (`make eval-run EVAL_RUN_FILE=argo/eval-run-local.yaml`) — first run
+  2026-09-03, gate failed; see the dated A/B below.
+
+## Dated A/B on the single-VM target (2026-09-03)
+
+Same VM, same harness, ~40 minutes apart, 10/10 tickers each, no
+retries. vLLM traffic confirmed for the local arm: 20 POST
+`/v1/chat/completions` (2 trained sections × 10 tickers).
+
+| Arm | Workflow | Claims | Sup/Uns/Inf | Unsupported | Gate (≤5%) |
+|---|---|---|---|---|---|
+| `baseline` (hosted) | grounding-eval-6zwqf | 66 | 51/2/13 | 3.03% | PASSED |
+| `local-model` (in-cluster vLLM fine-tune, 2 sections) | grounding-eval-local-dkghz | 65 | 48/8/9 | **12.31%** | **FAILED** |
+
+The fine-tune serves in-cluster but does not pass the grounding gate on
+the two sections it owns. Consequence: `USE_LOCAL_MODEL` stays off in
+production config — hosted models remain the production path — and this
+A/B is the measured reason (consistent in direction with the Phase 0
+audit's decision to ship the local model off). These are dated run
+records from the committed harness; the numbers-of-record table is
+unchanged.
 
 ## Boundary
 
