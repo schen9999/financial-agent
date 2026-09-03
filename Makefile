@@ -78,8 +78,12 @@ argo-deploy: ## Apply eval workflow RBAC, WorkflowTemplate, and nightly CronWork
 	kubectl apply -k argo/overlays/kind
 	@echo "Nightly eval scheduled: $$(kubectl -n $(NAMESPACE) get cronworkflow grounding-eval-nightly -o jsonpath='{.spec.schedule} {.spec.timezone}')"
 
+# Override to submit a different one-shot Workflow, e.g. the local-model arm:
+#   make eval-run EVAL_RUN_FILE=argo/eval-run-local.yaml
+EVAL_RUN_FILE ?= argo/eval-run.yaml
+
 eval-run: ## Submit the grounding eval workflow now and follow it to completion
-	@WF=$$(kubectl -n $(NAMESPACE) create -f argo/eval-run.yaml -o name | sed 's|.*/||'); \
+	@WF=$$(kubectl -n $(NAMESPACE) create -f $(EVAL_RUN_FILE) -o name | sed 's|.*/||'); \
 	echo "submitted workflow: $$WF"; \
 	while :; do \
 		phase=$$(kubectl -n $(NAMESPACE) get workflow $$WF -o jsonpath='{.status.phase}' 2>/dev/null); \
@@ -141,6 +145,12 @@ vm-up: ## Apply the k3s overlays in order: app (+secrets), Argo, vLLM
 	@echo "Up. Tunnel from the laptop: ssh -L 31080:localhost:30080 -L 31501:localhost:30501 -L 31880:localhost:30880 ubuntu@<vm-ip>"
 
 vm-eval: eval-run ## Run the grounding eval DAG on the VM (same submit/follow as eval-run)
+
+vm-local-model: ## Toggle app-plane local-model routing (ON=true|false); eval arms are unaffected
+	@test -n "$(ON)" || { echo "usage: make vm-local-model ON=true|false"; exit 1; }
+	kubectl -n $(NAMESPACE) patch configmap app-config --type merge -p '{"data":{"USE_LOCAL_MODEL":"$(ON)"}}'
+	kubectl -n $(NAMESPACE) rollout restart deployment/api deployment/worker deployment/streamlit
+	@echo "USE_LOCAL_MODEL=$(ON) (live patch — kubectl apply -k k8s/overlays/k3s restores the committed false)"
 
 # ── vLLM (CPU mode — backs the default-off USE_LOCAL_MODEL flag) ─────────────
 

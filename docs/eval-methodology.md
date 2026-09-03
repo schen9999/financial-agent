@@ -67,6 +67,12 @@ main (DAG)
   outside kustomize on purpose: the image is resolved by whichever
   overlay applied the WorkflowTemplate, so submission is
   environment-agnostic.
+- **Arm selection**: the template takes an `arms` parameter (default
+  `baseline` — the gate arm the nightly cron runs). The harness pins the
+  model-routing flags per arm so A/B arms can't leak into each other;
+  `argo/eval-run-local.yaml` submits the `local-model` arm
+  (`make eval-run EVAL_RUN_FILE=argo/eval-run-local.yaml`). No eval has
+  yet run against the in-cluster vLLM.
 
 ## Boundary
 

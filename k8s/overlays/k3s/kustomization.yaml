@@ -105,3 +105,21 @@ patches:
         resources:
           requests:
             storage: 50Gi
+
+  # ── Local-model pointers for the in-cluster vLLM — INERT BY DEFAULT:
+  #    USE_LOCAL_MODEL stays false (restated), so the app plane ignores them,
+  #    and the eval harness pins routing per A/B arm regardless. One ConfigMap
+  #    governs both planes: toggle the app with `make vm-local-model ON=true`,
+  #    run the eval's local-model arm with
+  #    `make eval-run EVAL_RUN_FILE=argo/eval-run-local.yaml`.
+  - patch: |-
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: app-config
+        namespace: financial-agent
+      data:
+        USE_LOCAL_MODEL: "false"
+        LOCAL_MODEL_BACKEND: "openai"
+        LOCAL_MODEL_URL: "http://vllm.financial-agent.svc:8000"
+        LOCAL_MODEL_NAME: "financial-lora"

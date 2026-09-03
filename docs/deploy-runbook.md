@@ -171,6 +171,29 @@ has yet run against vLLM itself.
    `kubectl -n financial-agent port-forward svc/mcp 30800:8000` and add
    `-L 31800:localhost:30800` to the tunnel.
 
+**Eval against the in-cluster vLLM — NOT YET EXECUTED.** The eval pods
+already read `app-config` (envFrom), which on k3s carries the pointer
+values (`LOCAL_MODEL_BACKEND=openai`, `LOCAL_MODEL_URL` at the vllm
+Service, `LOCAL_MODEL_NAME=financial-lora`). But the harness pins
+`USE_LOCAL_MODEL` **per A/B arm by design** (no flag leakage between
+arms), so the ConfigMap flag can never route an eval — it governs the
+app services only. The switches are therefore:
+
+- Eval vs vLLM: `make eval-run EVAL_RUN_FILE=argo/eval-run-local.yaml`
+  — submits the `local-model` arm (fine-tune serves Financial Health +
+  Risk Factors; Haiku keeps the other two sections).
+- App plane: `make vm-local-model ON=true` (revert with `ON=false`;
+  `kubectl apply -k k8s/overlays/k3s` also restores the committed
+  `false`).
+
+**Credits warning — every eval run burns Anthropic credits**, in every
+arm: the LLM-as-judge is Sonnet, and Haiku generates sections (all four
+in `baseline`, two even in `local-model`). A low balance does **not**
+fail loudly: the Anthropic 400 ("credit balance is too low") exhausts
+the per-ticker retry and surfaces as **skipped tickers**, which fail
+the gate via the skipped-tickers rule — indistinguishable at a glance
+from a data problem. On mass skips, check the credit balance first.
+
 ## OKE (OCI) — Phase 2
 
 All OCI infrastructure is authored in `terraform/oci/` (fmt + validate

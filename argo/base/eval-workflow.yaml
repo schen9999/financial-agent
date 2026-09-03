@@ -31,6 +31,15 @@ spec:
         value: "5"
       - name: min-claims
         value: "30"
+      # Which grounding_check.py arm(s) to run. The harness pins the model-
+      # routing flags per arm ON PURPOSE (no leakage between A/B arms), so the
+      # eval plane is switched here, not via app-config's USE_LOCAL_MODEL —
+      # that flag governs the app services only. LOCAL_MODEL_BACKEND/URL/NAME
+      # do reach the eval pods from app-config (envFrom below). The nightly
+      # cron inherits this default (baseline = the gate arm);
+      # argo/eval-run-local.yaml submits arms=local-model against vLLM/Ollama.
+      - name: arms
+        value: baseline
   templates:
     - name: main
       dag:
@@ -67,7 +76,7 @@ spec:
           - --tickers
           - "{{inputs.parameters.ticker}}"
           - --arms
-          - baseline
+          - "{{workflow.parameters.arms}}"
           - --json-out
           - /tmp/result.json
         env:
