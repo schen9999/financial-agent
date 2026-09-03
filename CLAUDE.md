@@ -23,6 +23,19 @@ Migrate to OCI for a hiring demo (deadline: demo Fri Sep 18, 2026):
   Object Storage bucket for eval artifacts and the vLLM model weights.
 - Images pushed to OCI Container Registry (OCIR)
 
+## Targets
+- kind (local, working): single-node dev cluster; the equivalence baseline
+  every overlay change is proven against.
+- Single VM (Phase 1.75 validation; demo fallback): one VM.GPU.A10.2 —
+  2x A10 24 GB, 30-core Xeon, 472 GB RAM, 1 TB disk, Ubuntu 22.04, NVIDIA
+  driver 570 preinstalled. Constraints: ssh access only (VCN seclist admits
+  22 only; everything reached via ssh -L tunnels, nothing bound publicly);
+  Docker/k3s not yet installed; no OKE compartment, OCIR, or Object Storage
+  bucket exists yet. Runs single-node k3s with the k3s overlays; vLLM pins
+  one GPU so a green run validates the A10.1-shaped oke-gpu serving config.
+- OKE (Phase 2, once the compartment lands): the Terraform-created cluster
+  per the Goal section above.
+
 ## Hard constraints
 1. kind must remain a working local target throughout. Use kustomize overlays or
    Helm values (kind vs oke), never fork the manifests.
@@ -60,6 +73,21 @@ deploy and nothing else):
 - Storage story reconciled: Redis ephemeral everywhere, 350 GB itemized.
 - enable_gpu_pool flag for free-trial tenancy dry runs (never the demo
   tenancy; no numbers or claims from trial runs).
+
+Phase 1.75 — single-VM validation target (manifests/tooling committed; NOT
+yet executed on the VM — nothing may claim a step ran there until confirmed
+from the box):
+- k3s overlays for all three trees (k8s/overlays/k3s, argo/overlays/k3s,
+  k8s/vllm/overlays/k3s-gpu): the oke shape with environmental deltas only —
+  NodePorts behind ssh tunnels (mcp stays ClusterIP), imported local image
+  with pullPolicy Never, Postgres on local-path at 50Gi, hostPath weights,
+  vLLM pinned to one of the two A10s with the exact oke-gpu image and args.
+  kind and oke renders proven unchanged by render_diff.py.
+- Makefile vm-images / vm-up / vm-eval (run on the VM); runbook section
+  "Single-VM path (k3s)" with every step marked NOT YET EXECUTED, network
+  baseline (seclist + ufw allow-22) before any NodePort exists.
+- CHECKPOINT: If no OKE compartment by Sep 10, the VM is the demo target;
+  stop Terraform work and rehearse.
 
 Phase 2 — once OCI access lands (detailed steps: docs/deploy-runbook.md):
 1. Fill terraform.tfvars: OCIDs, region/AD with A10 capacity, re-confirm the
