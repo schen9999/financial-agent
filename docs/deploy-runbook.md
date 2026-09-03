@@ -99,7 +99,9 @@ has yet run against vLLM itself.
   multi-process engine needs real shared memory. The base mounts an
   emptyDir (`medium: Memory`, `sizeLimit: 2Gi`) at `/dev/shm`.
 
-1. **[Phase 1.75 — NOT YET EXECUTED] Network baseline — before any
+1. **[EXECUTED 2026-09-03 — ufw active with 22/tcp only; external probe
+   of NodePort 30880 from outside the VCN times out (seclist blocks
+   it)]** **Network baseline — before any
    NodePort exists.** Verify the VCN security list on the VM's subnet
    admits only 22/tcp from your allowlisted CIDR (no 30000–32767, no
    80/443), then set the host baseline:
@@ -157,12 +159,17 @@ has yet run against vLLM itself.
    tickers, 66 claims, 3.03% unsupported, GATE PASSED (hosted models;
    not a numbers-of-record re-run)]** `make vm-eval` — the grounding
    gate must pass on the VM.
-8. **[Phase 1.75 — NOT YET EXECUTED]** Access via ssh tunnels ONLY
-   (nothing else is admitted by the seclist):
-   `ssh -L 30080:localhost:30080 -L 30501:localhost:30501 -L 30880:localhost:30880 ubuntu@<vm-ip>`.
-   mcp stays ClusterIP exactly as on oke — on the VM run
+8. **[EXECUTED 2026-09-03 — /v1/models answered through the tunnel and
+   Streamlit rendered in the browser]** Access via ssh tunnels ONLY
+   (nothing else is admitted by the seclist). Use **non-30xxx local
+   ports** — the kind cluster maps 30080/30501/30800 on the dev laptop,
+   so binding the same numbers locally collides ("Address already in
+   use", hit on first attempt):
+   `ssh -L 31080:localhost:30080 -L 31501:localhost:30501 -L 31880:localhost:30880 ubuntu@<vm-ip>`
+   then browse http://localhost:31501 (Streamlit) / :31080 (API) /
+   :31880 (vLLM). mcp stays ClusterIP exactly as on oke — on the VM run
    `kubectl -n financial-agent port-forward svc/mcp 30800:8000` and add
-   `-L 30800:localhost:30800` to the tunnel.
+   `-L 31800:localhost:30800` to the tunnel.
 
 ## OKE (OCI) — Phase 2
 

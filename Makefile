@@ -137,7 +137,8 @@ vm-up: ## Apply the k3s overlays in order: app (+secrets), Argo, vLLM
 	@# vLLM last: weights must already be at /home/ubuntu/models/qwen-ft (runbook)
 	kubectl apply -k k8s/vllm/overlays/k3s-gpu
 	kubectl -n $(NAMESPACE) rollout status deployment/vllm --timeout=900s
-	@echo "Up. Tunnel from the laptop: ssh -L 30080:localhost:30080 -L 30501:localhost:30501 -L 30880:localhost:30880 ubuntu@<vm-ip>"
+	@# local ports 31xxx on purpose: kind maps 30080/30501/30800 on the dev laptop
+	@echo "Up. Tunnel from the laptop: ssh -L 31080:localhost:30080 -L 31501:localhost:30501 -L 31880:localhost:30880 ubuntu@<vm-ip>"
 
 vm-eval: eval-run ## Run the grounding eval DAG on the VM (same submit/follow as eval-run)
 
