@@ -83,12 +83,14 @@ otherwise until confirmed from the box.**
    `kubectl apply -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.17.0/deployments/static/nvidia-device-plugin.yml`;
    verify `kubectl describe node | grep nvidia.com/gpu` reports 2.
 5. **[Phase 1.75 — NOT YET EXECUTED]** Weights to
-   `/home/ubuntu/models/qwen-ft`. Prerequisite: the merged checkpoint
-   (`financial-lora-merged/`, six files) exists only on the dev machine —
-   push it to a **private** HF repo first (`huggingface-cli upload`).
-   Then on the VM: `huggingface-cli login` (token, never committed) and
+   `/home/ubuntu/models/qwen-ft`. Primary path — rsync straight from the
+   dev machine (the merged checkpoint `financial-lora-merged/`, six
+   files, exists only there; nothing leaves your machines):
+   `rsync -avP financial-lora-merged/ ubuntu@<vm-ip>:/home/ubuntu/models/qwen-ft/`.
+   Fallback if rsync from this network is impractical: push the
+   checkpoint to a **private** HF repo (`huggingface-cli upload`), then
+   on the VM `huggingface-cli login` (token, never committed) and
    `huggingface-cli download <org>/<repo> --local-dir /home/ubuntu/models/qwen-ft`.
-   Offline fallback: `rsync`/`scp` the directory from the dev machine.
 6. **[Phase 1.75 — NOT YET EXECUTED]** `make vm-images && make vm-up`
    (on the VM, from the repo checkout). Expect the first `vm-up` to sit
    in ContainerCreating for several minutes: `vllm/vllm-openai:v0.10.2`
