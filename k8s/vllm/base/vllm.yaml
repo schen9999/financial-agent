@@ -1,0 +1,130 @@
+# vLLM serving the QLoRA-fine-tuned Qwen2.5-1.5B (merged fp16 checkpoint) as an
+# OpenAI-compatible endpoint. Deployed SEPARATELY from the app tree because it
+# backs a default-off feature (USE_LOCAL_MODEL=false): deploy with
+# `make vllm-deploy`, remove with `make vllm-down`.
+#
+# Env-agnostic base — the image is a placeholder every overlay MUST rewrite,
+# and backend specifics (CPU vs A10 GPU: resources, model source env) live in
+# overlays/kind-cpu and overlays/oke-gpu. Never apply this base directly.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/name: vllm
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate # one model volume / one GPU — never run two pods against it
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vllm
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vllm
+        app.kubernetes.io/part-of: financial-agent
+    spec:
+      # Service links OFF: the Service below is named `vllm`, so Kubernetes
+      # would inject VLLM_PORT=tcp://<ip>:8000 into the pod env — vLLM's
+      # get_vllm_port crashes parsing it (hit on the VM, 2026-09-03).
+      enableServiceLinks: false
+      # Model delivery: fetch-model curls each file in MODEL_FILES from
+      # MODEL_BASE_URL into the shared emptyDir before vLLM starts. Overlays
+      # supply the env — kind-cpu points at a small public HF model (so the
+      # delivery logic is exercisable locally); oke-gpu points at an OCI
+      # Object Storage pre-authenticated request (PAR) for the fine-tuned
+      # checkpoint: a scoped, expiring URL set at deploy time and never
+      # committed — no cluster secrets, no IAM policies.
+      initContainers:
+        - name: fetch-model
+          image: curlimages/curl:8.10.1
+          command: ["sh", "-c"]
+          args:
+            - |
+              set -e
+              dst=/models/financial-lora
+              if [ -e "$dst/.download-complete" ]; then
+                echo "model already present, skipping download"
+                exit 0
+              fi
+              for f in $MODEL_FILES; do
+                echo "fetching $f"
+                curl -fSL --retry 3 --retry-delay 5 -o "$dst/$f" "$MODEL_BASE_URL/$f"
+              done
+              touch "$dst/.download-complete"
+              echo "model download complete"
+          volumeMounts:
+            - name: model
+              mountPath: /models/financial-lora
+      containers:
+        - name: vllm
+          image: vllm-backend # placeholder — overlays rewrite via `images:` (CPU or CUDA build)
+          imagePullPolicy: IfNotPresent
+          # Explicit command overrides each image's ENTRYPOINT. vllm/vllm-openai's
+          # entrypoint is already the OpenAI api server, so passing "vllm serve"
+          # as args crashes with "unrecognized arguments: serve ..." (hit on the
+          # VM, 2026-09-03). `vllm serve` starts that same server in every vLLM
+          # image, CPU or CUDA.
+          command: ["vllm", "serve"]
+          args:
+            - /models/financial-lora
+            - --served-model-name=financial-lora
+            - --dtype=bfloat16
+            - --max-model-len=4096
+            - --max-num-seqs=8
+            - --host=0.0.0.0
+            - --port=8000
+          ports:
+            - containerPort: 8000
+              name: http
+          volumeMounts:
+            - name: model
+              mountPath: /models/financial-lora
+              readOnly: true
+            - name: shm
+              mountPath: /dev/shm
+          # resources come from the overlay (CPU quotas vs nvidia.com/gpu)
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 60 # CPU model load + graph warmup can take minutes
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 30
+            timeoutSeconds: 10
+      # `model` must stay volumes[0] — k3s-gpu replaces it by index (JSON6902)
+      volumes:
+        - name: model
+          emptyDir:
+            sizeLimit: 10Gi # weights land here at pod start (fetch-model)
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 2Gi # default 64Mi shm is too small for vLLM's multi-process engine
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vllm
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/name: vllm
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  selector:
+    app.kubernetes.io/name: vllm
+  ports:
+    - port: 8000
+      targetPort: http

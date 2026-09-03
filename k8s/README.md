@@ -8,19 +8,36 @@ Streamlit in-process without a worker).
 
 ## Layout
 
+Manifests are kustomize base + overlays: one env-agnostic base, one overlay per
+deploy target (kind locally, oke for Phase 2 of the OCI migration). The kind
+overlay renders the exact pre-kustomize config — verified with
+`scripts/render_diff.py` (semantic diff: comments/ordering ignored, any real
+change fails).
+
 ```
 k8s/
   kind-config.yaml        # single node; NodePorts 30080/30501/30800 mapped to host
   secret.env.template     # documents the app-secrets keys (real values come from .env)
-  manifests/
+  base/                   # env-agnostic; never applied directly
     00-namespace.yaml
     10-configmap.yaml     # in-cluster REDIS_URL + feature flags at audited defaults
     20-redis.yaml         # cache (exact key research:{TICKER}) + Celery broker
     21-postgres.yaml      # research_briefs, PVC-backed, generated password
-    30-api.yaml           # FastAPI (NodePort 30080)
+    30-api.yaml           # FastAPI
     31-worker.yaml        # Celery worker (first env where async actually completes)
-    32-streamlit.yaml     # UI, in-process pipeline, unchanged app.py (NodePort 30501)
-    33-mcp.yaml           # MCP streamable-HTTP (NodePort 30800, endpoint /mcp)
+    32-streamlit.yaml     # UI, in-process pipeline, unchanged app.py
+    33-mcp.yaml           # MCP streamable-HTTP (endpoint /mcp)
+  overlays/
+    kind/                 # imagePullPolicy Never + NodePorts 30080/30501/30800
+    oke/                  # OCIR image, LoadBalancers, Block Volume PVC @ 50Gi
+  vllm/                   # separate deploy unit (default-off feature) — same pattern
+    base/
+    overlays/kind-cpu/    # today's committed CPU mode (WSL2, no GPU)
+    overlays/oke-gpu/     # A10 target — Phase 2, unverified until it runs there
+argo/                     # eval DAG: same pattern; eval-run.yaml stays outside
+  install/                #   controller+server install, version-pinned (apply -k)
+  base/                   #   kustomize (one-shot Workflow, references the template)
+  overlays/{kind,oke}/
 Dockerfile.k8s            # one app image for api/worker/streamlit/mcp (CPU torch)
 Makefile                  # cluster-up / deploy / smoke-test / cluster-down
 scripts/k8s_smoke_test.sh
@@ -60,6 +77,10 @@ After `make deploy`:
 
 ## Design notes
 
+- **Redis stays PVC-less on every target (kind and OKE) on purpose:** the
+  exact-key cache and short-lived Celery results are rebuildable, so a restart
+  costs only a cold cache — persistence would buy nothing and cost a block
+  volume.
 - **One image, four commands.** `Dockerfile.k8s` builds from the full
   `requirements.txt` (the ECS image's `requirements-api.txt` lacks streamlit and
   mcp); api/worker/streamlit/mcp differ only in the manifest `command`. The ECS

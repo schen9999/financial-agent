@@ -1,0 +1,77 @@
+# A10 GPU serving on OKE — Phase 2 target, UNVERIFIED until it actually runs
+# on the GPU node (per CLAUDE.md, docs may not claim vLLM served the model
+# until then; Ollama remains the committed fallback backend).
+#
+# Sizing against VM.GPU.A10.1: 1x A10 24 GB VRAM. Qwen2.5-1.5B merged fp16 is
+# ~3 GB of weights; --gpu-memory-utilization=0.90 leaves the rest to KV cache.
+# The CUDA build (vllm/vllm-openai) supports Ampere sm86 = A10. The OKE GPU
+# node image ships the NVIDIA driver + container toolkit and auto-taints the
+# node nvidia.com/gpu:NoSchedule — hence the toleration + pool selector, which
+# keep vLLM off the app pool and everything else off the GPU node.
+#
+# Model delivery (Phase 2): upload the six files of financial-lora-merged/ to
+# the Object Storage bucket under a financial-lora/ prefix, create a read-only
+# pre-authenticated request (PAR) scoped to that prefix, and set
+# MODEL_BASE_URL below to the PAR URL at deploy time — locally, uncommitted
+# (a PAR is a bearer URL; treat it like terraform.tfvars). The fetch-model
+# init container then pulls the weights into the emptyDir at pod start:
+# no cluster secrets, no IAM policies.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+
+images:
+  - name: vllm-backend
+    newName: docker.io/vllm/vllm-openai
+    newTag: v0.10.2 # pinned to match the committed CPU-mode version
+
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: vllm
+        namespace: financial-agent
+      spec:
+        template:
+          spec:
+            # vLLM's image is public docker.io today, but every oke Deployment
+            # carries the pull secret so a later mirror into OCIR needs no
+            # manifest change.
+            imagePullSecrets:
+              - name: ocir-pull-secret
+            nodeSelector:
+              pool: gpu
+            tolerations:
+              - key: nvidia.com/gpu
+                operator: Exists
+                effect: NoSchedule
+            initContainers:
+              - name: fetch-model
+                env:
+                  - name: MODEL_BASE_URL
+                    value: CHANGEME_PAR_URL # Phase 2, set locally at deploy time — never commit a real PAR
+                  - name: MODEL_FILES
+                    value: "chat_template.jinja config.json generation_config.json model.safetensors tokenizer.json tokenizer_config.json"
+            containers:
+              - name: vllm
+                resources:
+                  requests:
+                    cpu: "4"
+                    memory: 16Gi
+                    nvidia.com/gpu: "1"
+                  limits:
+                    cpu: "8"
+                    memory: 32Gi
+                    nvidia.com/gpu: "1"
+  # KV-cache budget for the 24 GB card (append, keep base args intact)
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: vllm
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: --gpu-memory-utilization=0.90

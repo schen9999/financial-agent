@@ -28,7 +28,7 @@ spec:
       containers:
         - name: api
           image: financial-agent-app:local
-          imagePullPolicy: Never # loaded via `kind load docker-image`
+          imagePullPolicy: IfNotPresent # kind overlay: Never (kind-loaded); oke overlay: OCIR image
           command: ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]
           ports:
             - containerPort: 8000
@@ -75,10 +75,9 @@ metadata:
     app.kubernetes.io/name: api
     app.kubernetes.io/part-of: financial-agent
 spec:
-  type: NodePort
+  # ClusterIP in base; exposure is per-overlay (kind: NodePort 30080, oke: LoadBalancer)
   selector:
     app.kubernetes.io/name: api
   ports:
     - port: 8000
       targetPort: http
-      nodePort: 30080

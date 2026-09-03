@@ -26,7 +26,7 @@ spec:
       containers:
         - name: mcp
           image: financial-agent-app:local
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent # kind overlay: Never (kind-loaded); oke overlay: OCIR image
           command: ["python", "mcp_server.py"]
           env:
             - name: MCP_TRANSPORT
@@ -75,10 +75,9 @@ metadata:
     app.kubernetes.io/name: mcp
     app.kubernetes.io/part-of: financial-agent
 spec:
-  type: NodePort
+  # ClusterIP in base; exposure is per-overlay (kind: NodePort 30800, oke: stays internal)
   selector:
     app.kubernetes.io/name: mcp
   ports:
     - port: 8000
       targetPort: http
-      nodePort: 30800

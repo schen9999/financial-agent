@@ -31,6 +31,15 @@ spec:
         value: "5"
       - name: min-claims
         value: "30"
+      # Which grounding_check.py arm(s) to run. The harness pins the model-
+      # routing flags per arm ON PURPOSE (no leakage between A/B arms), so the
+      # eval plane is switched here, not via app-config's USE_LOCAL_MODEL —
+      # that flag governs the app services only. LOCAL_MODEL_BACKEND/URL/NAME
+      # do reach the eval pods from app-config (envFrom below). The nightly
+      # cron inherits this default (baseline = the gate arm);
+      # argo/eval-run-local.yaml submits arms=local-model against vLLM/Ollama.
+      - name: arms
+        value: baseline
   templates:
     - name: main
       dag:
@@ -61,13 +70,13 @@ spec:
         retryPolicy: OnFailure
       container:
         image: financial-agent-app:local
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent # kind overlay: Never; oke overlay rewrites the image
         command: ["python", "grounding_check.py"]
         args:
           - --tickers
           - "{{inputs.parameters.ticker}}"
           - --arms
-          - baseline
+          - "{{workflow.parameters.arms}}"
           - --json-out
           - /tmp/result.json
         env:
@@ -106,8 +115,19 @@ spec:
               data: "{{inputs.parameters.results}}"
       container:
         image: financial-agent-app:local
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent # kind overlay: Never; oke overlay rewrites the image
         command: ["python", "scripts/eval_aggregate.py"]
+        # Same env sources as the fan-out pods. EVAL_ARTIFACTS_PUT_URL (a
+        # write-capable Object Storage PAR, set via app-secrets in Phase 2 —
+        # never committed) turns on best-effort artifact archival; unset, the
+        # aggregate behaves exactly as before.
+        envFrom:
+          - secretRef:
+              name: app-secrets
+          - secretRef:
+              name: infra-secrets
+          - configMapRef:
+              name: app-config
         args:
           - --input
           - /tmp/all_results.json

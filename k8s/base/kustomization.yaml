@@ -1,0 +1,14 @@
+# Env-agnostic base. Never applied directly — deploy an overlay:
+#   kubectl apply -k k8s/overlays/kind   (local; what `make deploy` runs)
+#   kubectl apply -k k8s/overlays/oke    (Phase 2, once OCI access lands)
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - 00-namespace.yaml
+  - 10-configmap.yaml
+  - 20-redis.yaml
+  - 21-postgres.yaml
+  - 30-api.yaml
+  - 31-worker.yaml
+  - 32-streamlit.yaml
+  - 33-mcp.yaml

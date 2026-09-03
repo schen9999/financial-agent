@@ -9,7 +9,8 @@ IMAGE     ?= financial-agent-app:local
 ENV_FILE  ?= .env
 
 .PHONY: cluster-up deploy smoke-test cluster-down status logs \
-        argo-install argo-deploy eval-run cost-report
+        argo-install argo-deploy eval-run cost-report \
+        vm-images vm-up vm-eval
 
 cluster-up: ## Create the single-node kind cluster (or restart its stopped node)
 	@if kind get clusters 2>/dev/null | grep -qx $(CLUSTER); then \
@@ -30,7 +31,7 @@ deploy: ## Build the app image, load it into kind, apply manifests, wait for rol
 	@test -f $(ENV_FILE) || { echo "ERROR: $(ENV_FILE) not found — copy .env.example and fill in keys"; exit 1; }
 	docker build -f Dockerfile.k8s -t $(IMAGE) .
 	kind load docker-image $(IMAGE) --name $(CLUSTER)
-	kubectl apply -f k8s/manifests/00-namespace.yaml
+	kubectl apply -f k8s/base/00-namespace.yaml
 	@# infra-secrets: random Postgres password, generated once, lives only in-cluster
 	@kubectl -n $(NAMESPACE) get secret infra-secrets >/dev/null 2>&1 || { \
 		PGPASS=$$(openssl rand -hex 16); \
@@ -41,7 +42,7 @@ deploy: ## Build the app image, load it into kind, apply manifests, wait for rol
 	@# app-secrets: developer API keys from the local .env (never committed)
 	kubectl -n $(NAMESPACE) create secret generic app-secrets \
 		--from-env-file=$(ENV_FILE) --dry-run=client -o yaml | kubectl apply -f -
-	kubectl apply -f k8s/manifests/
+	kubectl apply -k k8s/overlays/kind
 	@# restart app deployments so an updated image/secrets take effect on redeploy
 	kubectl -n $(NAMESPACE) rollout restart deployment/api deployment/worker deployment/streamlit deployment/mcp 2>/dev/null || true
 	kubectl -n $(NAMESPACE) rollout status deployment/redis    --timeout=180s
@@ -67,20 +68,25 @@ logs: ## Tail logs: make logs C=api|worker|streamlit|mcp|redis|postgres
 
 # ── Argo Workflows (batch/eval — request-time async stays on Celery) ─────────
 
-ARGO_VERSION ?= v3.7.18
-
-argo-install: ## Install Argo Workflows (controller + server) into the cluster
-	kubectl create namespace argo --dry-run=client -o yaml | kubectl apply -f -
-	kubectl apply -n argo -f https://github.com/argoproj/argo-workflows/releases/download/$(ARGO_VERSION)/install.yaml
+# Argo version is pinned in argo/install/kustomization.yaml (single source of truth).
+argo-install: ## Install Argo Workflows (controller + server), pinned via argo/install
+	kubectl apply -k argo/install
 	kubectl -n argo rollout status deploy/workflow-controller --timeout=300s
 	kubectl -n argo rollout status deploy/argo-server --timeout=300s
 
+# Which argo overlay to apply (kind locally; vm-* targets pass k3s).
+ARGO_OVERLAY ?= kind
+
 argo-deploy: ## Apply eval workflow RBAC, WorkflowTemplate, and nightly CronWorkflow
-	kubectl apply -f argo/rbac.yaml -f argo/eval-workflow.yaml -f argo/eval-cron.yaml
+	kubectl apply -k argo/overlays/$(ARGO_OVERLAY)
 	@echo "Nightly eval scheduled: $$(kubectl -n $(NAMESPACE) get cronworkflow grounding-eval-nightly -o jsonpath='{.spec.schedule} {.spec.timezone}')"
 
+# Override to submit a different one-shot Workflow, e.g. the local-model arm:
+#   make eval-run EVAL_RUN_FILE=argo/eval-run-local.yaml
+EVAL_RUN_FILE ?= argo/eval-run.yaml
+
 eval-run: ## Submit the grounding eval workflow now and follow it to completion
-	@WF=$$(kubectl -n $(NAMESPACE) create -f argo/eval-run.yaml -o name | sed 's|.*/||'); \
+	@WF=$$(kubectl -n $(NAMESPACE) create -f $(EVAL_RUN_FILE) -o name | sed 's|.*/||'); \
 	echo "submitted workflow: $$WF"; \
 	while :; do \
 		phase=$$(kubectl -n $(NAMESPACE) get workflow $$WF -o jsonpath='{.status.phase}' 2>/dev/null); \
@@ -97,22 +103,71 @@ eval-run: ## Submit the grounding eval workflow now and follow it to completion
 cost-report: ## Re-runnable cost/brief measurement (runs locally; needs .env)
 	python scripts/cost_report.py
 
+# ── Single-VM path (k3s on the OCI A10 box — docs/deploy-runbook.md) ─────────
+# These targets run ON the VM over ssh, not on the dev machine. The app image
+# and the Argo workflow pods share ONE image (financial-agent-app: one image,
+# four commands, plus both eval containers) — vm-images imports that single
+# artifact into k3s containerd and lists what both roles will run.
+
+VM_IMAGE_TAR ?= /tmp/financial-agent-app.tar
+
+vm-images: ## Build the app+workflow image and import it into k3s containerd
+	docker build -f Dockerfile.k8s -t $(IMAGE) .
+	docker save $(IMAGE) -o $(VM_IMAGE_TAR)
+	sudo k3s ctr images import $(VM_IMAGE_TAR)
+	rm -f $(VM_IMAGE_TAR)
+	@echo "── images now in k3s containerd (this one serves the app Deployments AND the Argo workflow pods):"
+	@sudo k3s ctr images ls | grep financial-agent || { echo "ERROR: financial-agent image not found after import"; exit 1; }
+
+vm-up: ## Apply the k3s overlays in order: app (+secrets), Argo, vLLM
+	@test -f $(ENV_FILE) || { echo "ERROR: $(ENV_FILE) not found — copy .env.example and fill in keys"; exit 1; }
+	kubectl apply -f k8s/base/00-namespace.yaml
+	@kubectl -n $(NAMESPACE) get secret infra-secrets >/dev/null 2>&1 || { \
+		PGPASS=$$(openssl rand -hex 16); \
+		kubectl -n $(NAMESPACE) create secret generic infra-secrets \
+			--from-literal=POSTGRES_PASSWORD=$$PGPASS \
+			--from-literal=DATABASE_URL=postgresql://agent:$$PGPASS@postgres:5432/financial_agent; \
+		echo "created infra-secrets (random Postgres password)"; }
+	kubectl -n $(NAMESPACE) create secret generic app-secrets \
+		--from-env-file=$(ENV_FILE) --dry-run=client -o yaml | kubectl apply -f -
+	kubectl apply -k k8s/overlays/k3s
+	kubectl -n $(NAMESPACE) rollout status deployment/redis     --timeout=180s
+	kubectl -n $(NAMESPACE) rollout status deployment/postgres  --timeout=300s
+	kubectl -n $(NAMESPACE) rollout status deployment/api       --timeout=600s
+	kubectl -n $(NAMESPACE) rollout status deployment/worker    --timeout=600s
+	kubectl -n $(NAMESPACE) rollout status deployment/streamlit --timeout=600s
+	kubectl -n $(NAMESPACE) rollout status deployment/mcp       --timeout=600s
+	kubectl apply -k argo/install
+	kubectl -n argo rollout status deploy/workflow-controller --timeout=300s
+	kubectl -n argo rollout status deploy/argo-server --timeout=300s
+	$(MAKE) argo-deploy ARGO_OVERLAY=k3s
+	@# vLLM last: weights must already be at /home/ubuntu/models/qwen-ft (runbook)
+	kubectl apply -k k8s/vllm/overlays/k3s-gpu
+	kubectl -n $(NAMESPACE) rollout status deployment/vllm --timeout=900s
+	@# local ports 31xxx on purpose: kind maps 30080/30501/30800 on the dev laptop
+	@echo "Up. Tunnel from the laptop: ssh -L 31080:localhost:30080 -L 31501:localhost:30501 -L 31880:localhost:30880 ubuntu@<vm-ip>"
+
+vm-eval: eval-run ## Run the grounding eval DAG on the VM (same submit/follow as eval-run)
+
+vm-local-model: ## Toggle app-plane local-model routing (ON=true|false); eval arms are unaffected
+	@test -n "$(ON)" || { echo "usage: make vm-local-model ON=true|false"; exit 1; }
+	kubectl -n $(NAMESPACE) patch configmap app-config --type merge -p '{"data":{"USE_LOCAL_MODEL":"$(ON)"}}'
+	kubectl -n $(NAMESPACE) rollout restart deployment/api deployment/worker deployment/streamlit
+	@echo "USE_LOCAL_MODEL=$(ON) (live patch — kubectl apply -k k8s/overlays/k3s restores the committed false)"
+
 # ── vLLM (CPU mode — backs the default-off USE_LOCAL_MODEL flag) ─────────────
 
 VLLM_IMAGE ?= public.ecr.aws/q9t5s3a7/vllm-cpu-release-repo:v0.10.2
 
-vllm-deploy: ## Copy the merged model into the kind node and deploy vLLM
+vllm-deploy: ## Deploy vLLM (CPU mode); the fetch-model init container downloads the model at pod start
 	docker pull -q $(VLLM_IMAGE)
 	kind load docker-image $(VLLM_IMAGE) --name $(CLUSTER)
-	docker exec $(CLUSTER)-control-plane sh -c 'test -d /opt/models/financial-lora' || \
-		{ docker exec $(CLUSTER)-control-plane mkdir -p /opt/models; \
-		  docker cp financial-lora-merged $(CLUSTER)-control-plane:/opt/models/financial-lora; }
-	kubectl apply -f k8s/vllm/vllm.yaml
+	kubectl apply -k k8s/vllm/overlays/kind-cpu
 	kubectl -n $(NAMESPACE) rollout status deployment/vllm --timeout=900s
 	@echo "vLLM up. In-cluster URL: http://vllm:8000  (port-forward: kubectl -n $(NAMESPACE) port-forward svc/vllm 18000:8000)"
 
 vllm-down: ## Remove the vLLM deployment (frees ~4.5GB on the node)
-	kubectl delete -f k8s/vllm/vllm.yaml --ignore-not-found
+	kubectl delete -k k8s/vllm/overlays/kind-cpu --ignore-not-found
 
 vllm-bench: ## Benchmark the vLLM endpoint (expects port-forward on :18000)
 	python scripts/vllm_benchmark.py --url http://localhost:18000 --json-out /tmp/vllm_bench.json

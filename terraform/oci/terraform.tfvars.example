@@ -1,0 +1,17 @@
+# Copy to terraform.tfvars (gitignored) and fill in once OCI credentials land.
+# Auth can instead come from ~/.oci/config — then leave user_ocid/fingerprint/
+# private_key_path unset here.
+
+region           = "us-ashburn-1"
+tenancy_ocid     = "ocid1.tenancy.oc1..aaaa..."
+compartment_ocid = "ocid1.compartment.oc1..aaaa..."
+
+# user_ocid        = "ocid1.user.oc1..aaaa..."
+# fingerprint      = "aa:bb:cc:..."
+# private_key_path = "~/.oci/oci_api_key.pem"
+
+# Tighten the API endpoint to your IP for the demo:
+# api_allowed_cidr = "1.2.3.4/32"
+
+# If VM.GPU.A10.1 hits "out of host capacity" in the default AD:
+# gpu_availability_domain = "Uocm:US-ASHBURN-AD-2"

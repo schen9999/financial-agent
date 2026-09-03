@@ -1,0 +1,27 @@
+# Single-VM validation target (Phase 1.75): eval DAG on single-node k3s —
+# the oke overlay's shape minus registry concerns. VALIDATED on the VM
+# 2026-09-03: vm-eval ran the DAG to Succeeded with the gate passing.
+# Image stays the localhost-built financial-agent-app:local from base
+# (imported by `make vm-images`); no imagePullSecrets. JSON6902 with template
+# indices because kustomize strategic merge would replace a CRD's whole
+# templates list.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+
+patches:
+  # templates: 0=main (dag, no container), 1=eval-one, 2=aggregate.
+  # Imported image must never be pulled — fail loudly instead.
+  - target:
+      group: argoproj.io
+      version: v1alpha1
+      kind: WorkflowTemplate
+      name: grounding-eval
+    patch: |-
+      - op: replace
+        path: /spec/templates/1/container/imagePullPolicy
+        value: Never
+      - op: replace
+        path: /spec/templates/2/container/imagePullPolicy
+        value: Never

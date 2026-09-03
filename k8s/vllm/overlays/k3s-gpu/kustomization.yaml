@@ -1,0 +1,85 @@
+# Single-VM validation target (Phase 1.75): single-node k3s on the
+# VM.GPU.A10.2 (2x A10 24 GB). Purpose: a green vLLM run here validates the
+# exact serving image, tag, and args committed for the OKE A10 — same CUDA
+# build, same --gpu-memory-utilization, one GPU, matching the A10.1 shape the
+# demo targets. VALIDATED on the VM 2026-09-03: rollout green, /v1/models on
+# NodePort 30880 lists financial-lora, serving pinned to the one granted A10
+# (~21 GiB used, second card idle). No eval has run against vLLM itself yet.
+#
+# Deltas vs oke-gpu, all environmental:
+#   - Model delivery: hostPath /home/ubuntu/models/qwen-ft (downloaded on the
+#     VM with huggingface-cli — see the runbook's single-VM section) replaces
+#     the fetch-model init container + emptyDir. No PAR exists yet (no bucket).
+#   - CUDA_VISIBLE_DEVICES=0 pins serving to ONE granted A10 — index 0 of
+#     the devices the plugin exposes, which may be either physical card
+#     (on the VM it granted physical index 1); the request stays
+#     nvidia.com/gpu: 1.
+#   - No pool selector / GPU toleration: one untainted node.
+#   - NodePort 30880, reached only through an ssh -L tunnel — the VM binds
+#     nothing publicly.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+
+images:
+  - name: vllm-backend
+    newName: docker.io/vllm/vllm-openai
+    newTag: v0.10.2 # identical to oke-gpu — the point of this target
+
+patches:
+  # Drop fetch-model and swap the emptyDir for the hostPath weights dir.
+  # JSON6902 because a strategic merge would merge two volume sources into
+  # one invalid volume. Also append the same KV-cache arg oke-gpu appends.
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: vllm
+    patch: |-
+      - op: remove
+        path: /spec/template/spec/initContainers
+      - op: replace
+        path: /spec/template/spec/volumes/0
+        value:
+          name: model
+          hostPath:
+            path: /home/ubuntu/models/qwen-ft
+            type: Directory
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: --gpu-memory-utilization=0.90
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: vllm
+        namespace: financial-agent
+      spec:
+        template:
+          spec:
+            containers:
+              - name: vllm
+                env:
+                  - name: CUDA_VISIBLE_DEVICES # A10.2 has two GPUs; serve on one
+                    value: "0"
+                resources:
+                  requests:
+                    cpu: "4"
+                    memory: 16Gi
+                    nvidia.com/gpu: "1"
+                  limits:
+                    cpu: "8"
+                    memory: 32Gi
+                    nvidia.com/gpu: "1"
+  - patch: |-
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: vllm
+        namespace: financial-agent
+      spec:
+        type: NodePort
+        ports:
+          - port: 8000
+            nodePort: 30880
