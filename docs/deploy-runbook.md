@@ -1,9 +1,9 @@
 # Deploy runbook
 
-Two targets, one manifest tree: `kind` (local, fully working today) and
-`oke` (OCI, Phase 2). Anything not yet executed is marked
-**[Phase 2 — NOT YET EXECUTED]**; everything else has been run end-to-end
-on this repo.
+Three targets, one manifest tree: `kind` (local, fully working today),
+`k3s` (single-VM validation, Phase 1.75), and `oke` (OCI, Phase 2).
+Anything not yet executed is marked **NOT YET EXECUTED** with its phase;
+everything else has been run end-to-end on this repo.
 
 ## kind (local) — end to end
 
@@ -50,6 +50,58 @@ Notes:
   exercise `USE_LOCAL_MODEL` locally is Ollama via
   `LOCAL_MODEL_BACKEND`'s default. This is exactly why Ollama remains the
   committed fallback until vLLM demonstrably serves on the A10.
+
+## Single-VM path (k3s) — Phase 1.75
+
+Validation target: one OCI VM.GPU.A10.2 (2x A10 24 GB, 30-core Xeon,
+472 GB RAM, 1 TB disk, Ubuntu 22.04, NVIDIA driver 570 preinstalled),
+reachable by ssh only. Purpose: rehearse the full topology and validate
+the committed A10 vLLM serving args before OKE exists — and serve as the
+demo target if it doesn't (see the CLAUDE.md checkpoint). **No step below
+has been executed on the VM; per the honesty rules, nothing may claim
+otherwise until confirmed from the box.**
+
+1. **[Phase 1.75 — NOT YET EXECUTED] Network baseline — before any
+   NodePort exists.** Verify the VCN security list on the VM's subnet
+   admits only 22/tcp from your allowlisted CIDR (no 30000–32767, no
+   80/443), then set the host baseline:
+   `sudo ufw default deny incoming && sudo ufw allow 22/tcp && sudo ufw enable`.
+   The seclist is the authoritative gate: kube-proxy programs NodePorts
+   directly in iptables and can route around host firewalls, so ufw is
+   defense-in-depth, not the guarantee. NodePorts will bind on the VM,
+   but nothing is publicly reachable while the seclist admits only 22.
+2. **[Phase 1.75 — NOT YET EXECUTED]** Docker + NVIDIA container
+   toolkit: install Docker and `nvidia-container-toolkit`, run
+   `sudo nvidia-ctk runtime configure --runtime=docker` + restart
+   docker; verify `nvidia-smi` (host) shows both A10s.
+3. **[Phase 1.75 — NOT YET EXECUTED]** k3s:
+   `curl -sfL https://get.k3s.io | sh -` (single node; bundles the
+   `local-path` StorageClass the Postgres PVC uses). With the toolkit
+   already installed, k3s configures the nvidia containerd runtime on
+   its own.
+4. **[Phase 1.75 — NOT YET EXECUTED]** NVIDIA device plugin, pinned:
+   `kubectl apply -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.17.0/deployments/static/nvidia-device-plugin.yml`;
+   verify `kubectl describe node | grep nvidia.com/gpu` reports 2.
+5. **[Phase 1.75 — NOT YET EXECUTED]** Weights to
+   `/home/ubuntu/models/qwen-ft`. Prerequisite: the merged checkpoint
+   (`financial-lora-merged/`, six files) exists only on the dev machine —
+   push it to a **private** HF repo first (`huggingface-cli upload`).
+   Then on the VM: `huggingface-cli login` (token, never committed) and
+   `huggingface-cli download <org>/<repo> --local-dir /home/ubuntu/models/qwen-ft`.
+   Offline fallback: `rsync`/`scp` the directory from the dev machine.
+6. **[Phase 1.75 — NOT YET EXECUTED]** `make vm-images && make vm-up`
+   (on the VM, from the repo checkout). Expect the first `vm-up` to sit
+   in ContainerCreating for several minutes: `vllm/vllm-openai:v0.10.2`
+   is a multi-GB CUDA image. Optional pre-pull to front-load that wait:
+   `sudo k3s crictl pull docker.io/vllm/vllm-openai:v0.10.2`.
+7. **[Phase 1.75 — NOT YET EXECUTED]** `make vm-eval` — the grounding
+   gate must pass on the VM.
+8. **[Phase 1.75 — NOT YET EXECUTED]** Access via ssh tunnels ONLY
+   (nothing else is admitted by the seclist):
+   `ssh -L 30080:localhost:30080 -L 30501:localhost:30501 -L 30880:localhost:30880 ubuntu@<vm-ip>`.
+   mcp stays ClusterIP exactly as on oke — on the VM run
+   `kubectl -n financial-agent port-forward svc/mcp 30800:8000` and add
+   `-L 30800:localhost:30800` to the tunnel.
 
 ## OKE (OCI) — Phase 2
 
