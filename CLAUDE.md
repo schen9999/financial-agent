@@ -37,24 +37,48 @@ Migrate to OCI for a hiring demo (deadline: demo Fri Sep 18, 2026):
 6. Work on branch `oci-migration`. Small commits, imperative messages.
 
 ## Phases
-Phase 1 — no OCI credentials yet (NOW):
-- Author Terraform: VCN, OKE basic cluster, both node pools, OCIR, Object Storage
-  bucket, block volume storage class. Must pass `terraform fmt` and
-  `terraform validate`. No plan/apply until credentials exist.
-- Parameterize manifests for OKE: storage class name, image registry prefix,
-  service exposure (LoadBalancer vs NodePort), GPU node selector + toleration
-  for the vLLM deployment.
-- Verify vLLM manifests against A10 specs: 24 GB VRAM budget, nvidia.com/gpu
-  resource request, correct image for CUDA on A10.
-- Docs skeleton in /docs: architecture diagram, deploy runbook, eval methodology,
-  numbers-of-record table.
+Phase 1 — COMPLETE (no OCI credentials):
+- Terraform authored in terraform/oci (VCN, OKE basic cluster, both node
+  pools, OCIR, bucket, BV storage class); fmt + validate pass, no plan/apply.
+- Manifests parameterized as kustomize base + kind/oke overlays (app, vllm,
+  argo trees); kind renders proven equivalent via scripts/render_diff.py.
+- vLLM manifests sized against the A10 (24 GB budget, nvidia.com/gpu request,
+  CUDA image). Docs skeleton in /docs.
 
-Phase 2 — once OCI access lands:
-- terraform plan/apply, push images to OCIR, deploy overlay, PVCs bind,
-  all probes green.
-- Bring up vLLM on the A10, point LOCAL_MODEL_BACKEND at it, run the eval DAG
-  against it. Only after this runs end-to-end may docs say vLLM served the model.
-- Re-run the committed cost harness on OCI and record the new number.
+Phase 1.5 — COMPLETE (pre-credential gaps closed so Phase 2 is apply, push,
+deploy and nothing else):
+- vLLM weights delivery: fetch-model init container + Object Storage read PAR
+  (zero secrets); kind exercises the same path with a small public model.
+- ocir-pull-secret referenced by every oke Deployment and the Argo workflow
+  pods; secret created imperatively from an auth token (runbook step 6).
+- Argo install pinned and committed (argo/install, apply -k); verified by
+  full delete, reinstall, and a green eval DAG run.
+- Eval artifact archival to the bucket: env-gated (EVAL_ARTIFACTS_PUT_URL,
+  off by default), best-effort, unit-tested with a mocked client.
+- LB ingress deny-all by default (lb_allowed_cidrs) with seclist management
+  mode None so Terraform is the single authority.
+- Storage story reconciled: Redis ephemeral everywhere, 350 GB itemized.
+- enable_gpu_pool flag for free-trial tenancy dry runs (never the demo
+  tenancy; no numbers or claims from trial runs).
+
+Phase 2 — once OCI access lands (detailed steps: docs/deploy-runbook.md):
+1. Fill terraform.tfvars: OCIDs, region/AD with A10 capacity, re-confirm the
+   pinned kubernetes_version, set api_allowed_cidr + lb_allowed_cidrs.
+2. terraform init / plan / apply (two-stage -target fallback documented).
+3. OCIR: docker login with an auth token, tag + push the app image, create
+   ocir-pull-secret in-cluster.
+4. Set the CHANGEME image refs in both oke overlays (local edit), create
+   app-secrets/infra-secrets, kubectl apply -k k8s/overlays/oke; verify PVC
+   binds on financial-agent-bv, probes green, LBs get IPs (allowlist first).
+5. make argo-install; kubectl apply -k argo/overlays/oke; eval DAG green
+   against hosted models. Optionally set EVAL_ARTIFACTS_PUT_URL (write PAR)
+   to turn on archival.
+6. Upload the merged weights to the bucket, create the read PAR, set
+   MODEL_BASE_URL locally (never committed), apply k8s/vllm/overlays/oke-gpu.
+   Only after vLLM serves on the A10 may docs (and this file) say it does.
+7. Point LOCAL_MODEL_URL at vLLM with LOCAL_MODEL_BACKEND=openai, run the
+   eval DAG against it, re-run scripts/cost_report.py on OCI and record the
+   new number.
 
 Phase 3 — demo polish:
 - Full documentation pass, demo script centered on the Argo eval DAG and
