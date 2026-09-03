@@ -108,6 +108,17 @@ spec:
         image: financial-agent-app:local
         imagePullPolicy: IfNotPresent # kind overlay: Never; oke overlay rewrites the image
         command: ["python", "scripts/eval_aggregate.py"]
+        # Same env sources as the fan-out pods. EVAL_ARTIFACTS_PUT_URL (a
+        # write-capable Object Storage PAR, set via app-secrets in Phase 2 —
+        # never committed) turns on best-effort artifact archival; unset, the
+        # aggregate behaves exactly as before.
+        envFrom:
+          - secretRef:
+              name: app-secrets
+          - secretRef:
+              name: infra-secrets
+          - configMapRef:
+              name: app-config
         args:
           - --input
           - /tmp/all_results.json

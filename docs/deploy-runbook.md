@@ -96,7 +96,13 @@ yet.** Execute in order once access lands.
    LoadBalancers get external IPs.
 7. **[Phase 2 — NOT YET EXECUTED]** `make argo-install`, then
    `kubectl apply -k argo/overlays/oke`; run the eval DAG end-to-end
-   against hosted models first.
+   against hosted models first. To turn on eval artifact archival
+   (off by default): create a write-capable PAR on the eval-artifacts
+   bucket permitting objects under `eval-runs/`, and add
+   `EVAL_ARTIFACTS_PUT_URL=<PAR URL>` to the `.env` that app-secrets is
+   created from (a PAR is a bearer URL — never commit it). The aggregate
+   step then archives `aggregate.json` + `results.json` per run,
+   best-effort.
 8. **[Phase 2 — NOT YET EXECUTED]** vLLM on the A10: upload the six
    files of `financial-lora-merged/` to the eval-artifacts bucket under
    a `financial-lora/` prefix (`oci os object put`), create a read-only

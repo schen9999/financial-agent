@@ -28,8 +28,16 @@ main (DAG)
   retry per ticker (`retryPolicy: OnFailure`) absorbs transient upstream
   flakiness.
 - **Results travel as output parameters** (small JSON per ticker), so no
-  artifact repository is required on the local cluster. Wiring artifacts
-  to the OCI Object Storage bucket is a Phase 2 task.
+  artifact repository is required on the local cluster.
+- **Artifact archival is wired but off by default**: when
+  `EVAL_ARTIFACTS_PUT_URL` is set (a write-capable Object Storage PAR,
+  Phase 2), the aggregate step PUTs `aggregate.json` + `results.json`
+  under `eval-runs/<run-id>/` in the versioned eval-artifacts bucket —
+  failed runs included (they are the most valuable to keep). Best-effort
+  by design: an upload failure prints a WARNING and never changes the
+  gate's exit code. Unit-tested with a mocked client
+  (tests/test_eval_artifacts.py). No upload has run yet — first real
+  archival happens in Phase 2.
 - **The aggregate step is a gate**: `scripts/eval_aggregate.py
   --max-unsupported-pct 5 --min-claims 30` fails the workflow if the
   unsupported rate breaches 5% **or** the run produced too few claims to
