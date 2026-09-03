@@ -1,5 +1,6 @@
 # Single-VM validation target (Phase 1.75): eval DAG on single-node k3s —
-# the oke overlay's shape minus registry concerns. NOT YET RUN on the VM.
+# the oke overlay's shape minus registry concerns. VALIDATED on the VM
+# 2026-09-03: vm-eval ran the DAG to Succeeded with the gate passing.
 # Image stays the localhost-built financial-agent-app:local from base
 # (imported by `make vm-images`); no imagePullSecrets. JSON6902 with template
 # indices because kustomize strategic merge would replace a CRD's whole

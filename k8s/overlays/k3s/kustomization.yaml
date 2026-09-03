@@ -1,7 +1,7 @@
 # Single-VM validation target (Phase 1.75): the full app topology on
 # single-node k3s on the VM.GPU.A10.2 — the oke overlay's shape with only
-# environmental deltas. NOT YET RUN on the VM; nothing may claim it ran
-# until confirmed from the box.
+# environmental deltas. VALIDATED on the VM 2026-09-03: vm-up rolled out all
+# six deployments green with the PVC bound on local-path.
 #
 # Deltas vs oke:
 #   - NodePort instead of OCI LoadBalancers, reached via ssh -L tunnels only

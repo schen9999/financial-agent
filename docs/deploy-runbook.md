@@ -77,9 +77,17 @@ eval WorkflowTemplate + CronWorkflow applied. vLLM crashlooped on a
 base-manifest bug (args `vllm serve ...` fed to `vllm/vllm-openai`,
 whose entrypoint is already the api server → "unrecognized arguments");
 fixed in the base by moving `vllm serve` to `command:`. The re-run then
-hit the two k8s gotchas below (also fixed in the base). **vLLM-on-k3s
-and vm-eval remain NOT YET EXECUTED** — re-apply the vLLM overlay after
-pulling the fixes.
+hit the two k8s gotchas below (also fixed in the base).
+
+**Validated 2026-09-03, later (confirmed from the box) — end to end:**
+after commit 4032e73 the vLLM deployment rolled out green on k3s;
+`/v1/models` on NodePort 30880 lists `financial-lora`; `nvidia-smi`
+confirms serving pinned to one A10 (~21 GiB used on the single granted
+device, the other idle). `make vm-eval` then ran the full grounding DAG
+on the VM to `Succeeded`: 10/10 tickers, 66 claims, 3.03% unsupported —
+GATE PASSED (≤ 5%, ≥ 30 claims). That run used hosted models via the
+existing harness — it is not a numbers-of-record re-run, and no eval
+has yet run against vLLM itself.
 
 **Known k8s gotchas (vLLM — fixed in the base, apply to every overlay):**
 - **Service links inject `VLLM_PORT`.** Because the Service is named
@@ -101,7 +109,7 @@ pulling the fixes.
    defense-in-depth, not the guarantee. NodePorts will bind on the VM,
    but nothing is publicly reachable while the seclist admits only 22.
 2. **[EXECUTED 2026-09-02 — proven by the Docker smoke test above:
-   `docker run --gpus '"device=0"'` served on GPU 0]** Docker + NVIDIA
+   `docker run --gpus` served pinned to one GPU]** Docker + NVIDIA
    container toolkit: install Docker and `nvidia-container-toolkit`, run
    `sudo nvidia-ctk runtime configure --runtime=docker` + restart
    docker; verify `nvidia-smi` (host) shows both A10s.
@@ -137,15 +145,17 @@ pulling the fixes.
    already fixed; the repo's `financial-lora-merged/` is **untracked
    and still carries the list-form key**, so apply this edit at the
    source before any future rsync/upload or it will re-break the VM.
-6. **[PARTIALLY EXECUTED 2026-09-03 — vm-images + vm-up ran: app
-   topology, Argo, and eval CRDs green (see Validated above); the vLLM
-   rollout is the unexecuted remainder after the base args fix]**
+6. **[EXECUTED 2026-09-03 — vm-images + vm-up fully green: app
+   topology, Argo, eval CRDs, and (after the base fixes) the vLLM
+   rollout with `/v1/models` answering on NodePort 30880]**
    `make vm-images && make vm-up`
    (on the VM, from the repo checkout). Expect the first `vm-up` to sit
    in ContainerCreating for several minutes: `vllm/vllm-openai:v0.10.2`
    is a multi-GB CUDA image. Optional pre-pull to front-load that wait:
    `sudo k3s crictl pull docker.io/vllm/vllm-openai:v0.10.2`.
-7. **[Phase 1.75 — NOT YET EXECUTED]** `make vm-eval` — the grounding
+7. **[EXECUTED 2026-09-03 — workflow Succeeded on the VM: 10/10
+   tickers, 66 claims, 3.03% unsupported, GATE PASSED (hosted models;
+   not a numbers-of-record re-run)]** `make vm-eval` — the grounding
    gate must pass on the VM.
 8. **[Phase 1.75 — NOT YET EXECUTED]** Access via ssh tunnels ONLY
    (nothing else is admitted by the seclist):

@@ -5,9 +5,9 @@ Production financial research agent. Six services: FastAPI, Celery worker, Redis
 Postgres, Streamlit, MCP server (stdio + streamable-HTTP). Eval harness runs as a
 gated Argo Workflows DAG with a nightly CronWorkflow. Pluggable OpenAI-compatible
 LOCAL_MODEL_BACKEND (currently Ollama; vLLM v0.10.2 validated serving the merged
-fine-tune on one A10 via a plain-Docker smoke test on the Phase 1.75 VM,
-2026-09-02 — in-cluster vLLM still pending; the dev CPU cannot run vLLM, no
-AVX-512).
+fine-tune pinned to one A10 on the Phase 1.75 VM — plain Docker 2026-09-02,
+in-cluster on k3s 2026-09-03. OKE serving and eval-against-vLLM still pending;
+the dev CPU cannot run vLLM, no AVX-512).
 
 Current deploy target: single-node kind K8s with probes and resource bounds.
 
@@ -33,8 +33,8 @@ Migrate to OCI for a hiring demo (deadline: demo Fri Sep 18, 2026):
   driver 570 preinstalled. Constraints: ssh access only (VCN seclist admits
   22 only; everything reached via ssh -L tunnels, nothing bound publicly);
   Docker/k3s not yet installed; no OKE compartment, OCIR, or Object Storage
-  bucket exists yet. Runs single-node k3s with the k3s overlays; vLLM pins
-  one GPU so a green run validates the A10.1-shaped oke-gpu serving config.
+  bucket exists yet. Runs single-node k3s with the k3s overlays; vLLM pinned
+  to one GPU validated the A10.1-shaped oke-gpu serving config (2026-09-03).
 - OKE (Phase 2, once the compartment lands): the Terraform-created cluster
   per the Goal section above.
 
@@ -48,9 +48,10 @@ Migrate to OCI for a hiring demo (deadline: demo Fri Sep 18, 2026):
    tests/ as well).
 4. Celery stays request-time async; Argo owns eval orchestration. Do not merge them.
 5. Ollama remains the committed fallback backend until vLLM serves in-cluster
-   and the eval DAG passes against it. (The hardware question is settled:
-   vLLM demonstrably served the fine-tune on an A10 — Docker smoke test on
-   the VM, 2026-09-02. The remaining gate is the in-cluster path.)
+   and the eval DAG passes against it. (Hardware and in-cluster serving are
+   settled — Docker 2026-09-02, k3s rollout + /v1 2026-09-03, both on the VM.
+   The remaining gate is an eval DAG run against vLLM itself,
+   USE_LOCAL_MODEL path.)
 6. Work on branch `oci-migration`. Small commits, imperative messages.
 
 ## Phases
@@ -78,15 +79,17 @@ deploy and nothing else):
 - enable_gpu_pool flag for free-trial tenancy dry runs (never the demo
   tenancy; no numbers or claims from trial runs).
 
-Phase 1.75 — single-VM validation target (manifests/tooling committed; steps
-flip to executed only on confirmed terminal output from the box):
-- 2026-09-02 validated: vLLM v0.10.2 served the fine-tune on one A10 with the
+Phase 1.75 — EXECUTED END TO END on the VM, 2026-09-03 (vm-images → vm-up →
+vm-eval all green; steps flipped only on confirmed terminal output):
+- 2026-09-02: vLLM v0.10.2 served the fine-tune pinned to one A10 with the
   oke-gpu args, in plain Docker (runbook "Validated so far").
-- 2026-09-03 validated: vm-up green on k3s — six app deployments, local-path
-  PVC, Argo controller/server, eval WorkflowTemplate/CronWorkflow. vLLM base
-  fixes from the box, in order: "vllm serve" moved to command: (entrypoint
-  collision), enableServiceLinks: false (VLLM_PORT injection), 2Gi Memory
-  emptyDir at /dev/shm. vLLM-on-k3s and vm-eval remain not executed.
+- 2026-09-03: vm-up green on k3s — six app deployments, local-path PVC, Argo,
+  eval CRDs. vLLM base fixes from the box, in order: "vllm serve" moved to
+  command: (entrypoint collision), enableServiceLinks: false (VLLM_PORT
+  injection), 2Gi Memory emptyDir at /dev/shm. Then: vLLM rollout green with
+  /v1/models on the NodePort, and vm-eval Succeeded — 10/10 tickers, 66
+  claims, 3.03% unsupported, gate passed (hosted models; not a
+  numbers-of-record re-run; no eval against vLLM itself yet).
 - k3s overlays for all three trees (k8s/overlays/k3s, argo/overlays/k3s,
   k8s/vllm/overlays/k3s-gpu): the oke shape with environmental deltas only —
   NodePorts behind ssh tunnels (mcp stays ClusterIP), imported local image
@@ -131,11 +134,12 @@ Phase 3 — demo polish:
 - Never claim Celery/Redis ran in production on ECS. ECS reality was a single
   FastAPI container + RDS. K8s is the first full-topology deployment.
 - Never claim vLLM served or deployed the model beyond what has actually run.
-  Legitimate as of 2026-09-02: vLLM v0.10.2 served the merged fine-tune on one
-  A10 with the committed serving args, in plain Docker on the validation VM
-  (smoke test confirmed from the box). Still gated: any claim of in-cluster
-  serving (k3s or OKE) or of the eval DAG running against vLLM — update this
-  line when those actually run.
+  Legitimate as of 2026-09-03: vLLM v0.10.2 served the merged fine-tune pinned
+  to one A10 with the committed serving args — in plain Docker (2026-09-02)
+  and in-cluster on single-node k3s via the k3s-gpu overlay (2026-09-03,
+  green rollout + /v1/models on the NodePort), both confirmed from the box.
+  Still gated: serving on OKE, and any eval DAG run against vLLM itself —
+  update this line when those actually run.
 - Cross-encoder reranking and the multi-agent supervisor shipped default-off
   because evals showed no grounding gain at higher cost/latency. State it that way.
 - Any new number in docs must come from a committed, re-runnable harness.

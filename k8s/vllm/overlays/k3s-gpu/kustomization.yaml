@@ -2,15 +2,18 @@
 # VM.GPU.A10.2 (2x A10 24 GB). Purpose: a green vLLM run here validates the
 # exact serving image, tag, and args committed for the OKE A10 — same CUDA
 # build, same --gpu-memory-utilization, one GPU, matching the A10.1 shape the
-# demo targets. NOT YET RUN on the VM; per CLAUDE.md honesty rules nothing may
-# claim it ran until confirmed from the box.
+# demo targets. VALIDATED on the VM 2026-09-03: rollout green, /v1/models on
+# NodePort 30880 lists financial-lora, serving pinned to the one granted A10
+# (~21 GiB used, second card idle). No eval has run against vLLM itself yet.
 #
 # Deltas vs oke-gpu, all environmental:
 #   - Model delivery: hostPath /home/ubuntu/models/qwen-ft (downloaded on the
 #     VM with huggingface-cli — see the runbook's single-VM section) replaces
 #     the fetch-model init container + emptyDir. No PAR exists yet (no bucket).
-#   - CUDA_VISIBLE_DEVICES=0 pins serving to one of the two A10s (first
-#     granted device); the request stays nvidia.com/gpu: 1.
+#   - CUDA_VISIBLE_DEVICES=0 pins serving to ONE granted A10 — index 0 of
+#     the devices the plugin exposes, which may be either physical card
+#     (on the VM it granted physical index 1); the request stays
+#     nvidia.com/gpu: 1.
 #   - No pool selector / GPU toleration: one untainted node.
 #   - NodePort 30880, reached only through an ssh -L tunnel — the VM binds
 #     nothing publicly.
