@@ -1,0 +1,30 @@
+# 40-ticker extended grounding benchmark (source of truth for the ticker set:
+# eval/tickers_extended.txt — a test keeps the two in sync). Built to tighten
+# the eval's confidence intervals: at ~66 claims a 3% rate cannot be resolved
+# against the 5% gate (docs/eval-methodology.md, "Statistical power").
+#
+# GATED — DO NOT SUBMIT without checking the Anthropic credit balance.
+# Cost estimate for a 40-ticker TWO-ARM run (this file = baseline pass; the
+# local-model pass is a second submission overriding `arms`), from the
+# committed price table + chars/4 token estimates over committed judge
+# artifacts (underestimates slightly — see the runbook):
+#   ~$1.41 judge (80 Sonnet calls) + ~$2.53 generation ≈ $4.
+# A low balance does not fail loudly — it surfaces as skipped tickers.
+#
+# Submit: make eval-run EVAL_RUN_FILE=argo/eval-run-extended.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: grounding-eval-extended-
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  workflowTemplateRef:
+    name: grounding-eval
+  # 40 tickers at parallelism 2 will not fit the template's 1h deadline.
+  activeDeadlineSeconds: 10800
+  arguments:
+    parameters:
+      - name: tickers
+        value: '["AAPL","MSFT","GOOGL","AMZN","NVDA","META","TSLA","JPM","V","WMT","XOM","UNH","UPST","AFRM","RIVN","LCID","SNAP","PTON","ROKU","COIN","CALM","SFIX","RDFN","BYND","CHGG","BLNK","OMER","EVGO","OCGN","EDIT","SANA","CRBU","VERV","BEAM","NTLA","TSM","NVO","BABA","TM","SAP"]'

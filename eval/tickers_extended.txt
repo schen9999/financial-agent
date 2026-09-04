@@ -1,0 +1,62 @@
+# Extended grounding benchmark — 40 tickers.
+# Purpose: the standard 10-ticker set is all mega-cap easy mode (dense news,
+# clean 10-K/10-Q coverage). This set deliberately stresses data coverage so
+# the eval measures the pipeline where retrieval is thin. Kept in sync with
+# argo/eval-run-extended.yaml (tests/test_extended_tickers.py enforces it).
+#
+# Known coverage stress, on purpose (skips are findings, not noise):
+#   - Foreign issuers (ADRs) file 20-F/6-K, not the 10-K/10-Q the SEC
+#     fetcher targets -> expect sparse/no filing retrieval.
+#   - Clinical-stage biotech and small caps have thin news flow.
+#   - "Volatile-earnings" membership was picked for a history of large
+#     post-earnings moves; re-check timeliness at submit time.
+
+# -- Large-cap (12) --
+AAPL
+MSFT
+GOOGL
+AMZN
+NVDA
+META
+TSLA
+JPM
+V
+WMT
+XOM
+UNH
+
+# -- Volatile-earnings names (8) --
+UPST
+AFRM
+RIVN
+LCID
+SNAP
+PTON
+ROKU
+COIN
+
+# -- Small-cap (8) --
+CALM
+SFIX
+RDFN
+BYND
+CHGG
+BLNK
+OMER
+EVGO
+
+# -- Clinical-stage / pre-revenue biotech (7) --
+OCGN
+EDIT
+SANA
+CRBU
+VERV
+BEAM
+NTLA
+
+# -- Non-US ADRs (5) --
+TSM
+NVO
+BABA
+TM
+SAP

@@ -207,6 +207,24 @@ the per-ticker retry and surfaces as **skipped tickers**, which fail
 the gate via the skipped-tickers rule — indistinguishable at a glance
 from a data problem. On mass skips, check the credit balance first.
 
+**Extended benchmark — gated, NOT YET SUBMITTED.**
+`argo/eval-run-extended.yaml` runs 40 tickers
+(`eval/tickers_extended.txt`: large-cap, volatile-earnings, small-cap,
+clinical-stage biotech, non-US ADRs — deliberately stressing data
+coverage; a test keeps the two files in sync). Cost estimate for the
+**two-arm 40-ticker A/B**, derived from the committed price table
+(`scripts/model_prices.json`) and chars/4 token estimates over the
+committed judge artifacts — the same labeled-estimate method the cost
+harness uses for its non-exact layer; it slightly **under**estimates
+because findings artifacts omit the pre-written sections the judge also
+reads: **~$1.41 judge** (80 Sonnet calls, ~2,190 in / ~740 out tokens
+each) **+ ~$2.53 generation** (80 briefs × $0.0316) **≈ $4 total**.
+Submit only after topping up credits:
+`make eval-run EVAL_RUN_FILE=argo/eval-run-extended.yaml` (baseline
+pass; the local-model pass is a second submission overriding `arms`).
+The workflow raises `activeDeadlineSeconds` to 3h — 40 tickers at
+parallelism 2 will not fit the template's 1h default.
+
 ## OKE (OCI) — Phase 2
 
 All OCI infrastructure is authored in `terraform/oci/` (fmt + validate

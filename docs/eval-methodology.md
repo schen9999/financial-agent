@@ -94,8 +94,9 @@ the arms on its own.** The decision to ship `USE_LOCAL_MODEL` off rests
 on the direction agreeing across independent measurements (85.4% vs
 88.6% at training time, 86.2% vs 77.8% in the Aug 2026 re-measure, and
 this run), not on one 10-ticker pass. A larger benchmark to tighten
-these intervals is the documented next step. These are dated run
-records from the committed
+these intervals is prepared (`eval/tickers_extended.txt` +
+`argo/eval-run-extended.yaml`, 40 tickers) and pending a funded run.
+These are dated run records from the committed
 harness; the numbers-of-record table is unchanged.
 
 ## Statistical power
