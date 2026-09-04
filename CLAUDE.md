@@ -56,6 +56,10 @@ Migrate to OCI for a hiring demo (deadline: demo Fri Sep 18, 2026):
    models remain the production path; Ollama stays the fallback for local
    serving demos. State it as measured-and-declined, not unfinished.
 6. Work on branch `oci-migration`. Small commits, imperative messages.
+7. Judge-calling tests spend Anthropic credits: they run ONLY under an
+   explicit env flag (CRITIC_INJECTION=1 today; the same pattern for any
+   future one), never in the default pytest suite, and never on push or PR
+   CI triggers — manual dispatch or schedule only.
 
 ## Phases
 Phase 1 — COMPLETE (no OCI credentials):
