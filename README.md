@@ -43,7 +43,7 @@ I added optional cross-encoder reranking to the RAG pipeline and ran a controlle
 
 Can a small local model replace Claude Haiku on section generation at lower cost?
 
-I fine-tuned **Qwen2.5-1.5B-Instruct** with QLoRA on 104 deterministic, Claude-free training pairs built from real SEC filings and financial data. The fine-tuned model serves 2 of 4 brief sections (Financial Health and Risk Factors); the other two stay on Haiku because deterministic targets couldn't be built for them -- an honest finding about the data, not a gap to paper over.
+I fine-tuned **Qwen2.5-1.5B-Instruct** with QLoRA on 104 deterministic, Claude-free training pairs built from real SEC filings and financial data. When enabled, the fine-tuned model is routed 2 of 4 brief sections (Financial Health and Risk Factors); the other two stay on Haiku because deterministic targets couldn't be built for them -- an honest finding about the data, not a gap to paper over. **The measured verdict (2026-09-03, in-cluster A/B, same harness, same day): the fine-tune fails the 5% grounding gate on exactly the two sections it owns -- 12.31% unsupported (8/65) vs a 3.03% (2/66) hosted baseline -- so it ships default-off.** The rest of this section is the experiment record.
 
 | | Section-generation (Haiku) cost | Grounding |
 |---|---:|---:|
@@ -60,11 +60,19 @@ synthesis dominates: hosted **$0.0316/brief** vs hybrid $0.0321/brief -- the
 **Aug 2026 re-measure ([benchmarks.md](benchmarks.md)):** the grounding
 regression reproduced in direction (86.2% hosted vs 77.8% hybrid on that judge
 pass). The local model runs behind a pluggable OpenAI-compatible backend
-(`LOCAL_MODEL_BACKEND=openai`): vLLM manifests are committed for
-AVX-512-capable hardware (`make vllm-deploy` -- not verifiable on this machine,
-where the prebuilt vLLM CPU image SIGILLs, root-caused to its AVX-512
-requirement on this AVX2-only CPU), and the code path is validated end-to-end
-via Ollama's `/v1` endpoint. Still default-off.
+(`LOCAL_MODEL_BACKEND=openai`); on this AVX2-only dev CPU the prebuilt vLLM
+image SIGILLs (root-caused to its AVX-512 requirement), so locally the code
+path is exercised via Ollama's `/v1` endpoint.
+
+**Sep 2026 GPU serving + in-cluster A/B:** vLLM v0.10.2 served the merged
+fine-tune pinned to one A10 on an OCI VM -- plain Docker (2026-09-02), then
+in-cluster on single-node k3s (2026-09-03) -- and the same gated eval DAG ran
+against it (20 confirmed `/v1/chat/completions`, 2 sections x 10 tickers):
+**12.31% unsupported (8/65) vs the same-day hosted baseline 3.03% (2/66)** --
+the local-model arm fails the 5% gate, the hosted baseline passes. Same
+harness, same day, same VM (dated A/B in
+[docs/eval-methodology.md](docs/eval-methodology.md)). A measured negative
+result, and the reason `USE_LOCAL_MODEL` ships off.
 
 I also re-implemented the same fine-tune with a hand-written PyTorch training loop (`fine_tune_pytorch_loop.ipynb`) -- custom `Dataset`, manual gradient accumulation and `optimizer.step()`, hand-written cosine LR, no Hugging Face `Trainer`. Benchmarked against the `Trainer` on identical data and config (`adamw_torch`, cosine schedule, grad-accum 8), the two loss curves track each other closely over 21 optimizer steps -- both start around 1.4--1.5 and trend down together, finishing at **0.50 (native)** and **0.35 (Trainer)**. The curves cross repeatedly, so that final-step gap sits within the run-to-run noise at this scale (~7 optimizer steps/epoch, plus shuffle order and 4-bit-kernel non-determinism) rather than a systematic difference -- confirming the hand-written loop reproduces the Trainer's training dynamics at the gradient-accumulation and optimizer-step level.
 
@@ -430,7 +438,8 @@ make cluster-down    # tear down
 |---|---|
 | Grounding (10 tickers, temp-0 judge) | **49% pre-fix → 0/84 unsupported in current eval** |
 | Cost/brief, hosted (exact API tokens + RAG estimate) | **$0.0316** (re-runnable: `make cost-report`) |
-| Grounding, hosted vs local-hybrid (9-ticker balanced A/B) | 86.2% vs 77.8% — expected regression, local stays default-off |
+| Grounding, hosted vs local-hybrid (9-ticker balanced A/B, Aug 2026) | 86.2% vs 77.8% — expected regression, local stays default-off |
+| Grounding, hosted vs in-cluster vLLM fine-tune (10-ticker A/B, 2026-09-03) | 3.03% (2/66) vs 12.31% (8/65) unsupported — local-model arm fails the 5% gate; ships default-off |
 | Cost/brief, hosted vs local-hybrid | $0.0316 vs $0.0321 — no measurable full-brief saving (Sonnet dominates) |
 | Local CPU serving (environment-limited: 2-core AVX2 laptop) | ~7.7 tok/s aggregate saturation; NOT comparable to GPU/hosted |
 
