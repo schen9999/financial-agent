@@ -110,6 +110,38 @@ is fully consistent with a true rate above 5% (and a mild fail with one
 below it). Distinguishing 3% from 5% with useful power needs claims in
 the several-hundreds — the motivation for the extended benchmark.
 
+## Judge validation — results pending
+
+The Sonnet judge (temperature 0) has had no human validation; until it
+does, every grounding number in this repo measures agreement with one
+model's reading, not ground truth. The protocol, built and awaiting
+labels:
+
+- **Sample**: `eval/judge_validation/sample.csv` — 50 claims,
+  stratified over the judge's labels (16 SUPPORTED / 3 UNSUPPORTED /
+  31 INFERENCE — all scarce strata kept in full, INFERENCE deliberately
+  heavy because that's where judge/human ambiguity lives), drawn from a
+  176-claim pool with `eval/label.py --seed 42`.
+- **Provenance, stated exactly**: the pool is the committed
+  `eval_findings/` per-claim artifacts of the **2026-08-24 local run**
+  (baseline + local-model arms, same judge and prompt as every DAG run).
+  It is *not* the Sep 3 `grounding-eval-6zwqf` run: that run's per-claim
+  findings were written inside the eval pods and never archived — a
+  known gap (the artifact-archival feature uploads aggregate/results
+  JSON only, not findings).
+- **Blinding**: the labeling CSV carries claim + retrieved context +
+  audited text only; the judge's verdict and the arm each claim came
+  from live in `sample_key.csv`, which is not opened until labeling is
+  done. Caveat disclosed: findings files do not persist the four
+  pre-written sections the judge additionally saw, so the human labels
+  against slightly less context.
+- **Analysis**: `eval/agreement.py` reports Cohen's kappa (3-class) and
+  the judge's precision/recall on UNSUPPORTED with human labels as
+  truth, all with Wilson 95% intervals.
+
+**Results: pending.** No human labels exist yet; no agreement number
+may be quoted until `eval/agreement.py` has run on the completed CSV.
+
 ## Boundary
 
 Argo owns eval orchestration; Celery owns request-time async. The eval
