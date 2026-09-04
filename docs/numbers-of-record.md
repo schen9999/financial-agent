@@ -22,6 +22,22 @@ recorded denominator, so no interval can honestly be attached to it.
 Quoting rules for the grounding number: always with the pre-fix context
 and the denominator — never a bare "0%".
 
+## Dated run records
+
+Quotable with their dates; each from a committed harness. These are run
+records, not headline numbers of record.
+
+| Record | Value | Source (committed harness) |
+|---|---|---|
+| Grounding A/B, hosted vs in-cluster vLLM fine-tune (2026-09-03, 10 tickers) | 3.03% (2/66, CI 0.8–10.4%) vs 12.31% (8/65, CI 6.4–22.5%) unsupported, Fisher p=0.0545; local-model arm failed the 5% gate, baseline passed | grounding-eval DAG runs (eval-methodology dated A/B); intervals `eval/stats.py` |
+| Grounding, hosted vs local-hybrid (Aug 2026, 9-ticker balanced) | 86.2% vs 77.8% | `grounding_check.py` A/B, benchmarks.md |
+| Cost, hosted vs hybrid | $0.0316 vs $0.0321 per brief — sections saving within run-to-run variance | `scripts/cost_report.py`, benchmarks.md |
+| First nightly gate fire (2026-08) | 5.62% unsupported, one NVDA outlier draft; re-measure 0/10 → variance, threshold kept at 5% | Argo run + NVDA re-measure, README red-night playbook |
+| Local CPU serving (environment-limited) | ~7.7 tok/s aggregate saturation; p50 13.3s→74.1s at concurrency 1→8; not comparable to GPU/hosted | `scripts/vllm_benchmark.py`, benchmarks.md |
+| Pipeline latency | 26.29s mean (~26s) per brief | `grounding_check.py` pipeline timing, Phase 0 re-measure |
+| K8s smoke test | 13/13 assertions | `scripts/k8s_smoke_test.sh` |
+| Test suite | 1078 lines, 70 tests (69 free + 1 credit-gated) | `python -m pytest tests/ --collect-only` |
+
 ## Retired
 
 | Retired number / claim | Why retired | Say instead |
