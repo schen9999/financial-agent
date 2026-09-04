@@ -439,7 +439,7 @@ make cluster-down    # tear down
 | Grounding (10 tickers, temp-0 judge) | **49% pre-fix → 0/84 unsupported in current eval** |
 | Cost/brief, hosted (exact API tokens + RAG estimate) | **$0.0316** (re-runnable: `make cost-report`) |
 | Grounding, hosted vs local-hybrid (9-ticker balanced A/B, Aug 2026) | 86.2% vs 77.8% — expected regression, local stays default-off |
-| Grounding, hosted vs in-cluster vLLM fine-tune (10-ticker A/B, 2026-09-03) | 3.03% (2/66) vs 12.31% (8/65) unsupported — local-model arm fails the 5% gate; ships default-off |
+| Grounding, hosted vs in-cluster vLLM fine-tune (10-ticker A/B, 2026-09-03) | 3.03% (2/66) vs 12.31% (8/65) unsupported — local-model arm fails the 5% gate; ships default-off. Fisher p=0.054, intervals overlap at this N — see [docs/eval-methodology.md](docs/eval-methodology.md) |
 | Cost/brief, hosted vs local-hybrid | $0.0316 vs $0.0321 — no measurable full-brief saving (Sonnet dominates) |
 | Local CPU serving (environment-limited: 2-core AVX2 laptop) | ~7.7 tok/s aggregate saturation; NOT comparable to GPU/hosted |
 

@@ -20,7 +20,7 @@ For each (ticker, arm) it records:
   - pipeline latency: retrieval + Haiku sections + Sonnet synthesis
     (shared data-fetch is excluded — it is network-bound and identical per arm)
 
-The Redis semantic cache is bypassed (BYPASS_CACHE=true) so no arm can return
+The Redis exact-key cache is bypassed (BYPASS_CACHE=true) so no arm can return
 another arm's cached brief; base stock/news/SEC data is fetched once per ticker
 and reused across arms so only the retrieval stage varies.
 
@@ -40,10 +40,12 @@ import argparse
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 
+from eval.stats import fisher_exact, format_rate_ci
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
-# Bypass the Redis semantic cache for the whole run BEFORE importing anything
+# Bypass the Redis exact-key cache for the whole run BEFORE importing anything
 # that touches it, so A/B arms never collide on a cached brief.
 os.environ["BYPASS_CACHE"] = "true"
 
@@ -345,6 +347,23 @@ def print_comparison(results: list[dict], arms: list[str]):
             flush=True,
         )
 
+    # Statistics: interval on every rate, exact test on every comparison —
+    # at ~65-85 claims per run, point estimates alone overstate what a
+    # single pass can resolve.
+    ref = "baseline" if "baseline" in arms else arms[0]
+    ref_agg = _aggregate(results, ref, only=balanced)
+    print(f"\n  Statistics (Wilson 95% CI; Fisher exact vs {ARMS[ref]['label']}):", flush=True)
+    for arm in arms:
+        a = _aggregate(results, arm, only=balanced)
+        line = f"    {ARMS[arm]['label']:<30} unsupported {format_rate_ci(a['unsupported'], a['total'])}"
+        if arm != ref and a["total"] and ref_agg["total"]:
+            p = fisher_exact(
+                ref_agg["unsupported"], ref_agg["total"] - ref_agg["unsupported"],
+                a["unsupported"], a["total"] - a["unsupported"],
+            )
+            line += f"  p={p:.4f}"
+        print(line, flush=True)
+
     # Headline delta: baseline vs rerank3 (final chunk count held constant).
     if "baseline" in arms and "rerank3" in arms:
         b = _aggregate(results, "baseline", only=balanced)
@@ -386,7 +405,7 @@ def main():
                              "and aggregate in a final step.")
     args = parser.parse_args()
 
-    print(f"BYPASS_CACHE={os.getenv('BYPASS_CACHE')} — Redis semantic cache disabled for this run.",
+    print(f"BYPASS_CACHE={os.getenv('BYPASS_CACHE')} — Redis exact-key cache disabled for this run.",
           flush=True)
     print(f"Arms: {', '.join(args.arms)}   Tickers: {', '.join(args.tickers)}\n", flush=True)
 

@@ -7,9 +7,13 @@ on OCI is written exactly as: to be measured in Phase 2.
 
 ## Current
 
+Every rate carries its Wilson 95% interval (computed by the committed
+`eval/stats.py`); the pre-fix 49% figure predates the harness and has no
+recorded denominator, so no interval can honestly be attached to it.
+
 | Metric | Number of record | Source (committed harness) |
 |---|---|---|
-| Grounding | 49% pre-fix → 0/84 unsupported in current eval | `grounding_check.py` via the Argo grounding-eval DAG (nightly + `make eval-run`) |
+| Grounding | 49% pre-fix → 0/84 unsupported in current eval (95% CI 0.0–4.4%) | `grounding_check.py` via the Argo grounding-eval DAG (nightly + `make eval-run`); interval: `eval/stats.py` |
 | Cost per brief | $0.0316 | `scripts/cost_report.py` (`make cost-report`) |
 | Cost per brief on OCI | to be measured in Phase 2 | same harness, re-run on OKE |
 | vLLM serving on the A10 (throughput/latency) | to be measured in Phase 2 | `scripts/vllm_benchmark.py` against the oke-gpu deployment |
@@ -26,7 +30,7 @@ and the denominator — never a bare "0%".
 | bare "0% unsupported" | drops the pre-fix baseline and the denominator | "49% pre-fix → 0/84 unsupported in current eval" |
 | "semantic cache" | the Redis cache is an exact-key cache (`research:{TICKER}`) | "exact-key cache per ticker" |
 | "Celery/Redis ran in production on ECS" | ECS reality was a single FastAPI container + RDS | "K8s is the first full-topology deployment" |
-| "vLLM serves/served the fine-tuned model" | not yet true — gated on the Phase 2 end-to-end run on the A10 | "vLLM manifests are committed; Ollama is the committed fallback backend" |
+| "vLLM will serve the model" as a pending claim | superseded — vLLM served the fine-tune on an A10 (Docker 2026-09-02, in-cluster k3s 2026-09-03) and the eval A/B against it failed the gate | "vLLM served the fine-tune on an A10; the in-cluster A/B was 3.03% (0.8–10.4%) vs 12.31% (6.4–22.5%), p=0.054 — ships default-off" (dated records in eval-methodology.md; OKE serving still ungated) |
 
 ## Framing rules that travel with the numbers
 

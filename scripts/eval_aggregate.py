@@ -26,6 +26,13 @@ import os
 import argparse
 import urllib.request
 from datetime import datetime, timezone
+from pathlib import Path
+
+# Repo root on sys.path so `eval.stats` imports when run as a script
+# (pods set PYTHONPATH=/app; this covers bare local runs too). stats is
+# stdlib-only, so the aggregate pod still starts fast.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from eval.stats import format_rate_ci, wilson_interval  # noqa: E402
 
 
 def maybe_upload_artifacts(summary, results, skipped):
@@ -101,6 +108,7 @@ def main():
     print(f"  tickers completed : {n}")
     print(f"  tickers skipped   : {len(skipped)}{' (' + ', '.join(skipped) + ')' if skipped else ''}")
     print(f"  unsupported rate  : {unsupported_pct:.2f}%   (gate: <= {args.max_unsupported_pct}%)")
+    print(f"  95% CI (Wilson)   : {format_rate_ci(uns, tot)}")
     print(f"  total claims      : {tot}   (gate: >= {args.min_claims})")
 
     failures = []
@@ -116,6 +124,7 @@ def main():
         "totals": {
             "supported": sup, "unsupported": uns, "inference": inf, "claims": tot,
             "unsupported_pct": round(unsupported_pct, 2),
+            "unsupported_ci_95": [round(x * 100, 2) for x in wilson_interval(uns, tot)],
             "mean_retrieval_s": round(mean_retr, 2), "mean_pipeline_s": round(mean_pipe, 2),
             "tickers_completed": n, "tickers_skipped": len(skipped),
         },

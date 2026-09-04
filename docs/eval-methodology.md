@@ -80,18 +80,35 @@ Same VM, same harness, ~40 minutes apart, 10/10 tickers each, no
 retries. vLLM traffic confirmed for the local arm: 20 POST
 `/v1/chat/completions` (2 trained sections × 10 tickers).
 
-| Arm | Workflow | Claims | Sup/Uns/Inf | Unsupported | Gate (≤5%) |
+| Arm | Workflow | Claims | Sup/Uns/Inf | Unsupported (Wilson 95% CI) | Gate (≤5%) |
 |---|---|---|---|---|---|
-| `baseline` (hosted) | grounding-eval-6zwqf | 66 | 51/2/13 | 3.03% | PASSED |
-| `local-model` (in-cluster vLLM fine-tune, 2 sections) | grounding-eval-local-dkghz | 65 | 48/8/9 | **12.31%** | **FAILED** |
+| `baseline` (hosted) | grounding-eval-6zwqf | 66 | 51/2/13 | 3.03% (0.8–10.4%) | PASSED |
+| `local-model` (in-cluster vLLM fine-tune, 2 sections) | grounding-eval-local-dkghz | 65 | 48/8/9 | **12.31%** (6.4–22.5%) | **FAILED** |
 
-The fine-tune serves in-cluster but does not pass the grounding gate on
-the two sections it owns. Consequence: `USE_LOCAL_MODEL` stays off in
-production config — hosted models remain the production path — and this
-A/B is the measured reason (consistent in direction with the Phase 0
-audit's decision to ship the local model off). These are dated run
-records from the committed harness; the numbers-of-record table is
-unchanged.
+Fisher exact (two-sided) on 2/66 vs 8/65: **p = 0.0545** (`eval/stats.py`).
+
+Read this with the statistics in view: the gate verdicts are operational
+facts (the run each arm is gated on passed/failed), but the intervals
+overlap and p = 0.054 — **this single A/B does not statistically separate
+the arms on its own.** The decision to ship `USE_LOCAL_MODEL` off rests
+on the direction agreeing across independent measurements (85.4% vs
+88.6% at training time, 86.2% vs 77.8% in the Aug 2026 re-measure, and
+this run), not on one 10-ticker pass. A larger benchmark to tighten
+these intervals is the documented next step. These are dated run
+records from the committed
+harness; the numbers-of-record table is unchanged.
+
+## Statistical power
+
+Every reported rate carries a Wilson 95% interval and every two-arm
+comparison a Fisher exact p-value (`eval/stats.py`, wired into
+`scripts/eval_aggregate.py` and `grounding_check.py`). The reason this
+is mandatory at the current scale: **N = 66 claims cannot resolve a 3%
+observed rate against a 5% gate** — the Wilson 95% interval for 2/66 is
+0.8–10.4%, which contains the gate on both sides, so a "pass" at 3.03%
+is fully consistent with a true rate above 5% (and a mild fail with one
+below it). Distinguishing 3% from 5% with useful power needs claims in
+the several-hundreds — the motivation for the extended benchmark.
 
 ## Boundary
 
