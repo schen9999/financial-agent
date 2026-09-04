@@ -501,13 +501,14 @@ regression.
 runs the production pipeline with token accounting on every LLM call (exact
 API-reported usage for the LangChain calls; tokenizer-estimated for the RAG-
 internal calls, labeled as such) and prices them from
-`scripts/model_prices.json`. Measured 2026-08-24 (3-ticker mean):
-**$0.0336/brief** = $0.0272 exact (4 Haiku sections + Sonnet synthesis) +
-$0.0064 RAG-internal estimate. Any cost number quoted for this project comes
-from re-running that harness — the earlier headline cost figure is historical
-(its harness was never committed; it matches the harness's exact-only portion
-almost to the cent, which suggests it never counted the RAG-internal calls
-either; the reconciliation is in `docs/PHASE0_AUDIT.md`).
+`scripts/model_prices.json`. The cost of record is **$0.0316/brief**
+([docs/numbers-of-record.md](docs/numbers-of-record.md), which also carries
+the dated run records, including an early 3-ticker run of this harness). Any
+cost number quoted for this project comes from re-running that harness — the
+earlier headline cost figure is historical (its harness was never committed;
+it matches the harness's exact-only portion almost to the cent, which
+suggests it never counted the RAG-internal calls either; the reconciliation
+is in `docs/PHASE0_AUDIT.md`).
 
 ---
 
