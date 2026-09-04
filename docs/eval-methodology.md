@@ -152,9 +152,23 @@ plausible fabricated claim inserted — 20 unique tagged fixtures
 committed (`eval/perturbed/fixtures.jsonl`, 7/7/6 across the three
 types). `eval/critic_check.py` runs the real judge over them:
 **recall 20/20 = 100% (95% CI 83.9–100%)**; precision vs the injection
-tags 71.4% (95% CI 52.9–84.7%) — a lower bound, since fixtures omit the
-pre-written sections the judge normally also sees, and one cascade
-fixture accounts for 5 of the 8 off-needle flags. A gated CI job
+tags 71.4% (95% CI 52.9–84.7%).
+
+Treat that precision as a **lower bound with real run-to-run noise**,
+for three audited reasons. (1) An off-needle flag can be a *legitimate
+cascade* of the injection: in the one case auditable from a same-day
+re-run, swapping NVDA's price to $283.50 made the untouched claim
+"sits in the upper-middle of its 52-week range" genuinely unsupported —
+the injected price exceeds the context's 52-week high — and the judge
+was right to flag it. (2) Fixtures omit the pre-written sections the
+judge normally also sees. (3) Even at temperature 0 the judge's claim
+segmentation varies between runs: the recorded run produced 8
+off-needle flags (5 on one fixture), while a re-run of those 4 fixtures
+on identical inputs reproduced all 4 on-needle detections but only 1 of
+the 8 off-needle flags. The recorded run's off-needle claim texts were
+not persisted (the tool now persists them), so the other 7 cannot be
+adjudicated — nothing beyond the audited case is claimed about them.
+Recall, the gated metric, reproduced exactly. A gated CI job
 (`.github/workflows/critic-injection.yml`) re-runs this on
 judge-adjacent changes and asserts recall ≥ 0.8; the bar does not move
 if it regresses — the number gets reported instead.

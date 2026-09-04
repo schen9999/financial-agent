@@ -64,7 +64,13 @@ def run_fixtures(fixtures: list[dict]) -> dict:
         detected += hit
         false_pos += extra
         rows.append({"id": fx["id"], "type": fx["type"], "detected": hit,
-                     "extra_flags": extra, "unsupported_flags": len(unsupported)})
+                     "extra_flags": extra, "unsupported_flags": len(unsupported),
+                     # keep the texts — an off-needle flag is unauditable
+                     # without them (learned 2026-09-04)
+                     "unsupported_claims": [
+                         {"text": c, "matches_needle": needle_in(fx["needle"], c)}
+                         for c in unsupported
+                     ]})
         print(f"  fixture {fx['id']:>2} [{fx['type']:<12}] "
               f"{'DETECTED' if hit else 'MISSED  '} "
               f"(+{extra} flags off-needle)", flush=True)
