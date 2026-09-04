@@ -143,6 +143,22 @@ labels:
 **Results: pending.** No human labels exist yet; no agreement number
 may be quoted until `eval/agreement.py` has run on the completed CSV.
 
+### Injected-failure check (measured 2026-09-04)
+
+Orthogonal to human labels: `eval/perturb.py` builds fixtures with
+*known* ground truth from committed run artifacts — a supported number
+swapped in the audited text, the supporting context lines dropped, or a
+plausible fabricated claim inserted — 20 unique tagged fixtures
+committed (`eval/perturbed/fixtures.jsonl`, 7/7/6 across the three
+types). `eval/critic_check.py` runs the real judge over them:
+**recall 20/20 = 100% (95% CI 83.9–100%)**; precision vs the injection
+tags 71.4% (95% CI 52.9–84.7%) — a lower bound, since fixtures omit the
+pre-written sections the judge normally also sees, and one cascade
+fixture accounts for 5 of the 8 off-needle flags. A gated CI job
+(`.github/workflows/critic-injection.yml`) re-runs this on
+judge-adjacent changes and asserts recall ≥ 0.8; the bar does not move
+if it regresses — the number gets reported instead.
+
 ## Boundary
 
 Argo owns eval orchestration; Celery owns request-time async. The eval
