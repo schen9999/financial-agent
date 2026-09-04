@@ -72,5 +72,5 @@ GPU/hosted) and 86.2% vs 77.8% grounding on a balanced 9-ticker suite.
 | 3.03% (2/66) vs 12.31% (8/65) unsupported — hosted vs in-cluster vLLM fine-tune | grounding-eval DAG runs 2026-09-03, docs/eval-methodology.md |
 | 5.62% gate failure → variance | Argo run + NVDA re-measure (0/10), README |
 | ~7.7 tok/s aggregate; p50 13.3s→74.1s (c=1→8) | scripts/vllm_benchmark.py, benchmarks.md |
-| 13/13 smoke assertions; 70 pytest tests (69 free + 1 credit-gated) | scripts/k8s_smoke_test.sh output; pytest --collect-only |
+| 13/13 smoke assertions; 72 pytest tests (71 free + 1 credit-gated) | scripts/k8s_smoke_test.sh output; pytest --collect-only |
 | ~26s pipeline latency (26.29s mean) | Phase 0 re-measure |

@@ -36,7 +36,7 @@ records, not headline numbers of record.
 | Local CPU serving (environment-limited) | ~7.7 tok/s aggregate saturation; p50 13.3s→74.1s at concurrency 1→8; not comparable to GPU/hosted | `scripts/vllm_benchmark.py`, benchmarks.md |
 | Pipeline latency | 26.29s mean (~26s) per brief | `grounding_check.py` pipeline timing, Phase 0 re-measure |
 | K8s smoke test | 13/13 assertions | `scripts/k8s_smoke_test.sh` |
-| Test suite | 1078 lines, 70 tests (69 free + 1 credit-gated) | `python -m pytest tests/ --collect-only` |
+| Test suite | 1121 lines, 72 tests (71 free + 1 credit-gated) | `python -m pytest tests/ --collect-only` |
 
 ## Retired
 
