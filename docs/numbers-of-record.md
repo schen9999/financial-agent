@@ -15,7 +15,7 @@ recorded denominator, so no interval can honestly be attached to it.
 |---|---|---|
 | Grounding | 49% pre-fix → 0/84 unsupported in current eval (95% CI 0.0–4.4%) | `grounding_check.py` via the Argo grounding-eval DAG (nightly + `make eval-run`); interval: `eval/stats.py` |
 | Cost per brief | $0.0316 | `scripts/cost_report.py` (`make cost-report`) |
-| Critic recall on injected failures | 20/20 = 100% (95% CI 83.9–100%), measured 2026-09-04; precision vs injection tags 71.4% (95% CI 52.9–84.7%) — a lower bound with run-to-run noise: the one auditable off-needle flag was a legitimate cascade of the injection, and flag counts vary between temp-0 runs (details: eval-methodology, "Injected-failure check") | `eval/perturb.py` fixtures + `eval/critic_check.py`; re-runnable in CI (`critic-injection.yml`, asserts recall ≥ 0.8) |
+| Critic recall on injected failures | 20/20 = 100% (95% CI 83.9–100%) on both runs (2026-09-04, runs 1 and 2). Run 2, with every flag persisted and adjudicated: raw precision vs injection tags 20/24 = 83.3% (95% CI 64.1–93.3%); **adjudicated precision 24/24 = 100% (95% CI 86.2–100%)** — all 4 off-needle flags were genuinely unsupported (3 injection cascades, 1 pre-existing), 0 false positives (adjudication table: eval-methodology, "Injected-failure check") | `eval/perturb.py` fixtures + `eval/critic_check.py`; re-runnable in CI (`critic-injection.yml`, asserts recall ≥ 0.8) |
 | Cost per brief on OCI | to be measured in Phase 2 | same harness, re-run on OKE |
 | vLLM serving on the A10 (throughput/latency) | to be measured in Phase 2 | `scripts/vllm_benchmark.py` against the oke-gpu deployment |
 

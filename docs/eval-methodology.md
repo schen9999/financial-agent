@@ -150,25 +150,26 @@ Orthogonal to human labels: `eval/perturb.py` builds fixtures with
 swapped in the audited text, the supporting context lines dropped, or a
 plausible fabricated claim inserted — 20 unique tagged fixtures
 committed (`eval/perturbed/fixtures.jsonl`, 7/7/6 across the three
-types). `eval/critic_check.py` runs the real judge over them:
-**recall 20/20 = 100% (95% CI 83.9–100%)**; precision vs the injection
-tags 71.4% (95% CI 52.9–84.7%).
+types). Two full runs of `eval/critic_check.py` (both 2026-09-04):
+**recall 20/20 = 100% (95% CI 83.9–100%) on both.** Run 1 persisted
+only counts (raw precision vs tags 71.4%, flags unauditable); run 2
+persisted every flag and all 4 off-needle flags were adjudicated
+against their fixture contexts:
 
-Treat that precision as a **lower bound with real run-to-run noise**,
-for three audited reasons. (1) An off-needle flag can be a *legitimate
-cascade* of the injection: in the one case auditable from a same-day
-re-run, swapping NVDA's price to $283.50 made the untouched claim
-"sits in the upper-middle of its 52-week range" genuinely unsupported —
-the injected price exceeds the context's 52-week high — and the judge
-was right to flag it. (2) Fixtures omit the pre-written sections the
-judge normally also sees. (3) Even at temperature 0 the judge's claim
-segmentation varies between runs: the recorded run produced 8
-off-needle flags (5 on one fixture), while a re-run of those 4 fixtures
-on identical inputs reproduced all 4 on-needle detections but only 1 of
-the 8 off-needle flags. The recorded run's off-needle claim texts were
-not persisted (the tool now persists them), so the other 7 cannot be
-adjudicated — nothing beyond the audited case is claimed about them.
-Recall, the gated metric, reproduced exactly. A gated CI job
+| Fixture | Off-needle claim | Evidence vs fixture context | Class |
+|---|---|---|---|
+| 0 META (swap 559.02→814.91) | "trades meaningfully below its 52-week high of $790.80" | high 790.8 is in context, but the injected price 814.91 exceeds it | cascade |
+| 2 NVDA (insert) | "Supply chain concentration around TSMC…" | no TSMC/supply-chain/foundry mention anywhere in the (unperturbed) context | pre-existing |
+| 9 NVDA (swap 208.48→283.50) | "sit in the upper-middle of its 52-week range" | injected price exceeds the 52-week high of 236.54 | cascade |
+| 16 NVDA (drop 208.48 lines) | "sit in the upper-middle of its 52-week range" | the current-price line was dropped; range position is unverifiable | cascade |
+
+Run 2: raw precision vs the injection tags 20/24 = 83.3% (95% CI
+64.1–93.3%); **adjudicated precision — cascades and pre-existing are
+true unsupported claims — 24/24 = 100% (95% CI 86.2–100%), zero false
+positives.** The judge's claim segmentation still varies between
+temperature-0 runs (8, then 4 off-needle flags on identical inputs), so
+per-run flag counts are noisy even though the gated metric, recall,
+reproduced exactly. A gated CI job
 (`.github/workflows/critic-injection.yml`) re-runs this on
 judge-adjacent changes and asserts recall ≥ 0.8; the bar does not move
 if it regresses — the number gets reported instead.
