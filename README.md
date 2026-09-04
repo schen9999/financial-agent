@@ -533,22 +533,26 @@ Tools exposed:
 **Run it**
 
 ```bash
-pip install "mcp[cli]==1.28.0"      # already in requirements.txt
+pip install -r requirements.txt     # environment (single source of truth)
+pip install -e .                    # registers the financial-agent-mcp command
 
-mcp dev mcp_server.py               # launches the MCP Inspector over stdio (best for a quick demo)
-python mcp_server.py                # raw stdio transport (what Claude Desktop launches)
-MCP_TRANSPORT=streamable-http python mcp_server.py   # HTTP transport instead of stdio
+financial-agent-mcp                 # stdio transport (what Claude Desktop launches)
+financial-agent-mcp --http          # streamable-HTTP on MCP_HOST:MCP_PORT instead
+mcp dev mcp_server.py               # MCP Inspector over stdio (best for a quick demo)
 ```
 
-**Connect Claude Desktop** -- add to `claude_desktop_config.json` (use absolute
-paths to this repo's venv Python and `mcp_server.py`), then restart Claude Desktop:
+(`MCP_TRANSPORT=streamable-http` still works with no flags — the Kubernetes
+deployment sets it and is unchanged.)
+
+**Connect Claude Desktop** -- add to `claude_desktop_config.json` (use the
+absolute path to the entrypoint in this repo's venv), then restart Claude
+Desktop:
 
 ```json
 {
   "mcpServers": {
     "financial-research-agent": {
-      "command": "/abs/path/financial-agent/.venv/Scripts/python.exe",
-      "args": ["/abs/path/financial-agent/mcp_server.py"]
+      "command": "/abs/path/financial-agent/.venv/Scripts/financial-agent-mcp.exe"
     }
   }
 }
