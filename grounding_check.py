@@ -41,6 +41,7 @@ from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 
 from eval.stats import fisher_exact, format_rate_ci
+from eval.runtime_guards import check_fatal_api_error
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -64,9 +65,11 @@ from agent.core import (
     _synthesis_prompt,
 )
 from agent.grounding import (  # single source of truth for the judge
+    JUDGE_SYSTEM,
     extract_exec_and_outlook,
     get_judge_llm,
     grade_brief,
+    judge_user_prompt,
 )
 
 ALL_TICKERS = ["AAPL", "NVDA", "JPM", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "V", "WMT"]
@@ -118,6 +121,23 @@ def _est_tokens(text: str) -> int:
     return max(1, len(text) // 4)
 
 
+# Full-run cost estimate: chars/4 tokens priced from the same committed table
+# the cost harness uses (scripts/model_prices.json). Labeled an estimate in
+# all output — scripts/cost_report.py (exact API usage) stays the cost of
+# record; this line exists so no eval run burns credits silently.
+_PRICES = None
+
+
+def _price_est(model: str, in_tok: int, out_tok: int) -> float:
+    global _PRICES
+    if _PRICES is None:
+        _PRICES = json.loads(
+            (Path(__file__).parent / "scripts" / "model_prices.json")
+            .read_text(encoding="utf-8"))["models"]
+    r = _PRICES[model]
+    return in_tok / 1e6 * r["input_per_mtok"] + out_tok / 1e6 * r["output_per_mtok"]
+
+
 def _brief_haiku_cost(arm: str, company: str, ticker: str,
                       section_contexts: dict, sections: list[str]) -> float:
     """Estimated Haiku $/brief: only sections actually served by Haiku cost
@@ -149,6 +169,10 @@ def _retry(fn, *args, _attempts=4, _base=3.0, **kwargs):
         try:
             return fn(*args, **kwargs)
         except Exception as e:
+            # Non-retryable: a credit-balance 400 raises SystemExit here —
+            # fail the run loudly instead of burning retries into a silent
+            # per-ticker skip (measured failure mode, 2026-09-03).
+            check_fatal_api_error(e)
             if i == _attempts - 1:
                 raise
             wait = _base * (2 ** i)
@@ -270,6 +294,18 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
 
     _save_findings(ticker, arm, source_context, exec_and_outlook, grade.findings)
 
+    # Estimated total spend for this (ticker, arm): Haiku sections (existing
+    # estimate) + Sonnet synthesis + Sonnet judge, chars/4 tokens priced from
+    # scripts/model_prices.json. Excludes retried calls.
+    est_cost = haiku_cost
+    est_cost += _price_est("claude-sonnet-4-6",
+                           _est_tokens(_synthesis_prompt(ticker, company, sections)),
+                           _est_tokens(brief))
+    est_cost += _price_est("claude-sonnet-4-6",
+                           _est_tokens(JUDGE_SYSTEM) + _est_tokens(
+                               judge_user_prompt(source_context, section_block, exec_and_outlook)),
+                           _est_tokens(grade.findings))
+
     counts = {
         "supported": grade.supported, "unsupported": grade.unsupported,
         "inference": grade.inference, "total": grade.total,
@@ -287,6 +323,7 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
     return {
         "ticker": ticker, "arm": arm,
         "retrieval_s": retrieval_s, "pipeline_s": pipeline_s, "haiku_cost": haiku_cost,
+        "est_cost": round(est_cost, 5),
         "inference_claims": grade.inference_claims,
         **counts,
     }

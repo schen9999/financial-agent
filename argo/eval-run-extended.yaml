@@ -9,7 +9,8 @@
 # committed price table + chars/4 token estimates over committed judge
 # artifacts (underestimates slightly — see the runbook):
 #   ~$1.41 judge (80 Sonnet calls) + ~$2.53 generation ≈ $4.
-# A low balance does not fail loudly — it surfaces as skipped tickers.
+# A low balance fails the run loudly (eval/runtime_guards.py) instead of
+# surfacing as skipped tickers, and the aggregate prints an estimated cost.
 #
 # Submit: make eval-run EVAL_RUN_FILE=argo/eval-run-extended.yaml
 apiVersion: argoproj.io/v1alpha1

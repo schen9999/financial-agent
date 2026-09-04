@@ -201,11 +201,15 @@ governs the app services only. The switches are therefore:
 
 **Credits warning — every eval run burns Anthropic credits**, in every
 arm: the LLM-as-judge is Sonnet, and Haiku generates sections (all four
-in `baseline`, two even in `local-model`). A low balance does **not**
-fail loudly: the Anthropic 400 ("credit balance is too low") exhausts
-the per-ticker retry and surfaces as **skipped tickers**, which fail
-the gate via the skipped-tickers rule — indistinguishable at a glance
-from a data problem. On mass skips, check the credit balance first.
+in `baseline`, two even in `local-model`). Two mitigations are wired
+in: the aggregate prints an **estimated per-run cost** (chars/4 tokens
+priced from `scripts/model_prices.json`, labeled an estimate — the cost
+of record stays `scripts/cost_report.py`), and a low balance now
+**fails the run loudly** — `eval/runtime_guards.py` raises on the
+Anthropic "credit balance" 400 instead of letting it exhaust the
+per-ticker retry and surface as skipped tickers (the measured failure
+mode of 2026-09-03, where mass skips were indistinguishable at a
+glance from a data problem).
 
 **Extended benchmark — gated, NOT YET SUBMITTED.**
 `argo/eval-run-extended.yaml` runs 40 tickers

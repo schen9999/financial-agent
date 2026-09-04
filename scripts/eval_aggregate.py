@@ -110,6 +110,11 @@ def main():
     print(f"  unsupported rate  : {unsupported_pct:.2f}%   (gate: <= {args.max_unsupported_pct}%)")
     print(f"  95% CI (Wilson)   : {format_rate_ci(uns, tot)}")
     print(f"  total claims      : {tot}   (gate: >= {args.min_claims})")
+    est_costs = [r["est_cost"] for r in results if "est_cost" in r]
+    if est_costs:
+        print(f"  est. run cost     : ${sum(est_costs):.4f}   "
+              f"(chars/4 tokens priced from scripts/model_prices.json; "
+              f"excludes retries — cost of record stays scripts/cost_report.py)")
 
     failures = []
     if unsupported_pct > args.max_unsupported_pct:
