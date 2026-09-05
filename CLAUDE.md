@@ -44,7 +44,7 @@ Migrate to OCI for a hiring demo (deadline: demo Fri Sep 18, 2026):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The 1121-line pytest suite (72 tests; 71 free + 1 credit-gated) must pass
+3. The 1222-line pytest suite (80 tests; 79 free + 1 credit-gated) must pass
    on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
@@ -136,8 +136,15 @@ Phase 3 — demo polish:
   benchmarking, fresh eval run for current numbers.
 
 ## Documentation honesty rules (apply to ALL written output: docs, READMEs, comments)
-- Grounding number of record: "49% pre-fix -> 0/84 unsupported in current eval."
-  Never a bare 0%.
+- Grounding number of record: "49% pre-fix -> 0/84 unsupported in current eval
+  (judge v1)." Never a bare 0%.
+- Every cited unsupported rate must name the judge prompt version that
+  produced it (agent/grounding.py JUDGE_PROMPT_VERSION; logged in every eval
+  summary). All judge-v1 rates carry the recall caveat: v1 recall on
+  UNSUPPORTED measured 1/9 against human labels (2026-09-04), so v1 rates are
+  lower bounds. Judge v2 is unvalidated until the held-out sample from the
+  40-ticker run is labeled — the 50-claim sample is a development set and
+  cannot validate v2.
 - Cost of record: $0.0316/brief from the committed harness. $0.0269 is retired.
   "54% cost reduction" is retired.
 - The Redis cache is exact-key per ticker. Never "semantic cache."
