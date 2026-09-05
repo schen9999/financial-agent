@@ -12,7 +12,8 @@ from pinecone import Pinecone, ServerlessSpec
 from dotenv import load_dotenv
 
 from agent.tracing import traceable
-from agent.tools.sec_common import SEC_USER_AGENT, clean_filing_html, skip_front_matter
+from agent.tools.sec_common import (SEC_USER_AGENT, clean_filing_html,
+                                    lookup_cik, skip_front_matter)
 from agent.tools.reranker import (
     reranking_enabled,
     rerank_candidates,
@@ -67,16 +68,21 @@ def _fetch_filing_text(ticker: str, form_type: str) -> str | None:
     headers = {"User-Agent": SEC_USER_AGENT}
 
     try:
-        response = requests.get(
-            f"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&ticker={ticker}&type={form_type}&dateb=&owner=include&count=1&output=atom",
-            headers=headers
-        )
-        text = response.text
-        cik_start = text.find("CIK=") + 4
-        cik_end = text.find("&", cik_start)
-        if cik_start <= 4:
-            return None
-        cik = text[cik_start:cik_end].zfill(10)
+        # Primary: authoritative mapping (shared, cached); the browse-edgar
+        # scrape survives as fallback only — it fails under EDGAR throttling
+        # (the MSFT failure surfaced by the judge-validation labeling).
+        cik = lookup_cik(ticker)
+        if not cik:
+            response = requests.get(
+                f"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&ticker={ticker}&type={form_type}&dateb=&owner=include&count=1&output=atom",
+                headers=headers
+            )
+            text = response.text
+            cik_start = text.find("CIK=") + 4
+            cik_end = text.find("&", cik_start)
+            if cik_start <= 4:
+                return None
+            cik = text[cik_start:cik_end].zfill(10)
 
         response = requests.get(
             f"https://data.sec.gov/submissions/CIK{cik}.json",

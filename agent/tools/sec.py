@@ -5,6 +5,7 @@ from agent.tools.sec_common import (
     SEC_USER_AGENT,
     SEC_TIMEOUT,
     clean_filing_html,
+    lookup_cik,
     skip_front_matter,
 )
 
@@ -35,7 +36,16 @@ def get_sec_filings(ticker: str) -> dict:
 
 
 def _get_cik(ticker: str) -> str | None:
-    """Looks up the SEC CIK number for a given ticker."""
+    """Looks up the SEC CIK number for a given ticker.
+
+    Primary: the authoritative company_tickers.json mapping (sec_common.
+    lookup_cik — deterministic, cached). The browse-edgar scrape and the
+    full-text-search guess below survive only as fallbacks for tickers the
+    mapping misses."""
+    cik = lookup_cik(ticker)
+    if cik:
+        return cik
+
     headers = {"User-Agent": SEC_USER_AGENT}
 
     try:

@@ -6,6 +6,8 @@ Keeping these in one place avoids drift between the two SEC code paths.
 """
 import re
 
+import requests
+
 # SEC fair-access policy requires a real contact in the User-Agent so EDGAR can
 # reach the operator about automated traffic; a fake address can get the client
 # rate-limited or blocked. See https://www.sec.gov/os/webmaster-faq#developers.
@@ -14,6 +16,39 @@ SEC_USER_AGENT = "FinancialAgent your-name your-email@example.com"
 
 # Default timeout (seconds) for every SEC HTTP request.
 SEC_TIMEOUT = 15
+
+# ticker -> zero-padded CIK, from SEC's authoritative mapping file. Fetched
+# once per process on first use; None means "not fetched yet / fetch failed,
+# retry next call" (a failed fetch is never cached as an empty map).
+_cik_map: dict[str, str] | None = None
+
+
+def lookup_cik(ticker: str) -> str | None:
+    """CIK for a ticker via https://www.sec.gov/files/company_tickers.json.
+
+    This is the documented, authoritative mapping — used as the PRIMARY
+    lookup because scraping browse-edgar HTML proved flaky under EDGAR
+    throttling (MSFT lookups failed during the 2026-08-24 eval run, which is
+    also why MSFT was the skipped ticker in the 9-ticker balanced A/B).
+    Returns None when the ticker is unknown or the mapping cannot be fetched;
+    callers keep their scrape fallbacks for that case.
+    """
+    global _cik_map
+    if _cik_map is None:
+        try:
+            resp = requests.get(
+                "https://www.sec.gov/files/company_tickers.json",
+                headers={"User-Agent": SEC_USER_AGENT},
+                timeout=SEC_TIMEOUT,
+            )
+            resp.raise_for_status()
+            _cik_map = {
+                v["ticker"].upper(): str(v["cik_str"]).zfill(10)
+                for v in resp.json().values()
+            }
+        except Exception:
+            return None
+    return _cik_map.get(ticker.strip().upper())
 
 
 def clean_filing_html(html: str) -> str:
