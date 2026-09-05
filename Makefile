@@ -84,6 +84,10 @@ argo-deploy: ## Apply eval workflow RBAC, WorkflowTemplate, and nightly CronWork
 # Override to submit a different one-shot Workflow, e.g. the local-model arm:
 #   make eval-run EVAL_RUN_FILE=argo/eval-run-local.yaml
 EVAL_RUN_FILE ?= argo/eval-run.yaml
+# Poll pacing: ceiling = activeDeadlineSeconds + margin. Overridable so the
+# guard paths can be exercised in seconds with a fake kubectl.
+EVAL_POLL_MARGIN ?= 600
+EVAL_POLL_INTERVAL ?= 20
 
 eval-run: ## Submit the grounding eval workflow now and follow it to completion
 	@WF=$$(kubectl -n $(NAMESPACE) create -f $(EVAL_RUN_FILE) -o name | sed 's|.*/||'); \
@@ -95,8 +99,8 @@ eval-run: ## Submit the grounding eval workflow now and follow it to completion
 	DEADLINE=$$(kubectl -n $(NAMESPACE) get workflow $$WF -o jsonpath='{.spec.activeDeadlineSeconds}' 2>/dev/null); \
 	test -n "$$DEADLINE" || DEADLINE=$$(kubectl -n $(NAMESPACE) get workflow $$WF -o jsonpath='{.status.storedWorkflowTemplateSpec.activeDeadlineSeconds}' 2>/dev/null); \
 	test -n "$$DEADLINE" || DEADLINE=3600; \
-	MAX=$$((DEADLINE + 600)); ELAPSED=0; \
-	echo "polling up to $$MAX s (activeDeadlineSeconds=$$DEADLINE + 600s margin)"; \
+	MAX=$$((DEADLINE + $(EVAL_POLL_MARGIN))); ELAPSED=0; \
+	echo "polling up to $$MAX s (activeDeadlineSeconds=$$DEADLINE + $(EVAL_POLL_MARGIN)s margin)"; \
 	while :; do \
 		phase=$$(kubectl -n $(NAMESPACE) get workflow $$WF -o jsonpath='{.status.phase}' 2>/dev/null); \
 		prog=$$(kubectl -n $(NAMESPACE) get workflow $$WF -o jsonpath='{.status.progress}' 2>/dev/null); \
@@ -106,7 +110,7 @@ eval-run: ## Submit the grounding eval workflow now and follow it to completion
 			echo "ERROR: exceeded max poll duration ($$MAX s) with phase='$$phase' — aborting the follow; the workflow (if any) keeps running in-cluster."; \
 			exit 1; \
 		fi; \
-		sleep 20; ELAPSED=$$((ELAPSED + 20)); \
+		sleep $(EVAL_POLL_INTERVAL); ELAPSED=$$((ELAPSED + $(EVAL_POLL_INTERVAL))); \
 	done; \
 	echo; echo "=== aggregate step output ==="; \
 	AGG=$$(kubectl -n $(NAMESPACE) get pods -l workflows.argoproj.io/workflow=$$WF -o name | grep aggregate | head -1); \
