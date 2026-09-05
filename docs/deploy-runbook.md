@@ -84,7 +84,7 @@ after commit 4032e73 the vLLM deployment rolled out green on k3s;
 `/v1/models` on NodePort 30880 lists `financial-lora`; `nvidia-smi`
 confirms serving pinned to one A10 (~21 GiB used on the single granted
 device, the other idle). `make vm-eval` then ran the full grounding DAG
-on the VM to `Succeeded`: 10/10 tickers, 66 claims, 3.03% unsupported —
+on the VM to `Succeeded`: 10/10 tickers, 66 claims, 3.03% unsupported (judge v1) —
 GATE PASSED (≤ 5%, ≥ 30 claims). That run used hosted models via the
 existing harness — it is not a numbers-of-record re-run, and no eval
 has yet run against vLLM itself.
@@ -156,7 +156,7 @@ has yet run against vLLM itself.
    is a multi-GB CUDA image. Optional pre-pull to front-load that wait:
    `sudo k3s crictl pull docker.io/vllm/vllm-openai:v0.10.2`.
 7. **[EXECUTED 2026-09-03 — workflow Succeeded on the VM: 10/10
-   tickers, 66 claims, 3.03% unsupported, GATE PASSED (hosted models;
+   tickers, 66 claims, 3.03% unsupported (judge v1), GATE PASSED (hosted models;
    not a numbers-of-record re-run)]** `make vm-eval` — the grounding
    gate must pass on the VM.
 8. **[EXECUTED 2026-09-03 — /v1/models answered through the tunnel and
@@ -171,12 +171,21 @@ has yet run against vLLM itself.
    `kubectl -n financial-agent port-forward svc/mcp 30800:8000` and add
    `-L 31800:localhost:30800` to the tunnel.
 
+**Stale-image warning (eval-rigor changes).** The `eval-rigor` branch
+changed code the eval pods run — `agent/grounding.py` (judge v2),
+`agent/tools/{rag,sec,sec_common}.py` (Item 1A anchoring, CIK lookup),
+`grounding_check.py`, `scripts/eval_aggregate.py`, and the `eval/`
+package. After pulling it on the VM, the full new-image sequence is
+`make vm-images`, `make vm-up`, `make argo-deploy ARGO_OVERLAY=k3s` —
+all three **before any `make eval-run`**, or the pods run the old code
+(and, without the argo-deploy, the old WorkflowTemplate).
+
 **Eval against the in-cluster vLLM — EXECUTED 2026-09-03, GATE FAILED.**
 `grounding-eval-local-dkghz` ran the `local-model` arm on the VM with
 vLLM confirmed serving (20 POST `/v1/chat/completions`, 2 sections × 10
 tickers, no retries): 10/10 tickers, 65 claims, 48 sup / 8 uns / 9 inf,
-**12.31% unsupported vs the 5% gate — FAILED**. The same-day baseline
-(`grounding-eval-6zwqf`, ~40 min earlier, same VM) passed at 3.03%.
+**12.31% unsupported (judge v1) vs the 5% gate — FAILED**. The same-day baseline
+(`grounding-eval-6zwqf`, ~40 min earlier, same VM) passed at 3.03% (judge v1).
 See the dated A/B in eval-methodology.md; the fine-tune serves but does
 not clear the gate on its two sections, so `USE_LOCAL_MODEL` stays off.
 (Process note: that run's `make argo-deploy` applied the **kind** argo
@@ -201,11 +210,78 @@ governs the app services only. The switches are therefore:
 
 **Credits warning — every eval run burns Anthropic credits**, in every
 arm: the LLM-as-judge is Sonnet, and Haiku generates sections (all four
-in `baseline`, two even in `local-model`). A low balance does **not**
-fail loudly: the Anthropic 400 ("credit balance is too low") exhausts
-the per-ticker retry and surfaces as **skipped tickers**, which fail
-the gate via the skipped-tickers rule — indistinguishable at a glance
-from a data problem. On mass skips, check the credit balance first.
+in `baseline`, two even in `local-model`). Two mitigations are wired
+in: the aggregate prints an **estimated per-run cost** (chars/4 tokens
+priced from `scripts/model_prices.json`, labeled an estimate — the cost
+of record stays `scripts/cost_report.py`), and a low balance now
+**fails the run loudly** — `eval/runtime_guards.py` raises on the
+Anthropic "credit balance" 400 instead of letting it exhaust the
+per-ticker retry and surface as skipped tickers (the measured failure
+mode of 2026-09-03, where mass skips were indistinguishable at a
+glance from a data problem).
+
+**Extended benchmark — gated, NOT YET SUBMITTED.**
+`argo/eval-run-extended.yaml` runs 40 tickers
+(`eval/tickers_extended.txt`: large-cap, volatile-earnings, small-cap,
+clinical-stage biotech, non-US ADRs — deliberately stressing data
+coverage; a test keeps the two files in sync). Cost estimate for the
+**two-arm 40-ticker A/B**, derived from the committed price table
+(`scripts/model_prices.json`) and chars/4 token estimates over the
+committed judge artifacts — the same labeled-estimate method the cost
+harness uses for its non-exact layer; it slightly **under**estimates
+because findings artifacts omit the pre-written sections the judge also
+reads: **~$1.41 judge** (80 Sonnet calls, ~2,190 in / ~740 out tokens
+each) **+ ~$2.53 generation** (80 briefs × $0.0316) **≈ $4 total**.
+**Post-retrieval-fix re-estimate (2026-09-04):** with real Item 1A
+prose in contexts the cost harness measures **$0.0364/brief** (fresh
+3-ticker run) → generation ~$2.91; the judge per-call estimate is
+retained (~$1.41 for 80 calls) because its input components are
+size-bounded — the 2,000-char SEC summary window and model-output-
+bounded RAG answers don't grow with richer source text — giving
+**≈ $4.30 total** for the two-arm run.
+
+**Cost-of-record re-measure (pending — do not run until decided):**
+the $0.0316 record was measured on the harness default, a 3-ticker
+mean over AAPL, NVDA, JPM (benchmarks.md pins the run via its
+per-ticker token evidence). The like-for-like re-measure on the fixed
+pipeline, same N and tickers:
+
+```bash
+python scripts/cost_report.py --tickers AAPL NVDA JPM --json-out cost_record_post_fix.json
+```
+Submit only after topping up credits:
+`make eval-run EVAL_RUN_FILE=argo/eval-run-extended.yaml` (baseline
+pass; the local-model pass is a second submission overriding `arms`).
+The workflow raises `activeDeadlineSeconds` to 3h — 40 tickers at
+parallelism 2 will not fit the template's 1h default.
+
+## Findings capture — after any eval run
+
+Every eval pod and the aggregate print a base64 tar of
+`/app/eval_findings` to stdout under `===EVAL_FINDINGS_TGZ_BEGIN/END===`
+markers — the per-claim judge evidence (metadata, retrieved context,
+judge-input sections, audited text, findings). Capture it while the
+pods still exist, extract, and commit:
+
+```bash
+kubectl -n financial-agent logs -l workflows.argoproj.io/workflow=<wf> \
+    --prefix --tail=-1 > eval/runs/<wf>.log
+python scripts/extract_findings.py --log eval/runs/<wf>.log --out eval/runs/<wf>/
+git add eval/runs/<wf>.log eval/runs/<wf>/   # commit both
+```
+
+The label-selector capture takes every pod's dump — required on kind,
+where the findings volume is a per-pod emptyDir; on k3s the volume is a
+shared hostPath (`/home/ubuntu/eval-findings/<wf>` on the VM), so the
+aggregate pod's dump alone is already complete and the hostPath is a
+second copy. Per-claim rows then come from
+`eval/parse_run_log.py --findings-dir eval/runs/<wf>/`.
+
+Emergency fallback if the logs are gone too (used 2026-09-05 to recover
+9j2dj): deleted pods' written files survive in containerd snapshot upper
+layers — on the node, `find` the containerd root (k3s:
+`/var/lib/rancher/k3s/agent/containerd`) under
+`io.containerd.snapshotter.v1.overlayfs/snapshots` for `eval_findings`.
 
 ## OKE (OCI) — Phase 2
 

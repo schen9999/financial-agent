@@ -2,6 +2,9 @@
 
 Rules these follow: only what was built and measured in this repo, real numbers
 only, each defensible under a deep-dive. Supporting evidence noted under each.
+All unsupported rates below are judge v1; v1 recall on UNSUPPORTED measured
+1/9 against human labels (2026-09-04), so they are lower bounds
+(docs/eval-methodology.md).
 
 ---
 
@@ -21,7 +24,7 @@ Celery task in a full deployment, and exact-key cache hit/miss isolation
 **2.** Converted an LLM-as-judge grounding evaluation into an Argo Workflows
 DAG — per-ticker fan-out at bounded parallelism, aggregate step, and a hard
 quality gate that fails the workflow above 5% unsupported claims — scheduled
-nightly via CronWorkflow; the gate fired on its first full run (5.62%, one
+nightly via CronWorkflow; the gate fired on its first full run (5.62%, judge v1, one
 outlier draft), and re-measurement attributed it to generation variance: the
 threshold was kept and the red-night playbook documented instead of widening
 the gate.
@@ -45,17 +48,20 @@ variance because synthesis-model tokens dominate.
 
 **4.** Built a pluggable OpenAI-compatible serving backend
 (`LOCAL_MODEL_BACKEND`) for a QLoRA-fine-tuned Qwen2.5-1.5B — vLLM Kubernetes
-manifests committed for AVX-512-capable hardware after root-causing the
-prebuilt vLLM CPU image's SIGILL to its AVX-512 requirement on AVX2-only
-hardware, with the code path validated end-to-end via Ollama's /v1 endpoint —
-and benchmarked it honestly: ~7.7 tok/s aggregate CPU saturation across
-concurrency 1→8 (environment-limited, labeled not comparable to GPU/hosted),
-and 86.2% vs 77.8% grounding against the hosted API on a balanced 9-ticker
-suite — an expected, reported regression that keeps the feature default-off.
+manifests committed after root-causing the prebuilt vLLM CPU image's SIGILL to
+its AVX-512 requirement on AVX2-only hardware — then served the fine-tune on
+an OCI A10 (plain Docker and in-cluster single-node k3s, 2026-09-02/03) and
+ran the gated eval DAG against it: **12.31% unsupported (8/65) vs a same-day
+3.03% (2/66) hosted baseline, judge v1 — the fine-tune fails the 5% gate on the two
+sections it owns**, so USE_LOCAL_MODEL ships off as a measured negative
+result. Earlier honest benchmarks pointed the same direction: ~7.7 tok/s
+aggregate CPU saturation (environment-limited, labeled not comparable to
+GPU/hosted) and 86.2% vs 77.8% grounding on a balanced 9-ticker suite.
 
 > Deep-dive backup: benchmarks.md (CPU-mode caveat up front; latency marked
-> environment-limited), k8s/vllm/vllm.yaml, agent/tools/local_model.py
-> (LOCAL_MODEL_BACKEND), exit-code-132 diagnosis in the Phase 3 commit.
+> environment-limited), k8s/vllm/ (base + overlays), docs/eval-methodology.md
+> (dated A/B), agent/tools/local_model.py (LOCAL_MODEL_BACKEND),
+> exit-code-132 diagnosis in the Phase 3 commit.
 
 ---
 
@@ -63,10 +69,11 @@ suite — an expected, reported regression that keeps the feature default-off.
 
 | Number | Where it comes from |
 |---|---|
-| 49% pre-fix → 0/84 unsupported in current eval (10 tickers) | Phase 0 re-measure, docs/PHASE0_AUDIT.md §4 |
+| 49% pre-fix → 0/84 unsupported in current eval (10 tickers, judge v1) | Phase 0 re-measure, docs/PHASE0_AUDIT.md §4 |
 | $0.0316/brief hosted; $0.0321 hybrid | scripts/cost_report.py runs, benchmarks.md |
 | 86.2% vs 77.8% grounding (9-ticker balanced) | grounding A/B run, benchmarks.md |
-| 5.62% gate failure → variance | Argo run + NVDA re-measure (0/10), README |
+| 3.03% (2/66) vs 12.31% (8/65) unsupported (judge v1) — hosted vs in-cluster vLLM fine-tune | grounding-eval DAG runs 2026-09-03, docs/eval-methodology.md |
+| 5.62% gate failure (judge v1) → variance | Argo run + NVDA re-measure (0/10), README |
 | ~7.7 tok/s aggregate; p50 13.3s→74.1s (c=1→8) | scripts/vllm_benchmark.py, benchmarks.md |
-| 13/13 smoke assertions; 43 pytest tests | scripts/k8s_smoke_test.sh output; pytest |
+| 13/13 smoke assertions; 80 pytest tests (79 free + 1 credit-gated) | scripts/k8s_smoke_test.sh output; pytest --collect-only |
 | ~26s pipeline latency (26.29s mean) | Phase 0 re-measure |

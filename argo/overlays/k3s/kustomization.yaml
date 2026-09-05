@@ -13,6 +13,9 @@ resources:
 patches:
   # templates: 0=main (dag, no container), 1=eval-one, 2=aggregate.
   # Imported image must never be pulled — fail loudly instead.
+  # Findings volume: hostPath shared by every pod of a run (single node),
+  # so the aggregate's stdout dump carries all tickers AND the raw files
+  # survive on the VM under /home/ubuntu/eval-findings/<workflow-name>.
   - target:
       group: argoproj.io
       version: v1alpha1
@@ -25,3 +28,10 @@ patches:
       - op: replace
         path: /spec/templates/2/container/imagePullPolicy
         value: Never
+      - op: replace
+        path: /spec/volumes/0
+        value:
+          name: findings
+          hostPath:
+            path: /home/ubuntu/eval-findings/{{workflow.name}}
+            type: DirectoryOrCreate

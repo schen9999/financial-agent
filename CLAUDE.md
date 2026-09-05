@@ -7,7 +7,7 @@ gated Argo Workflows DAG with a nightly CronWorkflow. Pluggable OpenAI-compatibl
 LOCAL_MODEL_BACKEND (currently Ollama; vLLM v0.10.2 validated serving the merged
 fine-tune pinned to one A10 on the Phase 1.75 VM — plain Docker 2026-09-02,
 in-cluster on k3s 2026-09-03, eval A/B against it 2026-09-03: gate FAILED at
-12.31% vs baseline 3.03%, so hosted models stay the production path. OKE
+12.31% vs baseline 3.03% (judge v1), so hosted models stay the production path. OKE
 serving still pending; the dev CPU cannot run vLLM, no AVX-512).
 
 Current deploy target: single-node kind K8s with probes and resource bounds.
@@ -44,17 +44,22 @@ Migrate to OCI for a hiring demo (deadline: demo Fri Sep 18, 2026):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The 833-line pytest suite (47 tests) must pass on every commit. Canonical
+3. The 1222-line pytest suite (80 tests; 79 free + 1 credit-gated) must pass
+   on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
 4. Celery stays request-time async; Argo owns eval orchestration. Do not merge them.
 5. SETTLED 2026-09-03: the fine-tune serves in-cluster (vLLM on the VM) but
    FAILS the grounding gate on the two sections it owns — 12.31% unsupported
-   vs the 5% gate; same-day baseline 3.03% (dated A/B in
+   vs the 5% gate, judge v1; same-day baseline 3.03% (dated A/B in
    docs/eval-methodology.md). USE_LOCAL_MODEL therefore ships off and hosted
    models remain the production path; Ollama stays the fallback for local
    serving demos. State it as measured-and-declined, not unfinished.
 6. Work on branch `oci-migration`. Small commits, imperative messages.
+7. Judge-calling tests spend Anthropic credits: they run ONLY under an
+   explicit env flag (CRITIC_INJECTION=1 today; the same pattern for any
+   future one), never in the default pytest suite, and never on push or PR
+   CI triggers — manual dispatch or schedule only.
 
 ## Phases
 Phase 1 — COMPLETE (no OCI credentials):
@@ -90,10 +95,10 @@ vm-eval all green; steps flipped only on confirmed terminal output):
   command: (entrypoint collision), enableServiceLinks: false (VLLM_PORT
   injection), 2Gi Memory emptyDir at /dev/shm. Then: vLLM rollout green with
   /v1/models on the NodePort, and vm-eval Succeeded — 10/10 tickers, 66
-  claims, 3.03% unsupported, gate passed (hosted models; not a
+  claims, 3.03% unsupported (judge v1), gate passed (hosted models; not a
   numbers-of-record re-run).
 - 2026-09-03 later: local-model arm ran against in-cluster vLLM (20 confirmed
-  /v1 requests) and FAILED the gate — 12.31% vs baseline 3.03% same day.
+  /v1 requests) and FAILED the gate — 12.31% vs baseline 3.03% same day (judge v1).
   Dated A/B recorded in docs/eval-methodology.md; constraint 5 settled.
 - k3s overlays for all three trees (k8s/overlays/k3s, argo/overlays/k3s,
   k8s/vllm/overlays/k3s-gpu): the oke shape with environmental deltas only —
@@ -131,8 +136,15 @@ Phase 3 — demo polish:
   benchmarking, fresh eval run for current numbers.
 
 ## Documentation honesty rules (apply to ALL written output: docs, READMEs, comments)
-- Grounding number of record: "49% pre-fix -> 0/84 unsupported in current eval."
-  Never a bare 0%.
+- Grounding number of record: "49% pre-fix -> 0/84 unsupported in current eval
+  (judge v1)." Never a bare 0%.
+- Every cited unsupported rate must name the judge prompt version that
+  produced it (agent/grounding.py JUDGE_PROMPT_VERSION; logged in every eval
+  summary). All judge-v1 rates carry the recall caveat: v1 recall on
+  UNSUPPORTED measured 1/9 against human labels (2026-09-04), so v1 rates are
+  lower bounds. Judge v2 is unvalidated until the held-out sample from the
+  40-ticker run is labeled — the 50-claim sample is a development set and
+  cannot validate v2.
 - Cost of record: $0.0316/brief from the committed harness. $0.0269 is retired.
   "54% cost reduction" is retired.
 - The Redis cache is exact-key per ticker. Never "semantic cache."
@@ -145,8 +157,8 @@ Phase 3 — demo polish:
   green rollout + /v1/models on the NodePort), both confirmed from the box.
   Also legitimate: the eval DAG ran against the in-cluster vLLM on
   2026-09-03 (local-model arm, 20 confirmed /v1 requests) and FAILED the
-  grounding gate at 12.31% vs the same-day 3.03% baseline — cite it with
-  both numbers. Still gated: serving on OKE — update this line when that
+  grounding gate at 12.31% vs the same-day 3.03% baseline (judge v1) — cite
+  it with both numbers and the version tag. Still gated: serving on OKE — update this line when that
   actually runs.
 - Cross-encoder reranking and the multi-agent supervisor shipped default-off
   because evals showed no grounding gain at higher cost/latency. State it that way.

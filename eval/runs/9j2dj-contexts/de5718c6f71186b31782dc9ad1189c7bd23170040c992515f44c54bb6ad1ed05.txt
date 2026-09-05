@@ -1,0 +1,126 @@
+STOCK DATA:
+{
+  "ticker": "GOOGL",
+  "company_name": "Alphabet Inc.",
+  "current_price": 338.46,
+  "currency": "USD",
+  "market_cap": 4139343675392.0,
+  "pe_ratio": 16.97392,
+  "forward_pe": 22.785429,
+  "week_52_high": 408.61,
+  "week_52_low": 233.23,
+  "revenue": 445865984000.0,
+  "net_income": 244118994944.0,
+  "profit_margin": 0.54771,
+  "dividend_yield": 0.26,
+  "sector": "Communication Services",
+  "industry": "Internet Content & Information"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": "Google Maps changes Lake Ontario label to Lake America in U.S.",
+    "source": "Fortune",
+    "published_at": "2026-08-30T18:26:19Z",
+    "description": "The decision was prompted by a change in the official US government geographic naming system, the company said."
+  },
+  {
+    "title": "OpenAI data centre executive Chris Malone departs the AI startup",
+    "source": "Bloomberg",
+    "published_at": "2026-08-26T07:43:30Z",
+    "description": "Malone\u2019s exit adds to a series of executive shuffles and departures at the ChatGPT maker in recent months"
+  },
+  {
+    "title": "Google\u2019s founders didn\u2019t market test Alphabet\u2019s name before launching the now $1.9 trillion juggernaut. Here\u2019s the advice Steve Jobs gave Larry Page",
+    "source": "Fortune",
+    "published_at": "2026-08-19T16:30:57Z",
+    "description": "The anniversary of Google's IPO is on Wednesday, and Fortune looked back at the philosophy behind the founders' brainchild."
+  },
+  {
+    "title": "Alibaba AI models hit 3 billion downloads, passing Meta, Google",
+    "source": "Fortune",
+    "published_at": "2026-08-15T22:39:46Z",
+    "description": "Qwen, Alibaba\u2019s family of AI models, has open-sourced more than 460 models and its ecosystem has spawned 300,000-plus derivatives."
+  },
+  {
+    "title": "Berkshire pads Delta, Alphabet stakes as Abel taps cash pile",
+    "source": "Fortune",
+    "published_at": "2026-08-15T15:09:08Z",
+    "description": "The conglomerate continued to pare its stake in Bank of America Corp. and now owns 6.8% of the US lender\u2019s shares."
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-05",
+    "summary": "Item 1A Risk Factors of this Annual Report on Form 10-K. Culture and Workforce Our people are critical for our continued success, so we work hard to create an environment where employees can have fulfilling careers and perform at a high level. We offer industry-leading benefits and programs to take care of the diverse needs of our employees and their families, including opportunities for career growth and development, resources to support their financial health, and access to excellent healthcare choices. Our competitive compensation programs help us to attract and retain key talent, and we will continue to invest in recruiting talented people to technical and non-technical roles and rewarding them well. We provide a variety of high-quality training and support to managers to build and str"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-07-23",
+    "summary": "ITEM 1A. RISK FACTORS Our operations and financial results are subject to various risks and uncertainties, including but not limited to those described in Part I, Item 1A, \"Risk Factors\" in our Annual Report on Form 10-K for the year ended December 31, 2025, which could harm our business, reputation, financial condition, and operating results, and may affect the trading price and price volatility of our Class A and Class C stock. Below are material changes to our risk factors since our Annual Report on Form 10-K for the year ended December 31, 2025. Risks Specific to our Company Our increasing investment in new businesses, products, services, and technologies is inherently risky, and could divert management attention and harm our business, financial condition, and operating results. We hav"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I can only provide information based on the context given, which contains excerpts from a 10-K filing but does not include any 10-Q information.
+
+Based on the 10-K excerpts provided, here are the key takeaways:
+
+**Revenue Concentration:**
+More than 70% of total revenues come from online advertising, creating significant dependence on this business segment.
+
+**Advertising Industry Challenges:**
+The company faces risks from reduced advertiser spending, ad-blocking technologies, evolving advertising formats, and the rapid reshaping of the advertising industry by AI. Advertiser spending correlates with overall economic conditions, making the business vulnerable to macroeconomic downturns.
+
+**Workforce:**
+As of December 31, 2025, the company had 190,820 employees and emphasizes competitive compensation and employee development programs.
+
+**Regulatory Environment:**
+The company faces increasingly heightened scrutiny and evolving regulations globally, particularly regarding AI, competition, data privacy, content moderation, and intellectual property. Compliance with these diverse and sometimes conflicting regulations could increase costs and limit business practices.
+
+**Strategic Investments:**
+Significant investments are being made in new businesses and technologies beyond advertising, including AI infrastructure (custom TPUs), cloud services, devices, and other bets in areas like life sciences and transportation. These investments carry inherent risks and may not generate adequate returns.
+
+**Infrastructure Expansion:**
+The company is entering into significant leasing arrangements for compute capacity to support AI and cloud computing services, which increases costs and operational complexity.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses several significant risk factors across its operations:
+
+## Revenue Concentration Risk
+Over 70% of total revenues come from online advertising, creating substantial dependence on this single revenue stream. Reduced advertiser spending, loss of partners, or shifts in advertising formats could significantly harm the business.
+
+## Advertising Industry Challenges
+- Technologies that block ads or make personalized advertising more difficult
+- Integration of ad-blocking technologies by online service providers
+- Rapid changes in the advertising industry driven by AI
+- Uncertainty about the company's ability to adapt competitively to evolving advertising formats
+
+## Macroeconomic Sensitivity
+Advertiser spending correlates with overall economic conditions, so adverse macroeconomic conditions could reduce advertising demand and harm financial results.
+
+## Investment and Innovation Risks
+- Significant investments in new businesses, products, and technologies across various industries are inherently risky
+- These investments may divert management attention and resources
+- New ventures may not be commercially viable or generate adequate returns
+- Investments in AI infrastructure, including custom TPUs and cloud computing, involve substantial costs and operational complexity
+
+## Competitive Pressures
+- Intense competition in devices, cloud services, and emerging technology areas
+- Competitors are well-funded and rapidly developing competing solutions
+- Risks in highly competitive markets like smartphones, home devices, and wearables with short product life cycles
+
+## Regulatory and Compliance Risks
+- Regulatory compliance requirements for financial services, healthcare, and public sector customers
+- Government audits and cost reviews
+- Evolving laws requiring new capital investments and localized service delivery
+- Regulatory scrutiny of pricing and delivery models
+
+## Other Bets Risks
+Investments in life sciences and transportation face intense competition and may not achieve profitability or competitive viability.

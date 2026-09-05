@@ -20,7 +20,7 @@ For each (ticker, arm) it records:
   - pipeline latency: retrieval + Haiku sections + Sonnet synthesis
     (shared data-fetch is excluded — it is network-bound and identical per arm)
 
-The Redis semantic cache is bypassed (BYPASS_CACHE=true) so no arm can return
+The Redis exact-key cache is bypassed (BYPASS_CACHE=true) so no arm can return
 another arm's cached brief; base stock/news/SEC data is fetched once per ticker
 and reused across arms so only the retrieval stage varies.
 
@@ -40,10 +40,13 @@ import argparse
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 
+from eval.stats import fisher_exact, format_rate_ci
+from eval.runtime_guards import check_fatal_api_error
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
-# Bypass the Redis semantic cache for the whole run BEFORE importing anything
+# Bypass the Redis exact-key cache for the whole run BEFORE importing anything
 # that touches it, so A/B arms never collide on a cached brief.
 os.environ["BYPASS_CACHE"] = "true"
 
@@ -62,9 +65,12 @@ from agent.core import (
     _synthesis_prompt,
 )
 from agent.grounding import (  # single source of truth for the judge
+    JUDGE_PROMPT_VERSION,
+    JUDGE_SYSTEM,
     extract_exec_and_outlook,
     get_judge_llm,
     grade_brief,
+    judge_user_prompt,
 )
 
 ALL_TICKERS = ["AAPL", "NVDA", "JPM", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "V", "WMT"]
@@ -116,6 +122,23 @@ def _est_tokens(text: str) -> int:
     return max(1, len(text) // 4)
 
 
+# Full-run cost estimate: chars/4 tokens priced from the same committed table
+# the cost harness uses (scripts/model_prices.json). Labeled an estimate in
+# all output — scripts/cost_report.py (exact API usage) stays the cost of
+# record; this line exists so no eval run burns credits silently.
+_PRICES = None
+
+
+def _price_est(model: str, in_tok: int, out_tok: int) -> float:
+    global _PRICES
+    if _PRICES is None:
+        _PRICES = json.loads(
+            (Path(__file__).parent / "scripts" / "model_prices.json")
+            .read_text(encoding="utf-8"))["models"]
+    r = _PRICES[model]
+    return in_tok / 1e6 * r["input_per_mtok"] + out_tok / 1e6 * r["output_per_mtok"]
+
+
 def _brief_haiku_cost(arm: str, company: str, ticker: str,
                       section_contexts: dict, sections: list[str]) -> float:
     """Estimated Haiku $/brief: only sections actually served by Haiku cost
@@ -147,6 +170,10 @@ def _retry(fn, *args, _attempts=4, _base=3.0, **kwargs):
         try:
             return fn(*args, **kwargs)
         except Exception as e:
+            # Non-retryable: a credit-balance 400 raises SystemExit here —
+            # fail the run loudly instead of burning retries into a silent
+            # per-ticker skip (measured failure mode, 2026-09-03).
+            check_fatal_api_error(e)
             if i == _attempts - 1:
                 raise
             wait = _base * (2 ** i)
@@ -162,16 +189,22 @@ def _retry(fn, *args, _attempts=4, _base=3.0, **kwargs):
 FINDINGS_DIR = Path(__file__).parent / "eval_findings"
 
 
-def _save_findings(ticker: str, arm: str, source_context: str, exec_and_outlook: str, findings: str):
-    """Persist the retrieved source context + audited text + judge findings so a
-    run's per-claim evidence survives (the printed counts alone can't be
-    re-derived without the judge, and auditing a label needs the source it saw)."""
+def _save_findings(ticker: str, arm: str, source_context: str, section_block: str,
+                   exec_and_outlook: str, findings: str):
+    """Persist EVERYTHING the judge saw plus its findings, so a run's
+    per-claim evidence survives and is self-describing: metadata (ticker,
+    arm, judge prompt version, context hash), the retrieved source context,
+    the pre-written sections (judge input — previously unpersisted, the
+    documented validation caveat), the audited text, and the findings.
+    Format rendered by eval.label.render_findings_md, which lives beside
+    the parser that reads it back."""
+    from eval.label import render_findings_md
     try:
         FINDINGS_DIR.mkdir(exist_ok=True)
         (FINDINGS_DIR / f"{ticker}_{arm}.md").write_text(
-            f"# {ticker} — {arm}\n\n## Retrieved source context\n\n{source_context}\n\n"
-            f"## Audited (Exec Summary + Outlook)\n\n{exec_and_outlook}\n\n"
-            f"## Judge findings\n\n{findings}\n",
+            render_findings_md(ticker, arm, JUDGE_PROMPT_VERSION,
+                               source_context, section_block,
+                               exec_and_outlook, findings),
             encoding="utf-8",
         )
     except Exception as e:
@@ -266,7 +299,20 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
         invoker=lambda messages: _retry(get_judge_llm().invoke, messages),
     )
 
-    _save_findings(ticker, arm, source_context, exec_and_outlook, grade.findings)
+    _save_findings(ticker, arm, source_context, section_block, exec_and_outlook,
+                   grade.findings)
+
+    # Estimated total spend for this (ticker, arm): Haiku sections (existing
+    # estimate) + Sonnet synthesis + Sonnet judge, chars/4 tokens priced from
+    # scripts/model_prices.json. Excludes retried calls.
+    est_cost = haiku_cost
+    est_cost += _price_est("claude-sonnet-4-6",
+                           _est_tokens(_synthesis_prompt(ticker, company, sections)),
+                           _est_tokens(brief))
+    est_cost += _price_est("claude-sonnet-4-6",
+                           _est_tokens(JUDGE_SYSTEM) + _est_tokens(
+                               judge_user_prompt(source_context, section_block, exec_and_outlook)),
+                           _est_tokens(grade.findings))
 
     counts = {
         "supported": grade.supported, "unsupported": grade.unsupported,
@@ -284,7 +330,9 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
 
     return {
         "ticker": ticker, "arm": arm,
+        "judge_version": JUDGE_PROMPT_VERSION,
         "retrieval_s": retrieval_s, "pipeline_s": pipeline_s, "haiku_cost": haiku_cost,
+        "est_cost": round(est_cost, 5),
         "inference_claims": grade.inference_claims,
         **counts,
     }
@@ -325,6 +373,7 @@ def print_comparison(results: list[dict], arms: list[str]):
     print(f"\n\n{'='*100}", flush=True)
     print("  BEFORE / AFTER — RERANKING A/B  (LLM-as-judge grounding)", flush=True)
     print(f"{'='*100}", flush=True)
+    print(f"  Judge prompt: {JUDGE_PROMPT_VERSION}", flush=True)
     print(f"  Balanced over {len(balanced)} ticker(s) completing all arms: "
           f"{', '.join(sorted(balanced)) or '(none)'}", flush=True)
     if excluded:
@@ -344,6 +393,23 @@ def print_comparison(results: list[dict], arms: list[str]):
             f"{a['retrieval_s']:>8.2f} {a['pipeline_s']:>8.2f} {a['haiku_cost']:>12.5f}",
             flush=True,
         )
+
+    # Statistics: interval on every rate, exact test on every comparison —
+    # at ~65-85 claims per run, point estimates alone overstate what a
+    # single pass can resolve.
+    ref = "baseline" if "baseline" in arms else arms[0]
+    ref_agg = _aggregate(results, ref, only=balanced)
+    print(f"\n  Statistics (Wilson 95% CI; Fisher exact vs {ARMS[ref]['label']}):", flush=True)
+    for arm in arms:
+        a = _aggregate(results, arm, only=balanced)
+        line = f"    {ARMS[arm]['label']:<30} unsupported {format_rate_ci(a['unsupported'], a['total'])}"
+        if arm != ref and a["total"] and ref_agg["total"]:
+            p = fisher_exact(
+                ref_agg["unsupported"], ref_agg["total"] - ref_agg["unsupported"],
+                a["unsupported"], a["total"] - a["unsupported"],
+            )
+            line += f"  p={p:.4f}"
+        print(line, flush=True)
 
     # Headline delta: baseline vs rerank3 (final chunk count held constant).
     if "baseline" in arms and "rerank3" in arms:
@@ -386,7 +452,7 @@ def main():
                              "and aggregate in a final step.")
     args = parser.parse_args()
 
-    print(f"BYPASS_CACHE={os.getenv('BYPASS_CACHE')} — Redis semantic cache disabled for this run.",
+    print(f"BYPASS_CACHE={os.getenv('BYPASS_CACHE')} — Redis exact-key cache disabled for this run.",
           flush=True)
     print(f"Arms: {', '.join(args.arms)}   Tickers: {', '.join(args.tickers)}\n", flush=True)
 
