@@ -41,9 +41,13 @@ from agent.tools.rag import (_ensure_settings, _fetch_filing_text,  # noqa: E402
                              _get_pinecone_index)
 
 RISK_QUERY = "What are the main risk factors?"
+# Exhibit boilerplate, or a TOC *listing* (section title followed by a page
+# number). A bare "Table of Contents" is page-header furniture that appears
+# inside genuine Item 1A prose (e.g. "8. Table of Contents Alphabet Inc.
+# ITEM 1A. RISK FACTORS Our operations...") and must not fail verification.
 BOILER_RE = re.compile(
     r"exhibit\s+\d|form of .{0,40}(rsu|restricted stock)|indenture|"
-    r"bonus plan|incentive plan|table of contents", re.I)
+    r"bonus plan|incentive plan|item\s*1a\W{0,10}risk\s*factors\s*\.?\s*\d", re.I)
 
 
 def read_ticker_file(path: str) -> list[str]:
