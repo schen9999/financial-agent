@@ -1,0 +1,90 @@
+STOCK DATA:
+{
+  "ticker": "NVDA",
+  "company_name": "NVIDIA Corporation",
+  "current_price": 230.36,
+  "currency": "USD",
+  "market_cap": 5562502742016.0,
+  "pe_ratio": 29.159492,
+  "forward_pe": 14.902219,
+  "week_52_high": 236.54,
+  "week_52_low": 164.27,
+  "revenue": 302970011648.0,
+  "net_income": 192880001024.0,
+  "profit_margin": 0.63663,
+  "dividend_yield": 0.44,
+  "sector": "Technology",
+  "industry": "Semiconductors"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-25",
+    "summary": "Item 1A. Risk Factors \u2013 Risks Related to Regulatory, Legal, Our Stock, and Other Matters\u201d for a discussion of this potential impact. Compliance with laws, rules, and regulations has not otherwise had a material effect upon our capital expenditures, results of operations, or competitive position and we do not currently anticipate material capital expenditures for environmental control facilities. Compliance with existing or future governmental regulations, including, but not limited to, those pertaining to IP ownership and infringement, taxes, import and export requirements and tariffs, anti-corruption, business acquisitions, foreign exchange controls and cash repatriation restrictions, data privacy requirements, competition and antitrust, advertising, employment, product regulations, cyber"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-26",
+    "summary": "Item 1A. Risk Factors 34 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 39 Item 5. Other Information 40 Item 6. Exhibits 42 Signature 43 Where You Can Find More Information Investors and others should note that we announce material financial information to our investors using our investor relations website, press releases, SEC filings and public conference calls and webcasts. We also use the following social media channels as a means of disclosing information about the company, our products, our planned financial and other announcements and attendance at upcoming investor and industry conferences, and other matters, and for complying with our disclosure obligations under Regulation FD: NVIDIA Corporate Blog (blogs.nvidia.com/) NVIDIA Technical Blog (developer.nvidia.co"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I cannot provide a summary of the latest 10-K and 10-Q based on the context provided. The information given contains only excerpts from a 10-K filing, specifically sections covering:
+
+1. **Human Capital Management** - Details about the workforce of approximately 42,000 employees across 38 countries, with 31,000 in R&D and 11,000 in sales, marketing, operations, and administrative roles. The company maintains a 3.7% turnover rate and emphasizes employee development and merit-based advancement.
+
+2. **Executive Officers** - Biographical information about five key executives, including CEO Jen-Hsun Huang (who co-founded the company in 1993) and CFO Colette M. Kress, along with their professional backgrounds and educational credentials.
+
+3. **Risk Factors** - A summary of major risk categories including industry and market risks, demand/supply/manufacturing risks, global operating business risks, and regulatory/legal risks. Specific concerns mentioned include competition, supply chain dependencies, cybersecurity threats, data privacy compliance, and litigation exposure.
+
+To provide a comprehensive summary of the latest 10-K and 10-Q filings, I would need access to complete financial statements, management's discussion and analysis (MD&A), results of operations, and other key sections from both documents, which are not included in the provided context.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses several categories of primary risk factors:
+
+## Industry and Market Risks
+- Failure to meet evolving needs of the industry and markets, particularly in accelerated computing platforms that experience rapid technological changes
+- Competition that could adversely impact market share and financial results
+
+## Demand, Supply, and Manufacturing Risks
+- Long manufacturing lead times and uncertain supply and capacity availability, combined with inaccurate demand forecasting
+- Dependency on third-party suppliers for manufacturing, assembly, testing, and packaging
+- Product defects that could result in significant remediation expenses
+
+## Global Operating Business Risks
+- Adverse economic conditions
+- International sales and operations exposure
+- Product, system security, and data protection incidents or cyber-attacks
+- Business disruptions
+- Climate change impacts
+- Challenges in realizing benefits from acquisitions and integrations
+- Revenue concentration from a limited number of partners and distributors
+- Counterparty risks from commercial arrangements
+- Difficulty attracting and retaining key talent
+- Disruptions to business processes and information systems
+- Operating results fluctuations
+
+## Regulatory, Legal, and Other Risks
+- Complex laws and export restrictions
+- Corporate sustainability scrutiny
+- Responsible use of technologies, including AI
+- Intellectual property protection challenges
+- Data privacy and security compliance obligations
+- Tax liabilities and changing tax laws
+- Litigation and regulatory proceedings
+- Potential delays or prevention of change in control

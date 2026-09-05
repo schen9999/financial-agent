@@ -29,6 +29,8 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 import yaml
 
 _LOG_LINE = re.compile(
@@ -86,12 +88,102 @@ def emit_rows(run: str, results: dict) -> list[dict]:
     return out
 
 
+def _norm(s: str) -> str:
+    return re.sub(r"\s+", " ", s.replace(",", "").replace('"', "")).strip().lower()
+
+
+def rows_from_findings_dir(run: str, findings_dir: Path, results: dict,
+                           contexts_dir: Path | None = None) -> list[dict]:
+    """Full per-claim rows from recovered findings files ({TICKER}_{arm}.md,
+    or <TICKER>/{TICKER}_{arm}.md). Preferred over the label-only
+    reconstruction: rows carry claim text, judge rationale, section
+    (located within the audited Exec Summary / Outlook blocks), and the
+    sha256 of the exact retrieved-context string the judge saw (context
+    bodies written to contexts_dir/<sha>.txt). judge_version comes from the
+    matching workflow result row."""
+    import hashlib
+
+    from eval.label import parse_claims, parse_findings_file
+
+    out = []
+    for f in sorted(findings_dir.rglob("*_*.md")):
+        ticker, arm = f.stem.rsplit("_", 1)
+        parsed = parse_findings_file(f.read_text(encoding="utf-8"))
+        if not parsed:
+            print(f"WARNING: could not parse {f}")
+            continue
+        ctx = parsed["context"]
+        sha = hashlib.sha256(ctx.encode("utf-8")).hexdigest()
+        if contexts_dir is not None:
+            contexts_dir.mkdir(parents=True, exist_ok=True)
+            (contexts_dir / f"{sha}.txt").write_text(ctx, encoding="utf-8")
+        # Section blocks of the audited text, for locating each claim.
+        blocks = {}
+        for m in re.finditer(r"### (Executive Summary|Outlook)\n(.*?)(?=\n### |\Z)",
+                             parsed["audited"], re.S):
+            blocks[m.group(1)] = _norm(m.group(2))
+        wf_row = results.get((ticker, arm), {})
+        for c in parse_claims(parsed["findings"]):
+            nc = _norm(c["claim"])
+            section = next((name for name, body in blocks.items() if nc and nc in body),
+                           None)
+            out.append({
+                "run": run, "ticker": ticker, "arm": arm,
+                "judge_version": wf_row.get("judge_version"),
+                "section": section,
+                "claim": c["claim"], "judge_label": c["label"],
+                "judge_rationale": c["reason"] or None,
+                "context_sha256": sha,
+                "source": "recovered-findings",
+            })
+        # The judge occasionally deviates from the CLAIM/LABEL/REASON format:
+        # a block can carry EXTRA LABEL+REASON pairs. Observed 2026-09-05
+        # (9j2dj): a pair with a DIFFERENT label than the block's primary is
+        # a distinct free-form verdict (BEAM's real UNSUPPORTED); a pair with
+        # the SAME label re-explains the same claim (JPM) and is suppressed
+        # as a duplicate — which also explains the run's own count being one
+        # high (count_labels counts every LABEL: line).
+        for block in re.split(r"\*{0,2}CLAIM:\*{0,2}", parsed["findings"])[1:]:
+            pairs = re.findall(
+                r"\*{0,2}LABEL:\*{0,2}\s*([A-Za-z]+)\s*\n\*{0,2}REASON:\*{0,2}\s*(.+)",
+                block)
+            if len(pairs) <= 1:
+                continue
+            primary = pairs[0][0].upper()
+            for label, reason in pairs[1:]:
+                if label.upper() == primary:
+                    print(f"NOTE {ticker}/{arm}: duplicate {label} label within "
+                          f"one claim block — suppressed (run count inflated by 1)")
+                    continue
+                if label.upper() not in ("SUPPORTED", "UNSUPPORTED", "INFERENCE"):
+                    continue
+                print(f"NOTE {ticker}/{arm}: free-form {label} verdict without "
+                      f"CLAIM line — emitted with claim=null")
+                out.append({
+                    "run": run, "ticker": ticker, "arm": arm,
+                    "judge_version": wf_row.get("judge_version"),
+                    "section": None, "claim": None,
+                    "judge_label": label.upper(),
+                    "judge_rationale": reason.strip() or None,
+                    "context_sha256": sha,
+                    "source": "recovered-freeform-label",
+                })
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--log", required=True)
     ap.add_argument("--workflow-yaml", required=True)
     ap.add_argument("--run", required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--findings-dir", default=None,
+                    help="Directory of recovered findings files — preferred "
+                         "source: full claim text/rationale/section/context "
+                         "instead of the label-only reconstruction.")
+    ap.add_argument("--contexts-dir", default=None,
+                    help="Where to write context bodies keyed by sha256 "
+                         "(with --findings-dir).")
     args = ap.parse_args()
 
     log_counts = parse_log_counts(Path(args.log).read_text(encoding="utf-8"))
@@ -110,7 +202,23 @@ def main():
         if key not in log_counts:
             mismatched.append((key, "in workflow params, missing from log"))
 
-    rows = emit_rows(args.run, results)
+    if args.findings_dir:
+        rows = rows_from_findings_dir(
+            args.run, Path(args.findings_dir), results,
+            Path(args.contexts_dir) if args.contexts_dir else None)
+        # Cross-check recovered rows against workflow-param counts.
+        per = {}
+        for r in rows:
+            key = (r["ticker"], r["arm"], r["judge_label"].lower())
+            per[key] = per.get(key, 0) + 1
+        for (ticker, arm), wr in sorted(results.items()):
+            for lab in ("supported", "unsupported", "inference"):
+                got = per.get((ticker, arm, lab), 0)
+                if got != wr[lab]:
+                    print(f"MISMATCH {ticker}/{arm} {lab}: findings {got} "
+                          f"!= params {wr[lab]}")
+    else:
+        rows = emit_rows(args.run, results)
     with open(args.out, "w", encoding="utf-8") as f:
         for r in rows:
             f.write(json.dumps(r) + "\n")

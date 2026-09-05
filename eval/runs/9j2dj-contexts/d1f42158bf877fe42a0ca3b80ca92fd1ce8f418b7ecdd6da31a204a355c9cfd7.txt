@@ -1,0 +1,77 @@
+STOCK DATA:
+{
+  "ticker": "MSFT",
+  "company_name": "Microsoft Corporation",
+  "current_price": 499.7,
+  "currency": "USD",
+  "market_cap": 3710545297408.0,
+  "pe_ratio": 27.853958,
+  "forward_pe": 21.19773,
+  "week_52_high": 553.72,
+  "week_52_low": 349.2,
+  "revenue": 331839012864.0,
+  "net_income": 133748998144.0,
+  "profit_margin": 0.40305,
+  "dividend_yield": 0.71,
+  "sector": "Technology",
+  "industry": "Software - Infrastructure"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-07-29",
+    "summary": "Item 1A. Risk Factors 14 Item 1B. Unresolved Staff Comments 29 Item 1C. Cybersecurity 29 Item 2. Properties 31 Item 3. Legal Proceedings 31 Item 4. Mine Safety Disclosures 31 PART II Item 5. Market for Registrant\u2019s Common Equity, Related Stockholder Matters, and Issuer Purchases of Equity Securities 32 Item 6. [Reserved] 33 Item 7. Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations 34 Item 7A. Quantitative and Qualitative Disclosures About Market Risk 49 Item 8. Financial Statements and Supplementary Data 50 Item 9. Changes in and Disagreements with Accountants on Accounting and Financial Disclosure 89 Item 9A. Controls and Procedures 89 Report of Management on Internal Control over Financial Reporting 89 Report of Independent Registered Public Accounting"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-04-29",
+    "summary": "Item 1A. Risk Factors 49 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 65 Item 5. Other Information 66 Item 6. Exhibits 67 SIGNATURE 68 2 PART I Item 1 PART I. FINANCI AL INFORMATION ITEM 1. FINA NCIAL STATEMENTS INCOME STA TEMENTS (In millions, except per share amounts) (Unaudited) Three Months Ended March 31, Nine Months Ended March 31, 2026 2025 2026 2025 Revenue: Product $ 15,089 $ 15,319 $ 47,462 $ 46,810 Service and other 67,797 54,747 194,370 158,473 Total revenue 82,886 70,066 241,832 205,283 Cost of revenue: Product 2,733 3,037 9,160 10,187 Service and other 24,095 18,882 67,689 53,630 Total cost of revenue 26,828 21,919 76,849 63,817 Gross margin 56,058 48,147 164,983 141,466 Research and development 8,915 8,198 25,565 23,659 Sales and marketing 6,814 6,212 "
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I can only provide information based on the context given, which contains excerpts from a 10-K filing. The context does not include any 10-Q information.
+
+Based on the 10-K excerpts provided, here are the key takeaways:
+
+**Business Focus and Mission:**
+The company is a technology firm committed to making digital technology and AI broadly available. Its mission is to empower every person and every organization to achieve more, with a focus on secure, trusted, and innovative platforms.
+
+**Three Operating Segments:**
+1. **Productivity and Business Processes** - Including Microsoft 365 Commercial and Consumer products, LinkedIn, and Dynamics cloud services
+2. **Intelligent Cloud** - Providing enterprise AI solutions and cloud-based services
+3. **More Personal Computing** - Focused on gaming, Windows, and personal devices
+
+**Strategic Priorities:**
+- AI integration across the entire technology stack
+- Expansion of Microsoft 365 with AI-enabled tools and features
+- Growth in cloud services and enterprise solutions
+- Responsible AI development with safety and security emphasis
+- Sustainability commitments, including carbon negative, water positive, and zero waste goals by 2030
+
+**Growth Drivers:**
+- Reaching new user segments (frontline workers, small/medium businesses, growth markets)
+- Shifting customers from on-premises to cloud-based subscriptions
+- Expanding average revenue per user through AI-enabled features
+- Increasing member engagement on LinkedIn and enterprise adoption of cloud services
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors
+
+The document indicates that risk factors are disclosed in Item 1A of the filing, though the specific details of those risk factors are not fully provided in the available context. 
+
+The filing references that readers should review the "Risk Factors" section (Part I, Item 1A) along with the "Management's Discussion and Analysis of Financial Condition and Results of Operations" and "Quantitative and Qualitative Disclosures About Market Risk" sections for a comprehensive understanding of risks and uncertainties that could cause actual results and events to differ materially from forward-looking statements.
+
+The document emphasizes that forward-looking statements are subject to risks and uncertainties, but the complete enumeration of specific primary risk factors is not detailed in the portions of the filing provided here.

@@ -1,0 +1,44 @@
+STOCK DATA:
+{
+  "ticker": "BABA",
+  "company_name": "Alibaba Group Holding Limited",
+  "current_price": 113.24,
+  "currency": "USD",
+  "market_cap": 281472008192.0,
+  "pe_ratio": 25.61991,
+  "forward_pe": 12.129876,
+  "week_52_high": 192.67,
+  "week_52_low": 91.99,
+  "revenue": 1044970995712.0,
+  "net_income": 73325002752.0,
+  "profit_margin": 0.07039,
+  "dividend_yield": 0.94,
+  "sector": "Consumer Cyclical",
+  "industry": "Internet Retail"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "message": "No 10-K found"
+  },
+  "10-Q": {
+    "message": "No 10-Q found"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+(not available)
+
+RAG — RISK FACTORS:
+(not available)
