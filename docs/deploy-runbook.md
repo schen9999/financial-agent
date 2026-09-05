@@ -230,6 +230,13 @@ harness uses for its non-exact layer; it slightly **under**estimates
 because findings artifacts omit the pre-written sections the judge also
 reads: **~$1.41 judge** (80 Sonnet calls, ~2,190 in / ~740 out tokens
 each) **+ ~$2.53 generation** (80 briefs × $0.0316) **≈ $4 total**.
+**Post-retrieval-fix re-estimate (2026-09-04):** with real Item 1A
+prose in contexts the cost harness measures **$0.0364/brief** (fresh
+3-ticker run) → generation ~$2.91; the judge per-call estimate is
+retained (~$1.41 for 80 calls) because its input components are
+size-bounded — the 2,000-char SEC summary window and model-output-
+bounded RAG answers don't grow with richer source text — giving
+**≈ $4.30 total** for the two-arm run.
 Submit only after topping up credits:
 `make eval-run EVAL_RUN_FILE=argo/eval-run-extended.yaml` (baseline
 pass; the local-model pass is a second submission overriding `arms`).
