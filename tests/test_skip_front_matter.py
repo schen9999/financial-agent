@@ -69,6 +69,19 @@ def test_entity_spaced_heading_anchors_after_cleaning():
     assert out.startswith("Item 1A. Risk Factors The following summarizes")
 
 
+def test_split_word_heading_anchors_on_section():
+    # MSFT-shaped: the section title's words are split across HTML spans, so
+    # after tag-stripping the only title-adjacent heading reads
+    # "ITEM 1A. RIS K FACTORS"; the TOC entry is the only intact spelling.
+    text = (COVER + FWD_LOOKING + TOC + BUSINESS
+            + "PART I Item 1A ITEM 1A. RIS K FACTORS Our operations and "
+              "financial results are subject to various risks. "
+            + "Risk prose sentence. " * 400)
+    out = skip_front_matter(text, 15000, min_len_to_skip=5000)
+    assert "Our operations and financial results" in out[:200]
+    assert "RSU Agreement" not in out
+
+
 def test_clean_filing_html_unescapes_entities():
     from agent.tools.sec_common import clean_filing_html
     assert clean_filing_html("A&#160;B &#8220;q&#8221;") == "A B “q”"

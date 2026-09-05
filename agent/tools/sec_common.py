@@ -155,6 +155,12 @@ def _section_anchor(body: str, marker: str) -> int | None:
     return fallback
 
 
+def _intra(word: str) -> str:
+    """Regex for `word` tolerating one whitespace char between letters —
+    matches headings whose words were split across HTML tags ("RIS K")."""
+    return r"\s?".join(word)
+
+
 def skip_front_matter(text: str, window: int, min_len_to_skip: int | None = None) -> str:
     """Return a `window`-sized slice of filing text past the cover-page boilerplate.
 
@@ -176,8 +182,12 @@ def skip_front_matter(text: str, window: int, min_len_to_skip: int | None = None
     # AAPL's window into Item 1 Business). Requiring the section title right
     # after the item number excludes cross-references; TOC entries still
     # match here and are rejected by _section_anchor's tail-density check.
-    for marker in (r"item\s*1a\.?[\s:\u2013\u2014-]*risk\s*factors",
-                   r"item\s*7\.?[\s:\u2013\u2014-]*management"):
+    # Title words tolerate ONE whitespace inside them (_intra): filers split
+    # heading words across HTML spans, and tag-stripping turns that into
+    # "ITEM 1A. RIS K FACTORS" (MSFT's 10-K, 2026-09-05) — the section's
+    # only title-adjacent occurrence, so the anchor fell back to the TOC.
+    for marker in (rf"item\s*1a\.?[\s:\u2013\u2014-]*{_intra('risk')}\s*{_intra('factors')}",
+                   rf"item\s*7\.?[\s:\u2013\u2014-]*{_intra('management')}"):
         start = _section_anchor(body, marker)
         if start is not None:
             return body[start:start + window]
