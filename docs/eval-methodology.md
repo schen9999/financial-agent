@@ -173,40 +173,51 @@ independent panel.
 
 Judge v2 (see `agent/grounding.py`: five rules, each targeting a
 failure mechanism from the v1 validation; not tuned beyond those rules)
-was re-run over the same 50 claims via `eval/rejudge.py` — doc-level,
-one judge call per unique document (19 calls), claims matched back by
-normalized containment. **These 50 claims are now a development set:
-v2's rules were written from their failure modes, so nothing below
-validates v2.** A held-out sample will be drawn from the 40-ticker run.
+and — for a clean comparison — **judge v1 under the identical doc-level
+view** were both re-run over the same 50 claims via `eval/rejudge.py`
+(19 judge calls each; claims matched back by normalized containment;
+keys: `sample_key_v1_rejudged.csv`, `sample_key_v2.csv`). **These 50
+claims are a development set: v2's rules were written from their
+failure modes, so nothing below validates v2.** A held-out sample will
+be drawn from the 40-ticker run.
 
 ```
-v1 (original key; judge saw the pre-written sections) — 50 claims
-                 SUPPORTED  UNSUPPORTED  INFERENCE
-SUPPORTED               13            2          1
-UNSUPPORTED              0            1          2
-INFERENCE               10            6         15
-kappa 0.321 · UNSUPPORTED precision 1/3 = 33.3% (6.1–79.2%)
-            · UNSUPPORTED recall    1/9 = 11.1% (2.0–43.5%)
-
-v2 (re-judge; sections unavailable, same view as the human labeler)
-— 31 matched claims, 19 unmatched under v2's claim segmentation
-                 SUPPORTED  UNSUPPORTED  INFERENCE
-SUPPORTED               20            3          1
-UNSUPPORTED              0            4          0
-INFERENCE                0            1          2
-kappa 0.648 · UNSUPPORTED precision 4/4 = 100% (51.0–100%)
-            · UNSUPPORTED recall    4/8 = 50.0% (21.5–78.5%)
+                       v1 original key   v1 rejudged      v2 rejudged
+inputs                 sections visible  doc-level, no    doc-level, no
+                                         sections         sections
+claims scored          50                28 matched        31 matched
+                                         (22 unmatched)    (19 unmatched)
+confusion (J rows      13/ 2/ 1          15/ 0/ 0          20/ 3/ 1
+ S,U,I × human S,U,I)   0/ 1/ 2           0/ 1/ 0           0/ 4/ 0
+                       10/ 6/15           4/ 4/ 4           0/ 1/ 2
+kappa                  0.321             0.498             0.648
+UNSUPPORTED recall     1/9 = 11.1%       1/5 = 20.0%       4/8 = 50.0%
+                       (2.0–43.5%)       (3.6–62.4%)       (21.5–78.5%)
+UNSUPPORTED precision  1/3 = 33.3%       1/1 = 100%        4/4 = 100%
+                       (6.1–79.2%)       (20.7–100%)       (34.2–100%)
 ```
 
-Read with care: the two matrices are not directly comparable — v2's
-covers only the 31 matched claims (one human-UNSUPPORTED claim is among
-the unmatched), and the inputs differ (v1's key came from runs that
-also saw the pre-written sections; the v2 re-judge, like the human
-labeler, saw only context + audited text). Directionally on the dev
-set, v2 does what its rules intend: INFERENCE shrank from 31 labels to
-3, UNSUPPORTED recall rose from 1/9 to 4/8 with no false UNSUPPORTED
-flags — but 3 human-UNSUPPORTED claims now land in SUPPORTED, a new
-failure surface for the held-out check.
+**The fair comparison is v1-rejudged vs v2** — same inputs, same
+doc-level view, prompt as the only variable. On the 24 claims matched
+under *both* segmentations: v1-rejudged kappa **0.381**, UNSUPPORTED
+recall 1/5, precision 1/1; v2 kappa **0.647**, UNSUPPORTED recall 2/5,
+precision 2/2. Read plainly: **the input view did a real share of the
+work** — v1's kappa moved 0.321 → 0.498 just from the doc-level
+re-judge, before any rule changed — and the v2 rules added a further
+genuine kappa gain on identical rows (0.381 → 0.647). On the metric
+that matters most, UNSUPPORTED recall, the fair-pair gain is **one
+claim (1/5 → 2/5)** — not resolvable at n=5; the headline 4/8 includes
+rows v1-rejudged failed to match. v1 also segments less stably (22
+unmatched vs 19).
+
+**Human-UNSUPPORTED claims v2 files as SUPPORTED** (dev-set ids; no
+fixes, mechanisms recorded for the held-out check):
+
+| id | Ticker | Claim | Mechanism |
+|---|---|---|---|
+| 20 | AAPL | "9-month net sales up 17% year-over-year through Q3 2026" | Rule-b component ambiguity: the nine-month table offers several "net sales" candidates (products-only grows 16.9%); v2's chosen combination passes the 0.15pp recompute, the human's did not |
+| 22 | JPM | "the regulatory and cybersecurity risk environment flagged in the company's own filings" | Rule-4 gap: the only filing content is a TOC ("Item 1A. Risk Factors… Item 1C. Cybersecurity"), which v2 accepted as the filings "flagging" those risks — rule 4 names exhibit boilerplate but not TOC section titles used as support |
+| 23 | WMT | "Q2 2026 net sales rose 7.2% year-over-year" | Recompute passes (175,684/163,981 = +7.14%, within 0.15pp of 7.2%); the discrepancy candidate is the period label — the table's quarter ends July 2026, which is fiscal 2027 for WMT, so "Q2 2026" mislabels the period (rule-c miss against a fiscal-calendar quirk) |
 
 ### Injected-failure check (measured 2026-09-04)
 

@@ -29,7 +29,11 @@ sys.path.insert(0, str(REPO))
 from dotenv import load_dotenv  # noqa: E402
 load_dotenv(REPO / ".env")
 
-from agent.grounding import JUDGE_PROMPT_VERSION, grade_brief  # noqa: E402
+from langchain_core.messages import HumanMessage, SystemMessage  # noqa: E402
+
+from agent.grounding import (JUDGE_PROMPT_VERSION, JUDGE_SYSTEM,  # noqa: E402
+                             JUDGE_SYSTEM_V1, get_judge_llm,
+                             judge_user_prompt)
 from eval.agreement import (LABELS, cohens_kappa,  # noqa: E402
                             precision_recall_unsupported)
 from eval.runtime_guards import check_fatal_api_error  # noqa: E402
@@ -89,6 +93,19 @@ def report(title: str, pairs: list[tuple[str, str]]):
 
 
 def main():
+    import argparse
+
+    ap = argparse.ArgumentParser(description="Re-judge the 50-claim sample.")
+    ap.add_argument("--prompt-version", choices=["v1", "v2"],
+                    default=JUDGE_PROMPT_VERSION,
+                    help="Which preserved prompt to send. Selecting v1 gives a "
+                         "clean comparison: same doc-level view, same inputs, "
+                         "prompt as the only variable.")
+    args = ap.parse_args()
+    system = JUDGE_SYSTEM_V1 if args.prompt_version == "v1" else JUDGE_SYSTEM
+    tag = "v1_rejudged" if args.prompt_version == "v1" else args.prompt_version
+    key_path = VAL / f"sample_key_{tag}.csv"
+
     rows = list(csv.DictReader(open(VAL / "sample.csv", newline="", encoding="utf-8")))
     v1key = {r["id"]: r for r in
              csv.DictReader(open(VAL / "sample_key.csv", newline="", encoding="utf-8"))}
@@ -97,50 +114,54 @@ def main():
     for r in rows:
         docs.setdefault(r["context"], []).append(r)
     print(f"{len(rows)} claims over {len(docs)} unique documents; "
-          f"judge prompt {JUDGE_PROMPT_VERSION}")
+          f"judge prompt {args.prompt_version} (doc-level, sections unavailable)")
 
-    v2_labels = {}
+    new_labels = {}
     for i, (ctx_cell, doc_rows) in enumerate(docs.items()):
         m = _SPLIT.search(ctx_cell)
         if not m:
             sys.exit(f"could not split context cell for ids {[r['id'] for r in doc_rows]}")
         source_context, audited = m.group(1), m.group(2)
         try:
-            grade = grade_brief(source_context, SECTION_BLOCK_NOTE, audited)
+            findings = get_judge_llm().invoke([
+                SystemMessage(content=system),
+                HumanMessage(content=judge_user_prompt(
+                    source_context, SECTION_BLOCK_NOTE, audited)),
+            ]).content
         except Exception as e:  # noqa: BLE001
             check_fatal_api_error(e)
             raise
-        judged = parse_claims(grade.findings)
+        judged = parse_claims(findings)
         for r in doc_rows:
-            v2_labels[r["id"]] = match_label(r["claim"], judged) or "UNMATCHED"
+            new_labels[r["id"]] = match_label(r["claim"], judged) or "UNMATCHED"
         print(f"  doc {i + 1}/{len(docs)}: {len(judged)} claims judged, "
-              f"{sum(1 for r in doc_rows if v2_labels[r['id']] != 'UNMATCHED')}"
+              f"{sum(1 for r in doc_rows if new_labels[r['id']] != 'UNMATCHED')}"
               f"/{len(doc_rows)} sample claims matched", flush=True)
         time.sleep(0.5)
 
-    with open(VAL / "sample_key_v2.csv", "w", newline="", encoding="utf-8") as f:
+    with open(key_path, "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["id", "arm", "judge_label", "judge_prompt_version"])
         for r in rows:
-            w.writerow([r["id"], v1key[r["id"]]["arm"], v2_labels[r["id"]],
-                        JUDGE_PROMPT_VERSION])
+            w.writerow([r["id"], v1key[r["id"]]["arm"], new_labels[r["id"]],
+                        args.prompt_version])
 
     human = {r["id"]: r["human_label"].strip().upper() for r in rows
              if r["human_label"].strip()}
     v1_pairs = [(v1key[i]["judge_label"].strip().upper(), h) for i, h in human.items()]
-    matched = [i for i in human if v2_labels[i] != "UNMATCHED"]
-    v2_pairs = [(v2_labels[i], human[i]) for i in matched]
+    matched = [i for i in human if new_labels[i] != "UNMATCHED"]
+    new_pairs = [(new_labels[i], human[i]) for i in matched]
     unmatched = len(human) - len(matched)
 
     print("\n" + "=" * 70)
-    print(f"  JUDGE v1 vs {JUDGE_PROMPT_VERSION} — same human labels")
+    print(f"  JUDGE v1 (original key) vs {args.prompt_version} rejudge — same human labels")
     print("=" * 70)
     report("v1 (original key, judge saw sections)", v1_pairs)
-    report(f"{JUDGE_PROMPT_VERSION} (re-judge, sections unavailable)", v2_pairs)
+    report(f"{args.prompt_version} (re-judge, sections unavailable)", new_pairs)
     if unmatched:
-        print(f"\n  NOTE: {unmatched} claims unmatched under "
-              f"{JUDGE_PROMPT_VERSION} segmentation — excluded from the v2 "
-              f"matrix above.")
+        print(f"\n  NOTE: {unmatched} claims unmatched under this rejudge's "
+              f"segmentation — excluded from its matrix above.")
+    print(f"  key written: {key_path.name}")
     print("=" * 70)
 
 
