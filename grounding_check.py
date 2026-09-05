@@ -65,6 +65,7 @@ from agent.core import (
     _synthesis_prompt,
 )
 from agent.grounding import (  # single source of truth for the judge
+    JUDGE_PROMPT_VERSION,
     JUDGE_SYSTEM,
     extract_exec_and_outlook,
     get_judge_llm,
@@ -322,6 +323,7 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
 
     return {
         "ticker": ticker, "arm": arm,
+        "judge_version": JUDGE_PROMPT_VERSION,
         "retrieval_s": retrieval_s, "pipeline_s": pipeline_s, "haiku_cost": haiku_cost,
         "est_cost": round(est_cost, 5),
         "inference_claims": grade.inference_claims,
@@ -364,6 +366,7 @@ def print_comparison(results: list[dict], arms: list[str]):
     print(f"\n\n{'='*100}", flush=True)
     print("  BEFORE / AFTER — RERANKING A/B  (LLM-as-judge grounding)", flush=True)
     print(f"{'='*100}", flush=True)
+    print(f"  Judge prompt: {JUDGE_PROMPT_VERSION}", flush=True)
     print(f"  Balanced over {len(balanced)} ticker(s) completing all arms: "
           f"{', '.join(sorted(balanced)) or '(none)'}", flush=True)
     if excluded:

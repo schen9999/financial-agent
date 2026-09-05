@@ -94,9 +94,11 @@ def main():
     mean_retr = sum(r["retrieval_s"] for r in results) / n if n else 0.0
     mean_pipe = sum(r["pipeline_s"] for r in results) / n if n else 0.0
 
+    judge_versions = sorted({r["judge_version"] for r in results if r.get("judge_version")})
     print("=" * 78)
     print("  NIGHTLY GROUNDING EVAL — AGGREGATE")
     print("=" * 78)
+    print(f"  judge prompt      : {', '.join(judge_versions) if judge_versions else 'unrecorded (pre-v2 rows)'}")
     print(f"  {'Ticker':<8} {'Sup':>4} {'Uns':>4} {'Inf':>4} {'Tot':>4} {'Retr(s)':>8} {'Pipe(s)':>8}")
     print(f"  {'-'*44}")
     for r in sorted(results, key=lambda r: r["ticker"]):
@@ -126,6 +128,7 @@ def main():
 
     summary = {
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "judge_version": judge_versions or None,
         "totals": {
             "supported": sup, "unsupported": uns, "inference": inf, "claims": tot,
             "unsupported_pct": round(unsupported_pct, 2),
