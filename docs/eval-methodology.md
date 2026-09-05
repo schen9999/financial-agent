@@ -74,6 +74,23 @@ main (DAG)
   (`make eval-run EVAL_RUN_FILE=argo/eval-run-local.yaml`) — first run
   2026-09-03, gate failed; see the dated A/B below.
 
+## Extended baseline: 40 tickers (2026-09-05)
+
+`grounding-eval-extended-9j2dj` — the first run at meaningful N, on
+**judge v2** against the **post-retrieval-fix index** (real Item 1A
+prose): **387 claims** across 40/40 tickers in 27 min (est. $2.35),
+**357 S / 12 U / 18 I = 3.10% unsupported (95% CI 1.8–5.3%)** — the
+point estimate is below the 5% gate; **the interval includes the
+gate.** INFERENCE share fell to 4.7% (18/387) from ~20% under v1,
+consistent with v2's narrowed INFERENCE definition. Coverage notes:
+the five ADRs ran without SEC context (20-F filers); per-ticker claim
+counts ranged 1–23; UPST is the outlier at 3/14 unsupported. Artifacts:
+`eval/runs/9j2dj-full.log`, `9j2dj-workflow.yaml`, per-claim rows in
+`9j2dj-claims.jsonl` (claim text recoverable for INFERENCE rows only —
+findings were pod-local). **Not the number of record**: that decision
+waits for the local-model arm over the same tickers and the held-out
+judge validation drawn from this run's claims.
+
 ## Dated A/B on the single-VM target (2026-09-03)
 
 Same VM, same harness, same judge (v1), ~40 minutes apart, 10/10

@@ -30,6 +30,7 @@ records, not headline numbers of record.
 
 | Record | Value | Source (committed harness) |
 |---|---|---|
+| Extended baseline, 40 tickers (2026-09-05, `grounding-eval-extended-9j2dj`) | Judge v2, post-retrieval-fix index: 387 claims (357 S / 12 U / 18 I), **3.10% unsupported (95% CI 1.8–5.3%)** — point estimate below the 5% gate; the interval includes the gate. INFERENCE share 4.7% vs ~20% under v1. 40/40 tickers (the five ADRs ran without SEC context); per-ticker claims ranged 1–23; UPST the outlier at 3/14 unsupported. 27 min, est. $2.35. NOT the number of record — that decision waits for the local-model arm and the held-out judge validation | grounding-eval DAG; artifacts `eval/runs/9j2dj-*`, per-claim rows `eval/runs/9j2dj-claims.jsonl` |
 | Grounding A/B, hosted vs in-cluster vLLM fine-tune (2026-09-03, 10 tickers) | 3.03% (2/66, CI 0.8–10.4%) vs 12.31% (8/65, CI 6.4–22.5%) unsupported, Fisher p=0.0545; local-model arm failed the 5% gate, baseline passed. Judge v1; v1 recall on UNSUPPORTED measured 1/9 against human labels, so both rates are lower bounds — the A/B *direction* is unaffected because both arms used the same judge | grounding-eval DAG runs (eval-methodology dated A/B); intervals `eval/stats.py` |
 | Grounding, hosted vs local-hybrid (Aug 2026, 9-ticker balanced) | 86.2% vs 77.8% | `grounding_check.py` A/B, benchmarks.md |
 | Cost, hosted vs hybrid | $0.0316 vs $0.0321 per brief — sections saving within run-to-run variance | `scripts/cost_report.py`, benchmarks.md |
