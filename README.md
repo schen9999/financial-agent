@@ -152,7 +152,7 @@ is not worth its cost.
 
 **Generate Brief** -- enter a ticker and the app produces a structured investment brief:
 1. Fetches stock data (yfinance), news (NewsAPI), and SEC filing summaries (EDGAR)
-2. Runs two concurrent Pinecone RAG queries to ground the SEC Filing Highlights and Risk Factors sections in actual filing text
+2. Runs two concurrent Pinecone RAG queries to ground the SEC Filing Highlights and Risk Factors sections in actual filing text (a retrieval defect that indexed exhibit text instead of Item 1A for most tickers was found and fixed 2026-09-04 — see [docs/eval-methodology.md](docs/eval-methodology.md), "Retrieval defect")
 3. Generates four middle sections in parallel using Claude Haiku
 4. Streams the Executive Summary and Outlook from Claude Sonnet, which receives the pre-written sections as context
 5. Caches the completed brief in Redis (exact key `research:{TICKER}`) and PostgreSQL

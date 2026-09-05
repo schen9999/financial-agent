@@ -38,6 +38,8 @@ records, not headline numbers of record.
 | Local CPU serving (environment-limited) | ~7.7 tok/s aggregate saturation; p50 13.3s→74.1s at concurrency 1→8; not comparable to GPU/hosted | `scripts/vllm_benchmark.py`, benchmarks.md |
 | Pipeline latency | 26.29s mean (~26s) per brief | `grounding_check.py` pipeline timing, Phase 0 re-measure |
 | K8s smoke test | 13/13 assertions | `scripts/k8s_smoke_test.sh` |
+| Retrieval defect fix (2026-09-04) | Pre-fix: 3/40 tickers' risk retrieval passed verification (32 served exhibit/TOC text; 5 ADRs unfetchable). Post-fix: 32/40 pass; remaining 8 itemized in eval-methodology "Retrieval defect". Grounding numbers dated before 2026-09-04 measured the pipeline against exhibit text for most tickers and stand as dated records of that pipeline | `scripts/reindex_filings.py` verify pass |
+| Cost harness, post-retrieval-fix run (2026-09-04, 3-ticker mean) | $0.0364/brief = $0.0280 exact + $0.0084 RAG-internal estimate — richer risk contexts lengthen inputs; the cost of record remains $0.0316 pending a full re-measure decision | `scripts/cost_report.py` |
 | Test suite | 1222 lines, 80 tests (79 free + 1 credit-gated) | `python -m pytest tests/ --collect-only` |
 
 ## Retired

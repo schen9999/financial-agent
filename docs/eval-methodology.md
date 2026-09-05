@@ -111,6 +111,38 @@ is fully consistent with a true rate above 5% (and a mild fail with one
 below it). Distinguishing 3% from 5% with useful power needs claims in
 the several-hundreds — the motivation for the extended benchmark.
 
+## Retrieval defect, discovered 2026-09-04
+
+**Mechanism.** On EDGAR filing index pages, inline-XBRL filers link the
+primary document through an `/ix?doc=` viewer wrapper. The fetcher's
+href regex matched only plain `/Archives/...htm` links, the
+exhibit-name filter then rejected every remaining `.htm` file, and the
+`htm_files[0]` fallback selected **Exhibit 4.x** — so for most tickers
+the indexed "10-K" was an exhibit (AAPL's was its Bylaws). Two
+compounding layers: undecoded HTML entities
+(`Item 1A.&#160;&#160;Risk Factors`) hid section headings from the
+window anchor, and a bare `item 1a` anchor also matched
+forward-looking-statement cross-references.
+
+**Fix and verification.** The fetcher now resolves the primary document
+from the submissions JSON `primaryDocument` field (scrape kept as
+fallback, `/ix?doc=` unwrapped), cleaning decodes entities, and the
+anchor requires title adjacency. Verified by
+`scripts/reindex_filings.py` (top-3 risk-factors retrieval must carry
+risk prose and no exhibit/TOC boilerplate): **pre-fix 3 PASS / 32
+VERIFY-FAILED / 5 FETCH-FAILED (ADRs); post-fix 32 PASS / 8 failed** —
+the 5 ADRs (20-F filers, the deliberate coverage gap), MSFT and SANA
+(windows still include a TOC-listing chunk), and UPST (verifier false
+positive: "indenture" used legitimately in SPE-financing risk prose).
+
+**What this means for the numbers.** All grounding numbers dated before
+2026-09-04 measured the pipeline against exhibit text for most tickers;
+they remain valid as dated records **of that pipeline**. The defect was
+surfaced by the human labeling pass — reading retrieved contexts and
+finding exhibit boilerplate (RSU agreements, indentures, bonus plans)
+where risk factors should be — not by the automated eval, which had
+scored that retrieval for weeks without noticing.
+
 ## Judge validation — v1 results (2026-09-04)
 
 - **Sample**: `eval/judge_validation/sample.csv` — 50 claims,
