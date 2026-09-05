@@ -175,8 +175,10 @@ has yet run against vLLM itself.
 changed code the eval pods run — `agent/grounding.py` (judge v2),
 `agent/tools/{rag,sec,sec_common}.py` (Item 1A anchoring, CIK lookup),
 `grounding_check.py`, `scripts/eval_aggregate.py`, and the `eval/`
-package. After pulling it on the VM, run `make vm-images && make vm-up`
-**before any `make eval-run`**, or the pods run the old code.
+package. After pulling it on the VM, the full new-image sequence is
+`make vm-images`, `make vm-up`, `make argo-deploy ARGO_OVERLAY=k3s` —
+all three **before any `make eval-run`**, or the pods run the old code
+(and, without the argo-deploy, the old WorkflowTemplate).
 
 **Eval against the in-cluster vLLM — EXECUTED 2026-09-03, GATE FAILED.**
 `grounding-eval-local-dkghz` ran the `local-model` arm on the VM with
@@ -252,6 +254,34 @@ Submit only after topping up credits:
 pass; the local-model pass is a second submission overriding `arms`).
 The workflow raises `activeDeadlineSeconds` to 3h — 40 tickers at
 parallelism 2 will not fit the template's 1h default.
+
+## Findings capture — after any eval run
+
+Every eval pod and the aggregate print a base64 tar of
+`/app/eval_findings` to stdout under `===EVAL_FINDINGS_TGZ_BEGIN/END===`
+markers — the per-claim judge evidence (metadata, retrieved context,
+judge-input sections, audited text, findings). Capture it while the
+pods still exist, extract, and commit:
+
+```bash
+kubectl -n financial-agent logs -l workflows.argoproj.io/workflow=<wf> \
+    --prefix --tail=-1 > eval/runs/<wf>.log
+python scripts/extract_findings.py --log eval/runs/<wf>.log --out eval/runs/<wf>/
+git add eval/runs/<wf>.log eval/runs/<wf>/   # commit both
+```
+
+The label-selector capture takes every pod's dump — required on kind,
+where the findings volume is a per-pod emptyDir; on k3s the volume is a
+shared hostPath (`/home/ubuntu/eval-findings/<wf>` on the VM), so the
+aggregate pod's dump alone is already complete and the hostPath is a
+second copy. Per-claim rows then come from
+`eval/parse_run_log.py --findings-dir eval/runs/<wf>/`.
+
+Emergency fallback if the logs are gone too (used 2026-09-05 to recover
+9j2dj): deleted pods' written files survive in containerd snapshot upper
+layers — on the node, `find` the containerd root (k3s:
+`/var/lib/rancher/k3s/agent/containerd`) under
+`io.containerd.snapshotter.v1.overlayfs/snapshots` for `eval_findings`.
 
 ## OKE (OCI) — Phase 2
 

@@ -86,8 +86,12 @@ consistent with v2's narrowed INFERENCE definition. Coverage notes:
 the five ADRs ran without SEC context (20-F filers); per-ticker claim
 counts ranged 1–23; UPST is the outlier at 3/14 unsupported. Artifacts:
 `eval/runs/9j2dj-full.log`, `9j2dj-workflow.yaml`, per-claim rows in
-`9j2dj-claims.jsonl` (claim text recoverable for INFERENCE rows only —
-findings were pod-local). **Not the number of record**: that decision
+`9j2dj-claims.jsonl` — full claim text and judge rationale for all
+rows, recovered post-hoc from containerd snapshots into
+`9j2dj-findings/` (contexts by sha256 in `9j2dj-contexts/`; one
+UNSUPPORTED verdict was free-form, carried with claim=null; findings
+dumps are now a standing part of every run — see the runbook's
+findings-capture section). **Not the number of record**: that decision
 waits for the local-model arm over the same tickers and the held-out
 judge validation drawn from this run's claims.
 
