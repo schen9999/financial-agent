@@ -237,6 +237,16 @@ retained (~$1.41 for 80 calls) because its input components are
 size-bounded — the 2,000-char SEC summary window and model-output-
 bounded RAG answers don't grow with richer source text — giving
 **≈ $4.30 total** for the two-arm run.
+
+**Cost-of-record re-measure (pending — do not run until decided):**
+the $0.0316 record was measured on the harness default, a 3-ticker
+mean over AAPL, NVDA, JPM (benchmarks.md pins the run via its
+per-ticker token evidence). The like-for-like re-measure on the fixed
+pipeline, same N and tickers:
+
+```bash
+python scripts/cost_report.py --tickers AAPL NVDA JPM --json-out cost_record_post_fix.json
+```
 Submit only after topping up credits:
 `make eval-run EVAL_RUN_FILE=argo/eval-run-extended.yaml` (baseline
 pass; the local-model pass is a second submission overriding `arms`).
