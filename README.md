@@ -20,9 +20,11 @@ The answer required building both the agent and the measurement layer to audit i
 
 I built an evaluation framework that audits every quantitative and forward-looking claim in each brief against the retrieved source context. A Sonnet judge (temperature 0) labels each claim `SUPPORTED`, `UNSUPPORTED`, or `INFERENCE`.
 
-**Early results: 49% unsupported claim rate.** Nearly half of what the agent said wasn't backed by anything it retrieved.
+**Early results: 49% unsupported claim rate (judge v1).** Nearly half of what the agent said wasn't backed by anything it retrieved.
 
-After iterating on prompt constraints and forcing generation to stay grounded in source material: **3% unsupported claim rate** — and the framing of record today is **49% pre-fix → 0/84 unsupported in the current eval** (Aug 2026 full re-measure, 10 tickers). See [docs/PHASE0_AUDIT.md](docs/PHASE0_AUDIT.md) for the audited numbers of record.
+After iterating on prompt constraints and forcing generation to stay grounded in source material: **3% unsupported claim rate** — and the framing of record today is **49% pre-fix → 0/84 unsupported in the current eval (judge v1)** (Aug 2026 full re-measure, 10 tickers). See [docs/PHASE0_AUDIT.md](docs/PHASE0_AUDIT.md) for the audited numbers of record.
+
+*Judge-version note:* every unsupported rate in this README comes from judge prompt **v1**; a 2026-09-04 human validation measured v1 recall on UNSUPPORTED at 1/9, so v1 rates are lower bounds ([docs/eval-methodology.md](docs/eval-methodology.md)).
 
 The prompt engineering work -- not the retrieval architecture -- was what actually moved the needle.
 
@@ -30,7 +32,7 @@ The prompt engineering work -- not the retrieval architecture -- was what actual
 
 I added optional cross-encoder reranking to the RAG pipeline and ran a controlled 4-arm eval across 10 tickers to measure whether it improved grounding:
 
-| Arm | Claims | Grounding | Unsupported | Retrieval Latency |
+| Arm | Claims | Grounding | Unsupported (judge v1) | Retrieval Latency |
 |---|---:|---:|---:|---:|
 | Baseline (top-3, no rerank) | 66 | 92.4% | 0.0% | 4.1s |
 | Plain top-5 (no rerank) | 74 | 86.5% | 1.4% | 4.5s |
@@ -43,7 +45,7 @@ I added optional cross-encoder reranking to the RAG pipeline and ran a controlle
 
 Can a small local model replace Claude Haiku on section generation at lower cost?
 
-I fine-tuned **Qwen2.5-1.5B-Instruct** with QLoRA on 104 deterministic, Claude-free training pairs built from real SEC filings and financial data. When enabled, the fine-tuned model is routed 2 of 4 brief sections (Financial Health and Risk Factors); the other two stay on Haiku because deterministic targets couldn't be built for them -- an honest finding about the data, not a gap to paper over. **The measured verdict (2026-09-03, in-cluster A/B, same harness, same day): the fine-tune fails the 5% grounding gate on exactly the two sections it owns -- 12.31% unsupported (8/65) vs a 3.03% (2/66) hosted baseline -- so it ships default-off.** The rest of this section is the experiment record.
+I fine-tuned **Qwen2.5-1.5B-Instruct** with QLoRA on 104 deterministic, Claude-free training pairs built from real SEC filings and financial data. When enabled, the fine-tuned model is routed 2 of 4 brief sections (Financial Health and Risk Factors); the other two stay on Haiku because deterministic targets couldn't be built for them -- an honest finding about the data, not a gap to paper over. **The measured verdict (2026-09-03, in-cluster A/B, same harness, same day): the fine-tune fails the 5% grounding gate on exactly the two sections it owns -- 12.31% unsupported (8/65) vs a 3.03% (2/66) hosted baseline, judge v1 -- so it ships default-off.** The rest of this section is the experiment record.
 
 | | Section-generation (Haiku) cost | Grounding |
 |---|---:|---:|
@@ -68,7 +70,7 @@ path is exercised via Ollama's `/v1` endpoint.
 fine-tune pinned to one A10 on an OCI VM -- plain Docker (2026-09-02), then
 in-cluster on single-node k3s (2026-09-03) -- and the same gated eval DAG ran
 against it (20 confirmed `/v1/chat/completions`, 2 sections x 10 tickers):
-**12.31% unsupported (8/65) vs the same-day hosted baseline 3.03% (2/66)** --
+**12.31% unsupported (8/65) vs the same-day hosted baseline 3.03% (2/66), judge v1** --
 the local-model arm fails the 5% gate, the hosted baseline passes. Same
 harness, same day, same VM (dated A/B in
 [docs/eval-methodology.md](docs/eval-methodology.md)). A measured negative
@@ -100,7 +102,7 @@ temperature-0 Sonnet judge, with retrieval held at baseline (reranking off, top-
 on both sides so the only differences were the planner-driven queries and the
 critic loop. Critic threshold: 5% unsupported.
 
-| Path | Claims | Unsupported | Cost/brief (relative)* | Latency/brief | Revisions/brief |
+| Path | Claims | Unsupported (judge v1) | Cost/brief (relative)* | Latency/brief | Revisions/brief |
 |---|---:|---:|---:|---:|---:|
 | Single-agent (control) | 73 | 1 (1.4%) | 1.00x | 26.1s | 0.00 |
 | Multi-agent | 71 | 0 (0.0%) | 1.92x | 43.9s | 0.00 |
@@ -115,7 +117,7 @@ Two findings, stated plainly:
 
 1. **The critic fired 0 revisions across all 10 real drafts.** The base pipeline
    already drives unsupported claims to the floor (roughly 3% at the time of this
-   experiment; 0/84 unsupported in the current eval) on the
+   experiment; 0/84 unsupported in the current eval, judge v1) on the
    Executive Summary and Outlook sections this eval scores, so the critic looked at
    every first draft, found nothing to fix, and passed it. There was no headroom
    for the revision loop to recover.
@@ -436,10 +438,10 @@ make cluster-down    # tear down
 
 | Measurement | Result |
 |---|---|
-| Grounding (10 tickers, temp-0 judge) | **49% pre-fix → 0/84 unsupported in current eval** |
+| Grounding (10 tickers, temp-0 judge) | **49% pre-fix → 0/84 unsupported in current eval (judge v1)** |
 | Cost/brief, hosted (exact API tokens + RAG estimate) | **$0.0316** (re-runnable: `make cost-report`) |
 | Grounding, hosted vs local-hybrid (9-ticker balanced A/B, Aug 2026) | 86.2% vs 77.8% — expected regression, local stays default-off |
-| Grounding, hosted vs in-cluster vLLM fine-tune (10-ticker A/B, 2026-09-03) | 3.03% (2/66) vs 12.31% (8/65) unsupported — local-model arm fails the 5% gate; ships default-off. Fisher p=0.054, intervals overlap at this N — see [docs/eval-methodology.md](docs/eval-methodology.md) |
+| Grounding, hosted vs in-cluster vLLM fine-tune (10-ticker A/B, 2026-09-03) | 3.03% (2/66) vs 12.31% (8/65) unsupported (judge v1) — local-model arm fails the 5% gate; ships default-off. Fisher p=0.054, intervals overlap at this N — see [docs/eval-methodology.md](docs/eval-methodology.md) |
 | Cost/brief, hosted vs local-hybrid | $0.0316 vs $0.0321 — no measurable full-brief saving (Sonnet dominates) |
 | Local CPU serving (environment-limited: 2-core AVX2 laptop) | ~7.7 tok/s aggregate saturation; NOT comparable to GPU/hosted |
 
@@ -487,7 +489,7 @@ it nightly at 03:30 America/New_York. Eval pods force `BYPASS_CACHE=true` — th
 never touch the live exact-key brief cache.
 
 **The gate fired on its first real run — and that was variance, measured.** The
-first full workflow run scored 5.62% unsupported (gate: ≤5%), driven entirely by
+first full workflow run scored 5.62% unsupported (judge v1; gate: ≤5%), driven entirely by
 one NVDA draft with 5 flagged claims. Re-measuring NVDA immediately produced
 0 unsupported of 10 (and the same morning's full-suite run had scored 0 of 84).
 Single-draft scores fluctuate at temperature 0.2 — the same behaviour as the
