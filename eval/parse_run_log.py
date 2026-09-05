@@ -100,7 +100,8 @@ def rows_from_findings_dir(run: str, findings_dir: Path, results: dict,
     (located within the audited Exec Summary / Outlook blocks), and the
     sha256 of the exact retrieved-context string the judge saw (context
     bodies written to contexts_dir/<sha>.txt). judge_version comes from the
-    matching workflow result row."""
+    file's own `## Metadata` block when present (extended format), else from
+    the matching workflow result row."""
     import hashlib
 
     from eval.label import parse_claims, parse_findings_file
@@ -123,13 +124,15 @@ def rows_from_findings_dir(run: str, findings_dir: Path, results: dict,
                              parsed["audited"], re.S):
             blocks[m.group(1)] = _norm(m.group(2))
         wf_row = results.get((ticker, arm), {})
+        judge_version = (parsed.get("metadata", {}).get("judge_prompt_version")
+                         or wf_row.get("judge_version"))
         for c in parse_claims(parsed["findings"]):
             nc = _norm(c["claim"])
             section = next((name for name, body in blocks.items() if nc and nc in body),
                            None)
             out.append({
                 "run": run, "ticker": ticker, "arm": arm,
-                "judge_version": wf_row.get("judge_version"),
+                "judge_version": judge_version,
                 "section": section,
                 "claim": c["claim"], "judge_label": c["label"],
                 "judge_rationale": c["reason"] or None,
@@ -161,7 +164,7 @@ def rows_from_findings_dir(run: str, findings_dir: Path, results: dict,
                       f"CLAIM line — emitted with claim=null")
                 out.append({
                     "run": run, "ticker": ticker, "arm": arm,
-                    "judge_version": wf_row.get("judge_version"),
+                    "judge_version": judge_version,
                     "section": None, "claim": None,
                     "judge_label": label.upper(),
                     "judge_rationale": reason.strip() or None,

@@ -15,11 +15,14 @@ Stratification keeps every claim from scarce strata (UNSUPPORTED first, then
 INFERENCE) and fills the remainder with SUPPORTED claims, deterministically
 (--seed).
 
-Protocol caveat, disclosed: the findings files persist the retrieved source
-context and the audited Exec Summary + Outlook, but NOT the four pre-written
-sections the judge additionally saw. Human labels are therefore made against
-slightly less context than the judge had; treat disagreements on
-section-derived facts with that in mind.
+Protocol caveat, disclosed: findings files written before the extended
+format (no `## Pre-written sections (judge input)` block) persist the
+retrieved source context and the audited Exec Summary + Outlook, but NOT
+the four pre-written sections the judge additionally saw — human labels
+from those files are made against slightly less context than the judge
+had; treat disagreements on section-derived facts with that in mind.
+Extended-format files persist the pre-written sections too, and this
+script includes them in the labeling context, closing the gap.
 
 Usage:
   python eval/label.py --arm baseline --sample 50 --seed 42 \
@@ -35,19 +38,66 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 DEFAULT_FINDINGS = REPO / "eval_findings"
 
-_SECTION_RE = re.compile(
-    r"## Retrieved source context\s*\n(.*?)\n## Audited[^\n]*\n(.*?)\n## Judge findings\s*\n(.*)",
-    re.S,
-)
+# Only these top-level headings delimit blocks — section BODIES routinely
+# contain their own "## " headings (SEC risk-factor context, the judge's
+# "## EXECUTIVE SUMMARY"/"## SUMMARY OF FINDINGS"), so splitting on any
+# "## " line fragments real files.
+_TOP_HEADING_RE = re.compile(
+    r"^## (Metadata|Retrieved source context|Pre-written sections \(judge input\)|"
+    r"Audited[^\n]*|Judge findings)[ \t]*$",
+    re.M)
+
+
+def render_findings_md(ticker: str, arm: str, judge_prompt_version: str,
+                       source_context: str, section_block: str,
+                       exec_and_outlook: str, findings: str) -> str:
+    """The extended findings-file format. Writer and parser live together in
+    this module so the format can't drift: grounding_check._save_findings
+    calls this, parse_findings_file reads it back."""
+    import hashlib
+    sha = hashlib.sha256(source_context.encode("utf-8")).hexdigest()
+    return (
+        f"# {ticker} — {arm}\n\n"
+        f"## Metadata\n\nticker: {ticker}\narm: {arm}\n"
+        f"judge_prompt_version: {judge_prompt_version}\n"
+        f"context_sha256: {sha}\n\n"
+        f"## Retrieved source context\n\n{source_context}\n\n"
+        f"## Pre-written sections (judge input)\n\n{section_block}\n\n"
+        f"## Audited (Exec Summary + Outlook)\n\n{exec_and_outlook}\n\n"
+        f"## Judge findings\n\n{findings}\n"
+    )
 
 
 def parse_findings_file(text: str) -> dict | None:
-    """Split one findings .md into its three sections."""
-    m = _SECTION_RE.search(text)
-    if not m:
+    """Split one findings .md by its `## ` headings.
+
+    Handles both formats: the original three sections (context / audited /
+    findings) and the extended one that adds `## Metadata` (ticker, arm,
+    judge_prompt_version, context_sha256) and `## Pre-written sections
+    (judge input)`. Extended keys are present only when the file has them.
+    """
+    matches = list(_TOP_HEADING_RE.finditer(text))
+    blocks = {}
+    for i, m in enumerate(matches):
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+        blocks[m.group(1).strip()] = text[m.end():end].strip()
+    context = blocks.get("Retrieved source context")
+    audited = next((v for k, v in blocks.items() if k.startswith("Audited")), None)
+    findings = blocks.get("Judge findings")
+    if context is None or audited is None or findings is None:
         return None
-    return {"context": m.group(1).strip(), "audited": m.group(2).strip(),
-            "findings": m.group(3).strip()}
+    out = {"context": context, "audited": audited, "findings": findings}
+    if "Metadata" in blocks:
+        out["metadata"] = {
+            k.strip(): v.strip()
+            for k, _, v in (ln.partition(":")
+                            for ln in blocks["Metadata"].splitlines())
+            if k.strip() and _}
+    prewritten = next((v for k, v in blocks.items()
+                       if k.startswith("Pre-written sections")), None)
+    if prewritten is not None:
+        out["section_block"] = prewritten
+    return out
 
 
 def parse_claims(findings: str) -> list[dict]:
@@ -84,6 +134,9 @@ def collect_claims(findings_dir: Path, arms: list[str], provenance: str) -> list
                 f"=== RETRIEVED SOURCE CONTEXT ===\n{parsed['context']}\n\n"
                 f"=== AUDITED TEXT (Exec Summary + Outlook) ===\n{parsed['audited']}"
             )
+            if "section_block" in parsed:
+                context += (f"\n\n=== PRE-WRITTEN SECTIONS (judge input) ===\n"
+                            f"{parsed['section_block']}")
             for c in parse_claims(parsed["findings"]):
                 rows.append({"ticker": ticker, "arm": arm, "provenance": provenance,
                              "context": context, **c})

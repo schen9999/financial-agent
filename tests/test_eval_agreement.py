@@ -27,11 +27,76 @@ REASON: pe_ratio 35.4 appears in the stock data.
 """
 
 
+EXTENDED_FINDINGS_MD = """# AAPL — baseline
+
+## Metadata
+
+ticker: AAPL
+arm: baseline
+judge_prompt_version: v2
+context_sha256: abc123
+
+## Retrieved source context
+
+STOCK DATA: {"pe_ratio": 35.4}
+
+## Pre-written sections (judge input)
+
+### Valuation
+The stock trades at a premium multiple.
+
+## Audited (Exec Summary + Outlook)
+
+### Executive Summary
+Apple trades at a P/E of 35.4.
+
+## Judge findings
+
+CLAIM: "P/E of 35.4"
+LABEL: SUPPORTED
+REASON: pe_ratio 35.4 appears in the stock data.
+"""
+
+
 def test_parse_findings_file_sections():
     parsed = parse_findings_file(FINDINGS_MD)
     assert parsed and "pe_ratio" in parsed["context"]
     assert "Executive Summary" in parsed["audited"]
     assert "CLAIM" in parsed["findings"]
+    assert "metadata" not in parsed and "section_block" not in parsed
+
+
+def test_parse_findings_file_extended_format():
+    parsed = parse_findings_file(EXTENDED_FINDINGS_MD)
+    assert parsed["metadata"]["judge_prompt_version"] == "v2"
+    assert parsed["metadata"]["context_sha256"] == "abc123"
+    assert "premium multiple" in parsed["section_block"]
+    # Extended blocks must not leak into the original three.
+    assert "premium multiple" not in parsed["context"]
+    assert "judge_prompt_version" not in parsed["context"]
+    assert "pe_ratio" in parsed["context"]
+    assert "Executive Summary" in parsed["audited"]
+
+
+def test_render_findings_md_round_trips():
+    import hashlib
+
+    from eval.label import render_findings_md
+
+    ctx = 'STOCK DATA: {"pe_ratio": 35.4}'
+    text = render_findings_md(
+        "AAPL", "baseline", "v2", ctx, "### Valuation\nPremium multiple.",
+        "### Executive Summary\nApple trades at a P/E of 35.4.",
+        'CLAIM: "P/E of 35.4"\nLABEL: SUPPORTED\nREASON: in stock data.')
+    parsed = parse_findings_file(text)
+    assert parsed["metadata"]["ticker"] == "AAPL"
+    assert parsed["metadata"]["arm"] == "baseline"
+    assert parsed["metadata"]["judge_prompt_version"] == "v2"
+    assert parsed["metadata"]["context_sha256"] == (
+        hashlib.sha256(ctx.encode()).hexdigest())
+    assert parsed["context"] == ctx
+    assert "Premium multiple" in parsed["section_block"]
+    assert parse_claims(parsed["findings"])[0]["label"] == "SUPPORTED"
 
 
 def test_parse_claims_plain_and_bold():

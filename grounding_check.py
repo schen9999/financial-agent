@@ -189,16 +189,22 @@ def _retry(fn, *args, _attempts=4, _base=3.0, **kwargs):
 FINDINGS_DIR = Path(__file__).parent / "eval_findings"
 
 
-def _save_findings(ticker: str, arm: str, source_context: str, exec_and_outlook: str, findings: str):
-    """Persist the retrieved source context + audited text + judge findings so a
-    run's per-claim evidence survives (the printed counts alone can't be
-    re-derived without the judge, and auditing a label needs the source it saw)."""
+def _save_findings(ticker: str, arm: str, source_context: str, section_block: str,
+                   exec_and_outlook: str, findings: str):
+    """Persist EVERYTHING the judge saw plus its findings, so a run's
+    per-claim evidence survives and is self-describing: metadata (ticker,
+    arm, judge prompt version, context hash), the retrieved source context,
+    the pre-written sections (judge input — previously unpersisted, the
+    documented validation caveat), the audited text, and the findings.
+    Format rendered by eval.label.render_findings_md, which lives beside
+    the parser that reads it back."""
+    from eval.label import render_findings_md
     try:
         FINDINGS_DIR.mkdir(exist_ok=True)
         (FINDINGS_DIR / f"{ticker}_{arm}.md").write_text(
-            f"# {ticker} — {arm}\n\n## Retrieved source context\n\n{source_context}\n\n"
-            f"## Audited (Exec Summary + Outlook)\n\n{exec_and_outlook}\n\n"
-            f"## Judge findings\n\n{findings}\n",
+            render_findings_md(ticker, arm, JUDGE_PROMPT_VERSION,
+                               source_context, section_block,
+                               exec_and_outlook, findings),
             encoding="utf-8",
         )
     except Exception as e:
@@ -293,7 +299,8 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
         invoker=lambda messages: _retry(get_judge_llm().invoke, messages),
     )
 
-    _save_findings(ticker, arm, source_context, exec_and_outlook, grade.findings)
+    _save_findings(ticker, arm, source_context, section_block, exec_and_outlook,
+                   grade.findings)
 
     # Estimated total spend for this (ticker, arm): Haiku sections (existing
     # estimate) + Sonnet synthesis + Sonnet judge, chars/4 tokens priced from
