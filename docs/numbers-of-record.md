@@ -13,7 +13,8 @@ recorded denominator, so no interval can honestly be attached to it.
 
 | Metric | Number of record | Source (committed harness) |
 |---|---|---|
-| Grounding | 49% pre-fix → 0/84 unsupported in current eval (95% CI 0.0–4.4%) | `grounding_check.py` via the Argo grounding-eval DAG (nightly + `make eval-run`); interval: `eval/stats.py` |
+| Grounding | 49% pre-fix → 0/84 unsupported in current eval (95% CI 0.0–4.4%). Judge v1; v1 recall on UNSUPPORTED measured 1/9 against human labels, so this rate is a lower bound | `grounding_check.py` via the Argo grounding-eval DAG (nightly + `make eval-run`); interval: `eval/stats.py` |
+| Judge validation (v1, 50-claim sample, 2026-09-04) | Cohen's kappa 0.321; recall on UNSUPPORTED 1/9 = 11.1% (95% CI 2.0–43.5%); precision 1/3 = 33.3% (95% CI 6.1–79.2%). Human-UNSUPPORTED claims mostly filed as INFERENCE. Author-adjudicated labels, not blind (method + limitations: eval-methodology, "Judge validation") | `eval/agreement.py` on `eval/judge_validation/sample.csv` |
 | Cost per brief | $0.0316 | `scripts/cost_report.py` (`make cost-report`) |
 | Critic recall on injected failures | 20/20 = 100% (95% CI 83.9–100%) on both runs (2026-09-04, runs 1 and 2). Run 2, with every flag persisted and adjudicated: raw precision vs injection tags 20/24 = 83.3% (95% CI 64.1–93.3%); **adjudicated precision 24/24 = 100% (95% CI 86.2–100%)** — all 4 off-needle flags were genuinely unsupported (3 injection cascades, 1 pre-existing), 0 false positives (adjudication table: eval-methodology, "Injected-failure check") | `eval/perturb.py` fixtures + `eval/critic_check.py`; re-runnable in CI (`critic-injection.yml`, asserts recall ≥ 0.8) |
 | Cost per brief on OCI | to be measured in Phase 2 | same harness, re-run on OKE |
@@ -29,7 +30,7 @@ records, not headline numbers of record.
 
 | Record | Value | Source (committed harness) |
 |---|---|---|
-| Grounding A/B, hosted vs in-cluster vLLM fine-tune (2026-09-03, 10 tickers) | 3.03% (2/66, CI 0.8–10.4%) vs 12.31% (8/65, CI 6.4–22.5%) unsupported, Fisher p=0.0545; local-model arm failed the 5% gate, baseline passed | grounding-eval DAG runs (eval-methodology dated A/B); intervals `eval/stats.py` |
+| Grounding A/B, hosted vs in-cluster vLLM fine-tune (2026-09-03, 10 tickers) | 3.03% (2/66, CI 0.8–10.4%) vs 12.31% (8/65, CI 6.4–22.5%) unsupported, Fisher p=0.0545; local-model arm failed the 5% gate, baseline passed. Judge v1; v1 recall on UNSUPPORTED measured 1/9 against human labels, so both rates are lower bounds — the A/B *direction* is unaffected because both arms used the same judge | grounding-eval DAG runs (eval-methodology dated A/B); intervals `eval/stats.py` |
 | Grounding, hosted vs local-hybrid (Aug 2026, 9-ticker balanced) | 86.2% vs 77.8% | `grounding_check.py` A/B, benchmarks.md |
 | Cost, hosted vs hybrid | $0.0316 vs $0.0321 per brief — sections saving within run-to-run variance | `scripts/cost_report.py`, benchmarks.md |
 | Cost harness, early run (2026-08-24, 3-ticker mean) | $0.0336/brief = $0.0272 exact (4 Haiku sections + Sonnet synthesis) + $0.0064 RAG-internal estimate — a dated run record; the cost of record is $0.0316 (Current table) | `scripts/cost_report.py` |

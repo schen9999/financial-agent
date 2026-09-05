@@ -111,37 +111,63 @@ is fully consistent with a true rate above 5% (and a mild fail with one
 below it). Distinguishing 3% from 5% with useful power needs claims in
 the several-hundreds — the motivation for the extended benchmark.
 
-## Judge validation — results pending
-
-The Sonnet judge (temperature 0) has had no human validation; until it
-does, every grounding number in this repo measures agreement with one
-model's reading, not ground truth. The protocol, built and awaiting
-labels:
+## Judge validation — v1 results (2026-09-04)
 
 - **Sample**: `eval/judge_validation/sample.csv` — 50 claims,
   stratified over the judge's labels (16 SUPPORTED / 3 UNSUPPORTED /
-  31 INFERENCE — all scarce strata kept in full, INFERENCE deliberately
-  heavy because that's where judge/human ambiguity lives), drawn from a
-  176-claim pool with `eval/label.py --seed 42`.
+  31 INFERENCE), drawn from a 176-claim pool with
+  `eval/label.py --seed 42`.
 - **Provenance, stated exactly**: the pool is the committed
   `eval_findings/` per-claim artifacts of the **2026-08-24 local run**
   (baseline + local-model arms, same judge and prompt as every DAG run).
   It is *not* the Sep 3 `grounding-eval-6zwqf` run: that run's per-claim
-  findings were written inside the eval pods and never archived — a
-  known gap (the artifact-archival feature uploads aggregate/results
-  JSON only, not findings).
-- **Blinding**: the labeling CSV carries claim + retrieved context +
-  audited text only; the judge's verdict and the arm each claim came
-  from live in `sample_key.csv`, which is not opened until labeling is
-  done. Caveat disclosed: findings files do not persist the four
-  pre-written sections the judge additionally saw, so the human labels
-  against slightly less context.
-- **Analysis**: `eval/agreement.py` reports Cohen's kappa (3-class) and
-  the judge's precision/recall on UNSUPPORTED with human labels as
-  truth, all with Wilson 95% intervals.
+  findings were written inside the eval pods and never archived.
+- **Labeling method, stated verbatim**: "Labels were assigned by the
+  author after reviewing every claim against its retrieved context. Two
+  LLMs (Gemini Pro on 42 claims, Claude Fable 5.1 on all 50) were
+  consulted for a proposed label and rationale; the author made the
+  final call on every row. Labeling was not blind to model output."
+- **Analysis**: `eval/agreement.py`, human labels as ground truth,
+  Wilson 95% intervals throughout.
 
-**Results: pending.** No human labels exist yet; no agreement number
-may be quoted until `eval/agreement.py` has run on the completed CSV.
+**Result (judge v1):**
+
+```
+Confusion (rows = judge, cols = human):
+                 SUPPORTED  UNSUPPORTED  INFERENCE
+SUPPORTED               13            2          1
+UNSUPPORTED              0            1          2
+INFERENCE               10            6         15
+```
+
+- Cohen's kappa (3-class): **0.321**
+- Judge recall on UNSUPPORTED: **1/9 = 11.1% (95% CI 2.0–43.5%)**
+- Judge precision on UNSUPPORTED: **1/3 = 33.3% (95% CI 6.1–79.2%)**
+
+**The finding, stated plainly: INFERENCE is a catch-all.** The judge
+filed 6 of the 9 human-UNSUPPORTED claims as INFERENCE — and INFERENCE
+also absorbed 10 human-SUPPORTED claims. Because the gate counts only
+UNSUPPORTED, **the gate understates the true unsupported rate by an
+unknown factor**: every judge-v1-reported unsupported rate in this repo
+(0/84, 3.03%, 12.31%) is a lower bound on what a human reading would
+find. The Sep 3 A/B *direction* is unaffected — both arms were scored
+by the same judge — but its absolute rates inherit the caveat.
+
+**Labeling rubric applied by the author, verbatim**: positional
+adjectives verifiable from two context numbers are SUPPORTED when they
+hold and UNSUPPORTED when they don't; comparators with no comparator in
+context are INFERENCE for mild ones (premium, elevated, reasonable) and
+UNSUPPORTED for superlatives; conditionals and watch-items are
+INFERENCE; declaratives naming an entity or figure not in context are
+UNSUPPORTED; derived percentages within 0.15pp of the computed value
+pass.
+
+**Sample limitations**: stratified toward judge-INFERENCE rows (31/50);
+ticker skew (JPM 11 and V 9 of 50); repeated draws from the same
+sentences (claims sampled from the same briefs share text); n=50, so
+the UNSUPPORTED cells are single digits and the intervals are wide;
+labels are the author's, informed by non-blind LLM consultation, not an
+independent panel.
 
 ### Injected-failure check (measured 2026-09-04)
 
