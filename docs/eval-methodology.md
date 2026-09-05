@@ -169,6 +169,45 @@ the UNSUPPORTED cells are single digits and the intervals are wide;
 labels are the author's, informed by non-blind LLM consultation, not an
 independent panel.
 
+### Judge v1 vs v2 on the 50-claim dev set (measured 2026-09-04)
+
+Judge v2 (see `agent/grounding.py`: five rules, each targeting a
+failure mechanism from the v1 validation; not tuned beyond those rules)
+was re-run over the same 50 claims via `eval/rejudge.py` — doc-level,
+one judge call per unique document (19 calls), claims matched back by
+normalized containment. **These 50 claims are now a development set:
+v2's rules were written from their failure modes, so nothing below
+validates v2.** A held-out sample will be drawn from the 40-ticker run.
+
+```
+v1 (original key; judge saw the pre-written sections) — 50 claims
+                 SUPPORTED  UNSUPPORTED  INFERENCE
+SUPPORTED               13            2          1
+UNSUPPORTED              0            1          2
+INFERENCE               10            6         15
+kappa 0.321 · UNSUPPORTED precision 1/3 = 33.3% (6.1–79.2%)
+            · UNSUPPORTED recall    1/9 = 11.1% (2.0–43.5%)
+
+v2 (re-judge; sections unavailable, same view as the human labeler)
+— 31 matched claims, 19 unmatched under v2's claim segmentation
+                 SUPPORTED  UNSUPPORTED  INFERENCE
+SUPPORTED               20            3          1
+UNSUPPORTED              0            4          0
+INFERENCE                0            1          2
+kappa 0.648 · UNSUPPORTED precision 4/4 = 100% (51.0–100%)
+            · UNSUPPORTED recall    4/8 = 50.0% (21.5–78.5%)
+```
+
+Read with care: the two matrices are not directly comparable — v2's
+covers only the 31 matched claims (one human-UNSUPPORTED claim is among
+the unmatched), and the inputs differ (v1's key came from runs that
+also saw the pre-written sections; the v2 re-judge, like the human
+labeler, saw only context + audited text). Directionally on the dev
+set, v2 does what its rules intend: INFERENCE shrank from 31 labels to
+3, UNSUPPORTED recall rose from 1/9 to 4/8 with no false UNSUPPORTED
+flags — but 3 human-UNSUPPORTED claims now land in SUPPORTED, a new
+failure surface for the held-out check.
+
 ### Injected-failure check (measured 2026-09-04)
 
 Orthogonal to human labels: `eval/perturb.py` builds fixtures with
