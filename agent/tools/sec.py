@@ -6,6 +6,7 @@ from agent.tools.sec_common import (
     SEC_TIMEOUT,
     clean_filing_html,
     lookup_cik,
+    primary_document_url,
     skip_front_matter,
 )
 
@@ -102,9 +103,13 @@ def _get_latest_filing(cik: str, form_type: str) -> dict:
 
     for i, form in enumerate(forms):
         if form == form_type:
-            accession = accession_numbers[i].replace("-", "")
-            doc = descriptions[i]
-            filing_url = f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{accession}/{doc}"
+            # Shared resolver: same URL as before for plain filenames, and
+            # defensively unwraps an /ix?doc= wrapper if one ever appears.
+            filing_url = primary_document_url(
+                cik, accession_numbers[i],
+                descriptions[i] if i < len(descriptions) else None)
+            if not filing_url:
+                continue
 
             return {
                 "form_type": form_type,

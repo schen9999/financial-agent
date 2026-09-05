@@ -13,7 +13,8 @@ from dotenv import load_dotenv
 
 from agent.tracing import traceable
 from agent.tools.sec_common import (SEC_USER_AGENT, clean_filing_html,
-                                    lookup_cik, skip_front_matter)
+                                    lookup_cik, primary_document_url,
+                                    scrape_document_url, skip_front_matter)
 from agent.tools.reranker import (
     reranking_enabled,
     rerank_candidates,
@@ -92,25 +93,24 @@ def _fetch_filing_text(ticker: str, form_type: str) -> str | None:
         filings = data.get("filings", {}).get("recent", {})
         forms = filings.get("form", [])
         accession_numbers = filings.get("accessionNumber", [])
+        primary_docs = filings.get("primaryDocument", [])
 
         for i, form in enumerate(forms):
             if form == form_type:
                 accession = accession_numbers[i].replace("-", "")
                 accession_dashed = accession_numbers[i]
 
-                index_url = f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{accession}/{accession_dashed}-index.htm"
-                index_response = requests.get(index_url, headers=headers, timeout=15)
+                # Primary: the submissions JSON names the real main document
+                # (index-page scraping picked Exhibit 4.x for iXBRL filers —
+                # see sec_common.primary_document_url).
+                doc_url = primary_document_url(
+                    cik, accession_dashed,
+                    primary_docs[i] if i < len(primary_docs) else None)
 
-                htm_files = re.findall(r'href="(/Archives/edgar/data/[^"]+\.htm)"', index_response.text)
-
-                doc_url = None
-                for href in htm_files:
-                    if "index" not in href.lower() and "ex" not in href.lower().split("/")[-1]:
-                        doc_url = f"https://www.sec.gov{href}"
-                        break
-
-                if not doc_url and htm_files:
-                    doc_url = f"https://www.sec.gov{htm_files[0]}"
+                if not doc_url:
+                    index_url = f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{accession}/{accession_dashed}-index.htm"
+                    index_response = requests.get(index_url, headers=headers, timeout=15)
+                    doc_url = scrape_document_url(index_response.text)
 
                 if doc_url:
                     filing_response = requests.get(doc_url, headers=headers, timeout=15)

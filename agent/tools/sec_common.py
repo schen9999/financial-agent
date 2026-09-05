@@ -4,6 +4,7 @@ skipping that gets past cover-page / table-of-contents boilerplate.
 
 Keeping these in one place avoids drift between the two SEC code paths.
 """
+import html as _html
 import re
 
 import requests
@@ -52,9 +53,59 @@ def lookup_cik(ticker: str) -> str | None:
 
 
 def clean_filing_html(html: str) -> str:
-    """Strip HTML tags and collapse whitespace from raw filing markup."""
+    """Strip HTML tags, decode entities, and collapse whitespace.
+
+    Entity decoding matters: filings render headings like
+    "Item 1A.&#160;&#160;Risk Factors" — without unescaping, the nbsp
+    entities break section-heading detection (AAPL's Item 1A was missed for
+    exactly this reason, 2026-09-04) and every downstream consumer reads
+    &#8220;-style entity soup instead of text."""
     clean = re.sub(r"<[^>]+>", " ", html)
+    clean = _html.unescape(clean)
     return re.sub(r"\s+", " ", clean).strip()
+
+
+def unwrap_ixbrl(path_or_url: str) -> str:
+    """Strip an inline-XBRL viewer wrapper: '/ix?doc=/Archives/...' -> the
+    underlying document path. Non-wrapped inputs pass through unchanged."""
+    m = re.search(r"ix\?doc=([^&\"]+)", path_or_url)
+    return m.group(1) if m else path_or_url
+
+
+def primary_document_url(cik: str | int, accession_dashed: str,
+                         primary_doc: str | None) -> str | None:
+    """Primary-document URL from the submissions JSON fields; None when the
+    primaryDocument field is missing/empty (caller falls back to scraping).
+
+    Why this is the primary path (2026-09-04): on the EDGAR index page,
+    inline-XBRL filers link the main document through /ix?doc=..., which the
+    old href scrape missed — the exhibit-name filter then rejected every
+    remaining .htm and the fallback fetched Exhibit 4.x (AAPL's "10-K" came
+    back as its Bylaws exhibit). The submissions JSON names the real file.
+    """
+    if not primary_doc or not str(primary_doc).strip():
+        return None
+    doc = unwrap_ixbrl(str(primary_doc).strip())
+    if doc.startswith("/Archives/"):
+        return f"https://www.sec.gov{doc}"
+    accession = accession_dashed.replace("-", "")
+    return f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{accession}/{doc}"
+
+
+def scrape_document_url(index_html: str) -> str | None:
+    """Fallback: pick the main document from a filing index page's HTML.
+    Handles both plain hrefs and /ix?doc= wrapped ones; prefers a
+    non-exhibit, non-index file; degrades to the first .htm found."""
+    hrefs = re.findall(r'href="((?:/ix\?doc=)?/Archives/edgar/data/[^"]+\.htm)"',
+                       index_html)
+    unwrapped = [unwrap_ixbrl(h) for h in hrefs]
+    for href in unwrapped:
+        name = href.lower().split("/")[-1]
+        if "index" not in name and "ex" not in name:
+            return f"https://www.sec.gov{href}"
+    if unwrapped:
+        return f"https://www.sec.gov{unwrapped[0]}"
+    return None
 
 
 def _section_anchor(body: str, marker: str) -> int | None:
@@ -97,7 +148,13 @@ def skip_front_matter(text: str, window: int, min_len_to_skip: int | None = None
 
     offset = min(3000, len(text) // 10)
     body = text[offset:]
-    for marker in (r"item\s*1a", r"item\s*7\b"):
+    # Title-adjacent markers: a bare "item 1a" also matches cross-references
+    # ("...as described in Item 1A of this Form 10-K...", which anchored
+    # AAPL's window into Item 1 Business). Requiring the section title right
+    # after the item number excludes cross-references; TOC entries still
+    # match here and are rejected by _section_anchor's tail-density check.
+    for marker in (r"item\s*1a\.?[\s:\u2013\u2014-]*risk\s*factors",
+                   r"item\s*7\.?[\s:\u2013\u2014-]*management"):
         start = _section_anchor(body, marker)
         if start is not None:
             return body[start:start + window]
