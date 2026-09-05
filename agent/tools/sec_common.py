@@ -22,14 +22,39 @@ def clean_filing_html(html: str) -> str:
     return re.sub(r"\s+", " ", clean).strip()
 
 
+def _section_anchor(body: str, marker: str) -> int | None:
+    """Offset of the marker occurrence that starts the actual SECTION, not its
+    table-of-contents or exhibit-index entry.
+
+    Mechanism of the bug this fixes (2026-09-04, judge-validation labeling):
+    the first `item 1a` hit in a 10-K is almost always the TOC line, so the
+    indexed window carried TOC + adjacent exhibit boilerplate (RSU agreements,
+    indentures, bonus plans) and the real Item 1A text never got indexed. A
+    TOC/index hit sits in a dense run of other "Item N" references and page
+    numbers; a real section heading is followed by prose. Prefer the first
+    occurrence whose following text is NOT item-dense; fall back to the first
+    occurrence if every hit looks like a listing.
+    """
+    fallback = None
+    for m in re.finditer(marker, body, re.I):
+        if fallback is None:
+            fallback = m.start()
+        tail = body[m.end(): m.end() + 400]
+        other_item_refs = len(re.findall(r"item\s*\d", tail, re.I))
+        if other_item_refs <= 1:
+            return m.start()
+    return fallback
+
+
 def skip_front_matter(text: str, window: int, min_len_to_skip: int | None = None) -> str:
     """Return a `window`-sized slice of filing text past the cover-page boilerplate.
 
     Short filings are returned as-is. For longer ones we first offset past the
     start (the same proportional skip the RAG path has always used) and then, if a
     substantive section marker (Item 1A Risk Factors or Item 7 MD&A) appears in the
-    remaining body, anchor on it so the slice carries real content instead of the
-    cover page or table of contents.
+    remaining body, anchor on its real section start — not its table-of-contents
+    entry (see _section_anchor) — so the slice carries Item 1A/MD&A content
+    instead of the cover page, TOC, or exhibit index.
     """
     threshold = window if min_len_to_skip is None else min_len_to_skip
     if len(text) <= threshold:
@@ -38,7 +63,7 @@ def skip_front_matter(text: str, window: int, min_len_to_skip: int | None = None
     offset = min(3000, len(text) // 10)
     body = text[offset:]
     for marker in (r"item\s*1a", r"item\s*7\b"):
-        m = re.search(marker, body, re.I)
-        if m:
-            return body[m.start():m.start() + window]
+        start = _section_anchor(body, marker)
+        if start is not None:
+            return body[start:start + window]
     return body[:window]
