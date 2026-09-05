@@ -11,10 +11,10 @@ def _txt_tickers():
     return [ln.strip() for ln in lines if ln.strip() and not ln.strip().startswith("#")]
 
 
-def _yaml_tickers():
-    text = (REPO / "argo" / "eval-run-extended.yaml").read_text(encoding="utf-8")
+def _yaml_tickers(name="eval-run-extended.yaml"):
+    text = (REPO / "argo" / name).read_text(encoding="utf-8")
     m = re.search(r"value:\s*'(\[.*?\])'", text, re.S)
-    assert m, "tickers parameter array not found in eval-run-extended.yaml"
+    assert m, f"tickers parameter array not found in {name}"
     return json.loads(m.group(1))
 
 
@@ -27,3 +27,12 @@ def test_forty_tickers_no_dups_uppercase():
 
 def test_yaml_matches_txt_exactly():
     assert _yaml_tickers() == _txt_tickers()
+
+
+def test_local_arm_yaml_matches_txt_exactly():
+    assert _yaml_tickers("eval-run-extended-local.yaml") == _txt_tickers()
+
+
+def test_local_arm_yaml_sets_local_model_arm():
+    text = (REPO / "argo" / "eval-run-extended-local.yaml").read_text(encoding="utf-8")
+    assert re.search(r"name: arms\s+value: local-model", text)
