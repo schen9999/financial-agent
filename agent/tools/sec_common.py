@@ -65,6 +65,29 @@ def clean_filing_html(html: str) -> str:
     return re.sub(r"\s+", " ", clean).strip()
 
 
+# TOC listing entry: "Item 1A. Risk Factors 14" — an item title followed by a
+# page number. Distinct from prose ("Item 1A. Risk Factors The following
+# summarizes...") and from page-header furniture ("8. Table of Contents
+# Alphabet Inc. ITEM 1A. RISK FACTORS Our operations...").
+_TOC_ENTRY = re.compile(r"item\s*\d{1,2}[abc]?\.?\s+[A-Za-z][^.0-9]{2,60}?\s+\d{1,3}\b", re.I)
+
+
+def is_toc_listing_chunk(text: str) -> bool:
+    """True when a retrieved chunk reads as a table-of-contents listing
+    rather than filing prose — applied at QUERY time (no reindex needed) so
+    windows that span a filer's TOC region (MSFT, SANA, 2026-09-04) don't
+    feed listing text to generation. Two signatures:
+    (a) three or more title+page-number entries, or
+    (b) a dense run of "Item N" references with little text between them.
+    A single incidental match (prose citing one item + a nearby number)
+    never trips it, so genuine Item 1A text — including chunks carrying
+    page-header furniture or words like "indenture" — is kept."""
+    if len(_TOC_ENTRY.findall(text)) >= 3:
+        return True
+    item_refs = len(re.findall(r"item\s*\d", text, re.I))
+    return item_refs >= 5 and len(text) / item_refs < 120
+
+
 def unwrap_ixbrl(path_or_url: str) -> str:
     """Strip an inline-XBRL viewer wrapper: '/ix?doc=/Archives/...' -> the
     underlying document path. Non-wrapped inputs pass through unchanged."""

@@ -60,13 +60,18 @@ def read_ticker_file(path: str) -> list[str]:
 
 
 def verify(pinecone_index, namespace: str) -> tuple[bool, bool, int]:
-    """(has_risk_prose, has_boilerplate, node_count) for top-3 retrieval."""
+    """(has_risk_prose, has_boilerplate, node_count) for top-3 retrieval,
+    after the same query-time TOC-listing filter the pipeline applies
+    (agent/tools/sec_common.is_toc_listing_chunk) — the verifier checks what
+    generation would actually consume."""
+    from agent.tools.sec_common import is_toc_listing_chunk
     index = VectorStoreIndex.from_vector_store(
         vector_store=PineconeVectorStore(pinecone_index=pinecone_index,
                                          namespace=namespace))
     nodes = index.as_retriever(similarity_top_k=3).retrieve(RISK_QUERY)
-    text = " ".join(n.get_content() for n in nodes)
-    return ("risk" in text.lower(), bool(BOILER_RE.search(text)), len(nodes))
+    kept = [n for n in nodes if not is_toc_listing_chunk(n.get_content())]
+    text = " ".join(n.get_content() for n in kept)
+    return ("risk" in text.lower(), bool(BOILER_RE.search(text)), len(kept))
 
 
 def main():

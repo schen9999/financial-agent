@@ -5,6 +5,7 @@ import requests
 import hashlib
 from langchain.tools import tool
 from llama_index.core import VectorStoreIndex, Document, Settings, StorageContext
+from llama_index.core.postprocessor.types import BaseNodePostprocessor
 from llama_index.vector_stores.pinecone import PineconeVectorStore
 from llama_index.llms.anthropic import Anthropic
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
@@ -13,8 +14,9 @@ from dotenv import load_dotenv
 
 from agent.tracing import traceable
 from agent.tools.sec_common import (SEC_USER_AGENT, clean_filing_html,
-                                    lookup_cik, primary_document_url,
-                                    scrape_document_url, skip_front_matter)
+                                    is_toc_listing_chunk, lookup_cik,
+                                    primary_document_url, scrape_document_url,
+                                    skip_front_matter)
 from agent.tools.reranker import (
     reranking_enabled,
     rerank_candidates,
@@ -125,6 +127,20 @@ def _fetch_filing_text(ticker: str, form_type: str) -> str | None:
     return None
 
 
+class _DropTocListings(BaseNodePostprocessor):
+    """Query-time filter: drop retrieved chunks that read as TOC listings
+    (see sec_common.is_toc_listing_chunk). Applied before the cross-encoder
+    when reranking is on, so listing junk never occupies a top-N slot.
+    Query-time on purpose — already-indexed namespaces need no reindex."""
+
+    @classmethod
+    def class_name(cls) -> str:
+        return "DropTocListings"
+
+    def _postprocess_nodes(self, nodes, query_bundle=None):
+        return [n for n in nodes if not is_toc_listing_chunk(n.node.get_content())]
+
+
 def _run_rag_query(index, question: str):
     """Query the index through the configured retrieval pipeline, logging
     retrieval latency so the reranking on/off cost is always visible.
@@ -134,7 +150,10 @@ def _run_rag_query(index, question: str):
                    reranks down to `RERANK_TOP_N`.
     """
     enabled = reranking_enabled()
-    query_engine = index.as_query_engine(**query_engine_kwargs())
+    kwargs = query_engine_kwargs()
+    kwargs["node_postprocessors"] = (
+        [_DropTocListings()] + kwargs.get("node_postprocessors", []))
+    query_engine = index.as_query_engine(**kwargs)
 
     t0 = time.perf_counter()
     response = query_engine.query(question)
