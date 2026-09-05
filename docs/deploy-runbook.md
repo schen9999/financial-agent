@@ -171,6 +171,13 @@ has yet run against vLLM itself.
    `kubectl -n financial-agent port-forward svc/mcp 30800:8000` and add
    `-L 31800:localhost:30800` to the tunnel.
 
+**Stale-image warning (eval-rigor changes).** The `eval-rigor` branch
+changed code the eval pods run — `agent/grounding.py` (judge v2),
+`agent/tools/{rag,sec,sec_common}.py` (Item 1A anchoring, CIK lookup),
+`grounding_check.py`, `scripts/eval_aggregate.py`, and the `eval/`
+package. After pulling it on the VM, run `make vm-images && make vm-up`
+**before any `make eval-run`**, or the pods run the old code.
+
 **Eval against the in-cluster vLLM — EXECUTED 2026-09-03, GATE FAILED.**
 `grounding-eval-local-dkghz` ran the `local-model` arm on the VM with
 vLLM confirmed serving (20 POST `/v1/chat/completions`, 2 sections × 10
