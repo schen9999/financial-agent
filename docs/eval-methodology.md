@@ -3,7 +3,7 @@
 The centerpiece of this project is not the UI; it is that grounding is
 **measured by a committed, re-runnable harness and gated in CI fashion**.
 The number of record: **49% pre-fix → 0/84 unsupported in the current
-eval** (always quoted with the pre-fix context and denominator, never as a
+eval (judge v1)** (always quoted with the pre-fix context and denominator, never as a
 bare 0%).
 
 ## What is measured
@@ -76,8 +76,8 @@ main (DAG)
 
 ## Dated A/B on the single-VM target (2026-09-03)
 
-Same VM, same harness, ~40 minutes apart, 10/10 tickers each, no
-retries. vLLM traffic confirmed for the local arm: 20 POST
+Same VM, same harness, same judge (v1), ~40 minutes apart, 10/10
+tickers each, no retries. vLLM traffic confirmed for the local arm: 20 POST
 `/v1/chat/completions` (2 trained sections × 10 tickers).
 
 | Arm | Workflow | Claims | Sup/Uns/Inf | Unsupported (Wilson 95% CI) | Gate (≤5%) |

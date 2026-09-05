@@ -46,10 +46,10 @@ records, not headline numbers of record.
 |---|---|---|
 | $0.0269 per brief | superseded by the committed cost harness | $0.0316 (source above) |
 | "54% cost reduction" | sections-only framing; the full-brief comparison does not support it | nothing — the claim is retired without replacement |
-| bare "0% unsupported" | drops the pre-fix baseline and the denominator | "49% pre-fix → 0/84 unsupported in current eval" |
+| bare "0% unsupported" | drops the pre-fix baseline and the denominator | "49% pre-fix → 0/84 unsupported in current eval (judge v1)" |
 | "semantic cache" | the Redis cache is an exact-key cache (`research:{TICKER}`) | "exact-key cache per ticker" |
 | "Celery/Redis ran in production on ECS" | ECS reality was a single FastAPI container + RDS | "K8s is the first full-topology deployment" |
-| "vLLM will serve the model" as a pending claim | superseded — vLLM served the fine-tune on an A10 (Docker 2026-09-02, in-cluster k3s 2026-09-03) and the eval A/B against it failed the gate | "vLLM served the fine-tune on an A10; the in-cluster A/B was 3.03% (0.8–10.4%) vs 12.31% (6.4–22.5%), p=0.054 — ships default-off" (dated records in eval-methodology.md; OKE serving still ungated) |
+| "vLLM will serve the model" as a pending claim | superseded — vLLM served the fine-tune on an A10 (Docker 2026-09-02, in-cluster k3s 2026-09-03) and the eval A/B against it failed the gate | "vLLM served the fine-tune on an A10; the in-cluster A/B was 3.03% (0.8–10.4%) vs 12.31% (6.4–22.5%), judge v1, p=0.054 — ships default-off" (dated records in eval-methodology.md; OKE serving still ungated) |
 
 ## Framing rules that travel with the numbers
 

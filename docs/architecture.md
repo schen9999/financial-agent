@@ -69,7 +69,7 @@ flowchart LR
   `ollama` (the committed fallback) or `openai` (what vLLM serves). vLLM
   served the fine-tune on an A10 (plain Docker 2026-09-02, in-cluster
   k3s 2026-09-03), and the eval DAG then measured it: **12.31%
-  unsupported vs a same-day 3.03% hosted baseline — the fine-tune fails
+  unsupported vs a same-day 3.03% hosted baseline (judge v1) — the fine-tune fails
   the 5% gate on the two sections it owns** (same harness, same day;
   dated A/B in eval-methodology.md). `USE_LOCAL_MODEL` ships off as a
   measured negative result. OKE serving remains Phase 2.

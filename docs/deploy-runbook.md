@@ -84,7 +84,7 @@ after commit 4032e73 the vLLM deployment rolled out green on k3s;
 `/v1/models` on NodePort 30880 lists `financial-lora`; `nvidia-smi`
 confirms serving pinned to one A10 (~21 GiB used on the single granted
 device, the other idle). `make vm-eval` then ran the full grounding DAG
-on the VM to `Succeeded`: 10/10 tickers, 66 claims, 3.03% unsupported —
+on the VM to `Succeeded`: 10/10 tickers, 66 claims, 3.03% unsupported (judge v1) —
 GATE PASSED (≤ 5%, ≥ 30 claims). That run used hosted models via the
 existing harness — it is not a numbers-of-record re-run, and no eval
 has yet run against vLLM itself.
@@ -156,7 +156,7 @@ has yet run against vLLM itself.
    is a multi-GB CUDA image. Optional pre-pull to front-load that wait:
    `sudo k3s crictl pull docker.io/vllm/vllm-openai:v0.10.2`.
 7. **[EXECUTED 2026-09-03 — workflow Succeeded on the VM: 10/10
-   tickers, 66 claims, 3.03% unsupported, GATE PASSED (hosted models;
+   tickers, 66 claims, 3.03% unsupported (judge v1), GATE PASSED (hosted models;
    not a numbers-of-record re-run)]** `make vm-eval` — the grounding
    gate must pass on the VM.
 8. **[EXECUTED 2026-09-03 — /v1/models answered through the tunnel and
@@ -182,8 +182,8 @@ package. After pulling it on the VM, run `make vm-images && make vm-up`
 `grounding-eval-local-dkghz` ran the `local-model` arm on the VM with
 vLLM confirmed serving (20 POST `/v1/chat/completions`, 2 sections × 10
 tickers, no retries): 10/10 tickers, 65 claims, 48 sup / 8 uns / 9 inf,
-**12.31% unsupported vs the 5% gate — FAILED**. The same-day baseline
-(`grounding-eval-6zwqf`, ~40 min earlier, same VM) passed at 3.03%.
+**12.31% unsupported (judge v1) vs the 5% gate — FAILED**. The same-day baseline
+(`grounding-eval-6zwqf`, ~40 min earlier, same VM) passed at 3.03% (judge v1).
 See the dated A/B in eval-methodology.md; the fine-tune serves but does
 not clear the gate on its two sections, so `USE_LOCAL_MODEL` stays off.
 (Process note: that run's `make argo-deploy` applied the **kind** argo
