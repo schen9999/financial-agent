@@ -87,13 +87,26 @@ EVAL_RUN_FILE ?= argo/eval-run.yaml
 
 eval-run: ## Submit the grounding eval workflow now and follow it to completion
 	@WF=$$(kubectl -n $(NAMESPACE) create -f $(EVAL_RUN_FILE) -o name | sed 's|.*/||'); \
+	if [ -z "$$WF" ]; then \
+		echo "ERROR: submit returned no workflow name — kubectl create failed (auth, context, or file?). Aborting."; \
+		exit 1; \
+	fi; \
 	echo "submitted workflow: $$WF"; \
+	DEADLINE=$$(kubectl -n $(NAMESPACE) get workflow $$WF -o jsonpath='{.spec.activeDeadlineSeconds}' 2>/dev/null); \
+	test -n "$$DEADLINE" || DEADLINE=$$(kubectl -n $(NAMESPACE) get workflow $$WF -o jsonpath='{.status.storedWorkflowTemplateSpec.activeDeadlineSeconds}' 2>/dev/null); \
+	test -n "$$DEADLINE" || DEADLINE=3600; \
+	MAX=$$((DEADLINE + 600)); ELAPSED=0; \
+	echo "polling up to $$MAX s (activeDeadlineSeconds=$$DEADLINE + 600s margin)"; \
 	while :; do \
 		phase=$$(kubectl -n $(NAMESPACE) get workflow $$WF -o jsonpath='{.status.phase}' 2>/dev/null); \
 		prog=$$(kubectl -n $(NAMESPACE) get workflow $$WF -o jsonpath='{.status.progress}' 2>/dev/null); \
 		echo "  [$$(date +%H:%M:%S)] phase=$$phase progress=$$prog"; \
 		case "$$phase" in Succeeded|Failed|Error) break;; esac; \
-		sleep 20; \
+		if [ $$ELAPSED -ge $$MAX ]; then \
+			echo "ERROR: exceeded max poll duration ($$MAX s) with phase='$$phase' — aborting the follow; the workflow (if any) keeps running in-cluster."; \
+			exit 1; \
+		fi; \
+		sleep 20; ELAPSED=$$((ELAPSED + 20)); \
 	done; \
 	echo; echo "=== aggregate step output ==="; \
 	AGG=$$(kubectl -n $(NAMESPACE) get pods -l workflows.argoproj.io/workflow=$$WF -o name | grep aggregate | head -1); \
