@@ -265,17 +265,21 @@ pods still exist, extract, and commit:
 
 ```bash
 kubectl -n financial-agent logs -l workflows.argoproj.io/workflow=<wf> \
-    --prefix --tail=-1 > eval/runs/<wf>.log
-python scripts/extract_findings.py --log eval/runs/<wf>.log --out eval/runs/<wf>/
-git add eval/runs/<wf>.log eval/runs/<wf>/   # commit both
+    --prefix --tail=-1 > eval/runs/raw/<wf>.log
+python scripts/extract_findings.py --log eval/runs/raw/<wf>.log \
+    --out eval/runs/raw/<wf>-findings/
+git add eval/runs/raw/<wf>-findings/   # the log stays local (gitignored:
+                                       # its payload duplicates the dir)
 ```
 
 The label-selector capture takes every pod's dump — required on kind,
 where the findings volume is a per-pod emptyDir; on k3s the volume is a
 shared hostPath (`/home/ubuntu/eval-findings/<wf>` on the VM), so the
 aggregate pod's dump alone is already complete and the hostPath is a
-second copy. Per-claim rows then come from
-`eval/parse_run_log.py --findings-dir eval/runs/<wf>/`.
+second copy. Per-claim rows (commit these too) then come from
+`eval/parse_run_log.py --findings-dir eval/runs/raw/<wf>-findings/`
+with `--contexts-dir eval/runs/<wf>-contexts --out
+eval/runs/<wf>-claims.jsonl`.
 
 Emergency fallback if the logs are gone too (used 2026-09-05 to recover
 9j2dj): deleted pods' written files survive in containerd snapshot upper

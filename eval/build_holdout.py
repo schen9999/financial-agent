@@ -34,9 +34,9 @@ OUT_DIR = REPO / "eval" / "judge_validation"
 DEV_SAMPLE = OUT_DIR / "sample.csv"
 
 SOURCES = [
-    (REPO / "eval/runs/j4cnp-findings", "baseline",
+    (REPO / "eval/runs/raw/j4cnp-findings", "baseline",
      "grounding-eval-extended-j4cnp"),
-    (REPO / "eval/runs/lsnnc-findings", "local-model",
+    (REPO / "eval/runs/raw/lsnnc-findings", "local-model",
      "grounding-eval-extended-local-lsnnc"),
 ]
 TARGETS = {"UNSUPPORTED": 15, "INFERENCE": 15, "SUPPORTED": 20}

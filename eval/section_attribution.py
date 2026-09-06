@@ -20,8 +20,8 @@ indicative, the overall A/B is the measured result.
 
 Usage:
   python eval/section_attribution.py \
-      --run eval/runs/j4cnp-claims.jsonl eval/runs/j4cnp-findings \
-      --run eval/runs/lsnnc-claims.jsonl eval/runs/lsnnc-findings
+      --run eval/runs/j4cnp-claims.jsonl eval/runs/raw/j4cnp-findings \
+      --run eval/runs/lsnnc-claims.jsonl eval/runs/raw/lsnnc-findings
 """
 import argparse
 import json

@@ -88,7 +88,7 @@ counts ranged 1–23; UPST is the outlier at 3/14 unsupported. Artifacts:
 `eval/runs/9j2dj-full.log`, `9j2dj-workflow.yaml`, per-claim rows in
 `9j2dj-claims.jsonl` — full claim text and judge rationale for all
 rows, recovered post-hoc from containerd snapshots into
-`9j2dj-findings/` (contexts by sha256 in `9j2dj-contexts/`; one
+`raw/9j2dj-findings/` (contexts by sha256 in `9j2dj-contexts/`; one
 UNSUPPORTED verdict was free-form, carried with claim=null; findings
 dumps are now a standing part of every run — see the runbook's
 findings-capture section). **Not the number of record**: superseded as a
