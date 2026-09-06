@@ -6,9 +6,11 @@ Postgres, Streamlit, MCP server (stdio + streamable-HTTP). Eval harness runs as 
 gated Argo Workflows DAG with a nightly CronWorkflow. Pluggable OpenAI-compatible
 LOCAL_MODEL_BACKEND (currently Ollama; vLLM v0.10.2 validated serving the merged
 fine-tune pinned to one A10 on the Phase 1.75 VM — plain Docker 2026-09-02,
-in-cluster on k3s 2026-09-03, eval A/B against it 2026-09-03: gate FAILED at
-12.31% vs baseline 3.03% (judge v1), so hosted models stay the production path. OKE
-serving still pending; the dev CPU cannot run vLLM, no AVX-512).
+in-cluster on k3s 2026-09-03. Eval A/Bs against it FAILED the gate: 10-ticker
+2026-09-03 (12.31% vs 3.03%, judge v1, p=0.054) and the deciding 40-ticker
+2026-09-05/06 (8.15% vs 3.06%, judge v2, p=0.0023), so hosted models stay the
+production path. OKE serving still pending; the dev CPU cannot run vLLM, no
+AVX-512).
 
 Current deploy target: single-node kind K8s with probes and resource bounds.
 
@@ -49,12 +51,17 @@ Migrate to OCI for a hiring demo (deadline: demo Fri Sep 18, 2026):
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
 4. Celery stays request-time async; Argo owns eval orchestration. Do not merge them.
-5. SETTLED 2026-09-03: the fine-tune serves in-cluster (vLLM on the VM) but
-   FAILS the grounding gate on the two sections it owns — 12.31% unsupported
-   vs the 5% gate, judge v1; same-day baseline 3.03% (dated A/B in
-   docs/eval-methodology.md). USE_LOCAL_MODEL therefore ships off and hosted
-   models remain the production path; Ollama stays the fallback for local
-   serving demos. State it as measured-and-declined, not unfinished.
+5. SETTLED, now on a clearly separated 40-ticker A/B (2026-09-05/06, judge
+   v2, same image and index both arms): the fine-tune serves in-cluster but
+   FAILS the grounding gate — 8.15% unsupported (30/368, CI 5.8–11.4%) vs
+   baseline 3.06% (12/392, CI 1.8–5.3%), Fisher p = 0.0023; the failure
+   concentrates in the two sections the fine-tune owns (attributed FH+RF
+   claims 19.82% vs 0.50%, p = 4.6e-10, eval/section_attribution.py). The
+   earlier 10-ticker judge-v1 A/B (12.31% vs 3.03%, p = 0.054) agrees in
+   direction but could not separate the arms alone. USE_LOCAL_MODEL
+   therefore ships off and hosted models remain the production path; Ollama
+   stays the fallback for local serving demos. State it as
+   measured-and-declined, not unfinished.
 6. Work on branch `oci-migration`. Small commits, imperative messages.
 7. Judge-calling tests spend Anthropic credits: they run ONLY under an
    explicit env flag (CRITIC_INJECTION=1 today; the same pattern for any
@@ -156,9 +163,10 @@ Phase 3 — demo polish:
   and in-cluster on single-node k3s via the k3s-gpu overlay (2026-09-03,
   green rollout + /v1/models on the NodePort), both confirmed from the box.
   Also legitimate: the eval DAG ran against the in-cluster vLLM on
-  2026-09-03 (local-model arm, 20 confirmed /v1 requests) and FAILED the
-  grounding gate at 12.31% vs the same-day 3.03% baseline (judge v1) — cite
-  it with both numbers and the version tag. Still gated: serving on OKE — update this line when that
+  2026-09-03 (10 tickers, judge v1: 12.31% vs 3.03%, p = 0.054) and on
+  2026-09-05/06 at 40 tickers (judge v2, same image/index: 8.15% vs 3.06%,
+  p = 0.0023 — the citable A/B) — always with both numbers and the judge
+  version tag. Still gated: serving on OKE — update this line when that
   actually runs.
 - Cross-encoder reranking and the multi-agent supervisor shipped default-off
   because evals showed no grounding gain at higher cost/latency. State it that way.

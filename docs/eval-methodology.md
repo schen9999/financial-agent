@@ -91,9 +91,67 @@ rows, recovered post-hoc from containerd snapshots into
 `9j2dj-findings/` (contexts by sha256 in `9j2dj-contexts/`; one
 UNSUPPORTED verdict was free-form, carried with claim=null; findings
 dumps are now a standing part of every run — see the runbook's
-findings-capture section). **Not the number of record**: that decision
-waits for the local-model arm over the same tickers and the held-out
-judge validation drawn from this run's claims.
+findings-capture section). **Not the number of record**: superseded as a
+baseline by `j4cnp` (below, same tickers on the rebuilt image); the
+number-of-record decision still waits for the held-out judge validation.
+
+## 40-ticker A/B: hosted baseline vs in-cluster fine-tune (2026-09-05/06)
+
+Both arms ran on the **same VM image** and the **same post-retrieval-fix
+index**, judge **v2**, over the 40 extended tickers
+(`eval/tickers_extended.txt`). The five ADRs (TSM, NVO, BABA, TM, SAP)
+ran on **stock + news data only** in both arms — 20-F filers, no SEC
+context (verified from the archived contexts: every RAG field
+"(not available)"). Per-claim rows: `eval/runs/j4cnp-claims.jsonl` and
+`eval/runs/lsnnc-claims.jsonl`; contexts by sha256 beside them.
+
+| Arm | Workflow | Claims | Sup/Uns/Inf | Unsupported (Wilson 95% CI) | Gate (≤5%) | Est. cost |
+|---|---|---|---|---|---|---|
+| `baseline` (hosted) | grounding-eval-extended-j4cnp | 392 | 354/12/26 | 3.06% (1.8–5.3%) | PASSED | $2.36 |
+| `local-model` (in-cluster vLLM fine-tune, 2 sections) | grounding-eval-extended-local-lsnnc | 368 | 324/30/14 | **8.15%** (5.8–11.4%) | **FAILED** | $2.44 |
+
+Fisher exact (two-sided) on 12/392 vs 30/368: **p = 0.0023**
+(`eval/stats.py`). Unlike the 10-ticker A/B of 2026-09-03 (p = 0.054),
+**this A/B separates the arms on its own**: the intervals are disjoint
+and the local arm's interval sits entirely above the gate. The ship-off
+decision for `USE_LOCAL_MODEL` now rests on this clearly separated
+40-ticker A/B (the earlier, underpowered measurements agree in
+direction).
+
+### Where the local arm fails: the sections the fine-tune owns
+
+The fine-tune writes only Financial Health and Risk Factors; Haiku keeps
+the other two sections in both arms. Attributing each judged claim to
+the pre-written section it restates (`eval/section_attribution.py`,
+committed: normalized containment, else word-overlap ≥ 0.6, else
+unattributed — a heuristic over paraphrased text, coverage ~78–79%; the
+overall A/B above is the measured result, the buckets are diagnostic):
+
+| Arm | Fine-tune-owned (FH + RF) | Other sections | Unattributed |
+|---|---|---|---|
+| `baseline` | 1/202 = 0.50% (0.1–2.8%) | 3/104 = 2.88% (1.0–8.1%) | 8/86 = 9.30% (4.8–17.3%) |
+| `local-model` | **22/111 = 19.82%** (13.5–28.2%) | 2/180 = 1.11% (0.3–4.0%) | 6/77 = 7.79% (3.6–16.0%) |
+| Fisher exact | **p = 4.6e-10** | p = 0.36 | p = 0.79 |
+
+The excess unsupported rate is concentrated **entirely in the content
+the fine-tune authored**; the arms are statistically indistinguishable
+everywhere else. Note the attribution shift itself: the baseline's
+synthesis restates FH/RF content near-verbatim (202 claims attributed)
+while the fine-tune's phrasing is restated less (111) — one more sign
+the fine-tune's sections diverge from their sources.
+
+### Run-to-run variance and observations
+
+- Baseline stability: `9j2dj` (previous image) 12/387 = 3.10% vs `j4cnp`
+  12/392 = 3.06%, Fisher p = 1.0 — the baseline is stable across the
+  image rebuild and the MSFT reindex.
+- WMT is the local arm's outlier: 9/16 unsupported.
+- CALM on `j4cnp` stalled in the pipeline: 185.61 s (retrieval 27.15 s)
+  vs the ~30 s typical — an observation, not yet diagnosed.
+- Neither run produced a duplicate judge label (the `9j2dj` JPM
+  double-label); four free-form verdicts without CLAIM lines are carried
+  in the rows with `claim=null` (j4cnp: EDIT/OCGN/UNH UNSUPPORTED;
+  lsnnc: VERV INFERENCE).
 
 ## Dated A/B on the single-VM target (2026-09-03)
 
@@ -114,11 +172,9 @@ overlap and p = 0.054 — **this single A/B does not statistically separate
 the arms on its own.** The decision to ship `USE_LOCAL_MODEL` off rests
 on the direction agreeing across independent measurements (85.4% vs
 88.6% at training time, 86.2% vs 77.8% in the Aug 2026 re-measure, and
-this run), not on one 10-ticker pass. A larger benchmark to tighten
-these intervals is prepared (`eval/tickers_extended.txt` +
-`argo/eval-run-extended.yaml`, 40 tickers) and pending a funded run.
-These are dated run records from the committed
-harness; the numbers-of-record table is unchanged.
+this run), not on one 10-ticker pass. **Superseded 2026-09-06**: the
+40-ticker A/B (above) separates the arms at p = 0.0023 and now carries
+the decision. These are dated run records from the committed harness.
 
 ## Statistical power
 
@@ -130,7 +186,9 @@ observed rate against a 5% gate** — the Wilson 95% interval for 2/66 is
 0.8–10.4%, which contains the gate on both sides, so a "pass" at 3.03%
 is fully consistent with a true rate above 5% (and a mild fail with one
 below it). Distinguishing 3% from 5% with useful power needs claims in
-the several-hundreds — the motivation for the extended benchmark.
+the several-hundreds — the motivation for the extended benchmark, which
+delivered exactly that: at N = 392 vs 368 the 40-ticker A/B separates
+3.06% from 8.15% at p = 0.0023 where the 10-ticker pass could not.
 
 ## Retrieval defect, discovered 2026-09-04
 
