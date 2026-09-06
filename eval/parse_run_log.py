@@ -177,7 +177,11 @@ def rows_from_findings_dir(run: str, findings_dir: Path, results: dict,
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--log", required=True)
-    ap.add_argument("--workflow-yaml", required=True)
+    ap.add_argument("--workflow-yaml", default=None,
+                    help="Workflow status yaml with eval-one output params. "
+                         "Optional with --findings-dir: without it the log's "
+                         "per-ticker count lines are the cross-check "
+                         "reference (dumps made the yaml redundant).")
     ap.add_argument("--run", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--findings-dir", default=None,
@@ -190,37 +194,46 @@ def main():
     args = ap.parse_args()
 
     log_counts = parse_log_counts(Path(args.log).read_text(encoding="utf-8"))
-    wf = yaml.safe_load(Path(args.workflow_yaml).read_text(encoding="utf-8"))
-    results = parse_workflow_results(wf)
+    results = {}
+    if args.workflow_yaml:
+        wf = yaml.safe_load(Path(args.workflow_yaml).read_text(encoding="utf-8"))
+        results = parse_workflow_results(wf)
 
     mismatched = []
-    for key, lc in sorted(log_counts.items()):
-        wr = results.get(key)
-        if not wr:
-            mismatched.append((key, "in log, missing from workflow params"))
-        elif any(lc[k] != wr[k] for k in ("supported", "unsupported", "inference", "total")):
-            mismatched.append((key, f"log {lc} != params "
-                                    f"{ {k: wr[k] for k in lc} }"))
-    for key in results:
-        if key not in log_counts:
-            mismatched.append((key, "in workflow params, missing from log"))
+    if results:
+        for key, lc in sorted(log_counts.items()):
+            wr = results.get(key)
+            if not wr:
+                mismatched.append((key, "in log, missing from workflow params"))
+            elif any(lc[k] != wr[k] for k in ("supported", "unsupported", "inference", "total")):
+                mismatched.append((key, f"log {lc} != params "
+                                        f"{ {k: wr[k] for k in lc} }"))
+        for key in results:
+            if key not in log_counts:
+                mismatched.append((key, "in workflow params, missing from log"))
+
+    # Cross-check reference: workflow params when given, else the log's
+    # per-ticker count lines (same shape).
+    reference = results or log_counts
 
     if args.findings_dir:
         rows = rows_from_findings_dir(
             args.run, Path(args.findings_dir), results,
             Path(args.contexts_dir) if args.contexts_dir else None)
-        # Cross-check recovered rows against workflow-param counts.
         per = {}
         for r in rows:
             key = (r["ticker"], r["arm"], r["judge_label"].lower())
             per[key] = per.get(key, 0) + 1
-        for (ticker, arm), wr in sorted(results.items()):
+        for (ticker, arm), wr in sorted(reference.items()):
             for lab in ("supported", "unsupported", "inference"):
                 got = per.get((ticker, arm, lab), 0)
                 if got != wr[lab]:
                     print(f"MISMATCH {ticker}/{arm} {lab}: findings {got} "
-                          f"!= params {wr[lab]}")
+                          f"!= reference {wr[lab]}")
     else:
+        if not results:
+            sys.exit("--workflow-yaml is required without --findings-dir "
+                     "(the label-only reconstruction reads output params)")
         rows = emit_rows(args.run, results)
     with open(args.out, "w", encoding="utf-8") as f:
         for r in rows:
@@ -230,10 +243,9 @@ def main():
     by_label = {}
     for r in rows:
         by_label[r["judge_label"]] = by_label.get(r["judge_label"], 0) + 1
-    tots = [results[k]["total"] for k in results]
-    print(f"rows: {len(rows)} ({by_label}) | claim text present: {with_text} "
-          f"(INFERENCE only — findings were pod-local, see module docstring)")
-    print(f"tickers: {len(results)} | per-ticker claims min={min(tots)} max={max(tots)}")
+    tots = [reference[k]["total"] for k in reference]
+    print(f"rows: {len(rows)} ({by_label}) | claim text present: {with_text}")
+    print(f"tickers: {len(reference)} | per-ticker claims min={min(tots)} max={max(tots)}")
     print(f"log-vs-params mismatches: {mismatched if mismatched else 'none'}")
 
 

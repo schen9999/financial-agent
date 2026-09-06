@@ -119,6 +119,43 @@ def parse_claims(findings: str) -> list[dict]:
     return out
 
 
+_LABEL_RE = re.compile(r"\*{0,2}LABEL:\*{0,2}\s*([A-Za-z]+)")
+_VALID_LABELS = ("SUPPORTED", "UNSUPPORTED", "INFERENCE")
+
+
+def count_labels_deduped(findings: str) -> dict:
+    """Label counts with per-claim-block dedupe.
+
+    agent.grounding.count_labels counts every LABEL: line, so a judge block
+    that repeats its label (JPM in run 9j2dj: one CLAIM, two identical
+    LABEL+REASON pairs) inflates the count by one. Here, within one CLAIM
+    block the first label counts once; a repeat of that same label is
+    suppressed (reported under 'duplicates_suppressed'); a DIFFERENT label
+    in the same block is a distinct free-form verdict and still counts
+    (BEAM's real UNSUPPORTED in 9j2dj had no CLAIM line of its own).
+    Labels before the first CLAIM block count as-is — no claim to dedupe
+    against."""
+    counts = {k.lower(): 0 for k in _VALID_LABELS}
+    counts["duplicates_suppressed"] = 0
+    parts = re.split(r"\*{0,2}CLAIM:\*{0,2}", findings)
+    for lab in _LABEL_RE.findall(parts[0]):
+        if lab.upper() in _VALID_LABELS:
+            counts[lab.lower()] += 1
+    for block in parts[1:]:
+        labs = [m.upper() for m in _LABEL_RE.findall(block)
+                if m.upper() in _VALID_LABELS]
+        if not labs:
+            continue
+        counts[labs[0].lower()] += 1
+        for lab in labs[1:]:
+            if lab == labs[0]:
+                counts["duplicates_suppressed"] += 1
+            else:
+                counts[lab.lower()] += 1
+    counts["total"] = sum(counts[k.lower()] for k in _VALID_LABELS)
+    return counts
+
+
 def collect_claims(findings_dir: Path, arms: list[str], provenance: str) -> list[dict]:
     """Claims from every requested arm. The arm goes to the KEY file only —
     the labeling CSV stays blind to which model produced each claim."""

@@ -106,6 +106,35 @@ def test_parse_claims_plain_and_bold():
     assert "growth forecast" in claims[1]["reason"]
 
 
+def test_count_labels_deduped_suppresses_repeated_label_in_one_block():
+    # JPM-shaped (run 9j2dj): one CLAIM, two identical LABEL+REASON pairs —
+    # counts once, and the duplicate is reported.
+    from eval.label import count_labels_deduped
+    c = count_labels_deduped(
+        'CLAIM: "net income rose"\nLABEL: SUPPORTED\nREASON: in the data.\n'
+        'LABEL: SUPPORTED\nREASON: restated with more detail.\n')
+    assert c["supported"] == 1 and c["total"] == 1
+    assert c["duplicates_suppressed"] == 1
+
+
+def test_count_labels_deduped_keeps_freeform_second_verdict():
+    # BEAM-shaped (run 9j2dj): an extra LABEL with a DIFFERENT label inside
+    # the block is a distinct free-form verdict and still counts.
+    from eval.label import count_labels_deduped
+    c = count_labels_deduped(
+        'CLAIM: "cash runway into 2027"\nLABEL: SUPPORTED\nREASON: stated.\n'
+        'LABEL: UNSUPPORTED\nREASON: the runway figure is not in context.\n')
+    assert c["supported"] == 1 and c["unsupported"] == 1 and c["total"] == 2
+    assert c["duplicates_suppressed"] == 0
+
+
+def test_count_labels_deduped_plain_blocks_match_naive_count():
+    from eval.label import count_labels_deduped
+    c = count_labels_deduped(parse_findings_file(FINDINGS_MD)["findings"])
+    assert (c["supported"], c["unsupported"], c["inference"]) == (1, 1, 0)
+    assert c["total"] == 2 and c["duplicates_suppressed"] == 0
+
+
 def test_stratified_sample_keeps_scarce_strata_and_is_deterministic():
     rows = ([{"label": "SUPPORTED", "i": i} for i in range(40)]
             + [{"label": "UNSUPPORTED", "i": i} for i in range(3)]

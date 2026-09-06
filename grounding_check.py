@@ -42,6 +42,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from eval.stats import fisher_exact, format_rate_ci
 from eval.runtime_guards import check_fatal_api_error
+from eval.label import count_labels_deduped
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -314,12 +315,18 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
                                judge_user_prompt(source_context, section_block, exec_and_outlook)),
                            _est_tokens(grade.findings))
 
-    counts = {
-        "supported": grade.supported, "unsupported": grade.unsupported,
-        "inference": grade.inference, "total": grade.total,
-    }
+    # Deduped recount from the findings text (eval.label): one label per
+    # CLAIM block; a repeated identical label is suppressed, a different
+    # label in the same block still counts (free-form verdict). grade's own
+    # counts tally every LABEL: line and ran one high on 9j2dj (JPM).
+    counts = count_labels_deduped(grade.findings)
+    dups = counts.pop("duplicates_suppressed")
+    if dups:
+        print(f"  [{ticker} | {arm}] NOTE: {dups} duplicate LABEL line(s) "
+              f"suppressed within a claim block", flush=True)
 
-    s, u, i, t = grade.supported, grade.unsupported, grade.inference, grade.total
+    s, u, i, t = (counts["supported"], counts["unsupported"],
+                  counts["inference"], counts["total"])
     print(
         f"  [{ticker} | {arm}] {s} SUP  {u} UNSUP  {i} INF  ({t} claims)  "
         f"retrieval={retrieval_s:.2f}s  pipeline={pipeline_s:.2f}s  haiku_cost=${haiku_cost:.5f}",
