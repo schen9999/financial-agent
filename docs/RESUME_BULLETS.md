@@ -36,7 +36,7 @@ the gate.
 
 **3.** Built a re-runnable cost-instrumentation harness that prices exact
 API-reported token usage per model from a config table, replacing a
-non-reproducible historical figure; measured $0.0316/brief and showed that a
+non-reproducible historical figure; measured $0.0366/brief and showed that a
 previously claimed "54% cost reduction" from a fine-tuned local model was
 sections-only spend — at full-brief level the saving is within run-to-run
 variance because synthesis-model tokens dominate.
@@ -70,7 +70,7 @@ GPU/hosted) and 86.2% vs 77.8% grounding on a balanced 9-ticker suite.
 | Number | Where it comes from |
 |---|---|
 | 49% pre-fix → 0/84 unsupported in current eval (10 tickers, judge v1) | Phase 0 re-measure, docs/PHASE0_AUDIT.md §4 |
-| $0.0316/brief hosted; $0.0321 hybrid | scripts/cost_report.py runs, benchmarks.md |
+| $0.0366/brief hosted (2026-09-06, post-retrieval-fix); pre-fix $0.0316 vs $0.0321 hybrid | scripts/cost_report.py runs, benchmarks.md + numbers-of-record.md |
 | 86.2% vs 77.8% grounding (9-ticker balanced) | grounding A/B run, benchmarks.md |
 | 3.03% (2/66) vs 12.31% (8/65) unsupported (judge v1) — hosted vs in-cluster vLLM fine-tune | grounding-eval DAG runs 2026-09-03, docs/eval-methodology.md |
 | 5.62% gate failure (judge v1) → variance | Argo run + NVDA re-measure (0/10), README |

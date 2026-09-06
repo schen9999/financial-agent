@@ -56,8 +56,10 @@ I fine-tuned **Qwen2.5-1.5B-Instruct** with QLoRA on 104 deterministic, Claude-f
 cost reduction.** The table above is the *section-generation* (Haiku) spend
 only. Measured at full-brief level with the committed cost harness
 (`scripts/cost_report.py`; details in [benchmarks.md](benchmarks.md)), Sonnet
-synthesis dominates: hosted **$0.0316/brief** vs hybrid $0.0321/brief -- the
-~$0.002 sections saving is within run-to-run variance. Shipped default-off.
+synthesis dominates: hosted $0.0316/brief vs hybrid $0.0321/brief (both on
+the pre-retrieval-fix pipeline; the current cost of record is
+**$0.0366/brief**, 2026-09-06 post-retrieval-fix) -- the ~$0.002 sections
+saving is within run-to-run variance. Shipped default-off.
 
 **Aug 2026 re-measure ([benchmarks.md](benchmarks.md)):** the grounding
 regression reproduced in direction (86.2% hosted vs 77.8% hybrid on that judge
@@ -111,7 +113,7 @@ critic loop. Critic threshold: 5% unsupported.
 \* Absolute costs from this experiment came from an uncommitted harness and are
 recorded as historical in [docs/PHASE0_AUDIT.md](docs/PHASE0_AUDIT.md); the
 current re-runnable cost of record for the single-agent pipeline is
-**$0.0316/brief** (`scripts/cost_report.py`).
+**$0.0366/brief** (2026-09-06, post-retrieval-fix; `scripts/cost_report.py`).
 
 Two findings, stated plainly:
 
@@ -439,10 +441,10 @@ make cluster-down    # tear down
 | Measurement | Result |
 |---|---|
 | Grounding (10 tickers, temp-0 judge) | **49% pre-fix → 0/84 unsupported in current eval (judge v1)** |
-| Cost/brief, hosted (exact API tokens + RAG estimate) | **$0.0316** (re-runnable: `make cost-report`) |
+| Cost/brief, hosted (exact API tokens + RAG estimate) | **$0.0366** (2026-09-06, post-retrieval-fix; re-runnable: `make cost-report`) |
 | Grounding, hosted vs local-hybrid (9-ticker balanced A/B, Aug 2026) | 86.2% vs 77.8% — expected regression, local stays default-off |
 | Grounding, hosted vs in-cluster vLLM fine-tune (10-ticker A/B, 2026-09-03) | 3.03% (2/66) vs 12.31% (8/65) unsupported (judge v1) — local-model arm fails the 5% gate; ships default-off. Fisher p=0.054, intervals overlap at this N — see [docs/eval-methodology.md](docs/eval-methodology.md) |
-| Cost/brief, hosted vs local-hybrid | $0.0316 vs $0.0321 — no measurable full-brief saving (Sonnet dominates) |
+| Cost/brief, hosted vs local-hybrid (pre-retrieval-fix pipeline) | $0.0316 vs $0.0321 — no measurable full-brief saving (Sonnet dominates) |
 | Local CPU serving (environment-limited: 2-core AVX2 laptop) | ~7.7 tok/s aggregate saturation; NOT comparable to GPU/hosted |
 
 ---
@@ -503,7 +505,8 @@ regression.
 runs the production pipeline with token accounting on every LLM call (exact
 API-reported usage for the LangChain calls; tokenizer-estimated for the RAG-
 internal calls, labeled as such) and prices them from
-`scripts/model_prices.json`. The cost of record is **$0.0316/brief**
+`scripts/model_prices.json`. The cost of record is **$0.0366/brief**
+(2026-09-06, post-retrieval-fix)
 ([docs/numbers-of-record.md](docs/numbers-of-record.md), which also carries
 the dated run records, including an early 3-ticker run of this harness). Any
 cost number quoted for this project comes from re-running that harness — the

@@ -220,7 +220,10 @@ per-ticker retry and surface as skipped tickers (the measured failure
 mode of 2026-09-03, where mass skips were indistinguishable at a
 glance from a data problem).
 
-**Extended benchmark — gated, NOT YET SUBMITTED.**
+**Extended benchmark — EXECUTED 2026-09-05/06** (baseline `j4cnp` gate
+PASSED at 3.06%, local-model `lsnnc` gate FAILED at 8.15%, judge v2;
+recorded in eval-methodology.md — actual per-run cost estimates from the
+aggregates: $2.36 + $2.44 ≈ $4.80 for the two arms).
 `argo/eval-run-extended.yaml` runs 40 tickers
 (`eval/tickers_extended.txt`: large-cap, volatile-earnings, small-cap,
 clinical-stage biotech, non-US ADRs — deliberately stressing data
@@ -231,20 +234,17 @@ committed judge artifacts — the same labeled-estimate method the cost
 harness uses for its non-exact layer; it slightly **under**estimates
 because findings artifacts omit the pre-written sections the judge also
 reads: **~$1.41 judge** (80 Sonnet calls, ~2,190 in / ~740 out tokens
-each) **+ ~$2.53 generation** (80 briefs × $0.0316) **≈ $4 total**.
-**Post-retrieval-fix re-estimate (2026-09-04):** with real Item 1A
-prose in contexts the cost harness measures **$0.0364/brief** (fresh
-3-ticker run) → generation ~$2.91; the judge per-call estimate is
-retained (~$1.41 for 80 calls) because its input components are
-size-bounded — the 2,000-char SEC summary window and model-output-
-bounded RAG answers don't grow with richer source text — giving
-**≈ $4.30 total** for the two-arm run.
+each) **+ ~$2.53 generation** (80 briefs × the then-current $0.0316)
+**≈ $4 total**; the 2026-09-04 post-retrieval-fix re-estimate raised it
+to **≈ $4.30**. Actuals came in at ≈ $4.80 (aggregate estimates above).
 
-**Cost-of-record re-measure (pending — do not run until decided):**
-the $0.0316 record was measured on the harness default, a 3-ticker
-mean over AAPL, NVDA, JPM (benchmarks.md pins the run via its
-per-ticker token evidence). The like-for-like re-measure on the fixed
-pipeline, same N and tickers:
+**Cost-of-record re-measure — EXECUTED 2026-09-06:** the pre-fix
+$0.0316 record was measured on the harness default, a 3-ticker mean
+over AAPL, NVDA, JPM (benchmarks.md pins the run via its per-ticker
+token evidence). The like-for-like re-measure on the fixed pipeline,
+same N and tickers, set the cost of record to **$0.0366/brief**
+($0.0282 exact + $0.0084 RAG-internal estimate; run evidence
+`cost_record_post_fix.json`):
 
 ```bash
 python scripts/cost_report.py --tickers AAPL NVDA JPM --json-out cost_record_post_fix.json

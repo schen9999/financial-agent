@@ -100,7 +100,11 @@ grounding % is sensitive to that split; unsupported stayed low on both arms:
 0 vs 2 claims). The local model writes less-grounded sections. Nothing here is
 hidden: the hybrid trades grounding for local serving.
 
-### Cost per brief — exact API-reported tokens, priced from `model_prices.json` (n=3)
+### Cost per brief — exact API-reported tokens, priced from `model_prices.json` (n=3, Aug 2026, pre-retrieval-fix pipeline)
+
+The current cost of record is **$0.0366/brief** (2026-09-06,
+post-retrieval-fix — docs/numbers-of-record.md); the table below is the
+dated pre-fix measurement the hybrid comparison was made on.
 
 | Backend | Exact (LangChain calls) | RAG-internal (estimated) | **Total/brief** | Total latency (incl. fetch)* |
 |---|---:|---:|---:|---:|

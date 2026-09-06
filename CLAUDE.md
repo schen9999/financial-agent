@@ -152,8 +152,9 @@ Phase 3 — demo polish:
   lower bounds. Judge v2 is unvalidated until the held-out sample from the
   40-ticker run is labeled — the 50-claim sample is a development set and
   cannot validate v2.
-- Cost of record: $0.0316/brief from the committed harness. $0.0269 is retired.
-  "54% cost reduction" is retired.
+- Cost of record: $0.0366/brief (2026-09-06, post-retrieval-fix) from the
+  committed harness. $0.0316 is a dated pre-retrieval-fix record — never quote
+  it as current. $0.0269 is retired. "54% cost reduction" is retired.
 - The Redis cache is exact-key per ticker. Never "semantic cache."
 - Never claim Celery/Redis ran in production on ECS. ECS reality was a single
   FastAPI container + RDS. K8s is the first full-topology deployment.
