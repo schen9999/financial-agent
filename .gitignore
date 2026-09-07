@@ -11,6 +11,11 @@ venv/
 
 # Eval artifacts
 eval_findings/
+# Raw eval-run pod logs: bulky (MBs of base64 findings dumps) and fully
+# redundant — the dump payloads are bit-identical to the committed
+# eval/runs/raw/<run>-findings/ dirs, which stay TRACKED because committed
+# harnesses read them (eval/section_attribution.py, eval/build_holdout.py).
+eval/runs/raw/*.log
 
 # Cached SEC filing text
 sec_filings/

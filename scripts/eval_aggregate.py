@@ -26,6 +26,13 @@ import os
 import argparse
 import urllib.request
 from datetime import datetime, timezone
+from pathlib import Path
+
+# Repo root on sys.path so `eval.stats` imports when run as a script
+# (pods set PYTHONPATH=/app; this covers bare local runs too). stats is
+# stdlib-only, so the aggregate pod still starts fast.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from eval.stats import format_rate_ci, wilson_interval  # noqa: E402
 
 
 def maybe_upload_artifacts(summary, results, skipped):
@@ -87,9 +94,11 @@ def main():
     mean_retr = sum(r["retrieval_s"] for r in results) / n if n else 0.0
     mean_pipe = sum(r["pipeline_s"] for r in results) / n if n else 0.0
 
+    judge_versions = sorted({r["judge_version"] for r in results if r.get("judge_version")})
     print("=" * 78)
     print("  NIGHTLY GROUNDING EVAL — AGGREGATE")
     print("=" * 78)
+    print(f"  judge prompt      : {', '.join(judge_versions) if judge_versions else 'unrecorded (pre-v2 rows)'}")
     print(f"  {'Ticker':<8} {'Sup':>4} {'Uns':>4} {'Inf':>4} {'Tot':>4} {'Retr(s)':>8} {'Pipe(s)':>8}")
     print(f"  {'-'*44}")
     for r in sorted(results, key=lambda r: r["ticker"]):
@@ -101,7 +110,13 @@ def main():
     print(f"  tickers completed : {n}")
     print(f"  tickers skipped   : {len(skipped)}{' (' + ', '.join(skipped) + ')' if skipped else ''}")
     print(f"  unsupported rate  : {unsupported_pct:.2f}%   (gate: <= {args.max_unsupported_pct}%)")
+    print(f"  95% CI (Wilson)   : {format_rate_ci(uns, tot)}")
     print(f"  total claims      : {tot}   (gate: >= {args.min_claims})")
+    est_costs = [r["est_cost"] for r in results if "est_cost" in r]
+    if est_costs:
+        print(f"  est. run cost     : ${sum(est_costs):.4f}   "
+              f"(chars/4 tokens priced from scripts/model_prices.json; "
+              f"excludes retries — cost of record stays scripts/cost_report.py)")
 
     failures = []
     if unsupported_pct > args.max_unsupported_pct:
@@ -113,9 +128,11 @@ def main():
 
     summary = {
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "judge_version": judge_versions or None,
         "totals": {
             "supported": sup, "unsupported": uns, "inference": inf, "claims": tot,
             "unsupported_pct": round(unsupported_pct, 2),
+            "unsupported_ci_95": [round(x * 100, 2) for x in wilson_interval(uns, tot)],
             "mean_retrieval_s": round(mean_retr, 2), "mean_pipeline_s": round(mean_pipe, 2),
             "tickers_completed": n, "tickers_skipped": len(skipped),
         },

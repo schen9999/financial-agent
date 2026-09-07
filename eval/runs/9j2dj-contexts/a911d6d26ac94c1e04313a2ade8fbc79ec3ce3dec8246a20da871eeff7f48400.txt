@@ -1,0 +1,89 @@
+STOCK DATA:
+{
+  "ticker": "UPST",
+  "company_name": "Upstart Holdings, Inc.",
+  "current_price": 28.05,
+  "currency": "USD",
+  "market_cap": 2729630976.0,
+  "pe_ratio": 53.942307,
+  "forward_pe": 8.071013,
+  "week_52_high": 71.38,
+  "week_52_low": 23.965,
+  "revenue": 1285890048.0,
+  "net_income": 60334000.0,
+  "profit_margin": 0.046919998,
+  "sector": "Financial Services",
+  "industry": "Credit Services"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-10",
+    "summary": "ITEM 1A. RISK FACTORS RISK FACTORS Investing in our common stock involves a high degree of risk. The risks and uncertainties described below should be carefully considered, together with all of the other information in this Annual Report on Form 10-K, including the section titled \u201cManagement\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d and our consolidated financial statements and related notes, before making a decision to invest in our common stock. Our business, financial condition, results of operations, or prospects could also be harmed by risks and uncertainties not currently known to us or that we currently do not believe are material. If any of the risks actually occur, our business, financial condition, results of operations, and prospects could be ad"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-04",
+    "summary": "ITEM 1A. RISK FACTORS RISK FACTORS Investing in our common stock involves a high degree of risk. The risks and uncertainties described below should be carefully considered, together with all of the other information in this Quarterly Report on Form 10-Q, including the section titled \u201cManagement\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d and our condensed consolidated financial statements and related notes, before making a decision to invest in our common stock. Our business, financial condition, results of operations, or prospects could also be harmed by risks and uncertainties not currently known to us or that we currently do not believe are material. If any of the risks actually occur, our business, financial condition, results of operations, and prospect"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I cannot provide a summary of the latest 10-K and 10-Q based on the information provided. The context materials only contain excerpts from the Risk Factors section of a 10-K filing for Upstart (UPST), specifically focusing on business and industry risks, funding and financing risks, and operational challenges.
+
+To provide a comprehensive summary of the latest 10-K and 10-Q filings, I would need access to additional sections such as:
+
+- Management's Discussion and Analysis (MD&A)
+- Financial statements and results of operations
+- Business overview and strategy
+- Liquidity and capital resources
+- Recent financial performance metrics
+- Quarterly results and trends
+
+The excerpts available only highlight the company's risk disclosures, which represent one component of these filings. A complete summary would require reviewing the full documents to capture the company's financial performance, operational results, strategic initiatives, and overall financial condition.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses several primary risk factors affecting its business:
+
+## Economic and Market Risks
+- Adverse economic conditions, uncertainty, and volatility that impact borrower demand, approval rates, loan origination volume, and capital availability
+- Macroeconomic factors beyond management's control that affect the supply of capital and borrower ability to repay loans
+- Concentration of operations in U.S. consumer credit, making the business vulnerable to domestic economic downturns
+
+## Capital and Funding Risks
+- Inability to maintain diverse and resilient loan funding from institutional investors
+- Dependence on committed capital and co-investment arrangements that expose the company to credit risk compensation obligations
+- Risks associated with asset-backed securitizations, warehouse credit facilities, and whole loan sale arrangements
+- Potential need to repurchase loans or make payments if representations and warranties prove inaccurate
+- Counterparty risk from derivative instruments and custodial arrangements
+
+## Operational and Technology Risks
+- Failure to improve or maintain effective artificial intelligence models for credit assessment
+- Significant disruption or failure in technology systems, including the AI lending platform
+- Inability to approve sufficient borrowers for loans
+
+## Business Model Risks
+- Dependence on a limited number of lending partners for a significant portion of loan originations and revenue
+- Reliance on strategic relationships with loan aggregators to attract applicants
+- Historical net losses and inability to achieve sustained profitability
+- Significant fluctuations in quarterly results
+
+## Regulatory and Reputational Risks
+- Compliance with a wide range of evolving laws and regulations
+- Security breaches and data protection failures
+- Risks related to loan servicing and collections obligations
+- Brand and reputation management challenges

@@ -1,0 +1,34 @@
+# Critic-vs-injected-failures check: runs the real judge over the committed
+# 20-fixture perturbation set and asserts recall >= 0.8. Spends real Anthropic
+# credits (~20 Sonnet judge calls, well under $1 by the committed estimate),
+# so it NEVER fires per commit: manual dispatch + one weekly scheduled run
+# only. Needs the ANTHROPIC_API_KEY repo secret. No cluster involved.
+#
+# Measured 2026-09-04 on this fixture set: recall 20/20 (95% CI 83.9-100%) —
+# the assertion passes, so this job is NOT allow-failure. If it ever fails,
+# the bar stays at 0.8: investigate and record the measured number in
+# docs/numbers-of-record.md instead of widening the gate.
+name: critic-injection
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 0" # Sunday 06:00 UTC
+
+jobs:
+  critic-injection:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # agent/grounding.py is deliberately import-light: the judge needs only
+      # langchain-anthropic (pinned to match requirements.txt) — no torch, no
+      # RAG stack, no cluster.
+      - run: pip install "langchain-anthropic==1.4.4" "python-dotenv==1.2.2" pytest
+      - run: python -m pytest tests/test_critic_injection.py -q -s
+        env:
+          CRITIC_INJECTION: "1"
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

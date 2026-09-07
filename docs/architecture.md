@@ -32,7 +32,7 @@ flowchart LR
 
     subgraph llm ["LLM seam (agent/tools/local_model.py)"]
         hosted["Anthropic API<br/>(hosted Claude — default for<br/>every section)"]
-        local["LOCAL_MODEL_BACKEND<br/>ollama (committed fallback) |<br/>openai → vLLM (A10: Phase 2,<br/>unverified)"]
+        local["LOCAL_MODEL_BACKEND<br/>ollama (committed fallback) |<br/>openai → vLLM (served on an A10<br/>2026-09-03; A/B failed the gate<br/>— ships default-off)"]
     end
 
     browser --> streamlit
@@ -66,10 +66,13 @@ flowchart LR
   `USE_LOCAL_MODEL=true`, only the two sections the fine-tuned
   Qwen2.5-1.5B was trained on (Financial Health, Risk Factors) route to
   `LOCAL_MODEL_URL`; `LOCAL_MODEL_BACKEND` selects the protocol —
-  `ollama` (the committed fallback) or `openai` (any OpenAI-compatible
-  endpoint, which is what the vLLM deployment will serve). vLLM has not
-  yet served the model on the A10; that claim unlocks only after the
-  Phase 2 end-to-end run.
+  `ollama` (the committed fallback) or `openai` (what vLLM serves). vLLM
+  served the fine-tune on an A10 (plain Docker 2026-09-02, in-cluster
+  k3s 2026-09-03), and the eval DAG then measured it: **12.31%
+  unsupported vs a same-day 3.03% hosted baseline (judge v1) — the fine-tune fails
+  the 5% gate on the two sections it owns** (same harness, same day;
+  dated A/B in eval-methodology.md). `USE_LOCAL_MODEL` ships off as a
+  measured negative result. OKE serving remains Phase 2.
 - **Default-off features**: cross-encoder reranking and the multi-agent
   supervisor ship default-off because evals showed no grounding gain at
   higher cost/latency (docs/PHASE0_AUDIT.md).

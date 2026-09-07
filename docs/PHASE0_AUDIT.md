@@ -1,5 +1,9 @@
 # Phase 0 Audit — Repo State Before the K8s / Argo / vLLM Work
 
+> All grounding/unsupported rates in this audit are **judge v1** and subject
+> to the recall caveat: v1 recall on UNSUPPORTED measured 1/9 against human
+> labels (2026-09-04) — see docs/eval-methodology.md.
+
 Date: 2026-08-24. Audited from code and config as committed at `b8ec9ab`, not from
 the README's description of itself. This document gates the later phases: the
 Kubernetes migration, Argo workflows, and vLLM serving are built against **this**

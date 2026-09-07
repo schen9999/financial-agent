@@ -1,0 +1,97 @@
+STOCK DATA:
+{
+  "ticker": "SFIX",
+  "company_name": "Stitch Fix, Inc.",
+  "current_price": 3.05,
+  "currency": "USD",
+  "market_cap": 406948864.0,
+  "forward_pe": -38.764614,
+  "week_52_high": 5.94,
+  "week_52_low": 2.95,
+  "revenue": 1334928000.0,
+  "net_income": -19118000.0,
+  "profit_margin": -0.01432,
+  "sector": "Consumer Cyclical",
+  "industry": "Apparel Retail"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2025-09-25",
+    "summary": "ITEM 1A. RISK FACTORS RISK FACTOR SUMMARY Our business is subject to numerous risks. The following summary highlights some of the risks you should consider with respect to our business and prospects. This summary is not complete and the risks summarized below are not the only risks we face. You should review and consider carefully the risks and uncertainties described in more detail in the \u201cRisk Factors\u201d below, which includes a more complete discussion of the risks summarized here. RISKS RELATING TO OUR BUSINESS \u2022 We have in the past been and may in the future be unable to retain clients or maintain a high level of engagement with our clients and maintain or increase their spending with us, which has and could continue to harm our business, financial condition, or operating results. \u2022 Our "
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-06-11",
+    "summary": "ITEM 1A. RISK FACTORS RISK FACTOR SUMMARY Our business is subject to numerous risks. The following summary highlights some of the risks you should consider with respect to our business and prospects. This summary is not complete and the risks summarized below are not the only risks we face. You should review and consider carefully the risks and uncertainties described in more detail in \u201cRisk Factors\u201d below, which includes a more complete discussion of the risks summarized here. RISKS RELATING TO OUR BUSINESS \u2022 We have in the past been and may in the future be unable to retain clients or maintain a high level of engagement with our clients and maintain or increase their spending with us, which has and could continue to harm our business, financial condition, or operating results. \u2022 Our grow"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from the Latest 10-K Filing
+
+Based on the available information, here are the primary risk factors and business challenges highlighted:
+
+## Client Retention and Engagement
+- The company has experienced declining active clients over recent fiscal years (2023-2025), which has negatively impacted revenue
+- High dependence on repeat purchases from engaged, high-spending clients creates vulnerability if these customers reduce purchases or leave
+- Success requires effectively engaging new clients to continue using the service beyond initial attempts
+
+## Growth and Customer Acquisition
+- Growth strategy relies heavily on attracting new clients cost-effectively through diverse marketing channels (digital, social media, influencers, traditional advertising)
+- Marketing effectiveness and return-on-investment vary period to period, and increased spending doesn't guarantee proportional client growth
+- New product and service launches are resource-intensive and may not successfully attract clients
+
+## Operational and Supply Chain Risks
+- Nearly all merchandise is sourced from third-party vendors, predominantly from China, creating exposure to tariffs, price fluctuations, shipping delays, and inflationary pressures
+- Inventory management challenges could adversely affect operations
+- Fulfillment center operations and shipping arrangements are critical to business success
+
+## Strategic and Competitive Challenges
+- Highly competitive industry requires effective differentiation
+- Management transformation and business strategy execution are critical
+- Talent retention and succession planning are ongoing concerns
+- Brand reputation and stylist management are essential to operations
+
+**Note:** The provided context contains only 10-K information; no 10-Q filing details were included.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses risk factors across several key categories:
+
+## Business-Related Risks
+- **Client Retention and Engagement**: Inability to retain clients or maintain high spending levels, with active client numbers having decreased in recent fiscal years
+- **New Client Acquisition**: Dependence on attracting new clients cost-effectively through various marketing channels, with uncertain returns on marketing investments
+- **Merchandise and Supply Chain**: Risks from sourcing and pricing of merchandise, tariffs, trade policy shifts, and manufacturing concentration in China
+- **Inventory Management**: Potential adverse effects from ineffective inventory management
+- **Fulfillment Operations**: Operational constraints and staffing challenges at fulfillment centers
+- **Shipping**: Critical reliance on shipping arrangements with potential for disruptions
+- **Revenue Growth and Profitability**: Uncertainty about maintaining revenue growth and achieving future profitability
+- **Brand and Reputation**: Dependence on maintaining a strong brand
+- **Personnel and Succession**: Challenges in attracting and retaining key employees and managing succession
+- **Stylist Management**: Risks associated with managing the Stylist workforce
+- **Vendor Relationships**: Dependence on acquiring and retaining merchandise vendors
+- **Fraud Losses**: Potential for significant fraud-related losses
+- **Real Estate Leases**: Financial risks from lease obligations
+
+## Industry and Economic Risks
+- **Consumer Discretionary Spending**: Vulnerability to economic downturns affecting discretionary purchases
+- **Competition**: Highly competitive industry environment
+- **Catastrophic Events**: Potential adverse effects from natural disasters, public health crises, and political events
+
+## Cybersecurity, Legal, and Regulatory Risks
+- **Technology Infrastructure**: System interruptions and performance failures
+- **Data Security**: Compromises of data security or third-party service providers
+- **Open Source Software**: Risks from open source software in proprietary applications
+- **Litigation**: Potential monetary damages from legal proceedings
+- **Compliance**: Product safety, labor, and vendor compliance obligations
+- **Privacy and Data Protection**: Evolving privacy and security laws and obligations
+- **eCommerce Regulations**: Unfavorable changes in internet and eCommerce regulations
+- **Cookie Tracking**: Restrictions or changes affecting cookie-based consumer tracking
+- **Intellectual Property**:

@@ -1,0 +1,29 @@
+# Local-model arm of the 40-ticker extended benchmark: same tickers as
+# argo/eval-run-extended.yaml (source of truth eval/tickers_extended.txt — a
+# test keeps all three in sync), arms=local-model (the harness's own arm sets
+# USE_LOCAL_MODEL; pointers come from app-config). Outside kustomize like its
+# siblings.
+#
+# A/B comparability: submit this against the SAME image that ran the baseline
+# extended pass — do not run `make vm-images` between the two arms, or the
+# arms compare different retrieval code.
+#
+# Submit: make eval-run EVAL_RUN_FILE=argo/eval-run-extended-local.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: grounding-eval-extended-local-
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  workflowTemplateRef:
+    name: grounding-eval
+  # 40 tickers at parallelism 2 will not fit the template's 1h deadline.
+  activeDeadlineSeconds: 10800
+  arguments:
+    parameters:
+      - name: arms
+        value: local-model
+      - name: tickers
+        value: '["AAPL","MSFT","GOOGL","AMZN","NVDA","META","TSLA","JPM","V","WMT","XOM","UNH","UPST","AFRM","RIVN","LCID","SNAP","PTON","ROKU","COIN","CALM","SFIX","RDFN","BYND","CHGG","BLNK","OMER","EVGO","OCGN","EDIT","SANA","CRBU","VERV","BEAM","NTLA","TSM","NVO","BABA","TM","SAP"]'
