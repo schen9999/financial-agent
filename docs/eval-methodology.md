@@ -289,8 +289,8 @@ view** were both re-run over the same 50 claims via `eval/rejudge.py`
 (19 judge calls each; claims matched back by normalized containment;
 keys: `sample_key_v1_rejudged.csv`, `sample_key_v2.csv`). **These 50
 claims are a development set: v2's rules were written from their
-failure modes, so nothing below validates v2.** A held-out sample will
-be drawn from the 40-ticker run.
+failure modes, so nothing below validates v2.** The held-out validation
+that does is in "Judge v2 held-out validation" below.
 
 ```
                        v1 original key   v1 rejudged      v2 rejudged
@@ -329,6 +329,48 @@ fixes, mechanisms recorded for the held-out check):
 | 20 | AAPL | "9-month net sales up 17% year-over-year through Q3 2026" | Rule-b component ambiguity: the nine-month table offers several "net sales" candidates (products-only grows 16.9%); v2's chosen combination passes the 0.15pp recompute, the human's did not |
 | 22 | JPM | "the regulatory and cybersecurity risk environment flagged in the company's own filings" | Rule-4 gap: the only filing content is a TOC ("Item 1A. Risk Factors… Item 1C. Cybersecurity"), which v2 accepted as the filings "flagging" those risks — rule 4 names exhibit boilerplate but not TOC section titles used as support |
 | 23 | WMT | "Q2 2026 net sales rose 7.2% year-over-year" | Recompute passes (175,684/163,981 = +7.14%, within 0.15pp of 7.2%); the discrepancy candidate is the period label — the table's quarter ends July 2026, which is fiscal 2027 for WMT, so "Q2 2026" mislabels the period (rule-c miss against a fiscal-calendar quirk) |
+
+### Judge v2 held-out validation (labeled 2026-09-06)
+
+- **Sample**: `eval/judge_validation/holdout_sample.csv` — 50 claims
+  drawn by `eval/build_holdout.py` (seed 42) from the 40-ticker A/B
+  runs (`j4cnp` baseline + `lsnnc` local-model), stratified by (arm,
+  judge label) to 15 UNSUPPORTED / 15 INFERENCE / 20 SUPPORTED with a
+  cap of 3 claims per ticker. **Held out**: zero overlap with the
+  50-claim dev set, checked by normalized claim text and
+  source-context sha256 (4 recurring-text claims excluded at draw
+  time). v2's rules were frozen before this sample existed.
+- **Labeling method, stated verbatim**: "The held-out sample was
+  labeled blind by the author against the retrieved context and
+  pre-written sections only, with no model consultation, using the
+  rubric in this document."
+- **Analysis**: `eval/agreement.py --labeled holdout_sample.csv --key
+  holdout_key.csv`, human labels as ground truth, Wilson 95% intervals.
+
+**Result (judge v2, held out):**
+
+```
+Confusion (rows = judge, cols = human):
+                 SUPPORTED  UNSUPPORTED  INFERENCE
+SUPPORTED               15            1          4
+UNSUPPORTED              1            9          5
+INFERENCE                1            2         12
+```
+
+- Cohen's kappa (3-class): **0.580**
+- Judge recall on UNSUPPORTED: **9/12 = 75.0% (95% CI 46.8–91.1%)**
+- Judge precision on UNSUPPORTED: **9/15 = 60.0% (95% CI 35.7–80.2%)**
+
+Against v1's dev-set result (kappa 0.321, UNSUPPORTED recall 1/9 =
+11.1%, precision 1/3 = 33.3% — non-blind, and measured under dev
+conditions): held-out, blind v2 lands at kappa 0.580 with recall 75%
+and precision 60%. Stated plainly: **v2 trades v1's INFERENCE
+catch-all for a mild over-flag of INFERENCE-as-UNSUPPORTED** — 5 of
+v2's 6 UNSUPPORTED false positives were human-INFERENCE claims. The
+consequence for reading rates differs from v1's: v1 rates were
+one-directional lower bounds (recall 11%); **v2's errors run both
+ways** (missed 3 of 12, over-flagged 6, net 15 flagged vs 12 human on
+this sample), so v2 rates are approximate point estimates, not bounds.
 
 ### Injected-failure check (measured 2026-09-04)
 

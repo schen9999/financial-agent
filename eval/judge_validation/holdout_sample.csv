@@ -155,7 +155,7 @@ Meta's financial performance remains heavily dependent on user growth and engage
 
 - **User Engagement and Advertiser Dependency**: The company's revenue relies heavily on maintaining user engagement and advertiser spending. Loss of users, reduced marketer spending, or inability to effectively target ads due to data signal limitations could significantly impact financial performance.
 
-- **Competitive and Operational Challenges**: Meta must continuously compete effectively while managing technical infrastructure scaling, cybersecurity risks, and potential service disruptions. Failure to innovate with new products or adapt to changes in mobile operating systems could erode market position and revenue growth.",
+- **Competitive and Operational Challenges**: Meta must continuously compete effectively while managing technical infrastructure scaling, cybersecurity risks, and potential service disruptions. Failure to innovate with new products or adapt to changes in mobile operating systems could erode market position and revenue growth.",SUPPORTED
 1,grounding-eval-extended-j4cnp,UPST,52-week price range of $23.97–$71.38,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -273,7 +273,7 @@ Unable to provide SEC filing highlights at this time. The available source mater
 
 • **Funding and Capital Availability Risk** – The company depends on institutional investors and co-investment arrangements to fund loans. Disruptions in capital markets, inability to maintain diverse funding sources, or reduced investor appetite for loan assets could constrain growth and increase credit risk obligations, including potential loan repurchase requirements.
 
-• **AI Model Performance and Technology Risk** – Upstart's competitive advantage relies on its artificial intelligence credit assessment models. Failure to continuously improve model accuracy, technology system disruptions, or inability to scale AI capabilities across new loan products could undermine underwriting quality and business competitiveness.",
+• **AI Model Performance and Technology Risk** – Upstart's competitive advantage relies on its artificial intelligence credit assessment models. Failure to continuously improve model accuracy, technology system disruptions, or inability to scale AI capabilities across new loan products could undermine underwriting quality and business competitiveness.",SUPPORTED
 2,grounding-eval-extended-j4cnp,JPM,34.9% profit margin,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -394,7 +394,7 @@ Unable to provide filing highlights at this time. The available source materials
 
 • **Credit and Market Volatility** – Adverse changes in clients' and counterparties' financial conditions, combined with fluctuations in interest rates, credit spreads, and collateral values, directly affect the firm's earnings and portfolio quality. Concentrated credit exposures amplify these risks.
 
-• **Operational and Cyber Risks** – JPMorgan Chase's dependence on complex operational systems and technology infrastructure creates vulnerability to cyber attacks, system failures, and data breaches. Additionally, risks from new products, third-party vendors, and the effectiveness of internal risk management frameworks pose ongoing operational challenges.",
+• **Operational and Cyber Risks** – JPMorgan Chase's dependence on complex operational systems and technology infrastructure creates vulnerability to cyber attacks, system failures, and data breaches. Additionally, risks from new products, third-party vendors, and the effectiveness of internal risk management frameworks pose ongoing operational challenges.",SUPPORTED
 3,grounding-eval-extended-j4cnp,CRBU,The stock has declined 55% from its 52-week high of $3.54 to $1.57,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -512,7 +512,7 @@ Caribou Biosciences remains a pre-revenue, clinical-stage biotech company with a
 
 - **Early-Stage Technology and Regulatory Uncertainty**: The company's allogeneic cell therapy candidates are based on novel technologies that have not yet demonstrated commercial-scale manufacturability or received marketing approval. Clinical trial delays, regulatory setbacks, or safety concerns could materially impact development timelines and commercialization prospects.
 
-- **Unproven Commercial Execution**: Caribou has no track record of successful product commercialization, sales and marketing operations, or sustained profitability, creating execution risk as the company advances toward potential market launch.",
+- **Unproven Commercial Execution**: Caribou has no track record of successful product commercialization, sales and marketing operations, or sustained profitability, creating execution risk as the company advances toward potential market launch.",INFERENCE
 4,grounding-eval-extended-j4cnp,TSLA,trailing P/E of 321.89,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -660,7 +660,7 @@ Tesla faces significant production and supply chain headwinds, including delays 
 
 • **Product Development and Manufacturing Execution** – Delays or failures in launching new products (Cybercab, autonomous driving, energy storage) or ramping production at scale could impact revenue growth. The company also faces challenges controlling manufacturing costs and achieving quality standards across expanding operations.
 
-• **Demand Forecasting and Market Expansion** – Tesla's ability to accurately project demand and scale sales, delivery, and service capabilities globally remains uncertain, particularly as it enters new markets and expands its product portfolio beyond vehicles into energy and AI-driven solutions.",
+• **Demand Forecasting and Market Expansion** – Tesla's ability to accurately project demand and scale sales, delivery, and service capabilities globally remains uncertain, particularly as it enters new markets and expands its product portfolio beyond vehicles into energy and AI-driven solutions.",SUPPORTED
 5,grounding-eval-extended-local-lsnnc,COIN,a net loss of $9.9 billion,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -808,7 +808,7 @@ The company identifies several primary risk factors affecting its business:
   - Talent retention
   - Market sentiment toward crypto.
 
-These risks collectively create uncertainty in forecasting performance and could cause the stock price to fluctuate significantly.",
+These risks collectively create uncertainty in forecasting performance and could cause the stock price to fluctuate significantly.",UNSUPPORTED
 6,grounding-eval-extended-j4cnp,RIVN,"the post-tax-credit demand environment"" (referencing the federal EV tax credit expiration)","=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -928,7 +928,7 @@ Rivian's Normal, Illinois facility operates at 215,000 annual vehicle capacity w
 
 • **Regulatory Compliance and Safety Standards**: Operations are subject to stringent federal, state, and local regulations including Federal Motor Vehicle Safety Standards, EPA emissions requirements, and NHTSA compliance obligations. Non-compliance could result in significant penalties, operational restrictions, and costly remediation efforts.
 
-• **Seasonality and Government Incentive Dependency**: Revenue is subject to seasonal fluctuations, with weaker sales in year-end quarters. The company is also vulnerable to changes in government EV tax credits and incentives—as evidenced by the September 2025 federal tax credit expiration, which caused delivery pull-forward into Q3 followed by Q4 decline.",
+• **Seasonality and Government Incentive Dependency**: Revenue is subject to seasonal fluctuations, with weaker sales in year-end quarters. The company is also vulnerable to changes in government EV tax credits and incentives—as evidenced by the September 2025 federal tax credit expiration, which caused delivery pull-forward into Q3 followed by Q4 decline.",INFERENCE
 7,grounding-eval-extended-j4cnp,META,"first-party data strategies"" [as a path to stabilizing ad-targeting effectiveness]","=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -1085,7 +1085,7 @@ Meta's financial performance remains heavily dependent on user growth and engage
 
 - **User Engagement and Advertiser Dependency**: The company's revenue relies heavily on maintaining user engagement and advertiser spending. Loss of users, reduced marketer spending, or inability to effectively target ads due to data signal limitations could significantly impact financial performance.
 
-- **Competitive and Operational Challenges**: Meta must continuously compete effectively while managing technical infrastructure scaling, cybersecurity risks, and potential service disruptions. Failure to innovate with new products or adapt to changes in mobile operating systems could erode market position and revenue growth.",
+- **Competitive and Operational Challenges**: Meta must continuously compete effectively while managing technical infrastructure scaling, cybersecurity risks, and potential service disruptions. Failure to innovate with new products or adapt to changes in mobile operating systems could erode market position and revenue growth.",INFERENCE
 8,grounding-eval-extended-local-lsnnc,RIVN,Autonomy+ charging service launching April 2026,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -1191,7 +1191,7 @@ The company is exposed to various risks that could have a material adverse effec
 
 **Seasonality**: The automotive industry experiences higher revenue in spring and summer months. Commercial vehicle sales are typically lower in the final months of the year as customers focus on holiday deliveries. Additionally, new product launches and changes in government incentives can significantly influence quarterly revenues. For example, the expiration of federal EV tax credits in September 2025 caused a pull-forward of deliveries into the third quarter with a corresponding decline in the fourth quarter.
 
-**Competition**: The company faces competition from millions of traditional internal combustion engine vehicles and EVs sold annually in consumer and commercial markets. Competition extends across the entire automotive value chain, including vehicle remarketers, repair and maintenance providers, charging companies, software developers, and fleet management companies.",
+**Competition**: The company faces competition from millions of traditional internal combustion engine vehicles and EVs sold annually in consumer and commercial markets. Competition extends across the entire automotive value chain, including vehicle remarketers, repair and maintenance providers, charging companies, software developers, and fleet management companies.",INFERENCE
 9,grounding-eval-extended-local-lsnnc,RIVN,"features like Universal Hands Free translate into recurring, higher-margin revenue streams","=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -1297,7 +1297,7 @@ The company is exposed to various risks that could have a material adverse effec
 
 **Seasonality**: The automotive industry experiences higher revenue in spring and summer months. Commercial vehicle sales are typically lower in the final months of the year as customers focus on holiday deliveries. Additionally, new product launches and changes in government incentives can significantly influence quarterly revenues. For example, the expiration of federal EV tax credits in September 2025 caused a pull-forward of deliveries into the third quarter with a corresponding decline in the fourth quarter.
 
-**Competition**: The company faces competition from millions of traditional internal combustion engine vehicles and EVs sold annually in consumer and commercial markets. Competition extends across the entire automotive value chain, including vehicle remarketers, repair and maintenance providers, charging companies, software developers, and fleet management companies.",
+**Competition**: The company faces competition from millions of traditional internal combustion engine vehicles and EVs sold annually in consumer and commercial markets. Competition extends across the entire automotive value chain, including vehicle remarketers, repair and maintenance providers, charging companies, software developers, and fleet management companies.",INFERENCE
 10,grounding-eval-extended-local-lsnnc,EDIT,Trading at $3.23 per share,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -1411,7 +1411,7 @@ The company discloses several significant risk factors that investors should con
 - **Years to commercialization**: It will be many years, if ever, before any product candidate is ready for commercialization.
 - **Regulatory uncertainty**: Regulatory authorities may require additional clinical and other studies beyond current expectations.
 
-These risk factors highlight the uncertainties inherent in the company's operations and strategies. Investors should carefully review these factors and consider them in conjunction with the other information contained herein.",
+These risk factors highlight the uncertainties inherent in the company's operations and strategies. Investors should carefully review these factors and consider them in conjunction with the other information contained herein.",SUPPORTED
 11,grounding-eval-extended-j4cnp,VERV,company's stated runway through mid-2027,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -1531,7 +1531,7 @@ Verve Therapeutics reported accumulated losses of $743.0 million through Decembe
 
 - **Dependence on Successful Clinical Development**: The company's first product candidate only entered clinical trials in 2022, with no completed trials to date. Years of development remain before potential commercialization, and there is no assurance of regulatory approval, manufacturing success, or market acceptance.
 
-- **Funding Requirements and Dilution Risk**: Substantial additional capital is required to continue operations and advance clinical programs. If unable to raise capital on acceptable terms, the company may be forced to delay or eliminate development programs, and future fundraising will likely result in significant shareholder dilution.",
+- **Funding Requirements and Dilution Risk**: Substantial additional capital is required to continue operations and advance clinical programs. If unable to raise capital on acceptable terms, the company may be forced to delay or eliminate development programs, and future fundraising will likely result in significant shareholder dilution.",SUPPORTED
 12,grounding-eval-extended-j4cnp,BLNK,disciplined capital allocation toward higher-margin DCFC deployment,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -1636,7 +1636,7 @@ Blink Charging reported approximately 66,350 chargers connected to its network a
 
 • **Capital Intensity and Funding Requirements** – Expanding the charging network requires significant ongoing capital investment; inability to secure adequate financing or achieve profitability could constrain growth and dilute shareholder value.
 
-• **Competitive Landscape and Market Consolidation** – Blink faces intense competition from larger, better-capitalized competitors and established automotive manufacturers entering the charging space, which could pressure pricing, market share, and margins.",
+• **Competitive Landscape and Market Consolidation** – Blink faces intense competition from larger, better-capitalized competitors and established automotive manufacturers entering the charging space, which could pressure pricing, market share, and margins.",INFERENCE
 13,grounding-eval-extended-local-lsnnc,OMER,clinical-stage biopharmaceutical company that has recently transitioned toward commercialization,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -1765,7 +1765,7 @@ Omeros held $171.8 million in cash and short-term investments as of December 31,
 - The company faces potential challenges in gaining market acceptance for its product. These challenges could include issues related to patient education, physician prescribing practices, and other factors that could impact the adoption and use of the company's product.
 - The company also faces potential challenges in successfully marketing, selling, and distributing its product. These challenges could include issues related to the design and packaging of the product, the effectiveness of advertising and promotional campaigns, and other factors that could impact the success of the company's product in the marketplace.
 - Additionally, the company faces potential challenges in successfully negotiating favorable terms and conditions for the sale and distribution of its product. These challenges could include issues related to the negotiation of pricing and payment terms, the negotiation of supply and distribution agreements, and other factors that could impact the success of the company's product in the marketplace.
-- Finally, the company faces potential challenges in successfully managing and controlling its financial resources and activities. These challenges could include issues related to the management and allocation of funds and resources, the management and monitoring of expenses and expenditures, and other factors that could impact the success of the company's product in the marketplace.",
+- Finally, the company faces potential challenges in successfully managing and controlling its financial resources and activities. These challenges could include issues related to the management and allocation of funds and resources, the management and monitoring of expenses and expenditures, and other factors that could impact the success of the company's product in the marketplace.",INFERENCE
 14,grounding-eval-extended-local-lsnnc,BYND,"[Outlook references ""Beyond Burger volumes as a leading indicator of category health""]","=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -1947,7 +1947,7 @@ The company identifies various risks that could affect its business operations a
 #### Compliance and Regulatory Risks
 - FDA compliance requirements.
 - Legal claims and government investigations.
-- Internal control weaknesses over financial reporting.",
+- Internal control weaknesses over financial reporting.",INFERENCE
 15,grounding-eval-extended-local-lsnnc,AFRM,commercial agreements that can be terminated on short notice,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -2086,7 +2086,7 @@ The company faces several material risk factors across its business operations:
 - Significant quarterly result fluctuations.
 - Loss of key leadership or inability to retain skilled employees.
 - International expansion challenges.
-- Rising interest rates impacting business performance.",
+- Rising interest rates impacting business performance.",SUPPORTED
 16,grounding-eval-extended-local-lsnnc,WMT,increased average selling prices,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -2199,7 +2199,7 @@ Based on the SEC filing, the primary risk factors disclosed include:
 
 - **Legal, Tax, Regulatory, Compliance, Reputational and Other Risks**: The company identifies a category of risks related to legal, tax, regulatory, compliance, and reputational matters, though specific details within this category are referenced but not fully detailed in the provided information.
 
-The filing notes that the risk factors described could materially and adversely affect the company's business operations and securities in the future. Additionally, the company acknowledges that business operations could be affected by factors that apply to all companies operating in the U.S. and globally, and that the disclosed risk factors do not identify all risks the company may face.",
+The filing notes that the risk factors described could materially and adversely affect the company's business operations and securities in the future. Additionally, the company acknowledges that business operations could be affected by factors that apply to all companies operating in the U.S. and globally, and that the disclosed risk factors do not identify all risks the company may face.",UNSUPPORTED
 17,grounding-eval-extended-j4cnp,CRBU,52-week high of $3.54,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -2317,7 +2317,7 @@ Caribou Biosciences remains a pre-revenue, clinical-stage biotech company with a
 
 - **Early-Stage Technology and Regulatory Uncertainty**: The company's allogeneic cell therapy candidates are based on novel technologies that have not yet demonstrated commercial-scale manufacturability or received marketing approval. Clinical trial delays, regulatory setbacks, or safety concerns could materially impact development timelines and commercialization prospects.
 
-- **Unproven Commercial Execution**: Caribou has no track record of successful product commercialization, sales and marketing operations, or sustained profitability, creating execution risk as the company advances toward potential market launch.",
+- **Unproven Commercial Execution**: Caribou has no track record of successful product commercialization, sales and marketing operations, or sustained profitability, creating execution risk as the company advances toward potential market launch.",SUPPORTED
 18,grounding-eval-extended-local-lsnnc,SAP,trails the industry average of 2.15%,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -2383,7 +2383,7 @@ No recent 10-K or 10-Q filing data is currently available for SAP SE. Investors 
 
 - The global economy and financial markets may experience significant volatility in response to various factors beyond our control, including geopolitical events, trade policies, economic indicators, natural disasters, pandemics, or other public health issues.
 - We operate in a highly competitive environment. Our business is subject to intense competition from both established companies and new entrants into the market. Competition can arise from a variety of sources, including pricing strategies, product differentiation, marketing efforts, technological advancements, and regulatory changes.
-- We face substantial competition in the software industry. In particular, we compete against large technology companies that offer a wide range of products and services. These competitors often have significantly greater resources than us, which could give them a competitive advantage over us.",
+- We face substantial competition in the software industry. In particular, we compete against large technology companies that offer a wide range of products and services. These competitors often have significantly greater resources than us, which could give them a competitive advantage over us.",UNSUPPORTED
 19,grounding-eval-extended-local-lsnnc,OCGN,a net loss of $81.8M,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -2537,7 +2537,7 @@ Ocugen faces substantial going concern doubts with net losses of $67.8 million i
 - Inability to retain key executives and attract qualified personnel.
 - Potential weaknesses in internal controls over financial reporting.
 - Risks associated with use of new technologies like artificial intelligence.
-- Volatility in common stock trading price.",
+- Volatility in common stock trading price.",SUPPORTED
 20,grounding-eval-extended-local-lsnnc,PTON,leaving room for re-rating if results deliver,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -2679,7 +2679,7 @@ The company discloses several primary risk factors related to its business:
 #### Brand and Market Competition
 - The company depends on maintaining the Peloton brand’s value and reputation.
 - Intense competition exists in highly competitive markets with limited barriers to entry.
-- Risk includes consumer preferences shifting rapidly to different fitness offerings or away from them altogether.",
+- Risk includes consumer preferences shifting rapidly to different fitness offerings or away from them altogether.",INFERENCE
 21,grounding-eval-extended-j4cnp,SNAP,narrowing of its net loss over consecutive quarters,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -2803,7 +2803,7 @@ Snap reported 474 million daily active users as of Q4 2025, though faces persist
 
 - **Advertising Revenue Concentration and Cyclicality**: Approximately 87% of revenue derives from advertising with most advertisers lacking long-term commitments. Economic downturns, political instability, and advertiser concerns about solution effectiveness create exposure to sudden spending cuts and revenue volatility.
 
-- **Data Privacy and Regulatory Headwinds**: Increasing regulatory scrutiny on data collection and targeted advertising, combined with platform privacy changes (Apple's tracking restrictions, potential Google changes), threatens advertising effectiveness and pricing power. Compliance failures risk significant monetary penalties and operational restrictions, particularly around teen advertising and parental consent requirements.",
+- **Data Privacy and Regulatory Headwinds**: Increasing regulatory scrutiny on data collection and targeted advertising, combined with platform privacy changes (Apple's tracking restrictions, potential Google changes), threatens advertising effectiveness and pricing power. Compliance failures risk significant monetary penalties and operational restrictions, particularly around teen advertising and parental consent requirements.",INFERENCE
 22,grounding-eval-extended-local-lsnnc,COIN,reporting $60.4 billion in annual revenue,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -2951,7 +2951,7 @@ The company identifies several primary risk factors affecting its business:
   - Talent retention
   - Market sentiment toward crypto.
 
-These risks collectively create uncertainty in forecasting performance and could cause the stock price to fluctuate significantly.",
+These risks collectively create uncertainty in forecasting performance and could cause the stock price to fluctuate significantly.",UNSUPPORTED
 23,grounding-eval-extended-j4cnp,OMER,the gap between cash on hand and annual cash consumption leaves limited margin for a slow launch,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -3082,7 +3082,7 @@ Omeros Corporation held $171.8 million in cash and short-term investments as of 
 
 • **Reimbursement and Pricing Pressure**: Payers are increasingly demanding discounts from list prices, and obtaining adequate reimbursement coverage for newly approved products involves significant delays. Government price controls—particularly in the EU—and potential Medicare reductions could constrain profitability even if the product achieves market penetration.
 
-• **Cash Burn and Capital Constraints**: Omeros has cumulative operating losses since inception and substantial ongoing cash consumption for R&D, commercialization, and debt service. The company faces uncertainty in generating sufficient revenue to achieve profitability and may struggle to raise additional capital if needed to fund operations.",
+• **Cash Burn and Capital Constraints**: Omeros has cumulative operating losses since inception and substantial ongoing cash consumption for R&D, commercialization, and debt service. The company faces uncertainty in generating sufficient revenue to achieve profitability and may struggle to raise additional capital if needed to fund operations.",INFERENCE
 24,grounding-eval-extended-j4cnp,BLNK,"disciplined capital allocation toward higher-margin DCFC deployment"" [as a thesis-strengthening condition]","=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -3187,7 +3187,7 @@ Blink Charging reported approximately 66,350 chargers connected to its network a
 
 • **Capital Intensity and Funding Requirements** – Expanding the charging network requires significant ongoing capital investment; inability to secure adequate financing or achieve profitability could constrain growth and dilute shareholder value.
 
-• **Competitive Landscape and Market Consolidation** – Blink faces intense competition from larger, better-capitalized competitors and established automotive manufacturers entering the charging space, which could pressure pricing, market share, and margins.",
+• **Competitive Landscape and Market Consolidation** – Blink faces intense competition from larger, better-capitalized competitors and established automotive manufacturers entering the charging space, which could pressure pricing, market share, and margins.",INFERENCE
 25,grounding-eval-extended-j4cnp,BEAM,cash burn accelerates beyond current levels,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -3296,7 +3296,7 @@ Beam Therapeutics reported a net loss of $80.0 million in 2025 with an accumulat
 
 - **Early-stage development with no approved products**: BEAM has not completed any pivotal clinical trials and has no marketed products. The company faces a lengthy development timeline (10-15 years typical) and limited operating history in successfully navigating regulatory approval, manufacturing scale-up, and commercial launch.
 
-- **Execution and commercial uncertainty**: Even if product candidates are successfully developed and approved, commercial success is not guaranteed. As an early-stage company transitioning to commercial operations, BEAM may encounter unforeseen technical, regulatory, and operational challenges that could delay or derail programs.",
+- **Execution and commercial uncertainty**: Even if product candidates are successfully developed and approved, commercial success is not guaranteed. As an early-stage company transitioning to commercial operations, BEAM may encounter unforeseen technical, regulatory, and operational challenges that could delay or derail programs.",INFERENCE
 26,grounding-eval-extended-j4cnp,OMER,leaving a narrow runway,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -3427,7 +3427,7 @@ Omeros Corporation held $171.8 million in cash and short-term investments as of 
 
 • **Reimbursement and Pricing Pressure**: Payers are increasingly demanding discounts from list prices, and obtaining adequate reimbursement coverage for newly approved products involves significant delays. Government price controls—particularly in the EU—and potential Medicare reductions could constrain profitability even if the product achieves market penetration.
 
-• **Cash Burn and Capital Constraints**: Omeros has cumulative operating losses since inception and substantial ongoing cash consumption for R&D, commercialization, and debt service. The company faces uncertainty in generating sufficient revenue to achieve profitability and may struggle to raise additional capital if needed to fund operations.",
+• **Cash Burn and Capital Constraints**: Omeros has cumulative operating losses since inception and substantial ongoing cash consumption for R&D, commercialization, and debt service. The company faces uncertainty in generating sufficient revenue to achieve profitability and may struggle to raise additional capital if needed to fund operations.",INFERENCE
 27,grounding-eval-extended-local-lsnnc,UPST,net income of $6.03 billion,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -3569,7 +3569,7 @@ The company discloses several primary risk factors affecting its business:
 #### Financial Performance Risks
 - History of net losses with uncertainty about achieving sustained profitability.
 - Significant quarterly results fluctuations.
-- Risks related to managing the Upstart Macro Index.",
+- Risks related to managing the Upstart Macro Index.",UNSUPPORTED
 28,grounding-eval-extended-local-lsnnc,NVO,premium valuation relative to peers,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -3635,7 +3635,7 @@ No recent 10-K or 10-Q filings are currently available for Novo Nordisk A/S. Inv
 
 - The global economy and financial markets may experience significant volatility in response to various factors beyond our control, including geopolitical events, trade policies, economic indicators, natural disasters, pandemics, health crises, labor disputes, regulatory changes, cybersecurity threats, or other similar developments.
 - We operate in a highly competitive industry that is subject to intense competition from both large and small companies worldwide. Competition can include pricing, product quality, service levels, marketing efforts, technological innovation, intellectual property rights, patents, trademarks, copyrights, trade secrets, know-how, and other proprietary information. In addition, we compete against pharmaceutical companies that produce generic versions of our products at lower prices than those charged by us.
-- Our business involves the development, manufacture, sale, distribution, and/or licensing of prescription drugs and medical devices. As such, we face numerous risks associated with the drug discovery process, which includes conducting preclinical studies on animals and then conducting clinical trials on humans. These risks include but are not limited to the risk that preclinical studies conducted on animals will not yield results that are predictive of the efficacy and safety of the drug candidate when tested in human subjects; the risk that clinical trials conducted on humans will not yield results that are predictive of the efficacy and safety of the drug candidate when tested in animal subjects; the risk that the data generated during preclinical studies and clinical trials will not be sufficient to support the approval of the drug candidate by the FDA or comparable foreign regulatory authorities; the risk that the data generated during preclinical studies and clinical trials will not be sufficient to support the filing of a New Drug Application (""NDA"")""), Supplemental New Drug Application (""SNDA"")""), or Biologics License Application (""BLA"")"" with the FDA or comparable foreign regulatory authorities; the risk that the NDA, SNDA, or BLA submitted to the FDA or comparable foreign regulatory authority will not be approved by the FDA or comparable foreign regulatory authority; the risk that if the NDA, SNDA, or BLA submitted to the FDA or comparable foreign regulatory authority is not approved by the FDA or comparable foreign regulatory authority, the company will have to expend substantial additional time, money, and effort to conduct further preclinical studies and clinical trials, and to obtain any necessary approvals from the FDA or comparable foreign regulatory authorities before commencing commercial sales of the drug candidate; the risk that the FDA or comparable foreign regulatory authority may require additional preclinical studies and clinical trials prior to approving the submission of the NDA, SNDA, or BLA",
+- Our business involves the development, manufacture, sale, distribution, and/or licensing of prescription drugs and medical devices. As such, we face numerous risks associated with the drug discovery process, which includes conducting preclinical studies on animals and then conducting clinical trials on humans. These risks include but are not limited to the risk that preclinical studies conducted on animals will not yield results that are predictive of the efficacy and safety of the drug candidate when tested in human subjects; the risk that clinical trials conducted on humans will not yield results that are predictive of the efficacy and safety of the drug candidate when tested in animal subjects; the risk that the data generated during preclinical studies and clinical trials will not be sufficient to support the approval of the drug candidate by the FDA or comparable foreign regulatory authorities; the risk that the data generated during preclinical studies and clinical trials will not be sufficient to support the filing of a New Drug Application (""NDA"")""), Supplemental New Drug Application (""SNDA"")""), or Biologics License Application (""BLA"")"" with the FDA or comparable foreign regulatory authorities; the risk that the NDA, SNDA, or BLA submitted to the FDA or comparable foreign regulatory authority will not be approved by the FDA or comparable foreign regulatory authority; the risk that if the NDA, SNDA, or BLA submitted to the FDA or comparable foreign regulatory authority is not approved by the FDA or comparable foreign regulatory authority, the company will have to expend substantial additional time, money, and effort to conduct further preclinical studies and clinical trials, and to obtain any necessary approvals from the FDA or comparable foreign regulatory authorities before commencing commercial sales of the drug candidate; the risk that the FDA or comparable foreign regulatory authority may require additional preclinical studies and clinical trials prior to approving the submission of the NDA, SNDA, or BLA",UNSUPPORTED
 29,grounding-eval-extended-local-lsnnc,CRBU,a growing accumulated deficit,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -3751,7 +3751,7 @@ The company discloses several primary risk factors related to its financial posi
 - **Significant Operating Losses**: The company has incurred substantial net losses since inception ($148.1 million in 2025 and $149.1 million in 2024) with an accumulated deficit of $596.5 million, and anticipates continued losses for the foreseeable future.
 - **No Revenue Generation**: The company has not commercialized any products and has never generated revenue from product sales.
 - **Need for Additional Financing**: The company currently lacks sufficient funds to conduct its planned pivotal clinical trial for vispa-cel and requires substantial additional capital to implement its operating plans and develop its product candidates.
-- **Uncertainty of Profitability**: There is no assurance the company will ever achieve profitability, and even if it does, it may not be able to sustain profitability on a quarterly or annual basis.",
+- **Uncertainty of Profitability**: There is no assurance the company will ever achieve profitability, and even if it does, it may not be able to sustain profitability on a quarterly or annual basis.",SUPPORTED
 30,grounding-eval-extended-local-lsnnc,EDIT,no committed external funding beyond contingent collaboration payments from BMS and Vertex,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -3865,7 +3865,7 @@ The company discloses several significant risk factors that investors should con
 - **Years to commercialization**: It will be many years, if ever, before any product candidate is ready for commercialization.
 - **Regulatory uncertainty**: Regulatory authorities may require additional clinical and other studies beyond current expectations.
 
-These risk factors highlight the uncertainties inherent in the company's operations and strategies. Investors should carefully review these factors and consider them in conjunction with the other information contained herein.",
+These risk factors highlight the uncertainties inherent in the company's operations and strategies. Investors should carefully review these factors and consider them in conjunction with the other information contained herein.",SUPPORTED
 31,grounding-eval-extended-j4cnp,GOOGL,Berkshire Hathaway has grown its stake to 6.8%,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -4024,7 +4024,7 @@ Alphabet derives over 70% of revenues from online advertising, creating signific
 
 • **Regulatory and Competitive Pressures**: Intensifying government scrutiny of pricing, data practices, and market dominance—combined with aggressive competition from well-funded rivals in cloud services, AI, and emerging technologies—threatens market share and profitability.
 
-• **AI Infrastructure and Innovation Investment Risk**: Substantial capital commitments to AI infrastructure, custom chips, and unproven new business ventures carry execution risk, may not generate adequate returns, and could divert resources from core operations.",
+• **AI Infrastructure and Innovation Investment Risk**: Substantial capital commitments to AI infrastructure, custom chips, and unproven new business ventures carry execution risk, may not generate adequate returns, and could divert resources from core operations.",UNSUPPORTED
 32,grounding-eval-extended-j4cnp,SNAP,potential further deterioration from Google,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -4148,7 +4148,7 @@ Snap reported 474 million daily active users as of Q4 2025, though faces persist
 
 - **Advertising Revenue Concentration and Cyclicality**: Approximately 87% of revenue derives from advertising with most advertisers lacking long-term commitments. Economic downturns, political instability, and advertiser concerns about solution effectiveness create exposure to sudden spending cuts and revenue volatility.
 
-- **Data Privacy and Regulatory Headwinds**: Increasing regulatory scrutiny on data collection and targeted advertising, combined with platform privacy changes (Apple's tracking restrictions, potential Google changes), threatens advertising effectiveness and pricing power. Compliance failures risk significant monetary penalties and operational restrictions, particularly around teen advertising and parental consent requirements.",
+- **Data Privacy and Regulatory Headwinds**: Increasing regulatory scrutiny on data collection and targeted advertising, combined with platform privacy changes (Apple's tracking restrictions, potential Google changes), threatens advertising effectiveness and pricing power. Compliance failures risk significant monetary penalties and operational restrictions, particularly around teen advertising and parental consent requirements.",SUPPORTED
 33,grounding-eval-extended-j4cnp,WMT,offer a credible path toward margin-accretive differentiation,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -4257,7 +4257,7 @@ Unable to provide accurate SEC filing highlights at this time. The available dat
 
 - **Regulatory and Compliance Risk**: Walmart faces exposure to evolving legal, tax, regulatory, and compliance requirements across its U.S. and global operations, with potential material adverse effects on business results and reputation.
 
-- **Market Competition and Economic Sensitivity**: As a retailer dependent on consumer spending, Walmart is vulnerable to competitive pressures, economic downturns, and shifts in consumer behavior that could impact sales and profitability.",
+- **Market Competition and Economic Sensitivity**: As a retailer dependent on consumer spending, Walmart is vulnerable to competitive pressures, economic downturns, and shifts in consumer behavior that could impact sales and profitability.",UNSUPPORTED
 34,grounding-eval-extended-j4cnp,TSM,compression between the trailing and forward P/E ratios suggests the market anticipates earnings growth that would justify the current valuation,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -4333,7 +4333,7 @@ SEC filings are not currently available for TSM. Investors should monitor the co
 
 • **Cyclical Demand and Overcapacity**: The semiconductor industry is highly cyclical; current elevated valuations (31.8x P/E) reflect peak profitability, leaving TSM vulnerable to demand downturns, customer inventory corrections, and competitive capacity expansions that could compress margins from current 49.9% levels.
 
-• **Technology Obsolescence and R&D Intensity**: Rapid advancement in chip manufacturing requires continuous heavy capital investment to maintain process leadership; failure to execute on next-generation nodes or loss of technological edge to competitors could erode TSM's competitive moat and market share.",
+• **Technology Obsolescence and R&D Intensity**: Rapid advancement in chip manufacturing requires continuous heavy capital investment to maintain process leadership; failure to execute on next-generation nodes or loss of technological edge to competitors could erode TSM's competitive moat and market share.",INFERENCE
 35,grounding-eval-extended-local-lsnnc,LCID,geographic diversification into Saudi Arabia and other international markets,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -4507,7 +4507,7 @@ The company faces numerous significant risks and uncertainties across several ke
 - The company may face significant challenges in accurately forecasting the level of social media engagement or interaction relevant to any future product launches or marketing campaigns.
 - The company may face significant challenges in accurately forecasting the level of user-generated content or feedback relevant to any future product launches or marketing campaigns.
 - The company may face significant challenges in accurately forecasting the level of vendor-specific integration requirements or constraints relevant to any future product launches or marketing campaigns.
-- The company may face significant challenges in accurately forecasting the level of warranty claims or returns relevant to any future product launches or marketing campaigns",
+- The company may face significant challenges in accurately forecasting the level of warranty claims or returns relevant to any future product launches or marketing campaigns",SUPPORTED
 36,grounding-eval-extended-local-lsnnc,META,23.26x P/E,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -4697,7 +4697,7 @@ Meta's financial performance remains heavily dependent on user growth and engage
 - Challenges in obtaining, maintaining, and enforcing intellectual property rights
 
 #### Risks Related to Stock Ownership
-- Limitations on voting influence due to dual-class stock structure and founder control",
+- Limitations on voting influence due to dual-class stock structure and founder control",SUPPORTED
 37,grounding-eval-extended-local-lsnnc,EVGO,"EVgo successfully draws on the DOE loan, demonstrates improving unit economics at its charging stations, and shows a credible trajectory toward cash flow breakeven","=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -4862,7 +4862,7 @@ The company discloses several categories of primary risk factors:
 - Lack of industry standards and transition to NACS charging standard.
 - Material weaknesses in internal controls over financial reporting.
 - Tax law changes and exposure to additional tax liabilities.
-- Inflationary pressures and trade policy changes affecting costs.",
+- Inflationary pressures and trade policy changes affecting costs.",INFERENCE
 38,grounding-eval-extended-local-lsnnc,LCID,"pursuing expansion into new platforms, robotaxis, and international markets including Saudi Arabia","=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -5036,7 +5036,7 @@ The company faces numerous significant risks and uncertainties across several ke
 - The company may face significant challenges in accurately forecasting the level of social media engagement or interaction relevant to any future product launches or marketing campaigns.
 - The company may face significant challenges in accurately forecasting the level of user-generated content or feedback relevant to any future product launches or marketing campaigns.
 - The company may face significant challenges in accurately forecasting the level of vendor-specific integration requirements or constraints relevant to any future product launches or marketing campaigns.
-- The company may face significant challenges in accurately forecasting the level of warranty claims or returns relevant to any future product launches or marketing campaigns",
+- The company may face significant challenges in accurately forecasting the level of warranty claims or returns relevant to any future product launches or marketing campaigns",SUPPORTED
 39,grounding-eval-extended-local-lsnnc,JPM,"wide profit margins"" (in context of sustaining them over the five-year period)","=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -5165,7 +5165,7 @@ JPMorgan Chase discloses the following principal risk factors:
 
 8. **Strategic Risks** – Ineffective business strategies, significant competition, and climate change impacts.
 
-9. **Conduct, Reputation, Country, and People Risks** – Employee misconduct, reputational damage, geopolitical impacts, and challenges in attracting and retaining qualified employees.",
+9. **Conduct, Reputation, Country, and People Risks** – Employee misconduct, reputational damage, geopolitical impacts, and challenges in attracting and retaining qualified employees.",UNSUPPORTED
 40,grounding-eval-extended-local-lsnnc,WMT,a year-over-year increase of $1.6 billion,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -5278,7 +5278,7 @@ Based on the SEC filing, the primary risk factors disclosed include:
 
 - **Legal, Tax, Regulatory, Compliance, Reputational and Other Risks**: The company identifies a category of risks related to legal, tax, regulatory, compliance, and reputational matters, though specific details within this category are referenced but not fully detailed in the provided information.
 
-The filing notes that the risk factors described could materially and adversely affect the company's business operations and securities in the future. Additionally, the company acknowledges that business operations could be affected by factors that apply to all companies operating in the U.S. and globally, and that the disclosed risk factors do not identify all risks the company may face.",
+The filing notes that the risk factors described could materially and adversely affect the company's business operations and securities in the future. Additionally, the company acknowledges that business operations could be affected by factors that apply to all companies operating in the U.S. and globally, and that the disclosed risk factors do not identify all risks the company may face.",UNSUPPORTED
 41,grounding-eval-extended-j4cnp,UNH,the company's heavy concentration in risk-based products leaves the net profit margin structurally thin,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -5387,7 +5387,7 @@ UnitedHealth Group faces significant medical cost management challenges, with ri
 
 • **Cybersecurity and Data Security Risk**: UNH processes large volumes of protected personal information and faces ongoing threats from cyberattacks, data breaches, ransomware, and malware. A significant cyberattack on its Change Healthcare business demonstrates material vulnerability; security incidents could result in operational disruptions, customer loss, regulatory penalties, litigation, and reputational damage.
 
-• **Information Systems and Technology Risk**: The company's operations depend on data integrity and system availability. Risks include system failures, inaccurate data affecting pricing and fraud detection, and the challenge of maintaining and upgrading legacy systems while adopting emerging technologies like artificial intelligence—any of which could impair customer acquisition and regulatory compliance.",
+• **Information Systems and Technology Risk**: The company's operations depend on data integrity and system availability. Risks include system failures, inaccurate data affecting pricing and fraud detection, and the challenge of maintaining and upgrading legacy systems while adopting emerging technologies like artificial intelligence—any of which could impair customer acquisition and regulatory compliance.",INFERENCE
 42,grounding-eval-extended-local-lsnnc,EDIT,progression of EDIT-401 and other pipeline programs through preclinical milestones,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -5501,7 +5501,7 @@ The company discloses several significant risk factors that investors should con
 - **Years to commercialization**: It will be many years, if ever, before any product candidate is ready for commercialization.
 - **Regulatory uncertainty**: Regulatory authorities may require additional clinical and other studies beyond current expectations.
 
-These risk factors highlight the uncertainties inherent in the company's operations and strategies. Investors should carefully review these factors and consider them in conjunction with the other information contained herein.",
+These risk factors highlight the uncertainties inherent in the company's operations and strategies. Investors should carefully review these factors and consider them in conjunction with the other information contained herein.",SUPPORTED
 43,grounding-eval-extended-j4cnp,VERV,$20.0 million milestone payment in February 2025,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -5621,7 +5621,7 @@ Verve Therapeutics reported accumulated losses of $743.0 million through Decembe
 
 - **Dependence on Successful Clinical Development**: The company's first product candidate only entered clinical trials in 2022, with no completed trials to date. Years of development remain before potential commercialization, and there is no assurance of regulatory approval, manufacturing success, or market acceptance.
 
-- **Funding Requirements and Dilution Risk**: Substantial additional capital is required to continue operations and advance clinical programs. If unable to raise capital on acceptable terms, the company may be forced to delay or eliminate development programs, and future fundraising will likely result in significant shareholder dilution.",
+- **Funding Requirements and Dilution Risk**: Substantial additional capital is required to continue operations and advance clinical programs. If unable to raise capital on acceptable terms, the company may be forced to delay or eliminate development programs, and future fundraising will likely result in significant shareholder dilution.",SUPPORTED
 44,grounding-eval-extended-local-lsnnc,TSM,dividend yield of 9.5%,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -5689,7 +5689,7 @@ No recent 10-K or 10-Q filings are currently available for TSM. As a Taiwan-list
 
 2. **Regulatory Compliance Risks**: TSM is subject to extensive regulations governing its operations, including those related to environmental protection, energy conservation, labor relations, health and safety, product quality, and consumer protection. Non-compliance with these regulations could result in significant fines, penalties, and/or civil or criminal actions against TSM.
 
-3. **Supply Chain Risks**: TSM relies on third-party suppliers for a substantial portion of its components and materials used in manufacturing semiconductor devices. The supply chain can be complex and may involve multiple parties at various stages of production and distribution. Any disruptions or delays in the supply chain, whether caused by factors such as natural disasters, geopolitical events, economic conditions, or other external factors, could have a material adverse effect on TSM's business, financial condition, results of operations, cash flows, and ability to pay dividends.",
+3. **Supply Chain Risks**: TSM relies on third-party suppliers for a substantial portion of its components and materials used in manufacturing semiconductor devices. The supply chain can be complex and may involve multiple parties at various stages of production and distribution. Any disruptions or delays in the supply chain, whether caused by factors such as natural disasters, geopolitical events, economic conditions, or other external factors, could have a material adverse effect on TSM's business, financial condition, results of operations, cash flows, and ability to pay dividends.",UNSUPPORTED
 45,grounding-eval-extended-j4cnp,LCID,"another large dilutive capital raise, further production shortfalls, or intensifying competitive pressure from established automakers would reinforce and deepen the cautious stance","=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -5836,7 +5836,7 @@ Lucid reported a net loss of $2.7 billion for the year ended December 31, 2025, 
 
 - **Limited Manufacturing Scale and Execution Risk**: The company has minimal experience manufacturing at scale with only two commercially available vehicles, creating substantial risk of production delays, quality issues, and inability to meet demand forecasts—critical challenges in the capital-intensive automotive industry.
 
-- **Intense Competition and Unproven Market Demand**: Lucid operates in a highly competitive luxury EV market dominated by established players like Tesla and traditional automakers, while depending on a limited product portfolio and direct-to-consumer distribution model with unproven demand at scale.",
+- **Intense Competition and Unproven Market Demand**: Lucid operates in a highly competitive luxury EV market dominated by established players like Tesla and traditional automakers, while depending on a limited product portfolio and direct-to-consumer distribution model with unproven demand at scale.",INFERENCE
 46,grounding-eval-extended-j4cnp,OCGN,trades near its 52-week low of $1.36,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -5964,7 +5964,7 @@ Ocugen faces substantial going concern doubts with net losses of $67.8 million i
 
 • **Clinical and Regulatory Uncertainty**: Success depends on novel modifier gene therapy technology that faces an uncertain regulatory environment, making development timelines and costs difficult to predict. The company faces risks of clinical trial delays, patient enrollment challenges, and reliance on third-party manufacturers and contractors whose performance cannot be guaranteed.
 
-• **Commercialization and Competition Risk**: Ocugen lacks prior experience marketing and distributing biotechnology products and faces significant competition from established pharmaceutical companies. Additional challenges include uncertain third-party payor reimbursement levels, unproven manufacturing and supply agreements, and volatile stock price performance that could result in substantial investor losses.",
+• **Commercialization and Competition Risk**: Ocugen lacks prior experience marketing and distributing biotechnology products and faces significant competition from established pharmaceutical companies. Additional challenges include uncertain third-party payor reimbursement levels, unproven manufacturing and supply agreements, and volatile stock price performance that could result in substantial investor losses.",UNSUPPORTED
 47,grounding-eval-extended-j4cnp,ROKU,moderation implied by the forward P/E of 39.66x relative to the trailing P/E of 65.93x,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -6066,7 +6066,7 @@ Roku faces intense competitive pressure from well-capitalized technology giants 
 
 • **Platform Competition and Market Saturation** – Intense competition from established streaming platforms (Netflix, Disney+, Amazon Prime) and smart TV manufacturers offering competing operating systems threatens Roku's market share and growth prospects.
 
-• **Content Licensing and Partnerships** – Roku's ability to attract and retain users depends on content availability through third-party partnerships, which are subject to renegotiation, price increases, or termination by content providers.",
+• **Content Licensing and Partnerships** – Roku's ability to attract and retain users depends on content availability through third-party partnerships, which are subject to renegotiation, price increases, or termination by content providers.",INFERENCE
 48,grounding-eval-extended-j4cnp,COIN,"probes into crypto-adjacent platforms"" [as a regulatory headwind to monitor]","=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -6213,7 +6213,7 @@ Coinbase's revenue is highly volatile and concentrated in Bitcoin and Ethereum t
 
 • **Revenue Concentration Risk** – A substantial portion of revenue is concentrated in transaction fees from Bitcoin and Ethereum trading, plus subscription revenue from payment stablecoins. Failure to diversify revenue streams or a decline in demand for these concentrated assets could significantly impact profitability.
 
-• **Regulatory & Macroeconomic Uncertainty** – Crypto markets are influenced by unpredictable factors including regulatory changes, government actions, global banking stability, and macroeconomic conditions. Adverse regulatory developments or economic downturns could reduce crypto adoption and trading activity, negatively impacting Coinbase's business.",
+• **Regulatory & Macroeconomic Uncertainty** – Crypto markets are influenced by unpredictable factors including regulatory changes, government actions, global banking stability, and macroeconomic conditions. Adverse regulatory developments or economic downturns could reduce crypto adoption and trading activity, negatively impacting Coinbase's business.",INFERENCE
 49,grounding-eval-extended-local-lsnnc,PTON,Peloton's thin profit margin leaves little buffer against any deterioration,"=== RETRIEVED SOURCE CONTEXT ===
 STOCK DATA:
 {
@@ -6355,4 +6355,4 @@ The company discloses several primary risk factors related to its business:
 #### Brand and Market Competition
 - The company depends on maintaining the Peloton brand’s value and reputation.
 - Intense competition exists in highly competitive markets with limited barriers to entry.
-- Risk includes consumer preferences shifting rapidly to different fitness offerings or away from them altogether.",
+- Risk includes consumer preferences shifting rapidly to different fitness offerings or away from them altogether.",INFERENCE
