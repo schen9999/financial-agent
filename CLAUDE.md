@@ -149,9 +149,12 @@ Phase 3 — demo polish:
   produced it (agent/grounding.py JUDGE_PROMPT_VERSION; logged in every eval
   summary). All judge-v1 rates carry the recall caveat: v1 recall on
   UNSUPPORTED measured 1/9 against human labels (2026-09-04), so v1 rates are
-  lower bounds. Judge v2 is unvalidated until the held-out sample from the
-  40-ticker run is labeled — the 50-claim sample is a development set and
-  cannot validate v2.
+  lower bounds. Judge v2 is VALIDATED held-out (2026-09-06, 50 blind labels,
+  zero dev-set overlap): kappa 0.580, UNSUPPORTED recall 75% / precision 60%
+  — v2 rates cite this validation and are approximate point estimates, not
+  bounds (errors run both ways); A/B directions are unaffected when both arms
+  share the judge. The 50-claim dev set remains a development set and
+  validates nothing.
 - Cost of record: $0.0366/brief (2026-09-06, post-retrieval-fix) from the
   committed harness. $0.0316 is a dated pre-retrieval-fix record — never quote
   it as current. $0.0269 is retired. "54% cost reduction" is retired.

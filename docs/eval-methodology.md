@@ -91,9 +91,11 @@ rows, recovered post-hoc from containerd snapshots into
 `raw/9j2dj-findings/` (contexts by sha256 in `9j2dj-contexts/`; one
 UNSUPPORTED verdict was free-form, carried with claim=null; findings
 dumps are now a standing part of every run — see the runbook's
-findings-capture section). **Not the number of record**: superseded as a
-baseline by `j4cnp` (below, same tickers on the rebuilt image); the
-number-of-record decision still waits for the held-out judge validation.
+findings-capture section). Calibration: judge v2 measured 75% recall /
+60% precision on UNSUPPORTED against blind human labels (n=50, held
+out), so absolute v2 rates are approximate. **Not the number of
+record**: superseded as a baseline by `j4cnp` (below, same tickers on
+the rebuilt image).
 
 ## 40-ticker A/B: hosted baseline vs in-cluster fine-tune (2026-09-05/06)
 
@@ -116,7 +118,11 @@ Fisher exact (two-sided) on 12/392 vs 30/368: **p = 0.0023**
 and the local arm's interval sits entirely above the gate. The ship-off
 decision for `USE_LOCAL_MODEL` now rests on this clearly separated
 40-ticker A/B (the earlier, underpowered measurements agree in
-direction).
+direction). Calibration: judge v2 measured 75% recall / 60% precision
+on UNSUPPORTED against blind human labels (n=50, held out), so the
+absolute rates here and in the per-section table below are
+approximate; the A/B direction and the per-section attribution are
+unaffected because both arms share the judge.
 
 ### Where the local arm fails: the sections the fine-tune owns
 
@@ -188,7 +194,9 @@ is fully consistent with a true rate above 5% (and a mild fail with one
 below it). Distinguishing 3% from 5% with useful power needs claims in
 the several-hundreds — the motivation for the extended benchmark, which
 delivered exactly that: at N = 392 vs 368 the 40-ticker A/B separates
-3.06% from 8.15% at p = 0.0023 where the 10-ticker pass could not.
+3.06% from 8.15% at p = 0.0023 where the 10-ticker pass could not
+(judge-v2 rates; approximate per the held-out calibration, direction
+unaffected — both arms share the judge).
 
 ## Retrieval defect, discovered 2026-09-04
 
