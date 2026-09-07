@@ -191,11 +191,11 @@ The full designed topology runs on a single-node kind cluster (see
 
 ```mermaid
 flowchart LR
-    subgraph cluster["kind cluster (WSL2, single node)"]
+    subgraph kind["kind cluster (WSL2, single node)"]
         ST["Streamlit UI<br/>(runs the pipeline in-process,<br/>app.py unchanged)"]
         API["FastAPI<br/>:30080"]
         WK["Celery worker"]
-        RD[("Redis<br/>exact-key cache research:{TICKER}<br/>+ Celery broker/backend")]
+        RD[("Redis<br/>exact-key cache research:TICKER<br/>+ Celery broker/backend")]
         PG[("PostgreSQL<br/>research_briefs (PVC)")]
         MCP["MCP server<br/>streamable-HTTP :30800"]
         subgraph argo["Argo Workflows"]
@@ -209,8 +209,13 @@ flowchart LR
     API -->|"briefs"| PG
     WK -->|"consume + cache"| RD
     ST -->|"cache"| RD
-    API & WK & ST & MCP & WF --> EXT
-    API & WK -.->|"USE_LOCAL_MODEL=true"| LOCAL
+    API --> EXT
+    WK --> EXT
+    ST --> EXT
+    MCP --> EXT
+    WF --> EXT
+    API -.->|"USE_LOCAL_MODEL=true"| LOCAL
+    WK -.->|"USE_LOCAL_MODEL=true"| LOCAL
 ```
 
 - **Celery vs. Argo:** request-time async stays on Celery; batch/eval runs on
