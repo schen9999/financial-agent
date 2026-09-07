@@ -158,6 +158,20 @@ the fine-tune's sections diverge from their sources.
   double-label); four free-form verdicts without CLAIM lines are carried
   in the rows with `claim=null` (j4cnp: EDIT/OCGN/UNH UNSUPPORTED;
   lsnnc: VERV INFERENCE).
+- Local-model arm, found during held-out labeling (observation, no
+  fix): the fine-tune's CRBU Financial Health section states a "$16.8
+  billion" market cap for a $1.57 stock and "[City Name]" as
+  headquarters. The archived context shows `market_cap: 168315792.0` —
+  **$168.3 million**: the digits trace to the real value but at 100×
+  the magnitude (a scale-conversion error, not an invention), while the
+  stock JSON has no headquarters field at all — "[City Name]" is a
+  literal unfilled template placeholder. **The judge flagged neither**,
+  and by design could not: it audits the synthesis's Exec Summary +
+  Outlook, and the Sonnet synthesis dropped both errors (the audited
+  text contains no market-cap or headquarters claim). Scope consequence,
+  stated plainly: fine-tune section errors count against the gate only
+  when the synthesis repeats them, so the measured 8.15% understates
+  the fine-tune's raw section error rate.
 
 ## Dated A/B on the single-VM target (2026-09-03)
 
