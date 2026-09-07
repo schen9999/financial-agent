@@ -44,7 +44,7 @@ records, not headline numbers of record.
 | K8s smoke test | 13/13 assertions | `scripts/k8s_smoke_test.sh` |
 | Retrieval defect fix (2026-09-04) | Pre-fix: 3/40 tickers' risk retrieval passed verification (32 served exhibit/TOC text; 5 ADRs unfetchable). Post-fix: 32/40 pass; remaining 8 itemized in eval-methodology "Retrieval defect". Grounding numbers dated before 2026-09-04 measured the pipeline against exhibit text for most tickers and stand as dated records of that pipeline | `scripts/reindex_filings.py` verify pass |
 | Cost harness, post-retrieval-fix preview run (2026-09-04, 3-ticker mean) | $0.0364/brief = $0.0280 exact + $0.0084 RAG-internal estimate — richer risk contexts lengthen inputs; confirmed by the 2026-09-06 re-measure that set the $0.0366 cost of record | `scripts/cost_report.py` |
-| Test suite | 1222 lines, 80 tests (79 free + 1 credit-gated) | `python -m pytest tests/ --collect-only` |
+| Test suite | 1583 lines, 110 tests (109 free + 1 credit-gated) — as of 2026-09-06 | `python -m pytest tests/ --collect-only` |
 
 ## Retired
 

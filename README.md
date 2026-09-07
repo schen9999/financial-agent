@@ -24,7 +24,7 @@ I built an evaluation framework that audits every quantitative and forward-looki
 
 After iterating on prompt constraints and forcing generation to stay grounded in source material: **3% unsupported claim rate** — and the framing of record today is **49% pre-fix → 0/84 unsupported in the current eval (judge v1)** (Aug 2026 full re-measure, 10 tickers). See [docs/PHASE0_AUDIT.md](docs/PHASE0_AUDIT.md) for the audited numbers of record.
 
-*Judge-version note:* every unsupported rate in this README comes from judge prompt **v1**; a 2026-09-04 human validation measured v1 recall on UNSUPPORTED at 1/9, so v1 rates are lower bounds ([docs/eval-methodology.md](docs/eval-methodology.md)).
+*Judge-version note:* every unsupported rate in this README names its judge prompt version. **v1** rates are lower bounds (2026-09-04 human validation: v1 recall on UNSUPPORTED 1/9). **v2** rates carry the held-out calibration — kappa 0.580, 75% recall / 60% precision on UNSUPPORTED against blind human labels (n=50, 2026-09-06) — and are approximate point estimates; A/B directions are unaffected when both arms share the judge ([docs/eval-methodology.md](docs/eval-methodology.md)).
 
 The prompt engineering work -- not the retrieval architecture -- was what actually moved the needle.
 
@@ -45,7 +45,7 @@ I added optional cross-encoder reranking to the RAG pipeline and ran a controlle
 
 Can a small local model replace Claude Haiku on section generation at lower cost?
 
-I fine-tuned **Qwen2.5-1.5B-Instruct** with QLoRA on 104 deterministic, Claude-free training pairs built from real SEC filings and financial data. When enabled, the fine-tuned model is routed 2 of 4 brief sections (Financial Health and Risk Factors); the other two stay on Haiku because deterministic targets couldn't be built for them -- an honest finding about the data, not a gap to paper over. **The measured verdict (2026-09-03, in-cluster A/B, same harness, same day): the fine-tune fails the 5% grounding gate on exactly the two sections it owns -- 12.31% unsupported (8/65) vs a 3.03% (2/66) hosted baseline, judge v1 -- so it ships default-off.** The rest of this section is the experiment record.
+I fine-tuned **Qwen2.5-1.5B-Instruct** with QLoRA on 104 deterministic, Claude-free training pairs built from real SEC filings and financial data. When enabled, the fine-tuned model is routed 2 of 4 brief sections (Financial Health and Risk Factors); the other two stay on Haiku because deterministic targets couldn't be built for them -- an honest finding about the data, not a gap to paper over. **The measured verdict (2026-09-05/06, 40-ticker in-cluster A/B, judge v2, same image and index): the fine-tune fails the 5% grounding gate -- 8.15% unsupported (30/368) vs a 3.06% (12/392) hosted baseline, Fisher p = 0.0023 -- and the failure concentrates in exactly the two sections it owns (19.82% vs 0.50% on attributed claims), so it ships default-off.** The rest of this section is the experiment record.
 
 | | Section-generation (Haiku) cost | Grounding |
 |---|---:|---:|
@@ -70,13 +70,15 @@ path is exercised via Ollama's `/v1` endpoint.
 
 **Sep 2026 GPU serving + in-cluster A/B:** vLLM v0.10.2 served the merged
 fine-tune pinned to one A10 on an OCI VM -- plain Docker (2026-09-02), then
-in-cluster on single-node k3s (2026-09-03) -- and the same gated eval DAG ran
-against it (20 confirmed `/v1/chat/completions`, 2 sections x 10 tickers):
-**12.31% unsupported (8/65) vs the same-day hosted baseline 3.03% (2/66), judge v1** --
-the local-model arm fails the 5% gate, the hosted baseline passes. Same
-harness, same day, same VM (dated A/B in
-[docs/eval-methodology.md](docs/eval-methodology.md)). A measured negative
-result, and the reason `USE_LOCAL_MODEL` ships off.
+in-cluster on single-node k3s (2026-09-03) -- and the gated eval DAG ran a
+40-ticker A/B against it (2026-09-05/06, judge v2, same image and index both
+arms): **8.15% unsupported (30/368) vs the hosted baseline 3.06% (12/392),
+Fisher p = 0.0023** -- the local-model arm fails the 5% gate, the hosted
+baseline passes, and per-section attribution places the excess entirely in
+the two fine-tune-owned sections (**19.82% vs 0.50%**, p = 4.6e-10). An
+earlier 10-ticker pass agreed in direction but could not separate the arms
+(dated records in [docs/eval-methodology.md](docs/eval-methodology.md)). A
+measured negative result, and the reason `USE_LOCAL_MODEL` ships off.
 
 I also re-implemented the same fine-tune with a hand-written PyTorch training loop (`fine_tune_pytorch_loop.ipynb`) -- custom `Dataset`, manual gradient accumulation and `optimizer.step()`, hand-written cosine LR, no Hugging Face `Trainer`. Benchmarked against the `Trainer` on identical data and config (`adamw_torch`, cosine schedule, grad-accum 8), the two loss curves track each other closely over 21 optimizer steps -- both start around 1.4--1.5 and trend down together, finishing at **0.50 (native)** and **0.35 (Trainer)**. The curves cross repeatedly, so that final-step gap sits within the run-to-run noise at this scale (~7 optimizer steps/epoch, plus shuffle order and 4-bit-kernel non-determinism) rather than a systematic difference -- confirming the hand-written loop reproduces the Trainer's training dynamics at the gradient-accumulation and optimizer-step level.
 
@@ -443,7 +445,9 @@ make cluster-down    # tear down
 | Grounding (10 tickers, temp-0 judge) | **49% pre-fix → 0/84 unsupported in current eval (judge v1)** |
 | Cost/brief, hosted (exact API tokens + RAG estimate) | **$0.0366** (2026-09-06, post-retrieval-fix; re-runnable: `make cost-report`) |
 | Grounding, hosted vs local-hybrid (9-ticker balanced A/B, Aug 2026) | 86.2% vs 77.8% — expected regression, local stays default-off |
-| Grounding, hosted vs in-cluster vLLM fine-tune (10-ticker A/B, 2026-09-03) | 3.03% (2/66) vs 12.31% (8/65) unsupported (judge v1) — local-model arm fails the 5% gate; ships default-off. Fisher p=0.054, intervals overlap at this N — see [docs/eval-methodology.md](docs/eval-methodology.md) |
+| Grounding, hosted vs in-cluster vLLM fine-tune (40-ticker A/B, 2026-09-05/06) | 3.06% (12/392) vs 8.15% (30/368) unsupported (judge v2), Fisher p = 0.0023 — local-model arm fails the 5% gate; ships default-off. Per-section: 0.50% vs 19.82% on fine-tune-owned claims (p = 4.6e-10) — see [docs/eval-methodology.md](docs/eval-methodology.md) |
+| Judge v2 held-out validation (blind, n=50, 2026-09-06) | kappa 0.580; UNSUPPORTED recall 75.0% (46.8–91.1%), precision 60.0% (35.7–80.2%) — v2 rates are approximate point estimates |
+| Critic recall on injected failures | 20/20 = 100% on both runs (2026-09-04); adjudicated precision 24/24 |
 | Cost/brief, hosted vs local-hybrid (pre-retrieval-fix pipeline) | $0.0316 vs $0.0321 — no measurable full-brief saving (Sonnet dominates) |
 | Local CPU serving (environment-limited: 2-core AVX2 laptop) | ~7.7 tok/s aggregate saturation; NOT comparable to GPU/hosted |
 
