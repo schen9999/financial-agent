@@ -139,8 +139,8 @@ def main():
               f"/{len(doc_rows)} sample claims matched", flush=True)
         time.sleep(0.5)
 
-    with open(key_path, "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
+    with open(key_path, "w", newline="\n", encoding="utf-8") as f:
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["id", "arm", "judge_label", "judge_prompt_version"])
         for r in rows:
             w.writerow([r["id"], v1key[r["id"]]["arm"], new_labels[r["id"]],

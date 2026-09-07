@@ -117,7 +117,10 @@ def rows_from_findings_dir(run: str, findings_dir: Path, results: dict,
         sha = hashlib.sha256(ctx.encode("utf-8")).hexdigest()
         if contexts_dir is not None:
             contexts_dir.mkdir(parents=True, exist_ok=True)
-            (contexts_dir / f"{sha}.txt").write_text(ctx, encoding="utf-8")
+            # newline="\n": the file is named by the sha256 of its bytes, so
+            # Windows' default CRLF translation would break the name.
+            (contexts_dir / f"{sha}.txt").write_text(ctx, encoding="utf-8",
+                                                     newline="\n")
         # Section blocks of the audited text, for locating each claim.
         blocks = {}
         for m in re.finditer(r"### (Executive Summary|Outlook)\n(.*?)(?=\n### |\Z)",
@@ -235,7 +238,7 @@ def main():
             sys.exit("--workflow-yaml is required without --findings-dir "
                      "(the label-only reconstruction reads output params)")
         rows = emit_rows(args.run, results)
-    with open(args.out, "w", encoding="utf-8") as f:
+    with open(args.out, "w", encoding="utf-8", newline="\n") as f:
         for r in rows:
             f.write(json.dumps(r) + "\n")
 

@@ -107,17 +107,17 @@ def main():
     rng.shuffle(picked)
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    with open(OUT_DIR / "holdout_sample.csv", "w", newline="",
+    with open(OUT_DIR / "holdout_sample.csv", "w", newline="\n",
               encoding="utf-8") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["id", "provenance", "ticker", "claim", "context",
                     "human_label"])
         for i, r in enumerate(picked):
             w.writerow([i, r["provenance"], r["ticker"], r["claim"],
                         r["context"], ""])
-    with open(OUT_DIR / "holdout_key.csv", "w", newline="",
+    with open(OUT_DIR / "holdout_key.csv", "w", newline="\n",
               encoding="utf-8") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["id", "arm", "judge_label", "judge_reason"])
         for i, r in enumerate(picked):
             w.writerow([i, r["arm"], r["label"], r["reason"]])

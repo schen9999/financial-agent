@@ -221,13 +221,13 @@ def main():
 
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
-    with open(f"{out}.csv", "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
+    with open(f"{out}.csv", "w", newline="\n", encoding="utf-8") as f:
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["id", "provenance", "ticker", "claim", "context", "human_label"])
         for i, r in enumerate(sample):
             w.writerow([i, r["provenance"], r["ticker"], r["claim"], r["context"], ""])
-    with open(f"{out}_key.csv", "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
+    with open(f"{out}_key.csv", "w", newline="\n", encoding="utf-8") as f:
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["id", "arm", "judge_label", "judge_reason"])
         for i, r in enumerate(sample):
             w.writerow([i, r["arm"], r["label"], r["reason"]])
