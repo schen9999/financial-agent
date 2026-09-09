@@ -36,3 +36,5 @@ crash.log
 crash.*.log
 infra/terraform.tfvars
 # keep .terraform.lock.hcl and *.tf committed
+.venv-wsl/
+.streamlit/
