@@ -77,7 +77,7 @@ eval WorkflowTemplate + CronWorkflow applied. vLLM crashlooped on a
 base-manifest bug (args `vllm serve ...` fed to `vllm/vllm-openai`,
 whose entrypoint is already the api server → "unrecognized arguments");
 fixed in the base by moving `vllm serve` to `command:`. The re-run then
-hit the two k8s gotchas below (also fixed in the base).
+hit the two further k8s gotchas below (also fixed in the base).
 
 **Validated 2026-09-03, later (confirmed from the box) — end to end:**
 after commit 4032e73 the vLLM deployment rolled out green on k3s;
@@ -90,6 +90,10 @@ existing harness — it is not a numbers-of-record re-run, and no eval
 has yet run against vLLM itself.
 
 **Known k8s gotchas (vLLM — fixed in the base, apply to every overlay):**
+- **Entrypoint collision.** `vllm/vllm-openai`'s entrypoint is already
+  the API server, so `args: [vllm, serve, ...]` produced "unrecognized
+  arguments" — the 2026-09-03 crashloop. The base puts `vllm serve` in
+  `command:` (commit 4032e73).
 - **Service links inject `VLLM_PORT`.** Because the Service is named
   `vllm`, Kubernetes' legacy service links put
   `VLLM_PORT=tcp://<ip>:8000` into the pod env, and vLLM's
@@ -99,67 +103,110 @@ has yet run against vLLM itself.
   multi-process engine needs real shared memory. The base mounts an
   emptyDir (`medium: Memory`, `sizeLimit: 2Gi`) at `/dev/shm`.
 
-1. **[EXECUTED 2026-09-03 — ufw active with 22/tcp only; external probe
-   of NodePort 30880 from outside the VCN times out (seclist blocks
-   it)]** **Network baseline — before any
-   NodePort exists.** Verify the VCN security list on the VM's subnet
-   admits only 22/tcp from your allowlisted CIDR (no 30000–32767, no
-   80/443), then set the host baseline:
-   `sudo ufw default deny incoming && sudo ufw allow 22/tcp && sudo ufw enable`.
-   The seclist is the authoritative gate: kube-proxy programs NodePorts
-   directly in iptables and can route around host firewalls, so ufw is
-   defense-in-depth, not the guarantee. NodePorts will bind on the VM,
+**Hand-fix ledger (2026-09-02/03).** Everything applied by hand on the
+box during the first bring-up now lives in exactly one place — the
+bootstrap script, a committed manifest or Makefile line, or a numbered
+step below — so a fresh VM needs no tribal knowledge:
+
+| Applied by hand on the box | Now lives in |
+|---|---|
+| `ufw default deny incoming`, `allow 22/tcp`, `enable` | `scripts/vm_bootstrap.sh` step 2 (step 1 below) |
+| Docker install, plus buildx so `docker build` runs under BuildKit — `Dockerfile.k8s` uses a per-Dockerfile ignore file (`Dockerfile.k8s.dockerignore`), a BuildKit-only feature; the legacy builder applies the ECS `.dockerignore` and drops `app.py` | bootstrap step 3; `DOCKER_BUILDKIT=1` inline on both Makefile `docker build` lines (`deploy`, `vm-images`) |
+| `nvidia-container-toolkit`, `nvidia-ctk runtime configure --runtime=docker`, docker restart | bootstrap step 4 |
+| k3s install; `default-runtime: nvidia` in `/etc/rancher/k3s/config.yaml` + k3s restart, so the device plugin's static manifest (no `runtimeClassName`) and the vLLM pod run under the nvidia runtime | bootstrap step 5 |
+| `/etc/rancher/k3s/k3s.yaml` → `~/.kube/config`; `export KUBECONFIG=$HOME/.kube/config` in `~/.bashrc` | bootstrap step 6 |
+| NVIDIA device plugin v0.17.0 static manifest | bootstrap step 7 |
+| `mkdir /home/ubuntu/models /home/ubuntu/eval-findings` — the hostPath parents of the k3s-gpu and argo k3s overlays | bootstrap step 8 |
+| `extra_special_tokens` deleted from `tokenizer_config.json` (2026-09-02) | bootstrap step 9, after every rsync (step 2 below) |
+| vLLM `vllm serve` → `command:`, `enableServiceLinks: false`, 2Gi `/dev/shm` | `k8s/vllm/base` (gotchas above; commit 4032e73) |
+| `make argo-deploy` applied the kind argo overlay (target was hardcoded) | Makefile `ARGO_OVERLAY` (`vm-up` passes `k3s`) |
+| ssh tunnel local ports colliding with kind's 30xxx | step 5 below (31xxx) |
+| Pre-pull of the multi-GB vLLM image before the first `vm-up` | step 3 below |
+
+Steps (the hand-executed history is kept per step; the script itself has
+not run yet):
+
+**Step 0 (only if `nvidia-smi` is missing) — NOT YET EXECUTED.** The
+script treats the driver as a precondition (the VM image used so far
+ships driver 570) and dies at its step 0 when `nvidia-smi` is absent.
+On a plain Ubuntu image install the driver first, then re-run the
+script:
+
+```bash
+sudo apt-get update && sudo apt-get install -y ubuntu-drivers-common && sudo ubuntu-drivers install --gpgpu && sudo reboot
+```
+
+1. **[NOT YET EXECUTED — Phase 1.75: `scripts/vm_bootstrap.sh` supersedes
+   the hand steps of 2026-09-02/03 in the ledger; each action it wraps
+   ran by hand then, the script has not]** **Network baseline, then one
+   run of the bootstrap script.** First, outside the VM: verify the VCN
+   security list on the VM's subnet admits only 22/tcp from your
+   allowlisted CIDR (no 30000–32767, no 80/443). The seclist is the
+   authoritative gate: kube-proxy programs NodePorts directly in iptables
+   and can route around host firewalls, so ufw is defense-in-depth, not
+   the guarantee (EXECUTED 2026-09-03: an external probe of NodePort
+   30880 from outside the VCN times out). NodePorts will bind on the VM,
    but nothing is publicly reachable while the seclist admits only 22.
-2. **[EXECUTED 2026-09-02 — proven by the Docker smoke test above:
-   `docker run --gpus` served pinned to one GPU]** Docker + NVIDIA
-   container toolkit: install Docker and `nvidia-container-toolkit`, run
-   `sudo nvidia-ctk runtime configure --runtime=docker` + restart
-   docker; verify `nvidia-smi` (host) shows both A10s.
-3. **[EXECUTED 2026-09-03 — entailed by the green vm-up: six app
-   rollouts on k3s and the PVC bound on local-path]** k3s:
-   `curl -sfL https://get.k3s.io | sh -` (single node; bundles the
-   `local-path` StorageClass the Postgres PVC uses). With the toolkit
-   already installed, k3s configures the nvidia containerd runtime on
-   its own.
-4. **[EXECUTED 2026-09-03 — entailed by the vLLM crashloop itself: the
-   pod was scheduled with nvidia.com/gpu granted and its container
-   started; the failure was an args bug, not scheduling or runtime]**
-   NVIDIA device plugin, pinned:
-   `kubectl apply -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.17.0/deployments/static/nvidia-device-plugin.yml`;
-   verify `kubectl describe node | grep nvidia.com/gpu` reports 2.
-5. **[EXECUTED 2026-09-02 — weights are on the VM and load: 2.89 GiB
-   into VRAM per the smoke test above]** Weights to
-   `/home/ubuntu/models/qwen-ft`. Primary path — rsync straight from the
-   dev machine (the merged checkpoint `financial-lora-merged/`, six
-   files, exists only there; nothing leaves your machines):
+   Then, on the VM, from the repo checkout, as `ubuntu` (not root):
+
+   ```bash
+   bash scripts/vm_bootstrap.sh
+   ```
+
+   One run takes a fresh Ubuntu 22.04 box with the driver preinstalled
+   to vm-up-ready: base packages, ufw (22/tcp only), Docker CE + buildx,
+   the container toolkit (+ Docker runtime), k3s with
+   `default-runtime: nvidia`, kubeconfig + `KUBECONFIG`, the device plugin
+   (v0.17.0), both hostPath parents, and the tokenizer strip whenever
+   weights are present. It is idempotent (`set -euo pipefail`; every step
+   no-ops when already done) and ends with a checklist — `nvidia-smi`,
+   `kubectl get nodes` with `nvidia.com/gpu` allocatable (expect 2 on the
+   A10.2), `docker buildx version`, ufw, Docker's nvidia runtime, k3s,
+   kubeconfig, `local-path`, dirs, tokenizer — exiting non-zero on any
+   FAIL row. Log out and back in afterwards (docker group, `KUBECONFIG`),
+   or `newgrp docker`, before `make vm-images`.
+2. **[EXECUTED 2026-09-02 by hand — weights on the VM and loading: 2.89 GiB
+   into VRAM per the Docker smoke test above. The scripted strip is NOT
+   YET EXECUTED]** Weights to `/home/ubuntu/models/qwen-ft` — the
+   k3s-gpu overlay's hostPath (`type: Directory`, so the directory must
+   exist before `vm-up`; step 1 created the parent). Primary path — rsync
+   straight from the dev machine (the merged checkpoint
+   `financial-lora-merged/`, six files, exists only there; nothing leaves
+   your machines):
    `rsync -avP financial-lora-merged/ ubuntu@<vm-ip>:/home/ubuntu/models/qwen-ft/`.
    Fallback if rsync from this network is impractical: push the
    checkpoint to a **private** HF repo (`huggingface-cli upload`), then
    on the VM `huggingface-cli login` (token, never committed) and
    `huggingface-cli download <org>/<repo> --local-dir /home/ubuntu/models/qwen-ft`.
+   Then re-run `bash scripts/vm_bootstrap.sh`: steps 1–8 no-op and step
+   9 strips the key below; the checklist's "weights + tokenizer" row must
+   read PASS.
 
    **Known fix (hit on the VM, 2026-09-02):** the checkpoint's
    `tokenizer_config.json` ships `extra_special_tokens` as a JSON
    **list** (newer transformers layout); the transformers bundled in
    vllm v0.10.2 crashes on it with `'list' object has no attribute
    'keys'`. Fix: delete the `extra_special_tokens` key — the special
-   tokens remain fully defined in `tokenizer.json`. The VM's copy is
-   already fixed; the repo's `financial-lora-merged/` is **untracked
-   and still carries the list-form key**, so apply this edit at the
-   source before any future rsync/upload or it will re-break the VM.
-6. **[EXECUTED 2026-09-03 — vm-images + vm-up fully green: app
+   tokens remain fully defined in `tokenizer.json`. The VM's copy was
+   fixed by hand; the repo's `financial-lora-merged/` is **untracked
+   and still carries the list-form key**, so every rsync/upload
+   re-breaks the VM until the strip runs again — which is why it is a
+   bootstrap step and not a one-time edit.
+3. **[EXECUTED 2026-09-03 — vm-images + vm-up fully green: app
    topology, Argo, eval CRDs, and (after the base fixes) the vLLM
    rollout with `/v1/models` answering on NodePort 30880]**
    `make vm-images && make vm-up`
-   (on the VM, from the repo checkout). Expect the first `vm-up` to sit
+   (on the VM, from the repo checkout). `vm-images` builds under
+   BuildKit (`DOCKER_BUILDKIT=1` is inline on the build line; buildx
+   from step 1). Expect the first `vm-up` to sit
    in ContainerCreating for several minutes: `vllm/vllm-openai:v0.10.2`
    is a multi-GB CUDA image. Optional pre-pull to front-load that wait:
    `sudo k3s crictl pull docker.io/vllm/vllm-openai:v0.10.2`.
-7. **[EXECUTED 2026-09-03 — workflow Succeeded on the VM: 10/10
+4. **[EXECUTED 2026-09-03 — workflow Succeeded on the VM: 10/10
    tickers, 66 claims, 3.03% unsupported (judge v1), GATE PASSED (hosted models;
    not a numbers-of-record re-run)]** `make vm-eval` — the grounding
    gate must pass on the VM.
-8. **[EXECUTED 2026-09-03 — /v1/models answered through the tunnel and
+5. **[EXECUTED 2026-09-03 — /v1/models answered through the tunnel and
    Streamlit rendered in the browser]** Access via ssh tunnels ONLY
    (nothing else is admitted by the seclist). Use **non-30xxx local
    ports** — the kind cluster maps 30080/30501/30800 on the dev laptop,

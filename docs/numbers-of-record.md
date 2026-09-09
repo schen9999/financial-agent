@@ -24,6 +24,24 @@ recorded denominator, so no interval can honestly be attached to it.
 Quoting rules for the grounding number: always with the pre-fix context
 and the denominator — never a bare "0%".
 
+**Cost provenance and the pending synthesis change.** The $0.0366 cost of
+record was measured on the committed pipeline as it stands: four Haiku
+sections plus **Sonnet** synthesis (`agent/core.py`, `_synthesis_llm`).
+The experiment behind the 2026-09-08 decision to move the synthesis step
+(Executive Summary + Outlook) to Haiku with a tuned prompt is
+`scripts/compare_synthesis.py`: a three-way Sonnet / Haiku / Haiku-tuned
+comparison over AAPL, NVDA, JPM that generates the four sections once and
+prints all three synthesis outputs in full for side-by-side reading (no
+cache writes). It yields **no number of record** — it neither prices nor
+judges the outputs. The switch is **held back**: synthesis stays bound to
+Sonnet in `agent/core.py` pending a quality re-eval on the VM (the
+grounding DAG against Haiku synthesis), so every accuracy number of
+record above stays consistent with the shipped code. When the re-eval
+passes and the switch lands, cost per brief is re-measured with
+`scripts/cost_report.py` (same three tickers, same `--json-out` run
+evidence) before any post-switch figure appears anywhere; until then
+$0.0366 stands unchanged.
+
 ## Dated run records
 
 Quotable with their dates; each from a committed harness. These are run
@@ -44,7 +62,8 @@ records, not headline numbers of record.
 | K8s smoke test | 13/13 assertions | `scripts/k8s_smoke_test.sh` |
 | Retrieval defect fix (2026-09-04) | Pre-fix: 3/40 tickers' risk retrieval passed verification (32 served exhibit/TOC text; 5 ADRs unfetchable). Post-fix: 32/40 pass; remaining 8 itemized in eval-methodology "Retrieval defect". Grounding numbers dated before 2026-09-04 measured the pipeline against exhibit text for most tickers and stand as dated records of that pipeline | `scripts/reindex_filings.py` verify pass |
 | Cost harness, post-retrieval-fix preview run (2026-09-04, 3-ticker mean) | $0.0364/brief = $0.0280 exact + $0.0084 RAG-internal estimate — richer risk contexts lengthen inputs; confirmed by the 2026-09-06 re-measure that set the $0.0366 cost of record | `scripts/cost_report.py` |
-| Test suite | 1583 lines, 110 tests (109 free + 1 credit-gated) — as of 2026-09-06 | `python -m pytest tests/ --collect-only` |
+| Synthesis-model comparison (2026-09-08, AAPL/NVDA/JPM) | Qualitative, side-by-side: Sonnet vs Haiku vs Haiku with a tuned prompt on the synthesis step; decision — Haiku with the tuned prompt (option C). No rate or cost is recorded from it; the switch is held back pending a quality re-eval on the VM (synthesis still Sonnet in the shipped code), so the $0.0366 cost of record and the grounding numbers are unaffected | `scripts/compare_synthesis.py` (prints all three outputs; does not write to cache) |
+| Test suite | 1645 lines (`wc -l tests/*.py`), 111 tests collected: 110 passed + 1 skipped (the credit-gated judge test) — as of 2026-09-09 | `python -m pytest tests/ --collect-only`; `python -m pytest tests/` |
 
 ## Retired
 

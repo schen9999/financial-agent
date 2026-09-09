@@ -8,6 +8,12 @@ NAMESPACE ?= financial-agent
 IMAGE     ?= financial-agent-app:local
 ENV_FILE  ?= .env
 
+# docker build runs under BuildKit (DOCKER_BUILDKIT=1 inline on both build
+# lines): Dockerfile.k8s relies on its per-Dockerfile ignore file
+# (Dockerfile.k8s.dockerignore), a BuildKit-only feature — the legacy builder
+# applies the ECS .dockerignore and drops app.py. Needs the buildx plugin
+# (Docker CE ships it; scripts/vm_bootstrap.sh installs it on the VM).
+
 .PHONY: cluster-up deploy smoke-test cluster-down status logs \
         argo-install argo-deploy eval-run cost-report \
         vm-images vm-up vm-eval
@@ -29,7 +35,7 @@ cluster-up: ## Create the single-node kind cluster (or restart its stopped node)
 
 deploy: ## Build the app image, load it into kind, apply manifests, wait for rollout
 	@test -f $(ENV_FILE) || { echo "ERROR: $(ENV_FILE) not found — copy .env.example and fill in keys"; exit 1; }
-	docker build -f Dockerfile.k8s -t $(IMAGE) .
+	DOCKER_BUILDKIT=1 docker build -f Dockerfile.k8s -t $(IMAGE) .
 	kind load docker-image $(IMAGE) --name $(CLUSTER)
 	kubectl apply -f k8s/base/00-namespace.yaml
 	@# infra-secrets: random Postgres password, generated once, lives only in-cluster
@@ -125,11 +131,15 @@ cost-report: ## Re-runnable cost/brief measurement (runs locally; needs .env)
 # and the Argo workflow pods share ONE image (financial-agent-app: one image,
 # four commands, plus both eval containers) — vm-images imports that single
 # artifact into k3s containerd and lists what both roles will run.
+# Fresh-VM prerequisite: bash scripts/vm_bootstrap.sh (ufw 22-only, Docker +
+# buildx, container toolkit, k3s with default-runtime nvidia, device plugin,
+# kubeconfig, hostPath dirs, tokenizer strip) — NOT YET EXECUTED; see the
+# runbook's single-VM section.
 
 VM_IMAGE_TAR ?= /tmp/financial-agent-app.tar
 
 vm-images: ## Build the app+workflow image and import it into k3s containerd
-	docker build -f Dockerfile.k8s -t $(IMAGE) .
+	DOCKER_BUILDKIT=1 docker build -f Dockerfile.k8s -t $(IMAGE) .
 	docker save $(IMAGE) -o $(VM_IMAGE_TAR)
 	sudo k3s ctr images import $(VM_IMAGE_TAR)
 	rm -f $(VM_IMAGE_TAR)

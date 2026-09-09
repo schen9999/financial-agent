@@ -96,5 +96,5 @@ ships with a measured error profile rather than an assumed one.
 | Critic recall 20/20 twice on injected failures; adjudicated precision 24/24 | eval/critic_check.py runs 2026-09-04, docs/numbers-of-record.md |
 | 5.62% gate failure (judge v1) → variance | Argo run + NVDA re-measure (0/10), README |
 | ~7.7 tok/s aggregate; p50 13.3s→74.1s (c=1→8) | scripts/vllm_benchmark.py, benchmarks.md |
-| 13/13 smoke assertions; 110 pytest tests (109 free + 1 credit-gated) | scripts/k8s_smoke_test.sh output; pytest --collect-only |
+| 13/13 smoke assertions; 111 pytest tests (110 free + 1 credit-gated) | scripts/k8s_smoke_test.sh output; pytest --collect-only |
 | ~26s pipeline latency (26.29s mean) | Phase 0 re-measure |

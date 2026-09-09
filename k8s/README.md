@@ -41,6 +41,7 @@ argo/                     # eval DAG: same pattern; eval-run.yaml stays outside
 Dockerfile.k8s            # one app image for api/worker/streamlit/mcp (CPU torch)
 Makefile                  # cluster-up / deploy / smoke-test / cluster-down
 scripts/k8s_smoke_test.sh
+scripts/vm_bootstrap.sh   # fresh Ubuntu A10 VM -> vm-up ready (single-VM k3s path; NOT YET EXECUTED)
 ```
 
 ## Prerequisites
