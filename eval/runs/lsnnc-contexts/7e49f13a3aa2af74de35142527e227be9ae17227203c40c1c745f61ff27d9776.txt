@@ -1,0 +1,102 @@
+STOCK DATA:
+{
+  "ticker": "CALM",
+  "company_name": "Cal-Maine Foods, Inc.",
+  "current_price": 74.63,
+  "currency": "USD",
+  "market_cap": 3485668096.0,
+  "pe_ratio": 11.25641,
+  "forward_pe": 20.817293,
+  "week_52_high": 115.28,
+  "week_52_low": 71.92,
+  "revenue": 2911631872.0,
+  "net_income": 316681984.0,
+  "profit_margin": 0.10876001,
+  "dividend_yield": 6.44,
+  "sector": "Consumer Defensive",
+  "industry": "Farm Products"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-07-22",
+    "summary": "Item 1A. Risk Factors and elsewhere in this report as well as those included in other reports we file from time to time with the Securities and Exchange Commission (the \u201cSEC\u201d) (including our Quarterly Reports on Form 10-Q and Current Reports on Form 8-K), (ii) changes in wholesale shell egg market prices, (iii) changes in the demand for shell eggs and our prepared foods offerings, (iv) increases in feed costs for our shell egg operations as well as increases in input costs for prepared foods, (v) our ability to predict and meet demand for cage -free and other specialty eggs, (vi) the risks and hazards inherent in shell egg, egg products and prepared foods operations (including, as applicable, disease, pests, weather conditions, and potential for product recall), including but not limited t"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-04-01",
+    "summary": "Item 1A Risk Factors of our 2025 Annual Report, as updated in Part II Item 1A of our quarterly report on Form 10-Q for the quarter ended November 29, 2025, as well as those included in other reports we file from time to time with the United States Securities and Exchange Commission (\u201cSEC\u201d) (including our Quarterly Reports on Form 10-Q and Current Reports on Form 8-K), (ii) the risks and hazards inherent in the shell egg, egg products and prepared foods operations (including, as applicable, disease, pests, weather conditions, and potential for product recall), including but not limited to the current outbreak of HPAI affecting poultry in the U.S., Canada and other countries that was first detected in commercial flocks in the U.S. in February 2022 and that impacted our flocks in the third an"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from Recent SEC Filings
+
+## Company Overview
+The company is the largest egg producer in the United States and a leading player in the egg-based food industry. Founded in 1957 and headquartered in Ridgeland, Mississippi, it operates a vertically integrated business spanning conventional and specialty eggs, egg products, and prepared foods.
+
+## Business Portfolio
+- **Shell Eggs**: Full range from conventional to specialty (cage-free, organic, brown, pasture-raised, free-range)
+- **Prepared Foods**: Pre-cooked egg patties, omelets, scrambled eggs, hard-cooked eggs, pancakes, waffles, and specialty wraps
+- **Branded Portfolio**: Eggland's Best®, Land O'Lakes®, Farmhouse Eggs®, 4Grain®, Sunups®, Van's®, MeadowCreek Foods®, and Crepini®
+
+## Growth Strategy
+The company is pursuing sustainable growth through:
+- Increasing specialty shell eggs in the sales mix
+- Expanding prepared foods and egg products businesses
+- Strengthening branded offerings
+- Strategic acquisitions and organic investments
+- Balanced pricing strategies combining market-based and structured arrangements
+
+## Recent Acquisitions (Last Two Fiscal Years)
+- **Echo Lake Foods** (June 2025): $289.5 million for prepared foods production
+- **Creighton Brothers** (March 2026): $129.3 million for shell egg and egg products assets
+- **ISE America** (Q1 FY2025): Commercial shell egg production and processing facilities
+- **Clean Egg** (October 2025): $23.7 million for cage-free and free-range layers
+- **Van's Foods** (May 2026): $24.8 million for prepared foods assets
+- **Crepini Foods** (Q2 FY2025): 51% stake in egg products and prepared foods venture
+
+## Capacity Expansion Initiatives
+Planned investments expected to grow prepared foods production capacity by over 30% through 2028, including:
+- 17 million pounds of scrambled egg production capacity
+- 12 million pounds of pancake production capacity
+- 18 million pounds from Crepini Foods joint venture
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses several significant risk factors affecting its business:
+
+**Market and Operational Risks:**
+- Fluctuations in wholesale shell egg market prices
+- Changes in demand for shell eggs and prepared foods offerings
+- Increases in feed costs and input costs for prepared foods
+- Ability to predict and meet demand for cage-free and specialty eggs
+
+**Disease and Environmental Hazards:**
+- Risks inherent in shell egg, egg products, and prepared foods operations including disease, pests, weather conditions, and product recall potential
+- Current outbreak of Highly Pathogenic Avian Influenza (HPAI) affecting poultry in the U.S., Canada, and other countries, which impacted operations in fiscal 2024 and March 2026
+
+**Acquisition and Integration Risks:**
+- Risks and obligations from recent or future acquisitions, such as the Echo Lake Foods acquisition completed in June 2025
+- Risks that conditions for completing pending acquisitions may not be met
+- Ability to successfully integrate recently acquired businesses and realize expected benefits including synergies, cost savings, and margin expansion
+
+**Competitive and Operational Challenges:**
+- Ability to produce, supply, and distribute products efficiently and reliably
+- Competition with existing competitors and new market entrants
+- Ability to retain existing customers and acquire new customers
+
+**Regulatory and Economic Risks:**
+- Government, customer, and consumer reactions to high egg market prices and potential new regulations
+- Changes in inflation, interest rates, and trade and tariff policies
+- Global instability from geopolitical conflicts and other uncertainties
+
+**Intellectual Property and Legal Risks:**
+- Loss or expiration of registered trademarks and intellectual property
+- Adverse results in pending litigation and legal matters

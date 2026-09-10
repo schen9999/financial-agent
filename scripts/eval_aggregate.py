@@ -11,10 +11,59 @@ results, prints the aggregate table, and enforces the quality gate:
 
 A non-zero exit fails the Argo workflow, which is the point: the nightly eval
 is a gate, not a report. Pure-stdlib on purpose — the aggregate pod starts fast.
+
+Artifact archival (off by default): when EVAL_ARTIFACTS_PUT_URL is set — an
+OCI Object Storage pre-authenticated request that permits writes — the run's
+summary and per-ticker results are PUT under eval-runs/<run-id>/ in the
+versioned eval-artifacts bucket. Best-effort BY DESIGN: the gate measures
+grounding, archival is auxiliary, so an upload failure prints a WARNING and
+never changes the exit code. Failed runs are archived too — they are the most
+valuable ones to keep.
 """
 import sys
 import json
+import os
 import argparse
+import urllib.request
+from datetime import datetime, timezone
+from pathlib import Path
+
+# Repo root on sys.path so `eval.stats` imports when run as a script
+# (pods set PYTHONPATH=/app; this covers bare local runs too). stats is
+# stdlib-only, so the aggregate pod still starts fast.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from eval.stats import format_rate_ci, wilson_interval  # noqa: E402
+
+
+def maybe_upload_artifacts(summary, results, skipped):
+    """PUT the run's artifacts to the archive; returns None when disabled,
+    else True/False for upload success. Never raises."""
+    base = os.getenv("EVAL_ARTIFACTS_PUT_URL", "").strip()
+    if not base:
+        return None
+    run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    objects = {
+        "aggregate.json": summary,
+        "results.json": {"results": results, "skipped": skipped},
+    }
+    ok = True
+    for name, doc in objects.items():
+        url = f"{base.rstrip('/')}/eval-runs/{run_id}/{name}"
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(doc, indent=2).encode("utf-8"),
+            method="PUT",
+            headers={"Content-Type": "application/json"},
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=30):
+                pass
+        except Exception as e:  # noqa: BLE001 — archival must never fail the gate
+            print(f"  WARNING: artifact upload failed for {name}: {e}")
+            ok = False
+    if ok:
+        print(f"  artifacts uploaded: eval-runs/{run_id}/ ({len(objects)} objects)")
+    return ok
 
 
 def main():
@@ -45,9 +94,11 @@ def main():
     mean_retr = sum(r["retrieval_s"] for r in results) / n if n else 0.0
     mean_pipe = sum(r["pipeline_s"] for r in results) / n if n else 0.0
 
+    judge_versions = sorted({r["judge_version"] for r in results if r.get("judge_version")})
     print("=" * 78)
     print("  NIGHTLY GROUNDING EVAL — AGGREGATE")
     print("=" * 78)
+    print(f"  judge prompt      : {', '.join(judge_versions) if judge_versions else 'unrecorded (pre-v2 rows)'}")
     print(f"  {'Ticker':<8} {'Sup':>4} {'Uns':>4} {'Inf':>4} {'Tot':>4} {'Retr(s)':>8} {'Pipe(s)':>8}")
     print(f"  {'-'*44}")
     for r in sorted(results, key=lambda r: r["ticker"]):
@@ -59,7 +110,13 @@ def main():
     print(f"  tickers completed : {n}")
     print(f"  tickers skipped   : {len(skipped)}{' (' + ', '.join(skipped) + ')' if skipped else ''}")
     print(f"  unsupported rate  : {unsupported_pct:.2f}%   (gate: <= {args.max_unsupported_pct}%)")
+    print(f"  95% CI (Wilson)   : {format_rate_ci(uns, tot)}")
     print(f"  total claims      : {tot}   (gate: >= {args.min_claims})")
+    est_costs = [r["est_cost"] for r in results if "est_cost" in r]
+    if est_costs:
+        print(f"  est. run cost     : ${sum(est_costs):.4f}   "
+              f"(chars/4 tokens priced from scripts/model_prices.json; "
+              f"excludes retries — cost of record stays scripts/cost_report.py)")
 
     failures = []
     if unsupported_pct > args.max_unsupported_pct:
@@ -68,6 +125,25 @@ def main():
         failures.append(f"{len(skipped)} ticker(s) skipped: {', '.join(skipped)}")
     if tot < args.min_claims:
         failures.append(f"only {tot} claims audited (< {args.min_claims})")
+
+    summary = {
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "judge_version": judge_versions or None,
+        "totals": {
+            "supported": sup, "unsupported": uns, "inference": inf, "claims": tot,
+            "unsupported_pct": round(unsupported_pct, 2),
+            "unsupported_ci_95": [round(x * 100, 2) for x in wilson_interval(uns, tot)],
+            "mean_retrieval_s": round(mean_retr, 2), "mean_pipeline_s": round(mean_pipe, 2),
+            "tickers_completed": n, "tickers_skipped": len(skipped),
+        },
+        "gate": {
+            "max_unsupported_pct": args.max_unsupported_pct,
+            "min_claims": args.min_claims,
+            "passed": not failures,
+            "failures": failures,
+        },
+    }
+    maybe_upload_artifacts(summary, results, skipped)
 
     print()
     if failures:

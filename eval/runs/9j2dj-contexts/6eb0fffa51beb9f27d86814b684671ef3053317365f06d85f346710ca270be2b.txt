@@ -1,0 +1,125 @@
+STOCK DATA:
+{
+  "ticker": "META",
+  "company_name": "Meta Platforms, Inc.",
+  "current_price": 616.77,
+  "currency": "USD",
+  "market_cap": 1571225468928.0,
+  "pe_ratio": 23.256788,
+  "forward_pe": 17.642334,
+  "week_52_high": 790.8,
+  "week_52_low": 520.26,
+  "revenue": 228246994944.0,
+  "net_income": 68097998848.0,
+  "profit_margin": 0.29834998,
+  "dividend_yield": 0.34,
+  "sector": "Communication Services",
+  "industry": "Internet Content & Information"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": "OpenAI hires Meta executive to lead Southeast Asia, Australia",
+    "source": "Bloomberg",
+    "published_at": "2026-08-28T09:08:29Z",
+    "description": "Sandhya Devanathan will be the region\u2019s senior leader, overseeing consumer growth, enterprise adoption, partnerships, operations, and regulator engagement"
+  },
+  {
+    "title": "AI firms debate putting cyber tests online after model hacks",
+    "source": "Bloomberg",
+    "published_at": "2026-08-26T09:14:18Z",
+    "description": "Cybersecurity specialists are debating whether they should connect the virtual testing environments where they experiment with dangerous software, known as sandboxes, to the internet"
+  },
+  {
+    "title": "Apple gears up to launch its first new Mac Mini in two years",
+    "source": "Bloomberg",
+    "published_at": "2026-08-25T03:38:53Z",
+    "description": "The new desktop will debut as soon as the coming days, potentially putting the unveiling ahead of a September event to introduce the next iPhones"
+  },
+  {
+    "title": "Alibaba AI models hit 3 billion downloads, passing Meta, Google",
+    "source": "Fortune",
+    "published_at": "2026-08-15T22:39:46Z",
+    "description": "Qwen, Alibaba\u2019s family of AI models, has open-sourced more than 460 models and its ecosystem has spawned 300,000-plus derivatives."
+  },
+  {
+    "title": "Alibaba AI models hit 3 billion downloads, passing Meta, Google",
+    "source": "Bloomberg",
+    "published_at": "2026-08-15T10:02:05Z",
+    "description": "Open models can be downloaded, customised and used as building blocks for new AI products; that has made download and derivative-model figures one measure of influence in the US-China AI race"
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-01-29",
+    "summary": "Item 1A. Risk Factors Certain factors may have a material adverse effect on our business, financial condition, and results of operations. You should consider carefully the risks and uncertainties described below, in addition to other information contained in this Annual Report on Form 10-K, including our consolidated financial statements and related notes. The risks and uncertainties described below are not the only ones we face. Additional risks and uncertainties that we are unaware of, or that we currently believe are not material, may also become important factors that adversely affect our business. If any of the following risks actually occurs, our business, financial condition, results of operations, and future prospects could be materially and adversely affected. In that event, the t"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-07-30",
+    "summary": "Item 1A. Risk Factors Certain factors may have a material adverse effect on our business, financial condition, and results of operations. You should consider carefully the risks and uncertainties described below, in addition to other information contained in this Quarterly Report on Form 10-Q, including our condensed consolidated financial statements and related notes. The risks and uncertainties described below are not the only ones we face. Additional risks and uncertainties that we are unaware of, or that we currently believe are not material, may also become important factors that adversely affect our business. If any of the following risks actually occurs, our business, financial condition, results of operations, and future prospects could be materially and adversely affected. In that"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from META's SEC Filings
+
+## Critical Business Dependencies
+
+The company's financial performance is fundamentally dependent on its ability to add, retain, and engage active users across its products, particularly Facebook and Instagram. User engagement directly drives ad impressions, which generate substantially all of the company's revenue.
+
+## User Growth and Engagement Challenges
+
+The company has experienced and expects to continue experiencing fluctuations and declines in active users in various markets, especially in regions with high penetration rates. Competition from platforms like TikTok has reduced user engagement with the company's products. Geopolitical events, such as the war in Ukraine, have also impacted the user base through service restrictions.
+
+## Revenue Concentration Risk
+
+Nearly all revenue comes from advertising on Facebook and Instagram. Marketers lack long-term commitments and typically allocate only a small portion of their advertising budgets to the company. Advertiser spending is contingent on effective ad delivery and competitive returns on investment.
+
+## Regulatory and Compliance Pressures
+
+The company faces complex and evolving regulations globally, including GDPR, DMA, DSA, and various privacy laws. Potential invalidation of data transfer mechanisms between the EU and US could significantly impact operations in Europe. Changes to user data practices have already reduced ad targeting effectiveness.
+
+## Operational Risks
+
+Key risks include maintaining technical infrastructure reliability, managing content moderation, preventing security breaches, and adapting to changes in mobile operating systems and third-party distribution channels. The company must also navigate litigation, government investigations, and enforcement actions.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The primary risk factors disclosed include:
+
+## Risks Related to Product Offerings
+- Inability to add and retain users or maintain user engagement levels
+- Loss of or reduction in spending by advertisers
+- Reduced availability of data signals for ad targeting and measurement
+- Ineffective operation with mobile operating systems or changes in relationships with mobile OS partners
+- Failure of new products or changes to existing products to attract users or generate revenue
+
+## Risks Related to Business Operations and Financial Results
+- Inability to compete effectively
+- Fluctuations in financial results
+- Unfavorable media coverage affecting brand reputation
+- Challenges in building, maintaining, and scaling technical infrastructure
+- Risks from service disruptions and catastrophic events
+- Operating in multiple countries globally
+- Litigation and class action lawsuits
+- Challenges with acquisitions and integration
+
+## Risks Related to Government Regulation and Enforcement
+- Government restrictions on product access or advertising delivery
+- Complex and evolving privacy, data protection, content moderation, and competition regulations (including GDPR, DMA, DSA, and others)
+- Government investigations and enforcement actions
+- Compliance challenges with privacy requirements and FTC consent orders
+
+## Risks Related to Data, Security, and Intellectual Property
+- Security breaches and improper data access or disclosure
+- Cyber incidents and intentional misuse of services
+- Challenges in obtaining and protecting intellectual property rights
+
+## Risks Related to Stock Ownership
+- Limited influence by Class A Common Stock holders due to dual-class structure and founder control

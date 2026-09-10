@@ -1,0 +1,20 @@
+# One-off run of the grounding-eval WorkflowTemplate against the LOCAL model:
+# submits the harness's local-model arm (the arm itself sets
+# USE_LOCAL_MODEL=true; the LOCAL_MODEL_BACKEND/URL/NAME pointers reach the
+# eval pods from app-config). Outside kustomize like eval-run.yaml. Submit:
+#   make eval-run EVAL_RUN_FILE=argo/eval-run-local.yaml
+# NOT YET EXECUTED against in-cluster vLLM.
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: grounding-eval-local-
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  workflowTemplateRef:
+    name: grounding-eval
+  arguments:
+    parameters:
+      - name: arms
+        value: local-model

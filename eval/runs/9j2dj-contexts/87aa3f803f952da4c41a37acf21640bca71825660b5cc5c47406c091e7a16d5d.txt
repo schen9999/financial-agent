@@ -1,0 +1,44 @@
+STOCK DATA:
+{
+  "ticker": "SAP",
+  "company_name": "SAP SE",
+  "current_price": 215.11,
+  "currency": "USD",
+  "market_cap": 248280891392.0,
+  "pe_ratio": 27.79199,
+  "forward_pe": 22.247412,
+  "week_52_high": 281.37,
+  "week_52_low": 144.97,
+  "revenue": 38192001024.0,
+  "net_income": 7795999744.0,
+  "profit_margin": 0.20413,
+  "dividend_yield": 1.35,
+  "sector": "Technology",
+  "industry": "Software - Application"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "message": "No 10-K found"
+  },
+  "10-Q": {
+    "message": "No 10-Q found"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+(not available)
+
+RAG — RISK FACTORS:
+(not available)

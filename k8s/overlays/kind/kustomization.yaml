@@ -1,0 +1,94 @@
+# kind overlay — reconstructs the pre-kustomize manifests exactly (verified by
+# scripts/render_diff.py): kind-loaded image is never pulled, and services are
+# NodePorts matched to kind-config.yaml's host port mappings.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+
+patches:
+  # ── imagePullPolicy: Never — the app image exists only inside the kind node
+  #    (`kind load docker-image`); a pull attempt means a broken deploy, so fail loudly.
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: api
+        namespace: financial-agent
+      spec:
+        template:
+          spec:
+            containers:
+              - name: api
+                imagePullPolicy: Never
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: worker
+        namespace: financial-agent
+      spec:
+        template:
+          spec:
+            containers:
+              - name: worker
+                imagePullPolicy: Never
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: streamlit
+        namespace: financial-agent
+      spec:
+        template:
+          spec:
+            containers:
+              - name: streamlit
+                imagePullPolicy: Never
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: mcp
+        namespace: financial-agent
+      spec:
+        template:
+          spec:
+            containers:
+              - name: mcp
+                imagePullPolicy: Never
+
+  # ── NodePorts mapped to the host by kind-config.yaml
+  - patch: |-
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: api
+        namespace: financial-agent
+      spec:
+        type: NodePort
+        ports:
+          - port: 8000
+            nodePort: 30080
+  - patch: |-
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: streamlit
+        namespace: financial-agent
+      spec:
+        type: NodePort
+        ports:
+          - port: 8501
+            nodePort: 30501
+  - patch: |-
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: mcp
+        namespace: financial-agent
+      spec:
+        type: NodePort
+        ports:
+          - port: 8000
+            nodePort: 30800

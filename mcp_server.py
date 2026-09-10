@@ -130,7 +130,30 @@ def query_sec_filings(ticker: str, question: str) -> str:
     return _guarded(_do)
 
 
+def _select_transport(http_flag: bool) -> str:
+    """--http wins; otherwise MCP_TRANSPORT keeps its original semantics
+    ("streamable-http" / "sse" / default "stdio") — the K8s deployment sets
+    the env var and passes no flags, so its behaviour is unchanged."""
+    if http_flag:
+        return "streamable-http"
+    return os.getenv("MCP_TRANSPORT", "stdio")
+
+
+def main(argv=None):
+    """Console entrypoint (`financial-agent-mcp`, see pyproject.toml)."""
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        prog="financial-agent-mcp",
+        description="Financial research agent MCP server. stdio by default "
+                    "(what Claude Desktop launches); --http serves the "
+                    "streamable-HTTP transport on MCP_HOST:MCP_PORT.",
+    )
+    parser.add_argument("--http", action="store_true",
+                        help="serve streamable-HTTP instead of stdio")
+    args = parser.parse_args(argv)
+    mcp.run(transport=_select_transport(args.http))
+
+
 if __name__ == "__main__":
-    # Default stdio (Claude Desktop / Inspector); MCP_TRANSPORT can select
-    # "streamable-http" or "sse" for HTTP deployment.
-    mcp.run(transport=os.getenv("MCP_TRANSPORT", "stdio"))
+    main()

@@ -1,0 +1,433 @@
+# Deploy runbook
+
+Three targets, one manifest tree: `kind` (local, fully working today),
+`k3s` (single-VM validation, Phase 1.75), and `oke` (OCI, Phase 2).
+Anything not yet executed is marked **NOT YET EXECUTED** with its phase;
+everything else has been run end-to-end on this repo.
+
+## kind (local) — end to end
+
+Prerequisites: Linux environment with `docker`, `kind`, `kubectl`, `make`,
+`jq`, `openssl`, and a filled-in `.env` in the repo root. On the dev
+machine this is the WSL2 distro `financial-agent` (see k8s/README.md for
+environment specifics).
+
+```bash
+make cluster-up      # create the single-node kind cluster (idempotent;
+                     # also restarts a stopped node after WSL idle-termination)
+make deploy          # build image, kind load, secrets from .env,
+                     # kubectl apply -k k8s/overlays/kind, wait for rollouts
+make smoke-test      # sync brief, async Celery brief, cache hit+miss, MCP
+make argo-install    # Argo controller + server (kubectl apply -k argo/install,
+                     # version pinned in that kustomization)
+make argo-deploy     # kubectl apply -k argo/overlays/kind
+                     # (RBAC, grounding-eval WorkflowTemplate, nightly cron)
+make eval-run        # submit the eval DAG now and follow it to completion
+make cost-report     # re-runnable cost/brief harness (local, needs .env)
+make status          # pods, services, recent events
+make cluster-down    # delete the cluster
+```
+
+After `make deploy`: FastAPI http://localhost:30080, Streamlit
+http://localhost:30501, MCP http://localhost:30800/mcp.
+
+Notes:
+
+- **Redis runs without a PVC on every target, deliberately**: the
+  exact-key cache (`research:{TICKER}`) is rebuildable and Celery results
+  are short-lived, so a restart costs only a cold cache — persistence
+  would buy nothing and cost a block volume.
+- Secrets never touch git: `app-secrets` is materialized from `.env`,
+  `infra-secrets` (Postgres password + DATABASE_URL) is generated once,
+  in-cluster only.
+- **vLLM local (CPU mode)**: `make vllm-deploy` applies
+  `k8s/vllm/overlays/kind-cpu`. Model delivery is a `fetch-model` init
+  container that downloads env-listed files into an emptyDir at pod
+  start; the kind overlay points it at a small public HF model
+  (Qwen2.5-0.5B-Instruct, no token) so the delivery path is exercisable
+  locally. On the current dev CPU the vLLM container itself is not
+  runnable (no AVX-512 — see benchmarks.md), so the committed way to
+  exercise `USE_LOCAL_MODEL` locally is Ollama via
+  `LOCAL_MODEL_BACKEND`'s default. This is exactly why Ollama remains the
+  committed fallback until vLLM demonstrably serves on the A10.
+
+## Single-VM path (k3s) — Phase 1.75
+
+Validation target: one OCI VM.GPU.A10.2 (2x A10 24 GB, 30-core Xeon,
+472 GB RAM, 1 TB disk, Ubuntu 22.04, NVIDIA driver 570 preinstalled),
+reachable by ssh only. Purpose: rehearse the full topology and validate
+the committed A10 vLLM serving args before OKE exists — and serve as the
+demo target if it doesn't (see the CLAUDE.md checkpoint). Steps are
+marked EXECUTED only after the run is confirmed from the box with
+terminal output; everything else stays NOT YET EXECUTED.
+
+**Validated so far (2026-09-02, confirmed from the box):** vLLM v0.10.2
+served the merged fine-tune on one A10 in **plain Docker — not yet via
+k3s** — with exactly the committed oke-gpu args (`--dtype bfloat16
+--max-model-len 4096 --max-num-seqs 8 --gpu-memory-utilization 0.90`,
+`--served-model-name financial-lora`): model load 2.89 GiB, 16.72 GiB
+KV cache available, 200 OK on `/v1/models` and `/v1/chat/completions`,
+port bound to 127.0.0.1 only. This validates the serving image, tag,
+and args that the k3s-gpu and oke-gpu overlays commit to.
+
+**Validated 2026-09-03 (confirmed from the box):** `make vm-up` brought
+the app topology up green on k3s — all six app deployments rolled out,
+Postgres PVC bound on `local-path`, Argo controller/server rolled out,
+eval WorkflowTemplate + CronWorkflow applied. vLLM crashlooped on a
+base-manifest bug (args `vllm serve ...` fed to `vllm/vllm-openai`,
+whose entrypoint is already the api server → "unrecognized arguments");
+fixed in the base by moving `vllm serve` to `command:`. The re-run then
+hit the two further k8s gotchas below (also fixed in the base).
+
+**Validated 2026-09-03, later (confirmed from the box) — end to end:**
+after commit 4032e73 the vLLM deployment rolled out green on k3s;
+`/v1/models` on NodePort 30880 lists `financial-lora`; `nvidia-smi`
+confirms serving pinned to one A10 (~21 GiB used on the single granted
+device, the other idle). `make vm-eval` then ran the full grounding DAG
+on the VM to `Succeeded`: 10/10 tickers, 66 claims, 3.03% unsupported (judge v1) —
+GATE PASSED (≤ 5%, ≥ 30 claims). That run used hosted models via the
+existing harness — it is not a numbers-of-record re-run, and no eval
+has yet run against vLLM itself.
+
+**Known k8s gotchas (vLLM — fixed in the base, apply to every overlay):**
+- **Entrypoint collision.** `vllm/vllm-openai`'s entrypoint is already
+  the API server, so `args: [vllm, serve, ...]` produced "unrecognized
+  arguments" — the 2026-09-03 crashloop. The base puts `vllm serve` in
+  `command:` (commit 4032e73).
+- **Service links inject `VLLM_PORT`.** Because the Service is named
+  `vllm`, Kubernetes' legacy service links put
+  `VLLM_PORT=tcp://<ip>:8000` into the pod env, and vLLM's
+  `get_vllm_port` crashes parsing it. The base sets
+  `enableServiceLinks: false` on the pod spec.
+- **`/dev/shm` too small.** The container default is 64Mi shm; vLLM's
+  multi-process engine needs real shared memory. The base mounts an
+  emptyDir (`medium: Memory`, `sizeLimit: 2Gi`) at `/dev/shm`.
+
+**Hand-fix ledger (2026-09-02/03).** Everything applied by hand on the
+box during the first bring-up now lives in exactly one place — the
+bootstrap script, a committed manifest or Makefile line, or a numbered
+step below — so a fresh VM needs no tribal knowledge:
+
+| Applied by hand on the box | Now lives in |
+|---|---|
+| `ufw default deny incoming`, `allow 22/tcp`, `enable` | `scripts/vm_bootstrap.sh` step 2 (step 1 below) |
+| Docker install, plus buildx so `docker build` runs under BuildKit — `Dockerfile.k8s` uses a per-Dockerfile ignore file (`Dockerfile.k8s.dockerignore`), a BuildKit-only feature; the legacy builder applies the ECS `.dockerignore` and drops `app.py` | bootstrap step 3; `DOCKER_BUILDKIT=1` inline on both Makefile `docker build` lines (`deploy`, `vm-images`) |
+| `nvidia-container-toolkit`, `nvidia-ctk runtime configure --runtime=docker`, docker restart | bootstrap step 4 |
+| k3s install; `default-runtime: nvidia` in `/etc/rancher/k3s/config.yaml` + k3s restart, so the device plugin's static manifest (no `runtimeClassName`) and the vLLM pod run under the nvidia runtime | bootstrap step 5 |
+| `/etc/rancher/k3s/k3s.yaml` → `~/.kube/config`; `export KUBECONFIG=$HOME/.kube/config` in `~/.bashrc` | bootstrap step 6 |
+| NVIDIA device plugin v0.17.0 static manifest | bootstrap step 7 |
+| `mkdir /home/ubuntu/models /home/ubuntu/eval-findings` — the hostPath parents of the k3s-gpu and argo k3s overlays | bootstrap step 8 |
+| `extra_special_tokens` deleted from `tokenizer_config.json` (2026-09-02) | bootstrap step 9, after every rsync (step 2 below) |
+| vLLM `vllm serve` → `command:`, `enableServiceLinks: false`, 2Gi `/dev/shm` | `k8s/vllm/base` (gotchas above; commit 4032e73) |
+| `make argo-deploy` applied the kind argo overlay (target was hardcoded) | Makefile `ARGO_OVERLAY` (`vm-up` passes `k3s`) |
+| ssh tunnel local ports colliding with kind's 30xxx | step 5 below (31xxx) |
+| Pre-pull of the multi-GB vLLM image before the first `vm-up` | step 3 below |
+
+Steps (the hand-executed history is kept per step; the script itself has
+not run yet):
+
+**Step 0 (only if `nvidia-smi` is missing) — NOT YET EXECUTED.** The
+script treats the driver as a precondition (the VM image used so far
+ships driver 570) and dies at its step 0 when `nvidia-smi` is absent.
+On a plain Ubuntu image install the driver first, then re-run the
+script:
+
+```bash
+sudo apt-get update && sudo apt-get install -y ubuntu-drivers-common && sudo ubuntu-drivers install --gpgpu && sudo reboot
+```
+
+1. **[NOT YET EXECUTED — Phase 1.75: `scripts/vm_bootstrap.sh` supersedes
+   the hand steps of 2026-09-02/03 in the ledger; each action it wraps
+   ran by hand then, the script has not]** **Network baseline, then one
+   run of the bootstrap script.** First, outside the VM: verify the VCN
+   security list on the VM's subnet admits only 22/tcp from your
+   allowlisted CIDR (no 30000–32767, no 80/443). The seclist is the
+   authoritative gate: kube-proxy programs NodePorts directly in iptables
+   and can route around host firewalls, so ufw is defense-in-depth, not
+   the guarantee (EXECUTED 2026-09-03: an external probe of NodePort
+   30880 from outside the VCN times out). NodePorts will bind on the VM,
+   but nothing is publicly reachable while the seclist admits only 22.
+   Then, on the VM, from the repo checkout, as `ubuntu` (not root):
+
+   ```bash
+   bash scripts/vm_bootstrap.sh
+   ```
+
+   One run takes a fresh Ubuntu 22.04 box with the driver preinstalled
+   to vm-up-ready: base packages, ufw (22/tcp only), Docker CE + buildx,
+   the container toolkit (+ Docker runtime), k3s with
+   `default-runtime: nvidia`, kubeconfig + `KUBECONFIG`, the device plugin
+   (v0.17.0), both hostPath parents, and the tokenizer strip whenever
+   weights are present. It is idempotent (`set -euo pipefail`; every step
+   no-ops when already done) and ends with a checklist — `nvidia-smi`,
+   `kubectl get nodes` with `nvidia.com/gpu` allocatable (expect 2 on the
+   A10.2), `docker buildx version`, ufw, Docker's nvidia runtime, k3s,
+   kubeconfig, `local-path`, dirs, tokenizer — exiting non-zero on any
+   FAIL row. Log out and back in afterwards (docker group, `KUBECONFIG`),
+   or `newgrp docker`, before `make vm-images`.
+2. **[EXECUTED 2026-09-02 by hand — weights on the VM and loading: 2.89 GiB
+   into VRAM per the Docker smoke test above. The scripted strip is NOT
+   YET EXECUTED]** Weights to `/home/ubuntu/models/qwen-ft` — the
+   k3s-gpu overlay's hostPath (`type: Directory`, so the directory must
+   exist before `vm-up`; step 1 created the parent). Primary path — rsync
+   straight from the dev machine (the merged checkpoint
+   `financial-lora-merged/`, six files, exists only there; nothing leaves
+   your machines):
+   `rsync -avP financial-lora-merged/ ubuntu@<vm-ip>:/home/ubuntu/models/qwen-ft/`.
+   Fallback if rsync from this network is impractical: push the
+   checkpoint to a **private** HF repo (`huggingface-cli upload`), then
+   on the VM `huggingface-cli login` (token, never committed) and
+   `huggingface-cli download <org>/<repo> --local-dir /home/ubuntu/models/qwen-ft`.
+   Then re-run `bash scripts/vm_bootstrap.sh`: steps 1–8 no-op and step
+   9 strips the key below; the checklist's "weights + tokenizer" row must
+   read PASS.
+
+   **Known fix (hit on the VM, 2026-09-02):** the checkpoint's
+   `tokenizer_config.json` ships `extra_special_tokens` as a JSON
+   **list** (newer transformers layout); the transformers bundled in
+   vllm v0.10.2 crashes on it with `'list' object has no attribute
+   'keys'`. Fix: delete the `extra_special_tokens` key — the special
+   tokens remain fully defined in `tokenizer.json`. The VM's copy was
+   fixed by hand; the repo's `financial-lora-merged/` is **untracked
+   and still carries the list-form key**, so every rsync/upload
+   re-breaks the VM until the strip runs again — which is why it is a
+   bootstrap step and not a one-time edit.
+3. **[EXECUTED 2026-09-03 — vm-images + vm-up fully green: app
+   topology, Argo, eval CRDs, and (after the base fixes) the vLLM
+   rollout with `/v1/models` answering on NodePort 30880]**
+   `make vm-images && make vm-up`
+   (on the VM, from the repo checkout). `vm-images` builds under
+   BuildKit (`DOCKER_BUILDKIT=1` is inline on the build line; buildx
+   from step 1). Expect the first `vm-up` to sit
+   in ContainerCreating for several minutes: `vllm/vllm-openai:v0.10.2`
+   is a multi-GB CUDA image. Optional pre-pull to front-load that wait:
+   `sudo k3s crictl pull docker.io/vllm/vllm-openai:v0.10.2`.
+4. **[EXECUTED 2026-09-03 — workflow Succeeded on the VM: 10/10
+   tickers, 66 claims, 3.03% unsupported (judge v1), GATE PASSED (hosted models;
+   not a numbers-of-record re-run)]** `make vm-eval` — the grounding
+   gate must pass on the VM.
+5. **[EXECUTED 2026-09-03 — /v1/models answered through the tunnel and
+   Streamlit rendered in the browser]** Access via ssh tunnels ONLY
+   (nothing else is admitted by the seclist). Use **non-30xxx local
+   ports** — the kind cluster maps 30080/30501/30800 on the dev laptop,
+   so binding the same numbers locally collides ("Address already in
+   use", hit on first attempt):
+   `ssh -L 31080:localhost:30080 -L 31501:localhost:30501 -L 31880:localhost:30880 ubuntu@<vm-ip>`
+   then browse http://localhost:31501 (Streamlit) / :31080 (API) /
+   :31880 (vLLM). mcp stays ClusterIP exactly as on oke — on the VM run
+   `kubectl -n financial-agent port-forward svc/mcp 30800:8000` and add
+   `-L 31800:localhost:30800` to the tunnel.
+
+**Stale-image warning (eval-rigor changes).** The `eval-rigor` branch
+changed code the eval pods run — `agent/grounding.py` (judge v2),
+`agent/tools/{rag,sec,sec_common}.py` (Item 1A anchoring, CIK lookup),
+`grounding_check.py`, `scripts/eval_aggregate.py`, and the `eval/`
+package. After pulling it on the VM, the full new-image sequence is
+`make vm-images`, `make vm-up`, `make argo-deploy ARGO_OVERLAY=k3s` —
+all three **before any `make eval-run`**, or the pods run the old code
+(and, without the argo-deploy, the old WorkflowTemplate).
+
+**Eval against the in-cluster vLLM — EXECUTED 2026-09-03, GATE FAILED.**
+`grounding-eval-local-dkghz` ran the `local-model` arm on the VM with
+vLLM confirmed serving (20 POST `/v1/chat/completions`, 2 sections × 10
+tickers, no retries): 10/10 tickers, 65 claims, 48 sup / 8 uns / 9 inf,
+**12.31% unsupported (judge v1) vs the 5% gate — FAILED**. The same-day baseline
+(`grounding-eval-6zwqf`, ~40 min earlier, same VM) passed at 3.03% (judge v1).
+See the dated A/B in eval-methodology.md; the fine-tune serves but does
+not clear the gate on its two sections, so `USE_LOCAL_MODEL` stays off.
+(Process note: that run's `make argo-deploy` applied the **kind** argo
+overlay — the target was hardcoded. The actual diff from the k3s render
+is **none**: the two overlays render semantically identical resources,
+verified with `render_diff.py` (5/5). `argo-deploy` is now
+overlay-aware: `ARGO_OVERLAY`, default `kind`; `vm-up` passes `k3s`.)
+
+Mechanics: the eval pods read `app-config` (envFrom), which on k3s
+carries the pointer values (`LOCAL_MODEL_BACKEND=openai`,
+`LOCAL_MODEL_URL` at the vllm Service, `LOCAL_MODEL_NAME=financial-lora`).
+The harness pins `USE_LOCAL_MODEL` **per A/B arm by design** (no flag
+leakage between arms), so the ConfigMap flag never routes an eval — it
+governs the app services only. The switches are therefore:
+
+- Eval vs vLLM: `make eval-run EVAL_RUN_FILE=argo/eval-run-local.yaml`
+  — submits the `local-model` arm (fine-tune serves Financial Health +
+  Risk Factors; Haiku keeps the other two sections).
+- App plane: `make vm-local-model ON=true` (revert with `ON=false`;
+  `kubectl apply -k k8s/overlays/k3s` also restores the committed
+  `false`).
+
+**Credits warning — every eval run burns Anthropic credits**, in every
+arm: the LLM-as-judge is Sonnet, and Haiku generates sections (all four
+in `baseline`, two even in `local-model`). Two mitigations are wired
+in: the aggregate prints an **estimated per-run cost** (chars/4 tokens
+priced from `scripts/model_prices.json`, labeled an estimate — the cost
+of record stays `scripts/cost_report.py`), and a low balance now
+**fails the run loudly** — `eval/runtime_guards.py` raises on the
+Anthropic "credit balance" 400 instead of letting it exhaust the
+per-ticker retry and surface as skipped tickers (the measured failure
+mode of 2026-09-03, where mass skips were indistinguishable at a
+glance from a data problem).
+
+**Extended benchmark — EXECUTED 2026-09-05/06** (baseline `j4cnp` gate
+PASSED at 3.06%, local-model `lsnnc` gate FAILED at 8.15%, judge v2;
+recorded in eval-methodology.md — actual per-run cost estimates from the
+aggregates: $2.36 + $2.44 ≈ $4.80 for the two arms).
+`argo/eval-run-extended.yaml` runs 40 tickers
+(`eval/tickers_extended.txt`: large-cap, volatile-earnings, small-cap,
+clinical-stage biotech, non-US ADRs — deliberately stressing data
+coverage; a test keeps the two files in sync). Cost estimate for the
+**two-arm 40-ticker A/B**, derived from the committed price table
+(`scripts/model_prices.json`) and chars/4 token estimates over the
+committed judge artifacts — the same labeled-estimate method the cost
+harness uses for its non-exact layer; it slightly **under**estimates
+because findings artifacts omit the pre-written sections the judge also
+reads: **~$1.41 judge** (80 Sonnet calls, ~2,190 in / ~740 out tokens
+each) **+ ~$2.53 generation** (80 briefs × the then-current $0.0316)
+**≈ $4 total**; the 2026-09-04 post-retrieval-fix re-estimate raised it
+to **≈ $4.30**. Actuals came in at ≈ $4.80 (aggregate estimates above).
+
+**Cost-of-record re-measure — EXECUTED 2026-09-06:** the pre-fix
+$0.0316 record was measured on the harness default, a 3-ticker mean
+over AAPL, NVDA, JPM (benchmarks.md pins the run via its per-ticker
+token evidence). The like-for-like re-measure on the fixed pipeline,
+same N and tickers, set the cost of record to **$0.0366/brief**
+($0.0282 exact + $0.0084 RAG-internal estimate; run evidence
+`cost_record_post_fix.json`):
+
+```bash
+python scripts/cost_report.py --tickers AAPL NVDA JPM --json-out cost_record_post_fix.json
+```
+Submit only after topping up credits:
+`make eval-run EVAL_RUN_FILE=argo/eval-run-extended.yaml` (baseline
+pass; the local-model pass is a second submission overriding `arms`).
+The workflow raises `activeDeadlineSeconds` to 3h — 40 tickers at
+parallelism 2 will not fit the template's 1h default.
+
+## Findings capture — after any eval run
+
+Every eval pod and the aggregate print a base64 tar of
+`/app/eval_findings` to stdout under `===EVAL_FINDINGS_TGZ_BEGIN/END===`
+markers — the per-claim judge evidence (metadata, retrieved context,
+judge-input sections, audited text, findings). Capture it while the
+pods still exist, extract, and commit:
+
+```bash
+kubectl -n financial-agent logs -l workflows.argoproj.io/workflow=<wf> \
+    --prefix --tail=-1 > eval/runs/raw/<wf>.log
+python scripts/extract_findings.py --log eval/runs/raw/<wf>.log \
+    --out eval/runs/raw/<wf>-findings/
+git add eval/runs/raw/<wf>-findings/   # the log stays local (gitignored:
+                                       # its payload duplicates the dir)
+```
+
+The label-selector capture takes every pod's dump — required on kind,
+where the findings volume is a per-pod emptyDir; on k3s the volume is a
+shared hostPath (`/home/ubuntu/eval-findings/<wf>` on the VM), so the
+aggregate pod's dump alone is already complete and the hostPath is a
+second copy. Per-claim rows (commit these too) then come from
+`eval/parse_run_log.py --findings-dir eval/runs/raw/<wf>-findings/`
+with `--contexts-dir eval/runs/<wf>-contexts --out
+eval/runs/<wf>-claims.jsonl`.
+
+Emergency fallback if the logs are gone too (used 2026-09-05 to recover
+9j2dj): deleted pods' written files survive in containerd snapshot upper
+layers — on the node, `find` the containerd root (k3s:
+`/var/lib/rancher/k3s/agent/containerd`) under
+`io.containerd.snapshotter.v1.overlayfs/snapshots` for `eval_findings`.
+
+## OKE (OCI) — Phase 2
+
+All OCI infrastructure is authored in `terraform/oci/` (fmt + validate
+pass). **No step below has been executed — there are no OCI credentials
+yet.** Execute in order once access lands.
+
+**Optional free-trial dry run — NOT the demo tenancy.** Before the demo
+tenancy's credentials arrive, steps 1–7 can be rehearsed against an OCI
+free-trial tenancy with `enable_gpu_pool = false` in terraform.tfvars
+(trials carry no GPU quota; everything except the A10 pool applies, so
+vLLM steps 8–9 are excluded). If trial service limits bite on the app
+pool, trim `app_pool_size` / `app_node_ocpus` in tfvars. Nothing from a
+trial run counts as a demo-tenancy result: no numbers, no "deployed on
+OKE" claims — tear it down (`terraform destroy`) when done and re-run
+everything for real on the demo tenancy.
+
+1. **[Phase 2 — NOT YET EXECUTED]** Auth + variables:
+   `cp terraform/oci/terraform.tfvars.example terraform/oci/terraform.tfvars`,
+   fill in tenancy/compartment OCIDs; confirm the pinned
+   `kubernetes_version` is still offered and the target AD has
+   VM.GPU.A10.1 capacity (see terraform/oci/README.md).
+2. **[Phase 2 — NOT YET EXECUTED]** `terraform init` / `plan` / `apply` —
+   creates VCN, OKE basic cluster, app pool (2x E4.Flex 4 OCPU/32 GB),
+   GPU pool (1x VM.GPU.A10.1), OCIR repo, eval-artifacts bucket, and the
+   `financial-agent-bv` StorageClass. First full apply may need the
+   documented two-stage `-target` sequence.
+3. **[Phase 2 — NOT YET EXECUTED]** Merge kubeconfig
+   (`kubeconfig_command` output) and confirm both node pools are Ready.
+4. **[Phase 2 — NOT YET EXECUTED]** Push the image: `docker login` to
+   OCIR (`ocir_login_hint` output; password is an auth token), tag
+   `financial-agent-app:local` as `ocir_app_repo_url` + tag, push.
+5. **[Phase 2 — NOT YET EXECUTED]** Replace the `CHANGEME` OCIR values in
+   `k8s/overlays/oke/kustomization.yaml` and
+   `argo/overlays/oke/kustomization.yaml` with the pushed image ref.
+6. **[Phase 2 — NOT YET EXECUTED]** Create secrets in the cluster: the
+   same two-secret scheme as kind (`app-secrets`, `infra-secrets`), plus
+   the OCIR pull secret every oke Deployment and the Argo workflow pods
+   reference. Generate an **auth token** for your user (Console → User
+   Settings → Auth tokens — it is not your console password; never
+   commit it), then:
+
+   ```bash
+   kubectl -n financial-agent create secret docker-registry ocir-pull-secret \
+     --docker-server=<region-key>.ocir.io \
+     --docker-username='<tenancy-namespace>/<username>' \
+     --docker-password='<auth-token>'
+   ```
+
+   (Federated/IDCS users: the username is
+   `<tenancy-namespace>/oracleidentitycloudservice/<email>`.) Then
+   `kubectl apply -k k8s/overlays/oke`. Verify: Postgres PVC binds on
+   `financial-agent-bv` at 50Gi, all probes green, streamlit/api
+   LoadBalancers get external IPs.
+
+   **LoadBalancer ingress is deny-all by default.** Streamlit and the
+   API carry no authentication, so the Terraform security list on the LB
+   subnet is the only gate: `lb_allowed_cidrs` defaults to `[]` and the
+   LBs serve nothing until you allowlist CIDRs in terraform.tfvars. The
+   LB services pin `security-list-management-mode: "None"` so the OKE
+   cloud controller cannot re-open `0.0.0.0/0` on its own. Trade-off:
+   for a demo to an audience off your network you must either add their
+   egress CIDR, or temporarily allowlist `0.0.0.0/0` — accepting that
+   an unauthenticated research UI (and its API-key spend) is then
+   world-reachable — and revert immediately after. The mcp service is
+   never exposed; use `kubectl port-forward`.
+7. **[Phase 2 — NOT YET EXECUTED]** `make argo-install`, then
+   `kubectl apply -k argo/overlays/oke`; run the eval DAG end-to-end
+   against hosted models first. To turn on eval artifact archival
+   (off by default): create a write-capable PAR on the eval-artifacts
+   bucket permitting objects under `eval-runs/`, and add
+   `EVAL_ARTIFACTS_PUT_URL=<PAR URL>` to the `.env` that app-secrets is
+   created from (a PAR is a bearer URL — never commit it). The aggregate
+   step then archives `aggregate.json` + `results.json` per run,
+   best-effort.
+8. **[Phase 2 — NOT YET EXECUTED]** vLLM on the A10: upload the six
+   files of `financial-lora-merged/` to the eval-artifacts bucket under
+   a `financial-lora/` prefix (`oci os object put`), create a read-only
+   pre-authenticated request (PAR) scoped to that prefix, set
+   `MODEL_BASE_URL` in `k8s/vllm/overlays/oke-gpu/kustomization.yaml` to
+   the PAR URL **locally, uncommitted** (a PAR is a bearer URL — treat
+   it like terraform.tfvars), then
+   `kubectl apply -k k8s/vllm/overlays/oke-gpu`. The `fetch-model` init
+   container downloads the weights into an emptyDir at pod start — no
+   cluster secrets, no IAM policies. Only after vLLM serves the model on
+   the A10 may any doc claim it does; update CLAUDE.md at that point.
+9. **[Phase 2 — NOT YET EXECUTED]** Point `LOCAL_MODEL_URL` at the vLLM
+   Service with `LOCAL_MODEL_BACKEND=openai`, re-run the eval DAG against
+   it, and re-run `scripts/cost_report.py` on OCI. Both numbers are **to
+   be measured in Phase 2** — no OKE number exists yet.
+
+## Invariants (both targets)
+
+- kind stays a working target throughout the migration — overlays, never
+  forked manifests. Equivalence proof: [verification.md](verification.md).
+- The Argo eval DAG and nightly cron must keep passing; Celery stays
+  request-time async (they are never merged).
+- `python -m pytest tests/` (43 tests) must pass on every commit.

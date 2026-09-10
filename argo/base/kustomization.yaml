@@ -1,0 +1,13 @@
+# Env-agnostic base for the eval DAG. Deploy an overlay, never this directly:
+#   kubectl apply -k argo/overlays/kind   (what `make argo-deploy` runs)
+#   kubectl apply -k argo/overlays/oke    (Phase 2)
+# argo/eval-run.yaml stays OUTSIDE kustomize: it is a one-shot Workflow
+# submitted manually (`make eval-run`) that just references the grounding-eval
+# WorkflowTemplate — the image is resolved by whichever overlay applied the
+# template, so the submitted run needs no image handling of its own.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - rbac.yaml
+  - eval-workflow.yaml
+  - eval-cron.yaml

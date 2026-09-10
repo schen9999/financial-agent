@@ -1,0 +1,89 @@
+STOCK DATA:
+{
+  "ticker": "JPM",
+  "company_name": "JPMorgan Chase & Co.",
+  "current_price": 358.64,
+  "currency": "USD",
+  "market_cap": 953331941376.0,
+  "pe_ratio": 15.505405,
+  "forward_pe": 14.341591,
+  "week_52_high": 366.5,
+  "week_52_low": 279.1,
+  "revenue": 186328006656.0,
+  "net_income": 63634001920.0,
+  "profit_margin": 0.34921002,
+  "dividend_yield": 1.66,
+  "sector": "Financial Services",
+  "industry": "Banks - Diversified"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": "JPMorgan\u2019s Copthall Mauritius to argue SEBI violation was technical, not manipulative",
+    "source": "Bloomberg",
+    "published_at": "2026-08-24T07:35:30Z",
+    "description": "A JPMorgan Chase & Co unit facing allegations of non-compliance from market regulator SEBI is likely to contend that the issue was technical in nature rather than manipulative, people familiar with the matter said."
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-13",
+    "summary": "Item 1A. Risk Factors. The following discussion sets forth the material risk factors that could affect JPMorganChase\u2019s financial condition and operations. Readers should not consider any descriptions of these factors to be a complete set of all potential risks that could affect the Firm. Any of the risk factors discussed below could by itself, or combined with other factors, materially and adversely affect JPMorganChase\u2019s business, results of operations, financial condition, capital position, liquidity, competitive position or reputation, including by materially increasing expenses or decreasing revenues, which could result in material losses or a decrease in earnings. Summary The principal risk factors include: \u2022 Legal and Regulatory risks, including the impact of extensive supervision an"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-06",
+    "summary": "Item 1A: Risk Factors on pages 9\u201331 of JPMorganChase\u2019s 2025 Form 10-K for information on the financial consequences to holders of the Firm\u2019s debt and equity securities in a resolution scenario. Refer to Other capital requirements on page 98 of JPMorganChase\u2019s 2025 Form 10-K for additional information on TLAC. 50 U.S. broker-dealer regulatory capital J.P. Morgan Securities JPMorganChase\u2019s principal U.S. broker-dealer subsidiary is J.P. Morgan Securities. J.P. Morgan Securities is subject to the regulatory capital requirements of Rule 15c3-1 under the Securities Exchange Act of 1934 (the \u201cNet Capital Rule\u201d). J.P. Morgan Securities is also registered as a futures commission merchant and is subject to regulatory capital requirements, including those imposed by the SEC, the Commodity Futures Tr"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I cannot provide a summary of the latest 10-K and 10-Q based on the information provided. The context materials only contain excerpts from JPMorganChase's risk factors disclosure, specifically focusing on legal, regulatory, and operational risks the firm faces.
+
+To provide a comprehensive summary of the latest 10-K and 10-Q filings, I would need access to the complete documents, including sections covering:
+
+- Financial performance and results of operations
+- Balance sheet and liquidity analysis
+- Capital adequacy and management
+- Business segment performance
+- Management's discussion and analysis (MD&A)
+- Consolidated financial statements
+- Cash flow analysis
+- Forward-looking guidance
+
+The excerpts available only address risk factors related to regulatory oversight, legal proceedings, competitive disadvantages from differential regulation, and operational compliance costs. While these are important considerations, they represent only a portion of what would be included in a full 10-K or 10-Q filing summary.
+
+If you have specific questions about the risk factors disclosed or other particular aspects of JPMorganChase's filings, I'd be happy to help with those.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+JPMorgan Chase discloses the following principal risk factors:
+
+1. **Legal and Regulatory Risks** – Extensive supervision and regulation, changes in law interpretation or enforcement, differences in regulatory implementation across jurisdictions, governmental policies affecting certain industries, penalties from litigation or investigations, and potential losses to security holders if the firm enters resolution.
+
+2. **Political Risks** – Negative effects on businesses due to economic uncertainty from political developments.
+
+3. **Market Risks** – Unfavorable economic and market events, political developments, changes in interest rates and credit spreads, and market fluctuations affecting businesses, investments, and earnings.
+
+4. **Credit Risks** – Adverse changes in financial condition of clients and counterparties, declines in collateral value, and concentrations of credit risk.
+
+5. **Liquidity Risks** – Constrained liquidity impairing operations, dependence on subsidiaries for funding, and adverse effects from credit rating downgrades.
+
+6. **Capital Risks** – Limitations on capital distribution to shareholders if regulatory capital requirements are not satisfied.
+
+7. **Operational Risks** – Dependence on operational systems and employees, cyber attacks, risks from new products or technologies, data management issues, vendor oversight, and risks related to the risk management framework and financial reporting controls.
+
+8. **Strategic Risks** – Ineffective business strategies, significant competition, and impacts from climate change.
+
+9. **Conduct Risks** – Negative impacts from employee misconduct.
+
+10. **Reputation Risks** – Negative commercial impacts from client decisions, conflicts of interest, and failure to meet fiduciary obligations.
+
+11. **Country Risks** – Impacts from hostilities between countries and local economic, political, regulatory, and social factors.
+
+12. **People Risks** – Criticality of attracting and retaining qualified employees.

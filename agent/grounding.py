@@ -18,8 +18,17 @@ from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, SystemMessage
 
 # ── Judge prompt ────────────────────────────────────────────────────────────────
+# Versioned: every eval summary logs which prompt produced its rates. v1 rates
+# carry a recall caveat — the 2026-09-04 human validation measured v1 recall on
+# UNSUPPORTED at 1/9 (INFERENCE absorbed most human-UNSUPPORTED claims). v2's
+# five added rules each target a failure mechanism observed in that 50-claim
+# sample; v2 is NOT tuned against those labels beyond implementing the rules.
 
-JUDGE_SYSTEM = """\
+JUDGE_PROMPT_VERSION = "v2"
+
+# v1 — preserved verbatim for re-runs and comparisons. Produced every rate
+# reported before 2026-09-04.
+JUDGE_SYSTEM_V1 = """\
 You are a financial accuracy auditor. Your task is to verify whether specific \
 claims in an AI-generated investment brief are grounded in the source data the \
 model was given.
@@ -41,6 +50,55 @@ data or pre-written sections below.
 that does NOT appear in the source data and cannot be derived from it.
   INFERENCE   — a directional conclusion, rounded/scaled figure, or reasonable \
 extrapolation that follows logically from the data but is not verbatim in it.
+
+Be exhaustive — do not skip any quantitative or forward-looking claim.\
+"""
+
+JUDGE_SYSTEM = """\
+You are a financial accuracy auditor. Your task is to verify whether specific \
+claims in an AI-generated investment brief are grounded in the source data the \
+model was given.
+
+Evaluate ONLY the Executive Summary and Outlook sections. For every specific \
+quantitative figure, price target, threshold, ratio, metric, percentage, named \
+product milestone, or forward-looking number in those sections, output one entry \
+in this exact format:
+
+CLAIM: "<exact quoted text>"
+LABEL: SUPPORTED | UNSUPPORTED | INFERENCE
+REASON: <one sentence — if SUPPORTED, cite the source figure or show the \
+arithmetic; if UNSUPPORTED, state exactly what is absent or fails a check; if \
+INFERENCE, state the derivation step>
+
+Definitions:
+  SUPPORTED   — the exact number or fact is explicitly present in the source \
+data or pre-written sections below, or is a derived figure you verified by \
+recomputation (check 2).
+  UNSUPPORTED — the claim names an entity, figure, period, or qualifier that \
+is absent from the context — even if the claim is hedged, conditional, or \
+framed as a watch-item — or it fails any check below.
+  INFERENCE   — reserved for claims fully derivable from the context facts by \
+a stated or obvious step (a rounding, a direct comparison of two present \
+figures, a directional restatement). If the derivation needs any fact that is \
+not in the context, the claim is UNSUPPORTED, not INFERENCE.
+
+Checks you MUST perform on every applicable claim:
+1. Presence: every entity, figure, period, and qualifier the claim names must \
+appear in the context. Hedging ("could", "worth watching", "if") does not \
+downgrade a missing fact to INFERENCE — absent is UNSUPPORTED.
+2. Derived percentages and ratios: recompute from the context figures before \
+labelling. Within 0.15 percentage points (or 0.1x for ratios) of your computed \
+value → SUPPORTED; otherwise → UNSUPPORTED. Never label a derived figure \
+INFERENCE.
+3. Period labels: check quarter / half / nine-month / fiscal-year wording \
+against the column headers actually present in the context; a period mismatch \
+is UNSUPPORTED.
+4. Table-of-contents lines and exhibit boilerplate (indentures, RSU \
+agreements, bonus plans, signature pages) are not evidence. A claim whose only \
+support is such text is UNSUPPORTED.
+5. Positional claims ("below its 52-week high", "upper half of its range") \
+must be checked arithmetically against the two relevant context figures; label \
+from the arithmetic, SUPPORTED when it holds and UNSUPPORTED when it does not.
 
 Be exhaustive — do not skip any quantitative or forward-looking claim.\
 """

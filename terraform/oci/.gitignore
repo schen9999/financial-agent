@@ -1,0 +1,6 @@
+# State and secrets never leave this machine.
+.terraform/
+*.tfstate
+*.tfstate.backup
+terraform.tfvars
+crash.log
