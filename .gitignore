@@ -38,3 +38,6 @@ infra/terraform.tfvars
 # keep .terraform.lock.hcl and *.tf committed
 .venv-wsl/
 .streamlit/
+
+# Local presenter notes — never committed
+notes/
