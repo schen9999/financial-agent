@@ -325,11 +325,13 @@ bootstrap checklist's `nvidia.com/gpu` allocatable reads 1, not 2.
 no committed manifest set `spec.suspend` on `grounding-eval-nightly`:
 node 2 came up unsuspended, as the base renders it. Node 1 read `true`,
 and nothing committed or recorded explains it (a hand suspend is
-possible, not confirmed). `make argo-deploy` prints
-"Nightly eval scheduled: ..." whether or not it is suspended, because it
-reads only the schedule. The k3s argo overlay now sets `suspend: true`
-(kind and oke unchanged, proven with `render_diff.py`), so `vm-up`
-applies it. Verify:
+possible, not confirmed). That day `make argo-deploy` printed
+"Nightly eval scheduled: ..." whether or not it was suspended, because it
+read only the schedule; it now prints `suspend=<value>` (`<unset>` when
+the field is absent) at the end of its "Nightly eval:" line. The k3s argo
+overlay now sets `suspend: true` (kind and oke unchanged, proven with
+`render_diff.py`), so `vm-up` applies it and should print `suspend=true`.
+Verify directly as well:
 
 ```bash
 kubectl -n financial-agent get cronworkflow grounding-eval-nightly \

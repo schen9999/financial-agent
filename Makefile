@@ -85,7 +85,8 @@ ARGO_OVERLAY ?= kind
 
 argo-deploy: ## Apply eval workflow RBAC, WorkflowTemplate, and nightly CronWorkflow
 	kubectl apply -k argo/overlays/$(ARGO_OVERLAY)
-	@echo "Nightly eval scheduled: $$(kubectl -n $(NAMESPACE) get cronworkflow grounding-eval-nightly -o jsonpath='{.spec.schedule} {.spec.timezone}')"
+	@SUSPEND=$$(kubectl -n $(NAMESPACE) get cronworkflow grounding-eval-nightly -o jsonpath='{.spec.suspend}'); \
+	echo "Nightly eval: $$(kubectl -n $(NAMESPACE) get cronworkflow grounding-eval-nightly -o jsonpath='{.spec.schedule} {.spec.timezone}') suspend=$${SUSPEND:-<unset>}"
 
 # Override to submit a different one-shot Workflow, e.g. the local-model arm:
 #   make eval-run EVAL_RUN_FILE=argo/eval-run-local.yaml
