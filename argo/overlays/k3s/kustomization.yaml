@@ -35,3 +35,16 @@ patches:
           hostPath:
             path: /home/ubuntu/eval-findings/{{workflow.name}}
             type: DirectoryOrCreate
+  # Nightly suspended on the VM: every scheduled fire burns Anthropic
+  # credits, and evals there are submitted by hand (make vm-eval). To
+  # resume, patch spec.suspend to false (reverts on the next vm-up). kind
+  # and oke keep the base's unsuspended schedule.
+  - target:
+      group: argoproj.io
+      version: v1alpha1
+      kind: CronWorkflow
+      name: grounding-eval-nightly
+    patch: |-
+      - op: add
+        path: /spec/suspend
+        value: true

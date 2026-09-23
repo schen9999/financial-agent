@@ -321,18 +321,23 @@ bootstrap checklist's `nvidia.com/gpu` allocatable reads 1, not 2.
   gate PASSED; a reproduction run, not a number of record
   (numbers-of-record.md, dated run records).
 
-**Post-`vm-up` check — the nightly must be suspended.** No committed
-manifest sets `spec.suspend` on `grounding-eval-nightly`, so every fresh
-`vm-up` leaves it scheduled, and `make argo-deploy` prints "Nightly eval
-scheduled: ..." whether or not it is suspended (it reads only the
-schedule). Node 2 came up unsuspended. Suspend it and confirm:
+**Post-`vm-up` check — the nightly must be suspended.** On 2026-09-23
+no committed manifest set `spec.suspend` on `grounding-eval-nightly`:
+node 2 came up unsuspended, as the base renders it. Node 1 read `true`,
+and nothing committed or recorded explains it (a hand suspend is
+possible, not confirmed). `make argo-deploy` prints
+"Nightly eval scheduled: ..." whether or not it is suspended, because it
+reads only the schedule. The k3s argo overlay now sets `suspend: true`
+(kind and oke unchanged, proven with `render_diff.py`), so `vm-up`
+applies it. Verify:
 
 ```bash
-kubectl -n financial-agent patch cronworkflow grounding-eval-nightly \
-    --type merge -p '{"spec":{"suspend":true}}'
 kubectl -n financial-agent get cronworkflow grounding-eval-nightly \
     -o jsonpath='{.spec.suspend}'   # must print: true
 ```
+
+Anything else means the k3s overlay was not the one applied: re-run
+`make argo-deploy ARGO_OVERLAY=k3s`, then check again.
 
 **One-shot ssh needs `KUBECONFIG` inline.** `ssh <host> "kubectl ..."`
 runs a non-interactive shell that never loads `~/.bashrc`, so the
