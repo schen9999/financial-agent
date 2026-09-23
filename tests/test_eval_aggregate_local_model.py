@@ -10,7 +10,9 @@ eval_aggregate = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(eval_aggregate)
 
 PROV = {"local_model_served_name": "qwen7b", "local_model_dir": "qwen2.5-7b-instruct",
-        "local_model_backend": "openai", "local_model_url": "http://vllm.financial-agent.svc:8000"}
+        "local_model_backend": "openai", "local_model_url": "http://vllm.financial-agent.svc:8000",
+        "local_model_sampling": '{"max_tokens": 512, "min_p": 0.0, "repetition_penalty": 1.1, '
+                                '"temperature": 0.1, "top_k": 20, "top_p": 0.8}'}
 
 
 def _row(ticker, **extra):
@@ -32,6 +34,9 @@ def test_local_model_line_printed(monkeypatch, tmp_path, capsys):
     out = capsys.readouterr().out
     assert out.count("local model       : qwen7b (dir qwen2.5-7b-instruct, openai @ ") == 1
     assert "mixes models" not in out
+    assert out.count('local sampling    : {"max_tokens": 512, "min_p": 0.0, '
+                     '"repetition_penalty": 1.1, "temperature": 0.1, "top_k": 20, '
+                     '"top_p": 0.8}') == 1
 
 
 def test_baseline_rows_print_no_local_model(monkeypatch, tmp_path, capsys):

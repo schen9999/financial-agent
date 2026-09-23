@@ -115,6 +115,7 @@ def main():
         print(f"  local model       : {lm.get('local_model_served_name')} "
               f"(dir {lm.get('local_model_dir')}, {lm.get('local_model_backend')} "
               f"@ {lm.get('local_model_url')})")
+        print(f"  local sampling    : {lm.get('local_model_sampling', 'unrecorded')}")
     if len(models) > 1:
         print("  WARNING: rows served by more than one local model — this run "
               "mixes models and is not a single-model measurement")

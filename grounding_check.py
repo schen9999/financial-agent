@@ -61,6 +61,7 @@ from agent.core import (
     _rag_contexts,
     _SECTIONS,
     _haiku_section,
+    _section_llm,
     _trim_stock, _trim_news, _trim_sec, _data_context,
     _llm as _sonnet,
     _synthesis_prompt,
@@ -127,17 +128,23 @@ def _uses_local_model(arm: str) -> bool:
 def _local_model_provenance(arm: str) -> dict | None:
     """Which model served this arm's local sections, recorded in the findings
     metadata and the result row so runs against different models can be told
-    apart later. Name and URL are read from LocalChat itself (the values the
-    requests actually use); LOCAL_MODEL_DIR is set alongside the served name
-    by `make vm-vllm`. None for arms that never route to the local model."""
+    apart later. Name, URL, and sampling come from the exact client the
+    pipeline builds for a local section (agent.core._section_llm, under this
+    arm's env); LOCAL_MODEL_DIR is set alongside the served name by
+    `make vm-vllm`. None for arms that never route to the local model."""
     if not _uses_local_model(arm):
         return None
-    client = LocalChat()
+    _apply_arm_env(arm)
+    client = _section_llm(next(iter(_LOCAL_SECTIONS)))
+    if not isinstance(client, LocalChat):
+        raise SystemExit(f"FATAL: arm {arm!r} sets USE_LOCAL_MODEL but local "
+                         f"sections route to {type(client).__name__}")
     return {
         "local_model_served_name": client.model,
         "local_model_dir": os.getenv("LOCAL_MODEL_DIR") or "unrecorded",
         "local_model_backend": local_model_backend(),
         "local_model_url": client.url,
+        "local_model_sampling": json.dumps(client.sampling_params(), sort_keys=True),
     }
 
 

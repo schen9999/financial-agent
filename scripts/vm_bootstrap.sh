@@ -323,15 +323,25 @@ for d in "$MODELS_DIR" "$EVAL_FINDINGS_DIR"; do
   if [ -d "$d" ]; then check PASS "dir $d" "$(stat -c '%U:%G %a' "$d")"; else check FAIL "dir $d" "missing"; fi
 done
 
-if [ -d "$MODELS_DIR/qwen-ft" ]; then
-  if [ ${#TOK_FILES[@]} -gt 0 ] && ! grep -q '"extra_special_tokens"' "$MODELS_DIR"/*/tokenizer_config.json 2>/dev/null; then
-    check PASS "weights + tokenizer" "$MODELS_DIR/qwen-ft present, extra_special_tokens absent"
-  else
-    check FAIL "weights + tokenizer" "extra_special_tokens still present or tokenizer_config.json missing"
-  fi
-else
+# One row per model dir: vm-vllm can serve any of them (runbook "Model
+# comparison"), so each must carry a tokenizer_config.json that step 9 has
+# cleaned. qwen-ft is the one vm-up serves by default.
+if [ ! -d "$MODELS_DIR/qwen-ft" ]; then
   check WARN "weights + tokenizer" "$MODELS_DIR/qwen-ft absent — rsync the merged checkpoint, re-run this script (runbook step 2), then make vm-up"
 fi
+shopt -s nullglob
+MODEL_DIRS=("$MODELS_DIR"/*/)
+shopt -u nullglob
+for d in "${MODEL_DIRS[@]}"; do
+  d=${d%/}
+  if [ ! -f "$d/tokenizer_config.json" ]; then
+    check FAIL "tokenizer $(basename "$d")" "$d/tokenizer_config.json missing"
+  elif grep -q '"extra_special_tokens"' "$d/tokenizer_config.json"; then
+    check FAIL "tokenizer $(basename "$d")" "extra_special_tokens still present — re-run this script"
+  else
+    check PASS "tokenizer $(basename "$d")" "tokenizer_config.json present, extra_special_tokens absent"
+  fi
+done
 
 echo
 if [ "$FAIL" = 1 ]; then

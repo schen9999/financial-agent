@@ -49,7 +49,7 @@ Migrate to OCI for a hiring demo (deadline: demo Fri Sep 18, 2026):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (1823 lines, 127 tests collected: 126 passed + 1 skipped,
+3. The pytest suite (1894 lines, 130 tests collected: 129 passed + 1 skipped,
    the credit-gated judge test, as of 2026-09-23) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).

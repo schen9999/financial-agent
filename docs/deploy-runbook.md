@@ -375,11 +375,26 @@ make vm-vllm
   doesn't fit, vLLM refuses to start and its log states the largest length
   that would; `vm-vllm` then fails at the rollout wait — read
   `kubectl -n financial-agent logs deploy/vllm` and lower `MAX_LEN`.
+- **Same request for every model.** `LocalChat` sends every sampling
+  parameter explicitly: temperature 0.1, max_tokens 512, top_p 0.8,
+  top_k 20, repetition_penalty 1.1, min_p 0.0 (`PINNED_SAMPLING` in
+  `agent/tools/local_model.py`). Unpinned, vLLM v0.10.2 fills omitted
+  parameters from each model's own `generation_config.json`
+  (Qwen2.5-7B-Instruct: repetition_penalty 1.05). The pinned values are
+  the fine-tune's effective ones, so its behaviour is unchanged. The
+  prompt text is identical too; only the `model` field differs.
 - **Provenance.** Every local-model row records the served name, model dir,
-  backend, and URL — in the findings `## Metadata` block and on a
-  `local model :` line in the aggregate (which warns if one run mixed
-  models). Each eval pod first checks `/v1/models` and exits FATAL if
-  `LOCAL_MODEL_NAME` isn't listed.
+  backend, URL, and the sampling parameters sent — in the findings
+  `## Metadata` block and on `local model :` / `local sampling :` lines in
+  the aggregate (which warns if one run mixed models). Each eval pod first
+  checks `/v1/models` and exits FATAL if `LOCAL_MODEL_NAME` isn't listed.
+- **In scope: same-family comparisons only.** vLLM still applies each
+  model's own chat template. Qwen2.5 models, the fine-tune included,
+  inject the same default system prompt, so they compare cleanly.
+  Cross-family comparisons need template handling and are out of scope:
+  Llama 3.x adds a date/knowledge-cutoff system header, and Qwen3-style
+  thinking models emit reasoning text that would land in the section the
+  judge reads.
 - **Swap only with `vm-vllm`, and not mid-run.** Pods read app-config at
   start. `kubectl apply -k k8s/overlays/k3s` resets `LOCAL_MODEL_NAME`, and
   `kubectl apply -k k8s/vllm/overlays/k3s-gpu` reverts vLLM to the

@@ -65,7 +65,7 @@ records, not headline numbers of record.
 | Retrieval defect fix (2026-09-04) | Pre-fix: 3/40 tickers' risk retrieval passed verification (32 served exhibit/TOC text; 5 ADRs unfetchable). Post-fix: 32/40 pass; remaining 8 itemized in eval-methodology "Retrieval defect". Grounding numbers dated before 2026-09-04 measured the pipeline against exhibit text for most tickers and stand as dated records of that pipeline | `scripts/reindex_filings.py` verify pass |
 | Cost harness, post-retrieval-fix preview run (2026-09-04, 3-ticker mean) | $0.0364/brief = $0.0280 exact + $0.0084 RAG-internal estimate — richer risk contexts lengthen inputs; confirmed by the 2026-09-06 re-measure that set the $0.0366 cost of record | `scripts/cost_report.py` |
 | Synthesis-model comparison (2026-09-08, AAPL/NVDA/JPM) | Qualitative, side-by-side: Sonnet vs Haiku vs Haiku with a tuned prompt on the synthesis step; decision — Haiku with the tuned prompt (option C). No rate or cost is recorded from it; the switch is held back pending a quality re-eval on the VM (synthesis still Sonnet in the shipped code), so the $0.0366 cost of record and the grounding numbers are unaffected | `scripts/compare_synthesis.py` (prints all three outputs; does not write to cache) |
-| Test suite | 1823 lines (`wc -l tests/*.py`), 127 tests collected: 126 passed + 1 skipped (the credit-gated judge test) — as of 2026-09-23 | `python -m pytest tests/ --collect-only`; `python -m pytest tests/` |
+| Test suite | 1894 lines (`wc -l tests/*.py`), 130 tests collected: 129 passed + 1 skipped (the credit-gated judge test) — as of 2026-09-23 | `python -m pytest tests/ --collect-only`; `python -m pytest tests/` |
 
 ## Retired
 
