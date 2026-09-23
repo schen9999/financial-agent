@@ -1,9 +1,14 @@
 # One-off run of the grounding-eval WorkflowTemplate against the LOCAL model:
 # submits the harness's local-model arm (the arm itself sets
-# USE_LOCAL_MODEL=true; the LOCAL_MODEL_BACKEND/URL/NAME pointers reach the
-# eval pods from app-config). Outside kustomize like eval-run.yaml. Submit:
+# USE_LOCAL_MODEL=true; the LOCAL_MODEL_BACKEND/URL/NAME/DIR pointers reach
+# the eval pods from app-config, set by `make vm-vllm`). Outside kustomize
+# like eval-run.yaml. Submit:
 #   make eval-run EVAL_RUN_FILE=argo/eval-run-local.yaml
-# NOT YET EXECUTED against in-cluster vLLM.
+# EXECUTED against in-cluster vLLM on the VM 2026-09-03
+# (grounding-eval-local-dkghz, 10 tickers, judge v1): 12.31% unsupported vs
+# the same-day baseline's 3.03% — gate FAILED (v1 recall on UNSUPPORTED was
+# 1/9, so both rates are lower bounds). The 40-ticker A/B (judge v2)
+# is recorded in docs/numbers-of-record.md.
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:

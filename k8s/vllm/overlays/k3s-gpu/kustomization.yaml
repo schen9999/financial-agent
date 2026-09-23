@@ -1,10 +1,17 @@
-# Single-VM validation target (Phase 1.75): single-node k3s on the
-# VM.GPU.A10.2 (2x A10 24 GB). Purpose: a green vLLM run here validates the
-# exact serving image, tag, and args committed for the OKE A10 — same CUDA
-# build, same --gpu-memory-utilization, one GPU, matching the A10.1 shape the
-# demo targets. VALIDATED on the VM 2026-09-03: rollout green, /v1/models on
-# NodePort 30880 lists financial-lora, serving pinned to the one granted A10
-# (~21 GiB used, second card idle). No eval has run against vLLM itself yet.
+# Single-VM target: single-node k3s. First validated (Phase 1.75) on a
+# VM.GPU.A10.2 (2x A10 24 GB, since retired); since 2026-09-23 it runs on
+# two VM.GPU.A10.1 nodes (vm-a10-inst-1 demo, vm-a10-inst-2 fallback), where
+# the one-GPU pin is the whole node. Purpose: validate the exact serving
+# image, tag, and args committed for the OKE A10 — same CUDA build, same
+# --gpu-memory-utilization, one GPU. VALIDATED 2026-09-03 on the A10.2:
+# rollout green, /v1/models on NodePort 30880 lists financial-lora, serving
+# pinned to the one granted A10 (~21 GiB used, second card idle); re-served
+# with no manifest changes on both A10.1 nodes 2026-09-23. Evals against it:
+# 2026-09-03, 10 tickers, judge v1: 12.31% vs baseline 3.03% unsupported
+# (p = 0.054; v1 rates are lower bounds, recall 1/9); 2026-09-05/06, 40
+# tickers, judge v2: 8.15% vs 3.06% (p = 0.0023; approximate per the v2
+# held-out calibration, 75% recall / 60% precision) — gate FAILED both
+# times, so USE_LOCAL_MODEL ships off.
 #
 # Deltas vs oke-gpu, all environmental:
 #   - Model delivery: hostPath /home/ubuntu/models/qwen-ft (downloaded on the
