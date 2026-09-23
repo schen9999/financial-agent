@@ -31,13 +31,16 @@ Migrate to OCI for a hiring demo (deadline: demo Fri Sep 18, 2026):
 ## Targets
 - kind (local, working): single-node dev cluster; the equivalence baseline
   every overlay change is proven against.
-- Single VM (Phase 1.75 validation; demo fallback): one VM.GPU.A10.2 —
-  2x A10 24 GB, 30-core Xeon, 472 GB RAM, 1 TB disk, Ubuntu 22.04, NVIDIA
-  driver 570 preinstalled. Constraints: ssh access only (VCN seclist admits
-  22 only; everything reached via ssh -L tunnels, nothing bound publicly);
-  Docker/k3s not yet installed; no OKE compartment, OCIR, or Object Storage
-  bucket exists yet. Runs single-node k3s with the k3s overlays; vLLM pinned
-  to one GPU validated the A10.1-shaped oke-gpu serving config (2026-09-03).
+- Single VM (demo target): vm-a10-inst-1, fallback vm-a10-inst-2 — two
+  VM.GPU.A10.1 nodes (1x A10 24 GB, Ubuntu 22.04, NVIDIA driver 570
+  preinstalled), rebuilt from the runbook 2026-09-23 (bootstrap, vm-images,
+  vm-up green on both; runbook "Rebuild on fresh nodes, 2026-09-23").
+  Constraints: ssh access only (VCN seclist admits 22 only; everything
+  reached via ssh -L tunnels, nothing bound publicly); no OKE compartment,
+  OCIR, or Object Storage bucket exists yet. Runs single-node k3s with the
+  k3s overlays. The Sep 2 VM.GPU.A10.2 (Phase 1.75 validation box, where
+  vLLM pinned to one GPU validated the A10.1-shaped oke-gpu serving config
+  on 2026-09-03) is gone.
 - OKE (Phase 2, once the compartment lands): the Terraform-created cluster
   per the Goal section above.
 

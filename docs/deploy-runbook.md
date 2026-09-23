@@ -302,6 +302,47 @@ pass; the local-model pass is a second submission overriding `arms`).
 The workflow raises `activeDeadlineSeconds` to 3h — 40 tickers at
 parallelism 2 will not fit the template's 1h default.
 
+### Rebuild on fresh nodes, 2026-09-23
+
+Two fresh VM.GPU.A10.1 nodes (1x A10 24 GB; Ubuntu 22.04, NVIDIA driver
+570 preinstalled), `vm-a10-inst-1` and `vm-a10-inst-2`, rebuilt from
+this runbook; the 2026-09-02 VM.GPU.A10.2 is gone. On an A10.1 the
+bootstrap checklist's `nvidia.com/gpu` allocatable reads 1, not 2.
+
+- **First contact:** `scripts/vm_bootstrap.sh` died at its sudo check.
+  `sudo -v` prompts for a password on these OCI images despite
+  NOPASSWD; the check is now `sudo -n true` (commit 92f5b45).
+- **Otherwise green on the first try, on both nodes:** bootstrap,
+  `make vm-images`, `make vm-up`. vLLM served `financial-lora` with no
+  manifest changes (the k3s-gpu overlay's one-GPU pin is the whole
+  node on an A10.1).
+- **Reproduction eval:** `grounding-eval-2nh8v` on `vm-a10-inst-1`,
+  hosted-models arm, judge v2 — 0/87 unsupported (95% CI 0.0–4.2%),
+  gate PASSED; a reproduction run, not a number of record
+  (numbers-of-record.md, dated run records).
+
+**Post-`vm-up` check — the nightly must be suspended.** No committed
+manifest sets `spec.suspend` on `grounding-eval-nightly`, so every fresh
+`vm-up` leaves it scheduled, and `make argo-deploy` prints "Nightly eval
+scheduled: ..." whether or not it is suspended (it reads only the
+schedule). Node 2 came up unsuspended. Suspend it and confirm:
+
+```bash
+kubectl -n financial-agent patch cronworkflow grounding-eval-nightly \
+    --type merge -p '{"spec":{"suspend":true}}'
+kubectl -n financial-agent get cronworkflow grounding-eval-nightly \
+    -o jsonpath='{.spec.suspend}'   # must print: true
+```
+
+**One-shot ssh needs `KUBECONFIG` inline.** `ssh <host> "kubectl ..."`
+runs a non-interactive shell that never loads `~/.bashrc`, so the
+bootstrap's `KUBECONFIG` export is absent and kubectl can't find the
+cluster. Pass it on the command line:
+
+```bash
+ssh ubuntu@<vm-ip> 'KUBECONFIG=$HOME/.kube/config kubectl -n financial-agent get pods'
+```
+
 ## Findings capture — after any eval run
 
 Every eval pod and the aggregate print a base64 tar of

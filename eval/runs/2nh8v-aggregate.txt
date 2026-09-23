@@ -1,0 +1,29 @@
+=== aggregate step output ===
+==============================================================================
+  NIGHTLY GROUNDING EVAL — AGGREGATE
+==============================================================================
+  judge prompt      : v2
+  Ticker    Sup  Uns  Inf  Tot  Retr(s)  Pipe(s)
+  --------------------------------------------
+  AAPL        9    0    0    9    19.46    39.92
+  AMZN        4    0    0    4    17.60    39.72
+  GOOGL       7    0    0    7    16.46    39.62
+  JPM         6    0    0    6    15.30    35.34
+  META       14    0    2   16    15.60    38.83
+  MSFT        7    0    0    7    14.46    34.65
+  NVDA        6    0    1    7    18.53    39.84
+  TSLA        9    0    1   10    18.09    40.10
+  V          10    0    1   11    21.27    46.87
+  WMT         9    0    1   10    19.99    45.26
+  --------------------------------------------
+  TOTAL      81    0    6   87    17.68    40.02
+
+  tickers completed : 10
+  tickers skipped   : 0
+  unsupported rate  : 0.00%   (gate: <= 5.0%)
+  95% CI (Wilson)   : 0.00% (95% CI 0.0–4.2%)
+  total claims      : 87   (gate: >= 30)
+  est. run cost     : $0.6108   (chars/4 tokens priced from scripts/model_prices.json; excludes retries — cost of record stays scripts/cost_report.py)
+
+  GATE PASSED
+==============================================================================
