@@ -59,7 +59,7 @@ apt_get() { sudo env DEBIAN_FRONTEND=noninteractive NEEDRESTART_MODE=a apt-get -
 
 [ "$(id -u)" -ne 0 ] || die "run as the login user (ubuntu), not root — the script uses sudo where needed"
 command -v sudo >/dev/null || die "sudo not found"
-sudo -v || die "sudo credentials required"
+sudo -n true || die "passwordless sudo required"
 
 RUNTIME_CHANGED=0   # toolkit installed or k3s config written in this run -> k3s + device plugin restart
 
