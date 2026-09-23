@@ -17,6 +17,11 @@
 #   - No pool selector / GPU toleration: one untainted node.
 #   - NodePort 30880, reached only through an ssh -L tunnel — the VM binds
 #     nothing publicly.
+#
+# Model swap: `make vm-vllm MODEL_DIR=... SERVED_NAME=... MAX_LEN=...`
+# rewrites the rendered hostPath, --served-model-name, and --max-model-len
+# (scripts/vllm_model_swap.py). The values committed here are its defaults;
+# change them and the script exits on drift until its defaults follow.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:

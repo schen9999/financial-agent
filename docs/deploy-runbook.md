@@ -350,6 +350,45 @@ cluster. Pass it on the command line:
 ssh ubuntu@<vm-ip> 'KUBECONFIG=$HOME/.kube/config kubectl -n financial-agent get pods'
 ```
 
+### Model comparison — NOT YET EXECUTED
+
+Runs the eval's local-model arm against a different open-weight model with
+no hand-edited manifests. `make vm-vllm` renders the k3s-gpu overlay, swaps
+three values (`scripts/vllm_model_swap.py`), applies, waits for the rollout,
+confirms `/v1/models` on NodePort 30880 lists the served name, and only then
+sets `LOCAL_MODEL_NAME` + `LOCAL_MODEL_DIR` in app-config. Defaults
+(`qwen-ft`, `financial-lora`, 4096) reproduce the committed deployment byte
+for byte; `vm-up` calls it with them. On the VM, from the repo checkout:
+
+```bash
+# 1. weights under /home/ubuntu/models/<dir> (gated models: huggingface-cli login first)
+huggingface-cli download Qwen/Qwen2.5-7B-Instruct --local-dir /home/ubuntu/models/qwen2.5-7b-instruct
+# 2. swap, 3. run the local-model arm, 4. restore the fine-tune
+make vm-vllm MODEL_DIR=qwen2.5-7b-instruct SERVED_NAME=qwen7b MAX_LEN=8192
+make eval-run EVAL_RUN_FILE=argo/eval-run-local.yaml
+make vm-vllm
+```
+
+- **Sizing is per model.** bf16 is 2 bytes per parameter, so a 7B model's
+  weights take roughly 15 GB of the A10's 24 GB; what remains under
+  `--gpu-memory-utilization=0.90` is KV cache, which bounds `MAX_LEN`. If it
+  doesn't fit, vLLM refuses to start and its log states the largest length
+  that would; `vm-vllm` then fails at the rollout wait — read
+  `kubectl -n financial-agent logs deploy/vllm` and lower `MAX_LEN`.
+- **Provenance.** Every local-model row records the served name, model dir,
+  backend, and URL — in the findings `## Metadata` block and on a
+  `local model :` line in the aggregate (which warns if one run mixed
+  models). Each eval pod first checks `/v1/models` and exits FATAL if
+  `LOCAL_MODEL_NAME` isn't listed.
+- **Swap only with `vm-vllm`, and not mid-run.** Pods read app-config at
+  start. `kubectl apply -k k8s/overlays/k3s` resets `LOCAL_MODEL_NAME`, and
+  `kubectl apply -k k8s/vllm/overlays/k3s-gpu` reverts vLLM to the
+  fine-tune; either alone leaves the pair out of step. The preflight
+  catches a name mismatch, but `LOCAL_MODEL_DIR` is only as current as the
+  last `vm-vllm`.
+- **App plane.** api/worker/streamlit keep their old env until restarted;
+  if they route locally, re-run `make vm-local-model ON=true` after a swap.
+
 ## Findings capture — after any eval run
 
 Every eval pod and the aggregate print a base64 tar of

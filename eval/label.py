@@ -50,17 +50,21 @@ _TOP_HEADING_RE = re.compile(
 
 def render_findings_md(ticker: str, arm: str, judge_prompt_version: str,
                        source_context: str, section_block: str,
-                       exec_and_outlook: str, findings: str) -> str:
+                       exec_and_outlook: str, findings: str,
+                       extra_metadata: dict | None = None) -> str:
     """The extended findings-file format. Writer and parser live together in
     this module so the format can't drift: grounding_check._save_findings
-    calls this, parse_findings_file reads it back."""
+    calls this, parse_findings_file reads it back. `extra_metadata` lines
+    (e.g. which model served the local-model arm) follow context_sha256;
+    without it the output is unchanged."""
     import hashlib
     sha = hashlib.sha256(source_context.encode("utf-8")).hexdigest()
+    extra = "".join(f"{k}: {v}\n" for k, v in (extra_metadata or {}).items())
     return (
         f"# {ticker} — {arm}\n\n"
         f"## Metadata\n\nticker: {ticker}\narm: {arm}\n"
         f"judge_prompt_version: {judge_prompt_version}\n"
-        f"context_sha256: {sha}\n\n"
+        f"context_sha256: {sha}\n{extra}\n"
         f"## Retrieved source context\n\n{source_context}\n\n"
         f"## Pre-written sections (judge input)\n\n{section_block}\n\n"
         f"## Audited (Exec Summary + Outlook)\n\n{exec_and_outlook}\n\n"

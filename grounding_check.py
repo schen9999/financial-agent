@@ -41,7 +41,7 @@ from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 
 from eval.stats import fisher_exact, format_rate_ci
-from eval.runtime_guards import check_fatal_api_error
+from eval.runtime_guards import check_fatal_api_error, check_local_model_served
 from eval.label import count_labels_deduped
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -117,6 +117,28 @@ _ARM_ENV_DEFAULTS = {
 _HAIKU_IN_PER_MTOK = 1.00
 _HAIKU_OUT_PER_MTOK = 5.00
 from agent.tools.local_model import LOCAL_SECTIONS as _LOCAL_SECTIONS  # canonical routing set
+from agent.tools.local_model import LocalChat, local_model_backend
+
+
+def _uses_local_model(arm: str) -> bool:
+    return ARMS[arm]["env"].get("USE_LOCAL_MODEL") == "true"
+
+
+def _local_model_provenance(arm: str) -> dict | None:
+    """Which model served this arm's local sections, recorded in the findings
+    metadata and the result row so runs against different models can be told
+    apart later. Name and URL are read from LocalChat itself (the values the
+    requests actually use); LOCAL_MODEL_DIR is set alongside the served name
+    by `make vm-vllm`. None for arms that never route to the local model."""
+    if not _uses_local_model(arm):
+        return None
+    client = LocalChat()
+    return {
+        "local_model_served_name": client.model,
+        "local_model_dir": os.getenv("LOCAL_MODEL_DIR") or "unrecorded",
+        "local_model_backend": local_model_backend(),
+        "local_model_url": client.url,
+    }
 
 
 def _est_tokens(text: str) -> int:
@@ -191,7 +213,8 @@ FINDINGS_DIR = Path(__file__).parent / "eval_findings"
 
 
 def _save_findings(ticker: str, arm: str, source_context: str, section_block: str,
-                   exec_and_outlook: str, findings: str):
+                   exec_and_outlook: str, findings: str,
+                   provenance: dict | None = None):
     """Persist EVERYTHING the judge saw plus its findings, so a run's
     per-claim evidence survives and is self-describing: metadata (ticker,
     arm, judge prompt version, context hash), the retrieved source context,
@@ -205,7 +228,8 @@ def _save_findings(ticker: str, arm: str, source_context: str, section_block: st
         (FINDINGS_DIR / f"{ticker}_{arm}.md").write_text(
             render_findings_md(ticker, arm, JUDGE_PROMPT_VERSION,
                                source_context, section_block,
-                               exec_and_outlook, findings),
+                               exec_and_outlook, findings,
+                               extra_metadata=provenance),
             encoding="utf-8",
         )
     except Exception as e:
@@ -300,8 +324,9 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
         invoker=lambda messages: _retry(get_judge_llm().invoke, messages),
     )
 
+    provenance = _local_model_provenance(arm)
     _save_findings(ticker, arm, source_context, section_block, exec_and_outlook,
-                   grade.findings)
+                   grade.findings, provenance)
 
     # Estimated total spend for this (ticker, arm): Haiku sections (existing
     # estimate) + Sonnet synthesis + Sonnet judge, chars/4 tokens priced from
@@ -342,6 +367,7 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
         "est_cost": round(est_cost, 5),
         "inference_claims": grade.inference_claims,
         **counts,
+        **({"local_model": provenance} if provenance else {}),
     }
 
 
@@ -462,6 +488,22 @@ def main():
     print(f"BYPASS_CACHE={os.getenv('BYPASS_CACHE')} — Redis exact-key cache disabled for this run.",
           flush=True)
     print(f"Arms: {', '.join(args.arms)}   Tickers: {', '.join(args.tickers)}\n", flush=True)
+
+    # A local-model arm must measure the model it claims to: confirm the
+    # server lists LOCAL_MODEL_NAME before any ticker runs (exits otherwise).
+    local_arm = next((a for a in args.arms if _uses_local_model(a)), None)
+    if local_arm:
+        prov = _local_model_provenance(local_arm)
+        if prov["local_model_backend"] == "openai":
+            ids = check_local_model_served(prov["local_model_url"],
+                                           prov["local_model_served_name"])
+            print(f"Local model: {prov['local_model_served_name']} (dir "
+                  f"{prov['local_model_dir']}) listed on "
+                  f"{prov['local_model_url']}/v1/models {ids}\n", flush=True)
+        else:
+            print(f"Local model: {prov['local_model_served_name']} via "
+                  f"{prov['local_model_backend']} — /v1/models check applies to "
+                  f"the openai backend only; not checked\n", flush=True)
 
     results = []
     skipped = []

@@ -66,6 +66,17 @@ def maybe_upload_artifacts(summary, results, skipped):
     return ok
 
 
+def local_models(results):
+    """Distinct local-model provenance dicts across the run's rows (rows from
+    arms that routed to a local model carry one; others don't)."""
+    seen = []
+    for r in results:
+        lm = r.get("local_model")
+        if lm and lm not in seen:
+            seen.append(lm)
+    return seen
+
+
 def main():
     parser = argparse.ArgumentParser(description="Aggregate fanned-out grounding results.")
     parser.add_argument("--input", required=True,
@@ -99,6 +110,14 @@ def main():
     print("  NIGHTLY GROUNDING EVAL — AGGREGATE")
     print("=" * 78)
     print(f"  judge prompt      : {', '.join(judge_versions) if judge_versions else 'unrecorded (pre-v2 rows)'}")
+    models = local_models(results)
+    for lm in models:
+        print(f"  local model       : {lm.get('local_model_served_name')} "
+              f"(dir {lm.get('local_model_dir')}, {lm.get('local_model_backend')} "
+              f"@ {lm.get('local_model_url')})")
+    if len(models) > 1:
+        print("  WARNING: rows served by more than one local model — this run "
+              "mixes models and is not a single-model measurement")
     print(f"  {'Ticker':<8} {'Sup':>4} {'Uns':>4} {'Inf':>4} {'Tot':>4} {'Retr(s)':>8} {'Pipe(s)':>8}")
     print(f"  {'-'*44}")
     for r in sorted(results, key=lambda r: r["ticker"]):
@@ -129,6 +148,7 @@ def main():
     summary = {
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "judge_version": judge_versions or None,
+        "local_model": models or None,
         "totals": {
             "supported": sup, "unsupported": uns, "inference": inf, "claims": tot,
             "unsupported_pct": round(unsupported_pct, 2),
