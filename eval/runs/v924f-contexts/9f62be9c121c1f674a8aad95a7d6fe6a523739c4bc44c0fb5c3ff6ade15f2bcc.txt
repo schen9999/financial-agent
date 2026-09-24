@@ -1,0 +1,128 @@
+STOCK DATA:
+{
+  "ticker": "GOOGL",
+  "company_name": "Alphabet Inc.",
+  "current_price": 337.83,
+  "currency": "USD",
+  "market_cap": 4131638738944.0,
+  "pe_ratio": 16.933834,
+  "forward_pe": 22.700775,
+  "week_52_high": 408.61,
+  "week_52_low": 235.84,
+  "revenue": 445865984000.0,
+  "net_income": 244118994944.0,
+  "profit_margin": 0.54771,
+  "dividend_yield": 0.25,
+  "sector": "Communication Services",
+  "industry": "Internet Content & Information"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": "New data centres worth $68 billion disrupted in US, data show",
+    "source": "Bloomberg",
+    "published_at": "2026-09-21T06:22:45Z",
+    "description": "Communities across the country are now pushing through moratoriums on new construction, often before developers can apply for permissions"
+  },
+  {
+    "title": "EQT plans $50 billion India investment, including Adani Connex",
+    "source": "Bloomberg",
+    "published_at": "2026-09-17T07:00:46Z",
+    "description": "The bulk of the buyout firm\u2019s investments \u2014 around $30 billion \u2014 will be in data centers, with another $5 billion devoted to renewable energy to power them, according to Jean Salata, chair of Stockholm-based EQT."
+  },
+  {
+    "title": "Google DeepMind staffer says AI may \u2018kill us all\u2019 in exit post",
+    "source": "Bloomberg",
+    "published_at": "2026-09-15T04:51:17Z",
+    "description": "Bilal Chugtai is the latest AI researcher to voice grave concerns about the new technology\u2019s misaligned capabilities that could eventually destroy humankind"
+  },
+  {
+    "title": "Google Maps changes Lake Ontario label to Lake America in U.S.",
+    "source": "Fortune",
+    "published_at": "2026-08-30T18:26:19Z",
+    "description": "The decision was prompted by a change in the official US government geographic naming system, the company said."
+  },
+  {
+    "title": "OpenAI data centre executive Chris Malone departs the AI startup",
+    "source": "Bloomberg",
+    "published_at": "2026-08-26T07:43:30Z",
+    "description": "Malone\u2019s exit adds to a series of executive shuffles and departures at the ChatGPT maker in recent months"
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-05",
+    "summary": "Item 1A Risk Factors of this Annual Report on Form 10-K. Culture and Workforce Our people are critical for our continued success, so we work hard to create an environment where employees can have fulfilling careers and perform at a high level. We offer industry-leading benefits and programs to take care of the diverse needs of our employees and their families, including opportunities for career growth and development, resources to support their financial health, and access to excellent healthcare choices. Our competitive compensation programs help us to attract and retain key talent, and we will continue to invest in recruiting talented people to technical and non-technical roles and rewarding them well. We provide a variety of high-quality training and support to managers to build and str"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-07-23",
+    "summary": "ITEM 1A. RISK FACTORS Our operations and financial results are subject to various risks and uncertainties, including but not limited to those described in Part I, Item 1A, \"Risk Factors\" in our Annual Report on Form 10-K for the year ended December 31, 2025, which could harm our business, reputation, financial condition, and operating results, and may affect the trading price and price volatility of our Class A and Class C stock. Below are material changes to our risk factors since our Annual Report on Form 10-K for the year ended December 31, 2025. Risks Specific to our Company Our increasing investment in new businesses, products, services, and technologies is inherently risky, and could divert management attention and harm our business, financial condition, and operating results. We hav"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I can only provide information based on the context given, which contains excerpts from a 10-K filing but does not include any 10-Q information.
+
+From the 10-K excerpts provided, the key takeaways are:
+
+**Revenue Concentration Risk:**
+More than 70% of total revenues come from online advertising, creating significant dependence on this business segment.
+
+**Advertising Industry Challenges:**
+- Advertisers can terminate contracts at any time
+- AI is rapidly reshaping the advertising industry and advertising formats
+- Technologies that block or impair personalized ads pose a threat
+- Macroeconomic conditions directly impact advertiser spending
+
+**Significant Investment in New Technologies:**
+The company is making substantial investments in AI infrastructure, including custom TPUs, and expanding into new businesses and products across various industries beyond advertising. However, these investments carry inherent risks and may not generate adequate returns.
+
+**Cloud Services Expansion:**
+Google Cloud is investing heavily in enterprise services, AI platforms, and infrastructure, but faces intense competition and increasing costs for cybersecurity, talent, and infrastructure maintenance.
+
+**Capital Intensity:**
+The company is entering into significant long-term leasing arrangements and making large capital investments in property and equipment, which increases operational complexity and financial obligations.
+
+**Competitive Pressures:**
+Across devices, cloud services, and other business segments, the company faces rapid technological advancement from competitors and evolving market conditions.
+
+Note: No 10-Q information was included in the provided context.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses several significant risk factors affecting its business:
+
+## Revenue Concentration and Advertising Risks
+- Over 70% of total revenues come from online advertising, creating substantial dependency on this segment
+- Advertisers can terminate contracts at any time
+- Technologies that block ads or make personalized advertising more difficult could impair advertising effectiveness
+- Shifts in advertising formats and AI's reshaping of the advertising industry present competitive challenges
+- Macroeconomic conditions directly affect advertiser spending and demand for advertising services
+
+## Investment and Innovation Risks
+- Significant investments in new businesses, products, services, and technologies across various industries are inherently risky
+- These investments may divert management attention and resources from current operations
+- New offerings may not be commercially viable or generate adequate returns on capital
+- AI-related investments and products raise ethical, technological, legal, and regulatory challenges
+
+## Infrastructure and Capital Intensity
+- Substantial capital investments required for AI-optimized infrastructure, including custom TPUs
+- Significant leasing arrangements with third-party operators for compute capacity may increase costs and operational complexity
+- Large, long-duration commercial agreements could increase liabilities if counterparties or vendors underperform
+- Changes in asset performance expectations could impact financial condition
+
+## Competitive Pressures
+- Intense competition across multiple business segments, particularly in devices, cloud services, and emerging technology areas
+- Competitors are well-funded, experienced, and rapidly developing competing solutions
+- Market saturation in developed countries and short product life cycles in device markets
+
+## Regulatory and Compliance Risks
+- Regulatory compliance risks in financial services, healthcare, and public sector businesses
+- Government audits and cost reviews could expose the company to legal, financial, and reputational risks
+- Evolving laws and regulations may require new capital investments and localized service delivery

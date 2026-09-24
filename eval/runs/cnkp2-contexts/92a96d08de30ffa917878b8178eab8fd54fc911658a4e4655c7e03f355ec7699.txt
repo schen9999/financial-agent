@@ -1,0 +1,93 @@
+STOCK DATA:
+{
+  "ticker": "AFRM",
+  "company_name": "Affirm Holdings, Inc.",
+  "current_price": 68.09,
+  "currency": "USD",
+  "market_cap": 22975010816.0,
+  "pe_ratio": 12.312838,
+  "forward_pe": 14.103469,
+  "week_52_high": 90.44,
+  "week_52_low": 42.095,
+  "revenue": 4261082112.0,
+  "net_income": 1929793024.0,
+  "profit_margin": 0.45289,
+  "sector": "Financial Services",
+  "industry": "Credit Services"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-08-27",
+    "summary": "Item 1A. Risk Factors Investing in our Class A common stock involves a high degree of risk. You should consider carefully the material factors, risks and uncertainties described below that make an investment in our Company speculative or risky, together with all of the other information in this Form 10-K, including the section titled \u201cManagement\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d and our consolidated financial statements and the accompanying notes included elsewhere in this Form 10-K, before deciding whether to invest in shares of our Class A common stock. The risks and uncertainties described below are not the only ones we face. Additional risks and uncertainties of which we are currently unaware or that we currently deem immaterial may also become"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-05-07",
+    "summary": "Item 1A. Risk Factors The risks described under the heading \u201cRisk Factors\u201d in our Annual Report on Form 10-K for the fiscal year ended June 30, 2025 could materially and adversely affect our business, financial condition, results of operations, cash flows, future prospects, and the trading price of our Class A common stock. The risks and uncertainties described therein are not the only ones we face. Additional risks and uncertainties that we are unaware of or that we currently deem immaterial may also become important factors that adversely affect our business. You should carefully read and consider such risks, together with all of the other information in our Annual Report on Form 10-K for the fiscal year ended June 30, 2025, in this Quarterly Report on Form 10-Q (including the disclosure"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I can only provide information based on the context given, which contains excerpts from a 10-K filing. The context does not include any 10-Q information.
+
+From the 10-K excerpts provided, the key takeaways are:
+
+**Competitive Landscape:**
+The pay-over-time industry faces intensifying competition with low barriers to entry. Larger competitors, particularly credit card issuing banks, have significant advantages including greater brand recognition, more diversified products, broader consumer and merchant bases, and operational efficiencies.
+
+**Critical Risk Factors:**
+- Heavy dependence on a small number of commercial partners and originating bank partners (Celtic Bank and Lead Bank)
+- Reliance on funding sources to support the business model
+- Loan performance risks and potential financial losses
+- Inability to sustain revenue and GMV growth rates
+- Profitability challenges and quarterly result fluctuations
+- Regulatory and compliance risks
+- Interest rate sensitivity
+- Cybersecurity and data protection vulnerabilities
+- Talent retention, particularly leadership
+
+**Business Dependencies:**
+- Success depends on attracting and retaining both commercial partners and consumers
+- Platform performance and transaction processing reliability are critical
+- Economic conditions and consumer creditworthiness significantly impact revenue
+- Collection efforts on delinquent loans are essential to loan performance
+
+The filing emphasizes that the company operates in a high-risk, competitive environment with significant operational and financial dependencies.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company faces several material risk factors across its business operations:
+
+## Commercial Partner and Consumer Risks
+- Inability to attract, retain, or grow relationships with commercial partners could materially harm the business
+- Failure to attract new consumers or retain existing ones would adversely affect results of operations
+- Many commercial partner agreements are non-exclusive and lack transaction volume commitments, allowing partners to work with competitors
+
+## Operational and Financial Risks
+- Reliance on a small number of commercial partners creates concentration risk
+- Dependence on Celtic Bank and Lead Bank to originate substantially all loans facilitated through the platform
+- Inability to sustain revenue and GMV growth rates
+- Reliance on various funding sources that may not be renewed or available on acceptable terms
+- Potential loan performance issues and financial losses on loans held on the balance sheet
+- Inability to sustain profitability and significant quarterly result fluctuations
+
+## Competitive and Market Risks
+- Highly competitive industry with competition from legacy payment methods, mobile wallets, and other pay-over-time solutions
+- Low barriers to entry in the pay-over-time industry
+- Rising market interest rates could adversely affect the business
+- Economic conditions and consumer creditworthiness impact revenue
+
+## Regulatory, Compliance, and Operational Risks
+- Extensive regulatory oversight and potential changes in laws and regulations
+- Litigation and compliance issues could result in fines, penalties, and reputational harm
+- Cyber-attacks and data security threats
+- Service disruptions on the platform
+- Loss of key personnel, including the Founder and CEO
+- International expansion challenges

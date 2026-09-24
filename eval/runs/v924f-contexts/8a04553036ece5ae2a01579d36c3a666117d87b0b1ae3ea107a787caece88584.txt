@@ -1,0 +1,87 @@
+STOCK DATA:
+{
+  "ticker": "COIN",
+  "company_name": "Coinbase Global, Inc.",
+  "current_price": 198.13,
+  "currency": "USD",
+  "market_cap": 52274012160.0,
+  "forward_pe": 69.88195,
+  "week_52_high": 402.16,
+  "week_52_low": 139.11,
+  "revenue": 6043752960.0,
+  "net_income": -987766016.0,
+  "profit_margin": -0.16344,
+  "sector": "Financial Services",
+  "industry": "Financial Data & Stock Exchanges"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": "Bitcoin drops below $80,000 as US jobs data spurs Fed-hike bets",
+    "source": "Bloomberg",
+    "published_at": "2026-09-07T03:29:51Z",
+    "description": "Bitcoin dropped as much as 3.5% after stronger-than-expected US jobs data revived bets on a September Federal Reserve rate hike, abruptly reversing the cryptocurrency\u2019s latest push above $80,000."
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-12",
+    "summary": "ITEM 1A. RISK FACTORS Investing in our Class A common stock involves a high degree of risk. You should carefully consider the risks and uncertainties described below, together with all of the other information in this Annual Report on Form 10-K, including the section titled \u201cManagement\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d and the Consolidated Financial Statements and related notes. The risks and uncertainties described below are not the only ones we face. Additional risks and uncertainties that we are unaware of or that we deem immaterial may also become important factors that adversely affect our business. If any of the following risks occur, our business, operating results, financial condition, and future prospects could be materially and adversely "
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-07-30",
+    "summary": "Item 1A Risk Factors in the Annual Report for additional details about these regulations. 41 Table of Contents We are required to hold corporate liquid assets at our subsidiaries to meet capital requirements established by our regulators based on the value of crypto assets and payment stablecoins held in custody. Our money-transmitting subsidiary, CB Inc., and our custodian subsidiary, Coinbase Custody Trust Company, LLC (\u201cCCTC\u201d), which is a fiduciary under New York State Law and a qualified custodian under the Investment Advisers Act of 1940, are required to maintain minimum net capital requirements under agreements with the New York State Department of Financial Services. These subsidiaries and other subsidiaries are also subject to maintenance capital requirements by other regulators bo"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I cannot provide a summary of the latest 10-K and 10-Q based on the context provided. The information given consists only of risk factor disclosures from a 10-K filing for Coinbase (COIN), specifically focusing on business volatility, cryptocurrency price fluctuations, and revenue concentration risks.
+
+To provide a comprehensive summary of the latest 10-K and 10-Q filings, I would need access to additional sections such as:
+
+- Management's Discussion and Analysis (MD&A)
+- Financial statements and results of operations
+- Balance sheet and cash flow information
+- Business overview and strategy
+- Recent quarterly performance metrics
+- Liquidity and capital resources discussion
+
+The risk factors section alone does not represent the full scope of what would constitute key takeaways from complete 10-K and 10-Q filings. If you have access to other sections of these documents, I'd be happy to provide a more complete summary.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company identifies several primary risk factors affecting its business:
+
+## Operating Results Volatility
+Operating results fluctuate significantly due to the highly volatile nature of crypto asset prices and market sentiment. This volatility makes it difficult to forecast growth trends accurately, and period-to-period comparisons may not be meaningful indicators of future performance.
+
+## Revenue Dependency on Crypto Markets
+Total revenue is substantially dependent on:
+- Prices of crypto assets
+- Volume of transactions conducted on the platform
+- Declines in either could adversely affect business, operating results, and financial condition
+
+## Revenue Concentration
+Revenue is concentrated in limited areas, particularly:
+- Transaction revenue from Bitcoin and Ethereum trading
+- Subscription and services revenue from payment stablecoins
+
+If revenue from these concentrated areas declines and is not replaced by new demand, the business could be adversely affected.
+
+## Multiple Unpredictable Factors
+Operating results are affected by numerous unpredictable factors including:
+- Regulatory changes and government actions
+- Ability to attract and retain customers and talent
+- Competition and product development
+- System failures and security breaches
+- Macroeconomic conditions
+- Market sentiment toward crypto assets
+- Partnerships and strategic alliances
+
+These risks collectively create uncertainty in forecasting performance and could cause the stock price to fluctuate significantly.
