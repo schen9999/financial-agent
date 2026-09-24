@@ -42,8 +42,10 @@ interval wherever the claim counts are on record.
   A10 GPU pool), OCIR, an Object Storage bucket, and a Block Volume storage
   class is written and passes `terraform validate`, but has **never been
   applied**. The k3s VMs are the running target.
-- **How to deploy it:** [docs/deploy-runbook.md](docs/deploy-runbook.md)
-  (single-node k3s path, and the OKE steps).
+- **How to deploy it:** [docs/operations.md](docs/operations.md) (current
+  procedure, teardown, troubleshooting); [docs/deploy-runbook.md](docs/deploy-runbook.md)
+  is the dated history and the OKE steps. Configuration:
+  [docs/configuration.md](docs/configuration.md); cost: [docs/cost.md](docs/cost.md).
 
 ## Key results
 
@@ -551,7 +553,7 @@ make cluster-down    # tear down
 
 | What | Command | Notes |
 |---|---|---|
-| Unit and integration tests | `python -m pytest tests/` | 135 collected: 134 pass + 1 skipped (as of 2026-09-23). Runs in CI on every pull request and push to `main`. |
+| Unit and integration tests | `python -m pytest tests/` | 139 collected: 138 pass + 1 skipped (as of 2026-09-24). Runs in CI on every pull request and push to `main`. |
 | Credit-gated judge test | `CRITIC_INJECTION=1 python -m pytest tests/test_critic_injection.py -q -s` | Calls the paid Sonnet judge, so it is skipped in the default run and never runs on push or PR. `critic-injection.yml` runs it weekly and on manual dispatch and asserts recall ≥ 0.8. |
 | Kubernetes smoke test | `make smoke-test` | On kind: 13 assertions covering a sync brief, a Celery async task, a cache hit and miss, and the MCP server. |
 | Manifest equivalence | `python3 scripts/render_diff.py LEFT RIGHT` | Semantic diff of two rendered manifest sets; exit 0 means identical. How it proves the overlays: [docs/verification.md](docs/verification.md). |
@@ -561,14 +563,21 @@ make cluster-down    # tear down
 
 ## API Endpoints
 
+Full reference with request and response shapes and an example for each
+route: [docs/api.md](docs/api.md). A running instance also serves the
+generated reference at `/docs`.
+
 | Method | Endpoint | Description |
 |---|---|---|
 | `GET` | `/health` | Health check |
+| `GET` | `/stock/{ticker}` | Current quote and key financials |
+| `GET` | `/stock/{ticker}/history` | 12 months of daily closes |
 | `POST` | `/research` | Generate brief (synchronous) |
 | `POST` | `/research/async` | Submit research job |
 | `GET` | `/research/status/{job_id}` | Poll async job status |
 | `POST` | `/ask` | ReAct agent answer |
 | `GET` | `/history/{ticker}` | Past briefs for a ticker |
+| `GET` | `/history` | The 10 most recent briefs |
 
 ---
 

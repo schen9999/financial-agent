@@ -23,7 +23,11 @@ Method (also written to fourarm_holdout_method.json):
     are only in the key. Label without opening the key.
 
 Usage:
-  python eval/build_fourarm_holdout.py
+  python eval/build_fourarm_holdout.py           # refuses if the method file exists
+  python eval/build_fourarm_holdout.py --force   # redraw; keeps provenance fields
+
+The answer key is written to eval/judge_validation/ but is gitignored: keep it
+outside the repository while the sample is unlabeled.
 """
 import csv
 import hashlib
@@ -86,7 +90,43 @@ def draw(rows: list[dict], seed: int = SEED) -> tuple[list[dict], dict]:
     return picked, strata
 
 
-def main():
+METHOD_FILE = OUT_DIR / "fourarm_holdout_method.json"
+# Fields added by hand after the draw (where the key lives, when it was
+# public). A rerun must never silently drop them.
+PROVENANCE_KEYS = ("key_location", "key_exposure")
+
+
+def check_can_write(path: Path, force: bool) -> None:
+    """Refuse to redraw over an existing method file unless forced: the
+    sample is reserved, and the file carries provenance a rerun would lose."""
+    if path.exists() and not force:
+        raise SystemExit(
+            f"{path.name} already exists; refusing to overwrite the reserved sample "
+            "and its provenance record. Rerun with --force to redraw (provenance "
+            f"fields {', '.join(PROVENANCE_KEYS)} are carried over).")
+
+
+def write_method(path: Path, method: dict, force: bool = False) -> dict:
+    """Write the method record; with force, keep existing provenance fields."""
+    check_can_write(path, force)
+    if path.exists():
+        old = json.loads(path.read_text(encoding="utf-8"))
+        for k in PROVENANCE_KEYS:
+            if k in old:
+                method[k] = old[k]
+    path.write_text(json.dumps(method, indent=2) + "\n", encoding="utf-8", newline="\n")
+    return method
+
+
+def main(argv=None):
+    import argparse
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap.add_argument("--force", action="store_true",
+                    help="redraw even though fourarm_holdout_method.json exists")
+    force = ap.parse_args(argv).force
+    # Before writing anything: a refused run must leave all three files intact.
+    check_can_write(METHOD_FILE, force)
+
     rows = []
     for label, run, harness_arm, wf in SOURCES:
         for r in collect_claims(REPO / f"eval/runs/raw/{run}-findings", [harness_arm], wf):
@@ -132,8 +172,7 @@ def main():
         "strata_population_and_drawn": {f"{a}|{l}": v for (a, l), v in strata.items()},
         "sample_size": len(picked),
     }
-    (OUT_DIR / "fourarm_holdout_method.json").write_text(
-        json.dumps(method, indent=2) + "\n", encoding="utf-8", newline="\n")
+    write_method(METHOD_FILE, method, force)
 
     print(f"population {before}, overlap excluded {excluded}, sample {len(picked)}")
     for (a, l), (pop, got) in strata.items():
