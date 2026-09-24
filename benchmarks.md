@@ -74,12 +74,16 @@ environment-limited.
 
 ### Grounding — full 10-ticker suite, LLM-as-judge, cache bypassed (2026-08-24)
 
+All grounding/unsupported figures in this file are **judge v1**; v1 recall on
+UNSUPPORTED measured 1/9 against human labels (2026-09-04), so unsupported
+rates are lower bounds (docs/eval-methodology.md).
+
 `LOCAL_MODEL_BACKEND=openai python grounding_check.py --arms baseline local-model`
 — same retrieval (top-3, no rerank) on both arms; the only difference is who
 writes the 2 trained sections. MSFT failed its data fetch after retries and was
 excluded from BOTH arms (9 tickers balanced).
 
-| Arm | Tickers | Claims | Supported | Unsupported | Inference | Grounding | Unsup % | Pipeline latency* |
+| Arm | Tickers | Claims | Supported | Unsupported | Inference | Grounding | Unsup % (judge v1) | Pipeline latency* |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | Hosted (all-Haiku sections) | 9 | 65 | 56 | 0 | 9 | **86.2%** | 0.0% | 27.3s |
 | Local hybrid (2 sections on fine-tuned Qwen2.5-1.5B) | 9 | 72 | 56 | 2 | 14 | **77.8%** | 2.8% | 223.0s* |
@@ -96,7 +100,11 @@ grounding % is sensitive to that split; unsupported stayed low on both arms:
 0 vs 2 claims). The local model writes less-grounded sections. Nothing here is
 hidden: the hybrid trades grounding for local serving.
 
-### Cost per brief — exact API-reported tokens, priced from `model_prices.json` (n=3)
+### Cost per brief — exact API-reported tokens, priced from `model_prices.json` (n=3, Aug 2026, pre-retrieval-fix pipeline)
+
+The current cost of record is **$0.0366/brief** (2026-09-06,
+post-retrieval-fix — docs/numbers-of-record.md); the table below is the
+dated pre-fix measurement the hybrid comparison was made on.
 
 | Backend | Exact (LangChain calls) | RAG-internal (estimated) | **Total/brief** | Total latency (incl. fetch)* |
 |---|---:|---:|---:|---:|

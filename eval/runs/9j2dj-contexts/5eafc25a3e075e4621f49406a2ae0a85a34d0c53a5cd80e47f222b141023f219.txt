@@ -1,0 +1,44 @@
+STOCK DATA:
+{
+  "ticker": "TM",
+  "company_name": "Toyota Motor Corporation",
+  "current_price": 197.11,
+  "currency": "USD",
+  "market_cap": 233414393856.0,
+  "pe_ratio": 9.117021,
+  "forward_pe": 12.491128,
+  "week_52_high": 248.9,
+  "week_52_low": 166.1,
+  "revenue": 51957024686080.0,
+  "net_income": 4483796959232.0,
+  "profit_margin": 0.0863,
+  "dividend_yield": 3.14,
+  "sector": "Consumer Cyclical",
+  "industry": "Auto Manufacturers"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "message": "No 10-K found"
+  },
+  "10-Q": {
+    "message": "No 10-Q found"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+(not available)
+
+RAG — RISK FACTORS:
+(not available)

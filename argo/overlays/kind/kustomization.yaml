@@ -1,0 +1,23 @@
+# kind overlay — reconstructs the pre-kustomize argo manifests exactly
+# (verified by scripts/render_diff.py). JSON6902 with template indices because
+# kustomize strategic merge would replace a CRD's whole templates list.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+
+patches:
+  # templates: 0=main (dag, no container), 1=eval-one, 2=aggregate.
+  # kind-loaded image must never be pulled — fail loudly instead.
+  - target:
+      group: argoproj.io
+      version: v1alpha1
+      kind: WorkflowTemplate
+      name: grounding-eval
+    patch: |-
+      - op: replace
+        path: /spec/templates/1/container/imagePullPolicy
+        value: Never
+      - op: replace
+        path: /spec/templates/2/container/imagePullPolicy
+        value: Never

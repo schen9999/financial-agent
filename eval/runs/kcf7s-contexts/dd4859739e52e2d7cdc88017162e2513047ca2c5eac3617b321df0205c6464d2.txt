@@ -1,0 +1,81 @@
+STOCK DATA:
+{
+  "ticker": "MSFT",
+  "company_name": "Microsoft Corporation",
+  "current_price": 500.59,
+  "currency": "USD",
+  "market_cap": 3717153947648.0,
+  "pe_ratio": 28.075714,
+  "forward_pe": 21.14346,
+  "week_52_high": 553.72,
+  "week_52_low": 349.2,
+  "revenue": 331839012864.0,
+  "net_income": 133748998144.0,
+  "profit_margin": 0.40305,
+  "dividend_yield": 0.79,
+  "sector": "Technology",
+  "industry": "Software - Infrastructure"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-07-29",
+    "summary": "ITEM 1A. RIS K FACTORS Our operations and financial results are subject to various risks and uncertainties, including those described below, that could adversely affect our business, operations, financial condition, results of operations, liquidity, and the trading price of our common stock. Statements in this section reflect our beliefs and opinions as to matters that could adversely affect us in the future. References to past events are provided by way of example only and are not intended to be a complete listing or a representation as to whether or not such matters have occurred in the past. STRATEGIC AND COMPETITIVE RISKS We face intense competition across all markets for our products and services, which could adversely affect our results of operations. Competition in the technology se"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-04-29",
+    "summary": "ITEM 1A. RI SK FACTORS Our operations and financial results are subject to various risks and uncertainties, including those described below, that could adversely affect our business, operations, financial condition, results of operations, liquidity, and the trading price of our common stock. STRATEGIC AND COMPETITIVE RISKS We face intense competition across all markets for our products and services, which could adversely affect our results of operations. Competition in the technology sector Our competitors range in size from diversified global companies with significant research and development resources to small, specialized firms whose narrower product lines may let them be more effective in deploying technical, marketing, and financial resources. Barriers to entry in many of our busines"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I cannot provide a summary of the latest 10-K and 10-Q based on the context provided. The information given consists only of excerpts from the Risk Factors section (Item 1A) of a filing, which focuses specifically on business risks and competitive challenges.
+
+To provide a comprehensive summary of the latest 10-K and 10-Q, I would need access to additional sections such as:
+
+- Business overview and operations
+- Financial performance and results
+- Management's discussion and analysis (MD&A)
+- Balance sheet and cash flow information
+- Management's assessment of financial condition
+- Other material business developments
+
+The risk factors section alone does not represent the full scope of what these filings contain. If you'd like, I can summarize the specific risks discussed in the provided excerpts, which primarily cover competitive pressures in technology, cloud and AI market challenges, and execution risks related to product development and customer adoption.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The primary risk factors disclosed include:
+
+## Strategic and Competitive Risks
+
+**Intense Competition Across Markets**: The company faces competition from diversified global companies with significant R&D resources as well as small, specialized firms. Many business areas have low barriers to entry and evolve rapidly with changing technologies and new product introductions.
+
+**Platform-Based Ecosystem Competition**: Competitors may pursue vertically-integrated models controlling both hardware and software, which could make it difficult to attract and retain customers. Additionally, competing platforms for smartphones and tablets have reduced demand for PC operating systems, and competing content and application marketplaces with significant installed bases pose challenges.
+
+**Business Model Competition**: The AI technology and services market is highly competitive with new entrants continuously emerging. Competitors use various business models including free applications funded by advertising, open-source software offerings, and cloud-based services.
+
+## Cloud and AI Investment Risks
+
+**Substantial Capital Requirements**: Significant investments in developing, training, and deploying AI models and cloud-based services require substantial capital expenditures on an accelerated timeline, with revenue realization uncertain in timing and magnitude.
+
+**Demand Uncertainty**: Demand for cloud-based and AI products is evolving and difficult to forecast. Overestimation of demand could result in underutilized infrastructure and asset impairment, while underestimation could limit the ability to meet customer needs.
+
+**Cost Structure Uncertainty**: The cost structure for AI products and services faces significant uncertainty regarding model training and inference costs, component availability and pricing, and energy costs.
+
+## Product Misuse Risk
+
+Cloud-based and AI products may be misused for fraudulent, abusive, or unlawful purposes, potentially resulting in reputational harm, regulatory scrutiny, and service disruptions.

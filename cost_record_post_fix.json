@@ -1,0 +1,91 @@
+{
+  "tickers": [
+    "AAPL",
+    "NVDA",
+    "JPM"
+  ],
+  "runs": [
+    {
+      "ticker": "AAPL",
+      "elapsed_s": 39.9,
+      "brief_chars": 6241,
+      "exact_by_model": {
+        "claude-haiku-4-5-20251001": {
+          "input_tokens": 2364,
+          "output_tokens": 757,
+          "cost_usd": 0.006149
+        },
+        "claude-sonnet-4-6": {
+          "input_tokens": 1914,
+          "output_tokens": 1278,
+          "cost_usd": 0.024912
+        }
+      },
+      "exact_cost_usd": 0.031061,
+      "rag_estimated": {
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4868,
+        "output_tokens": 701,
+        "cost_usd": 0.008373
+      },
+      "total_cost_usd": 0.039434
+    },
+    {
+      "ticker": "NVDA",
+      "elapsed_s": 32.11,
+      "brief_chars": 5816,
+      "exact_by_model": {
+        "claude-haiku-4-5-20251001": {
+          "input_tokens": 1954,
+          "output_tokens": 638,
+          "cost_usd": 0.005144
+        },
+        "claude-sonnet-4-6": {
+          "input_tokens": 1674,
+          "output_tokens": 1128,
+          "cost_usd": 0.021942
+        }
+      },
+      "exact_cost_usd": 0.027086,
+      "rag_estimated": {
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5927,
+        "output_tokens": 533,
+        "cost_usd": 0.008592
+      },
+      "total_cost_usd": 0.035678
+    },
+    {
+      "ticker": "JPM",
+      "elapsed_s": 32.2,
+      "brief_chars": 5541,
+      "exact_by_model": {
+        "claude-haiku-4-5-20251001": {
+          "input_tokens": 2211,
+          "output_tokens": 609,
+          "cost_usd": 0.005256
+        },
+        "claude-sonnet-4-6": {
+          "input_tokens": 1624,
+          "output_tokens": 1092,
+          "cost_usd": 0.021252
+        }
+      },
+      "exact_cost_usd": 0.026508,
+      "rag_estimated": {
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5003,
+        "output_tokens": 648,
+        "cost_usd": 0.008243
+      },
+      "total_cost_usd": 0.034751
+    }
+  ],
+  "mean": {
+    "exact_cost_usd": 0.028218,
+    "rag_estimated_cost_usd": 0.008403,
+    "total_cost_usd": 0.036621,
+    "elapsed_s": 34.74
+  },
+  "prices_file": "model_prices.json"
+}

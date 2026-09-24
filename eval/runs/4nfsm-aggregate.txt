@@ -1,0 +1,63 @@
+=== aggregate step output ===
+==============================================================================
+  NIGHTLY GROUNDING EVAL — AGGREGATE
+==============================================================================
+  judge prompt      : v2
+  local model       : qwen2.5-1.5b-instruct (dir qwen2.5-1.5b-instruct, openai @ http://vllm.financial-agent.svc:8000)
+  local sampling    : {"max_tokens": 512, "min_p": 0.0, "repetition_penalty": 1.1, "temperature": 0.1, "top_k": 20, "top_p": 0.8}
+  Ticker    Sup  Uns  Inf  Tot  Retr(s)  Pipe(s)
+  --------------------------------------------
+  AAPL        8    0    0    8    13.31    37.58
+  AFRM       17    1    0   18    16.97    36.58
+  AMZN        4    1    0    5    20.52    41.04
+  BABA        5    2    0    7    10.57    30.49
+  BEAM       15    0    2   17     7.02    32.38
+  BLNK       15    0    0   15    19.99    41.29
+  BYND        4    1    0    5     6.90    27.66
+  CALM       12    2    0   14     7.87    31.11
+  CHGG        9    0    0    9    20.44    42.52
+  COIN       10    1    0   11     6.57    28.40
+  CRBU        9    0    1   10     7.03    33.77
+  EDIT       12    3    2   17    15.95    41.51
+  EVGO        7    0    0    7    19.24    43.52
+  GOOGL       9    1    0   10    19.72    46.18
+  JPM         4    1    0    5     7.45    27.19
+  LCID       12    1    1   14     7.13    29.29
+  META        7    0    0    7     6.41    30.32
+  MSFT        5    0    0    5    13.12    37.34
+  NTLA        5    0    0    5     8.20    33.27
+  NVDA        6    1    0    7     7.06    28.72
+  NVO        10    0    0   10    11.09    31.11
+  OCGN        7    1    0    8    16.52    37.92
+  OMER        9    2    2   13    19.15    43.46
+  PTON        8    2    0   10     7.68    29.67
+  RDFN        5    0    0    5     6.91    26.27
+  RIVN        8    2    0   10     7.37    31.87
+  ROKU        8    2    0   10     6.56    29.38
+  SANA        7    0    0    7     7.21    27.24
+  SAP         6    0    1    7    13.34    32.44
+  SFIX        8    0    2   10     8.10    29.46
+  SNAP       13    0    0   13     7.58    30.69
+  TM          8    4    2   14    13.63    30.83
+  TSLA       12    0    0   12     8.01    30.46
+  TSM        11    0    0   11     2.87    23.64
+  UNH        15    1    2   18    18.69    40.59
+  UPST        6    1    0    7    15.80    38.03
+  V           5    0    0    5    16.07    40.15
+  VERV       10    0    1   11     7.93    29.64
+  WMT         8    1    0    9    14.08    35.84
+  XOM        13    0    1   14    17.51    41.42
+  --------------------------------------------
+  TOTAL     352   31   17  400    11.69    34.01
+
+  tickers completed : 40
+  tickers skipped   : 0
+  unsupported rate  : 7.75%   (gate: <= 5.0%)
+  95% CI (Wilson)   : 7.75% (95% CI 5.5–10.8%)
+  total claims      : 400   (gate: >= 30)
+  est. run cost     : $2.2704   (chars/4 tokens priced from scripts/model_prices.json; excludes retries — cost of record stays scripts/cost_report.py)
+
+  GATE FAILED: unsupported rate 7.75% exceeds 5.0%
+==============================================================================
+time="2026-09-23T23:36:08.322Z" level=info msg="sub-process exited" argo=true error="<nil>"
+Error: exit status 1

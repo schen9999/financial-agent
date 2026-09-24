@@ -1,0 +1,65 @@
+STOCK DATA:
+{
+  "ticker": "XOM",
+  "company_name": "ExxonMobil Holdings Corporation",
+  "current_price": 159.47,
+  "currency": "USD",
+  "market_cap": 655726608384.0,
+  "pe_ratio": 20.52381,
+  "forward_pe": 14.787854,
+  "week_52_high": 176.41,
+  "week_52_low": 108.35,
+  "revenue": 361060007936.0,
+  "net_income": 32757000192.0,
+  "profit_margin": 0.09072,
+  "dividend_yield": 2.54,
+  "sector": "Energy",
+  "industry": "Oil & Gas Integrated"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "message": "No 10-K found"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-03",
+    "summary": "Item 1A. Risk Factors\" of ExxonMobil\u2019s 2025 Form 10-K. Forward-looking and other statements regarding environmental and other sustainability efforts and aspirations are not an indication that these statements are material to investors or require disclosure in our filing with the SEC or any other regulatory authority. In addition, historical, current, and forward-looking environmental and other sustainability-related statements may be based on standards for measuring progress that are still developing, internal controls and processes that continue to evolve, and assumptions that are subject to change in the future, including future rule-making. Actions needed to advance ExxonMobil\u2019s 2030 greenhouse gas emission-reductions plans are incorporated into its medium term business plans, which are"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from ExxonMobil's Latest Filings
+
+## Financial Performance
+- **Upstream Earnings**: Total upstream earnings reached $13.7 billion for the first half of 2026, up from $12.2 billion in the same period of 2025
+- **Shareholder Returns**: The company distributed $8.6 billion in dividends and repurchased $10.0 billion of common stock
+
+## Production & Operations
+- **Oil-Equivalent Production**: Declined to 4,514 thousand barrels daily in Q2 2026 from 4,630 in Q2 2025, primarily due to Middle East disruptions, divestments, and entitlement changes
+- **Natural Gas Production**: Worldwide production decreased from 8,219 to 6,849 million cubic feet daily year-over-year
+
+## Earnings Drivers (Q2 2026)
+- **Positive Factors**: Higher crude oil realizations added $4.65 billion; advantaged volume growth (Guyana and Permian) contributed $1.14 billion; structural cost savings added $170 million
+- **Negative Factors**: Middle East disruptions reduced earnings by $1.06 billion; higher depreciation expenses decreased earnings by $690 million; unfavorable derivatives mark-to-market impacts reduced earnings by $180 million
+
+## Strategic Focus
+- Advantaged assets including Permian, Guyana, and LNG continue to drive growth
+- The company is incorporating greenhouse gas emission-reduction plans into medium-term business strategies, though current policy and technology trends are not yet aligned with net-zero 2050 targets
+
+RAG — RISK FACTORS:
+[From Pinecone cache] Based on the provided context, the document references risk factors but does not provide a detailed list of the primary risk factors themselves. The context only includes a brief mention that risk factors are discussed in "Item 1A. Risk Factors" of ExxonMobil's 2025 Form 10-K, but the actual content of those risk factors is not included in the information provided.
+
+The only specific risk-related topic that is elaborated upon in the context is related to environmental and sustainability efforts, which notes that:
+
+- Forward-looking statements regarding environmental and sustainability efforts are not necessarily material to investors or required SEC disclosure
+- Historical and forward-looking environmental statements may be based on developing measurement standards and evolving internal controls
+- Current policy and technology trends are not yet on a pathway to achieve net-zero by 2050
+- Future policy stringency and technology advancement will need to be incorporated into business plans
+- Capital investment in lower-emission investments is subject to availability of opportunities and public policy support
+
+To obtain a comprehensive list of the primary risk factors, you would need to review the full "Item 1A. Risk Factors" section of the 2025 Form 10-K filing.

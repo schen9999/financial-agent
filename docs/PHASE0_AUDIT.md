@@ -1,5 +1,9 @@
 # Phase 0 Audit — Repo State Before the K8s / Argo / vLLM Work
 
+> All grounding/unsupported rates in this audit are **judge v1** and subject
+> to the recall caveat: v1 recall on UNSUPPORTED measured 1/9 against human
+> labels (2026-09-04) — see docs/eval-methodology.md.
+
 Date: 2026-08-24. Audited from code and config as committed at `b8ec9ab`, not from
 the README's description of itself. This document gates the later phases: the
 Kubernetes migration, Argo workflows, and vLLM serving are built against **this**
@@ -96,6 +100,12 @@ all flags at production defaults, temperature-0 Sonnet judge — per-claim evide
 | Tickers | Claims | Supported | Unsupported | Inference | Unsup % | Mean retrieval | Mean pipeline latency | Haiku-only $/brief |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | 10/10 | 84 | 65 | **0** | 19 | **0.0%** | 5.38s | **26.29s** | $0.00592 |
+
+> **Superseded 2026-09-23:** this was the number of record as of this
+> audit (2026-08-24). It is judge v1 on the pre-2026-09-04 retrieval
+> pipeline, so it is now a dated record only; the current grounding number
+> of record is `j4cnp`, 12/392 = 3.06% (CI 1.8–5.3%, judge v2, fixed
+> retrieval) — docs/numbers-of-record.md.
 
 **The number of record going forward: 49% unsupported pre-fix → 0/84 unsupported (0.0%) measured today**
 (the previously recorded 3% has improved; run-to-run generation variance means small

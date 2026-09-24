@@ -1,0 +1,70 @@
+STOCK DATA:
+{
+  "ticker": "UNH",
+  "company_name": "UnitedHealth Group Incorporated",
+  "current_price": 397.14,
+  "currency": "USD",
+  "market_cap": 356470816768.0,
+  "pe_ratio": 25.506744,
+  "forward_pe": 17.701515,
+  "week_52_high": 461.62,
+  "week_52_low": 255.97,
+  "revenue": 450525986816.0,
+  "net_income": 14122000384.0,
+  "profit_margin": 0.03135,
+  "dividend_yield": 2.34,
+  "sector": "Healthcare",
+  "industry": "Healthcare Plans"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-03-02",
+    "summary": "ITEM 1A. RISK FACTORS CAUTIONARY STATEMENTS The statements, estimates, projections or outlook contained in this Annual Report on Form 10-K include forward-looking statements within the meaning of the Private Securities Litigation Reform Act of 1995 (PSLRA). When used in this Annual Report on Form 10-K and in future filings by us with the SEC, in our news releases, presentations to securities analysts or investors, and in oral statements made by or with the approval of one of our executive officers, the words \u201cbelieve,\u201d \u201cexpect,\u201d \u201cintend,\u201d \u201cestimate,\u201d \u201canticipate,\u201d \u201cforecast,\u201d \u201coutlook,\u201d \u201cplan,\u201d \u201cproject,\u201d \u201cshould\u201d or similar words or phrases are intended to identify such forward-looking statements. These statements are intended to take advantage of the \u201csafe harbor\u201d provisions of the PSLRA"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-10",
+    "summary": "ITEM 1A. RISK FACTORS In addition to the other information set forth in this report, you should carefully consider the factors discussed in Part I, Item 1A, \u201cRisk Factors\u201d of our 2025 10-K, which could materially affect our business, financial condition or future results. The risks described in our 2025 10-K are not the only risks facing us. Additional risks and uncertainties not currently known to us or that we currently deem to be immaterial also may materially adversely affect our business, financial condition or future results. There have been no material changes to the risk factors as disclosed in our 2025 10-K. ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS Issuer Purchases of Equity Securities (a) Second Quarter 2026 For the Month Ended Total Number of Shares Pu"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I cannot provide a summary of the latest 10-K and 10-Q based on the information provided. The context materials only contain excerpts from a 10-K filing focused specifically on risk factors related to UNH (UnitedHealth Group), not a comprehensive overview of the full 10-K or any 10-Q filing.
+
+The available information addresses several key risk areas:
+
+**Medical Cost Management Risks**: The company faces challenges in accurately predicting and pricing for medical costs, as risk-based products represent nearly 80% of total revenues. Small variances between predicted and actual costs can significantly impact financial results.
+
+**Cybersecurity and Data Security Risks**: The company processes large amounts of sensitive data and faces ongoing cybersecurity threats, including a 2024 cyberattack on the Change Healthcare business. Data breaches could result in operational disruptions, financial losses, and reputational damage.
+
+**Technology and Systems Integration Risks**: The company must successfully consolidate and integrate information systems while keeping pace with evolving technologies, including artificial intelligence. Failures in these areas could result in higher costs and operational problems.
+
+**Regulatory and Compliance Risks**: Rapidly evolving regulations related to health data, health information technologies, and AI may impose new compliance requirements and affect competitive positioning.
+
+To obtain a complete summary of the latest 10-K and 10-Q filings, you would need to review the full documents directly.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses several significant risk factors affecting its business:
+
+## Medical Cost Management and Pricing Risks
+The company assumes medical and administrative costs through risk-based benefit products, which constitute nearly 80% of total consolidated revenues. Key risks include the inability to accurately estimate, price for, and manage medical costs. Small differences between predicted and actual medical costs can result in significant financial impacts. Various factors may cause actual costs to exceed estimates, including medical cost inflation, increased service utilization, provider billing intensity, unexpected population differences, new or costly drugs, pandemics, climate change effects, and regulatory changes. Cost increases cannot typically be recovered through higher premiums during fixed contract periods.
+
+## Data Integrity and Information Systems Risks
+The business depends heavily on accurate and reliable data for operations, member service, and pricing. Risks include data inaccuracy, system failures, inability to maintain data integrity, and challenges in consolidating and integrating information systems. The company must keep pace with rapidly evolving technology, including artificial intelligence and generative AI, while managing significant development and operational costs.
+
+## Cybersecurity and Data Security Risks
+The company routinely processes large amounts of protected personal information and proprietary data. It faces ongoing threats from cyberattacks, data breaches, ransomware, and other security incidents. The company previously experienced a cyberattack affecting its Change Healthcare business. Evolving threat techniques, particularly those using AI technologies, may outpace preventive measures, potentially resulting in operational disruptions, financial losses, regulatory penalties, and reputational harm.
+
+## Regulatory and Technology Compliance Risks
+Uncertain and rapidly evolving laws and regulations related to health data and health information technologies may alter the competitive landscape and impose new compliance requirements.
+
+## Provider Relationship Risks
+The company's business depends on maintaining satisfactory relationships with healthcare payers, physicians, hospitals, and other service providers.

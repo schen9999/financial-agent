@@ -5,6 +5,8 @@ from agent.tools.sec_common import (
     SEC_USER_AGENT,
     SEC_TIMEOUT,
     clean_filing_html,
+    lookup_cik,
+    primary_document_url,
     skip_front_matter,
 )
 
@@ -35,7 +37,16 @@ def get_sec_filings(ticker: str) -> dict:
 
 
 def _get_cik(ticker: str) -> str | None:
-    """Looks up the SEC CIK number for a given ticker."""
+    """Looks up the SEC CIK number for a given ticker.
+
+    Primary: the authoritative company_tickers.json mapping (sec_common.
+    lookup_cik — deterministic, cached). The browse-edgar scrape and the
+    full-text-search guess below survive only as fallbacks for tickers the
+    mapping misses."""
+    cik = lookup_cik(ticker)
+    if cik:
+        return cik
+
     headers = {"User-Agent": SEC_USER_AGENT}
 
     try:
@@ -92,9 +103,13 @@ def _get_latest_filing(cik: str, form_type: str) -> dict:
 
     for i, form in enumerate(forms):
         if form == form_type:
-            accession = accession_numbers[i].replace("-", "")
-            doc = descriptions[i]
-            filing_url = f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{accession}/{doc}"
+            # Shared resolver: same URL as before for plain filenames, and
+            # defensively unwraps an /ix?doc= wrapper if one ever appears.
+            filing_url = primary_document_url(
+                cik, accession_numbers[i],
+                descriptions[i] if i < len(descriptions) else None)
+            if not filing_url:
+                continue
 
             return {
                 "form_type": form_type,

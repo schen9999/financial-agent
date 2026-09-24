@@ -1,0 +1,44 @@
+STOCK DATA:
+{
+  "ticker": "TSM",
+  "company_name": "Taiwan Semiconductor Manufacturing Company Limited",
+  "current_price": 428.91,
+  "currency": "USD",
+  "market_cap": 2224530653184.0,
+  "pe_ratio": 30.968231,
+  "forward_pe": 19.619719,
+  "week_52_high": 479.0,
+  "week_52_low": 241.62,
+  "revenue": 4440492343296.0,
+  "net_income": 2216808415232.0,
+  "profit_margin": 0.49923,
+  "dividend_yield": 0.98,
+  "sector": "Technology",
+  "industry": "Semiconductors"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "message": "No 10-K found"
+  },
+  "10-Q": {
+    "message": "No 10-Q found"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+(not available)
+
+RAG — RISK FACTORS:
+(not available)

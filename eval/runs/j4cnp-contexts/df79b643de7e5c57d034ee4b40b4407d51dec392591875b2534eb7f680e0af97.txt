@@ -1,0 +1,115 @@
+STOCK DATA:
+{
+  "ticker": "COIN",
+  "company_name": "Coinbase Global, Inc.",
+  "current_price": 184.64,
+  "currency": "USD",
+  "market_cap": 48714850304.0,
+  "forward_pe": 67.438545,
+  "week_52_high": 402.16,
+  "week_52_low": 139.11,
+  "revenue": 6043752960.0,
+  "net_income": -987766016.0,
+  "profit_margin": -0.16344,
+  "sector": "Financial Services",
+  "industry": "Financial Data & Stock Exchanges"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": "Bitcoin leaps past $75,000 as crypto rally continues in Asia",
+    "source": "Bloomberg",
+    "published_at": "2026-08-21T03:48:31Z",
+    "description": "Bitcoin surges past $75,000 in Asia as market optimism grows following US Treasury bond yield plans and Trump\u2019s crypto discussions."
+  },
+  {
+    "title": "Bitcoin roars past $70,000 as yields sink, Trump sparks optimism",
+    "source": "Bloomberg",
+    "published_at": "2026-08-20T11:21:00Z",
+    "description": "Bitcoin soars past $70,000, fueled by lower yields and optimism from Trump's meeting with crypto leaders, sparking market recovery."
+  },
+  {
+    "title": "New York City probes Kalshi and Polymarket over social harms",
+    "source": "Fortune",
+    "published_at": "2026-08-12T14:58:10Z",
+    "description": "The city council gave Kalshi and Polymarket 14 days to disclose New York user data, ages and how much residents have won or lost since last year."
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-12",
+    "summary": "ITEM 1A. RISK FACTORS Investing in our Class A common stock involves a high degree of risk. You should carefully consider the risks and uncertainties described below, together with all of the other information in this Annual Report on Form 10-K, including the section titled \u201cManagement\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d and the Consolidated Financial Statements and related notes. The risks and uncertainties described below are not the only ones we face. Additional risks and uncertainties that we are unaware of or that we deem immaterial may also become important factors that adversely affect our business. If any of the following risks occur, our business, operating results, financial condition, and future prospects could be materially and adversely "
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-07-30",
+    "summary": "Item 1A Risk Factors in the Annual Report for additional details about these regulations. 41 Table of Contents We are required to hold corporate liquid assets at our subsidiaries to meet capital requirements established by our regulators based on the value of crypto assets and payment stablecoins held in custody. Our money-transmitting subsidiary, CB Inc., and our custodian subsidiary, Coinbase Custody Trust Company, LLC (\u201cCCTC\u201d), which is a fiduciary under New York State Law and a qualified custodian under the Investment Advisers Act of 1940, are required to maintain minimum net capital requirements under agreements with the New York State Department of Financial Services. These subsidiaries and other subsidiaries are also subject to maintenance capital requirements by other regulators bo"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from Coinbase's Risk Disclosures
+
+Based on the SEC filings provided, here are the primary risk factors and business considerations:
+
+## Revenue Volatility and Crypto Dependence
+Coinbase's operating results fluctuate significantly due to the highly volatile nature of cryptocurrency prices and trading volumes. The company's revenue is substantially dependent on crypto asset prices and transaction volumes on its platform, making it vulnerable to market downturns.
+
+## Revenue Concentration Risk
+A meaningful portion of revenue is concentrated in a limited number of areas:
+- **Transaction revenue**: Approximately 45-46% of trading volume comes from Bitcoin and Ethereum transactions
+- **Subscription and services revenue**: Heavily dependent on stablecoin revenue from payment stablecoins
+
+If demand for these specific assets declines, the company could face significant revenue challenges.
+
+## Multiple Risk Factors Affecting Operations
+The company faces numerous unpredictable factors including:
+- Regulatory and legislative changes
+- Competitive pressures
+- Ability to attract and retain customers and talent
+- System failures and security breaches
+- Macroeconomic conditions
+- Market sentiment toward crypto assets
+
+## Bitcoin and Ethereum-Specific Risks
+Given the concentration in these two assets, the company is exposed to specific risks including blockchain network disruptions, environmental concerns, scaling challenges, regulatory restrictions on mining and staking, and technological vulnerabilities.
+
+## Difficult Financial Forecasting
+Due to rapid market evolution and volatility, period-to-period comparisons may not be meaningful indicators of future performance, making it difficult to forecast growth accurately.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company identifies several primary risk factors affecting its business:
+
+## Operating Results Volatility
+Operating results fluctuate significantly due to the highly volatile nature of crypto asset prices and market sentiment. This volatility makes it difficult to forecast growth trends accurately, and period-to-period comparisons may not be meaningful indicators of future performance.
+
+## Revenue Dependency on Crypto Markets
+Total revenue is substantially dependent on:
+- Prices of crypto assets
+- Volume of transactions conducted on the platform
+- Declines in either could adversely affect business, operating results, and financial condition
+
+## Revenue Concentration
+Revenue is concentrated in limited areas, particularly:
+- Transaction revenue from Bitcoin and Ethereum trading
+- Subscription and services revenue from payment stablecoins
+
+If revenue from these concentrated areas declines and is not replaced by demand for other crypto assets or services, the business could be adversely affected.
+
+## Factors Affecting Crypto Asset Prices and Trading Volume
+Multiple unpredictable factors influence crypto markets, including:
+- Market conditions and sentiment toward crypto
+- Regulatory changes and government actions
+- Competition from other payment services and crypto assets
+- Technological viability and security of crypto networks
+- Global banking system stability and macroeconomic conditions
+- Social media coverage and market speculation
+- Adoption rates as a medium of exchange or store of value
+
+These risks collectively create uncertainty that could cause the stock price to increase or decrease significantly.

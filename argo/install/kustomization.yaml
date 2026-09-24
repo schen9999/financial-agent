@@ -1,0 +1,15 @@
+# Argo Workflows controller + server, version-pinned and committed so the
+# install is reproducible on any cluster (kind today, OKE in Phase 2):
+#   kubectl apply -k argo/install     (what `make argo-install` runs)
+# Bumping Argo = changing the one ref below.
+#
+# The eval DAG's own RBAC (ServiceAccount argo-workflow + the
+# workflowtaskresults Role/RoleBinding) is deliberately NOT here — it lives in
+# argo/base/rbac.yaml and deploys with the per-environment overlays, because
+# it belongs to the financial-agent namespace, not the controller install.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argo
+resources:
+  - namespace.yaml
+  - https://github.com/argoproj/argo-workflows/releases/download/v3.7.18/install.yaml

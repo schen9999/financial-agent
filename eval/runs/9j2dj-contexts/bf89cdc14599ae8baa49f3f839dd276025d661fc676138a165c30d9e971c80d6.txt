@@ -1,0 +1,68 @@
+STOCK DATA:
+{
+  "ticker": "BLNK",
+  "company_name": "Blink Charging Co.",
+  "current_price": 0.5887,
+  "currency": "USD",
+  "market_cap": 85325424.0,
+  "forward_pe": -2.5484848,
+  "week_52_high": 2.65,
+  "week_52_low": 0.45,
+  "revenue": 96550000.0,
+  "net_income": -50667000.0,
+  "profit_margin": -0.52477,
+  "sector": "Industrials",
+  "industry": "Engineering & Construction"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-03-31",
+    "summary": "Item 1A \u2013 Risk Factors\u201d below. In this Annual Report, unless otherwise indicated or the context otherwise requires, the \u201cCompany,\u201d \u201cBlink,\u201d \u201cBlink Charging,\u201d \u201cwe,\u201d \u201cus\u201d or \u201cour\u201d refer to Blink Charging Co., a Nevada corporation, and its consolidated subsidiaries. The mark \u201cBlink\u201d is our registered trademark in the United States and, regarding the name of Ecotality, Inc. (whose assets we acquired in October 2013), in Australia, China, Hong Kong, Indonesia, Japan, South Korea, Malaysia, Mexico, New Zealand, Philippines, South Africa, Singapore, Switzerland, Taiwan, and is a trademark registered in the European Union under the Madrid Protocol. We have registered other trademarks and use certain trademarks, trade names, and logos that have not been registered. We claim common law rights to the"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-07",
+    "summary": "Item 1A - Risk Factors. Any one or more of these uncertainties, risks and other influences, could materially affect our results of operations and whether forward-looking statements made by us ultimately prove to be accurate. Our actual results, performance and achievements could differ materially from those expressed or implied in these forward-looking statements. Except as required by federal securities laws, we undertake no obligation to publicly update or revise any forward-looking statements, whether from new information, future events or otherwise. U.S. dollars are reported in thousands, except for share and per share amounts. Overview We are a leading owner, operator, and provider of EV charging equipment and networked EV charging services in the rapidly growing U.S. and internationa"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from Blink Charging's Latest SEC Filings
+
+## Strategic Restructuring and Operational Efficiency
+In May 2025, Blink announced the BlinkForward Initiative, a strategic restructuring plan designed to accelerate the path to profitability and enhance operational efficiency. This included reducing the global workforce from 513 to approximately 320 employees, cutting operating and administrative expenses, and transitioning to contract manufacturing (completed in January 2026).
+
+## Financial Actions
+Blink completed a $20 million funding round via public markets in December 2025 to support expansion efforts.
+
+## Strategic Acquisition
+In July 2025, Blink acquired Zemetric Inc., filling product gaps in software-driven fleet management, energy management services, and lower-cost Level 2 charger hardware. Zemetric's CEO became Blink's Chief Technology Officer.
+
+## Network Growth and Composition
+As of December 31, 2025, approximately 66,350 chargers were connected to the Blink Network, consisting of roughly 58,850 Level 2 commercial chargers and 1,920 DC Fast Charging (DCFC) commercial chargers, with approximately 8,250 chargers owned by Blink.
+
+## Market Expansion Focus
+Blink is prioritizing expansion of its DC Fast Charging network through deployment of high-speed chargers in strategic, high-utilization locations.
+
+## Product Portfolio Enhancement
+The company expanded its offerings to include the Shasta Level 2 charger (from the Zemetric acquisition), featuring ISO 15118 readiness and "Plug & Charge" functionality, alongside existing Series 7, 8, and 10 families and international products.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors
+
+The context provided indicates that Blink Charging Co. discloses risk factors in "Item 1A – Risk Factors" of their Annual Report. However, the specific risk factors themselves are not detailed in the context information provided. The document references that risk factors exist and directs readers to that section for comprehensive information, but the actual content of those risk factors is not included in the excerpts provided.
+
+To obtain the complete list of primary risk factors disclosed by Blink Charging, you would need to review the full "Item 1A – Risk Factors" section in their SEC EDGAR filings.

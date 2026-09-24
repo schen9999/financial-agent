@@ -1,0 +1,100 @@
+STOCK DATA:
+{
+  "ticker": "CALM",
+  "company_name": "Cal-Maine Foods, Inc.",
+  "current_price": 74.63,
+  "currency": "USD",
+  "market_cap": 3485668096.0,
+  "pe_ratio": 11.481538,
+  "forward_pe": 20.817293,
+  "week_52_high": 115.28,
+  "week_52_low": 71.92,
+  "revenue": 2911631872.0,
+  "net_income": 316681984.0,
+  "profit_margin": 0.10876001,
+  "dividend_yield": 6.31,
+  "sector": "Consumer Defensive",
+  "industry": "Farm Products"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-07-22",
+    "summary": "Item 1A. Risk Factors and elsewhere in this report as well as those included in other reports we file from time to time with the Securities and Exchange Commission (the \u201cSEC\u201d) (including our Quarterly Reports on Form 10-Q and Current Reports on Form 8-K), (ii) changes in wholesale shell egg market prices, (iii) changes in the demand for shell eggs and our prepared foods offerings, (iv) increases in feed costs for our shell egg operations as well as increases in input costs for prepared foods, (v) our ability to predict and meet demand for cage -free and other specialty eggs, (vi) the risks and hazards inherent in shell egg, egg products and prepared foods operations (including, as applicable, disease, pests, weather conditions, and potential for product recall), including but not limited t"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-04-01",
+    "summary": "Item 1A Risk Factors of our 2025 Annual Report, as updated in Part II Item 1A of our quarterly report on Form 10-Q for the quarter ended November 29, 2025, as well as those included in other reports we file from time to time with the United States Securities and Exchange Commission (\u201cSEC\u201d) (including our Quarterly Reports on Form 10-Q and Current Reports on Form 8-K), (ii) the risks and hazards inherent in the shell egg, egg products and prepared foods operations (including, as applicable, disease, pests, weather conditions, and potential for product recall), including but not limited to the current outbreak of HPAI affecting poultry in the U.S., Canada and other countries that was first detected in commercial flocks in the U.S. in February 2022 and that impacted our flocks in the third an"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from Cal-Maine Foods' Recent SEC Filings
+
+## Company Overview
+Cal-Maine Foods is the largest egg company in the United States and a leading player in the egg-based food industry. Founded in 1957 and headquartered in Ridgeland, Mississippi, the company operates a vertically integrated business spanning conventional and specialty shell eggs, egg products, and prepared foods.
+
+## Business Portfolio
+The company offers a comprehensive range of products including:
+- **Shell eggs**: Conventional, cage-free, nutritionally enhanced, organic, brown, pasture-raised, and free-range varieties
+- **Prepared foods**: Pre-cooked egg patties, omelets, scrambled eggs, hard-cooked eggs, pancakes, waffles, and specialty wraps
+- **Branded offerings**: Eggland's Best®, Land O'Lakes®, Farmhouse Eggs®, 4Grain®, Sunups®, Van's®, MeadowCreek Foods®, and Crepini®
+
+## Strategic Growth Initiatives
+The company is pursuing several expansion projects:
+- Echo Lake Foods facilities are adding 17 million pounds of scrambled egg production and 12 million pounds of pancake production capacity
+- Crepini Foods joint venture is adding 18 million pounds of production capacity
+- Combined, these initiatives are expected to grow prepared foods capacity by over 30% through 2028
+
+## Recent Acquisitions
+Cal-Maine has completed multiple strategic acquisitions, including:
+- Echo Lake Foods (June 2025) for $289.5 million
+- Creighton Brothers LLC (March 2026) for $129.3 million
+- Clean Egg LLC (October 2025) for $23.7 million
+- Van's Foods assets (May 2026) for $24.8 million
+- ISE America (fiscal 2025) with approximately 4.7 million laying hens capacity
+
+## Key Risk Factors
+Notable risks include HPAI (Highly Pathogenic Avian Influenza) outbreaks affecting flocks, feed cost volatility, market price fluctuations, competition, and integration challenges from recent acquisitions.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors
+
+The company discloses the following primary risk factors:
+
+1. **Market Price Volatility** - Changes in wholesale shell egg market prices and demand for shell eggs and prepared foods offerings
+
+2. **Input Cost Increases** - Rising feed costs for shell egg operations and increased input costs for prepared foods
+
+3. **Specialty Product Demand** - Ability to predict and meet demand for cage-free and other specialty eggs
+
+4. **Operational Hazards** - Risks inherent in shell egg, egg products, and prepared foods operations including disease, pests, weather conditions, and product recall potential. Notably, this includes the current outbreak of Highly Pathogenic Avian Influenza (HPAI) affecting poultry in the U.S., Canada, and other countries, which impacted operations in fiscal 2024 and again in March 2026
+
+5. **Acquisition Integration** - Risks related to acquiring new flocks or businesses and the ability to successfully integrate and manage recently acquired businesses while realizing expected benefits such as synergies, cost savings, and margin expansion
+
+6. **Operational Efficiency** - Ability to produce, supply, and distribute products efficiently and reliably
+
+7. **Competition** - Ability to compete effectively with existing competitors and new market entrants, retain customers, and grow product mix
+
+8. **Regulatory and Market Reactions** - Government, customer, and consumer reactions to high egg market prices, including potential new regulations
+
+9. **Macroeconomic Factors** - Changes in inflation, interest rates, and trade and tariff policies
+
+10. **Intellectual Property** - Loss or expiration of registered trademarks and other intellectual property
+
+11. **Legal Matters** - Adverse results in pending litigation
+
+12. **Geopolitical Risks** - Global instability from geopolitical conflicts and other uncertainties

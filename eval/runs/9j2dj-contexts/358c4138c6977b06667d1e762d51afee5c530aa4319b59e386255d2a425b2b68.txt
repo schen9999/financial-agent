@@ -1,0 +1,44 @@
+STOCK DATA:
+{
+  "ticker": "NVO",
+  "company_name": "Novo Nordisk A/S",
+  "current_price": 46.6,
+  "currency": "USD",
+  "market_cap": 206019985408.0,
+  "pe_ratio": 11.449631,
+  "forward_pe": 13.629678,
+  "week_52_high": 64.16,
+  "week_52_low": 35.12,
+  "revenue": 329430990848.0,
+  "net_income": 116442996736.0,
+  "profit_margin": 0.35347,
+  "dividend_yield": 3.78,
+  "sector": "Healthcare",
+  "industry": "Drug Manufacturers - General"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "message": "No 10-K found"
+  },
+  "10-Q": {
+    "message": "No 10-Q found"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+(not available)
+
+RAG — RISK FACTORS:
+(not available)

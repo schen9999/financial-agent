@@ -1,0 +1,72 @@
+STOCK DATA:
+{
+  "ticker": "XOM",
+  "company_name": "ExxonMobil Holdings Corporation",
+  "current_price": 161.23,
+  "currency": "USD",
+  "market_cap": 662963552256.0,
+  "pe_ratio": 20.72365,
+  "forward_pe": 14.878227,
+  "week_52_high": 176.41,
+  "week_52_low": 110.39,
+  "revenue": 361060007936.0,
+  "net_income": 32757000192.0,
+  "profit_margin": 0.09072,
+  "dividend_yield": 2.6,
+  "sector": "Energy",
+  "industry": "Oil & Gas Integrated"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "message": "No 10-K found"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-03",
+    "summary": "Item 1A. Risk Factors\" of ExxonMobil\u2019s 2025 Form 10-K. Forward-looking and other statements regarding environmental and other sustainability efforts and aspirations are not an indication that these statements are material to investors or require disclosure in our filing with the SEC or any other regulatory authority. In addition, historical, current, and forward-looking environmental and other sustainability-related statements may be based on standards for measuring progress that are still developing, internal controls and processes that continue to evolve, and assumptions that are subject to change in the future, including future rule-making. Actions needed to advance ExxonMobil\u2019s 2030 greenhouse gas emission-reductions plans are incorporated into its medium term business plans, which are"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from ExxonMobil's Latest Filings
+
+## Financial Performance
+- **Upstream Earnings**: Total upstream earnings reached $7.9 billion in Q2 2026 (compared to $5.4 billion in Q2 2025) and $13.7 billion for the first half of 2026 (versus $12.2 billion in the prior year period)
+- **Shareholder Returns**: The company distributed $8.6 billion in dividends and repurchased $10.0 billion of common stock
+
+## Production & Operations
+- **Oil-Equivalent Production**: Declined to 4,514 thousand barrels daily in Q2 2026 from 4,630 in Q2 2025, primarily due to divestments and Middle East disruptions
+- **Production Mix**: Crude oil production remained relatively stable at 3,373 thousand barrels daily, while natural gas production decreased significantly from 8,219 to 6,849 million cubic feet daily
+
+## Earnings Drivers
+- **Positive Factors**: Higher crude oil realizations added $4.7 billion in Q2 earnings, and advantaged volume growth (mainly from Guyana and Permian) contributed $1.1 billion
+- **Negative Factors**: Middle East disruptions reduced earnings by $1.1 billion in Q2, and higher depreciation expenses decreased earnings by $690 million
+
+## Market Conditions
+- Crude oil prices remained within the 10-year historical range despite supply disruptions in the Middle East
+- Natural gas prices remained elevated above the 10-year average
+- Global refining margins were sharply above historical ranges due to unprecedented capacity reductions
+
+## Strategic Focus
+- Advantaged assets (Permian, Guyana, and LNG) continue to drive growth
+- The company is incorporating greenhouse gas emission-reduction plans into medium-term business planning through 2030
+
+RAG — RISK FACTORS:
+[From Pinecone cache] Based on the provided context, the document references risk factors that are detailed in "Item 1A. Risk Factors" of ExxonMobil's 2025 Form 10-K, but the specific primary risk factors are not enumerated in the excerpts provided.
+
+However, the context does indicate that the company acknowledges risks related to:
+
+1. **Environmental and sustainability efforts** - The document notes that forward-looking statements regarding environmental and sustainability efforts are subject to evolving standards, internal controls that continue to evolve, and assumptions that may change, including future rule-making.
+
+2. **Policy and technology advancement** - There is risk that current trends for policy stringency and development of lower-emission solutions may not be on a pathway to achieve net-zero by 2050, and that future policies and technology advancements are uncertain.
+
+3. **Project execution and investment** - References to projects or opportunities may not reflect actual investment decisions, as individual projects may advance based on factors including availability of stable and supportive policy, permitting, technological advancement, and alignment with partners and stakeholders.
+
+4. **Market conditions** - The context mentions that market conditions are influenced by supply disruptions and global refining capacity changes, which affect pricing and margins.
+
+For a comprehensive list of primary risk factors, one would need to review the complete "Item 1A. Risk Factors" section of the 2025 Form 10-K, which is referenced but not fully detailed in the provided excerpts.

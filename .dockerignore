@@ -27,6 +27,8 @@ adapters/
 financial-lora-build/
 sec_filings/
 eval_findings/
+eval/runs/
+eval/judge_validation/
 
 # Frontend + dev/eval scripts not used by the API
 app.py

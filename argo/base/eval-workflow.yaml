@@ -1,0 +1,173 @@
+# Grounding-eval as an Argo Workflow: fan the eval cases (tickers) out as
+# parallel pods, aggregate grounding scores in a final step, and FAIL the
+# workflow if the unsupported-claim rate breaches the threshold.
+#
+# Batch/eval runs on Argo; request-time async stays on Celery — see the README
+# section "Celery vs. Argo" for the reasoning.
+#
+# Fan-out results travel as output PARAMETERS (small JSON per ticker), so no
+# artifact repository (S3/MinIO) is needed on the local cluster. parallelism=2
+# bounds concurrent eval pods: each one imports the torch/embedding stack
+# (~1 GB RSS) and the single kind node has ~8 GB.
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: grounding-eval
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  entrypoint: main
+  serviceAccountName: argo-workflow
+  parallelism: 2
+  # Findings volume, mounted at /app/eval_findings in every pod. The mount
+  # deliberately MASKS the image-baked copy of eval_findings/, so pods see
+  # only what this run writes. Base: emptyDir (per-pod; the stdout dump
+  # below is then the only durable channel — kind). The k3s overlay swaps
+  # in a hostPath shared across the run's pods; oke keeps emptyDir plus the
+  # EVAL_ARTIFACTS_PUT_URL upload. Added after per-claim findings were lost
+  # pod-locally on three separate runs.
+  volumes:
+    - name: findings
+      emptyDir: {}
+  activeDeadlineSeconds: 3600
+  ttlStrategy:
+    secondsAfterCompletion: 86400 # keep a day of history for debugging
+  arguments:
+    parameters:
+      - name: tickers
+        value: '["AAPL","NVDA","JPM","MSFT","GOOGL","AMZN","META","TSLA","V","WMT"]'
+      - name: max-unsupported-pct
+        value: "5"
+      - name: min-claims
+        value: "30"
+      # Which grounding_check.py arm(s) to run. The harness pins the model-
+      # routing flags per arm ON PURPOSE (no leakage between A/B arms), so the
+      # eval plane is switched here, not via app-config's USE_LOCAL_MODEL —
+      # that flag governs the app services only. LOCAL_MODEL_BACKEND/URL/NAME
+      # do reach the eval pods from app-config (envFrom below). The nightly
+      # cron inherits this default (baseline = the gate arm);
+      # argo/eval-run-local.yaml submits arms=local-model against vLLM/Ollama.
+      - name: arms
+        value: baseline
+  templates:
+    - name: main
+      dag:
+        tasks:
+          - name: eval-ticker
+            template: eval-one
+            arguments:
+              parameters:
+                - name: ticker
+                  value: "{{item}}"
+            withParam: "{{workflow.parameters.tickers}}"
+          - name: aggregate
+            depends: eval-ticker
+            template: aggregate
+            arguments:
+              parameters:
+                - name: results
+                  # Aggregated JSON array of every fan-out pod's result parameter.
+                  value: "{{tasks.eval-ticker.outputs.parameters.result}}"
+
+    - name: eval-one
+      inputs:
+        parameters:
+          - name: ticker
+      activeDeadlineSeconds: 1200
+      retryStrategy:
+        limit: "1" # one retry per ticker for transient upstream flakiness
+        retryPolicy: OnFailure
+      container:
+        image: financial-agent-app:local
+        imagePullPolicy: IfNotPresent # kind overlay: Never; oke overlay rewrites the image
+        # After the harness runs (its exit code is preserved), the pod's
+        # findings are tarred and printed base64 under markers, so
+        # `kubectl logs` always captures them — per-pod, because on kind
+        # the findings volume is a per-pod emptyDir. Recover with
+        # scripts/extract_findings.py.
+        command: ["sh", "-c"]
+        args:
+          - |
+            python grounding_check.py --tickers '{{inputs.parameters.ticker}}' --arms '{{workflow.parameters.arms}}' --json-out /tmp/result.json
+            rc=$?
+            echo "===EVAL_FINDINGS_TGZ_BEGIN pod={{pod.name}}==="
+            tar czf - -C /app eval_findings | base64 -w0
+            echo
+            echo "===EVAL_FINDINGS_TGZ_END==="
+            exit $rc
+        volumeMounts:
+          - name: findings
+            mountPath: /app/eval_findings
+        env:
+          # The harness sets this itself; restated for visibility. Eval pods
+          # must NEVER read or write the live exact-key cache.
+          - name: BYPASS_CACHE
+            value: "true"
+        envFrom:
+          - secretRef:
+              name: app-secrets
+          - secretRef:
+              name: infra-secrets
+          - configMapRef:
+              name: app-config
+        resources:
+          requests:
+            cpu: 300m
+            memory: 900Mi
+          limits:
+            cpu: 1500m
+            memory: 2Gi
+      outputs:
+        parameters:
+          - name: result
+            valueFrom:
+              path: /tmp/result.json
+
+    - name: aggregate
+      inputs:
+        parameters:
+          - name: results
+        artifacts:
+          - name: results-json
+            path: /tmp/all_results.json
+            raw:
+              data: "{{inputs.parameters.results}}"
+      container:
+        image: financial-agent-app:local
+        imagePullPolicy: IfNotPresent # kind overlay: Never; oke overlay rewrites the image
+        # Same findings dump as eval-one. On k3s the shared hostPath means
+        # this single dump carries EVERY ticker's findings; on kind/oke the
+        # aggregate's emptyDir is its own (usually empty) and the per-pod
+        # eval-one dumps are the complete channel.
+        command: ["sh", "-c"]
+        # Same env sources as the fan-out pods. EVAL_ARTIFACTS_PUT_URL (a
+        # write-capable Object Storage PAR, set via app-secrets in Phase 2 —
+        # never committed) turns on best-effort artifact archival; unset, the
+        # aggregate behaves exactly as before.
+        envFrom:
+          - secretRef:
+              name: app-secrets
+          - secretRef:
+              name: infra-secrets
+          - configMapRef:
+              name: app-config
+        args:
+          - |
+            python scripts/eval_aggregate.py --input /tmp/all_results.json --max-unsupported-pct '{{workflow.parameters.max-unsupported-pct}}' --min-claims '{{workflow.parameters.min-claims}}'
+            rc=$?
+            echo "===EVAL_FINDINGS_TGZ_BEGIN pod={{pod.name}}==="
+            tar czf - -C /app eval_findings | base64 -w0
+            echo
+            echo "===EVAL_FINDINGS_TGZ_END==="
+            exit $rc
+        volumeMounts:
+          - name: findings
+            mountPath: /app/eval_findings
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
