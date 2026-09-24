@@ -624,7 +624,18 @@ Reading it:
   and 7.49% across seeds, so the printed lower bound rounds to 7.4% or
   7.5% depending on the seed; the committed seed prints 7.4%.
 
-#### Calibration batch (drawn 2026-09-24, not yet labeled)
+#### Calibration batch (drawn and labeled 2026-09-24; under relabel review)
+
+**Status: under relabel review.** The batch was labeled with
+`eval/label_cli.py` and the labels are committed as labeled. On
+judge-SUPPORTED claims they disagree sharply with the held-out sample,
+so no recall or true-rate figure in this repository has been updated
+from them. The review relabels, blind and together, every
+judge-SUPPORTED row of the batch (103) and of the held-out sample (20)
+from `eval/judge_validation/relabel_S.csv` (`eval/build_relabel_s.py`,
+seed 20260925; rows shuffled, source not shown, source mapping in a
+gitignored key). The figures above stay the held-out-only numbers
+until that review is done.
 
 `eval/build_calibration_batch.py` (seed 20260924) draws 150 claims from
 `j4cnp` + `lsnnc` into `eval/judge_validation/calibration_batch.csv`,
@@ -650,7 +661,7 @@ also in `calibration_batch_method.json`:
   the judge label. Rows are shuffled. The census of the scarce strata
   still concentrates some tickers (WMT, the local-model outlier, has 15
   rows); label every row on its own evidence.
-- **Labeling**: the calibration batch is labeled with `eval/label_cli.py`, blind to judge labels (the tool never reads a `*_key.csv`).
+- **Labeling**: the calibration batch was labeled with `eval/label_cli.py`, blind to judge labels (the tool never reads a `*_key.csv`).
 - **Key**: `calibration_batch_key.csv` (run, arm, judge label and reason,
   with the strata in a `#` header block) is gitignored like the four-arm
   key; it stays out of the public repository while the batch is

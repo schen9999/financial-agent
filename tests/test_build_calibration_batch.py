@@ -68,7 +68,20 @@ def test_committed_batch_does_not_reveal_judge_label():
         assert reader.fieldnames == ["id", "ticker", "claim", "context", "human_label"]
         rows = list(reader)
     assert len(rows) == b.TOTAL
-    assert all(not r["human_label"] for r in rows)
+    # labeled 2026-09-24: human labels only, never a judge column
+    assert {r["human_label"] for r in rows} <= {"", "SUPPORTED", "UNSUPPORTED", "INFERENCE"}
+
+
+def test_relabel_sample_is_blind_to_source():
+    from eval import build_relabel_s as r
+    if not r.SAMPLE_FILE.exists():
+        pytest.skip("relabel sample not built")
+    with open(r.SAMPLE_FILE, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        assert reader.fieldnames == ["id", "ticker", "claim", "context", "human_label"]
+        rows = list(reader)
+    assert len(rows) == 123
+    assert [row["id"] for row in rows] == [str(i) for i in range(123)]
 
 
 def test_main_refuses_before_reading_when_method_exists(monkeypatch, tmp_path):
