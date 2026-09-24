@@ -613,6 +613,54 @@ Reading it:
   and 7.49% across seeds, so the printed lower bound rounds to 7.4% or
   7.5% depending on the seed; the committed seed prints 7.4%.
 
+#### Calibration batch (drawn 2026-09-24, not yet labeled)
+
+`eval/build_calibration_batch.py` (seed 20260924) draws 150 claims from
+`j4cnp` + `lsnnc` into `eval/judge_validation/calibration_batch.csv`,
+weighted toward the judge-SUPPORTED stratum that decides recall. Method,
+also in `calibration_batch_method.json`:
+
+- **Pool**: every claim with a CLAIM line (756 parsed), minus 57 that
+  overlap the dev set (claim text or source-context sha256) or the
+  held-out set (claim text).
+- **Strata**: judge label, then arm in proportion to the run's
+  judge-label count. Targets were 100 SUPPORTED / 25 INFERENCE / 25
+  UNSUPPORTED; after exclusions only 23 UNSUPPORTED and 24 INFERENCE
+  claims remain eligible, so both are taken whole and the shortfall of 3
+  goes to SUPPORTED (103), keeping 150. Within each (label, arm) cell the
+  draw is simple random.
+- **Ticker cap**: 4 per ticker on SUPPORTED, applied only if not binding.
+  It binds (EDIT, LCID, NTLA, TSLA at 5, UNH at 6; 6 draws would be
+  displaced), so it is **not applied** and the SUPPORTED draw stays
+  simple random. 38 tickers appear in the SUPPORTED draw.
+- **Blinding**: the CSV has `id, ticker, claim, context, human_label`
+  only. No provenance column (unlike `holdout_sample.csv`): 22 of the 23
+  eligible UNSUPPORTED claims are local-model, so the run would hint at
+  the judge label. Rows are shuffled. The census of the scarce strata
+  still concentrates some tickers (WMT, the local-model outlier, has 15
+  rows); label every row on its own evidence.
+- **Key**: `calibration_batch_key.csv` (run, arm, judge label and reason,
+  with the strata in a `#` header block) is gitignored like the four-arm
+  key; it stays out of the public repository while the batch is
+  unlabeled. `eval/agreement.py` and `eval/reweight_calibration.py` read
+  it as is.
+
+| Judge label, arm | Run population | Eligible pool | Drawn |
+|---|---|---|---|
+| SUPPORTED, `j4cnp` baseline | 354 | 341 | 54 |
+| SUPPORTED, `lsnnc` local-model | 324 | 311 | 49 |
+| UNSUPPORTED, `j4cnp` baseline | 12 | 1 | 1 |
+| UNSUPPORTED, `lsnnc` local-model | 30 | 22 | 22 |
+| INFERENCE, `j4cnp` baseline | 26 | 18 | 18 |
+| INFERENCE, `lsnnc` local-model | 14 | 6 | 6 |
+
+Reweighting after labeling uses the run populations above as N_k, with
+the same script and method as the held-out sample. Within SUPPORTED the
+arms are drawn in proportion to their counts (54/49 vs 354/324), so a
+per-label p_k over the batch is unbiased for the pooled runs. The
+UNSUPPORTED and INFERENCE cells are census draws that are nearly all one
+arm each, so per-run estimates should weight by (label, arm) cell.
+
 ### Injected-failure check (measured 2026-09-04)
 
 Orthogonal to human labels: `eval/perturb.py` builds fixtures with

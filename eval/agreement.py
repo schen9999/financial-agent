@@ -52,10 +52,22 @@ def precision_recall_unsupported(pairs: list[tuple[str, str]]):
             "precision_n": tp + fp, "recall_n": tp + fn}
 
 
+def _skip_leading_comments(f):
+    """Yield lines from the first non-'#' line on: key files may carry a
+    '# ...' header block (eval/build_calibration_batch.py records its strata
+    there). Only leading lines are skipped, never ones inside the CSV."""
+    lines = iter(f)
+    for line in lines:
+        if not line.startswith("#"):
+            yield line
+            break
+    yield from lines
+
+
 def load_pairs(labeled: Path, key: Path) -> list[tuple[str, str]]:
     with open(key, newline="", encoding="utf-8") as f:
         judge = {row["id"]: row["judge_label"].strip().upper()
-                 for row in csv.DictReader(f)}
+                 for row in csv.DictReader(_skip_leading_comments(f))}
     pairs, unlabeled, bad = [], 0, []
     with open(labeled, newline="", encoding="utf-8") as f:
         for row in csv.DictReader(f):
