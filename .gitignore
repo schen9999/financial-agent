@@ -49,3 +49,6 @@ eval/judge_validation/fourarm_holdout_key.csv
 # Answer key for the unlabeled calibration batch; eval/build_calibration_batch.py
 # writes it here, keep it out of the public repo while unlabeled
 eval/judge_validation/calibration_batch_key.csv
+
+# Answer key for the judge-SUPPORTED relabel sample (source set per row)
+eval/judge_validation/relabel_S_key.csv
