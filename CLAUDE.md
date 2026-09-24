@@ -52,7 +52,7 @@ Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (2072 lines, 139 tests collected: 138 passed + 1 skipped,
+3. The pytest suite (2120 lines, 144 tests collected: 143 passed + 1 skipped,
    the credit-gated judge test, as of 2026-09-24) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
@@ -162,11 +162,20 @@ Phase 3 — demo polish:
   summary). All judge-v1 rates carry the recall caveat: v1 recall on
   UNSUPPORTED measured 1/9 against human labels (2026-09-04), so v1 rates are
   lower bounds. Judge v2 is VALIDATED held-out (2026-09-06, 50 blind labels,
-  zero dev-set overlap): kappa 0.580, UNSUPPORTED recall 75% / precision 60%
-  — v2 rates cite this validation and are approximate point estimates, not
-  bounds (errors run both ways); A/B directions are unaffected when both arms
+  zero dev-set overlap): kappa 0.580, UNSUPPORTED precision 60% (9/15, CI
+  35.7–80.2%); population-weighted recall ~25% on the baseline run (CI
+  7.4–58.4%), driven by one miss in 20 judge-SUPPORTED claims, so the
+  interval is wide (eval/reweight_calibration.py). The 2026-09-06 "75%
+  recall" was computed on the judge-label-stratified sample unweighted and
+  is superseded. Every v2 rate is the judge-flagged rate; where a
+  reweighted true-rate estimate exists it goes beside it (j4cnp 7.2%, CI
+  3.1–22.0%; lsnnc 9.8%, CI 5.3–24.2%; 2nh8v 5.6%, CI 1.4–20.8%). A/B
+  directions and the per-section attribution are unaffected when both arms
   share the judge. The 50-claim dev set remains a development set and
   validates nothing.
+- Judge recall is only ever quoted population-weighted (reweighted to the
+  run's judge-label counts), with its CI. Never quote recall computed on a
+  judge-label-stratified sample as drawn.
 - Cost of record: $0.0366/brief (2026-09-06, post-retrieval-fix) from the
   committed harness. $0.0316 is a dated pre-retrieval-fix record — never quote
   it as current. $0.0269 is retired. "54% cost reduction" is retired.

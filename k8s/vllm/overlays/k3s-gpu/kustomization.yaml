@@ -9,8 +9,8 @@
 # with no manifest changes on both A10.1 nodes 2026-09-23. Evals against it:
 # 2026-09-03, 10 tickers, judge v1: 12.31% vs baseline 3.03% unsupported
 # (p = 0.054; v1 rates are lower bounds, recall 1/9); 2026-09-05/06, 40
-# tickers, judge v2: 8.15% vs 3.06% (p = 0.0023; approximate per the v2
-# held-out calibration, 75% recall / 60% precision) — gate FAILED both
+# tickers, judge v2: 8.15% vs 3.06% (p = 0.0023; judge-flagged rates, same
+# judge both arms, see docs/numbers-of-record.md) — gate FAILED both
 # times, so USE_LOCAL_MODEL ships off.
 #
 # Deltas vs oke-gpu, all environmental:

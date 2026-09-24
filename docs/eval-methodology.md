@@ -4,8 +4,8 @@ The centerpiece of this project is not the UI; it is that grounding is
 **measured by a committed, re-runnable harness and gated in CI fashion**.
 The grounding number of record: **12/392 = 3.06% unsupported (Wilson 95%
 CI 1.8–5.3%)**, hosted baseline `j4cnp` (2026-09-05/06), judge v2, fixed
-retrieval, 40 tickers — approximate per the v2 held-out calibration (75%
-recall / 60% precision on UNSUPPORTED). The former "49% pre-fix → 0/84"
+retrieval, 40 tickers. That is the judge-flagged rate; the reweighted true-rate estimate 7.2% (CI 3.1–22.0%),
+from the v2 held-out calibration: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall ~25% on the baseline run (CI 7.4–58.4%), driven by one miss in 20 judge-SUPPORTED claims, so the interval is wide. The former "49% pre-fix → 0/84"
 (judge v1, pre-retrieval-fix, 2026-08-24) is a dated record only. Never a
 bare rate or a bare 0%.
 
@@ -94,9 +94,9 @@ rows, recovered post-hoc from containerd snapshots into
 `raw/9j2dj-findings/` (contexts by sha256 in `9j2dj-contexts/`; one
 UNSUPPORTED verdict was free-form, carried with claim=null; findings
 dumps are now a standing part of every run — see the runbook's
-findings-capture section). Calibration: judge v2 measured 75% recall /
-60% precision on UNSUPPORTED against blind human labels (n=50, held
-out), so absolute v2 rates are approximate. **Not the number of
+findings-capture section). Calibration: this is a judge-flagged rate
+(judge v2 held-out: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall ~25% on the baseline run (CI 7.4–58.4%), driven by one miss in 20 judge-SUPPORTED claims, so the interval is wide); no reweighted estimate is computed for
+this run. **Not the number of
 record**: superseded as a baseline by `j4cnp` (below, same tickers on
 the rebuilt image).
 
@@ -121,11 +121,12 @@ Fisher exact (two-sided) on 12/392 vs 30/368: **p = 0.0023**
 and the local arm's interval sits entirely above the gate. The ship-off
 decision for `USE_LOCAL_MODEL` now rests on this clearly separated
 40-ticker A/B (the earlier, underpowered measurements agree in
-direction). Calibration: judge v2 measured 75% recall / 60% precision
-on UNSUPPORTED against blind human labels (n=50, held out), so the
-absolute rates here and in the per-section table below are
-approximate; the A/B direction and the per-section attribution are
-unaffected because both arms share the judge.
+direction). Calibration: these are judge-flagged rates (judge v2
+held-out: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall ~25% on the baseline run (CI 7.4–58.4%), driven by one miss in 20 judge-SUPPORTED claims, so the interval is wide). Reweighted true-rate estimates (`eval/reweight_calibration.py`):
+`j4cnp` 7.2% (CI 3.1–22.0%), `lsnnc` 9.8% (CI 5.3–24.2%). The A/B
+direction (3.06% vs 8.15%, p = 0.0023) and the per-section attribution
+stand: the same judge scored both arms, so its misses apply to both.
+Per-section reweighted estimates are recorded in numbers-of-record.
 
 ### Where the local arm fails: the sections the fine-tune owns
 
@@ -232,10 +233,10 @@ Not supported: a size curve. The hosted arm is a different model family
 are not points on one scaling line; only the three Qwen2.5 arms share a
 family.
 
-Calibration: judge v2 measured 75% recall / 60% precision on UNSUPPORTED
-against blind human labels (n=50, held out, 2026-09-06), so every rate
-here is an approximate point estimate; comparisons are unaffected in
-direction because all arms share the judge. A four-arm held-out sample is
+Calibration: every rate here is a judge-flagged rate (judge v2 held-out:
+precision 60% (9/15, CI 35.7–80.2%); population-weighted recall ~25% on the baseline run (CI 7.4–58.4%), driven by one miss in 20 judge-SUPPORTED claims, so the interval is wide). No reweighted estimate is computed: the held-out miss rates
+were measured on `j4cnp`/`lsnnc` claims and are not extended to other
+models. Comparisons hold in direction because all arms share the judge. A four-arm held-out sample is
 drawn for re-validating the judge on this claim set (below) and is not yet
 labeled.
 
@@ -372,8 +373,8 @@ below it). Distinguishing 3% from 5% with useful power needs claims in
 the several-hundreds — the motivation for the extended benchmark, which
 delivered exactly that: at N = 392 vs 368 the 40-ticker A/B separates
 3.06% from 8.15% at p = 0.0023 where the 10-ticker pass could not
-(judge-v2 rates; approximate per the held-out calibration, direction
-unaffected — both arms share the judge).
+(judge-flagged v2 rates; reweighted estimates 7.2% vs 9.8%, see the
+held-out validation; direction unaffected, both arms share the judge).
 
 ## Retrieval defect, discovered 2026-09-04
 
@@ -543,19 +544,74 @@ INFERENCE                1            2         12
 ```
 
 - Cohen's kappa (3-class): **0.580**
-- Judge recall on UNSUPPORTED: **9/12 = 75.0% (95% CI 46.8–91.1%)**
 - Judge precision on UNSUPPORTED: **9/15 = 60.0% (95% CI 35.7–80.2%)**
+- Judge recall on UNSUPPORTED, population-weighted: **25.4% on `j4cnp`
+  (95% CI 7.4–58.4%)**; see "Reweighting to the population" below
 
-Against v1's dev-set result (kappa 0.321, UNSUPPORTED recall 1/9 =
-11.1%, precision 1/3 = 33.3% — non-blind, and measured under dev
-conditions): held-out, blind v2 lands at kappa 0.580 with recall 75%
-and precision 60%. Stated plainly: **v2 trades v1's INFERENCE
-catch-all for a mild over-flag of INFERENCE-as-UNSUPPORTED** — 5 of
-v2's 6 UNSUPPORTED false positives were human-INFERENCE claims. The
-consequence for reading rates differs from v1's: v1 rates were
-one-directional lower bounds (recall 11%); **v2's errors run both
-ways** (missed 3 of 12, over-flagged 6, net 15 flagged vs 12 human on
-this sample), so v2 rates are approximate point estimates, not bounds.
+Precision conditions on the judge label, so it needs no reweighting.
+Recall does. Stated plainly: v2 over-flags INFERENCE as UNSUPPORTED (5
+of its 6 UNSUPPORTED false positives were human-INFERENCE claims), but
+once the sample is weighted back to the runs it misses far more than it
+over-flags, so **every v2 unsupported rate is a judge-flagged rate and
+the true rate is estimated higher.** Against v1's dev-set result (kappa
+0.321, UNSUPPORTED recall 1/9 = 11.1%, precision 1/3 = 33.3%,
+non-blind, and measured under dev conditions, unweighted), v2 is the
+better instrument on kappa and precision; the recall comparison is not
+like for like.
+
+**Superseded (dated 2026-09-06): recall 9/12 = 75.0% (CI 46.8–91.1%).**
+That figure was computed on the sample as drawn. The sample was
+stratified by judge label (20 SUPPORTED / 15 UNSUPPORTED / 15
+INFERENCE), while judge-SUPPORTED is ~90% of claims in the runs, so the
+unweighted figure gave the judge-SUPPORTED stratum 20/50 of the weight
+instead of ~90%. It is not quoted as current anywhere.
+
+#### Reweighting to the population (2026-09-24)
+
+`eval/reweight_calibration.py` (same `--labeled`/`--key` arguments as
+`eval/agreement.py`, plus `--run LABEL CLAIMS_JSONL FINDINGS_DIR` per
+run) weights each judge-label stratum by that run's judge-label counts
+(`eval/label.py` `count_labels_deduped` over the findings, cross-checked
+against the claims file). Per stratum k: p_k = human-UNSUPPORTED / n_k
+(SUPPORTED 1/20, UNSUPPORTED 9/15, INFERENCE 2/15). Estimated truly
+unsupported claims T = sum_k N_k p_k; recall = N_U p_U / T; true rate =
+T / N. 95% intervals: Monte Carlo over independent Jeffreys
+Beta(x + 0.5, n - x + 0.5) posteriors per stratum, 200,000 draws, fixed
+seed 20260924; the run counts N_k are treated as fixed.
+
+| Run | Judge counts S / U / I | Judge-flagged rate | Recall (95% CI) | Estimated true rate (95% CI) |
+|---|---|---|---|---|
+| `j4cnp` baseline | 354 / 12 / 26 | 3.06% | 25.4% (7.4–58.4%) | 7.2% (3.1–22.0%) |
+| `lsnnc` local-model | 324 / 30 / 14 | 8.15% | 49.9% (18.4–83.1%) | 9.8% (5.3–24.2%) |
+| pooled | 678 / 42 / 40 | 5.53% | 39.1% (13.0–74.0%) | 8.5% (4.2–23.1%) |
+
+Reproduce:
+
+```
+python eval/reweight_calibration.py \
+    --labeled eval/judge_validation/holdout_sample.csv \
+    --key eval/judge_validation/holdout_key.csv \
+    --run j4cnp eval/runs/j4cnp-claims.jsonl eval/runs/raw/j4cnp-findings \
+    --run lsnnc eval/runs/lsnnc-claims.jsonl eval/runs/raw/lsnnc-findings \
+    --by-section
+```
+
+Reading it:
+
+- The recall interval is wide because it rests on one human-UNSUPPORTED
+  claim among 20 judge-SUPPORTED claims; that single stratum decides
+  most of T. The calibration batch below exists to narrow it.
+- The A/B direction stands. `j4cnp` 3.06% vs `lsnnc` 8.15% (p = 0.0023)
+  and the per-section attribution compare two arms scored by the same
+  judge, so its misses apply to both. The reweighted estimates (7.2% vs
+  9.8%) are closer together because the same assumed miss rate on
+  judge-SUPPORTED claims adds to both; the held-out sample cannot tell
+  whether misses differ by arm or by section.
+- The recall on `lsnnc` is higher because more of its truly unsupported
+  claims are ones the judge does flag (30 judge-UNSUPPORTED vs 12).
+- The Monte Carlo 2.5th percentile for `j4cnp` recall sits between 7.45%
+  and 7.49% across seeds, so the printed lower bound rounds to 7.4% or
+  7.5% depending on the seed; the committed seed prints 7.4%.
 
 ### Injected-failure check (measured 2026-09-04)
 

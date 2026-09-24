@@ -39,9 +39,8 @@ Headline figures (numbers-of-record, "Current"):
 
 - Grounding: **12/392 = 3.06% unsupported (Wilson 95% CI 1.8–5.3%)**,
   hosted baseline `j4cnp` (2026-09-05/06), judge v2, fixed retrieval, 40
-  tickers. Judge v2's held-out calibration (75% recall / 60% precision on
-  UNSUPPORTED, blind labels, n=50) makes this an approximate point
-  estimate (section 5). The former headline, "49% pre-fix → 0/84" (judge
+  tickers. That is the judge-flagged rate; the reweighted true-rate estimate 7.2% (CI 3.1–22.0%)
+  (section 5). Held-out calibration: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall ~25% on the baseline run (CI 7.4–58.4%), driven by one miss in 20 judge-SUPPORTED claims, so the interval is wide. The former headline, "49% pre-fix → 0/84" (judge
   v1, pre-retrieval-fix, 2026-08-24), is a dated record only.
 - Cost per brief: **$0.0366** (2026-09-06, post-retrieval-fix; 3-ticker
   mean over AAPL/NVDA/JPM from the committed `scripts/cost_report.py`).
@@ -174,11 +173,11 @@ records):
 result: the model serves, the harness measured it, and it fails the gate
 in exactly the text it owns.
 
-**Caveat that travels with the table.** These are judge-v2 rates. v2 is
-calibrated held-out at 75% recall / 60% precision on UNSUPPORTED (blind
-labels, n = 50, 2026-09-06), so the absolute rates are approximate point
-estimates; the A/B direction and the per-section attribution are
-unaffected because both arms share the judge. Also on record: the
+**Caveat that travels with the table.** These are judge-flagged v2
+rates. Held-out calibration (blind labels, n = 50, 2026-09-06): precision 60% (9/15, CI 35.7–80.2%); population-weighted recall ~25% on the baseline run (CI 7.4–58.4%), driven by one miss in 20 judge-SUPPORTED claims, so the interval is wide.
+Reweighted true-rate estimates: `j4cnp` 7.2% (CI 3.1–22.0%), `lsnnc`
+9.8% (CI 5.3–24.2%). The A/B direction and the per-section attribution
+stand because both arms share the judge. Also on record: the
 baseline's interval (1.8–5.3%) still includes the 5% gate at N = 392.
 
 ## 4. The 2026-09-04 retrieval defect and its effect on earlier numbers
@@ -243,12 +242,17 @@ human reading would find.
 2026-09-06)"). Five rules written from v1's failure modes and frozen
 before the sample existed; 50 claims drawn from the 40-ticker A/B runs
 with zero overlap with the dev set, labeled blind with no model
-consultation: kappa **0.580**; recall on UNSUPPORTED **9/12 = 75.0%**
-(CI 46.8–91.1%); precision **9/15 = 60.0%** (CI 35.7–80.2%). v2 trades
-the catch-all for a mild over-flag of INFERENCE as UNSUPPORTED (5 of 6
-false positives). Consequence: v2's errors run both ways, so v2 rates
-are approximate point estimates, not bounds. A/B directions are
-unaffected when both arms share the judge.
+consultation: kappa **0.580**; precision on UNSUPPORTED **9/15 =
+60.0%** (CI 35.7–80.2%); population-weighted recall on UNSUPPORTED
+**25.4%** on the baseline run (CI 7.4–58.4%), driven by one miss in 20
+judge-SUPPORTED claims, so the interval is wide. The sample was
+stratified by judge label, so recall is reweighted to the run's
+judge-label counts (`eval/reweight_calibration.py`); the unweighted
+9/12 = 75.0% first published is superseded. v2 over-flags INFERENCE as
+UNSUPPORTED (5 of 6 false positives) but misses more than it over-flags
+once weighted. Consequence: every v2 rate is a judge-flagged rate and
+the true rate is estimated higher (baseline 7.2%, CI 3.1–22.0%). A/B
+directions are unaffected when both arms share the judge.
 
 **Injected-failure check** (numbers-of-record, "Critic recall on injected
 failures", 2026-09-04). Orthogonal to human labels: twenty fixtures with
@@ -357,13 +361,20 @@ python eval/section_attribution.py \
   --run eval/runs/j4cnp-claims.jsonl eval/runs/raw/j4cnp-findings \
   --run eval/runs/lsnnc-claims.jsonl eval/runs/raw/lsnnc-findings
 
-# judge v2 held-out agreement: kappa 0.580, recall 75%, precision 60%
+# judge v2 held-out agreement: kappa 0.580, precision 60%
 python eval/agreement.py --labeled eval/judge_validation/holdout_sample.csv \
                          --key eval/judge_validation/holdout_key.csv
+
+# population-weighted recall (25.4% on j4cnp) and true-rate estimates
+python eval/reweight_calibration.py \
+  --labeled eval/judge_validation/holdout_sample.csv \
+  --key eval/judge_validation/holdout_key.csv \
+  --run j4cnp eval/runs/j4cnp-claims.jsonl eval/runs/raw/j4cnp-findings \
+  --run lsnnc eval/runs/lsnnc-claims.jsonl eval/runs/raw/lsnnc-findings
 ```
 
-**Tests.** `python -m pytest tests/`: 2072 lines, 139 tests collected —
-138 passed + 1 skipped, the credit-gated judge test that runs only under
+**Tests.** `python -m pytest tests/`: 2120 lines, 144 tests collected —
+143 passed + 1 skipped, the credit-gated judge test that runs only under
 `CRITIC_INJECTION=1` (as of 2026-09-24).
 
 ## Known limitations and next steps
@@ -401,8 +412,10 @@ runs on the A10 nodes: gated, cache bypassed in eval, secrets never in
 git, one image for every role, and the test suite above. The fine-tune,
 no — it ships default-off as a measured negative result. Two qualifiers
 belong in any ship note: the hosted baseline's interval (1.8–5.3% at N =
-392) still includes the 5% gate, and the judge that produces the rate is
-calibrated at 75% recall / 60% precision on the class the gate rides on.
+392) still includes the 5% gate, and the judge that produces the rate
+has 60% precision and ~25% population-weighted recall (CI 7.4–58.4%) on
+the class the gate rides on, so the reweighted true rate is estimated
+at 7.2% (CI 3.1–22.0%).
 And these are single-node clusters: nothing has run on OKE or across
 nodes.
 
@@ -418,7 +431,8 @@ of harness work.
 how wrong it is, and that travels with every number. v1 measured kappa
 0.321 and 1/9 recall on UNSUPPORTED, so every v1 rate is a lower bound.
 v2, validated held-out and blind on a sample it had never seen, measures
-kappa 0.580, 75% recall, 60% precision, with errors in both directions.
+kappa 0.580 and 60% precision; population-weighted, its recall is ~25%
+on the baseline (CI 7.4–58.4%), so it misses more than it over-flags.
 On injected failures with known ground truth it caught 20/20, every
 off-needle flag adjudicated as a real unsupported claim. The limits: one
 labeler (the author), n = 50 so the UNSUPPORTED cells are single digits
@@ -429,8 +443,9 @@ labels, not the judge, are the ground truth.
 
 **Next steps, in the order the data asks for them.**
 
-1. Widen the judge calibration: a second labeler and a larger held-out
-   sample, because n = 50 single-author labels leave the intervals wide.
+1. Widen the judge calibration: label the 150-claim calibration batch
+   (100 judge-SUPPORTED, the stratum that drives recall), then a second
+   labeler, because n = 50 single-author labels leave the intervals wide.
 2. Close the retrieval coverage gap the reindex verification itemizes:
    five ADRs on 20-F filings, two tickers with TOC chunks in the window.
 3. Land the Haiku synthesis change only after a quality re-eval on the
