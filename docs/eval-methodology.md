@@ -126,7 +126,8 @@ held-out: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall ~25%
 `j4cnp` 7.2% (CI 3.1–22.0%), `lsnnc` 9.8% (CI 5.3–24.2%). The A/B
 direction (3.06% vs 8.15%, p = 0.0023) and the per-section attribution
 stand: the same judge scored both arms, so its misses apply to both.
-Per-section reweighted estimates are recorded in numbers-of-record.
+Per-section reweighted estimates appear as a sensitivity row under the
+table below.
 
 ### Where the local arm fails: the sections the fine-tune owns
 
@@ -142,6 +143,16 @@ overall A/B above is the measured result, the buckets are diagnostic):
 | `baseline` | 1/202 = 0.50% (0.1–2.8%) | 3/104 = 2.88% (1.0–8.1%) | 8/86 = 9.30% (4.8–17.3%) |
 | `local-model` | **22/111 = 19.82%** (13.5–28.2%) | 2/180 = 1.11% (0.3–4.0%) | 6/77 = 7.79% (3.6–16.0%) |
 | Fisher exact | **p = 4.6e-10** | p = 0.36 | p = 0.79 |
+| *Sensitivity: reweighted true-rate estimate, baseline vs local-model* | *5.4% (1.0–21.3%) vs 16.0% (9.8–29.4%)* | *6.7% (2.3–22.2%) vs 5.8% (1.4–21.5%)* | *12.3% (7.5–24.6%) vs 10.4% (6.0–23.7%)* |
+
+The headline is the judge-flagged comparison above (0.50% vs 19.82%,
+p = 4.6e-10). The sensitivity row reweights each bucket with
+`eval/reweight_calibration.py --by-section`, which assumes one
+judge-SUPPORTED miss rate (1/20 in the held-out sample) shared across
+both arms and all sections; the sample cannot say whether misses
+differ by arm or section. Under that assumption the baseline's FH + RF
+estimate is almost entirely the assumed miss rate applied to its 199
+judge-SUPPORTED claims, which is why the gap narrows.
 
 The excess unsupported rate is concentrated **entirely in the content
 the fine-tune authored**; the arms are statistically indistinguishable
