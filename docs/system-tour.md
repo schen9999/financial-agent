@@ -362,9 +362,9 @@ python eval/agreement.py --labeled eval/judge_validation/holdout_sample.csv \
                          --key eval/judge_validation/holdout_key.csv
 ```
 
-**Tests.** `python -m pytest tests/`: 2027 lines, 135 tests collected —
-134 passed + 1 skipped, the credit-gated judge test that runs only under
-`CRITIC_INJECTION=1` (as of 2026-09-23).
+**Tests.** `python -m pytest tests/`: 2072 lines, 139 tests collected —
+138 passed + 1 skipped, the credit-gated judge test that runs only under
+`CRITIC_INJECTION=1` (as of 2026-09-24).
 
 ## Known limitations and next steps
 
