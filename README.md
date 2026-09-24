@@ -30,40 +30,35 @@ The prompt engineering work -- not the retrieval architecture -- was what actual
 
 ### Reranking A/B Experiment
 
-I added optional cross-encoder reranking to the RAG pipeline and ran a controlled 4-arm eval across 10 tickers to measure whether it improved grounding:
+I added optional cross-encoder reranking to the RAG pipeline and ran a controlled 4-arm eval across 10 tickers to measure whether it improved grounding. A dated record: Jun 2026, judge v1, pre-retrieval-fix, local `grounding_check.py` runs (pre-Argo, so no workflow run IDs); intervals from `eval/stats.py`:
 
-| Arm | Claims | Grounding | Unsupported (judge v1) | Retrieval Latency |
+| Arm | Claims | Grounding | Unsupported (judge v1, Wilson 95% CI) | Retrieval Latency |
 |---|---:|---:|---:|---:|
-| Baseline (top-3, no rerank) | 66 | 92.4% | 0.0% | 4.1s |
-| Plain top-5 (no rerank) | 74 | 86.5% | 1.4% | 4.5s |
-| Rerank 20→3 | 84 | 78.6% | 0.0% | 20.7s |
-| Rerank 20→5 | 69 | 85.5% | 0.0% | 20.4s |
+| Baseline (top-3, no rerank) | 66 | 92.4% | 0/66 = 0.0% (0.0–5.5%) | 4.1s |
+| Plain top-5 (no rerank) | 74 | 86.5% | 1/74 = 1.4% (0.2–7.3%) | 4.5s |
+| Rerank 20→3 | 84 | 78.6% | 0/84 = 0.0% (0.0–4.4%) | 20.7s |
+| Rerank 20→5 | 69 | 85.5% | 0/69 = 0.0% (0.0–5.3%) | 20.4s |
 
-**Conclusion:** reranking adds 4--5x latency with no reliable grounding benefit. It ships default-off. The measurement framework is the deliverable -- it's what demonstrates the feature isn't needed, rather than assuming it would help.
+**Conclusion:** reranking adds 4--5x retrieval latency with no reliable grounding benefit. It ships default-off. The measurement framework is the deliverable -- it's what demonstrates the feature isn't needed, rather than assuming it would help.
 
 ### QLoRA Fine-Tuning Experiment
 
 Can a small local model replace Claude Haiku on section generation at lower cost?
 
-I fine-tuned **Qwen2.5-1.5B-Instruct** with QLoRA on 104 deterministic, Claude-free training pairs built from real SEC filings and financial data. When enabled, the fine-tuned model is routed 2 of 4 brief sections (Financial Health and Risk Factors); the other two stay on Haiku because deterministic targets couldn't be built for them -- an honest finding about the data, not a gap to paper over. **The measured verdict (2026-09-05/06, 40-ticker in-cluster A/B, judge v2, same image and index): the fine-tune fails the 5% grounding gate -- 8.15% unsupported (30/368) vs a 3.06% (12/392) hosted baseline, Fisher p = 0.0023 -- and the failure concentrates in exactly the two sections it owns (19.82% vs 0.50% on attributed claims), so it ships default-off.** The rest of this section is the experiment record.
+I fine-tuned **Qwen2.5-1.5B-Instruct** with QLoRA on 104 deterministic, Claude-free training pairs built from real SEC filings and financial data. When enabled, the fine-tuned model is routed 2 of 4 brief sections (Financial Health and Risk Factors); the other two stay on Haiku because deterministic targets couldn't be built for them -- an honest finding about the data, not a gap to paper over. **The measured verdict (2026-09-05/06, 40-ticker in-cluster A/B, judge v2, same image and index): the fine-tune fails the 5% grounding gate -- 8.15% unsupported (`lsnnc`, 30/368, Wilson 95% CI 5.8–11.4%) vs a 3.06% hosted baseline (`j4cnp`, 12/392, CI 1.8–5.3%), Fisher p = 0.0023 -- and the failure concentrates in exactly the two sections it owns (19.82%, 22/111, CI 13.5–28.2%, vs 0.50%, 1/202, CI 0.1–2.8%, on attributed claims; same two runs), so it ships default-off.** Judge-v2 rates are approximate per the held-out calibration (75% recall / 60% precision on UNSUPPORTED). The rest of this section is the experiment record.
 
-| | Section-generation (Haiku) cost | Grounding |
-|---|---:|---:|
-| Baseline (all Haiku) | $0.00538 | 88.6% |
-| Hybrid (local model for 2 sections) | $0.00248 | 85.4% |
-
-**Sections-only saving at slightly lower grounding -- no measurable full-brief
-cost reduction.** The table above is the *section-generation* (Haiku) spend
-only. Measured at full-brief level with the committed cost harness
-(`scripts/cost_report.py`; details in [benchmarks.md](benchmarks.md)), Sonnet
-synthesis dominates: hosted $0.0316/brief vs hybrid $0.0321/brief (both on
-the pre-retrieval-fix pipeline; the current cost of record is
-**$0.0366/brief**, 2026-09-06 post-retrieval-fix) -- the ~$0.002 sections
-saving is within run-to-run variance. Shipped default-off.
+**No measurable full-brief cost reduction.** Measured with the committed cost
+harness (`scripts/cost_report.py`; details in [benchmarks.md](benchmarks.md)),
+Sonnet synthesis dominates the bill: hosted $0.0316/brief vs hybrid
+$0.0321/brief (both on the pre-retrieval-fix pipeline; the current cost of
+record is **$0.0366/brief**, 2026-09-06 post-retrieval-fix) -- the saving on
+the two local sections is within run-to-run variance. Shipped default-off.
 
 **Aug 2026 re-measure ([benchmarks.md](benchmarks.md)):** the grounding
-regression reproduced in direction (86.2% hosted vs 77.8% hybrid on that judge
-pass). The local model runs behind a pluggable OpenAI-compatible backend
+regression reproduced in direction -- grounding (supported share) 86.2% hosted
+(56/65, Wilson 95% CI 75.7–92.5%) vs 77.8% hybrid (56/72, CI 66.9–85.8%);
+judge v1, 9 tickers balanced, pre-retrieval-fix, local `grounding_check.py`
+run with no workflow run ID. The local model runs behind a pluggable OpenAI-compatible backend
 (`LOCAL_MODEL_BACKEND=openai`); on this AVX2-only dev CPU the prebuilt vLLM
 image SIGILLs (root-caused to its AVX-512 requirement), so locally the code
 path is exercised via Ollama's `/v1` endpoint.
@@ -72,13 +67,30 @@ path is exercised via Ollama's `/v1` endpoint.
 fine-tune pinned to one A10 on an OCI VM -- plain Docker (2026-09-02), then
 in-cluster on single-node k3s (2026-09-03) -- and the gated eval DAG ran a
 40-ticker A/B against it (2026-09-05/06, judge v2, same image and index both
-arms): **8.15% unsupported (30/368) vs the hosted baseline 3.06% (12/392),
-Fisher p = 0.0023** -- the local-model arm fails the 5% gate, the hosted
-baseline passes, and per-section attribution places the excess entirely in
-the two fine-tune-owned sections (**19.82% vs 0.50%**, p = 4.6e-10). An
-earlier 10-ticker pass agreed in direction but could not separate the arms
-(dated records in [docs/eval-methodology.md](docs/eval-methodology.md)). A
-measured negative result, and the reason `USE_LOCAL_MODEL` ships off.
+arms): **8.15% unsupported (`lsnnc`, 30/368, CI 5.8–11.4%) vs the hosted
+baseline 3.06% (`j4cnp`, 12/392, CI 1.8–5.3%), Fisher p = 0.0023** -- the
+local-model arm fails the 5% gate, the hosted baseline passes, and
+per-section attribution places the excess entirely in the two
+fine-tune-owned sections (**19.82%, 22/111, CI 13.5–28.2% vs 0.50%, 1/202,
+CI 0.1–2.8%**, p = 4.6e-10). An earlier 10-ticker pass agreed in direction
+but could not separate the arms (dated records in
+[docs/eval-methodology.md](docs/eval-methodology.md)). A measured negative
+result, and the reason `USE_LOCAL_MODEL` ships off.
+
+**Four-arm comparison (2026-09-23, a dated comparison set, not numbers of
+record; 40 tickers, judge v2, identical pinned sampling).** To separate
+training from model size, the same harness scored four arms that differ
+only in who writes Financial Health and Risk Factors: each local model
+writes those two sections, while Haiku writes the other two and Sonnet the
+synthesis in every arm. Unsupported rates: the hosted baseline (`kcf7s`,
+4/383 = 1.04%, CI 0.4–2.7%), the fine-tune (`v924f`, 25/385 = 6.49%, CI 4.4–9.4%), its
+untuned base Qwen2.5-1.5B-Instruct (`4nfsm`, 31/400 = 7.75%, CI 5.5–10.8%),
+and untuned Qwen2.5-7B-Instruct (`cnkp2`, 18/393 = 4.58%, CI 2.9–7.1%). The
+fine-tune matched its own base (p = 0.58); within Qwen2.5, 1.5B → 7B
+improved with borderline significance (p = 0.076) at 3.7x lower serving
+throughput on the same A10; and every open-weight arm trailed hosted (7B vs
+hosted p = 0.0039). Judge-v2 rates, approximate per the held-out
+calibration. Details: [docs/eval-methodology.md](docs/eval-methodology.md).
 
 I also re-implemented the same fine-tune with a hand-written PyTorch training loop (`fine_tune_pytorch_loop.ipynb`) -- custom `Dataset`, manual gradient accumulation and `optimizer.step()`, hand-written cosine LR, no Hugging Face `Trainer`. Benchmarked against the `Trainer` on identical data and config (`adamw_torch`, cosine schedule, grad-accum 8), the two loss curves track each other closely over 21 optimizer steps -- both start around 1.4--1.5 and trend down together, finishing at **0.50 (native)** and **0.35 (Trainer)**. The curves cross repeatedly, so that final-step gap sits within the run-to-run noise at this scale (~7 optimizer steps/epoch, plus shuffle order and 4-bit-kernel non-determinism) rather than a systematic difference -- confirming the hand-written loop reproduces the Trainer's training dynamics at the gradient-accumulation and optimizer-step level.
 
@@ -104,24 +116,29 @@ so there is a single source of truth for grounding.
 I ran both paths over the standard 10-ticker set, scored by the same
 temperature-0 Sonnet judge, with retrieval held at baseline (reranking off, top-3)
 on both sides so the only differences were the planner-driven queries and the
-critic loop. Critic threshold: 5% unsupported.
+critic loop. Critic threshold: 5% unsupported. A dated record: Jun 2026,
+judge v1, pre-retrieval-fix, local runs (pre-Argo, no workflow run IDs);
+intervals from `eval/stats.py`.
 
-| Path | Claims | Unsupported (judge v1) | Cost/brief (relative)* | Latency/brief | Revisions/brief |
-|---|---:|---:|---:|---:|---:|
-| Single-agent (control) | 73 | 1 (1.4%) | 1.00x | 26.1s | 0.00 |
-| Multi-agent | 71 | 0 (0.0%) | 1.92x | 43.9s | 0.00 |
-| Delta | | -1.4 pts | +92% | +68% | n/a |
+| Path | Claims | Unsupported (judge v1, Wilson 95% CI) | Latency/brief | Revisions/brief |
+|---|---:|---:|---:|---:|
+| Single-agent (control) | 73 | 1/73 = 1.4% (0.2–7.4%) | 26.1s | 0.00 |
+| Multi-agent | 71 | 0/71 = 0.0% (0.0–5.1%) | 43.9s | 0.00 |
+| Delta | | -1.4 pts | +68% | n/a |
 
-\* Absolute costs from this experiment came from an uncommitted harness and are
-recorded as historical in [docs/PHASE0_AUDIT.md](docs/PHASE0_AUDIT.md); the
+The multi-agent path also costs more per brief (an extra Haiku planner call
+and a Sonnet critic call on every brief). The cost ratio this experiment
+recorded came from an uncommitted harness, so it is kept only as a historical
+note in [docs/PHASE0_AUDIT.md](docs/PHASE0_AUDIT.md) and not quoted here; the
 current re-runnable cost of record for the single-agent pipeline is
 **$0.0366/brief** (2026-09-06, post-retrieval-fix; `scripts/cost_report.py`).
 
 Two findings, stated plainly:
 
 1. **The critic fired 0 revisions across all 10 real drafts.** The base pipeline
-   already drives unsupported claims to the floor (roughly 3% at the time of this
-   experiment; 0/84 in the 2026-08-24 re-measure, judge v1, pre-retrieval-fix) on the
+   already drives unsupported claims to the floor (1/73 on the control arm
+   above; a later re-measure on 2026-08-24 found 0/84, Wilson 95% CI
+   0.0–4.4%, judge v1, pre-retrieval-fix, local run with no workflow run ID) on the
    Executive Summary and Outlook sections this eval scores, so the critic looked at
    every first draft, found nothing to fix, and passed it. There was no headroom
    for the revision loop to recover.
@@ -132,9 +149,9 @@ Two findings, stated plainly:
    temperature-0.2 generation variance, not a systematic weakness in the base
    synthesis prompt.
 
-The orchestration cost roughly **+92% per brief and +68% latency** (the planner
-adds a Haiku call, and the inline critic adds a Sonnet judge to every brief) for a
-grounding benefit that, on this workload, was null.
+The orchestration adds cost and latency (the planner adds a Haiku call, and the
+inline critic adds a Sonnet judge to every brief) for a grounding benefit that,
+on this workload, was null.
 
 **Conclusion: it ships default-off.** On this workload the multi-agent path showed
 no grounding benefit because the single-agent baseline was already at the
@@ -185,9 +202,9 @@ is not worth its cost.
 | Async tasks | Celery + Redis |
 | REST API | FastAPI |
 | Frontend | Streamlit |
-| Local orchestration | Kubernetes (kind, single node in WSL2) — full topology incl. worker + MCP |
+| Orchestration | Kubernetes — kind (local, single node in WSL2) and single-node k3s on two OCI A10 VMs; full topology incl. worker + MCP |
 | Batch / eval orchestration | Argo Workflows v3.7 (fan-out eval DAG, nightly CronWorkflow, quality gate) |
-| Local model serving | OpenAI-compatible backend: vLLM manifests (AVX-512 hosts) / Ollama `/v1` (this machine) — see [benchmarks.md](benchmarks.md) |
+| Local model serving (default-off) | OpenAI-compatible backend: vLLM v0.10.2 on one OCI A10 (k3s) / Ollama `/v1` on the dev laptop (no AVX-512 for vLLM) — see [benchmarks.md](benchmarks.md) |
 | Cloud (backend) | AWS ECS Fargate, RDS PostgreSQL, Secrets Manager, ECR |
 | Infrastructure as Code | Terraform |
 | CI/CD | GitHub Actions → ECR → ECS (OIDC, no static keys) |
@@ -199,9 +216,11 @@ is not worth its cost.
 
 ### Deployment topology (Kubernetes)
 
-The full designed topology runs on a single-node kind cluster (see
-[k8s/README.md](k8s/README.md) and the audit in
-[docs/PHASE0_AUDIT.md](docs/PHASE0_AUDIT.md)):
+The full designed topology runs on a single-node kind cluster locally and on
+single-node k3s on the OCI A10 VMs (see [k8s/README.md](k8s/README.md),
+[docs/deploy-runbook.md](docs/deploy-runbook.md), and the audit in
+[docs/PHASE0_AUDIT.md](docs/PHASE0_AUDIT.md)). The diagram shows the kind
+layout; the k3s overlay adds vLLM on the node's A10:
 
 ```mermaid
 flowchart LR
@@ -217,7 +236,7 @@ flowchart LR
         end
     end
     EXT["Anthropic API · NewsAPI · SEC EDGAR<br/>· yfinance · Pinecone · LangSmith"]
-    LOCAL["Local model (default-off)<br/>OpenAI-compatible endpoint:<br/>vLLM manifests (AVX-512 hosts) / Ollama (this machine)"]
+    LOCAL["Local model (default-off)<br/>OpenAI-compatible endpoint:<br/>vLLM on an A10 (k3s) / Ollama (dev laptop)"]
 
     API -->|"cache + enqueue"| RD
     API -->|"briefs"| PG
@@ -337,7 +356,8 @@ nothing downstream changes. Toggle the flag to compare the two paths.
 
 The FastAPI backend is containerized and runs on **AWS ECS Fargate**, with a real
 **RDS PostgreSQL** database, secrets in **AWS Secrets Manager**, and a
-**GitHub Actions** pipeline that deploys on every push to `main`. The whole
+**GitHub Actions** pipeline that deploys after CI passes on `main` (commits
+that touch only `README.md`, `docs/`, `infra/`, or notebooks skip the deploy). The whole
 footprint is defined in **Terraform** (`infra/`). The Streamlit frontend stays on
 Streamlit Cloud; Redis/Celery are stubbed in this environment (the cache no-ops
 and the async endpoint is disabled).
@@ -361,6 +381,15 @@ RDS PostgreSQL (t3.micro)        Secrets Manager
   (private, SG-locked to           DATABASE_URL, REDIS_URL — injected as task
    the task's SG)                  env vars by the execution role
 ```
+
+**Current state.** The service normally runs at 0 tasks. It was last deployed
+at `c602e99` (task definition revision 8) and verified on 2026-09-24 by
+scaling to 1: `/health` returned 200 and an AAPL brief returned 200 with all
+six sections, then the service was parked at 0 again. Two caveats: the task
+definition has no container health check (Fargate ignores the image's
+Dockerfile `HEALTHCHECK`), so ECS reports health as UNKNOWN; and at 0 tasks a
+deploy's "wait for stable" passes without starting a container, so a deploy
+alone doesn't prove the new image runs.
 
 **Design choices**
 
@@ -450,10 +479,11 @@ make cluster-down    # tear down
 | Grounding, number of record (40 tickers, judge v2, fixed retrieval) | **12/392 = 3.06% unsupported (Wilson 95% CI 1.8–5.3%)**, hosted baseline `j4cnp` (2026-09-05/06); approximate per the v2 held-out calibration |
 | Grounding, dated (2026-08-24, 10 tickers, judge v1, pre-retrieval-fix) | 49% pre-fix → 0/84 unsupported (CI 0.0–4.4%) — a lower bound on an exhibit-indexing pipeline; retired as current |
 | Cost/brief, hosted (exact API tokens + RAG estimate) | **$0.0366** (2026-09-06, post-retrieval-fix; re-runnable: `make cost-report`) |
-| Grounding, hosted vs local-hybrid (9-ticker balanced A/B, Aug 2026) | 86.2% vs 77.8% — expected regression, local stays default-off |
-| Grounding, hosted vs in-cluster vLLM fine-tune (40-ticker A/B, 2026-09-05/06) | 3.06% (12/392) vs 8.15% (30/368) unsupported (judge v2), Fisher p = 0.0023 — local-model arm fails the 5% gate; ships default-off. Per-section: 0.50% vs 19.82% on fine-tune-owned claims (p = 4.6e-10) — see [docs/eval-methodology.md](docs/eval-methodology.md) |
+| Grounding (supported share), hosted vs local-hybrid (9-ticker balanced A/B, Aug 2026, judge v1, pre-retrieval-fix, local run — no workflow run ID) | 86.2% (56/65, CI 75.7–92.5%) vs 77.8% (56/72, CI 66.9–85.8%) — expected regression, local stays default-off |
+| Grounding, hosted vs in-cluster vLLM fine-tune (40-ticker A/B, 2026-09-05/06, judge v2) | `j4cnp` 3.06% (12/392, CI 1.8–5.3%) vs `lsnnc` 8.15% (30/368, CI 5.8–11.4%) unsupported, Fisher p = 0.0023 — local-model arm fails the 5% gate; ships default-off. Per-section: 0.50% (1/202, CI 0.1–2.8%) vs 19.82% (22/111, CI 13.5–28.2%) on fine-tune-owned claims (p = 4.6e-10) — see [docs/eval-methodology.md](docs/eval-methodology.md) |
+| Four-arm comparison (2026-09-23, 40 tickers, judge v2, identical pinned sampling) — a dated comparison set, not numbers of record | Unsupported: hosted `kcf7s` 1.04% (4/383, CI 0.4–2.7%); fine-tune `v924f` 6.49% (25/385, CI 4.4–9.4%); untuned Qwen2.5-1.5B `4nfsm` 7.75% (31/400, CI 5.5–10.8%); untuned Qwen2.5-7B `cnkp2` 4.58% (18/393, CI 2.9–7.1%). Fine-tune vs its base p = 0.58; 1.5B vs 7B p = 0.076 (borderline); 7B vs hosted p = 0.0039 |
 | Judge v2 held-out validation (blind, n=50, 2026-09-06) | kappa 0.580; UNSUPPORTED recall 75.0% (46.8–91.1%), precision 60.0% (35.7–80.2%) — v2 rates are approximate point estimates |
-| Critic recall on injected failures | 20/20 = 100% on both runs (2026-09-04); adjudicated precision 24/24 |
+| Critic recall on injected failures | 20/20 = 100% (CI 83.9–100%) on both runs (2026-09-04); adjudicated precision 24/24 |
 | Cost/brief, hosted vs local-hybrid (pre-retrieval-fix pipeline) | $0.0316 vs $0.0321 — no measurable full-brief saving (Sonnet dominates) |
 | Local CPU serving (environment-limited: 2-core AVX2 laptop) | ~7.7 tok/s aggregate saturation; NOT comparable to GPU/hosted |
 
@@ -492,7 +522,7 @@ different-ticker miss.
 | Failure semantics | Retry/report per request | The *workflow* fails if the aggregate quality gate fails |
 | Why not the other one | An eval suite is a DAG with fan-out, per-step containers, and a pass/fail verdict — modeling that in Celery means hand-building orchestration Argo already provides | Spinning up a pod per API request would add cold-start latency and K8s API load to the hot path that a resident worker avoids |
 
-The eval workflow (`argo/eval-workflow.yaml`) fans out one pod per ticker
+The eval workflow (`argo/base/eval-workflow.yaml`) fans out one pod per ticker
 (bounded parallelism — each pod carries the torch/embedding stack), aggregates
 grounding scores in a final step (`scripts/eval_aggregate.py`), and **fails the
 workflow** if the unsupported-claim rate breaches the threshold, any ticker was
@@ -503,7 +533,8 @@ never touch the live exact-key brief cache.
 **The gate fired on its first real run — and that was variance, measured.** The
 first full workflow run scored 5.62% unsupported (judge v1; gate: ≤5%), driven entirely by
 one NVDA draft with 5 flagged claims. Re-measuring NVDA immediately produced
-0 unsupported of 10 (and the same morning's full-suite run had scored 0 of 84).
+0 unsupported of 10 (and the same morning's full-suite run had scored 0/84,
+Wilson 95% CI 0.0–4.4%; judge v1, pre-retrieval-fix, local run with no workflow run ID).
 Single-draft scores fluctuate at temperature 0.2 — the same behaviour as the
 WMT flag in the multi-agent experiment. The threshold stays at 5% rather than
 being widened to make red nights rarer: the documented response to a red night
