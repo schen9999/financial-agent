@@ -583,10 +583,11 @@ true unsupported claims — 24/24 = 100% (95% CI 86.2–100%), zero false
 positives.** The judge's claim segmentation still varies between
 temperature-0 runs (8, then 4 off-needle flags on identical inputs), so
 per-run flag counts are noisy even though the gated metric, recall,
-reproduced exactly. A gated CI job
-(`.github/workflows/critic-injection.yml`) re-runs this on
-judge-adjacent changes and asserts recall ≥ 0.8; the bar does not move
-if it regresses — the number gets reported instead.
+reproduced exactly. A CI job
+(`.github/workflows/critic-injection.yml`) re-runs this weekly (Sundays
+06:00 UTC) and on manual dispatch, never on push or PR because it spends
+judge credits, and asserts recall ≥ 0.8; the bar does not move if it
+regresses — the number gets reported instead.
 
 ## Boundary
 

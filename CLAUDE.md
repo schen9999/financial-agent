@@ -15,7 +15,7 @@ AVX-512).
 Current deploy target: single-node kind K8s with probes and resource bounds.
 
 ## Goal
-Migrate to OCI for a hiring demo (deadline: demo Fri Sep 18, 2026):
+Migrate to OCI for a hiring demo (deadline: demo October 2026, date TBD):
 - OKE basic cluster, created via Terraform (cluster creation is part of the deliverable)
 - App node pool: 2x VM.Standard.E4.Flex, 4 OCPUs / 32 GB each (1 OCPU = 2 vCPUs;
   size K8s requests/limits in vCPU terms: 16 vCPU / 64 GB total across the pool)
