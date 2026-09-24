@@ -9,9 +9,15 @@ a page at a time, and takes one keystroke-word per row:
   b           go back and relabel the previous row answered this session
   k           skip (stays blank; the next session comes back to it)
   q           quit (every answer is already saved)
+  /term       find every match of term in the context (case-insensitive):
+              each is shown with its line number and two lines either
+              side, the term highlighted; paging then resumes
 
 At a "more" prompt, Enter shows the next page; a label key answers
 without paging further.
+
+A row's existing label is never shown, including when going back with b:
+relabeling is as blind as the first pass.
 
 Blinding: this tool never opens a *_key.csv and refuses one passed as
 --csv. The section shown is found in the row's own context (the audited
@@ -156,37 +162,65 @@ def ask(prompt: str, inp, out) -> str:
     return inp().strip().lower()
 
 
+def _highlighter(out):
+    if getattr(out, "isatty", lambda: False)():
+        return lambda s: f"\033[7m{s}\033[0m"
+    return lambda s: f">>{s}<<"
+
+
+def search(lines: list[str], term: str, out, width: int = 2) -> int:
+    """Write every line matching `term` (case-insensitive) with `width`
+    lines of context, the match highlighted. Returns the match count."""
+    pat = re.compile(re.escape(term), re.I)
+    hits = [n for n, line in enumerate(lines) if pat.search(line)]
+    if not hits:
+        out.write(f"no match for '{term}'\n")
+        return 0
+    mark = _highlighter(out)
+    out.write(f"{len(hits)} line(s) match '{term}':\n")
+    for h in hits:
+        out.write(f"--- line {h + 1}/{len(lines)}\n")
+        for n in range(max(0, h - width), min(len(lines), h + width + 1)):
+            text = pat.sub(lambda m: mark(m.group(0)), lines[n]) if n == h else lines[n]
+            out.write(f"{n + 1:>5}{'>' if n == h else ' '} {text}\n")
+    return len(hits)
+
+
 def show_and_ask(lf: LabelFile, k: int, page: int, inp, out) -> str:
     r = lf.row(k)
     done = lf.labeled_count()
     out.write("\n" + "=" * 78 + "\n")
     out.write(f"row {k + 1}/{len(lf.rows)} (id {r.get('id', '?')})   "
               f"labeled {done}/{len(lf.rows)}\n")
-    current = lf.label(k)
-    if current:
-        out.write(f"current label: {current} (relabeling)\n")
     out.write(f"ticker : {r.get('ticker', '?')}\n")
     out.write(f"section: {locate_section(r.get('claim', ''), r.get('context', ''))}\n")
     out.write(f"claim  : {r.get('claim', '')}\n")
     out.write("-" * 78 + "\n")
     lines = r.get("context", "").splitlines()
-    pos = 0
+    pos, show = 0, True
     while True:
-        out.write("\n".join(lines[pos:pos + page]) + "\n")
-        pos += page
+        if show:
+            out.write("\n".join(lines[pos:pos + page]) + "\n")
+            pos += page
+            show = False
         if pos < len(lines):
             a = ask(f"-- more ({pos}/{len(lines)} lines): Enter = next page, "
-                    f"s/u/i/b/k/q -- ", inp, out)
+                    f"/term = search, s/u/i/b/k/q -- ", inp, out)
             if a == "":
+                show = True
                 continue
         else:
             a = ask("label [s]upported [u]nsupported [i]nference, "
-                    "[b]ack, s[k]ip, [q]uit: ", inp, out)
+                    "[b]ack, s[k]ip, [q]uit, /term search: ", inp, out)
+        if a.startswith("/"):
+            if a[1:].strip():
+                search(lines, a[1:].strip(), out)
+            else:
+                out.write("usage: /term\n")
+            continue
         if a in KEYS or a in ("b", "k", "q"):
             return a
-        out.write("unrecognized; use s, u, i, b, k or q\n")
-        if pos >= len(lines):
-            pos = max(0, len(lines) - page)
+        out.write("unrecognized; use s, u, i, b, k, q or /term\n")
 
 
 def run(path: Path, page: int = 40, inp=input, out=sys.stdout) -> None:

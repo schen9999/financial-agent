@@ -84,3 +84,26 @@ def test_record_spans_handles_quoted_newlines():
 def test_locate_section_from_context_only():
     assert locate_section("Margins may compress", CONTEXT) == "Outlook"
     assert locate_section("not in the text", CONTEXT) == "not located"
+
+
+def test_search_highlights_every_match_with_line_numbers():
+    from eval.label_cli import search
+    out = io.StringIO()
+    lines = ["alpha", "revenue up", "beta", "gamma", "Revenue down", "delta"]
+    assert search(lines, "revenue", out) == 2
+    text = out.getvalue()
+    assert "2 line(s) match" in text
+    assert "    2> >>revenue<< up" in text and "    5> >>Revenue<< down" in text
+    assert search(lines, "missing", io.StringIO()) == 0
+
+
+def test_search_then_label_and_back_never_shows_existing_label(tmp_path):
+    path = tmp_path / "batch.csv"
+    _write(path, [[0, "AAA", "Revenue was $1.0 billion", CONTEXT, ""],
+                  [1, "BBB", "plain", "short context", ""]])
+    out = io.StringIO()
+    run(path, page=100, inp=_feed(["/revenue", "u", "b", "s", "q"]), out=out)
+    text = out.getvalue()
+    assert ">>revenue<<" in text
+    assert "UNSUPPORTED" not in text and "SUPPORTED" not in text
+    assert LabelFile(path).label(0) == "SUPPORTED"
