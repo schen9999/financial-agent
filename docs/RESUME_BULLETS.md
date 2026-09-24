@@ -27,10 +27,10 @@ cost-aware routing ($0.0366/brief).
 GitHub Actions CI/CD; exposed the agent's tools as a spec-compliant MCP
 server (stdio and streamable-HTTP transports).
 
-> Deep-dive backup: the AWS Terraform (`infra/`: ECR, RDS, Secrets, IAM,
-> networking, ECS Fargate service, GitHub OIDC provider + scoped deploy
-> role) is in git history — commits 2f76e0d, e6fb147, fb831ad — and no
-> longer in the tree; .github/workflows/deploy.yml (OIDC
+> Deep-dive backup: the AWS Terraform is still in the tree — `infra/`, 16
+> files: ECR, RDS, Secrets, IAM, networking, ECS Fargate service, GitHub
+> OIDC provider + scoped deploy role (added in commits 2f76e0d, e6fb147,
+> fb831ad); .github/workflows/deploy.yml (OIDC
 > `role-to-assume`, ECR push, ECS task-definition deploy). ECS ran a
 > single FastAPI container + RDS; Celery/Redis never ran on ECS.
 > MCP server: stdio and streamable-HTTP entrypoints, tests/test_mcp_*.py.
