@@ -4,7 +4,8 @@
 Production financial research agent. Six services: FastAPI, Celery worker, Redis,
 Postgres, Streamlit, MCP server (stdio + streamable-HTTP). Eval harness runs as a
 gated Argo Workflows DAG with a nightly CronWorkflow. Pluggable OpenAI-compatible
-LOCAL_MODEL_BACKEND (currently Ollama; vLLM v0.10.2 validated serving the merged
+LOCAL_MODEL_BACKEND (code default ollama for local dev; the k3s nodes set
+openai -> in-cluster vLLM; vLLM v0.10.2 validated serving the merged
 fine-tune pinned to one A10 on the Phase 1.75 VM — plain Docker 2026-09-02,
 in-cluster on k3s 2026-09-03. Eval A/Bs against it FAILED the gate: 10-ticker
 2026-09-03 (12.31% vs 3.03%, judge v1, p=0.054) and the deciding 40-ticker
@@ -12,7 +13,9 @@ in-cluster on k3s 2026-09-03. Eval A/Bs against it FAILED the gate: 10-ticker
 production path. OKE serving still pending; the dev CPU cannot run vLLM, no
 AVX-512).
 
-Current deploy target: single-node kind K8s with probes and resource bounds.
+Current demo target: single-node k3s on vm-a10-inst-1 (fallback vm-a10-inst-2);
+see Targets. kind stays the local equivalence baseline, with probes and
+resource bounds.
 
 ## Goal
 Migrate to OCI for a hiring demo (deadline: demo October 2026, date TBD):
@@ -120,7 +123,8 @@ vm-eval all green; steps flipped only on confirmed terminal output):
   "Single-VM path (k3s)" with every step marked NOT YET EXECUTED, network
   baseline (seclist + ufw allow-22) before any NodePort exists.
 - CHECKPOINT: If no OKE compartment by Sep 10, the VM is the demo target;
-  stop Terraform work and rehearse.
+  stop Terraform work and rehearse. RESOLVED: no compartment landed by Sep
+  10; the k3s VM path is the demo target (now two A10.1 nodes, see Targets).
 
 Phase 2 — once OCI access lands (detailed steps: docs/deploy-runbook.md):
 1. Fill terraform.tfvars: OCIDs, region/AD with A10 capacity, re-confirm the
@@ -178,8 +182,16 @@ Phase 3 — demo polish:
   2026-09-03 (10 tickers, judge v1: 12.31% vs 3.03%, p = 0.054) and on
   2026-09-05/06 at 40 tickers (judge v2, same image/index: 8.15% vs 3.06%,
   p = 0.0023 — the citable A/B) — always with both numbers and the judge
-  version tag. Still gated: serving on OKE — update this line when that
-  actually runs.
+  version tag. Also legitimate as of 2026-09-23: vLLM v0.10.2 re-served
+  `financial-lora` on both VM.GPU.A10.1 nodes (single-node k3s, no manifest
+  changes), and on vm-a10-inst-2 also served untuned Qwen2.5-1.5B-Instruct
+  and Qwen2.5-7B-Instruct (swapped with `make vm-vllm`) for the four-arm
+  comparison — a dated comparison set, not numbers of record, 40 tickers,
+  judge v2: hosted `kcf7s` 4/383 = 1.04% (CI 0.4–2.7%), fine-tune `v924f`
+  25/385 = 6.49% (CI 4.4–9.4%), 1.5B base `4nfsm` 31/400 = 7.75% (CI
+  5.5–10.8%), 7B base `cnkp2` 18/393 = 4.58% (CI 2.9–7.1%); quote it as a
+  dated set with run IDs and CIs. Still gated: serving on OKE — update this
+  line when that actually runs.
 - Cross-encoder reranking and the multi-agent supervisor shipped default-off
   because evals showed no grounding gain at higher cost/latency. State it that way.
 - Any new number in docs must come from a committed, re-runnable harness.

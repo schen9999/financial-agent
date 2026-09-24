@@ -2,7 +2,7 @@
 
 A guided tour of the financial research agent for someone joining the
 project. It walks the system in six stops — what it is for, how it is
-deployed on the OCI VM, the one experiment that carries the biggest
+deployed on the OCI A10 nodes, the one experiment that carries the biggest
 decision, the retrieval defect that reshaped the numbers, how the judge
 that produces every rate is calibrated, and how to run and observe all of
 it — and closes with the known limitations. The deeper references are
@@ -49,13 +49,17 @@ Headline figures (numbers-of-record, "Current"):
   re-measure). A repeat request for the same ticker within 24 h is
   served from the exact-key cache.
 
-## 2. The single-VM k3s topology on OCI
+## 2. The single-node k3s topology on OCI
 
-The full designed topology runs on one OCI VM (VM.GPU.A10.2: two A10 24 GB
-cards, single-node k3s, reachable only by ssh). It is the first
-environment where the whole topology runs together — the retired ECS
-deployment was a single FastAPI container plus RDS, with no Celery,
-Redis, Streamlit, or MCP in production.
+The full designed topology runs on single-node k3s on OCI A10 VMs,
+reachable only by ssh. It first ran on a VM.GPU.A10.2 (two A10 24 GB
+cards, 2026-09-02/03, since retired) and was rebuilt from the runbook on
+2026-09-23 on two VM.GPU.A10.1 nodes (one A10 each): `vm-a10-inst-1`, the
+demo target, and `vm-a10-inst-2`, the fallback — each its own single-node
+cluster. It is the first environment where the whole topology runs
+together. The ECS deployment is a single FastAPI container plus RDS, with
+no Celery, Redis, Streamlit, or MCP; it normally runs at 0 tasks, was last
+deployed at `c602e99`, and was verified on 2026-09-24.
 
 Six services in namespace `financial-agent`:
 
@@ -72,10 +76,11 @@ Beside them:
 
 - **vLLM** (`k8s/vllm/overlays/k3s-gpu`): vLLM v0.10.2 serving the merged
   Qwen2.5-1.5B fine-tune from a hostPath, `nvidia.com/gpu: 1`, pinned to
-  one of the two A10s with `CUDA_VISIBLE_DEVICES=0`, the same image and
-  serving args the oke-gpu overlay commits to. On record: served in
-  plain Docker (2026-09-02) and in-cluster on k3s (2026-09-03), both
-  confirmed from the box. It backs the default-off `USE_LOCAL_MODEL`
+  one A10 with `CUDA_VISIBLE_DEVICES=0` (on the A10.1 nodes, the only
+  one), the same image and serving args the oke-gpu overlay commits to.
+  On record: served in plain Docker (2026-09-02) and in-cluster on k3s
+  (2026-09-03) on the A10.2, both confirmed from the box, and re-served
+  on both A10.1 nodes on 2026-09-23 with no manifest changes. It backs the default-off `USE_LOCAL_MODEL`
   flag through the `LOCAL_MODEL_BACKEND=openai` seam.
 - **Argo Workflows** (namespace `argo`): the `grounding-eval`
   WorkflowTemplate (fan-out of one pod per ticker, `parallelism: 2`, an
@@ -98,9 +103,10 @@ The oke overlay and the Terraform for the OKE cluster, both node pools,
 OCIR, the bucket, and the Block Volume storage class exist and validate
 but have not been applied.
 
-On record for this box: the gated eval DAG ran green on the VM on
-2026-09-03 (hosted models, judge v1: 3.03% unsupported, 2/66), and every
-run in section 3 executed on this node.
+On record for the A10.2: the gated eval DAG ran green there on 2026-09-03
+(`grounding-eval-6zwqf`, hosted models, judge v1: 2/66 = 3.03% unsupported,
+Wilson 95% CI 0.8–10.4%, a lower bound), and every run in section 3
+executed on that VM.
 
 ## 3. The 40-ticker A/B: hosted models vs the fine-tuned local model
 
@@ -156,8 +162,10 @@ records):
 - 10-ticker A/B on the VM, 2026-09-03, judge v1: 3.03% (2/66, CI
   0.8–10.4%) vs 12.31% (8/65, CI 6.4–22.5%), Fisher p = 0.0545 — the
   intervals overlap, so that run could not separate the arms alone.
-- Aug 2026, 9-ticker balanced, grounding score: 86.2% hosted vs 77.8%
-  local-hybrid.
+- Aug 2026, 9-ticker balanced, grounding score (supported share): 86.2%
+  hosted (56/65, CI 75.7–92.5%) vs 77.8% local-hybrid (56/72, CI
+  66.9–85.8%); judge v1, pre-retrieval-fix, local run with no workflow run
+  ID.
 - Cost, hosted vs hybrid on the pre-retrieval-fix pipeline: $0.0316 vs
   $0.0321 per brief — the sections saving is within run-to-run variance
   because Sonnet synthesis dominates the bill.
@@ -281,10 +289,10 @@ http://localhost:30501, MCP http://localhost:30800/mcp. kind has no GPU
 and the dev CPU cannot run vLLM (no AVX-512); `USE_LOCAL_MODEL` is
 exercised locally through Ollama, the committed fallback backend.
 
-**On the VM** (single-VM section of the runbook). A fresh box is brought
-to readiness by `scripts/vm_bootstrap.sh` (written 2026-09-09, not yet
-executed; the actions it wraps were applied by hand on 2026-09-02/03),
-the weights are rsynced to `/home/ubuntu/models/qwen-ft`, then:
+**On an A10 node** (single-VM section of the runbook). A fresh box is
+brought to readiness by `scripts/vm_bootstrap.sh` (executed on both A10.1
+nodes on 2026-09-23, green after a one-line sudo-check fix, 92f5b45), the
+weights are rsynced to `/home/ubuntu/models/qwen-ft`, then:
 
 ```bash
 make vm-images                       # build the app image and import it into k3s containerd
@@ -305,9 +313,9 @@ ssh -L 31080:localhost:30080 -L 31501:localhost:30501 -L 31880:localhost:30880 u
 ```bash
 kubectl -n financial-agent get pods,svc,pvc     # six services + vllm; mcp ClusterIP; postgres PVC Bound
 kubectl -n argo get pods                         # workflow-controller + argo-server
-kubectl -n financial-agent get cronworkflow      # grounding-eval-nightly, 30 3 * * * America/New_York
+kubectl -n financial-agent get cronworkflow      # grounding-eval-nightly, 30 3 * * * America/New_York; suspended on k3s
 kubectl -n financial-agent get workflows         # retained run history
-nvidia-smi                                       # vLLM's process on one A10, the other idle
+nvidia-smi                                       # vLLM's process on the node's A10
 curl -s http://localhost:31880/v1/models         # lists financial-lora (through the tunnel)
 ```
 
@@ -331,7 +339,8 @@ spends Anthropic credits in every arm (Haiku sections and the Sonnet
 judge); a low balance fails the run loudly rather than skipping tickers.
 After any run, capture the per-claim findings while the pods exist
 (runbook, "Findings capture"). The nightly gate's first fire (2026-08)
-failed at 5.62% on one NVDA outlier draft; the re-measure was 0/10, so
+failed at 5.62% (judge v1; no denominator or run ID on record, so no
+interval) on one NVDA outlier draft; the re-measure was 0/10, so
 the threshold stayed at 5% — a red run is examined, not tuned away.
 
 **Recomputing the recorded numbers from committed artifacts.** All three
@@ -368,19 +377,34 @@ held-out labeling also showed what the failure looks like in prose: a
 scale-conversion error on a market cap and a literal unfilled template
 placeholder in a local-arm section — neither invented from nothing, both
 wrong. And the direction reproduced across three independent
-measurements: 86.2% vs 77.8% (Aug 2026), 3.03% vs 12.31% (2026-09-03,
-judge v1), 3.06% vs 8.15% (2026-09-05/06, judge v2). How much more data
-or a larger base model would close is unknown; this configuration does
-not, and the harness is what established that.
+measurements: grounding 86.2% vs 77.8% (Aug 2026, judge v1, local run, CIs
+in section 3), unsupported `6zwqf` 3.03% (2/66, CI 0.8–10.4%) vs `dkghz`
+12.31% (8/65, CI 6.4–22.5%) (2026-09-03, judge v1), and `j4cnp` 3.06%
+(12/392, CI 1.8–5.3%) vs `lsnnc` 8.15% (30/368, CI 5.8–11.4%)
+(2026-09-05/06, judge v2).
+
+The four-arm comparison (2026-09-23; a dated comparison set, not numbers
+of record; 40 tickers, judge v2, identical pinned sampling) then asked
+whether the training or the model was the cause. Each local model writes
+the same two sections (Financial Health, Risk Factors) while Haiku writes
+the other two and Sonnet the synthesis in every arm. The fine-tune matched
+its own untuned base: `v924f` 6.49% (25/385, CI 4.4–9.4%) vs `4nfsm` 7.75%
+(31/400, CI 5.5–10.8%), p = 0.58, so the training did not cause the
+failure. Within Qwen2.5, 1.5B → 7B improved with borderline significance:
+`cnkp2` 4.58% (18/393, CI 2.9–7.1%), p = 0.076 vs the 1.5B, at 3.7x lower
+serving throughput on the same A10. And every open-weight arm trailed the
+hosted baseline, `kcf7s` 1.04% (4/383, CI 0.4–2.7%); 7B vs hosted p =
+0.0039. Details: eval-methodology.md, "Four-arm model comparison".
 
 **Is the current configuration ship-ready?** The hosted path, yes, as it
-runs on the VM: gated nightly, cache bypassed in eval, secrets never in
+runs on the A10 nodes: gated, cache bypassed in eval, secrets never in
 git, one image for every role, and the test suite above. The fine-tune,
 no — it ships default-off as a measured negative result. Two qualifiers
 belong in any ship note: the hosted baseline's interval (1.8–5.3% at N =
 392) still includes the 5% gate, and the judge that produces the rate is
 calibrated at 75% recall / 60% precision on the class the gate rides on.
-And this is one node: nothing has run on OKE or on more than one node.
+And these are single-node clusters: nothing has run on OKE or across
+nodes.
 
 **The section-audit gap.** The judge audits the synthesis (Executive
 Summary + Outlook), not the four pre-written sections. A fine-tune
@@ -415,5 +439,12 @@ labels, not the judge, are the ground truth.
 4. OKE: apply the authored Terraform and run the same DAG there (Phase 2
    in the runbook). Cost per brief on OCI and vLLM throughput on the A10
    under OKE are to-be-measured cells in the record.
-5. The fine-tune: more and better training data before any re-run, or
-   retire it. The serving path is proven; the model is not.
+5. The local model: the four-arm comparison (2026-09-23, dated set)
+   points away from more training data — the fine-tune matched its
+   untuned base (p = 0.58), so training was not the cause. Model size is
+   the lever the data points at, and only weakly: 1.5B → 7B was
+   borderline (p = 0.076), and every open-weight arm still trailed hosted
+   (7B vs hosted p = 0.0039). Next: pair the inputs (replay one snapshot
+   of retrieved context to every arm) and test larger models on
+   Financial Health, where every local error in that set sat. The serving
+   path is proven; no local model tested so far matches hosted.
