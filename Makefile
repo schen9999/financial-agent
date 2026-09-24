@@ -194,7 +194,8 @@ vm-vllm: ## Serve MODEL_DIR as SERVED_NAME (MAX_LEN) on the VM's A10 and point L
 		< $(VLLM_RENDER).yaml > $(VLLM_RENDER)-swapped.yaml
 	kubectl apply -f $(VLLM_RENDER)-swapped.yaml
 	kubectl -n $(NAMESPACE) rollout status deployment/vllm --timeout=900s
-	@curl -fsS http://localhost:30880/v1/models | python3 -c 'import json, sys; ids = [m["id"] for m in json.load(sys.stdin)["data"]]; print("/v1/models:", ids); sys.exit(0 if "$(SERVED_NAME)" in ids else "ERROR: /v1/models does not list $(SERVED_NAME)")'
+	@# rollout-ready can precede the NodePort answering: poll up to 120s
+	python3 scripts/wait_for_model.py --url http://localhost:30880 --name '$(SERVED_NAME)' --timeout 120
 	kubectl -n $(NAMESPACE) patch configmap app-config --type merge -p '{"data":{"LOCAL_MODEL_NAME":"$(SERVED_NAME)","LOCAL_MODEL_DIR":"$(MODEL_DIR)"}}'
 	@echo "vLLM serves $(SERVED_NAME) from /home/ubuntu/models/$(MODEL_DIR) (max-model-len $(MAX_LEN)); eval pods read LOCAL_MODEL_NAME/DIR at start."
 
