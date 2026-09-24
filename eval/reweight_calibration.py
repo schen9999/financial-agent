@@ -28,6 +28,8 @@ Usage:
       --key eval/judge_validation/holdout_key.csv \\
       --run j4cnp eval/runs/j4cnp-claims.jsonl eval/runs/raw/j4cnp-findings \\
       --run lsnnc eval/runs/lsnnc-claims.jsonl eval/runs/raw/lsnnc-findings
+  Repeat --labeled/--key (paired in order) to pool several samples per
+  judge-label stratum, e.g. the holdout plus calibration_batch.csv.
 """
 import argparse
 import json
@@ -116,8 +118,10 @@ def summarize(strata: dict, pop: dict, draws: list[dict]) -> dict:
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--labeled", required=True)
-    ap.add_argument("--key", required=True)
+    ap.add_argument("--labeled", required=True, action="append",
+                    help="repeatable, paired in order with --key; samples are "
+                         "pooled per judge-label stratum")
+    ap.add_argument("--key", required=True, action="append")
     ap.add_argument("--run", nargs=3, action="append", required=True,
                     metavar=("LABEL", "CLAIMS_JSONL", "FINDINGS_DIR"))
     ap.add_argument("--by-section", action="store_true",
@@ -127,7 +131,11 @@ def main():
     ap.add_argument("--seed", type=int, default=SEED)
     args = ap.parse_args()
 
-    strata = stratum_counts(load_pairs(Path(args.labeled), Path(args.key)))
+    if len(args.labeled) != len(args.key):
+        sys.exit("--labeled and --key must be given the same number of times")
+    pairs = [p for lab, key in zip(args.labeled, args.key)
+             for p in load_pairs(Path(lab), Path(key))]
+    strata = stratum_counts(pairs)
     pops = {label: population_counts(Path(c), Path(f)) for label, c, f in args.run}
     if len(pops) > 1:
         pops["pooled"] = {k: sum(p[k] for p in pops.values()) for k in LABELS}
