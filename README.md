@@ -4,6 +4,77 @@ An AI agent that researches stocks and answers follow-up questions using live fi
 
 **Live Demo:** [financial-research-agent.streamlit.app](https://financial-research-agent.streamlit.app) | **Built with Claude Code**
 
+**Documentation:** start at [docs/README.md](docs/README.md) — every question a reviewer might ask, mapped to the document that answers it.
+
+---
+
+## Summary
+
+A research agent that turns live market data, news, and SEC filings into
+investment briefs, and audits the quantitative and forward-looking claims in
+each brief's Executive Summary and Outlook against the sources it retrieved,
+using an LLM judge whose own accuracy is measured against blind human labels. It runs as a six-service stack (FastAPI, Celery,
+Redis, PostgreSQL, Streamlit, MCP server) on Kubernetes, with the grounding
+eval as a gated Argo Workflows DAG. On OCI it runs on single-node k3s on A10
+GPU VMs, where vLLM serves a QLoRA fine-tune that was measured against the
+hosted models and ships disabled. Every rate this repository quotes names its
+judge version and the run or source it came from, with a Wilson confidence
+interval wherever the claim counts are on record.
+
+---
+
+## Deployed on OCI
+
+- **Where:** two VM.GPU.A10.1 instances (1x A10 24 GB, Ubuntu 22.04):
+  `vm-a10-inst-1` (the demo target) and `vm-a10-inst-2` (fallback), each a
+  separate single-node k3s cluster, rebuilt from the runbook on 2026-09-23.
+  They are reached only through ssh tunnels; the VCN security list admits
+  port 22 only.
+- **What runs there:** the six services; vLLM v0.10.2 serving the merged
+  fine-tune (`financial-lora`) on the node's A10, behind the default-off
+  `USE_LOCAL_MODEL` flag; and Argo Workflows running the gated grounding-eval
+  DAG (the nightly CronWorkflow is suspended on k3s; runs are submitted with
+  `make vm-eval`).
+- **One manifest set:** a kustomize base with `kind`, `k3s`, and `oke`
+  overlays; `scripts/render_diff.py` proves overlay changes never alter the
+  kind render ([docs/verification.md](docs/verification.md)).
+- **OKE:** Terraform for an OKE basic cluster, both node pools (including an
+  A10 GPU pool), OCIR, an Object Storage bucket, and a Block Volume storage
+  class is written and passes `terraform validate`, but has **never been
+  applied**. The k3s VMs are the running target.
+- **How to deploy it:** [docs/deploy-runbook.md](docs/deploy-runbook.md)
+  (single-node k3s path, and the OKE steps).
+
+## Key results
+
+Every row links to [docs/numbers-of-record.md](docs/numbers-of-record.md),
+which carries the full records and the rules for quoting them. Judge-v2
+rates are approximate per the judge's held-out calibration (75% recall / 60%
+precision on UNSUPPORTED).
+
+| Result | Value (Wilson 95% CI) | Run ID / source | Judge | Status |
+|---|---|---|---|---|
+| Grounding, hosted pipeline (40 tickers) | 12/392 = 3.06% unsupported (1.8–5.3%) | `j4cnp`, 2026-09-05/06 | v2 | [number of record](docs/numbers-of-record.md#current) |
+| Fine-tune vs hosted (40-ticker A/B) | 30/368 = 8.15% (5.8–11.4%) vs 12/392 = 3.06% (1.8–5.3%), Fisher p = 0.0023 — fails the 5% gate, ships disabled | `lsnnc` vs `j4cnp`, 2026-09-05/06 | v2 | [dated record](docs/numbers-of-record.md#dated-run-records) |
+| Four-arm comparison (40 tickers) | hosted 4/383 = 1.04% (0.4–2.7%); fine-tune 25/385 = 6.49% (4.4–9.4%); untuned Qwen2.5-1.5B 31/400 = 7.75% (5.5–10.8%); untuned Qwen2.5-7B 18/393 = 4.58% (2.9–7.1%) | `kcf7s`, `v924f`, `4nfsm`, `cnkp2`, 2026-09-23 | v2 | [dated comparison set, not numbers of record](docs/numbers-of-record.md#dated-run-records) |
+| Judge validation (blind, held-out, n=50) | kappa 0.580; UNSUPPORTED recall 9/12 = 75.0% (46.8–91.1%), precision 9/15 = 60.0% (35.7–80.2%) | `eval/judge_validation/holdout_sample.csv`, labeled 2026-09-06 | v2 | [current](docs/numbers-of-record.md#current) |
+| Cost per brief | $0.0366 (3-ticker mean; no interval computed) | `cost_record_post_fix.json`, 2026-09-06 | n/a (not a judged rate) | [cost of record](docs/numbers-of-record.md#current) |
+
+---
+
+## What It Does
+
+**Generate Brief** -- enter a ticker and the app produces a structured investment brief:
+1. Fetches stock data (yfinance), news (NewsAPI), and SEC filing summaries (EDGAR)
+2. Runs two concurrent Pinecone RAG queries to ground the SEC Filing Highlights and Risk Factors sections in actual filing text (a retrieval defect that indexed exhibit text instead of Item 1A for most tickers was found and fixed 2026-09-04 — see [docs/eval-methodology.md](docs/eval-methodology.md), "Retrieval defect")
+3. Generates four middle sections in parallel using Claude Haiku
+4. Streams the Executive Summary and Outlook from Claude Sonnet, which receives the pre-written sections as context
+5. Caches the completed brief in Redis (exact key `research:{TICKER}`) and PostgreSQL
+
+**Ask a follow-up** -- a LangGraph ReAct agent answers free-form questions, selecting whichever tools it needs (stock data, news, SEC filings, or RAG search).
+
+**Two execution paths, by design:** the Streamlit UI imports the agent and runs the pipeline **in-process** (so the hosted demo needs no backend and can stream tokens directly), while the FastAPI app runs the same `agent/` code behind REST endpoints for programmatic consumers (and is what ECS/Kubernetes deploy). Same pipeline, two entry points -- there is no Streamlit→FastAPI hop.
+
 ---
 
 ## Why This Exists
@@ -18,7 +89,7 @@ The answer required building both the agent and the measurement layer to audit i
 
 ### Grounding Eval (LLM-as-judge)
 
-I built an evaluation framework that audits every quantitative and forward-looking claim in each brief against the retrieved source context. A Sonnet judge (temperature 0) labels each claim `SUPPORTED`, `UNSUPPORTED`, or `INFERENCE`.
+I built an evaluation framework that audits the quantitative and forward-looking claims in each brief's Executive Summary and Outlook against the retrieved source context (the four pre-written sections are judge input, not audited directly). A Sonnet judge (temperature 0) labels each claim `SUPPORTED`, `UNSUPPORTED`, or `INFERENCE`.
 
 **Early results: 49% unsupported claim rate (judge v1, pre-retrieval-fix).** Nearly half of what the agent said wasn't backed by anything it retrieved.
 
@@ -166,21 +237,6 @@ comparison (baseline / planner-only / planner+critic) is the documented next ste
 to attribute any gain to the planner versus the critic. As with the reranking
 experiment, the deliverable is the measurement that shows when the feature is and
 is not worth its cost.
-
----
-
-## What It Does
-
-**Generate Brief** -- enter a ticker and the app produces a structured investment brief:
-1. Fetches stock data (yfinance), news (NewsAPI), and SEC filing summaries (EDGAR)
-2. Runs two concurrent Pinecone RAG queries to ground the SEC Filing Highlights and Risk Factors sections in actual filing text (a retrieval defect that indexed exhibit text instead of Item 1A for most tickers was found and fixed 2026-09-04 — see [docs/eval-methodology.md](docs/eval-methodology.md), "Retrieval defect")
-3. Generates four middle sections in parallel using Claude Haiku
-4. Streams the Executive Summary and Outlook from Claude Sonnet, which receives the pre-written sections as context
-5. Caches the completed brief in Redis (exact key `research:{TICKER}`) and PostgreSQL
-
-**Ask a follow-up** -- a LangGraph ReAct agent answers free-form questions, selecting whichever tools it needs (stock data, news, SEC filings, or RAG search).
-
-**Two execution paths, by design:** the Streamlit UI imports the agent and runs the pipeline **in-process** (so the hosted demo needs no backend and can stream tokens directly), while the FastAPI app runs the same `agent/` code behind REST endpoints for programmatic consumers (and is what ECS/Kubernetes deploy). Same pipeline, two entry points -- there is no Streamlit→FastAPI hop.
 
 ---
 
@@ -352,7 +408,9 @@ nothing downstream changes. Toggle the flag to compare the two paths.
 
 ---
 
-## AWS Deployment
+## AWS Deployment (secondary)
+
+The primary deployment is on OCI ([above](#deployed-on-oci)). AWS ECS is a secondary, single-container deployment of the API only.
 
 The FastAPI backend is containerized and runs on **AWS ECS Fargate**, with a real
 **RDS PostgreSQL** database, secrets in **AWS Secrets Manager**, and a
@@ -411,8 +469,8 @@ alone doesn't prove the new image runs.
 
 ### Pausing to save cost
 
-Fargate bills while a task runs, so I park it when I'm not demoing and bring it
-back for an interview:
+Fargate bills while a task runs, so the service is parked at 0 tasks and scaled
+up only when it's needed:
 
 ```bash
 infra/ecs-scale.sh 0   # pause  — stop the task (no Fargate compute cost; RDS stays free-tier)
@@ -486,6 +544,18 @@ make cluster-down    # tear down
 | Critic recall on injected failures | 20/20 = 100% (CI 83.9–100%) on both runs (2026-09-04); adjudicated precision 24/24 |
 | Cost/brief, hosted vs local-hybrid (pre-retrieval-fix pipeline) | $0.0316 vs $0.0321 — no measurable full-brief saving (Sonnet dominates) |
 | Local CPU serving (environment-limited: 2-core AVX2 laptop) | ~7.7 tok/s aggregate saturation; NOT comparable to GPU/hosted |
+
+---
+
+## Testing
+
+| What | Command | Notes |
+|---|---|---|
+| Unit and integration tests | `python -m pytest tests/` | 135 collected: 134 pass + 1 skipped (as of 2026-09-23). Runs in CI on every pull request and push to `main`. |
+| Credit-gated judge test | `CRITIC_INJECTION=1 python -m pytest tests/test_critic_injection.py -q -s` | Calls the paid Sonnet judge, so it is skipped in the default run and never runs on push or PR. `critic-injection.yml` runs it weekly and on manual dispatch and asserts recall ≥ 0.8. |
+| Kubernetes smoke test | `make smoke-test` | On kind: 13 assertions covering a sync brief, a Celery async task, a cache hit and miss, and the MCP server. |
+| Manifest equivalence | `python3 scripts/render_diff.py LEFT RIGHT` | Semantic diff of two rendered manifest sets; exit 0 means identical. How it proves the overlays: [docs/verification.md](docs/verification.md). |
+| Grounding eval gate | `make eval-run` (kind) / `make vm-eval` (k3s) | The Argo DAG fails the workflow if unsupported claims exceed 5%, any ticker is skipped, or fewer than 30 claims were audited. |
 
 ---
 

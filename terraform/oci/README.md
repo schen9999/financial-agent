@@ -2,7 +2,8 @@
 
 Terraform for the OCI deployment (Phase 1 of the OKE migration; see
 [CLAUDE.md](../../CLAUDE.md)). The AWS config in [infra/](../../infra/) is the
-retired ECS deployment and stays untouched.
+separate ECS deployment (a single FastAPI container + RDS, normally scaled to
+0 tasks; redeployed and verified 2026-09-24) and stays untouched.
 
 ## What this creates
 

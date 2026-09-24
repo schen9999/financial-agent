@@ -18,7 +18,7 @@ see Targets. kind stays the local equivalence baseline, with probes and
 resource bounds.
 
 ## Goal
-Migrate to OCI for a hiring demo (deadline: demo October 2026, date TBD):
+Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
 - OKE basic cluster, created via Terraform (cluster creation is part of the deliverable)
 - App node pool: 2x VM.Standard.E4.Flex, 4 OCPUs / 32 GB each (1 OCPU = 2 vCPUs;
   size K8s requests/limits in vCPU terms: 16 vCPU / 64 GB total across the pool)
