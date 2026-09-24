@@ -37,31 +37,31 @@ server (stdio and streamable-HTTP transports).
 
 **3.** Migrated the six-service stack (FastAPI, Celery, Redis, PostgreSQL,
 Streamlit, MCP) to Kubernetes with probes, resource bounds, and templated
-secrets, then rebuilt it on k3s across two NVIDIA A10 VMs with vLLM serving
-the fine-tune.
+secrets, then rebuilt it on two single-node k3s VMs (NVIDIA A10) with vLLM
+serving the fine-tune.
 
 > Deep-dive backup: k8s/ (kustomize base + kind/k3s/oke overlays),
 > scripts/k8s_smoke_test.sh (13/13). Two VM.GPU.A10.1 nodes
-> (vm-a10-inst-1, vm-a10-inst-2) rebuilt from docs/deploy-runbook.md on
-> 2026-09-23, each its own single-node k3s cluster (not one cluster
-> spanning both); vLLM v0.10.2 served `financial-lora` on both with no
-> manifest changes (runbook "Rebuild on fresh nodes, 2026-09-23"). K8s is
-> the stack's first full-topology deployment.
+> (vm-a10-inst-1, vm-a10-inst-2), each its own single-node k3s cluster,
+> rebuilt from docs/deploy-runbook.md on 2026-09-23; vLLM v0.10.2 served
+> `financial-lora` on both with no manifest changes (runbook "Rebuild on
+> fresh nodes, 2026-09-23"). K8s is the stack's first full-topology
+> deployment.
 
 **4.** Converted the LLM-as-judge grounding eval into a gated Argo Workflows
-DAG (40-ticker fan-out, 5% gate, Wilson CIs, Fisher tests); blind labels
-validated the judge (held-out kappa 0.580) and exposed a retrieval bug
-indexing exhibits over Item 1A.
+DAG (40-ticker fan-out, 5% gate, Wilson CIs, Fisher tests); blind held-out
+labels validated the judge (kappa 0.580); an earlier labeling pass exposed a
+retrieval bug.
 
 > Deep-dive backup: argo/base/eval-workflow.yaml, scripts/eval_aggregate.py
 > (gate), eval/stats.py (Wilson, Fisher). Kappa 0.580 is judge v2 on the
-> 50-claim held-out set, labeled blind 2026-09-06 (eval/agreement.py). Two
-> labeling passes, stated precisely: the retrieval defect was surfaced
-> 2026-09-04 by the human labeling pass on the 50-claim **dev** set
-> (author-adjudicated, not blind) — reading retrieved contexts and finding
-> exhibit boilerplate where Item 1A risk factors should be; the **blind**
-> held-out pass came after the fix. Defect and fix: eval-methodology
-> "Retrieval defect" (pre-fix 3/40 risk retrievals verified, post-fix 32/40).
+> 50-claim held-out set, labeled blind 2026-09-06 (eval/agreement.py). The
+> earlier pass was the 2026-09-04 labeling of the 50-claim dev set
+> (author-adjudicated, not blind): reading retrieved contexts turned up
+> exhibit boilerplate where Item 1A risk factors should be — the fetcher
+> was indexing exhibits (AAPL's "10-K" was its Bylaws). Defect and fix:
+> eval-methodology "Retrieval defect" (pre-fix 3/40 risk retrievals
+> verified, post-fix 32/40).
 
 **5.** Fine-tuned Qwen2.5-1.5B with QLoRA to write two report sections; a
 40-ticker A/B measured 8.15% vs 3.06% unsupported claims (Fisher p =
@@ -91,17 +91,17 @@ trailed the hosted model while running 3.7x slower on the same GPU.
 > hosted is a different model family. 1.5B→7B within Qwen2.5: p = 0.076,
 > borderline. Full tables: eval-methodology "Four-arm model comparison".
 
-**7.** Shipped default-off a supervisor multi-agent graph (1.9x cost) and
-reranking (4-5x latency); neither improved grounding.
+**7.** Shipped a supervisor multi-agent graph and cross-encoder reranking
+default-off after evals showed no grounding gain.
 
-> Deep-dive backup: both are dated experiments from before the
-> 2026-09-04 retrieval fix, judge v1, 10 tickers (README). Multi-agent:
-> 1.92x relative cost and +68% latency vs single-agent; the absolute costs
-> came from an uncommitted harness and are recorded as historical, not
-> re-runnable (docs/PHASE0_AUDIT.md), so 1.9x is a recorded historical
-> ratio. Reranking: 4–5x is **retrieval** latency (20.7 s vs 4.1 s top-3;
-> 20.4 s vs 4.5 s top-5), from grounding_check.py's per-arm timing.
-> Neither figure is in numbers-of-record.
+> Deep-dive backup: README "Multi-agent" and "Reranking A/B Experiment" —
+> both 10-ticker, judge v1, before the 2026-09-04 retrieval fix. Flags
+> `MULTI_AGENT_ENABLED` (agent/graph.py) and `RERANKING_ENABLED`
+> (agent/tools/reranker.py, `BAAI/bge-reranker-base`), both default false
+> (docs/PHASE0_AUDIT.md flag table). If asked for magnitudes: both added
+> cost or latency, but the multi-agent cost ratio came from an uncommitted
+> harness (historical only), and the reranking penalty was measured on
+> retrieval latency alone — so neither is quoted as a figure.
 
 ---
 
@@ -117,5 +117,3 @@ reranking (4-5x latency); neither improved grounding.
 | 19.82% vs 0.50% on fine-tune-owned sections, p = 4.6e-10 | dated A/B | eval/section_attribution.py, numbers-of-record |
 | four-arm: p = 0.58 (fine-tune vs base), p = 0.0039 (7B vs hosted) | dated comparison set, not numbers of record | eval/multi_arm_stats.py, numbers-of-record |
 | 3.7x (711.3 vs 194.6 output tok/s; 2878 vs 10517 ms mean E2E) | dated measurement, k3s A10 | scripts/vm_bench_serve.sh, eval/runs/bench/, numbers-of-record |
-| 1.92x multi-agent cost | historical, uncommitted harness — not in numbers-of-record | README multi-agent table, docs/PHASE0_AUDIT.md |
-| 4–5x reranking retrieval latency | judge-v1-era experiment — not in numbers-of-record | README reranking table (grounding_check.py timing) |
