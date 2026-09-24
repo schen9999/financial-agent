@@ -1,0 +1,77 @@
+STOCK DATA:
+{
+  "ticker": "AMZN",
+  "company_name": "Amazon.com, Inc.",
+  "current_price": 249.27,
+  "currency": "USD",
+  "market_cap": 2688704315392.0,
+  "pe_ratio": 20.07005,
+  "forward_pe": 23.994894,
+  "week_52_high": 287.2,
+  "week_52_low": 196.0,
+  "revenue": 775680032768.0,
+  "net_income": 135281000448.0,
+  "profit_margin": 0.1744,
+  "sector": "Consumer Cyclical",
+  "industry": "Internet Retail"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-06",
+    "summary": "Item 1A. Risk Factors Please carefully consider the following discussion of significant factors, events, and uncertainties that make an investment in our securities risky. The events and consequences discussed in these risk factors could, in circumstances we may or may not be able to accurately predict, recognize, or control, have a material adverse effect on our business, growth, reputation, prospects, financial condition, operating results (including components of our financial results), cash flows, liquidity, and stock price. These risk factors do not identify all risks that we face; our operations could also be affected by factors, events, or uncertainties that are not presently known to us or that we currently do not consider to present significant risks to our operations. In addition"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-07-31",
+    "summary": "Item 1A. Risk Factors Please carefully consider the following discussion of significant factors, events, and uncertainties that make an investment in our securities risky. The events and consequences discussed in these risk factors could, in circumstances we may or may not be able to accurately predict, recognize, or control, have a material adverse effect on our business, growth, reputation, prospects, financial condition, operating results (including components of our financial results), cash flows, liquidity, and stock price. These risk factors do not identify all risks that we face; our operations could also be affected by factors, events, or uncertainties that are not presently known to us or that we currently do not consider to present significant risks to our operations. In addition"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I cannot provide a summary of the latest 10-K and 10-Q based on the information provided. The context materials only contain excerpts from Amazon's risk factors section, specifically discussing business competition, international operations, retail demand variability, and seller fraud risks.
+
+To provide a comprehensive summary of the latest 10-K and 10-Q filings, I would need access to the complete documents, including sections such as:
+
+- Business overview and operations
+- Financial performance and results
+- Management's discussion and analysis
+- Balance sheet and cash flow statements
+- Segment performance
+- Capital allocation and liquidity
+- Forward-looking guidance
+
+The risk factors section alone does not represent the full scope of information contained in these quarterly and annual reports. If you'd like, I can answer specific questions about the risk factors discussed in the provided excerpts, or you could provide additional sections of the filings for a more complete analysis.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses several significant risk factors affecting its business:
+
+## Business and Industry Risks
+
+**Intense Competition**: The company faces rapidly evolving and intensely competitive markets across multiple industries including e-commerce retail, web and infrastructure computing services, electronic devices, digital content, advertising, grocery, healthcare, communications, and transportation/logistics. Some competitors have greater resources, longer histories, more customers, and stronger brand recognition. Competition is intensifying through new business models, well-funded entrants, business combinations, and technological advances including artificial intelligence and machine learning.
+
+## Expansion Risks
+
+**New Products, Services, Technologies, and Geographic Regions**: The company may have limited experience in newer market segments, and customers may not adopt new offerings. These ventures present technology challenges and could result in service disruptions or quality issues. Investments in new technologies, automation, artificial intelligence, and machine learning may not generate expected returns, potentially requiring write-downs or write-offs. Sustainability initiatives may also fail to deliver anticipated benefits.
+
+## International Operations Risks
+
+**Geographic Expansion Challenges**: International activities are significant to revenues and profits, but the company has limited operating experience in certain markets and may not achieve sustained profitability. International operations face numerous risks including:
+- Local economic and political conditions
+- Government regulation and restrictive governmental actions
+- Trade barriers, tariffs, and import/export restrictions
+- Data protection and privacy laws
+- Currency exchange and fund repatriation limitations
+- Staffing and management challenges
+- Geopolitical events including war and terrorism
+
+## Seller-Related Risks
+
+**Fraudulent Activities**: The company faces risks from fraudulent or unlawful seller activities, including counterfeit goods, stolen products, and payment fraud, which could result in civil or criminal liability and increased costs under buyer guarantee programs.

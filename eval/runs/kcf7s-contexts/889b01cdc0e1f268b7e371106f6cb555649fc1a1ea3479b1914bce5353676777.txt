@@ -1,0 +1,95 @@
+STOCK DATA:
+{
+  "ticker": "NTLA",
+  "company_name": "Intellia Therapeutics, Inc.",
+  "current_price": 12.33,
+  "currency": "USD",
+  "market_cap": 1727762048.0,
+  "forward_pe": -4.7440777,
+  "week_52_high": 28.25,
+  "week_52_low": 7.95,
+  "revenue": 59506000.0,
+  "net_income": -399975008.0,
+  "profit_margin": 0.0,
+  "sector": "Healthcare",
+  "industry": "Biotechnology"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-26",
+    "summary": "Item 1A. Risk Factors Investing in our common stock involves a high degree of risk. In evaluating us and our business, careful consideration should be given to the following risk factors, in addition to the other information set forth in this Annual Report on Form 10-K for the year ended December 31, 2025 and in other documents that we file with the Securities and Exchange Commission (\u201cSEC\u201d). If any of the following risks and uncertainties actually occurs, our business, prospects, financial condition and results of operations could be materially and adversely affected. The risks described below are not intended to be exhaustive and are not the only risks facing us. New risk factors can emerge from time to time, and we cannot predict the impact that any factor or combination of factors may "
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-06",
+    "summary": "Item 1A. Risk Factors Investing in our common stock involves a high degree of risk. In evaluating us and our business, careful consideration should be given to the following risk factors, in addition to the other information set forth in this Quarterly Report on Form 10-Q, our Annual Report on Form 10-K for the year ended December 31, 2025, and in other documents that we file with the Securities and Exchange Commission (\u201cSEC\u201d). If any of the following risks and uncertainties actually occurs, our business, prospects, financial condition and results of operations could be materially and adversely affected. The risks described below are not intended to be exhaustive and are not the only risks facing us. New risk factors can emerge from time to time, and we cannot predict the impact that any f"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from the Risk Factors Disclosure
+
+Based on the available information from the 10-K filing, here are the primary risk factors disclosed:
+
+## Clinical Development Challenges
+- CRISPR genome editing technology is relatively new with largely unproven therapeutic utility in humans
+- No in vivo genome editing therapy has been approved in the U.S., EU, or other key jurisdictions
+- The company faces significant challenges in solving critical issues including safe delivery of therapeutic agents, optimizing efficacy and specificity, and demonstrating safety and efficacy
+
+## Regulatory and Development Uncertainties
+- Regulatory agencies have very limited experience with CRISPR-based therapeutics, particularly in vivo therapies, which may require additional testing and data
+- Clinical trials may fail to demonstrate safety or efficacy, requiring additional studies or program termination
+- Regulatory requirements may be revised, potentially delaying or preventing approval
+
+## Market Adoption Risks
+- Public perception and media coverage of safety or efficacy issues could discourage clinical trial participation and physician/patient acceptance
+- Physicians may be slow to adopt novel therapies due to complexity, training requirements, or perceived risks
+- Healthcare providers and payors may determine that benefits do not justify costs
+
+## Operational and Manufacturing Risks
+- Challenges in obtaining sufficient clinical trial enrollment and maintaining patient compliance
+- Supply chain and manufacturing challenges for preclinical, clinical, and commercial materials
+- Substantial investment and time required before generating any revenue from product sales
+
+The disclosure emphasizes that all programs remain in discovery, preclinical, or clinical stages with uncertain outcomes and lengthy development timelines ahead.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses several primary risk factors related to its CRISPR genome editing technology business:
+
+## Clinical Development and Regulatory Risks
+- CRISPR genome editing technology has only recently been clinically validated for human therapeutic use, and in vivo CRISPR-based therapies remain largely unproven
+- No genome editing in vivo therapy has been approved in the U.S., EU, or other key jurisdictions
+- Clinical development is lengthy, expensive, and uncertain in outcome
+- Regulatory authorities have very limited or no experience with CRISPR-based therapeutics, which may require additional testing and delay development
+- The company faces challenges in obtaining regulatory authorization and approval to conduct clinical trials
+
+## Technical and Development Challenges
+- Successfully developing safe delivery methods to target cells and optimizing efficacy and specificity remain unsolved issues
+- Manufacturing, scalability, and profitability of CRISPR products are uncertain
+- Success in one CRISPR product does not guarantee success in others
+- Clinical trials may fail to demonstrate safety or efficacy, or produce negative results
+
+## Market Adoption and Perception Risks
+- Public perception and media coverage of safety or efficacy issues may discourage clinical trial participation
+- Ethical concerns about genome editing may influence physician and patient acceptance
+- Healthcare providers are often slow to adopt new technologies and may view these therapies as too complex or risky
+- Certain patients may not be candidates for the therapies due to health conditions or genetic profiles
+
+## Regulatory and Legislative Risks
+- Government responses to negative public perception could result in new legislation or regulations limiting development and commercialization
+- Regulatory requirements may change, potentially delaying or preventing product approval

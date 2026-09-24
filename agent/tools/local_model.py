@@ -34,6 +34,17 @@ def local_model_backend() -> str:
     return os.getenv("LOCAL_MODEL_BACKEND", "ollama").strip().lower()
 
 
+# Sampling pinned on every OpenAI-backend request, so every served model gets
+# identical parameters. vLLM v0.10.2 (--generation-config auto, its default)
+# fills any parameter a request omits from the model's own
+# generation_config.json, which differs per model (Qwen2.5-7B-Instruct:
+# repetition_penalty 1.05). Values are the fine-tune's effective ones — its
+# generation_config.json sets top_p 0.8, top_k 20, repetition_penalty 1.1 and
+# no min_p, so vLLM's default 0.0 applied — leaving its served behaviour, and
+# every recorded A/B, unchanged. temperature and max_tokens were already sent.
+PINNED_SAMPLING = {"top_p": 0.8, "top_k": 20, "repetition_penalty": 1.1, "min_p": 0.0}
+
+
 def is_local_section(heading: str) -> bool:
     """True for sections the local model is trained to serve."""
     return heading in LOCAL_SECTIONS
@@ -59,6 +70,22 @@ class LocalChat:
         except ValueError:
             self.timeout = 180.0
 
+    def sampling_params(self) -> dict:
+        """Every sampling parameter this client sends — also what the eval
+        records as local-model provenance. The Ollama path sends temperature
+        only (its other defaults come from the Modelfile, not from here)."""
+        if local_model_backend() != "openai":
+            return {"temperature": self.temperature}
+        return {
+            "temperature": self.temperature,
+            # Bound generation: without max_tokens the server generates
+            # until EOS, and a small fine-tune that misses EOS runs to the
+            # context limit — minutes per request on CPU. Sections are
+            # 3-5 sentences (~150-250 tokens); 512 is generous.
+            "max_tokens": int(os.getenv("LOCAL_MODEL_MAX_TOKENS", "512")),
+            **PINNED_SAMPLING,
+        }
+
     @staticmethod
     def _role(message) -> str:
         name = type(message).__name__.lower()
@@ -81,12 +108,7 @@ class LocalChat:
         if local_model_backend() == "openai":
             payload = {
                 "model": self.model,
-                "temperature": self.temperature,
-                # Bound generation: without max_tokens the server generates
-                # until EOS, and a small fine-tune that misses EOS runs to the
-                # context limit — minutes per request on CPU. Sections are
-                # 3-5 sentences (~150-250 tokens); 512 is generous.
-                "max_tokens": int(os.getenv("LOCAL_MODEL_MAX_TOKENS", "512")),
+                **self.sampling_params(),
                 "messages": chat_messages,
             }
             resp = requests.post(f"{self.url}/v1/chat/completions", json=payload, timeout=self.timeout)

@@ -1,0 +1,73 @@
+STOCK DATA:
+{
+  "ticker": "XOM",
+  "company_name": "ExxonMobil Holdings Corporation",
+  "current_price": 161.23,
+  "currency": "USD",
+  "market_cap": 662963552256.0,
+  "pe_ratio": 20.72365,
+  "forward_pe": 14.878227,
+  "week_52_high": 176.41,
+  "week_52_low": 110.39,
+  "revenue": 361060007936.0,
+  "net_income": 32757000192.0,
+  "profit_margin": 0.09072,
+  "dividend_yield": 2.6,
+  "sector": "Energy",
+  "industry": "Oil & Gas Integrated"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "message": "No 10-K found"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-03",
+    "summary": "Item 1A. Risk Factors\" of ExxonMobil\u2019s 2025 Form 10-K. Forward-looking and other statements regarding environmental and other sustainability efforts and aspirations are not an indication that these statements are material to investors or require disclosure in our filing with the SEC or any other regulatory authority. In addition, historical, current, and forward-looking environmental and other sustainability-related statements may be based on standards for measuring progress that are still developing, internal controls and processes that continue to evolve, and assumptions that are subject to change in the future, including future rule-making. Actions needed to advance ExxonMobil\u2019s 2030 greenhouse gas emission-reductions plans are incorporated into its medium term business plans, which are"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from ExxonMobil's Latest Filings
+
+## Financial Performance
+- **Upstream earnings** for the second quarter 2026 reached $7.9 billion, up from $5.4 billion in the same period of 2025
+- Year-to-date upstream earnings totaled $13.7 billion compared to $12.2 billion in the first half of 2025
+- The company distributed $8.6 billion in dividends and repurchased $10.0 billion of common stock
+
+## Production & Operations
+- Oil-equivalent production decreased to 4,514 thousand barrels daily in Q2 2026 from 4,630 in Q2 2025
+- Crude oil and liquids production reached 3,373 thousand barrels daily in Q2 2026
+- Natural gas production declined to 6,849 million cubic feet daily from 8,219 in the prior year period
+
+## Earnings Drivers
+- **Price impacts** added $4.65 billion in Q2 earnings from higher crude realizations, partially offset by lower gas prices
+- **Advantaged volume growth** contributed $1.14 billion, primarily from Guyana and Permian expansion
+- **Middle East disruptions** reduced earnings by $1.06 billion in the quarter
+- **Expenses** decreased earnings by $690 million due to higher depreciation
+
+## Market Conditions
+- Crude oil prices remained within the 10-year historical range despite Middle East supply disruptions
+- Natural gas prices stayed elevated above the 10-year average
+- Global refining margins were sharply above historical ranges due to unprecedented capacity reductions
+
+## Strategic Focus
+- Advantaged assets include Permian, Guyana, and LNG operations
+- The company is incorporating greenhouse gas emission-reduction plans into medium-term business planning through 2030
+
+RAG — RISK FACTORS:
+[From Pinecone cache] Based on the provided context, the document references risk factors but does not provide a detailed list of the primary risk factors themselves. The context only includes a brief mention that states: "Item 1A. Risk Factors" of ExxonMobil's 2025 Form 10-K."
+
+This indicates that comprehensive risk factor disclosures are contained in that section of the 2025 Form 10-K filing, but the specific details of those primary risk factors are not included in the information provided here. The context focuses instead on operational metrics, earnings drivers, financial results, and sustainability-related statements rather than enumerating the actual risk factors.

@@ -1,0 +1,58 @@
+STOCK DATA:
+{
+  "ticker": "ROKU",
+  "company_name": "Roku, Inc.",
+  "current_price": 153.49,
+  "currency": "USD",
+  "market_cap": 22794899456.0,
+  "pe_ratio": 65.03814,
+  "forward_pe": 39.12567,
+  "week_52_high": 159.89,
+  "week_52_low": 78.53,
+  "revenue": 5209110016.0,
+  "net_income": 355204992.0,
+  "profit_margin": 0.06819,
+  "sector": "Communication Services",
+  "industry": "Entertainment"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-13",
+    "summary": "Item 1A. Risk Factors Our business involves significant risks, some of which are described below. You should carefully consider the risks and uncertainties described below, together with all the other information in this Annual Report, including \u201cManagement\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d and the consolidated financial statements and the related notes. If any of the following risks actually occur, our business, reputation, financial condition, results of operations, revenue, key performance metrics, and future prospects could be seriously harmed. In addition, you should consider the interrelationship and compounding effects of two or more risks occurring simultaneously. Unless otherwise indicated, references to our business being harmed in these "
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-06",
+    "summary": "Item 1A. Risk Factors Our business involves significant risks, some of which are described below. You should carefully consider the risks and uncertainties described below, together with all the other information in this Quarterly Report, including \u201cManagement\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d and the condensed consolidated financial statements and the related notes. If any of the following risks actually occur, our business, reputation, financial condition, results of operations, revenue, key performance metrics, and future prospects could be seriously harmed. In addition, you should consider the interrelationship and compounding effects of two or more risks occurring simultaneously. Unless otherwise indicated, references to our business being har"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I cannot provide a summary of the latest 10-K and 10-Q based on the information available. The provided materials contain only excerpts from risk factor disclosures related to competitive pressures, stock ownership considerations, and regulatory compliance matters. These sections do not represent a comprehensive overview of the company's financial performance, operational results, or strategic initiatives that would typically be found in complete 10-K and 10-Q filings.
+
+To obtain key takeaways from the latest 10-K and 10-Q, you would need access to the full documents, which would include sections such as:
+- Management's Discussion and Analysis (MD&A)
+- Financial statements and results of operations
+- Liquidity and capital resources
+- Business overview and strategy
+- Complete risk factor discussions
+
+I recommend reviewing the complete SEC filings directly for a comprehensive understanding of the company's financial condition and performance.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] I apologize, but the context information provided only contains introductory language about risk factors without disclosing the specific primary risks themselves. The material explains that Roku's business involves significant risks and warns that various aspects of the business—including reputation, financial condition, results of operations, revenue, and key performance metrics—could be seriously harmed if risks materialize. It also notes the importance of considering compounding effects when multiple risks occur simultaneously.
+
+However, the actual enumeration and description of the specific primary risk factors are not included in the context provided. To answer your question about what the primary risk factors are, I would need access to the detailed risk factor disclosures that follow this introductory section in Roku's SEC filing.

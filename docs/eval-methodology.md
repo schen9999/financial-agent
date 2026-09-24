@@ -2,9 +2,12 @@
 
 The centerpiece of this project is not the UI; it is that grounding is
 **measured by a committed, re-runnable harness and gated in CI fashion**.
-The number of record: **49% pre-fix → 0/84 unsupported in the current
-eval (judge v1)** (always quoted with the pre-fix context and denominator, never as a
-bare 0%).
+The grounding number of record: **12/392 = 3.06% unsupported (Wilson 95%
+CI 1.8–5.3%)**, hosted baseline `j4cnp` (2026-09-05/06), judge v2, fixed
+retrieval, 40 tickers — approximate per the v2 held-out calibration (75%
+recall / 60% precision on UNSUPPORTED). The former "49% pre-fix → 0/84"
+(judge v1, pre-retrieval-fix, 2026-08-24) is a dated record only. Never a
+bare rate or a bare 0%.
 
 ## What is measured
 
@@ -172,6 +175,166 @@ the fine-tune's sections diverge from their sources.
   stated plainly: fine-tune section errors count against the gate only
   when the synthesis repeats them, so the measured 8.15% understates
   the fine-tune's raw section error rate.
+
+## Four-arm model comparison (2026-09-23) — a dated comparison set
+
+**A dated comparison set, not numbers of record.** Four runs on node 2
+(`vm-a10-inst-2`, VM.GPU.A10.1, single-node k3s), all on 2026-09-23 (US
+time; the last run finished 00:13 UTC on the 24th), branch `model-compare`
+image, 40 extended tickers, judge **v2**. The arms differ **only in who
+writes the Financial Health and Risk Factors sections**: in every arm Haiku
+writes Recent Developments and SEC Filing Highlights, Sonnet writes the
+synthesis, and Sonnet judges it. The hosted arm uses Haiku for all four
+sections; the three local arms serve FH + RF from vLLM v0.10.2 on the one
+A10 (max-model-len 4096, `--gpu-memory-utilization=0.90`, max-num-seqs 8),
+swapped with `make vm-vllm`, with identical pinned sampling
+(temperature 0.1, max_tokens 512, top_p 0.8, top_k 20,
+repetition_penalty 1.1, min_p 0.0). Each local run's served name, model dir,
+and sampling are recorded in its findings metadata and aggregate.
+
+| Arm (FH + RF writer) | Workflow | Claims | Sup/Uns/Inf | Unsupported (Wilson 95% CI) | Gate (≤5%) | Est. cost |
+|---|---|---|---|---|---|---|
+| hosted (Haiku) | grounding-eval-extended-kcf7s | 383 | 364/4/15 | 1.04% (0.4–2.7%) | PASSED | $2.33 |
+| financial-lora (Qwen2.5-1.5B + LoRA, merged) | grounding-eval-extended-local-v924f | 385 | 346/25/14 | 6.49% (4.4–9.4%) | FAILED | $2.49 |
+| qwen2.5-1.5b-instruct (base) | grounding-eval-extended-local-4nfsm | 400 | 352/31/17 | 7.75% (5.5–10.8%) | FAILED | $2.27 |
+| qwen2.5-7b-instruct (base) | grounding-eval-extended-local-cnkp2 | 393 | 353/18/22 | 4.58% (2.9–7.1%) | PASSED (point estimate only) | $1.98 |
+
+Exact two-sided Fisher on unsupported vs not, all six pairs (all judged
+claims; no multiplicity correction):
+
+| Pair | Counts | p |
+|---|---|---|
+| hosted `kcf7s` vs financial-lora `v924f` | 4/383 vs 25/385 | 7.8e-05 |
+| hosted `kcf7s` vs qwen2.5-1.5b `4nfsm` | 4/383 vs 31/400 | 2.6e-06 |
+| hosted `kcf7s` vs qwen2.5-7b `cnkp2` | 4/383 vs 18/393 | 0.0039 |
+| financial-lora `v924f` vs qwen2.5-1.5b `4nfsm` | 25/385 vs 31/400 | 0.5794 |
+| financial-lora `v924f` vs qwen2.5-7b `cnkp2` | 25/385 vs 18/393 | 0.2737 |
+| qwen2.5-1.5b `4nfsm` vs qwen2.5-7b `cnkp2` | 31/400 vs 18/393 | 0.0764 |
+
+What the set supports, and only this:
+
+- **The fine-tune matched its own base model.** financial-lora `v924f`
+  6.49% (4.4–9.4%) vs qwen2.5-1.5b-instruct `4nfsm` 7.75% (5.5–10.8%),
+  p = 0.58: the LoRA neither helped nor hurt grounding measurably.
+- **Within Qwen2.5, 1.5B → 7B improved, with borderline significance.**
+  `4nfsm` 7.75% (5.5–10.8%) vs `cnkp2` 4.58% (2.9–7.1%), p = 0.076 on all
+  claims — not significant at 0.05. On the sections the local model
+  writes (below) the gap is larger (p = 0.014), but that is one of several
+  buckets tested and carries no multiplicity correction.
+- **Every open-weight arm trailed hosted.** `kcf7s` 1.04% (0.4–2.7%)
+  against each local arm: p = 7.8e-05, 2.6e-06, 0.0039.
+- **The 7B gate pass is on the point estimate only.** `cnkp2`'s 4.58% is
+  under the 5% gate, but its interval (2.9–7.1%) spans it, so the run is
+  consistent with a true rate above the gate.
+
+Not supported: a size curve. The hosted arm is a different model family
+(Anthropic Haiku, size undisclosed), not a larger Qwen, so the four arms
+are not points on one scaling line; only the three Qwen2.5 arms share a
+family.
+
+Calibration: judge v2 measured 75% recall / 60% precision on UNSUPPORTED
+against blind human labels (n=50, held out, 2026-09-06), so every rate
+here is an approximate point estimate; comparisons are unaffected in
+direction because all arms share the judge. A four-arm held-out sample is
+drawn for re-validating the judge on this claim set (below) and is not yet
+labeled.
+
+### Per section: where the local arms' unsupported claims come from
+
+Attribution by `eval/multi_arm_stats.py` (the `eval/section_attribution.py`
+heuristic unchanged: normalized containment, else word-overlap ≥ 0.6, else
+unattributed; free-form verdicts without a CLAIM line count as
+unattributed). Buckets are diagnostic; the table above is the measured
+result.
+
+| Section (writer in local arms) | hosted `kcf7s` | financial-lora `v924f` | qwen2.5-1.5b `4nfsm` | qwen2.5-7b `cnkp2` |
+|---|---|---|---|---|
+| **Financial Health (local model)** | 1/181 = 0.55% (0.1–3.1%) | **15/85 = 17.65%** (11.0–27.1%) | **16/127 = 12.60%** (7.9–19.5%) | 6/163 = 3.68% (1.7–7.8%) |
+| **Risk Factors (local model)** | 0/18 = 0.00% (0.0–17.6%) | 0/27 = 0.00% (0.0–12.5%) | 0/19 = 0.00% (0.0–16.8%) | 0/3 = 0.00% (0.0–56.1%) |
+| Recent Developments (Haiku) | 1/45 = 2.22% (0.4–11.6%) | 2/111 = 1.80% (0.5–6.3%) | 3/83 = 3.61% (1.2–10.1%) | 4/62 = 6.45% (2.5–15.4%) |
+| SEC Filing Highlights (Haiku) | 0/72 = 0.00% (0.0–5.1%) | 0/80 = 0.00% (0.0–4.6%) | 1/89 = 1.12% (0.2–6.1%) | 0/78 = 0.00% (0.0–4.7%) |
+| Unattributed (synthesis phrasing) | 2/67 = 2.99% (0.8–10.2%) | 8/82 = 9.76% (5.0–18.1%) | 11/82 = 13.41% (7.7–22.4%) | 8/87 = 9.20% (4.7–17.1%) |
+
+FH + RF combined, pairwise Fisher: hosted 1/199 vs financial-lora 15/112
+(p = 1.3e-06), vs 1.5B base 16/146 (p = 6.9e-06), vs 7B base 6/166
+(p = 0.0500); financial-lora vs 1.5B base p = 0.57; financial-lora vs 7B
+base p = 0.0044; 1.5B base vs 7B base p = 0.014. All other claims
+combined: the lowest p is 0.028 (hosted vs 1.5B base), and the three
+local arms are indistinguishable from each other (p ≥ 0.31).
+
+Every unsupported claim in the locally written sections is attributed to
+Financial Health; Risk Factors contributed none in any arm. The 7B's risk
+section is almost never restated by the synthesis (3 attributed claims,
+against 18–27 elsewhere), so its Risk Factors cell says nothing. As on
+2026-09-05/06, the fine-tune's Financial Health text is restated less than
+its base's (85 vs 127 claims attributed). The unattributed bucket runs
+higher in all three local arms (9.2–13.4%) than hosted (3.0%), with wide
+intervals: synthesis-original claims may be degrading when the input
+sections are weaker, which this attribution can't resolve.
+
+### Serving benchmark on the A10 (2026-09-23)
+
+`scripts/vm_bench_serve.sh` on node 2, run inside the vLLM pod against
+localhost:8000, one model at a time on the same deployment args as the
+eval runs. Identical settings for all three: `vllm bench serve`, random
+dataset, 1024 input / 256 output tokens with `--ignore-eos`, 200 prompts,
+request rate inf, max concurrency 8, seed 0, `/v1/completions`, after an
+untimed 16-prompt warmup. All 200 requests succeeded in every run (204,065
+input / 51,200 output tokens each). Raw results:
+`eval/runs/bench/<served-name>.json`.
+
+| Model | Output tok/s | Total tok/s | Req/s | TTFT mean / p99 (ms) | TPOT mean (ms) | E2E latency mean / p99 (ms) |
+|---|---|---|---|---|---|---|
+| financial-lora | 711.5 | 3547.3 | 2.78 | 162 / 348 | 10.65 | 2877 / 3001 |
+| qwen2.5-1.5b-instruct | 711.3 | 3546.4 | 2.78 | 146 / 348 | 10.71 | 2878 / 3033 |
+| qwen2.5-7b-instruct | 194.6 | 970.4 | 0.76 | 485 / 1461 | 39.34 | 10517 / 10982 |
+
+financial-lora and its base serve identically (same architecture; the LoRA
+is merged). The 7B runs at about 27% of the 1.5B's output throughput, and
+its mean end-to-end latency per 256-token request is about 3.7× higher, on
+the same GPU and batch limit. These are dated measurements on k3s. The
+OKE serving benchmark in numbers-of-record stays "to be measured in Phase 2".
+
+### Observations
+
+- **No run saw byte-identical source data.** Across the four runs the
+  retrieved context differs for all 40 tickers. News is fetched live
+  (differs for 40/40), and the RAG fields are an LLM-written answer over
+  the retrieved chunks, whose wording varies run to run (differs for the
+  35 tickers that have SEC context; the five ADRs had none in every run).
+  Stock data differed for 2 tickers. This noise hits every arm alike, as
+  in earlier A/Bs; it is not a per-arm confound, but the arms are not
+  paired on identical inputs.
+- **Hosted ran lower than on 2026-09-05.** `kcf7s` 1.04% (0.4–2.7%) vs
+  `j4cnp` 3.06% (1.8–5.3%), p = 0.074: within run-to-run variance at
+  this N. financial-lora `v924f` 6.49% vs `lsnnc` 8.15% (5.8–11.4%),
+  p = 0.40, also consistent.
+- Free-form verdicts without a CLAIM line are carried with `claim=null`:
+  `v924f` AFRM and VERV SUPPORTED, LCID and TM UNSUPPORTED; `4nfsm` GOOGL
+  and PTON UNSUPPORTED.
+- `v924f` and `4nfsm` show workflow phase Failed: that is the gate
+  failing (aggregate exit 1), not an infrastructure failure. All four
+  runs completed 40/40 tickers with no skips.
+
+Artifacts: findings `eval/runs/raw/{kcf7s,v924f,4nfsm,cnkp2}-findings/`
+(the hostPath copies, byte-identical to each aggregate pod's findings
+dump), aggregates `eval/runs/<run>-aggregate.txt`, per-claim rows
+`eval/runs/<run>-claims.jsonl` (`eval/parse_run_log.py`, no count
+mismatches against the pod logs), contexts `eval/runs/<run>-contexts/`.
+Stats: `python eval/multi_arm_stats.py --run hosted eval/runs/kcf7s-claims.jsonl eval/runs/raw/kcf7s-findings --run financial-lora eval/runs/v924f-claims.jsonl eval/runs/raw/v924f-findings --run qwen1.5b-base eval/runs/4nfsm-claims.jsonl eval/runs/raw/4nfsm-findings --run qwen7b-base eval/runs/cnkp2-claims.jsonl eval/runs/raw/cnkp2-findings`.
+
+### Held-out validation sample for this set
+
+`eval/build_fourarm_holdout.py` (seed 20260923) drew 78 claims stratified
+by arm × judge verdict: 6 UNSUPPORTED / 6 INFERENCE / 8 SUPPORTED per arm
+(hosted has only 4 UNSUPPORTED, all taken), at most 3 claims per
+(arm, ticker). Population: 1,555 claims with a CLAIM line; 6 overlapping
+the dev or v2 held-out sets excluded. Allocation is equal, not
+proportional; stratum population and sample sizes are in
+`eval/judge_validation/fourarm_holdout_method.json` for reweighting. The
+labeling CSV is blind (no run, arm, or verdict); the key is separate.
+**Reserved for judge validation on this claim set only.** Not yet
+labeled.
 
 ## Dated A/B on the single-VM target (2026-09-03)
 

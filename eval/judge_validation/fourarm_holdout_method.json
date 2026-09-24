@@ -1,0 +1,77 @@
+{
+  "purpose": "manual judge validation on the 2026-09-23 four-arm claim set ONLY; not for tuning, selection, or any other analysis",
+  "runs": {
+    "hosted": "grounding-eval-extended-kcf7s",
+    "financial-lora": "grounding-eval-extended-local-v924f",
+    "qwen2.5-1.5b-instruct": "grounding-eval-extended-local-4nfsm",
+    "qwen2.5-7b-instruct": "grounding-eval-extended-local-cnkp2"
+  },
+  "judge_prompt_version": "v2",
+  "seed": 20260923,
+  "rng": "python random.Random(seed); per stratum: sort by (ticker, claim), shuffle, draw in order skipping (arm, ticker) pairs at the cap",
+  "strata": "arm x judge verdict",
+  "targets_per_arm": {
+    "UNSUPPORTED": 6,
+    "INFERENCE": 6,
+    "SUPPORTED": 8
+  },
+  "ticker_cap_per_arm": 3,
+  "population_claims": 1555,
+  "excluded_overlap_with": [
+    "sample.csv",
+    "holdout_sample.csv"
+  ],
+  "excluded_count": 6,
+  "excluded_free_form_null_claims": "not in population (no CLAIM line to label)",
+  "strata_population_and_drawn": {
+    "hosted|UNSUPPORTED": [
+      4,
+      4
+    ],
+    "hosted|INFERENCE": [
+      15,
+      6
+    ],
+    "hosted|SUPPORTED": [
+      359,
+      8
+    ],
+    "financial-lora|UNSUPPORTED": [
+      23,
+      6
+    ],
+    "financial-lora|INFERENCE": [
+      14,
+      6
+    ],
+    "financial-lora|SUPPORTED": [
+      343,
+      8
+    ],
+    "qwen2.5-1.5b-instruct|UNSUPPORTED": [
+      29,
+      6
+    ],
+    "qwen2.5-1.5b-instruct|INFERENCE": [
+      17,
+      6
+    ],
+    "qwen2.5-1.5b-instruct|SUPPORTED": [
+      352,
+      8
+    ],
+    "qwen2.5-7b-instruct|UNSUPPORTED": [
+      18,
+      6
+    ],
+    "qwen2.5-7b-instruct|INFERENCE": [
+      22,
+      6
+    ],
+    "qwen2.5-7b-instruct|SUPPORTED": [
+      353,
+      8
+    ]
+  },
+  "sample_size": 78
+}

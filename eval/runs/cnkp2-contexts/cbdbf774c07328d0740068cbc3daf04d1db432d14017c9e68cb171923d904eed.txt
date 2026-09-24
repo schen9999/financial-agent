@@ -1,0 +1,94 @@
+STOCK DATA:
+{
+  "ticker": "CALM",
+  "company_name": "Cal-Maine Foods, Inc.",
+  "current_price": 71.73,
+  "currency": "USD",
+  "market_cap": 3350221056.0,
+  "pe_ratio": 10.819005,
+  "forward_pe": 24.607206,
+  "week_52_high": 101.86,
+  "week_52_low": 71.08,
+  "revenue": 2911631872.0,
+  "net_income": 316681984.0,
+  "profit_margin": 0.10876001,
+  "dividend_yield": 6.56,
+  "sector": "Consumer Defensive",
+  "industry": "Farm Products"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-07-22",
+    "summary": "Item 1A. Risk Factors and elsewhere in this report as well as those included in other reports we file from time to time with the Securities and Exchange Commission (the \u201cSEC\u201d) (including our Quarterly Reports on Form 10-Q and Current Reports on Form 8-K), (ii) changes in wholesale shell egg market prices, (iii) changes in the demand for shell eggs and our prepared foods offerings, (iv) increases in feed costs for our shell egg operations as well as increases in input costs for prepared foods, (v) our ability to predict and meet demand for cage -free and other specialty eggs, (vi) the risks and hazards inherent in shell egg, egg products and prepared foods operations (including, as applicable, disease, pests, weather conditions, and potential for product recall), including but not limited t"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-04-01",
+    "summary": "Item 1A Risk Factors of our 2025 Annual Report, as updated in Part II Item 1A of our quarterly report on Form 10-Q for the quarter ended November 29, 2025, as well as those included in other reports we file from time to time with the United States Securities and Exchange Commission (\u201cSEC\u201d) (including our Quarterly Reports on Form 10-Q and Current Reports on Form 8-K), (ii) the risks and hazards inherent in the shell egg, egg products and prepared foods operations (including, as applicable, disease, pests, weather conditions, and potential for product recall), including but not limited to the current outbreak of HPAI affecting poultry in the U.S., Canada and other countries that was first detected in commercial flocks in the U.S. in February 2022 and that impacted our flocks in the third an"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from Cal-Maine Foods' Recent SEC Filings
+
+## Company Overview
+Cal-Maine Foods is the largest egg company in the United States and a leading player in the egg-based food industry. Founded in 1957 and headquartered in Ridgeland, Mississippi, the company offers a comprehensive portfolio spanning conventional to specialty eggs (cage-free, organic, pasture-raised, etc.) and prepared foods products.
+
+## Strategic Growth Initiatives
+The company is pursuing several key growth strategies:
+- Increasing specialty shell eggs in the sales mix
+- Expanding prepared foods and egg products businesses
+- Strengthening branded offerings (including Eggland's Best®, Land O'Lakes®, and Van's®)
+- Pursuing strategic acquisitions and organic investments
+
+## Recent Acquisitions
+Cal-Maine has been actively acquiring complementary businesses:
+- **Echo Lake Foods** (June 2025) - $289.5 million for prepared foods production
+- **Creighton Brothers** (March 2026) - $129.3 million for shell egg and egg products assets
+- **Van's Foods assets** (May 2026) - $24.8 million
+- **Clean Egg** (October 2025) - $23.7 million for cage-free and free-range layers
+- **ISE America** (Q1 fiscal 2025) - Significant Northeast/Mid-Atlantic expansion
+- **Crepini Foods** joint venture (Q2 fiscal 2025) - 51% stake for $6.75 million
+
+## Capacity Expansion Plans
+The company has multiple expansion projects underway expected to increase prepared foods production capacity by over 30% from mid-2027 through 2028, including new scrambled egg and pancake production lines.
+
+## Risk Factors
+Key risks include HPAI (avian flu) impacts, feed cost volatility, market price fluctuations, integration challenges from acquisitions, and competitive pressures.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses the following primary risk factors:
+
+1. **Market Price Volatility** - Changes in wholesale shell egg market prices and demand for shell eggs and prepared foods offerings
+
+2. **Input Cost Increases** - Rising feed costs for shell egg operations and increased input costs for prepared foods
+
+3. **Product Demand Forecasting** - Inability to predict and meet demand for cage-free and other specialty eggs
+
+4. **Operational Hazards** - Risks inherent in shell egg, egg products, and prepared foods operations including disease, pests, weather conditions, and product recall potential
+
+5. **Disease Outbreaks** - The current outbreak of Highly Pathogenic Avian Influenza (HPAI) affecting poultry in the U.S., Canada, and other countries, which impacted operations in fiscal 2024 and March 2026
+
+6. **Acquisition Integration** - Risks related to recent acquisitions (such as Echo Lake Foods) including the ability to successfully integrate businesses and realize expected benefits like synergies, cost savings, and margin expansion
+
+7. **Operational Efficiency** - Ability to produce, supply, and distribute products efficiently and reliably
+
+8. **Competition** - Ability to compete effectively with existing competitors and new market entrants, retain customers, and acquire new customers
+
+9. **Regulatory and Market Reactions** - Government, customer, and consumer reactions to high egg market prices, including potential new regulations
+
+10. **Macroeconomic Factors** - Changes in inflation, interest rates, and trade and tariff policies
+
+11. **Intellectual Property** - Loss or expiration of registered trademarks and other intellectual property
+
+12. **Litigation** - Adverse results in pending legal matters
+
+13. **Geopolitical Risks** - Global instability from geopolitical conflicts and other uncertainties

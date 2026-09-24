@@ -49,8 +49,8 @@ Migrate to OCI for a hiring demo (deadline: demo Fri Sep 18, 2026):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (1645 lines, 111 tests collected: 110 passed + 1 skipped,
-   the credit-gated judge test, as of 2026-09-09) must pass on every commit. Canonical
+3. The pytest suite (2027 lines, 135 tests collected: 134 passed + 1 skipped,
+   the credit-gated judge test, as of 2026-09-23) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
 4. Celery stays request-time async; Argo owns eval orchestration. Do not merge them.
@@ -146,8 +146,13 @@ Phase 3 — demo polish:
   benchmarking, fresh eval run for current numbers.
 
 ## Documentation honesty rules (apply to ALL written output: docs, READMEs, comments)
-- Grounding number of record: "49% pre-fix -> 0/84 unsupported in current eval
-  (judge v1)." Never a bare 0%.
+- Grounding number of record: hosted baseline `j4cnp` (2026-09-05/06),
+  12/392 = 3.06% unsupported (Wilson 95% CI 1.8–5.3%), judge v2, fixed
+  retrieval, 40 tickers — always with the run ID, CI, and the v2
+  calibration note. "49% pre-fix -> 0/84" is RETIRED as current: it was
+  measured 2026-08-24 under judge v1 on the pre-Sep-4 retrieval pipeline,
+  so it is a dated record only, quoted with both tags (judge v1,
+  pre-retrieval-fix). Never a bare 0%.
 - Every cited unsupported rate must name the judge prompt version that
   produced it (agent/grounding.py JUDGE_PROMPT_VERSION; logged in every eval
   summary). All judge-v1 rates carry the recall caveat: v1 recall on

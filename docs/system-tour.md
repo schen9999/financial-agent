@@ -37,11 +37,12 @@ gate that fails a run visibly.
 
 Headline figures (numbers-of-record, "Current"):
 
-- Grounding: **49% unsupported pre-fix → 0/84 unsupported in the current
-  eval (95% CI 0.0–4.4%), judge v1**. Always quoted with the pre-fix
-  context and the denominator, never as a bare 0%. Judge v1's recall on
-  UNSUPPORTED measured 1/9 against human labels (2026-09-04), so this
-  rate is a lower bound (section 5).
+- Grounding: **12/392 = 3.06% unsupported (Wilson 95% CI 1.8–5.3%)**,
+  hosted baseline `j4cnp` (2026-09-05/06), judge v2, fixed retrieval, 40
+  tickers. Judge v2's held-out calibration (75% recall / 60% precision on
+  UNSUPPORTED, blind labels, n=50) makes this an approximate point
+  estimate (section 5). The former headline, "49% pre-fix → 0/84" (judge
+  v1, pre-retrieval-fix, 2026-08-24), is a dated record only.
 - Cost per brief: **$0.0366** (2026-09-06, post-retrieval-fix; 3-ticker
   mean over AAPL/NVDA/JPM from the committed `scripts/cost_report.py`).
 - Pipeline latency: **26.29 s mean (~26 s) per brief** (Phase 0
@@ -205,7 +206,8 @@ one verifier false positive.
 
 - Every grounding number dated before 2026-09-04 measured the pipeline
   against exhibit text for most tickers. They stand as dated records of
-  that pipeline, including the 0/84 (judge v1) number of record.
+  that pipeline, including the former 0/84 (judge v1) number of record,
+  retired as current for that reason.
 - Post-fix baselines, judge v2, 40 tickers: 3.10% unsupported (12 U of
   387 claims, CI 1.8–5.3%) on `9j2dj` (2026-09-05, 27 min, est. $2.35)
   and 3.06% (12/392) on `j4cnp` after an image rebuild, Fisher p = 1.0 —
@@ -351,9 +353,9 @@ python eval/agreement.py --labeled eval/judge_validation/holdout_sample.csv \
                          --key eval/judge_validation/holdout_key.csv
 ```
 
-**Tests.** `python -m pytest tests/`: 1645 lines, 111 tests collected —
-110 passed + 1 skipped, the credit-gated judge test that runs only under
-`CRITIC_INJECTION=1` (as of 2026-09-09).
+**Tests.** `python -m pytest tests/`: 2027 lines, 135 tests collected —
+134 passed + 1 skipped, the credit-gated judge test that runs only under
+`CRITIC_INJECTION=1` (as of 2026-09-23).
 
 ## Known limitations and next steps
 

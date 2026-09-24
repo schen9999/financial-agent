@@ -99,6 +99,22 @@ def test_render_findings_md_round_trips():
     assert parse_claims(parsed["findings"])[0]["label"] == "SUPPORTED"
 
 
+def test_render_findings_md_records_local_model():
+    from eval.label import render_findings_md
+
+    args = ("AAPL", "local-model", "v2", "ctx", "### Valuation\nx.",
+            "### Executive Summary\ny.", 'CLAIM: "y"\nLABEL: SUPPORTED\nREASON: z.')
+    prov = {"local_model_served_name": "qwen7b", "local_model_dir": "qwen2.5-7b-instruct"}
+    parsed = parse_findings_file(render_findings_md(*args, extra_metadata=prov))
+    assert parsed["metadata"]["local_model_served_name"] == "qwen7b"
+    assert parsed["metadata"]["local_model_dir"] == "qwen2.5-7b-instruct"
+    assert parsed["metadata"]["judge_prompt_version"] == "v2"
+    # No provenance: byte-identical to the format every committed run uses.
+    assert render_findings_md(*args) == render_findings_md(*args, extra_metadata=None)
+    assert "local_model" not in render_findings_md(*args)
+    assert "context_sha256: " in render_findings_md(*args).split("## Retrieved")[0]
+
+
 def test_parse_claims_plain_and_bold():
     claims = parse_claims(parse_findings_file(FINDINGS_MD)["findings"])
     assert [c["label"] for c in claims] == ["SUPPORTED", "UNSUPPORTED"]

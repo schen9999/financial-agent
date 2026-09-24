@@ -131,3 +131,69 @@ def test_invoke_openai_backend_posts_chat_completions(monkeypatch):
     # OpenAI schema: temperature is top-level, no Ollama "options"/"stream" keys
     assert "options" not in captured["json"]
     assert captured["json"]["temperature"] == pytest.approx(0.1)
+
+
+def _capture_openai_bodies(monkeypatch, models):
+    os.environ["LOCAL_MODEL_BACKEND"] = "openai"
+    bodies = []
+
+    class _Resp:
+        def raise_for_status(self):
+            pass
+
+        def json(self):
+            return {"choices": [{"message": {"content": "ok"}}]}
+
+    def fake_post(url, json=None, timeout=None):
+        bodies.append(json)
+        return _Resp()
+
+    monkeypatch.setattr(local_model.requests, "post", fake_post)
+    for m in models:
+        LocalChat(model=m, url="http://vllm:8000", temperature=0.1).invoke(
+            [HumanMessage("write the section")])
+    return bodies
+
+
+def test_openai_request_identical_across_served_models(monkeypatch):
+    """A model comparison must vary only the model: vLLM fills any omitted
+    sampling param from each model's own generation_config.json, so every
+    param is sent explicitly and the bodies differ only in `model`."""
+    models = ["financial-lora", "qwen7b", "llama8b"]
+    bodies = _capture_openai_bodies(monkeypatch, models)
+    assert [b["model"] for b in bodies] == models
+    stripped = [{k: v for k, v in b.items() if k != "model"} for b in bodies]
+    assert stripped[0] == stripped[1] == stripped[2]
+    assert stripped[0] == {
+        "temperature": 0.1, "max_tokens": 512, "top_p": 0.8, "top_k": 20,
+        "repetition_penalty": 1.1, "min_p": 0.0,
+        "messages": [{"role": "user", "content": "write the section"}],
+    }
+
+
+def test_sampling_params_are_what_is_sent(monkeypatch):
+    body = _capture_openai_bodies(monkeypatch, ["financial-lora"])[0]
+    chat = LocalChat(model="financial-lora", url="http://vllm:8000", temperature=0.1)
+    sent = {k: v for k, v in body.items() if k not in ("model", "messages")}
+    assert chat.sampling_params() == sent
+
+
+def test_ollama_path_sends_temperature_only(monkeypatch):
+    captured = {}
+
+    class _Resp:
+        def raise_for_status(self):
+            pass
+
+        def json(self):
+            return {"message": {"content": "ok"}}
+
+    def fake_post(url, json=None, timeout=None):
+        captured["json"] = json
+        return _Resp()
+
+    monkeypatch.setattr(local_model.requests, "post", fake_post)
+    chat = LocalChat(model="financial-lora", url="http://localhost:11434")
+    chat.invoke([HumanMessage("x")])
+    assert captured["json"]["options"] == {"temperature": pytest.approx(0.1)}
+    assert chat.sampling_params() == {"temperature": pytest.approx(0.1)}

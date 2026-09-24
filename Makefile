@@ -16,7 +16,7 @@ ENV_FILE  ?= .env
 
 .PHONY: cluster-up deploy smoke-test cluster-down status logs \
         argo-install argo-deploy eval-run cost-report \
-        vm-images vm-up vm-eval
+        vm-images vm-up vm-eval vm-vllm
 
 cluster-up: ## Create the single-node kind cluster (or restart its stopped node)
 	@if kind get clusters 2>/dev/null | grep -qx $(CLUSTER); then \
@@ -169,13 +169,35 @@ vm-up: ## Apply the k3s overlays in order: app (+secrets), Argo, vLLM
 	kubectl -n argo rollout status deploy/workflow-controller --timeout=300s
 	kubectl -n argo rollout status deploy/argo-server --timeout=300s
 	$(MAKE) argo-deploy ARGO_OVERLAY=k3s
-	@# vLLM last: weights must already be at /home/ubuntu/models/qwen-ft (runbook)
-	kubectl apply -k k8s/vllm/overlays/k3s-gpu
-	kubectl -n $(NAMESPACE) rollout status deployment/vllm --timeout=900s
+	@# vLLM last: weights must already be at /home/ubuntu/models/qwen-ft (runbook).
+	@# Defaults reproduce the committed k3s-gpu deployment and record the model
+	@# in app-config for the eval's local-model arm.
+	$(MAKE) vm-vllm
 	@# local ports 31xxx on purpose: kind maps 30080/30501/30800 on the dev laptop
 	@echo "Up. Tunnel from the laptop: ssh -L 31080:localhost:30080 -L 31501:localhost:30501 -L 31880:localhost:30880 ubuntu@<vm-ip>"
 
 vm-eval: eval-run ## Run the grounding eval DAG on the VM (same submit/follow as eval-run)
+
+# Model swap for the local-model eval arm (runbook "Model comparison").
+# Weights live in /home/ubuntu/models/$(MODEL_DIR); MAX_LEN is per model — a
+# 7B bf16 leaves far less KV cache on the 24 GB A10 than the 1.5B fine-tune.
+# Defaults reproduce the committed k3s-gpu deployment exactly.
+MODEL_DIR ?= qwen-ft
+SERVED_NAME ?= financial-lora
+MAX_LEN ?= 4096
+VLLM_RENDER ?= /tmp/vllm-k3s-gpu
+
+vm-vllm: ## Serve MODEL_DIR as SERVED_NAME (MAX_LEN) on the VM's A10 and point LOCAL_MODEL_NAME at it
+	@test -d /home/ubuntu/models/$(MODEL_DIR) || { echo "ERROR: /home/ubuntu/models/$(MODEL_DIR) not found — copy the weights there first"; exit 1; }
+	kubectl kustomize k8s/vllm/overlays/k3s-gpu > $(VLLM_RENDER).yaml
+	python3 scripts/vllm_model_swap.py --model-dir '$(MODEL_DIR)' --served-name '$(SERVED_NAME)' --max-len '$(MAX_LEN)' \
+		< $(VLLM_RENDER).yaml > $(VLLM_RENDER)-swapped.yaml
+	kubectl apply -f $(VLLM_RENDER)-swapped.yaml
+	kubectl -n $(NAMESPACE) rollout status deployment/vllm --timeout=900s
+	@# rollout-ready can precede the NodePort answering: poll up to 120s
+	python3 scripts/wait_for_model.py --url http://localhost:30880 --name '$(SERVED_NAME)' --timeout 120
+	kubectl -n $(NAMESPACE) patch configmap app-config --type merge -p '{"data":{"LOCAL_MODEL_NAME":"$(SERVED_NAME)","LOCAL_MODEL_DIR":"$(MODEL_DIR)"}}'
+	@echo "vLLM serves $(SERVED_NAME) from /home/ubuntu/models/$(MODEL_DIR) (max-model-len $(MAX_LEN)); eval pods read LOCAL_MODEL_NAME/DIR at start."
 
 vm-local-model: ## Toggle app-plane local-model routing (ON=true|false); eval arms are unaffected
 	@test -n "$(ON)" || { echo "usage: make vm-local-model ON=true|false"; exit 1; }
