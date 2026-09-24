@@ -650,6 +650,7 @@ also in `calibration_batch_method.json`:
   the judge label. Rows are shuffled. The census of the scarce strata
   still concentrates some tickers (WMT, the local-model outlier, has 15
   rows); label every row on its own evidence.
+- **Labeling**: the calibration batch is labeled with `eval/label_cli.py`, blind to judge labels (the tool never reads a `*_key.csv`).
 - **Key**: `calibration_batch_key.csv` (run, arm, judge label and reason,
   with the strata in a `#` header block) is gitignored like the four-arm
   key; it stays out of the public repository while the batch is
