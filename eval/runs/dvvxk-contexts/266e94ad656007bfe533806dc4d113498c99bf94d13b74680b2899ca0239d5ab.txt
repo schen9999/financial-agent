@@ -1,0 +1,83 @@
+STOCK DATA:
+{
+  "ticker": "NTLA",
+  "company_name": "Intellia Therapeutics, Inc.",
+  "current_price": 12.16,
+  "currency": "USD",
+  "market_cap": 1703940480.0,
+  "forward_pe": -4.6786685,
+  "week_52_high": 28.25,
+  "week_52_low": 7.95,
+  "revenue": 59506000.0,
+  "net_income": -399975008.0,
+  "profit_margin": 0.0,
+  "sector": "Healthcare",
+  "industry": "Biotechnology"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-26",
+    "summary": "Item 1A. Risk Factors Investing in our common stock involves a high degree of risk. In evaluating us and our business, careful consideration should be given to the following risk factors, in addition to the other information set forth in this Annual Report on Form 10-K for the year ended December 31, 2025 and in other documents that we file with the Securities and Exchange Commission (\u201cSEC\u201d). If any of the following risks and uncertainties actually occurs, our business, prospects, financial condition and results of operations could be materially and adversely affected. The risks described below are not intended to be exhaustive and are not the only risks facing us. New risk factors can emerge from time to time, and we cannot predict the impact that any factor or combination of factors may "
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-06",
+    "summary": "Item 1A. Risk Factors Investing in our common stock involves a high degree of risk. In evaluating us and our business, careful consideration should be given to the following risk factors, in addition to the other information set forth in this Quarterly Report on Form 10-Q, our Annual Report on Form 10-K for the year ended December 31, 2025, and in other documents that we file with the Securities and Exchange Commission (\u201cSEC\u201d). If any of the following risks and uncertainties actually occurs, our business, prospects, financial condition and results of operations could be materially and adversely affected. The risks described below are not intended to be exhaustive and are not the only risks facing us. New risk factors can emerge from time to time, and we cannot predict the impact that any f"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I cannot provide a summary of the latest 10-K and 10-Q based on the context provided. The information given consists only of risk factor disclosures from a 10-K filing for the year ended December 31, 2025, specifically focusing on risks related to preclinical and clinical development of CRISPR-based therapeutics.
+
+To provide a comprehensive summary of the latest 10-K and 10-Q filings, I would need access to additional sections of these documents, including:
+
+- Business overview and strategy
+- Financial results and performance metrics
+- Management's discussion and analysis (MD&A)
+- Balance sheet and cash flow information
+- Recent developments and milestones
+- Liquidity and capital resources
+- Results of operations
+
+The context provided only covers one portion of the risk factors section, which represents just one component of a complete 10-K filing. A meaningful summary would require information from multiple sections of both the 10-K and 10-Q documents.
+
+RAG — RISK FACTORS:
+[Indexed to Pinecone] # Primary Risk Factors Disclosed
+
+The company discloses several primary risk factors related to its CRISPR genome editing technology business:
+
+## Clinical Development and Technology Risks
+- CRISPR genome editing technology has only recently been clinically validated for human therapeutic use, and in vivo CRISPR-based technologies remain relatively new with largely unproven therapeutic utility
+- The company's approaches to developing therapies using CRISPR systems are unproven and may never lead to marketable products
+- No genome editing in vivo therapy has been approved in the U.S., EU, or other key jurisdictions, making regulatory approval uncertain
+- Successful development requires solving numerous technical challenges, including safe delivery of therapeutic agents to target cells and optimizing efficacy and specificity
+
+## Regulatory and Approval Challenges
+- Clinical development is lengthy, expensive, and uncertain in outcome
+- Regulatory authorities have very limited or no experience with CRISPR-based therapeutics, particularly in vivo therapeutics, which may require additional testing and delay development
+- Regulatory agencies may impose stricter requirements or require more extensive preclinical and clinical testing compared to traditional therapies
+- Clinical trials may fail to demonstrate safety or efficacy, or produce negative or inconclusive results
+
+## Market Adoption and Public Perception Risks
+- Public perception and media coverage of potential safety or efficacy issues may adversely influence participation in clinical trials and physician/patient acceptance
+- Ethical concerns related to genome editing and CRISPR-based therapies may impact adoption
+- Physicians and healthcare providers are often slow to adopt new products and may view these therapies as too complex or risky without appropriate training
+- Healthcare providers and payors may determine that benefits do not outweigh costs
+
+## Operational Challenges
+- Manufacturing and supply chain challenges for preclinical, clinical, and commercial supplies
+- Inability to establish clinical endpoints that regulatory authorities consider clinically meaningful
+- Challenges in patient enrollment and retention in clinical trials

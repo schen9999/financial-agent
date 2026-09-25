@@ -52,8 +52,8 @@ Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (2072 lines, 139 tests collected: 138 passed + 1 skipped,
-   the credit-gated judge test, as of 2026-09-24) must pass on every commit. Canonical
+3. The pytest suite (2426 lines, 164 tests collected: 163 passed + 1 skipped,
+   the credit-gated judge test, as of 2026-09-25) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
 4. Celery stays request-time async; Argo owns eval orchestration. Do not merge them.
@@ -162,11 +162,27 @@ Phase 3 — demo polish:
   summary). All judge-v1 rates carry the recall caveat: v1 recall on
   UNSUPPORTED measured 1/9 against human labels (2026-09-04), so v1 rates are
   lower bounds. Judge v2 is VALIDATED held-out (2026-09-06, 50 blind labels,
-  zero dev-set overlap): kappa 0.580, UNSUPPORTED recall 75% / precision 60%
-  — v2 rates cite this validation and are approximate point estimates, not
-  bounds (errors run both ways); A/B directions are unaffected when both arms
+  zero dev-set overlap): kappa 0.580, UNSUPPORTED precision 60% (9/15, CI
+  35.7–80.2%). CALIBRATION OF RECORD (2026-09-24): judge-SUPPORTED stratum
+  4/123 from a blind relabel of 123 claims, judge-UNSUPPORTED 9/15 and
+  judge-INFERENCE 2/15 from the held-out sample; population-weighted
+  recall 32.5% on the baseline run (CI 16.0–52.4%), lsnnc 59.2% (CI
+  36.0–77.9%), pooled 47.9% (CI 26.5–68.3%) (eval/reweight_calibration.py
+  with --use; command in eval-methodology). The 2026-09-06 "75% recall"
+  (unweighted) and the 2026-09-24 held-out-only reweight (25.4%, 1/20
+  judge-SUPPORTED) are superseded. The calibration batch's first-pass
+  labels are DISCARDED (over-strict: blind relabel test-retest kappa
+  0.242, 39 of 42 judge-SUPPORTED UNSUPPORTED labels withdrawn); they are
+  on record as a dated finding only and never feed a figure. Every v2 rate
+  is the judge-flagged rate; where a reweighted true-rate estimate exists
+  it goes beside it (j4cnp 5.7%, CI 3.5–9.9%; lsnnc 8.3%, CI 5.5–12.5%;
+  pooled 6.9%, CI 4.5–11.1%; 2nh8v 3.9%, CI 1.8–8.3%). A/B
+  directions and the per-section attribution are unaffected when both arms
   share the judge. The 50-claim dev set remains a development set and
   validates nothing.
+- Judge recall is only ever quoted population-weighted (reweighted to the
+  run's judge-label counts), with its CI. Never quote recall computed on a
+  judge-label-stratified sample as drawn.
 - Cost of record: $0.0366/brief (2026-09-06, post-retrieval-fix) from the
   committed harness. $0.0316 is a dated pre-retrieval-fix record — never quote
   it as current. $0.0269 is retired. "54% cost reduction" is retired.
@@ -187,7 +203,8 @@ Phase 3 — demo polish:
   changes), and on vm-a10-inst-2 also served untuned Qwen2.5-1.5B-Instruct
   and Qwen2.5-7B-Instruct (swapped with `make vm-vllm`) for the four-arm
   comparison — a dated comparison set, not numbers of record, 40 tickers,
-  judge v2: hosted `kcf7s` 4/383 = 1.04% (CI 0.4–2.7%), fine-tune `v924f`
+  judge v2: hosted `kcf7s` 4/383 = 1.04% (CI 0.4–2.7%) and its 2026-09-24
+  same-image rerun `dvvxk` 7/389 = 1.80% (CI 0.9–3.7%, p = 0.55), fine-tune `v924f`
   25/385 = 6.49% (CI 4.4–9.4%), 1.5B base `4nfsm` 31/400 = 7.75% (CI
   5.5–10.8%), 7B base `cnkp2` 18/393 = 4.58% (CI 2.9–7.1%); quote it as a
   dated set with run IDs and CIs. Still gated: serving on OKE — update this

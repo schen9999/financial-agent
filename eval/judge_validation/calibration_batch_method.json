@@ -1,0 +1,85 @@
+{
+  "purpose": "judge v2 calibration: population-weighted recall and true unsupported rate on j4cnp/lsnnc (eval/reweight_calibration.py)",
+  "runs": {
+    "j4cnp": "grounding-eval-extended-j4cnp",
+    "lsnnc": "grounding-eval-extended-local-lsnnc"
+  },
+  "judge_prompt_version": "v2",
+  "seed": 20260924,
+  "rng": "python random.Random(seed); per (judge label, arm) in sorted order: sort by (ticker, claim), shuffle, take first n; then shuffle rows",
+  "targets": {
+    "SUPPORTED": 100,
+    "INFERENCE": 25,
+    "UNSUPPORTED": 25
+  },
+  "total": 150,
+  "shortfall_filled_from": "SUPPORTED",
+  "arm_allocation": "proportional to run judge-label counts, largest remainder, capped by eligible pool",
+  "run_population_counts": {
+    "j4cnp": {
+      "SUPPORTED": 354,
+      "UNSUPPORTED": 12,
+      "INFERENCE": 26
+    },
+    "lsnnc": {
+      "SUPPORTED": 324,
+      "UNSUPPORTED": 30,
+      "INFERENCE": 14
+    }
+  },
+  "parsed_claims": 756,
+  "excluded_overlap": 57,
+  "excluded_overlap_with": [
+    "sample.csv (claim text, context sha)",
+    "holdout_sample.csv (claim text)"
+  ],
+  "excluded_free_form_null_claims": "not in pool (no CLAIM line to label)",
+  "strata": {
+    "SUPPORTED|baseline": {
+      "run_population": 354,
+      "eligible_pool": 341,
+      "drawn": 54
+    },
+    "SUPPORTED|local-model": {
+      "run_population": 324,
+      "eligible_pool": 311,
+      "drawn": 49
+    },
+    "UNSUPPORTED|baseline": {
+      "run_population": 12,
+      "eligible_pool": 1,
+      "drawn": 1
+    },
+    "UNSUPPORTED|local-model": {
+      "run_population": 30,
+      "eligible_pool": 22,
+      "drawn": 22
+    },
+    "INFERENCE|baseline": {
+      "run_population": 26,
+      "eligible_pool": 18,
+      "drawn": 18
+    },
+    "INFERENCE|local-model": {
+      "run_population": 14,
+      "eligible_pool": 6,
+      "drawn": 6
+    }
+  },
+  "ticker_cap": {
+    "cap": 4,
+    "tickers_in_draw": 38,
+    "max_per_ticker": 6,
+    "tickers_over_cap": {
+      "EDIT": 5,
+      "LCID": 5,
+      "NTLA": 5,
+      "TSLA": 5,
+      "UNH": 6
+    },
+    "draws_displaced": 6,
+    "applied": false
+  },
+  "sample_size": 150,
+  "key_location": "calibration_batch_key.csv, gitignored; never committed while unlabeled"
+}

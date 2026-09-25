@@ -45,3 +45,11 @@ notes/
 # Answer key for the unlabeled four-arm judge-validation sample — kept
 # outside the repo; eval/build_fourarm_holdout.py writes it here on a rerun
 eval/judge_validation/fourarm_holdout_key.csv
+
+# Answer key for the unlabeled calibration batch; eval/build_calibration_batch.py
+# writes it here, keep it out of the public repo while unlabeled
+eval/judge_validation/calibration_batch_key.csv
+
+
+# Answer key for the judge-UNSUPPORTED/INFERENCE relabel sample
+eval/judge_validation/relabel_UI_key.csv
