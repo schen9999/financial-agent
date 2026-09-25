@@ -50,8 +50,6 @@ eval/judge_validation/fourarm_holdout_key.csv
 # writes it here, keep it out of the public repo while unlabeled
 eval/judge_validation/calibration_batch_key.csv
 
-# Answer key for the judge-SUPPORTED relabel sample (source set per row)
-eval/judge_validation/relabel_S_key.csv
 
 # Answer key for the judge-UNSUPPORTED/INFERENCE relabel sample
 eval/judge_validation/relabel_UI_key.csv

@@ -122,6 +122,10 @@ def main():
                     help="repeatable, paired in order with --key; samples are "
                          "pooled per judge-label stratum")
     ap.add_argument("--key", required=True, action="append")
+    ap.add_argument("--use", action="append",
+                    help="optional, paired in order with --labeled: the judge "
+                         "labels to take from that sample, comma-separated "
+                         "(e.g. UNSUPPORTED,INFERENCE), or ALL (default)")
     ap.add_argument("--run", nargs=3, action="append", required=True,
                     metavar=("LABEL", "CLAIMS_JSONL", "FINDINGS_DIR"))
     ap.add_argument("--by-section", action="store_true",
@@ -133,8 +137,16 @@ def main():
 
     if len(args.labeled) != len(args.key):
         sys.exit("--labeled and --key must be given the same number of times")
-    pairs = [p for lab, key in zip(args.labeled, args.key)
-             for p in load_pairs(Path(lab), Path(key))]
+    uses = args.use or ["ALL"] * len(args.labeled)
+    if len(uses) != len(args.labeled):
+        sys.exit("--use, when given, must be given once per --labeled")
+    pairs = []
+    for lab, key, use in zip(args.labeled, args.key, uses):
+        keep = set(LABELS) if use.upper() == "ALL" else \
+            {u.strip().upper() for u in use.split(",")}
+        if not keep <= set(LABELS):
+            sys.exit(f"--use {use}: labels must be from {LABELS} or ALL")
+        pairs += [p for p in load_pairs(Path(lab), Path(key)) if p[0] in keep]
     strata = stratum_counts(pairs)
     pops = {label: population_counts(Path(c), Path(f)) for label, c, f in args.run}
     if len(pops) > 1:
