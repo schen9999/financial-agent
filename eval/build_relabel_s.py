@@ -15,7 +15,8 @@ Output (same blind shape as calibration_batch.csv):
                      Gitignored; do not open while labeling.
 
 Every row in this sample is judge-SUPPORTED by construction; that is the
-only judge information the labeler can infer.
+only judge information the labeler can infer. `build()` is shared with
+eval/build_relabel_ui.py, which does the same for the U and I strata.
 
 Usage:
   python eval/build_relabel_s.py           # refuses if relabel_S.csv exists
@@ -25,6 +26,7 @@ import argparse
 import csv
 import random
 import sys
+from collections import Counter
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
@@ -46,16 +48,18 @@ def read_csv(path: Path) -> list[dict]:
                     if path.name.endswith("_key.csv") else csv.DictReader(f))
 
 
-def collect(sources=SOURCES) -> list[dict]:
+def collect(sources=SOURCES, labels=("SUPPORTED",)) -> list[dict]:
+    """Rows of every source whose judge label is in `labels`."""
     rows = []
     for name, sample, key in sources:
         judge = {r["id"]: r for r in read_csv(key)}
         for r in read_csv(sample):
             k = judge[r["id"]]
-            if k["judge_label"].strip().upper() == "SUPPORTED":
+            label = k["judge_label"].strip().upper()
+            if label in labels:
                 rows.append({"source": name, "source_id": r["id"],
                              "run": k.get("run", ""), "arm": k["arm"],
-                             "judge_label": "SUPPORTED", "ticker": r["ticker"],
+                             "judge_label": label, "ticker": r["ticker"],
                              "claim": r["claim"], "context": r["context"]})
     return rows
 
@@ -66,27 +70,36 @@ def shuffle(rows: list[dict], seed: int = SEED) -> list[dict]:
     return rows
 
 
-def main(argv=None):
-    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--force", action="store_true")
-    if SAMPLE_FILE.exists() and not ap.parse_args(argv).force:
-        sys.exit(f"{SAMPLE_FILE.name} exists; refusing to overwrite (use --force)")
-    rows = shuffle(collect())
-    with open(SAMPLE_FILE, "w", newline="\n", encoding="utf-8") as f:
+def build(labels, sample_file: Path, key_file: Path, seed: int, force: bool = False,
+          sources=SOURCES) -> list[dict]:
+    """Write a blind relabel sample of the rows whose judge label is in
+    `labels` (fresh ids, shuffled, no source or judge column) and its key."""
+    if sample_file.exists() and not force:
+        sys.exit(f"{sample_file.name} exists; refusing to overwrite (use --force)")
+    rows = shuffle(collect(sources, labels), seed)
+    with open(sample_file, "w", newline="\n", encoding="utf-8") as f:
         w = csv.writer(f, lineterminator="\n")
         w.writerow(["id", "ticker", "claim", "context", "human_label"])
         for i, r in enumerate(rows):
             w.writerow([i, r["ticker"], r["claim"], r["context"], ""])
-    with open(KEY_FILE, "w", newline="\n", encoding="utf-8") as f:
-        f.write(f"# relabel_S seed {SEED}; sources: "
-                + ", ".join(f"{n} {sum(r['source'] == n for r in rows)}" for n, _, _ in SOURCES)
+    counts = Counter((r["source"], r["judge_label"]) for r in rows)
+    with open(key_file, "w", newline="\n", encoding="utf-8") as f:
+        f.write(f"# {sample_file.stem} seed {seed}; "
+                + ", ".join(f"{s} {lab} {n}" for (s, lab), n in sorted(counts.items()))
                 + "\n")
         w = csv.writer(f, lineterminator="\n")
         w.writerow(["id", "source", "source_id", "run", "arm", "judge_label"])
         for i, r in enumerate(rows):
             w.writerow([i, r["source"], r["source_id"], r["run"], r["arm"], r["judge_label"]])
-    counts = {n: sum(r["source"] == n for r in rows) for n, _, _ in SOURCES}
-    print(f"{SAMPLE_FILE.name}: {len(rows)} rows {counts}, seed {SEED}; key -> {KEY_FILE.name}")
+    print(f"{sample_file.name}: {len(rows)} rows {dict(counts)}, seed {seed}; "
+          f"key -> {key_file.name}")
+    return rows
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap.add_argument("--force", action="store_true")
+    build(("SUPPORTED",), SAMPLE_FILE, KEY_FILE, SEED, ap.parse_args(argv).force)
 
 
 if __name__ == "__main__":

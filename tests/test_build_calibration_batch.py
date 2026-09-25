@@ -84,6 +84,18 @@ def test_relabel_sample_is_blind_to_source():
     assert [row["id"] for row in rows] == [str(i) for i in range(123)]
 
 
+def test_relabel_ui_sample_is_blind_to_source_and_judge():
+    from eval import build_relabel_ui as r
+    if not r.SAMPLE_FILE.exists():
+        pytest.skip("relabel UI sample not built")
+    with open(r.SAMPLE_FILE, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        assert reader.fieldnames == ["id", "ticker", "claim", "context", "human_label"]
+        rows = list(reader)
+    assert len(rows) == 77
+    assert [row["id"] for row in rows] == [str(i) for i in range(77)]
+
+
 def test_main_refuses_before_reading_when_method_exists(monkeypatch, tmp_path):
     path = tmp_path / "calibration_batch_method.json"
     path.write_text("{}", encoding="utf-8")
