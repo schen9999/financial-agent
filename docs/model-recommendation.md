@@ -75,7 +75,11 @@ the A10 and 35.0 s on the CPU for the fine-tune (29.1 s for the 1.5B base),
 from the measured TTFT and TPOT and the token counts T in section 4. A mean
 brief is about 34 s, so on this CPU the two sections are not short: they
 alone take about as long as the whole brief. Brief time with CPU serving
-was not measured. Method, table and caveats: eval-methodology, ["CPU
+was not measured. At concurrency 1 the CPU gap is mostly prompt
+processing: mean TTFT is about 115 times the A10's (5985 vs 52 ms), time
+per output token about 5 times (43.4 vs 8.8 ms). So prompt length, INT8
+weights and AMX-capable Xeons are the next levers; none was measured.
+Method, table and caveats: eval-methodology, ["CPU
 inference benchmark"](eval-methodology.md#cpu-inference-benchmark-2026-09-28-a-dated-measurement).
 
 **Locally served sections only.** The fairer comparison: the other
