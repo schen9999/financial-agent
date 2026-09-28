@@ -1011,9 +1011,10 @@ positives.** The judge's claim segmentation still varies between
 temperature-0 runs (8, then 4 off-needle flags on identical inputs), so
 per-run flag counts are noisy even though the gated metric, recall,
 reproduced exactly. A CI job
-(`.github/workflows/critic-injection.yml`) re-runs this weekly (Sundays
-06:00 UTC) and on manual dispatch, never on push or PR because it spends
-judge credits, and asserts recall ≥ 0.8; the bar does not move if it
+(`.github/workflows/critic-injection.yml`) re-runs this on manual dispatch
+only (the weekly Sunday schedule was removed 2026-09-28), never on push, PR
+or a schedule because it spends judge credits, and asserts recall ≥ 0.8;
+the bar does not move if it
 regresses — the number gets reported instead.
 
 ## Boundary

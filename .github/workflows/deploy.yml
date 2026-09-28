@@ -1,11 +1,11 @@
 name: Deploy
 
-# Runs only after the CI workflow succeeds on main — i.e. tests pass, then deploy.
+# Manual only (Actions tab -> Deploy -> Run workflow), since 2026-09-28: a
+# merge to main no longer rebuilds the image or rolls the ECS service. Run it
+# from main after CI has passed on the commit you want deployed; it builds and
+# deploys the dispatched commit (github.sha) with no changed-files filter.
 on:
-  workflow_run:
-    workflows: ["CI"]
-    types: [completed]
-    branches: [main]
+  workflow_dispatch:
 
 # OIDC: GitHub gets a short-lived token to assume the AWS deploy role.
 permissions:
@@ -26,45 +26,13 @@ env:
   CONTAINER_NAME: api
 
 jobs:
-  # Skip the (expensive) image build + deploy when only docs/infra/notebooks
-  # changed — no point rebuilding the image or churning the task's public IP.
-  changes:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: ubuntu-latest
-    outputs:
-      should_deploy: ${{ steps.filter.outputs.should_deploy }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
-          fetch-depth: 2
-
-      - id: filter
-        name: Decide whether a deploy is needed
-        run: |
-          CHANGED=$(git diff --name-only HEAD^ HEAD)
-          echo "Changed files in HEAD commit:"; echo "$CHANGED"
-          # Anything NOT matching README.md / docs/ / infra/ / *.ipynb is an
-          # app change worth deploying. (Inspects the latest commit — fine for
-          # the one-commit-per-push flow used here.)
-          CODE=$(echo "$CHANGED" | grep -vE '^(README\.md$|docs/|infra/|.*\.ipynb$)' || true)
-          if [ -z "$CODE" ]; then
-            echo "Only docs/infra/notebooks changed -> skipping deploy."
-            echo "should_deploy=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "App-relevant changes -> deploying."
-            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
-          fi
-
   deploy:
-    needs: changes
-    if: ${{ needs.changes.outputs.should_deploy == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the tested commit
+      - name: Checkout the dispatched commit
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+          ref: ${{ github.sha }}
 
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
@@ -79,7 +47,7 @@ jobs:
       - name: Build and push image
         env:
           REGISTRY: ${{ steps.ecr.outputs.registry }}
-          SHA: ${{ github.event.workflow_run.head_sha }}
+          SHA: ${{ github.sha }}
         run: |
           IMAGE="$REGISTRY/$ECR_REPOSITORY"
           docker build -t "$IMAGE:latest" -t "$IMAGE:$SHA" .

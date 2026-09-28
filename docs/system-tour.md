@@ -277,9 +277,10 @@ lines dropped, a plausible claim inserted). Recall **20/20 = 100%** (CI
 20/24 = 83.3%, and **adjudicated precision 24/24 = 100%** (CI
 86.2–100%) — every off-needle flag was a genuine unsupported claim,
 either a cascade from the injection or pre-existing. A CI job
-(`.github/workflows/critic-injection.yml`) re-runs this weekly (Sundays
-06:00 UTC) and on manual dispatch, never on push or PR because it spends
-judge credits, and asserts recall ≥ 0.8; if it regresses, the bar does
+(`.github/workflows/critic-injection.yml`) re-runs this on manual dispatch
+only (the weekly Sunday schedule was removed 2026-09-28), never on push, PR
+or a schedule because it spends judge credits, and asserts recall ≥ 0.8; if
+it regresses, the bar does
 not move — the number gets reported.
 
 **How to read any rate in this repository.** A judge-v1 rate is a lower

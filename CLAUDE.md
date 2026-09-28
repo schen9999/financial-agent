@@ -71,8 +71,9 @@ Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
 6. Work on branch `oci-migration`. Small commits, imperative messages.
 7. Judge-calling tests spend Anthropic credits: they run ONLY under an
    explicit env flag (CRITIC_INJECTION=1 today; the same pattern for any
-   future one), never in the default pytest suite, and never on push or PR
-   CI triggers — manual dispatch or schedule only.
+   future one), never in the default pytest suite, and never on push, PR or
+   scheduled CI triggers — manual dispatch only (the Sunday schedule was
+   removed 2026-09-28).
 
 ## Phases
 Phase 1 — COMPLETE (no OCI credentials):

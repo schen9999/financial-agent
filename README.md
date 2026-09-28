@@ -95,13 +95,13 @@ The answer required building both the agent and the measurement layer to audit i
 
 I built an evaluation framework that audits the quantitative and forward-looking claims in each brief's Executive Summary and Outlook against the retrieved source context (the four pre-written sections are judge input, not audited directly). A Sonnet judge (temperature 0) labels each claim `SUPPORTED`, `UNSUPPORTED`, or `INFERENCE`.
 
-**Early results: 49% unsupported claim rate (judge v1, pre-retrieval-fix).** Nearly half of what the agent said wasn't backed by anything it retrieved.
+**Current: 12/392 = 3.06% unsupported (Wilson 95% CI 1.8–5.3%), judge-flagged.** The grounding number of record is the 40-ticker hosted baseline `j4cnp` (2026-09-05/06), judge v2 on the fixed retrieval pipeline. The judge misses unsupported claims, so its flagged rate undercounts: reweighted with the calibration of record, the estimated true rate is **5.7% (CI 3.5–9.9%)**. Calibration of record: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED). See [docs/numbers-of-record.md](docs/numbers-of-record.md).
 
-After iterating on prompt constraints and forcing generation to stay grounded in source material, the 2026-08-24 10-ticker re-measure found 0/84 unsupported — a dated record (judge v1, a lower bound; pre-retrieval-fix). The current grounding number of record is the 40-ticker hosted baseline `j4cnp` (2026-09-05/06): **12/392 = 3.06% unsupported (Wilson 95% CI 1.8–5.3%)**, judge v2 on the fixed retrieval pipeline. That is the judge-flagged rate; the reweighted true-rate estimate 5.7% (CI 3.5–9.9%). Calibration of record: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED). See [docs/numbers-of-record.md](docs/numbers-of-record.md).
+**The fine-tune A/B: 8.15% vs 3.06%, Fisher p = 0.0023 (judge v2).** On the same image and index, with the QLoRA fine-tune writing two of the four sections, the local-model arm `lsnnc` measured 30/368 = 8.15% unsupported (CI 5.8–11.4%) against `j4cnp`'s 3.06%. It fails the 5% gate, the excess sits in the two sections the fine-tune writes, and it ships disabled ([details below](#qlora-fine-tuning-experiment)).
 
 *Judge-version note:* every unsupported rate in this README names its judge prompt version. **v1** rates are lower bounds (2026-09-04 human validation: v1 recall on UNSUPPORTED 1/9). **v2** rates are judge-flagged rates and carry the calibration of record (2026-09-24; kappa and precision from blind held-out labels, n=50, 2026-09-06): kappa 0.580, precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED). Reweighted true-rate estimates sit beside the rates where computed; A/B directions are unaffected when both arms share the judge ([docs/eval-methodology.md](docs/eval-methodology.md)).
 
-The prompt engineering work -- not the retrieval architecture -- was what actually moved the needle.
+*Dated history (judge v1, pre-retrieval-fix; not current):* before the synthesis prompt's grounding rules, the first measurement found 49% of claims unsupported (pre-harness, no recorded denominator). After them, the 2026-08-24 10-ticker re-measure found 0/84. Both predate judge v2 and the 2026-09-04 retrieval fix, and v1 rates are lower bounds.
 
 ### Reranking A/B Experiment
 
@@ -418,18 +418,20 @@ The primary deployment is on OCI ([above](#deployed-on-oci)). AWS ECS is a secon
 
 The FastAPI backend is containerized and runs on **AWS ECS Fargate**, with a real
 **RDS PostgreSQL** database, secrets in **AWS Secrets Manager**, and a
-**GitHub Actions** pipeline that deploys after CI passes on `main` (commits
-that touch only `README.md`, `docs/`, `infra/`, or notebooks skip the deploy). The whole
+**GitHub Actions** deploy workflow that runs **on manual dispatch only**
+(since 2026-09-28; a merge to `main` no longer deploys). Run it from `main`
+(Actions → Deploy → Run workflow) after CI has passed on that commit; it builds
+and deploys the dispatched commit. The whole
 footprint is defined in **Terraform** (`infra/`). The Streamlit frontend stays on
 Streamlit Cloud; Redis/Celery are stubbed in this environment (the cache no-ops
 and the async endpoint is disabled).
 
 ```
-push to main
+CI green on main, then manual "Run workflow" (Deploy)
      │
      ▼
 GitHub Actions ──OIDC (no long-lived AWS keys)──► assume scoped IAM role
-  1. pytest (CI gate)
+  1. checkout the dispatched commit (CI is the separate pytest gate)
   2. docker build → push image (latest + commit SHA) → Amazon ECR
   3. register new task-def revision → update ECS service (wait for stable)
      │
@@ -444,10 +446,12 @@ RDS PostgreSQL (t3.micro)        Secrets Manager
    the task's SG)                  env vars by the execution role
 ```
 
-**Current state.** The service normally runs at 0 tasks. It was last deployed
-at `c602e99` (task definition revision 8) and verified on 2026-09-24 by
-scaling to 1: `/health` returned 200 and an AAPL brief returned 200 with all
-six sections, then the service was parked at 0 again. Two caveats: the task
+**Current state.** The service normally runs at 0 tasks. The image last
+verified running was `c602e99` (task definition revision 8), on 2026-09-24,
+by scaling to 1: `/health` returned 200 and an AAPL brief returned 200 with
+all six sections, then the service was parked at 0 again. The automatic
+deploys that followed each merge that day (the last at `7e17b4b`) ran at 0
+tasks and were not verified the same way. Two caveats: the task
 definition has no container health check (Fargate ignores the image's
 Dockerfile `HEALTHCHECK`), so ECS reports health as UNKNOWN; and at 0 tasks a
 deploy's "wait for stable" passes without starting a container, so a deploy
@@ -548,6 +552,7 @@ make cluster-down    # tear down
 | Critic recall on injected failures | 20/20 = 100% (CI 83.9–100%) on both runs (2026-09-04); adjudicated precision 24/24 |
 | Cost/brief, hosted vs local-hybrid (pre-retrieval-fix pipeline) | $0.0316 vs $0.0321 — no measurable full-brief saving (Sonnet dominates) |
 | Local CPU serving (environment-limited: 2-core AVX2 laptop) | ~7.7 tok/s aggregate saturation; NOT comparable to GPU/hosted |
+| CPU inference, Xeon on `vm-a10-inst-2` (2026-09-28; a dated measurement, not a number of record: vLLM v0.10.2 CPU backend, 14 cores, BF16, same shape as the A10 run) | financial-lora: 22.9 vs 708.3 output tok/s on the node's A10 at concurrency 8; 15.0 vs 111.1 at concurrency 1, where time to first token is about 115x the A10's and time per output token about 5x. Intel Xeon Platinum 8358 (no AMX), not tuned, no quality eval; see [docs/eval-methodology.md](docs/eval-methodology.md#cpu-inference-benchmark-2026-09-28-a-dated-measurement) |
 
 ---
 
@@ -555,8 +560,8 @@ make cluster-down    # tear down
 
 | What | Command | Notes |
 |---|---|---|
-| Unit and integration tests | `python -m pytest tests/` | 139 collected: 138 pass + 1 skipped (as of 2026-09-24). Runs in CI on every pull request and push to `main`. |
-| Credit-gated judge test | `CRITIC_INJECTION=1 python -m pytest tests/test_critic_injection.py -q -s` | Calls the paid Sonnet judge, so it is skipped in the default run and never runs on push or PR. `critic-injection.yml` runs it weekly and on manual dispatch and asserts recall ≥ 0.8. |
+| Unit and integration tests | `python -m pytest tests/` | 186 collected: 185 pass + 1 skipped (as of 2026-09-28). Runs in CI on every pull request and push to `main`. |
+| Credit-gated judge test | `CRITIC_INJECTION=1 python -m pytest tests/test_critic_injection.py -q -s` | Calls the paid Sonnet judge, so it is skipped in the default run and never runs on push, PR or a schedule. `critic-injection.yml` runs it on manual dispatch only and asserts recall ≥ 0.8. |
 | Kubernetes smoke test | `make smoke-test` | On kind: 13 assertions covering a sync brief, a Celery async task, a cache hit and miss, and the MCP server. |
 | Manifest equivalence | `python3 scripts/render_diff.py LEFT RIGHT` | Semantic diff of two rendered manifest sets; exit 0 means identical. How it proves the overlays: [docs/verification.md](docs/verification.md). |
 | Grounding eval gate | `make eval-run` (kind) / `make vm-eval` (k3s) | The Argo DAG fails the workflow if unsupported claims exceed 5%, any ticker is skipped, or fewer than 30 claims were audited. |
