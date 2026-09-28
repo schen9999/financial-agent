@@ -42,7 +42,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 from eval.label import parse_findings_file  # noqa: E402
 from eval.section_attribution import canonical_section  # noqa: E402
@@ -132,6 +131,7 @@ def hosted_four_section_cost(path: Path) -> tuple[float, int]:
 
 
 def main():
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--gpu-hourly-usd", type=float, required=True,
                     help="A10 price per hour (no default: take it from the current price list)")
