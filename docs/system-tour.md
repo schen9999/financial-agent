@@ -8,7 +8,8 @@ that produces every rate is calibrated, and how to run and observe all of
 it — and closes with the known limitations. The deeper references are
 [architecture.md](architecture.md), [eval-methodology.md](eval-methodology.md),
 [numbers-of-record.md](numbers-of-record.md), and
-[deploy-runbook.md](deploy-runbook.md).
+[deploy-runbook.md](deploy-runbook.md). The model choice drawn from the
+four-arm comparison is in [Model recommendation](model-recommendation.md).
 
 **Numbers policy.** Every number here is copied from
 [numbers-of-record.md](numbers-of-record.md) with its judge-version tag
