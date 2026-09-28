@@ -224,6 +224,19 @@ claims; no multiplicity correction):
 | financial-lora `v924f` vs qwen2.5-7b `cnkp2` | 25/385 vs 18/393 | 0.2737 |
 | qwen2.5-1.5b `4nfsm` vs qwen2.5-7b `cnkp2` | 31/400 vs 18/393 | 0.0764 |
 
+Against the other hosted run on the same image (the 2026-09-24 rerun
+`dvvxk`) and against both hosted runs pooled (`kcf7s` + `dvvxk`, 11/772 =
+1.42%), same test (`--pool`, added 2026-09-28):
+
+| Pair | Counts | p |
+|---|---|---|
+| hosted rerun `dvvxk` vs financial-lora `v924f` | 7/389 vs 25/385 | 0.0010 |
+| hosted rerun `dvvxk` vs qwen2.5-1.5b `4nfsm` | 7/389 vs 31/400 | 8.5e-05 |
+| hosted rerun `dvvxk` vs qwen2.5-7b `cnkp2` | 7/389 vs 18/393 | 0.0401 |
+| hosted pooled vs financial-lora `v924f` | 11/772 vs 25/385 | 7.5e-06 |
+| hosted pooled vs qwen2.5-1.5b `4nfsm` | 11/772 vs 31/400 | 1.2e-07 |
+| hosted pooled vs qwen2.5-7b `cnkp2` | 11/772 vs 18/393 | 0.0022 |
+
 What the set supports, and only this:
 
 - **The fine-tune matched its own base model.** financial-lora `v924f`
@@ -235,7 +248,10 @@ What the set supports, and only this:
   writes (below) the gap is larger (p = 0.014), but that is one of several
   buckets tested and carries no multiplicity correction.
 - **Every open-weight arm trailed hosted.** `kcf7s` 1.04% (0.4–2.7%)
-  against each local arm: p = 7.8e-05, 2.6e-06, 0.0039.
+  against each local arm: p = 7.8e-05, 2.6e-06, 0.0039. It holds against
+  the higher of the two hosted runs too: the 7B, the closest arm, trails
+  the rerun `dvvxk` 1.80% (0.9–3.7%) at p = 0.040 and both hosted runs
+  pooled, 11/772 = 1.42% (0.8–2.5%), at p = 0.0022.
 - **The 7B gate pass is on the point estimate only.** `cnkp2`'s 4.58% is
   under the 5% gate, but its interval (2.9–7.1%) spans it, so the run is
   consistent with a true rate above the gate.
@@ -338,7 +354,9 @@ Artifacts: findings `eval/runs/raw/{kcf7s,v924f,4nfsm,cnkp2}-findings/`
 dump), aggregates `eval/runs/<run>-aggregate.txt`, per-claim rows
 `eval/runs/<run>-claims.jsonl` (`eval/parse_run_log.py`, no count
 mismatches against the pod logs), contexts `eval/runs/<run>-contexts/`.
-Stats: `python eval/multi_arm_stats.py --run hosted eval/runs/kcf7s-claims.jsonl eval/runs/raw/kcf7s-findings --run financial-lora eval/runs/v924f-claims.jsonl eval/runs/raw/v924f-findings --run qwen1.5b-base eval/runs/4nfsm-claims.jsonl eval/runs/raw/4nfsm-findings --run qwen7b-base eval/runs/cnkp2-claims.jsonl eval/runs/raw/cnkp2-findings`.
+Stats: `python eval/multi_arm_stats.py --run hosted eval/runs/kcf7s-claims.jsonl eval/runs/raw/kcf7s-findings --run financial-lora eval/runs/v924f-claims.jsonl eval/runs/raw/v924f-findings --run qwen1.5b-base eval/runs/4nfsm-claims.jsonl eval/runs/raw/4nfsm-findings --run qwen7b-base eval/runs/cnkp2-claims.jsonl eval/runs/raw/cnkp2-findings`;
+the `dvvxk` and pooled-hosted comparisons add
+`--run hosted-rerun eval/runs/dvvxk-claims.jsonl eval/runs/raw/dvvxk-findings --pool hosted-pooled hosted hosted-rerun`.
 
 ### Dated finding: hosted-arm rate fell between images (2026-09-25)
 

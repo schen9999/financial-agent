@@ -16,7 +16,12 @@ count in the totals and land in "unattributed".
 Usage:
   python eval/multi_arm_stats.py \\
       --run hosted  eval/runs/kcf7s-claims.jsonl eval/runs/raw/kcf7s-findings \\
-      --run lora    eval/runs/v924f-claims.jsonl eval/runs/raw/v924f-findings ...
+      --run lora    eval/runs/v924f-claims.jsonl eval/runs/raw/v924f-findings ... \\
+      [--pool hosted-pooled hosted rerun]
+
+--pool NAME LABEL LABEL... concatenates the claims of runs from the same arm
+(e.g. two hosted runs on one image) and tests each run outside the pool
+against it.
 """
 import argparse
 import json
@@ -59,6 +64,19 @@ def pairwise(runs: dict, pred=lambda r: True) -> list[tuple]:
     return out
 
 
+def pooled(runs: dict, name: str, members: list[str], pred=lambda r: True) -> list[tuple]:
+    """Fisher of the pooled member runs against each run outside the pool."""
+    pool = [r for m in members for r in runs[m]]
+    up, np_ = tally(pool, pred)
+    out = []
+    for label, rows in runs.items():
+        if label in members:
+            continue
+        u, n = tally(rows, pred)
+        out.append((label, name, u, n, up, np_, fisher_exact(u, n - u, up, np_ - up)))
+    return out
+
+
 def fmt_p(p: float) -> str:
     return f"{p:.4f}" if p >= 1e-4 else f"{p:.1e}"
 
@@ -67,8 +85,15 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--run", nargs=3, action="append", required=True,
                     metavar=("LABEL", "CLAIMS_JSONL", "FINDINGS_DIR"))
+    ap.add_argument("--pool", nargs="+", action="append", default=[],
+                    metavar="NAME LABEL",
+                    help="pool the labeled runs under NAME and test every other "
+                         "run against the pool (e.g. --pool hosted-pooled kcf7s dvvxk)")
     args = ap.parse_args()
     runs = {label: load_run(Path(c), Path(f)) for label, c, f in args.run}
+    for name, *members in args.pool:
+        if len(members) < 2 or any(m not in runs for m in members):
+            ap.error(f"--pool {name}: needs two or more labels given by --run")
 
     print("Per run (all judged claims):")
     for label, rows in runs.items():
@@ -78,6 +103,12 @@ def main():
     print("\nPairwise, exact two-sided Fisher (all claims):")
     for a, b, ua, na, ub, nb, p in pairwise(runs):
         print(f"  {a:<14} vs {b:<14} {ua}/{na} vs {ub}/{nb}   p = {fmt_p(p)}")
+
+    for name, *members in args.pool:
+        print(f"\nPooled {name} ({' + '.join(members)}), exact two-sided Fisher "
+              f"(all claims):")
+        for a, b, ua, na, ub, nb, p in pooled(runs, name, members):
+            print(f"  {a:<14} vs {b:<14} {ua}/{na} vs {ub}/{nb}   p = {fmt_p(p)}")
 
     print("\nPer section (attributed; unsupported/claims = rate, 95% CI):")
     for sec in SECTIONS:
