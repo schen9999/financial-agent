@@ -401,6 +401,8 @@ What remains: run-to-run variance (this is one test at p = 0.039), the
 news change on those 11 tickers, and model behaviour on the provider's
 side behind unchanged model IDs, which the repository cannot show.
 
+Split by that news change (2026-09-27, `eval/compare_runs.py pooled --news-split eval/runs/raw/j4cnp-findings eval/runs/raw/kcf7s-findings`): the 11 news-changed tickers went from 8/218 = 3.67% to 1/224 = 0.45% (p = 0.019), the other 29 from 16/560 = 2.86% to 10/548 = 1.82% (p = 0.32), so the drop concentrates where the news changed; this is a post hoc split of mostly large-cap names, suggestive rather than confirmation.
+
 **What it changes.** Nothing of record. The grounding number of record
 stays `j4cnp` 12/392 = 3.06%, and the calibration of record still
 reweights to `j4cnp`'s population (354 S / 12 U / 26 I). The hosted

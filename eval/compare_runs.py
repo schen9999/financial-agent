@@ -86,11 +86,22 @@ def filings(sec_block: str) -> dict:
     return {k: v.get("filing_date") for k, v in data.items() if isinstance(v, dict)}
 
 
-def cmd_pooled(groups):
+def news_changed(dir_a: Path, dir_b: Path) -> set:
+    """Tickers whose NEWS ARTICLES block differs between two runs."""
+    fa, fb = findings_by_ticker(dir_a), findings_by_ticker(dir_b)
+    return {t for t in set(fa) & set(fb)
+            if split_blocks(fa[t]["context"]).get("NEWS ARTICLES")
+            != split_blocks(fb[t]["context"]).get("NEWS ARTICLES")}
+
+
+def cmd_pooled(groups, tickers=None, label="all tickers"):
     tallies = []
+    print(f"[{label}]")
     for name, *paths in groups:
         rows = [json.loads(line) for p in paths
                 for line in Path(p).read_text(encoding="utf-8").splitlines()]
+        if tickers is not None:
+            rows = [r for r in rows if r["ticker"] in tickers]
         u, n = sum(r["judge_label"] == "UNSUPPORTED" for r in rows), len(rows)
         tallies.append((u, n))
         runs = ", ".join(Path(p).name.split("-claims")[0] for p in paths)
@@ -160,6 +171,9 @@ def main(argv=None):
     p = sub.add_parser("pooled")
     p.add_argument("--group", nargs="+", action="append", required=True,
                    metavar="NAME_THEN_CLAIMS_JSONL")
+    p.add_argument("--news-split", nargs=2, metavar=("FINDINGS_DIR_A", "FINDINGS_DIR_B"),
+                   help="also split by tickers whose NEWS ARTICLES block differs "
+                        "between these two runs")
     c = sub.add_parser("counts")
     c.add_argument("--run", nargs=2, action="append", required=True,
                    metavar=("LABEL", "FINDINGS_DIR"))
@@ -170,7 +184,17 @@ def main(argv=None):
     if args.cmd == "pooled":
         if len(args.group) != 2 or any(len(g) < 2 for g in args.group):
             ap.error("pooled needs exactly two --group NAME CLAIMS_JSONL ...")
-        cmd_pooled(args.group)
+        if args.news_split:
+            changed = news_changed(Path(args.news_split[0]), Path(args.news_split[1]))
+            all_t = {json.loads(line)["ticker"] for p in args.group[0][1:]
+                     for line in Path(p).read_text(encoding="utf-8").splitlines()}
+            print(f"news changed ({len(changed)}): {', '.join(sorted(changed))}\n")
+            cmd_pooled(args.group, changed, f"news changed, {len(changed)} tickers")
+            print()
+            cmd_pooled(args.group, all_t - changed,
+                       f"news unchanged, {len(all_t - changed)} tickers")
+        else:
+            cmd_pooled(args.group)
     elif args.cmd == "counts":
         cmd_counts(args.run)
     else:

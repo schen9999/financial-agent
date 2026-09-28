@@ -38,3 +38,19 @@ def test_pooled_fisher(tmp_path, capsys):
                 ["new", write("c", 4, 383), write("d", 7, 389)]])
     out = capsys.readouterr().out
     assert "24/778" in out and "11/772" in out and "p = 0.0388" in out
+
+
+def test_news_changed_flags_only_differing_news(tmp_path):
+    from eval.compare_runs import news_changed
+
+    def write(run, ticker, news):
+        d = tmp_path / run
+        d.mkdir(exist_ok=True)
+        ctx = CONTEXT.replace("NEWS ARTICLES:\n[]", f"NEWS ARTICLES:\n{news}")
+        (d / f"{ticker}_baseline.md").write_text(
+            f"# {ticker}\n\n## Retrieved source context\n\n{ctx}\n\n"
+            "## Audited (Exec Summary + Outlook)\n\ntext\n\n## Judge findings\n\nnone\n",
+            encoding="utf-8")
+    write("a", "AAA", "[1]"); write("b", "AAA", "[2]")
+    write("a", "BBB", "[3]"); write("b", "BBB", "[3]")
+    assert news_changed(tmp_path / "a", tmp_path / "b") == {"AAA"}
