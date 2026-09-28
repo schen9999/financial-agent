@@ -340,6 +340,87 @@ dump), aggregates `eval/runs/<run>-aggregate.txt`, per-claim rows
 mismatches against the pod logs), contexts `eval/runs/<run>-contexts/`.
 Stats: `python eval/multi_arm_stats.py --run hosted eval/runs/kcf7s-claims.jsonl eval/runs/raw/kcf7s-findings --run financial-lora eval/runs/v924f-claims.jsonl eval/runs/raw/v924f-findings --run qwen1.5b-base eval/runs/4nfsm-claims.jsonl eval/runs/raw/4nfsm-findings --run qwen7b-base eval/runs/cnkp2-claims.jsonl eval/runs/raw/cnkp2-findings`.
 
+### Dated finding: hosted-arm rate fell between images (2026-09-25)
+
+**What moved.** The hosted arm's unsupported rate is lower on the
+2026-09-23 image than on the 2026-09-05 image, two runs each, same 40
+tickers, judge v2:
+
+| Image (inferred build commit) | Runs | Unsupported (Wilson 95% CI) |
+|---|---|---|
+| 2026-09-05 (d88af26) | `9j2dj`, `j4cnp` | 24/778 = 3.08% (2.1–4.5%) |
+| 2026-09-23 (c309627) | `kcf7s`, `dvvxk` | 11/772 = 1.42% (0.8–2.5%) |
+
+Fisher exact, two-sided: **p = 0.039**. Counts are per-claim deduped, the
+rule the Sep 23 runs were scored with; `9j2dj`'s own DAG aggregate
+counted 387 claims because the judge repeated one JPM SUPPORTED label
+(24/779, same p).
+
+**What did not change.** Neither image records its build commit; they
+are inferred from commit and image timestamps (d88af26 carries the MSFT
+reindex fix `j4cnp` ran after; c309627 was committed three minutes
+before the Sep 23 image was built). The diff d88af26..c309627 has no
+change on the hosted generation, judge or retrieval path: `agent/core.py`,
+`agent/grounding.py` (judge prompt v2, Sonnet, temperature 0),
+`agent/tools/` apart from `local_model.py` (used only by the local
+arm), the model IDs, the hosted temperatures, `requirements.txt`,
+`Dockerfile.k8s`, and the Argo and k8s eval config are all unchanged.
+The one hosted-path code change is per-claim dedupe counting (4bc4e35),
+and it changes no count: raw and deduped counts are identical for
+`j4cnp`, `kcf7s` and `dvvxk` (it differs only on `9j2dj`, by the one JPM
+label above).
+
+**Did the inputs drift?** The working hypothesis after the diff was
+live-input drift (NewsAPI, yfinance, RAG wording) plus run-to-run
+variance. Comparing the retrieved source context block by block for the
+same 40 tickers, across images and, as a reference, within the Sep 23
+image:
+
+| Block | `j4cnp` vs `kcf7s` (across images) | `kcf7s` vs `dvvxk` (same image) |
+|---|---|---|
+| Stock data | 2/40 identical | 3/40 identical |
+| News articles | 29/40 identical | 36/40 identical |
+| SEC filing summaries | 39/40 identical | 38/40 identical |
+| RAG SEC highlights | 5/40 identical | 6/40 identical |
+| RAG risk factors | 6/40 identical | 5/40 identical |
+
+- SEC filing inputs did not drift. The filing forms and dates match for
+  39/40 tickers against both Sep 23 runs; the exceptions are RDFN, whose
+  EDGAR fetch came back empty in `kcf7s`, and SFIX, whose new 10-K (filed
+  2026-09-24) `dvvxk` picked up. RAG answers are available for the same
+  35 tickers in every run.
+- The RAG answer text differs as much between two runs of one image as
+  between images, so its wording is run-to-run variation, not drift.
+- News differs across images for 11 tickers beyond the within-image
+  level; stock data differs almost everywhere in both comparisons.
+
+So the context check **does not support input drift as the main cause**:
+apart from news on 11 tickers, the cross-image input differences are the
+size of ordinary run-to-run differences. The cause is **unconfirmed**.
+What remains: run-to-run variance (this is one test at p = 0.039), the
+news change on those 11 tickers, and model behaviour on the provider's
+side behind unchanged model IDs, which the repository cannot show.
+
+**What it changes.** Nothing of record. The grounding number of record
+stays `j4cnp` 12/392 = 3.06%, and the calibration of record still
+reweights to `j4cnp`'s population (354 S / 12 U / 26 I). The hosted
+baseline to compare against is dated: quote the image with the rate.
+
+Reproduce (reads committed artifacts only):
+
+```
+python eval/compare_runs.py pooled \
+    --group sep5  eval/runs/9j2dj-claims.jsonl eval/runs/j4cnp-claims.jsonl \
+    --group sep23 eval/runs/kcf7s-claims.jsonl eval/runs/dvvxk-claims.jsonl
+python eval/compare_runs.py counts --run j4cnp eval/runs/raw/j4cnp-findings \
+    --run kcf7s eval/runs/raw/kcf7s-findings --run dvvxk eval/runs/raw/dvvxk-findings \
+    --run 9j2dj eval/runs/raw/9j2dj-findings
+python eval/compare_runs.py contexts --a j4cnp eval/runs/raw/j4cnp-findings \
+    --b kcf7s eval/runs/raw/kcf7s-findings
+python eval/compare_runs.py contexts --a kcf7s eval/runs/raw/kcf7s-findings \
+    --b dvvxk eval/runs/raw/dvvxk-findings
+```
+
 ### Held-out validation sample for this set
 
 `eval/build_fourarm_holdout.py` (seed 20260923) drew 78 claims stratified
