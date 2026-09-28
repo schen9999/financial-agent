@@ -90,7 +90,11 @@ def main():
     rest = lambda r: r["attributed"] not in OWNED  # noqa: E731
     for title, pred in (("Financial Health + Risk Factors (fine-tune-owned in the "
                          "local arms)", owned), ("All other claims", rest)):
-        print(f"\n{title}, pairwise Fisher:")
+        print(f"\n{title}, per run:")
+        for label, rows in runs.items():
+            u, n = tally(rows, pred)
+            print(f"  {label:<14} {u}/{n} = {format_rate_ci(u, n)}")
+        print(f"{title}, pairwise Fisher:")
         for a, b, ua, na, ub, nb, p in pairwise(runs, pred):
             print(f"  {a:<14} vs {b:<14} {ua}/{na} vs {ub}/{nb}   p = {fmt_p(p)}")
 

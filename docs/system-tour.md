@@ -8,7 +8,8 @@ that produces every rate is calibrated, and how to run and observe all of
 it — and closes with the known limitations. The deeper references are
 [architecture.md](architecture.md), [eval-methodology.md](eval-methodology.md),
 [numbers-of-record.md](numbers-of-record.md), and
-[deploy-runbook.md](deploy-runbook.md).
+[deploy-runbook.md](deploy-runbook.md). The model choice drawn from the
+four-arm comparison is in [Model recommendation](model-recommendation.md).
 
 **Numbers policy.** Every number here is copied from
 [numbers-of-record.md](numbers-of-record.md) with its judge-version tag
@@ -390,9 +391,9 @@ python eval/reweight_calibration.py \
   --run lsnnc eval/runs/lsnnc-claims.jsonl eval/runs/raw/lsnnc-findings
 ```
 
-**Tests.** `python -m pytest tests/`: 2482 lines, 168 tests collected —
-167 passed + 1 skipped, the credit-gated judge test that runs only under
-`CRITIC_INJECTION=1` (as of 2026-09-27).
+**Tests.** `python -m pytest tests/`: 2657 lines, 179 tests collected —
+178 passed + 1 skipped, the credit-gated judge test that runs only under
+`CRITIC_INJECTION=1` (as of 2026-09-28).
 
 ## Known limitations and next steps
 

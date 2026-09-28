@@ -6,6 +6,8 @@ An AI agent that researches stocks and answers follow-up questions using live fi
 
 **Documentation:** start at [docs/README.md](docs/README.md) — every question a reviewer might ask, mapped to the document that answers it.
 
+**[Model recommendation](docs/model-recommendation.md):** hosted Haiku or an open-weight model on the A10 for section writing, from the four-arm comparison.
+
 ---
 
 ## Summary
