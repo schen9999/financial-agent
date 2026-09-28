@@ -66,6 +66,18 @@ def test_attribution_and_pairwise(tmp_path):
     assert p == fisher_exact(2, 1, 0, 2)
 
 
+def test_pooled_tests_outsiders_against_concatenated_members(tmp_path):
+    runs = {
+        "x": _run(tmp_path, "x", "local-model", [("a", "UNSUPPORTED"), ("b", "SUPPORTED")]),
+        "h1": _run(tmp_path, "h1", "baseline", [("c", "SUPPORTED"), ("d", "UNSUPPORTED")]),
+        "h2": _run(tmp_path, "h2", "baseline", [("e", "SUPPORTED"), ("f", "SUPPORTED"),
+                                                ("g", "SUPPORTED")]),
+    }
+    (a, b, ua, na, ub, nb, p), = mas.pooled(runs, "hosted", ["h1", "h2"])
+    assert (a, b, ua, na, ub, nb) == ("x", "hosted", 1, 2, 1, 5)
+    assert p == fisher_exact(1, 1, 1, 4)
+
+
 def test_fmt_p():
     assert mas.fmt_p(0.0764) == "0.0764"
     assert mas.fmt_p(7.8e-05) == "7.8e-05"

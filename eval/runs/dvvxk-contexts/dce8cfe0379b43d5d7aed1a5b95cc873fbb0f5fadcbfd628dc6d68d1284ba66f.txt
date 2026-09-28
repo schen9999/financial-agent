@@ -1,0 +1,106 @@
+STOCK DATA:
+{
+  "ticker": "EVGO",
+  "company_name": "EVgo, Inc.",
+  "current_price": 1.33,
+  "currency": "USD",
+  "market_cap": 418305920.0,
+  "forward_pe": -3.0227275,
+  "week_52_high": 5.18,
+  "week_52_low": 1.23,
+  "revenue": 402948000.0,
+  "net_income": -54125000.0,
+  "profit_margin": -0.13502,
+  "sector": "Consumer Cyclical",
+  "industry": "Specialty Retail"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-03-09",
+    "summary": "Item 1A. Risk Factors . In the course of conducting our business operations, we are exposed to a variety of risks, any of which have affected or could materially and adversely affect our business, financial condition and results of operations. Before you make a decision to buy our securities, in addition to the risks and uncertainties discussed above under \u201cCautionary Statement Regarding Forward-Looking Statements,\u201d you should carefully consider the specific risks set forth herein. If any of these risks actually occur, our business, financial condition, liquidity and results of operations may be harmed. As a result, the market price of our securities could decline, possibly significantly or permanently, and you could lose all or part of your investment. Additionally, the risks and uncertai"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-06",
+    "summary": "Item 1A. Risk Factors In the course of conducting our business operations, we are exposed to a variety of risks, any of which have affected or could materially adversely affect our business, financial condition, and results of operations. The market price of our securities could decline, possibly significantly or permanently, if one or more of these risks and uncertainties occur. Before you make a decision to buy our securities, in addition to the risks and uncertainties discussed above under \u201cCautionary Statement Regarding Forward-Looking Statements,\u201d you should carefully consider the specific risk factors set forth in the \u201cRisk Factors\u201d section in the Annual Report. There have been no material changes to the risk factors disclosed in Part I, Item 1A of the Annual Report. See the \u201cItem 5 "
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from EVGO's SEC Filings
+
+## Financial Position
+- As of December 31, 2025, the company had $210.7 million in cash, cash equivalents, and restricted cash, with $161.2 million in working capital
+- The company has a history of operating losses and negative operating cash flows
+- Management expects to incur significant expenses and continuing losses in the near- and medium-term
+
+## Business Model Dependencies
+- Growth is highly correlated with EV adoption rates and OEMs' ability to supply electric vehicles to the market
+- The company has experienced rapid growth recently but faces challenges in managing this expansion effectively
+- Success depends heavily on relationships with automotive OEM and fleet partners
+
+## Funding and Capital
+- The company relies substantially on its ability to fully draw down a Department of Energy (DOE) Loan, which contains multiple conditions precedent
+- The DOE Loan is secured by a substantial portion of consolidated assets
+- Additional financing may be needed, though there is no assurance it will be available on favorable terms
+
+## Market and Competitive Risks
+- The company faces significant competition in the EV charging market
+- Market growth estimates may prove inaccurate
+- EV market development depends on numerous factors including consumer perception, government incentives, fuel prices, and EV model availability
+- Automotive industry cyclicality may impact EV adoption, particularly among commercial fleet operators
+
+## Operational Challenges
+- Supply chain disruptions could materially affect operations
+- Dependence on a limited number of vendors and customers creates vulnerability
+- Construction risks, cost overruns, and installation delays are ongoing concerns
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses several categories of primary risk factors:
+
+## Business-Related Risks
+- Operating as an early-stage growth company with a history of operating losses and expectations of continuing losses in the near and medium-term
+- Heavy dependence on continuing EV adoption and demand, as well as OEMs' ability to supply EVs to the market
+- Challenges in managing rapid growth effectively
+- Uncertainty created by current and future federal and state administrations regarding the EV sector
+- Potential inaccuracy of market opportunity estimates and growth forecasts
+- Significant competition in the EV charging market
+- Reliance on a limited number of vendors for charging equipment and support services
+- Dependence on a limited number of customers and OEM partners
+- Construction risks, cost overruns, and installation delays
+- Supply chain disruptions
+- Potential need for additional funding on potentially unfavorable terms
+
+## DOE Loan-Related Risks
+- Substantial dependence on the ability to fully draw on the DOE Loan, which has multiple conditions precedent
+- Risk of default if unable to comply with DOE Loan covenants
+- Significant assets pledged as collateral, limiting availability for additional secured debt
+- Operational restrictions imposed on subsidiaries under the loan
+- Restrictions on cash distributions from subsidiaries needed to fund operations
+
+## EV Market Risks
+- Changes to fuel economy standards or success of alternative fuels
+- Slower-than-expected electrification of rideshare and commercial fleets
+- Uncertainty regarding medium and heavy-duty vehicle segment development
+
+## Other Risks
+- Technology, intellectual property protection and enforcement challenges
+- Lack of industry standards and transition to NACS charging standard
+- Material weaknesses in internal controls over financial reporting
+- Tax law changes and exposure to additional tax liabilities
+- Inflationary pressures affecting equipment and operating costs

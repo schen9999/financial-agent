@@ -4,8 +4,8 @@ The centerpiece of this project is not the UI; it is that grounding is
 **measured by a committed, re-runnable harness and gated in CI fashion**.
 The grounding number of record: **12/392 = 3.06% unsupported (Wilson 95%
 CI 1.8–5.3%)**, hosted baseline `j4cnp` (2026-09-05/06), judge v2, fixed
-retrieval, 40 tickers — approximate per the v2 held-out calibration (75%
-recall / 60% precision on UNSUPPORTED). The former "49% pre-fix → 0/84"
+retrieval, 40 tickers. That is the judge-flagged rate; the reweighted true-rate estimate 5.7% (CI 3.5–9.9%),
+from the v2 calibration of record: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED). The former "49% pre-fix → 0/84"
 (judge v1, pre-retrieval-fix, 2026-08-24) is a dated record only. Never a
 bare rate or a bare 0%.
 
@@ -94,9 +94,9 @@ rows, recovered post-hoc from containerd snapshots into
 `raw/9j2dj-findings/` (contexts by sha256 in `9j2dj-contexts/`; one
 UNSUPPORTED verdict was free-form, carried with claim=null; findings
 dumps are now a standing part of every run — see the runbook's
-findings-capture section). Calibration: judge v2 measured 75% recall /
-60% precision on UNSUPPORTED against blind human labels (n=50, held
-out), so absolute v2 rates are approximate. **Not the number of
+findings-capture section). Calibration: this is a judge-flagged rate
+(judge v2 calibration of record: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED)); no reweighted estimate is computed for
+this run. **Not the number of
 record**: superseded as a baseline by `j4cnp` (below, same tickers on
 the rebuilt image).
 
@@ -121,11 +121,13 @@ Fisher exact (two-sided) on 12/392 vs 30/368: **p = 0.0023**
 and the local arm's interval sits entirely above the gate. The ship-off
 decision for `USE_LOCAL_MODEL` now rests on this clearly separated
 40-ticker A/B (the earlier, underpowered measurements agree in
-direction). Calibration: judge v2 measured 75% recall / 60% precision
-on UNSUPPORTED against blind human labels (n=50, held out), so the
-absolute rates here and in the per-section table below are
-approximate; the A/B direction and the per-section attribution are
-unaffected because both arms share the judge.
+direction). Calibration: these are judge-flagged rates (judge v2
+calibration of record: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED)). Reweighted true-rate estimates (`eval/reweight_calibration.py`):
+`j4cnp` 5.7% (CI 3.5–9.9%), `lsnnc` 8.3% (CI 5.5–12.5%). The A/B
+direction (3.06% vs 8.15%, p = 0.0023) and the per-section attribution
+stand: the same judge scored both arms, so its misses apply to both.
+Per-section reweighted estimates appear as a sensitivity row under the
+table below.
 
 ### Where the local arm fails: the sections the fine-tune owns
 
@@ -141,6 +143,16 @@ overall A/B above is the measured result, the buckets are diagnostic):
 | `baseline` | 1/202 = 0.50% (0.1–2.8%) | 3/104 = 2.88% (1.0–8.1%) | 8/86 = 9.30% (4.8–17.3%) |
 | `local-model` | **22/111 = 19.82%** (13.5–28.2%) | 2/180 = 1.11% (0.3–4.0%) | 6/77 = 7.79% (3.6–16.0%) |
 | Fisher exact | **p = 4.6e-10** | p = 0.36 | p = 0.79 |
+| *Sensitivity: reweighted true-rate estimate, baseline vs local-model* | *3.6% (1.5–7.9%) vs 14.6% (9.5–20.0%)* | *5.0% (2.8–9.2%) vs 4.1% (2.0–8.3%)* | *11.2% (7.3–18.3%) vs 9.0% (6.0–13.8%)* |
+
+The headline is the judge-flagged comparison above (0.50% vs 19.82%,
+p = 4.6e-10). The sensitivity row reweights each bucket with
+`eval/reweight_calibration.py --by-section`, which assumes one
+judge-SUPPORTED miss rate (4/123 in the calibration of record) shared across
+both arms and all sections; the sample cannot say whether misses
+differ by arm or section. Under that assumption the baseline's FH + RF
+estimate is almost entirely the assumed miss rate applied to its 199
+judge-SUPPORTED claims, which is why the gap narrows.
 
 The excess unsupported rate is concentrated **entirely in the content
 the fine-tune authored**; the arms are statistically indistinguishable
@@ -195,6 +207,7 @@ and sampling are recorded in its findings metadata and aggregate.
 | Arm (FH + RF writer) | Workflow | Claims | Sup/Uns/Inf | Unsupported (Wilson 95% CI) | Gate (≤5%) | Est. cost |
 |---|---|---|---|---|---|---|
 | hosted (Haiku) | grounding-eval-extended-kcf7s | 383 | 364/4/15 | 1.04% (0.4–2.7%) | PASSED | $2.33 |
+| hosted (Haiku), rerun 2026-09-24, same image | grounding-eval-extended-dvvxk | 389 | 353/7/29 | 1.80% (0.9–3.7%) | PASSED | $2.34 |
 | financial-lora (Qwen2.5-1.5B + LoRA, merged) | grounding-eval-extended-local-v924f | 385 | 346/25/14 | 6.49% (4.4–9.4%) | FAILED | $2.49 |
 | qwen2.5-1.5b-instruct (base) | grounding-eval-extended-local-4nfsm | 400 | 352/31/17 | 7.75% (5.5–10.8%) | FAILED | $2.27 |
 | qwen2.5-7b-instruct (base) | grounding-eval-extended-local-cnkp2 | 393 | 353/18/22 | 4.58% (2.9–7.1%) | PASSED (point estimate only) | $1.98 |
@@ -211,6 +224,19 @@ claims; no multiplicity correction):
 | financial-lora `v924f` vs qwen2.5-7b `cnkp2` | 25/385 vs 18/393 | 0.2737 |
 | qwen2.5-1.5b `4nfsm` vs qwen2.5-7b `cnkp2` | 31/400 vs 18/393 | 0.0764 |
 
+Against the other hosted run on the same image (the 2026-09-24 rerun
+`dvvxk`) and against both hosted runs pooled (`kcf7s` + `dvvxk`, 11/772 =
+1.42%), same test (`--pool`, added 2026-09-28):
+
+| Pair | Counts | p |
+|---|---|---|
+| hosted rerun `dvvxk` vs financial-lora `v924f` | 7/389 vs 25/385 | 0.0010 |
+| hosted rerun `dvvxk` vs qwen2.5-1.5b `4nfsm` | 7/389 vs 31/400 | 8.5e-05 |
+| hosted rerun `dvvxk` vs qwen2.5-7b `cnkp2` | 7/389 vs 18/393 | 0.0401 |
+| hosted pooled vs financial-lora `v924f` | 11/772 vs 25/385 | 7.5e-06 |
+| hosted pooled vs qwen2.5-1.5b `4nfsm` | 11/772 vs 31/400 | 1.2e-07 |
+| hosted pooled vs qwen2.5-7b `cnkp2` | 11/772 vs 18/393 | 0.0022 |
+
 What the set supports, and only this:
 
 - **The fine-tune matched its own base model.** financial-lora `v924f`
@@ -222,7 +248,10 @@ What the set supports, and only this:
   writes (below) the gap is larger (p = 0.014), but that is one of several
   buckets tested and carries no multiplicity correction.
 - **Every open-weight arm trailed hosted.** `kcf7s` 1.04% (0.4–2.7%)
-  against each local arm: p = 7.8e-05, 2.6e-06, 0.0039.
+  against each local arm: p = 7.8e-05, 2.6e-06, 0.0039. It holds against
+  the higher of the two hosted runs too: the 7B, the closest arm, trails
+  the rerun `dvvxk` 1.80% (0.9–3.7%) at p = 0.040 and both hosted runs
+  pooled, 11/772 = 1.42% (0.8–2.5%), at p = 0.0022.
 - **The 7B gate pass is on the point estimate only.** `cnkp2`'s 4.58% is
   under the 5% gate, but its interval (2.9–7.1%) spans it, so the run is
   consistent with a true rate above the gate.
@@ -232,10 +261,10 @@ Not supported: a size curve. The hosted arm is a different model family
 are not points on one scaling line; only the three Qwen2.5 arms share a
 family.
 
-Calibration: judge v2 measured 75% recall / 60% precision on UNSUPPORTED
-against blind human labels (n=50, held out, 2026-09-06), so every rate
-here is an approximate point estimate; comparisons are unaffected in
-direction because all arms share the judge. A four-arm held-out sample is
+Calibration: every rate here is a judge-flagged rate (judge v2 calibration of record:
+precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED)). No reweighted estimate is computed: the held-out miss rates
+were measured on `j4cnp`/`lsnnc` claims and are not extended to other
+models. Comparisons hold in direction because all arms share the judge. A four-arm held-out sample is
 drawn for re-validating the judge on this claim set (below) and is not yet
 labeled.
 
@@ -294,6 +323,11 @@ is merged). The 7B runs at about 27% of the 1.5B's output throughput, and
 its mean end-to-end latency per 256-token request is about 3.7× higher, on
 the same GPU and batch limit. These are dated measurements on k3s. The
 OKE serving benchmark in numbers-of-record stays "to be measured in Phase 2".
+These runs warmed up on their own timed prompts, so the first 16 of each
+were already in vLLM's prefix cache. A clean rerun of financial-lora on
+2026-09-28 gave 708.3 output tok/s (0.5% lower) and a mean TTFT of 198 ms
+instead of 162: the throughput figures stand, the TTFT is understated. See
+"CPU inference benchmark", dated finding.
 
 ### Observations
 
@@ -307,7 +341,11 @@ OKE serving benchmark in numbers-of-record stays "to be measured in Phase 2".
   paired on identical inputs.
 - **Hosted ran lower than on 2026-09-05.** `kcf7s` 1.04% (0.4–2.7%) vs
   `j4cnp` 3.06% (1.8–5.3%), p = 0.074: within run-to-run variance at
-  this N. financial-lora `v924f` 6.49% vs `lsnnc` 8.15% (5.8–11.4%),
+  this N. The 2026-09-24 rerun of the hosted arm on the same image and settings,
+  `dvvxk`, gave 7/389 = 1.80% (0.9–3.7%): p = 0.55 vs `kcf7s` and 0.35
+  vs `j4cnp` (`eval/multi_arm_stats.py`; artifacts `eval/runs/dvvxk-*`,
+  `eval/runs/raw/dvvxk-findings/`). The Sep 23 image's two hosted runs
+  are `kcf7s` and `dvvxk`. financial-lora `v924f` 6.49% vs `lsnnc` 8.15% (5.8–11.4%),
   p = 0.40, also consistent.
 - Free-form verdicts without a CLAIM line are carried with `claim=null`:
   `v924f` AFRM and VERV SUPPORTED, LCID and TM UNSUPPORTED; `4nfsm` GOOGL
@@ -321,7 +359,92 @@ Artifacts: findings `eval/runs/raw/{kcf7s,v924f,4nfsm,cnkp2}-findings/`
 dump), aggregates `eval/runs/<run>-aggregate.txt`, per-claim rows
 `eval/runs/<run>-claims.jsonl` (`eval/parse_run_log.py`, no count
 mismatches against the pod logs), contexts `eval/runs/<run>-contexts/`.
-Stats: `python eval/multi_arm_stats.py --run hosted eval/runs/kcf7s-claims.jsonl eval/runs/raw/kcf7s-findings --run financial-lora eval/runs/v924f-claims.jsonl eval/runs/raw/v924f-findings --run qwen1.5b-base eval/runs/4nfsm-claims.jsonl eval/runs/raw/4nfsm-findings --run qwen7b-base eval/runs/cnkp2-claims.jsonl eval/runs/raw/cnkp2-findings`.
+Stats: `python eval/multi_arm_stats.py --run hosted eval/runs/kcf7s-claims.jsonl eval/runs/raw/kcf7s-findings --run financial-lora eval/runs/v924f-claims.jsonl eval/runs/raw/v924f-findings --run qwen1.5b-base eval/runs/4nfsm-claims.jsonl eval/runs/raw/4nfsm-findings --run qwen7b-base eval/runs/cnkp2-claims.jsonl eval/runs/raw/cnkp2-findings`;
+the `dvvxk` and pooled-hosted comparisons add
+`--run hosted-rerun eval/runs/dvvxk-claims.jsonl eval/runs/raw/dvvxk-findings --pool hosted-pooled hosted hosted-rerun`.
+
+### Dated finding: hosted-arm rate fell between images (2026-09-25)
+
+**What moved.** The hosted arm's unsupported rate is lower on the
+2026-09-23 image than on the 2026-09-05 image, two runs each, same 40
+tickers, judge v2:
+
+| Image (inferred build commit) | Runs | Unsupported (Wilson 95% CI) |
+|---|---|---|
+| 2026-09-05 (d88af26) | `9j2dj`, `j4cnp` | 24/778 = 3.08% (2.1–4.5%) |
+| 2026-09-23 (c309627) | `kcf7s`, `dvvxk` | 11/772 = 1.42% (0.8–2.5%) |
+
+Fisher exact, two-sided: **p = 0.039**. Counts are per-claim deduped, the
+rule the Sep 23 runs were scored with; `9j2dj`'s own DAG aggregate
+counted 387 claims because the judge repeated one JPM SUPPORTED label
+(24/779, same p).
+
+**What did not change.** Neither image records its build commit; they
+are inferred from commit and image timestamps (d88af26 carries the MSFT
+reindex fix `j4cnp` ran after; c309627 was committed three minutes
+before the Sep 23 image was built). The diff d88af26..c309627 has no
+change on the hosted generation, judge or retrieval path: `agent/core.py`,
+`agent/grounding.py` (judge prompt v2, Sonnet, temperature 0),
+`agent/tools/` apart from `local_model.py` (used only by the local
+arm), the model IDs, the hosted temperatures, `requirements.txt`,
+`Dockerfile.k8s`, and the Argo and k8s eval config are all unchanged.
+The one hosted-path code change is per-claim dedupe counting (4bc4e35),
+and it changes no count: raw and deduped counts are identical for
+`j4cnp`, `kcf7s` and `dvvxk` (it differs only on `9j2dj`, by the one JPM
+label above).
+
+**Did the inputs drift?** The working hypothesis after the diff was
+live-input drift (NewsAPI, yfinance, RAG wording) plus run-to-run
+variance. Comparing the retrieved source context block by block for the
+same 40 tickers, across images and, as a reference, within the Sep 23
+image:
+
+| Block | `j4cnp` vs `kcf7s` (across images) | `kcf7s` vs `dvvxk` (same image) |
+|---|---|---|
+| Stock data | 2/40 identical | 3/40 identical |
+| News articles | 29/40 identical | 36/40 identical |
+| SEC filing summaries | 39/40 identical | 38/40 identical |
+| RAG SEC highlights | 5/40 identical | 6/40 identical |
+| RAG risk factors | 6/40 identical | 5/40 identical |
+
+- SEC filing inputs did not drift. The filing forms and dates match for
+  39/40 tickers against both Sep 23 runs; the exceptions are RDFN, whose
+  EDGAR fetch came back empty in `kcf7s`, and SFIX, whose new 10-K (filed
+  2026-09-24) `dvvxk` picked up. RAG answers are available for the same
+  35 tickers in every run.
+- The RAG answer text differs as much between two runs of one image as
+  between images, so its wording is run-to-run variation, not drift.
+- News differs across images for 11 tickers beyond the within-image
+  level; stock data differs almost everywhere in both comparisons.
+
+So the context check **does not support input drift as the main cause**:
+apart from news on 11 tickers, the cross-image input differences are the
+size of ordinary run-to-run differences. The cause is **unconfirmed**.
+What remains: run-to-run variance (this is one test at p = 0.039), the
+news change on those 11 tickers, and model behaviour on the provider's
+side behind unchanged model IDs, which the repository cannot show.
+
+Split by that news change (2026-09-27, `eval/compare_runs.py pooled --news-split eval/runs/raw/j4cnp-findings eval/runs/raw/kcf7s-findings`): the 11 news-changed tickers went from 8/218 = 3.67% to 1/224 = 0.45% (p = 0.019), the other 29 from 16/560 = 2.86% to 10/548 = 1.82% (p = 0.32), so the drop concentrates where the news changed; this is a post hoc split of mostly large-cap names, suggestive rather than confirmation.
+
+**What it changes.** Nothing of record. The grounding number of record
+stays `j4cnp` 12/392 = 3.06%, and the calibration of record still
+reweights to `j4cnp`'s population (354 S / 12 U / 26 I). The hosted
+baseline to compare against is dated: quote the image with the rate.
+
+Reproduce (reads committed artifacts only):
+
+```
+python eval/compare_runs.py pooled \
+    --group sep5  eval/runs/9j2dj-claims.jsonl eval/runs/j4cnp-claims.jsonl \
+    --group sep23 eval/runs/kcf7s-claims.jsonl eval/runs/dvvxk-claims.jsonl
+python eval/compare_runs.py counts --run j4cnp eval/runs/raw/j4cnp-findings \
+    --run kcf7s eval/runs/raw/kcf7s-findings --run dvvxk eval/runs/raw/dvvxk-findings \
+    --run 9j2dj eval/runs/raw/9j2dj-findings
+python eval/compare_runs.py contexts --a j4cnp eval/runs/raw/j4cnp-findings \
+    --b kcf7s eval/runs/raw/kcf7s-findings
+python eval/compare_runs.py contexts --a kcf7s eval/runs/raw/kcf7s-findings \
+    --b dvvxk eval/runs/raw/dvvxk-findings
+```
 
 ### Held-out validation sample for this set
 
@@ -335,6 +458,146 @@ proportional; stratum population and sample sizes are in
 labeling CSV is blind (no run, arm, or verdict); the key is separate.
 **Reserved for judge validation on this claim set only.** Not yet
 labeled.
+
+## CPU inference benchmark (2026-09-28): a dated measurement
+
+One data point: the same weights and the same benchmark client and shape,
+served from the node's Xeon and from its A10. This is a measurement, not
+optimization work; nothing was tuned for the CPU.
+
+**Setup.**
+
+- **Node** `vm-a10-inst-2`, a VM.GPU.A10.1: a KVM guest with 15 cores (30
+  vCPUs) of an Intel Xeon Platinum 8358 @ 2.60GHz, one socket, one NUMA
+  node, 235 GiB of memory, and one A10. The CPU flags include AVX-512 (F,
+  BW, VL, DQ, VNNI) but not AVX512_BF16 or AMX.
+- **CPU server:** vLLM's official CPU image
+  `public.ecr.aws/q9t5s3a7/vllm-cpu-release-repo:v0.10.2`, the vLLM version
+  the GPU deployment runs, in plain Docker on the host outside k3s, with
+  the GPU deployment's serving args (`--dtype bfloat16 --max-model-len 4096
+  --max-num-seqs 8`), prefix caching at its default (on) and an 8 GB KV
+  cache. Pinned to 14 of the 15 physical cores (`--cpuset-cpus 2-29`, 28
+  vCPUs) with one OMP thread per physical core, 64 GB memory limit.
+  `scripts/vm_bench_cpu.sh`.
+- **A10:** the running k3s deployment (`vllm/vllm-openai:v0.10.2`, same
+  args), benchmarked from inside the pod by `scripts/vm_bench_serve.sh`.
+- **Precision:** BF16 on both. The fine-tune's weights are stored as FP16
+  and cast to BF16 at load, on both backends.
+- **Client:** `vllm bench serve` v0.10.2 on both: random dataset, 1024
+  input / 256 output tokens with `--ignore-eos`, request rate inf,
+  `/v1/completions`, the fine-tune's tokenizer. For the CPU it ran in a
+  separate container pinned to core 0 (vCPUs 0-1). Concurrency 8 with 200
+  prompts (seed 1) and concurrency 1 with 50 prompts (seed 2), on each
+  backend, each after an untimed 16-prompt warmup on seed 1000. The prompts
+  are identical across backends: each pair of files has the same total
+  input tokens (204,537 and 50,992).
+- **Quiet node:** api, worker, streamlit and mcp were scaled to 0 for the
+  runs and restored after. Postgres, Redis, Argo and the GPU vLLM pod
+  stayed up and idle. Sampled every 30 s through the CPU runs, the GPU pod
+  used 5-19 millicores (median 13) and the CPU server container a median
+  1389% (its 14 OMP threads). Logs: `load-*.log` beside the results.
+- **Models:** financial-lora (the merged fine-tune) on both, and the
+  untuned Qwen2.5-1.5B-Instruct on the CPU. The 7B was not run: the
+  fine-tune's CPU output throughput at concurrency 8, 22.9 tok/s, is under
+  the ~30 tok/s set as the bar for trying it.
+
+Raw results: `eval/runs/bench/a10-2026-09-28/` and
+`eval/runs/bench/cpu-2026-09-28/`. Steps to reproduce: deploy-runbook,
+"CPU inference benchmark". The table and the per-brief line below are
+produced by:
+
+```bash
+A=eval/runs/bench/a10-2026-09-28; D=eval/runs/bench/cpu-2026-09-28
+python scripts/bench_table.py \
+  "$A/financial-lora-c8.json=A10, financial-lora" "$A/financial-lora-c1.json=A10, financial-lora" \
+  "$D/financial-lora-c8.json=CPU, financial-lora" "$D/financial-lora-c1.json=CPU, financial-lora" \
+  "$D/qwen2.5-1.5b-instruct-c8.json=CPU, qwen2.5-1.5b-instruct" \
+  "$D/qwen2.5-1.5b-instruct-c1.json=CPU, qwen2.5-1.5b-instruct" \
+  --section-tokens 530 --section-tokens 398 --section-tokens 1024
+```
+
+| Run | Device | Backend | dtype | Pinned cores | Concurrency | Prompts | Output tok/s | Total tok/s | Req/s | TTFT mean / median / p99 ms | TPOT mean / median / p99 ms | E2E mean / median / p99 ms | Prefix-cache hits |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| A10, financial-lora | NVIDIA A10 | vllm 0.10.2 | bfloat16 | n/a | 8 | 200 | 708.3 | 3538.1 | 2.767 | 198 / 197 / 354 | 10.6 / 10.5 / 11.1 | 2890 / 2892 / 3038 | 1.0% |
+| A10, financial-lora | NVIDIA A10 | vllm 0.10.2 | bfloat16 | n/a | 1 | 50 | 111.1 | 553.5 | 0.434 | 52 / 52 / 55 | 8.8 / 8.8 / 8.9 | 2305 / 2306 / 2315 | 1.9% |
+| CPU, financial-lora | Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz | vllm-cpu 0.10.2 | bfloat16 | 14 | 8 | 200 | 22.9 | 114.2 | 0.089 | 13819 / 12325 / 41866 | 297.1 / 304.4 / 328.3 | 89584 / 89949 / 102255 | 0.4% |
+| CPU, financial-lora | Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz | vllm-cpu 0.10.2 | bfloat16 | 14 | 1 | 50 | 15.0 | 74.8 | 0.059 | 5985 / 6110 / 6128 | 43.4 / 43.4 / 44.1 | 17061 / 17166 / 17364 | 1.7% |
+| CPU, qwen2.5-1.5b-instruct | Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz | vllm-cpu 0.10.2 | bfloat16 | 14 | 8 | 200 | 22.9 | 114.2 | 0.089 | 13820 / 12326 / 41879 | 297.0 / 304.2 / 328.0 | 89562 / 89891 / 102235 | 0.4% |
+| CPU, qwen2.5-1.5b-instruct | Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz | vllm-cpu 0.10.2 | bfloat16 | 14 | 1 | 50 | 15.1 | 75.2 | 0.059 | 5985 / 6110 / 6131 | 43.0 / 43.0 / 43.6 | 16961 / 17077 / 17242 | 1.7% |
+
+- **A10 vs CPU, financial-lora.** At concurrency 8 the A10 produced 708.3
+  output tok/s and the CPU 22.9, about 31 times as many. At concurrency 1,
+  111.1 vs 15.0, about 7 times. The gap is widest in prefill: mean TTFT for
+  a 1024-token prompt at concurrency 1 was 52 ms on the A10 and 5985 ms on
+  the CPU. Decode is closer: TPOT 8.8 vs 43.4 ms.
+- **Batching adds little on this CPU.** From concurrency 1 to 8, CPU output
+  throughput rose from 15.0 to 22.9 tok/s while mean TPOT rose from 43 to
+  297 ms. On the A10 it rose from 111.1 to 708.3.
+- **The fine-tune and its base serve identically on the CPU**, as on the
+  A10 (same architecture, LoRA merged).
+
+**Per brief.** A serial estimate of the time to write one brief's two
+locally served sections at concurrency 1: 2 × mean TTFT + T × mean TPOT,
+with T the Financial Health + Risk Factors output tokens per brief from
+[model-recommendation.md](model-recommendation.md), section 4 (fine-tune
+mean 530, 1.5B base 398, cap 1024). Fine-tune: A10 4.8 s, CPU 35.0 s (9.2 s
+and 56.4 s at the cap). 1.5B base on the CPU: 29.1 s. The fine-tune arm's
+mean brief time with A10 serving was 34.1 s (`v924f`). On the A10 the two
+sections are short next to the brief; on this CPU they alone take about as
+long as a whole brief. It is an estimate: TTFT was measured at 1024 input
+tokens, not on the real section prompts, and the pipeline sends the two
+sections in parallel rather than one after the other. Brief time with CPU
+serving was not measured.
+
+**Caveats.**
+
+- One node, one VM shape, measured once, on a shared-tenancy KVM guest.
+- No AMX or AVX512_BF16 on this Ice Lake Xeon: vLLM runs BF16 through
+  AVX-512 conversions. Newer Xeons with AMX would likely differ; not
+  measured. Only this Intel Xeon was measured; nothing here speaks for AMD
+  or Arm CPUs.
+- Not tuned: the GPU deployment's args and vLLM's CPU defaults, 14 cores,
+  no quantization, no thread or KV-cache sweeps, no other CPU server. The
+  two backends differ in more than hardware: they run different attention
+  and matmul kernels (the CPU server logs Torch SDPA attention).
+- No quality eval. Same weights and dtype on both, so output quality was
+  not re-measured, and numerical differences between the backends' kernels
+  were not checked. The four-arm grounding rates were measured with A10
+  serving only.
+- Synthetic shape (random tokens, 1024 in / 256 out), as in the A10
+  benchmark. Concurrency 1 used 50 prompts on both backends, 200 at
+  concurrency 8.
+- Core 0 was shared by the benchmark client, k3s and the idle pods.
+
+### Dated finding: warmup prompts were cached in the first pass (2026-09-28)
+
+The first CPU pass, and the A10 files of 2026-09-23, warmed up on the timed
+seed. With `vllm bench serve`, seed 0 gives the same first N prompts at any
+prompt count, so the 16 warmup prompts were the first 16 timed prompts,
+and with prefix caching on (the vLLM default on both backends) those
+skipped most of their prefill. The first CPU pass also ran concurrency 1
+after concurrency 8 on the same server, so all 50 of its prompts had been
+served before. Checked with the client's own dataset code
+(`RandomDataset`, seed 0: the 16 warmup prompts are the first 16 of 200,
+and the first 50 of 200 are the 50-prompt set). Both scripts now warm up
+on a separate seed and record the timed run's prefix-cache hit share; the
+clean runs above show 0.4-1.9%, which fits the client's initial test
+request re-sending the first prompt.
+
+| Run, financial-lora | First pass: output tok/s, mean TTFT | Clean: output tok/s, mean TTFT |
+|---|---|---|
+| A10, concurrency 8 | 711.5, 162 ms (2026-09-23) | 708.3, 198 ms |
+| A10, concurrency 1 | 113.2, 19 ms | 111.1, 52 ms |
+| CPU, concurrency 8 | 23.7, 13195 ms | 22.9, 13819 ms |
+| CPU, concurrency 1 | 20.8, 1025 ms | 15.0, 5985 ms |
+
+The cache mostly distorted TTFT, and throughput where prefill dominates
+(the CPU at concurrency 1). On the A10 at concurrency 8, throughput moved
+by 0.5%, so the 2026-09-23 A10 throughput figures, and the cost estimate
+built on them, stand; their TTFT is understated. First-pass files, run
+through `scripts/bench_table.py` for the figures above:
+`eval/runs/bench/cpu-2026-09-28/first-pass/` (the 2026-09-23 A10 file is
+`eval/runs/bench/financial-lora.json`).
 
 ## Dated A/B on the single-VM target (2026-09-03)
 
@@ -372,8 +635,8 @@ below it). Distinguishing 3% from 5% with useful power needs claims in
 the several-hundreds — the motivation for the extended benchmark, which
 delivered exactly that: at N = 392 vs 368 the 40-ticker A/B separates
 3.06% from 8.15% at p = 0.0023 where the 10-ticker pass could not
-(judge-v2 rates; approximate per the held-out calibration, direction
-unaffected — both arms share the judge).
+(judge-flagged v2 rates; reweighted estimates 5.7% vs 8.3%, see the
+held-out validation; direction unaffected, both arms share the judge).
 
 ## Retrieval defect, discovered 2026-09-04
 
@@ -543,19 +806,183 @@ INFERENCE                1            2         12
 ```
 
 - Cohen's kappa (3-class): **0.580**
-- Judge recall on UNSUPPORTED: **9/12 = 75.0% (95% CI 46.8–91.1%)**
 - Judge precision on UNSUPPORTED: **9/15 = 60.0% (95% CI 35.7–80.2%)**
+- Judge recall on UNSUPPORTED, population-weighted: **32.5% on `j4cnp`
+  (95% CI 16.0–52.4%)**, on the calibration set of record below
 
-Against v1's dev-set result (kappa 0.321, UNSUPPORTED recall 1/9 =
-11.1%, precision 1/3 = 33.3% — non-blind, and measured under dev
-conditions): held-out, blind v2 lands at kappa 0.580 with recall 75%
-and precision 60%. Stated plainly: **v2 trades v1's INFERENCE
-catch-all for a mild over-flag of INFERENCE-as-UNSUPPORTED** — 5 of
-v2's 6 UNSUPPORTED false positives were human-INFERENCE claims. The
-consequence for reading rates differs from v1's: v1 rates were
-one-directional lower bounds (recall 11%); **v2's errors run both
-ways** (missed 3 of 12, over-flagged 6, net 15 flagged vs 12 human on
-this sample), so v2 rates are approximate point estimates, not bounds.
+Precision conditions on the judge label, so it needs no reweighting.
+Recall does. Stated plainly: v2 over-flags INFERENCE as UNSUPPORTED (5
+of its 6 UNSUPPORTED false positives were human-INFERENCE claims), but
+once the sample is weighted back to the runs it misses more than it
+over-flags, so **every v2 unsupported rate is a judge-flagged rate and
+the true rate is estimated higher.** Against v1's dev-set result (kappa
+0.321, UNSUPPORTED recall 1/9 = 11.1%, precision 1/3 = 33.3%,
+non-blind, and measured under dev conditions, unweighted), v2 is the
+better instrument on kappa and precision; the recall comparison is not
+like for like.
+
+**Superseded (dated 2026-09-06): recall 9/12 = 75.0% (CI 46.8–91.1%).**
+That figure was computed on the sample as drawn. The sample was
+stratified by judge label (20 SUPPORTED / 15 UNSUPPORTED / 15
+INFERENCE), while judge-SUPPORTED is ~90% of claims in the runs, so the
+unweighted figure gave the judge-SUPPORTED stratum 20/50 of the weight
+instead of ~90%. It is not quoted as current anywhere.
+
+#### Calibration of record (2026-09-24)
+
+The set, per judge-label stratum:
+
+- **Judge-SUPPORTED: 4/123 human-UNSUPPORTED**, from the blind relabel of
+  123 judge-SUPPORTED claims (the calibration batch's 103 and the
+  held-out sample's 20, shuffled together with the source hidden;
+  `eval/judge_validation/relabel_S.csv`, see the dated finding below).
+- **Judge-UNSUPPORTED: 9/15 and judge-INFERENCE: 2/15**, the held-out
+  sample's labels of 2026-09-06.
+- The calibration batch's first-pass labels are discarded and kept on
+  record only (dated finding below).
+
+`eval/reweight_calibration.py` weights each judge-label stratum by that
+run's judge-label counts (`eval/label.py` `count_labels_deduped` over
+the findings, cross-checked against the claims file). Per stratum k:
+p_k = human-UNSUPPORTED / n_k. Estimated truly unsupported claims
+T = sum_k N_k p_k; recall = N_U p_U / T; true rate = T / N. 95%
+intervals: Monte Carlo over independent Jeffreys Beta(x + 0.5,
+n - x + 0.5) posteriors per stratum, 200,000 draws, fixed seed 20260924;
+the run counts N_k are treated as fixed.
+
+| Run | Judge counts S / U / I | Judge-flagged rate | Recall (95% CI) | Estimated true rate (95% CI) |
+|---|---|---|---|---|
+| `j4cnp` baseline | 354 / 12 / 26 | 3.06% | 32.5% (16.0–52.4%) | 5.7% (3.5–9.9%) |
+| `lsnnc` local-model | 324 / 30 / 14 | 8.15% | 59.2% (36.0–77.9%) | 8.3% (5.5–12.5%) |
+| pooled | 678 / 42 / 40 | 5.53% | 47.9% (26.5–68.3%) | 6.9% (4.5–11.1%) |
+
+Reproduce (`--use` takes only the judge-UNSUPPORTED and judge-INFERENCE
+rows from the held-out sample; its judge-SUPPORTED rows are in the
+relabel set):
+
+```
+python eval/reweight_calibration.py \
+    --labeled eval/judge_validation/relabel_S.csv \
+    --key eval/judge_validation/relabel_S_key.csv --use ALL \
+    --labeled eval/judge_validation/holdout_sample.csv \
+    --key eval/judge_validation/holdout_key.csv --use UNSUPPORTED,INFERENCE \
+    --run j4cnp eval/runs/j4cnp-claims.jsonl eval/runs/raw/j4cnp-findings \
+    --run lsnnc eval/runs/lsnnc-claims.jsonl eval/runs/raw/lsnnc-findings \
+    --by-section
+```
+
+Reading it:
+
+- With 123 judge-SUPPORTED labels the stratum that decides most of T is
+  now well measured; the judge-UNSUPPORTED and judge-INFERENCE strata
+  are still 15 labels each and now drive most of the interval width.
+- The A/B direction stands. `j4cnp` 3.06% vs `lsnnc` 8.15% (p = 0.0023)
+  and the per-section attribution compare two arms scored by the same
+  judge, so its misses apply to both. The reweighted estimates (5.7% vs
+  8.3%) are closer together because the same miss rate on
+  judge-SUPPORTED claims adds to both; the calibration cannot tell
+  whether misses differ by arm or by section.
+- The recall on `lsnnc` is higher because more of its truly unsupported
+  claims are ones the judge does flag (30 judge-UNSUPPORTED vs 12).
+- Two interval bounds sit on a Monte Carlo rounding boundary: the
+  `j4cnp` recall upper bound prints 52.4% (52.6% in an independent run
+  of the same math) and the true-rate lower bound 3.5% (3.4%). The
+  committed seed's output is what is quoted.
+
+**Superseded (dated 2026-09-24): the held-out-only reweight.** Computed
+first the same day from the held-out sample alone (judge-SUPPORTED
+1/20): `j4cnp` recall 25.4% (CI 7.4–58.4%), true rate 7.2% (CI
+3.1–22.0%); `lsnnc` recall 49.9% (CI 18.4–83.1%), true rate 9.8% (CI
+5.3–24.2%); pooled recall 39.1% (CI 13.0–74.0%), true rate 8.5% (CI
+4.2–23.1%). Replaced by the calibration of record above, which measures
+the judge-SUPPORTED stratum on 123 claims instead of 20.
+
+#### Dated finding: calibration batch first pass discarded, caught by a blind relabel (2026-09-24)
+
+The 150-claim calibration batch (method below) was labeled once with
+`eval/label_cli.py`. On judge-SUPPORTED claims the first pass found
+42/103 = 40.8% (CI 31.8–50.4%) human-UNSUPPORTED, against 1/20 in the
+held-out sample (Fisher p = 0.0016). It showed no drift by labeling
+position (rows 1–34: 9/19, rows 35–150: 33/84, p = 0.61) and no arm
+effect (38.9% baseline vs 42.9% local-model), but it concentrated in
+Outlook claims (18/30 = 60.0%, against 19/67 = 28.4% in Executive
+Summary).
+
+To separate a labeling-standard shift from sampling, every
+judge-SUPPORTED row of both sets (103 + 20) was relabeled blind, shuffled
+together with the source hidden (`eval/build_relabel_s.py`, seed
+20260925). Results (`python eval/relabel_agreement.py`):
+
+| Source | Original | Blind relabel | Test-retest |
+|---|---|---|---|
+| Held-out sample (20) | 1/20 = 5.0% (CI 0.9–23.6%), labeled 2026-09-06 | 1/20 = 5.0% (CI 0.9–23.6%) | 17/20 exact, kappa 0.592 |
+| Calibration batch (103) | 42/103 = 40.8% (CI 31.8–50.4%), first pass | 3/103 = 2.9% (CI 1.0–8.2%) | 62/103 exact, kappa 0.242 |
+
+- The relabeled sources agree: 1/20 vs 3/103, Fisher p = 0.51; together
+  4/123 = 3.3% (CI 1.3–8.1%).
+- The batch's first pass moved one way: of its 42 UNSUPPORTED labels, 3
+  stayed, 31 went to SUPPORTED and 8 to INFERENCE; no label moved toward
+  UNSUPPORTED. The withdrawn labels include plainly sourced figures
+  (an accumulated deficit, a user count, a segment revenue line).
+- On relabel, Outlook claims were 0/35 UNSUPPORTED with 9/35 INFERENCE:
+  the forward-looking claims the first pass had called UNSUPPORTED are
+  the INFERENCE the rubric describes.
+
+Conclusion: the first pass applied an over-strict standard. Its labels
+are discarded and kept on record only (`calibration_batch.csv`, labels
+as entered). The batch's judge-UNSUPPORTED and judge-INFERENCE rows came
+from the same pass (21/23 judge-UNSUPPORTED rows labeled UNSUPPORTED,
+against 9/15 in the held-out sample, p = 0.039), so they are discarded
+too; those strata use the held-out labels. A blind relabel sample for
+them (`relabel_UI.csv`, 77 rows, `eval/build_relabel_ui.py`, seed
+20260926) is built and was not labeled. The lesson that stays: a
+labeling pass is not trusted until a blind relabel of an overlapping
+sample agrees with it.
+
+#### Calibration batch: draw method (2026-09-24)
+
+`eval/build_calibration_batch.py` (seed 20260924) draws 150 claims from
+`j4cnp` + `lsnnc` into `eval/judge_validation/calibration_batch.csv`,
+weighted toward the judge-SUPPORTED stratum that decides recall. Method,
+also in `calibration_batch_method.json`:
+
+- **Pool**: every claim with a CLAIM line (756 parsed), minus 57 that
+  overlap the dev set (claim text or source-context sha256) or the
+  held-out set (claim text).
+- **Strata**: judge label, then arm in proportion to the run's
+  judge-label count. Targets were 100 SUPPORTED / 25 INFERENCE / 25
+  UNSUPPORTED; after exclusions only 23 UNSUPPORTED and 24 INFERENCE
+  claims remain eligible, so both are taken whole and the shortfall of 3
+  goes to SUPPORTED (103), keeping 150. Within each (label, arm) cell the
+  draw is simple random.
+- **Ticker cap**: 4 per ticker on SUPPORTED, applied only if not binding.
+  It binds (EDIT, LCID, NTLA, TSLA at 5, UNH at 6; 6 draws would be
+  displaced), so it is **not applied** and the SUPPORTED draw stays
+  simple random. 38 tickers appear in the SUPPORTED draw.
+- **Blinding**: the CSV has `id, ticker, claim, context, human_label`
+  only. No provenance column (unlike `holdout_sample.csv`): 22 of the 23
+  eligible UNSUPPORTED claims are local-model, so the run would hint at
+  the judge label. Rows are shuffled. The census of the scarce strata
+  still concentrates some tickers (WMT, the local-model outlier, has 15
+  rows); label every row on its own evidence.
+- **Labeling**: the first pass was labeled with `eval/label_cli.py`, blind to judge labels (the tool never reads a `*_key.csv`); it is discarded, see above.
+- **Key**: `calibration_batch_key.csv` (run, arm, judge label and reason,
+  with the strata in a `#` header block) is gitignored like the four-arm
+  key; it stays out of the public repository. `eval/agreement.py` and `eval/reweight_calibration.py` read
+  it as is.
+
+| Judge label, arm | Run population | Eligible pool | Drawn |
+|---|---|---|---|
+| SUPPORTED, `j4cnp` baseline | 354 | 341 | 54 |
+| SUPPORTED, `lsnnc` local-model | 324 | 311 | 49 |
+| UNSUPPORTED, `j4cnp` baseline | 12 | 1 | 1 |
+| UNSUPPORTED, `lsnnc` local-model | 30 | 22 | 22 |
+| INFERENCE, `j4cnp` baseline | 26 | 18 | 18 |
+| INFERENCE, `lsnnc` local-model | 14 | 6 | 6 |
+
+Within SUPPORTED the arms were drawn in proportion to their counts
+(54/49 vs 354/324), which is why the batch's judge-SUPPORTED rows could
+join the relabel set directly.
 
 ### Injected-failure check (measured 2026-09-04)
 
@@ -584,9 +1011,10 @@ positives.** The judge's claim segmentation still varies between
 temperature-0 runs (8, then 4 off-needle flags on identical inputs), so
 per-run flag counts are noisy even though the gated metric, recall,
 reproduced exactly. A CI job
-(`.github/workflows/critic-injection.yml`) re-runs this weekly (Sundays
-06:00 UTC) and on manual dispatch, never on push or PR because it spends
-judge credits, and asserts recall ≥ 0.8; the bar does not move if it
+(`.github/workflows/critic-injection.yml`) re-runs this on manual dispatch
+only (the weekly Sunday schedule was removed 2026-09-28), never on push, PR
+or a schedule because it spends judge credits, and asserts recall ≥ 0.8;
+the bar does not move if it
 regresses — the number gets reported instead.
 
 ## Boundary

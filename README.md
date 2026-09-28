@@ -6,6 +6,8 @@ An AI agent that researches stocks and answers follow-up questions using live fi
 
 **Documentation:** start at [docs/README.md](docs/README.md) — every question a reviewer might ask, mapped to the document that answers it.
 
+**[Model recommendation](docs/model-recommendation.md):** hosted Haiku or an open-weight model on the A10 for section writing, from the four-arm comparison.
+
 ---
 
 ## Summary
@@ -51,15 +53,15 @@ interval wherever the claim counts are on record.
 
 Every row links to [docs/numbers-of-record.md](docs/numbers-of-record.md),
 which carries the full records and the rules for quoting them. Judge-v2
-rates are approximate per the judge's held-out calibration (75% recall / 60%
-precision on UNSUPPORTED).
+rates are judge-flagged rates. Calibration of record: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED); the baseline's
+reweighted true-rate estimate 5.7% (CI 3.5–9.9%).
 
 | Result | Value (Wilson 95% CI) | Run ID / source | Judge | Status |
 |---|---|---|---|---|
 | Grounding, hosted pipeline (40 tickers) | 12/392 = 3.06% unsupported (1.8–5.3%) | `j4cnp`, 2026-09-05/06 | v2 | [number of record](docs/numbers-of-record.md#current) |
 | Fine-tune vs hosted (40-ticker A/B) | 30/368 = 8.15% (5.8–11.4%) vs 12/392 = 3.06% (1.8–5.3%), Fisher p = 0.0023 — fails the 5% gate, ships disabled | `lsnnc` vs `j4cnp`, 2026-09-05/06 | v2 | [dated record](docs/numbers-of-record.md#dated-run-records) |
-| Four-arm comparison (40 tickers) | hosted 4/383 = 1.04% (0.4–2.7%); fine-tune 25/385 = 6.49% (4.4–9.4%); untuned Qwen2.5-1.5B 31/400 = 7.75% (5.5–10.8%); untuned Qwen2.5-7B 18/393 = 4.58% (2.9–7.1%) | `kcf7s`, `v924f`, `4nfsm`, `cnkp2`, 2026-09-23 | v2 | [dated comparison set, not numbers of record](docs/numbers-of-record.md#dated-run-records) |
-| Judge validation (blind, held-out, n=50) | kappa 0.580; UNSUPPORTED recall 9/12 = 75.0% (46.8–91.1%), precision 9/15 = 60.0% (35.7–80.2%) | `eval/judge_validation/holdout_sample.csv`, labeled 2026-09-06 | v2 | [current](docs/numbers-of-record.md#current) |
+| Four-arm comparison (40 tickers) | hosted 4/383 = 1.04% (0.4–2.7%), same-image rerun 7/389 = 1.80% (0.9–3.7%); fine-tune 25/385 = 6.49% (4.4–9.4%); untuned Qwen2.5-1.5B 31/400 = 7.75% (5.5–10.8%); untuned Qwen2.5-7B 18/393 = 4.58% (2.9–7.1%) | `kcf7s`, `v924f`, `4nfsm`, `cnkp2`, 2026-09-23; `dvvxk` 2026-09-24 | v2 | [dated comparison set, not numbers of record](docs/numbers-of-record.md#dated-run-records) |
+| Judge calibration of record (blind labels) | kappa 0.580; UNSUPPORTED precision 9/15 = 60.0% (35.7–80.2%), population-weighted recall 32.5% on `j4cnp` (16.0–52.4%) | `holdout_sample.csv` (2026-09-06) + blind relabel `relabel_S.csv` (2026-09-24) | v2 | [current](docs/numbers-of-record.md#current) |
 | Cost per brief | $0.0366 (3-ticker mean; no interval computed) | `cost_record_post_fix.json`, 2026-09-06 | n/a (not a judged rate) | [cost of record](docs/numbers-of-record.md#current) |
 
 ---
@@ -93,13 +95,13 @@ The answer required building both the agent and the measurement layer to audit i
 
 I built an evaluation framework that audits the quantitative and forward-looking claims in each brief's Executive Summary and Outlook against the retrieved source context (the four pre-written sections are judge input, not audited directly). A Sonnet judge (temperature 0) labels each claim `SUPPORTED`, `UNSUPPORTED`, or `INFERENCE`.
 
-**Early results: 49% unsupported claim rate (judge v1, pre-retrieval-fix).** Nearly half of what the agent said wasn't backed by anything it retrieved.
+**Current: 12/392 = 3.06% unsupported (Wilson 95% CI 1.8–5.3%), judge-flagged.** The grounding number of record is the 40-ticker hosted baseline `j4cnp` (2026-09-05/06), judge v2 on the fixed retrieval pipeline. The judge misses unsupported claims, so its flagged rate undercounts: reweighted with the calibration of record, the estimated true rate is **5.7% (CI 3.5–9.9%)**. Calibration of record: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED). See [docs/numbers-of-record.md](docs/numbers-of-record.md).
 
-After iterating on prompt constraints and forcing generation to stay grounded in source material, the 2026-08-24 10-ticker re-measure found 0/84 unsupported — a dated record (judge v1, a lower bound; pre-retrieval-fix). The current grounding number of record is the 40-ticker hosted baseline `j4cnp` (2026-09-05/06): **12/392 = 3.06% unsupported (Wilson 95% CI 1.8–5.3%)**, judge v2 on the fixed retrieval pipeline — approximate per the judge's held-out calibration (75% recall / 60% precision on UNSUPPORTED, blind labels, n=50). See [docs/numbers-of-record.md](docs/numbers-of-record.md).
+**The fine-tune A/B: 8.15% vs 3.06%, Fisher p = 0.0023 (judge v2).** On the same image and index, with the QLoRA fine-tune writing two of the four sections, the local-model arm `lsnnc` measured 30/368 = 8.15% unsupported (CI 5.8–11.4%) against `j4cnp`'s 3.06%. It fails the 5% gate, the excess sits in the two sections the fine-tune writes, and it ships disabled ([details below](#qlora-fine-tuning-experiment)).
 
-*Judge-version note:* every unsupported rate in this README names its judge prompt version. **v1** rates are lower bounds (2026-09-04 human validation: v1 recall on UNSUPPORTED 1/9). **v2** rates carry the held-out calibration — kappa 0.580, 75% recall / 60% precision on UNSUPPORTED against blind human labels (n=50, 2026-09-06) — and are approximate point estimates; A/B directions are unaffected when both arms share the judge ([docs/eval-methodology.md](docs/eval-methodology.md)).
+*Judge-version note:* every unsupported rate in this README names its judge prompt version. **v1** rates are lower bounds (2026-09-04 human validation: v1 recall on UNSUPPORTED 1/9). **v2** rates are judge-flagged rates and carry the calibration of record (2026-09-24; kappa and precision from blind held-out labels, n=50, 2026-09-06): kappa 0.580, precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED). Reweighted true-rate estimates sit beside the rates where computed; A/B directions are unaffected when both arms share the judge ([docs/eval-methodology.md](docs/eval-methodology.md)).
 
-The prompt engineering work -- not the retrieval architecture -- was what actually moved the needle.
+*Dated history (judge v1, pre-retrieval-fix; not current):* before the synthesis prompt's grounding rules, the first measurement found 49% of claims unsupported (pre-harness, no recorded denominator). After them, the 2026-08-24 10-ticker re-measure found 0/84. Both predate judge v2 and the 2026-09-04 retrieval fix, and v1 rates are lower bounds.
 
 ### Reranking A/B Experiment
 
@@ -118,7 +120,7 @@ I added optional cross-encoder reranking to the RAG pipeline and ran a controlle
 
 Can a small local model replace Claude Haiku on section generation at lower cost?
 
-I fine-tuned **Qwen2.5-1.5B-Instruct** with QLoRA on 104 deterministic, Claude-free training pairs built from real SEC filings and financial data. When enabled, the fine-tuned model is routed 2 of 4 brief sections (Financial Health and Risk Factors); the other two stay on Haiku because deterministic targets couldn't be built for them -- an honest finding about the data, not a gap to paper over. **The measured verdict (2026-09-05/06, 40-ticker in-cluster A/B, judge v2, same image and index): the fine-tune fails the 5% grounding gate -- 8.15% unsupported (`lsnnc`, 30/368, Wilson 95% CI 5.8–11.4%) vs a 3.06% hosted baseline (`j4cnp`, 12/392, CI 1.8–5.3%), Fisher p = 0.0023 -- and the failure concentrates in exactly the two sections it owns (19.82%, 22/111, CI 13.5–28.2%, vs 0.50%, 1/202, CI 0.1–2.8%, on attributed claims; same two runs), so it ships default-off.** Judge-v2 rates are approximate per the held-out calibration (75% recall / 60% precision on UNSUPPORTED). The rest of this section is the experiment record.
+I fine-tuned **Qwen2.5-1.5B-Instruct** with QLoRA on 104 deterministic, Claude-free training pairs built from real SEC filings and financial data. When enabled, the fine-tuned model is routed 2 of 4 brief sections (Financial Health and Risk Factors); the other two stay on Haiku because deterministic targets couldn't be built for them -- an honest finding about the data, not a gap to paper over. **The measured verdict (2026-09-05/06, 40-ticker in-cluster A/B, judge v2, same image and index): the fine-tune fails the 5% grounding gate -- 8.15% unsupported (`lsnnc`, 30/368, Wilson 95% CI 5.8–11.4%) vs a 3.06% hosted baseline (`j4cnp`, 12/392, CI 1.8–5.3%), Fisher p = 0.0023 -- and the failure concentrates in exactly the two sections it owns (19.82%, 22/111, CI 13.5–28.2%, vs 0.50%, 1/202, CI 0.1–2.8%, on attributed claims; same two runs), so it ships default-off.** These are judge-flagged v2 rates; reweighted true-rate estimates are 8.3% (CI 5.5–12.5%) vs 5.7% (CI 3.5–9.9%), and the direction stands because both arms share the judge. The rest of this section is the experiment record.
 
 **No measurable full-brief cost reduction.** Measured with the committed cost
 harness (`scripts/cost_report.py`; details in [benchmarks.md](benchmarks.md)),
@@ -156,14 +158,14 @@ training from model size, the same harness scored four arms that differ
 only in who writes Financial Health and Risk Factors: each local model
 writes those two sections, while Haiku writes the other two and Sonnet the
 synthesis in every arm. Unsupported rates: the hosted baseline (`kcf7s`,
-4/383 = 1.04%, CI 0.4–2.7%), the fine-tune (`v924f`, 25/385 = 6.49%, CI 4.4–9.4%), its
+4/383 = 1.04%, CI 0.4–2.7%; its same-image rerun `dvvxk` 7/389 = 1.80%, CI 0.9–3.7%), the fine-tune (`v924f`, 25/385 = 6.49%, CI 4.4–9.4%), its
 untuned base Qwen2.5-1.5B-Instruct (`4nfsm`, 31/400 = 7.75%, CI 5.5–10.8%),
 and untuned Qwen2.5-7B-Instruct (`cnkp2`, 18/393 = 4.58%, CI 2.9–7.1%). The
 fine-tune matched its own base (p = 0.58); within Qwen2.5, 1.5B → 7B
 improved with borderline significance (p = 0.076) at 3.7x lower serving
 throughput on the same A10; and every open-weight arm trailed hosted (7B vs
-hosted p = 0.0039). Judge-v2 rates, approximate per the held-out
-calibration. Details: [docs/eval-methodology.md](docs/eval-methodology.md).
+hosted p = 0.0039). Judge-flagged v2 rates; comparisons hold in
+direction because all arms share the judge. Details: [docs/eval-methodology.md](docs/eval-methodology.md).
 
 I also re-implemented the same fine-tune with a hand-written PyTorch training loop (`fine_tune_pytorch_loop.ipynb`) -- custom `Dataset`, manual gradient accumulation and `optimizer.step()`, hand-written cosine LR, no Hugging Face `Trainer`. Benchmarked against the `Trainer` on identical data and config (`adamw_torch`, cosine schedule, grad-accum 8), the two loss curves track each other closely over 21 optimizer steps -- both start around 1.4--1.5 and trend down together, finishing at **0.50 (native)** and **0.35 (Trainer)**. The curves cross repeatedly, so that final-step gap sits within the run-to-run noise at this scale (~7 optimizer steps/epoch, plus shuffle order and 4-bit-kernel non-determinism) rather than a systematic difference -- confirming the hand-written loop reproduces the Trainer's training dynamics at the gradient-accumulation and optimizer-step level.
 
@@ -416,18 +418,20 @@ The primary deployment is on OCI ([above](#deployed-on-oci)). AWS ECS is a secon
 
 The FastAPI backend is containerized and runs on **AWS ECS Fargate**, with a real
 **RDS PostgreSQL** database, secrets in **AWS Secrets Manager**, and a
-**GitHub Actions** pipeline that deploys after CI passes on `main` (commits
-that touch only `README.md`, `docs/`, `infra/`, or notebooks skip the deploy). The whole
+**GitHub Actions** deploy workflow that runs **on manual dispatch only**
+(since 2026-09-28; a merge to `main` no longer deploys). Run it from `main`
+(Actions → Deploy → Run workflow) after CI has passed on that commit; it builds
+and deploys the dispatched commit. The whole
 footprint is defined in **Terraform** (`infra/`). The Streamlit frontend stays on
 Streamlit Cloud; Redis/Celery are stubbed in this environment (the cache no-ops
 and the async endpoint is disabled).
 
 ```
-push to main
+CI green on main, then manual "Run workflow" (Deploy)
      │
      ▼
 GitHub Actions ──OIDC (no long-lived AWS keys)──► assume scoped IAM role
-  1. pytest (CI gate)
+  1. checkout the dispatched commit (CI is the separate pytest gate)
   2. docker build → push image (latest + commit SHA) → Amazon ECR
   3. register new task-def revision → update ECS service (wait for stable)
      │
@@ -442,10 +446,12 @@ RDS PostgreSQL (t3.micro)        Secrets Manager
    the task's SG)                  env vars by the execution role
 ```
 
-**Current state.** The service normally runs at 0 tasks. It was last deployed
-at `c602e99` (task definition revision 8) and verified on 2026-09-24 by
-scaling to 1: `/health` returned 200 and an AAPL brief returned 200 with all
-six sections, then the service was parked at 0 again. Two caveats: the task
+**Current state.** The service normally runs at 0 tasks. The image last
+verified running was `c602e99` (task definition revision 8), on 2026-09-24,
+by scaling to 1: `/health` returned 200 and an AAPL brief returned 200 with
+all six sections, then the service was parked at 0 again. The automatic
+deploys that followed each merge that day (the last at `7e17b4b`) ran at 0
+tasks and were not verified the same way. Two caveats: the task
 definition has no container health check (Fargate ignores the image's
 Dockerfile `HEALTHCHECK`), so ECS reports health as UNKNOWN; and at 0 tasks a
 deploy's "wait for stable" passes without starting a container, so a deploy
@@ -536,16 +542,17 @@ make cluster-down    # tear down
 
 | Measurement | Result |
 |---|---|
-| Grounding, number of record (40 tickers, judge v2, fixed retrieval) | **12/392 = 3.06% unsupported (Wilson 95% CI 1.8–5.3%)**, hosted baseline `j4cnp` (2026-09-05/06); approximate per the v2 held-out calibration |
+| Grounding, number of record (40 tickers, judge v2, fixed retrieval) | **12/392 = 3.06% unsupported (Wilson 95% CI 1.8–5.3%)**, hosted baseline `j4cnp` (2026-09-05/06); judge-flagged rate, reweighted true-rate estimate 5.7% (CI 3.5–9.9%) |
 | Grounding, dated (2026-08-24, 10 tickers, judge v1, pre-retrieval-fix) | 49% pre-fix → 0/84 unsupported (CI 0.0–4.4%) — a lower bound on an exhibit-indexing pipeline; retired as current |
 | Cost/brief, hosted (exact API tokens + RAG estimate) | **$0.0366** (2026-09-06, post-retrieval-fix; re-runnable: `make cost-report`) |
 | Grounding (supported share), hosted vs local-hybrid (9-ticker balanced A/B, Aug 2026, judge v1, pre-retrieval-fix, local run — no workflow run ID) | 86.2% (56/65, CI 75.7–92.5%) vs 77.8% (56/72, CI 66.9–85.8%) — expected regression, local stays default-off |
-| Grounding, hosted vs in-cluster vLLM fine-tune (40-ticker A/B, 2026-09-05/06, judge v2) | `j4cnp` 3.06% (12/392, CI 1.8–5.3%) vs `lsnnc` 8.15% (30/368, CI 5.8–11.4%) unsupported, Fisher p = 0.0023 — local-model arm fails the 5% gate; ships default-off. Per-section: 0.50% (1/202, CI 0.1–2.8%) vs 19.82% (22/111, CI 13.5–28.2%) on fine-tune-owned claims (p = 4.6e-10) — see [docs/eval-methodology.md](docs/eval-methodology.md) |
-| Four-arm comparison (2026-09-23, 40 tickers, judge v2, identical pinned sampling) — a dated comparison set, not numbers of record | Unsupported: hosted `kcf7s` 1.04% (4/383, CI 0.4–2.7%); fine-tune `v924f` 6.49% (25/385, CI 4.4–9.4%); untuned Qwen2.5-1.5B `4nfsm` 7.75% (31/400, CI 5.5–10.8%); untuned Qwen2.5-7B `cnkp2` 4.58% (18/393, CI 2.9–7.1%). Fine-tune vs its base p = 0.58; 1.5B vs 7B p = 0.076 (borderline); 7B vs hosted p = 0.0039 |
-| Judge v2 held-out validation (blind, n=50, 2026-09-06) | kappa 0.580; UNSUPPORTED recall 75.0% (46.8–91.1%), precision 60.0% (35.7–80.2%) — v2 rates are approximate point estimates |
+| Grounding, hosted vs in-cluster vLLM fine-tune (40-ticker A/B, 2026-09-05/06, judge v2) | `j4cnp` 3.06% (12/392, CI 1.8–5.3%) vs `lsnnc` 8.15% (30/368, CI 5.8–11.4%) unsupported, Fisher p = 0.0023 — local-model arm fails the 5% gate; ships default-off. Per-section: 0.50% (1/202, CI 0.1–2.8%) vs 19.82% (22/111, CI 13.5–28.2%) on fine-tune-owned claims (p = 4.6e-10). Judge-flagged rates; reweighted true-rate estimates 5.7% vs 8.3%, direction unaffected (same judge); see [docs/eval-methodology.md](docs/eval-methodology.md) |
+| Four-arm comparison (2026-09-23, 40 tickers, judge v2, identical pinned sampling) — a dated comparison set, not numbers of record | Unsupported: hosted `kcf7s` 1.04% (4/383, CI 0.4–2.7%) and its same-image rerun `dvvxk` 1.80% (7/389, CI 0.9–3.7%); fine-tune `v924f` 6.49% (25/385, CI 4.4–9.4%); untuned Qwen2.5-1.5B `4nfsm` 7.75% (31/400, CI 5.5–10.8%); untuned Qwen2.5-7B `cnkp2` 4.58% (18/393, CI 2.9–7.1%). Fine-tune vs its base p = 0.58; 1.5B vs 7B p = 0.076 (borderline); 7B vs hosted p = 0.0039 |
+| Judge v2 calibration of record (2026-09-24) | kappa 0.580; UNSUPPORTED precision 60.0% (35.7–80.2%), population-weighted recall 32.5% on `j4cnp` (16.0–52.4%), judge-SUPPORTED stratum from a blind relabel of 123 claims; v2 rates are judge-flagged rates |
 | Critic recall on injected failures | 20/20 = 100% (CI 83.9–100%) on both runs (2026-09-04); adjudicated precision 24/24 |
 | Cost/brief, hosted vs local-hybrid (pre-retrieval-fix pipeline) | $0.0316 vs $0.0321 — no measurable full-brief saving (Sonnet dominates) |
 | Local CPU serving (environment-limited: 2-core AVX2 laptop) | ~7.7 tok/s aggregate saturation; NOT comparable to GPU/hosted |
+| CPU inference, Xeon on `vm-a10-inst-2` (2026-09-28; a dated measurement, not a number of record: vLLM v0.10.2 CPU backend, 14 cores, BF16, same shape as the A10 run) | financial-lora: 22.9 vs 708.3 output tok/s on the node's A10 at concurrency 8; 15.0 vs 111.1 at concurrency 1, where time to first token is about 115x the A10's and time per output token about 5x. Intel Xeon Platinum 8358 (no AMX), not tuned, no quality eval; see [docs/eval-methodology.md](docs/eval-methodology.md#cpu-inference-benchmark-2026-09-28-a-dated-measurement) |
 
 ---
 
@@ -553,8 +560,8 @@ make cluster-down    # tear down
 
 | What | Command | Notes |
 |---|---|---|
-| Unit and integration tests | `python -m pytest tests/` | 139 collected: 138 pass + 1 skipped (as of 2026-09-24). Runs in CI on every pull request and push to `main`. |
-| Credit-gated judge test | `CRITIC_INJECTION=1 python -m pytest tests/test_critic_injection.py -q -s` | Calls the paid Sonnet judge, so it is skipped in the default run and never runs on push or PR. `critic-injection.yml` runs it weekly and on manual dispatch and asserts recall ≥ 0.8. |
+| Unit and integration tests | `python -m pytest tests/` | 186 collected: 185 pass + 1 skipped (as of 2026-09-28). Runs in CI on every pull request and push to `main`. |
+| Credit-gated judge test | `CRITIC_INJECTION=1 python -m pytest tests/test_critic_injection.py -q -s` | Calls the paid Sonnet judge, so it is skipped in the default run and never runs on push, PR or a schedule. `critic-injection.yml` runs it on manual dispatch only and asserts recall ≥ 0.8. |
 | Kubernetes smoke test | `make smoke-test` | On kind: 13 assertions covering a sync brief, a Celery async task, a cache hit and miss, and the MCP server. |
 | Manifest equivalence | `python3 scripts/render_diff.py LEFT RIGHT` | Semantic diff of two rendered manifest sets; exit 0 means identical. How it proves the overlays: [docs/verification.md](docs/verification.md). |
 | Grounding eval gate | `make eval-run` (kind) / `make vm-eval` (k3s) | The Argo DAG fails the workflow if unsupported claims exceed 5%, any ticker is skipped, or fewer than 30 claims were audited. |

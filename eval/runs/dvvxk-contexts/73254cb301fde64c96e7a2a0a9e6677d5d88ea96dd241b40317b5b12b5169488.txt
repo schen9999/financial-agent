@@ -1,0 +1,74 @@
+STOCK DATA:
+{
+  "ticker": "XOM",
+  "company_name": "ExxonMobil Holdings Corporation",
+  "current_price": 162.03,
+  "currency": "USD",
+  "market_cap": 666253066240.0,
+  "pe_ratio": 20.853281,
+  "forward_pe": 14.952051,
+  "week_52_high": 176.41,
+  "week_52_low": 110.39,
+  "revenue": 361060007936.0,
+  "net_income": 32757000192.0,
+  "profit_margin": 0.09072,
+  "dividend_yield": 2.56,
+  "sector": "Energy",
+  "industry": "Oil & Gas Integrated"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "message": "No 10-K found"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-03",
+    "summary": "Item 1A. Risk Factors\" of ExxonMobil\u2019s 2025 Form 10-K. Forward-looking and other statements regarding environmental and other sustainability efforts and aspirations are not an indication that these statements are material to investors or require disclosure in our filing with the SEC or any other regulatory authority. In addition, historical, current, and forward-looking environmental and other sustainability-related statements may be based on standards for measuring progress that are still developing, internal controls and processes that continue to evolve, and assumptions that are subject to change in the future, including future rule-making. Actions needed to advance ExxonMobil\u2019s 2030 greenhouse gas emission-reductions plans are incorporated into its medium term business plans, which are"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from ExxonMobil's Latest Filings
+
+## Financial Performance
+- **Upstream Earnings**: Total upstream earnings reached $7.9 billion in Q2 2026 (compared to $5.4 billion in Q2 2025) and $13.7 billion for the first half of 2026 (versus $12.2 billion in the prior year period)
+- **Shareholder Returns**: The company distributed $8.6 billion in dividends and repurchased $10.0 billion of common stock
+
+## Production & Operations
+- **Oil-Equivalent Production**: Declined to 4,514 thousand barrels daily in Q2 2026 from 4,630 in Q2 2025, primarily due to divestments and Middle East disruptions
+- **Production Mix**: Crude oil and liquids production totaled 3,373 thousand barrels daily globally, while natural gas production was 6,849 million cubic feet daily
+
+## Earnings Drivers
+- **Positive Factors**: Higher crude oil realizations added $4.7 billion in Q2 earnings; advantaged volume growth (Guyana and Permian) contributed $1.1 billion
+- **Negative Factors**: Middle East disruptions reduced earnings by $1.1 billion; higher depreciation expenses decreased earnings by $690 million; unfavorable derivatives mark-to-market impacts reduced earnings by $180 million
+
+## Market Conditions & Strategy
+- Crude oil prices remained within the 10-year historical range despite supply disruptions in the Middle East
+- Natural gas prices remained elevated above the 10-year average
+- The company is focused on advantaged assets including Permian, Guyana, and LNG projects
+- Environmental and sustainability efforts are being incorporated into medium-term business plans with annual updates
+
+RAG — RISK FACTORS:
+[From Pinecone cache] Based on the provided context, the document references risk factors but does not provide a comprehensive list of the primary risk factors themselves. The context only includes a brief mention that directs readers to "Item 1A. Risk Factors" of ExxonMobil's 2025 Form 10-K for detailed information about risk factors.
+
+The only specific risk factor area that receives some discussion in the provided context relates to environmental and sustainability efforts. The document notes that forward-looking statements regarding environmental and sustainability initiatives are not necessarily material to investors and may be based on:
+
+- Standards for measuring progress that are still developing
+- Internal controls and processes that continue to evolve
+- Assumptions subject to change in the future, including future rule-making
+
+Additionally, the context mentions that current trends for policy stringency and development of lower-emission solutions are not yet on a pathway to achieve net-zero by 2050, which could be considered a risk factor related to climate and regulatory policy.
+
+However, to obtain a complete understanding of the primary risk factors disclosed by the company, you would need to review the full "Item 1A. Risk Factors" section of the 2025 Form 10-K filing.

@@ -1,0 +1,58 @@
+STOCK DATA:
+{
+  "ticker": "ROKU",
+  "company_name": "Roku, Inc.",
+  "current_price": 153.33,
+  "currency": "USD",
+  "market_cap": 22771136512.0,
+  "pe_ratio": 64.970345,
+  "forward_pe": 39.084885,
+  "week_52_high": 159.89,
+  "week_52_low": 78.53,
+  "revenue": 5209110016.0,
+  "net_income": 355204992.0,
+  "profit_margin": 0.06819,
+  "sector": "Communication Services",
+  "industry": "Entertainment"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-13",
+    "summary": "Item 1A. Risk Factors Our business involves significant risks, some of which are described below. You should carefully consider the risks and uncertainties described below, together with all the other information in this Annual Report, including \u201cManagement\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d and the consolidated financial statements and the related notes. If any of the following risks actually occur, our business, reputation, financial condition, results of operations, revenue, key performance metrics, and future prospects could be seriously harmed. In addition, you should consider the interrelationship and compounding effects of two or more risks occurring simultaneously. Unless otherwise indicated, references to our business being harmed in these "
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-06",
+    "summary": "Item 1A. Risk Factors Our business involves significant risks, some of which are described below. You should carefully consider the risks and uncertainties described below, together with all the other information in this Quarterly Report, including \u201cManagement\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d and the condensed consolidated financial statements and the related notes. If any of the following risks actually occur, our business, reputation, financial condition, results of operations, revenue, key performance metrics, and future prospects could be seriously harmed. In addition, you should consider the interrelationship and compounding effects of two or more risks occurring simultaneously. Unless otherwise indicated, references to our business being har"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I cannot provide a summary of the latest 10-K and 10-Q based on the information available. The provided materials contain only excerpts from risk factor disclosures related to competitive pressures, stock ownership considerations, and regulatory compliance matters. These sections do not represent a comprehensive overview of the company's financial performance, operational results, or strategic initiatives that would typically be found in complete 10-K and 10-Q filings.
+
+To obtain key takeaways from the latest 10-K and 10-Q, you would need access to the full documents, which would include sections such as:
+- Management's Discussion and Analysis (MD&A)
+- Financial statements and results of operations
+- Liquidity and capital resources
+- Business overview and strategy
+- Complete risk factor analysis
+
+I recommend reviewing the complete SEC filings directly for a comprehensive understanding of the company's recent performance and outlook.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] I apologize, but the context information provided does not contain the specific details of the primary risk factors themselves. The material you've shared only includes the introductory section to the Risk Factors disclosure, which explains the general nature and potential consequences of risks, but does not list or describe the actual individual risk factors.
+
+To answer your question about the primary risk factors, I would need access to the sections that follow this introduction, which would detail the specific risks facing the business.
