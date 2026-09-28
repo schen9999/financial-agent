@@ -323,6 +323,11 @@ is merged). The 7B runs at about 27% of the 1.5B's output throughput, and
 its mean end-to-end latency per 256-token request is about 3.7× higher, on
 the same GPU and batch limit. These are dated measurements on k3s. The
 OKE serving benchmark in numbers-of-record stays "to be measured in Phase 2".
+These runs warmed up on their own timed prompts, so the first 16 of each
+were already in vLLM's prefix cache. A clean rerun of financial-lora on
+2026-09-28 gave 708.3 output tok/s (0.5% lower) and a mean TTFT of 198 ms
+instead of 162: the throughput figures stand, the TTFT is understated. See
+"CPU inference benchmark", dated finding.
 
 ### Observations
 
@@ -453,6 +458,146 @@ proportional; stratum population and sample sizes are in
 labeling CSV is blind (no run, arm, or verdict); the key is separate.
 **Reserved for judge validation on this claim set only.** Not yet
 labeled.
+
+## CPU inference benchmark (2026-09-28): a dated measurement
+
+One data point: the same weights and the same benchmark client and shape,
+served from the node's Xeon and from its A10. This is a measurement, not
+optimization work; nothing was tuned for the CPU.
+
+**Setup.**
+
+- **Node** `vm-a10-inst-2`, a VM.GPU.A10.1: a KVM guest with 15 cores (30
+  vCPUs) of an Intel Xeon Platinum 8358 @ 2.60GHz, one socket, one NUMA
+  node, 235 GiB of memory, and one A10. The CPU flags include AVX-512 (F,
+  BW, VL, DQ, VNNI) but not AVX512_BF16 or AMX.
+- **CPU server:** vLLM's official CPU image
+  `public.ecr.aws/q9t5s3a7/vllm-cpu-release-repo:v0.10.2`, the vLLM version
+  the GPU deployment runs, in plain Docker on the host outside k3s, with
+  the GPU deployment's serving args (`--dtype bfloat16 --max-model-len 4096
+  --max-num-seqs 8`), prefix caching at its default (on) and an 8 GB KV
+  cache. Pinned to 14 of the 15 physical cores (`--cpuset-cpus 2-29`, 28
+  vCPUs) with one OMP thread per physical core, 64 GB memory limit.
+  `scripts/vm_bench_cpu.sh`.
+- **A10:** the running k3s deployment (`vllm/vllm-openai:v0.10.2`, same
+  args), benchmarked from inside the pod by `scripts/vm_bench_serve.sh`.
+- **Precision:** BF16 on both. The fine-tune's weights are stored as FP16
+  and cast to BF16 at load, on both backends.
+- **Client:** `vllm bench serve` v0.10.2 on both: random dataset, 1024
+  input / 256 output tokens with `--ignore-eos`, request rate inf,
+  `/v1/completions`, the fine-tune's tokenizer. For the CPU it ran in a
+  separate container pinned to core 0 (vCPUs 0-1). Concurrency 8 with 200
+  prompts (seed 1) and concurrency 1 with 50 prompts (seed 2), on each
+  backend, each after an untimed 16-prompt warmup on seed 1000. The prompts
+  are identical across backends: each pair of files has the same total
+  input tokens (204,537 and 50,992).
+- **Quiet node:** api, worker, streamlit and mcp were scaled to 0 for the
+  runs and restored after. Postgres, Redis, Argo and the GPU vLLM pod
+  stayed up and idle. Sampled every 30 s through the CPU runs, the GPU pod
+  used 5-19 millicores (median 13) and the CPU server container a median
+  1389% (its 14 OMP threads). Logs: `load-*.log` beside the results.
+- **Models:** financial-lora (the merged fine-tune) on both, and the
+  untuned Qwen2.5-1.5B-Instruct on the CPU. The 7B was not run: the
+  fine-tune's CPU output throughput at concurrency 8, 22.9 tok/s, is under
+  the ~30 tok/s set as the bar for trying it.
+
+Raw results: `eval/runs/bench/a10-2026-09-28/` and
+`eval/runs/bench/cpu-2026-09-28/`. Steps to reproduce: deploy-runbook,
+"CPU inference benchmark". The table and the per-brief line below are
+produced by:
+
+```bash
+A=eval/runs/bench/a10-2026-09-28; D=eval/runs/bench/cpu-2026-09-28
+python scripts/bench_table.py \
+  "$A/financial-lora-c8.json=A10, financial-lora" "$A/financial-lora-c1.json=A10, financial-lora" \
+  "$D/financial-lora-c8.json=CPU, financial-lora" "$D/financial-lora-c1.json=CPU, financial-lora" \
+  "$D/qwen2.5-1.5b-instruct-c8.json=CPU, qwen2.5-1.5b-instruct" \
+  "$D/qwen2.5-1.5b-instruct-c1.json=CPU, qwen2.5-1.5b-instruct" \
+  --section-tokens 530 --section-tokens 398 --section-tokens 1024
+```
+
+| Run | Device | Backend | dtype | Pinned cores | Concurrency | Prompts | Output tok/s | Total tok/s | Req/s | TTFT mean / median / p99 ms | TPOT mean / median / p99 ms | E2E mean / median / p99 ms | Prefix-cache hits |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| A10, financial-lora | NVIDIA A10 | vllm 0.10.2 | bfloat16 | n/a | 8 | 200 | 708.3 | 3538.1 | 2.767 | 198 / 197 / 354 | 10.6 / 10.5 / 11.1 | 2890 / 2892 / 3038 | 1.0% |
+| A10, financial-lora | NVIDIA A10 | vllm 0.10.2 | bfloat16 | n/a | 1 | 50 | 111.1 | 553.5 | 0.434 | 52 / 52 / 55 | 8.8 / 8.8 / 8.9 | 2305 / 2306 / 2315 | 1.9% |
+| CPU, financial-lora | Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz | vllm-cpu 0.10.2 | bfloat16 | 14 | 8 | 200 | 22.9 | 114.2 | 0.089 | 13819 / 12325 / 41866 | 297.1 / 304.4 / 328.3 | 89584 / 89949 / 102255 | 0.4% |
+| CPU, financial-lora | Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz | vllm-cpu 0.10.2 | bfloat16 | 14 | 1 | 50 | 15.0 | 74.8 | 0.059 | 5985 / 6110 / 6128 | 43.4 / 43.4 / 44.1 | 17061 / 17166 / 17364 | 1.7% |
+| CPU, qwen2.5-1.5b-instruct | Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz | vllm-cpu 0.10.2 | bfloat16 | 14 | 8 | 200 | 22.9 | 114.2 | 0.089 | 13820 / 12326 / 41879 | 297.0 / 304.2 / 328.0 | 89562 / 89891 / 102235 | 0.4% |
+| CPU, qwen2.5-1.5b-instruct | Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz | vllm-cpu 0.10.2 | bfloat16 | 14 | 1 | 50 | 15.1 | 75.2 | 0.059 | 5985 / 6110 / 6131 | 43.0 / 43.0 / 43.6 | 16961 / 17077 / 17242 | 1.7% |
+
+- **A10 vs CPU, financial-lora.** At concurrency 8 the A10 produced 708.3
+  output tok/s and the CPU 22.9, about 31 times as many. At concurrency 1,
+  111.1 vs 15.0, about 7 times. The gap is widest in prefill: mean TTFT for
+  a 1024-token prompt at concurrency 1 was 52 ms on the A10 and 5985 ms on
+  the CPU. Decode is closer: TPOT 8.8 vs 43.4 ms.
+- **Batching adds little on this CPU.** From concurrency 1 to 8, CPU output
+  throughput rose from 15.0 to 22.9 tok/s while mean TPOT rose from 43 to
+  297 ms. On the A10 it rose from 111.1 to 708.3.
+- **The fine-tune and its base serve identically on the CPU**, as on the
+  A10 (same architecture, LoRA merged).
+
+**Per brief.** A serial estimate of the time to write one brief's two
+locally served sections at concurrency 1: 2 × mean TTFT + T × mean TPOT,
+with T the Financial Health + Risk Factors output tokens per brief from
+[model-recommendation.md](model-recommendation.md), section 4 (fine-tune
+mean 530, 1.5B base 398, cap 1024). Fine-tune: A10 4.8 s, CPU 35.0 s (9.2 s
+and 56.4 s at the cap). 1.5B base on the CPU: 29.1 s. The fine-tune arm's
+mean brief time with A10 serving was 34.1 s (`v924f`). On the A10 the two
+sections are short next to the brief; on this CPU they alone take about as
+long as a whole brief. It is an estimate: TTFT was measured at 1024 input
+tokens, not on the real section prompts, and the pipeline sends the two
+sections in parallel rather than one after the other. Brief time with CPU
+serving was not measured.
+
+**Caveats.**
+
+- One node, one VM shape, measured once, on a shared-tenancy KVM guest.
+- No AMX or AVX512_BF16 on this Ice Lake Xeon: vLLM runs BF16 through
+  AVX-512 conversions. Newer Xeons with AMX would likely differ; not
+  measured. Only this Intel Xeon was measured; nothing here speaks for AMD
+  or Arm CPUs.
+- Not tuned: the GPU deployment's args and vLLM's CPU defaults, 14 cores,
+  no quantization, no thread or KV-cache sweeps, no other CPU server. The
+  two backends differ in more than hardware: they run different attention
+  and matmul kernels (the CPU server logs Torch SDPA attention).
+- No quality eval. Same weights and dtype on both, so output quality was
+  not re-measured, and numerical differences between the backends' kernels
+  were not checked. The four-arm grounding rates were measured with A10
+  serving only.
+- Synthetic shape (random tokens, 1024 in / 256 out), as in the A10
+  benchmark. Concurrency 1 used 50 prompts on both backends, 200 at
+  concurrency 8.
+- Core 0 was shared by the benchmark client, k3s and the idle pods.
+
+### Dated finding: warmup prompts were cached in the first pass (2026-09-28)
+
+The first CPU pass, and the A10 files of 2026-09-23, warmed up on the timed
+seed. With `vllm bench serve`, seed 0 gives the same first N prompts at any
+prompt count, so the 16 warmup prompts were the first 16 timed prompts,
+and with prefix caching on (the vLLM default on both backends) those
+skipped most of their prefill. The first CPU pass also ran concurrency 1
+after concurrency 8 on the same server, so all 50 of its prompts had been
+served before. Checked with the client's own dataset code
+(`RandomDataset`, seed 0: the 16 warmup prompts are the first 16 of 200,
+and the first 50 of 200 are the 50-prompt set). Both scripts now warm up
+on a separate seed and record the timed run's prefix-cache hit share; the
+clean runs above show 0.4-1.9%, which fits the client's initial test
+request re-sending the first prompt.
+
+| Run, financial-lora | First pass: output tok/s, mean TTFT | Clean: output tok/s, mean TTFT |
+|---|---|---|
+| A10, concurrency 8 | 711.5, 162 ms (2026-09-23) | 708.3, 198 ms |
+| A10, concurrency 1 | 113.2, 19 ms | 111.1, 52 ms |
+| CPU, concurrency 8 | 23.7, 13195 ms | 22.9, 13819 ms |
+| CPU, concurrency 1 | 20.8, 1025 ms | 15.0, 5985 ms |
+
+The cache mostly distorted TTFT, and throughput where prefill dominates
+(the CPU at concurrency 1). On the A10 at concurrency 8, throughput moved
+by 0.5%, so the 2026-09-23 A10 throughput figures, and the cost estimate
+built on them, stand; their TTFT is understated. First-pass files, run
+through `scripts/bench_table.py` for the figures above:
+`eval/runs/bench/cpu-2026-09-28/first-pass/` (the 2026-09-23 A10 file is
+`eval/runs/bench/financial-lora.json`).
 
 ## Dated A/B on the single-VM target (2026-09-03)
 

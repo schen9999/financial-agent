@@ -404,6 +404,66 @@ make vm-vllm
 - **App plane.** api/worker/streamlit keep their old env until restarted;
   if they route locally, re-run `make vm-local-model ON=true` after a swap.
 
+### CPU inference benchmark (executed 2026-09-28 on `vm-a10-inst-2`)
+
+Serves the same weights on the node's Xeon with the vLLM CPU backend and
+runs the A10 benchmark client and shape against it. Plain Docker on the
+host, outside k3s; no manifest changes. Results and method:
+eval-methodology, "CPU inference benchmark". On a node rebuilt from this
+runbook (weights under `/home/ubuntu/models`, the `extra_special_tokens`
+fix applied to `qwen-ft`), from the repo checkout:
+
+```bash
+# 0. The vLLM CPU backend needs AVX-512: this must print avx512f
+grep -ow avx512f /proc/cpuinfo | head -1
+docker pull public.ecr.aws/q9t5s3a7/vllm-cpu-release-repo:v0.10.2
+# 1. Quiet the node: scale the app plane to 0 (postgres, redis, argo and the
+#    idle GPU vLLM stay up; check `kubectl top pods -A` shows them idle)
+kubectl -n financial-agent scale deploy api worker streamlit mcp --replicas=0
+# 2. A10, CPU container stopped, against the running pod; seeds the pod
+#    has not served (it keeps its prefix cache until restarted)
+A=eval/runs/bench/a10-$(date +%F); mkdir -p $A
+SEED=1 bash scripts/vm_bench_serve.sh financial-lora > $A/financial-lora-c8.json
+CONCURRENCY=1 NUM_PROMPTS=50 SEED=2 bash scripts/vm_bench_serve.sh financial-lora \
+  > $A/financial-lora-c1.json
+# 3. CPU, a fresh server per model (about 36 min at c=8, 12 min at c=1)
+D=eval/runs/bench/cpu-$(date +%F); mkdir -p $D
+bash scripts/vm_bench_cpu.sh serve qwen-ft financial-lora
+SEED=1 bash scripts/vm_bench_cpu.sh bench financial-lora 8 200 > $D/financial-lora-c8.json
+SEED=2 bash scripts/vm_bench_cpu.sh bench financial-lora 1 50  > $D/financial-lora-c1.json
+bash scripts/vm_bench_cpu.sh stop
+#    (repeat serve/bench/stop with qwen2.5-1.5b-instruct for the base row)
+# 4. Restore the app plane and confirm every pod is Running
+kubectl -n financial-agent scale deploy api worker streamlit mcp --replicas=1
+kubectl -n financial-agent get pods
+# 5. Table and the per-brief section time, from the committed files
+python scripts/bench_table.py $A/financial-lora-c8.json=A10 $A/financial-lora-c1.json=A10 \
+  $D/financial-lora-c8.json=CPU $D/financial-lora-c1.json=CPU \
+  --section-tokens 530 --section-tokens 1024
+```
+
+- **Prefix caching.** Both servers run with vLLM's default prefix
+  caching, so a prompt the server has already seen skips most of its
+  prefill. Both scripts warm up on `WARMUP_SEED` (default 1000), never the
+  timed `SEED`, and write the prefix-cache hit share of the timed run into
+  the result JSON; `bench_table.py` prints it. Expect about 1-2% (the
+  client's initial test request re-sends the first prompt). A seed's first
+  N prompts are the same at any `--num-prompts` of N or more, so each timed
+  run on one server needs its own seed. The 2026-09-23 A10 files were run
+  before this and have their first 16 timed prompts cached.
+
+- **Pinning.** The server container gets `--cpuset-cpus 2-29` (14 physical
+  cores, 28 vCPUs; on this shape SMT siblings are pairs 2k, 2k+1) and one
+  OMP thread per physical core (`VLLM_CPU_OMP_THREADS_BIND=2,4,...,28`);
+  the client container runs on core 0 (vCPUs 0-1), which it shares with
+  k3s. Other shapes: set `SERVER_CPUS`, `OMP_BIND` and `CLIENT_CPUS` from
+  `lscpu -e` before running. Each result JSON records the pinning.
+- **Same client and prompts as the A10.** `vllm bench serve` v0.10.2 from
+  the CPU image, the tokenizer mounted at `/models/financial-lora` as in
+  the pod, and the same seeds; each CPU file's total input tokens match
+  the A10 file with the same seed and prompt count.
+- **Nothing is exposed.** The server binds 127.0.0.1:8100 on the host.
+
 ## Findings capture — after any eval run
 
 Every eval pod and the aggregate print a base64 tar of

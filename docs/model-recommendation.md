@@ -3,7 +3,9 @@
 2026-09-28. Every figure below comes from
 [numbers-of-record.md](numbers-of-record.md),
 [eval-methodology.md](eval-methodology.md), or the committed script named
-beside it. No new eval runs went into this page.
+beside it. No new eval runs went into this page. The CPU serving column
+comes from a 2026-09-28 benchmark on the same node (eval-methodology,
+"CPU inference benchmark"); no eval ran with CPU serving.
 
 ## 1. Question
 
@@ -41,12 +43,12 @@ Four arms, same 40 tickers, judge v2, all from the image built 2026-09-23
 (VM.GPU.A10.1, single-node k3s), vLLM v0.10.2, identical pinned sampling.
 A dated comparison set, not numbers of record.
 
-| Arm (writes FH + RF) | Run | Unsupported, judge-flagged (v2) | 95% CI | Output tok/s (A10) | Mean E2E per request (A10) | Mean brief time | Cost of FH + RF per brief |
-|---|---|---|---|---|---|---|---|
-| Hosted (Haiku) | `kcf7s`; rerun `dvvxk` | 4/383 = 1.04%; 7/389 = 1.80% | 0.4-2.7%; 0.9-3.7% | n/a | not measured | 32.8 s; 34.4 s | at most $0.0055 (full brief $0.0366, cost of record) |
-| Qwen2.5-7B-Instruct | `cnkp2` | 18/393 = 4.58% | 2.9-7.1% | 194.6 | 10517 ms | 32.7 s | A10: $0.0182 one at a time; $0.00057 busy |
-| Qwen2.5-1.5B-Instruct | `4nfsm` | 31/400 = 7.75% | 5.5-10.8% | 711.3 | 2878 ms | 34.0 s | A10: $0.0189; $0.00031 |
-| QLoRA fine-tune (1.5B, merged) | `v924f` | 25/385 = 6.49% | 4.4-9.4% | 711.5 | 2877 ms | 34.1 s | A10: $0.0190; $0.00041 |
+| Arm (writes FH + RF) | Run | Unsupported, judge-flagged (v2) | 95% CI | Output tok/s (A10) | Output tok/s (Xeon CPU) | Mean E2E per request (A10) | Mean brief time | Cost of FH + RF per brief |
+|---|---|---|---|---|---|---|---|---|
+| Hosted (Haiku) | `kcf7s`; rerun `dvvxk` | 4/383 = 1.04%; 7/389 = 1.80% | 0.4-2.7%; 0.9-3.7% | n/a | n/a | not measured | 32.8 s; 34.4 s | at most $0.0055 (full brief $0.0366, cost of record) |
+| Qwen2.5-7B-Instruct | `cnkp2` | 18/393 = 4.58% | 2.9-7.1% | 194.6 | not run | 10517 ms | 32.7 s | A10: $0.0182 one at a time; $0.00057 busy |
+| Qwen2.5-1.5B-Instruct | `4nfsm` | 31/400 = 7.75% | 5.5-10.8% | 711.3 | 22.9 | 2878 ms | 34.0 s | A10: $0.0189; $0.00031 |
+| QLoRA fine-tune (1.5B, merged) | `v924f` | 25/385 = 6.49% | 4.4-9.4% | 711.5 | 22.9 | 2877 ms | 34.1 s | A10: $0.0190; $0.00041 |
 
 Exact two-sided Fisher, no multiplicity correction: fine-tune vs its base
 p = 0.58; 7B vs hosted `kcf7s` p = 0.0039; 1.5B vs 7B p = 0.076 (not
@@ -60,6 +62,21 @@ synthesis), with two tickers in flight at a time. Mean retrieval time
 alone varied from 8.5 to 13.3 s across these runs, so brief-time
 differences of a second or two carry no signal. Cost columns are in
 section 4.
+
+**CPU serving (2026-09-28, a dated measurement).** The Xeon column is the
+same client and shape at concurrency 8, run on the node's own CPU: an
+Intel Xeon Platinum 8358 (Ice Lake, no AMX or AVX512_BF16), 14 of its 15
+cores pinned, vLLM v0.10.2's CPU backend, BF16, not tuned. A same-day A10
+rerun gave 708.3 output tok/s for the fine-tune, about 31 times the CPU's
+22.9. The 7B was not run on the CPU, since the 1.5B models were under the
+~30 tok/s bar set for trying it. At concurrency 1 (one brief at a time),
+writing the two local sections of one brief takes an estimated 4.8 s on
+the A10 and 35.0 s on the CPU for the fine-tune (29.1 s for the 1.5B base),
+from the measured TTFT and TPOT and the token counts T in section 4. A mean
+brief is about 34 s, so on this CPU the two sections are not short: they
+alone take about as long as the whole brief. Brief time with CPU serving
+was not measured. Method, table and caveats: eval-methodology, ["CPU
+inference benchmark"](eval-methodology.md#cpu-inference-benchmark-2026-09-28-a-dated-measurement).
 
 **Locally served sections only.** The fairer comparison: the other
 sections came from the same models in every arm. Claims are attributed
@@ -157,8 +174,9 @@ C is at most $0.0055, and B is at least 363.
 
 ## 6. Next steps
 
-- Add a CPU inference column (the node's Xeon) for the 1.5B, if that run
-  is made.
+- CPU serving was measured on the node's Xeon (section 3). A Xeon with
+  AMX, or quantized weights, would each be a separate measurement; neither
+  has run.
 - A full open-weight pipeline, with open-weight synthesis and judge, would
   be a separate study.
 - Audit the locally served sections directly. Today the judge reads only
@@ -173,6 +191,7 @@ C is at most $0.0055, and B is at least 363.
 | FH + RF rates, CIs, p-values, coverage | `python eval/multi_arm_stats.py --run hosted eval/runs/kcf7s-claims.jsonl eval/runs/raw/kcf7s-findings --run lora eval/runs/v924f-claims.jsonl eval/runs/raw/v924f-findings --run 1.5b eval/runs/4nfsm-claims.jsonl eval/runs/raw/4nfsm-findings --run 7b eval/runs/cnkp2-claims.jsonl eval/runs/raw/cnkp2-findings` |
 | Output tok/s, E2E latency | `eval/runs/bench/<served-name>.json` from `scripts/vm_bench_serve.sh` (the script refuses to run unless the pod serves that name; `model_id` in the JSON is the fixed in-pod mount path) |
 | Brief time, retrieval time | `eval/runs/<run>-aggregate.txt`, TOTAL row, Pipe(s) and Retr(s) (`grounding_check.py` `pipeline_s`) |
+| Output tok/s (Xeon CPU), section time at concurrency 1 | `eval/runs/bench/cpu-2026-09-28/*.json` and `eval/runs/bench/a10-2026-09-28/*.json` from `scripts/vm_bench_cpu.sh` and `scripts/vm_bench_serve.sh`, tabulated by `scripts/bench_table.py` (command in eval-methodology, "CPU inference benchmark") |
 | Cost per brief (A10), T, break-even | `python scripts/cost_per_brief_selfhost.py --gpu-hourly-usd 2.00` over the findings, bench JSONs, aggregates and `cost_record_post_fix.json` |
 | $0.0366 full brief | cost of record, 2026-09-06, `scripts/cost_report.py` |
 | A10 price | [cost.md](cost.md), OCI price-list API, retrieved 2026-09-24 |
