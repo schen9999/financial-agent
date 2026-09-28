@@ -24,11 +24,12 @@ and nothing here says how one would perform.
   (p = 0.0039 or lower against `kcf7s`).
 - **If data must stay in the tenancy: Qwen2.5-7B-Instruct.** It is the
   best open-weight arm at 4.58%, but it clears the 5% gate on the point
-  estimate only (CI 2.9-7.1%). It serves at about a quarter of the 1.5B's
-  throughput, though mean brief time did not change (32.7 s vs 32.8 s
-  hosted). On the two sections it writes, it trails hosted 3.61% vs 0.50%
-  (p = 0.050, borderline). Below 363 briefs an hour, the A10 costs more
-  than the hosted sections it replaces.
+  estimate only (CI 2.9-7.1%). On the two sections it writes, its gap to
+  hosted is borderline: 3.61% vs 0.50%, p = 0.050, just above 0.05 and
+  so not significant at that level. It serves at about a quarter of the
+  1.5B's throughput, but mean brief time was unchanged (32.7 s vs 32.8 s
+  hosted). Below 363 briefs an hour, the A10 costs more than the hosted
+  sections it replaces.
 - **Do not use the 1.5B, tuned or untuned.** Both fail the gate, and the
   QLoRA fine-tune did not beat its own base model (6.49% vs 7.75%,
   p = 0.58).
