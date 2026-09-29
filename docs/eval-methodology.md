@@ -856,7 +856,7 @@ Output tok/s / median TTFT ms / median TPOT ms:
 - **llama.cpp Q4_K_M sweep: concurrency 1 only.** 37.9 tok/s, median
   TTFT 1987 ms, median TPOT 18.9 ms at 14 threads, in line with the main
   Q4_K_M run (37.5 tok/s). The concurrency-2 cell lost 4 of 32 requests to
-  the keep-alive close below, over the 5% limit, so it was refused and the
+  the keep-alive close below (12.5%, over the limit), so it was refused and the
   rest of that sweep did not run. It was not retried: retrying until a
   run passes would select runs by luck. No llama.cpp concurrency or
   thread scaling was measured.
@@ -894,12 +894,13 @@ them).
   request frees its concurrency slot at once, so the server's load is
   unchanged. A run is accepted with losses only if every error is this
   one, the server's token count proves the lost requests generated
-  nothing, and at most 5% of prompts are lost; the indices are recorded
-  in `lost_requests`, and the table prints the run as "199 of 200". The
-  limit was 1% until the mechanism was measured; the Q8_0 run with 3
-  losses was refused under it and rerun (0 lost), so no committed file
-  depends on the change. One committed run has a loss: Q4_K_M at
-  concurrency 8, request 8, 199 of 200.
+  nothing, and at most 1% of prompts are lost (at least one allowed); the
+  indices are recorded in `lost_requests`, and the table prints the run
+  as "199 of 200". A 5% limit was considered after the cause was measured
+  and not adopted, because no result needed it: every committed run
+  passes at 1%, the Q8_0 run with 3 losses was refused and rerun (0
+  lost), and the sweep cell below fails either way. One committed run has
+  a loss: Q4_K_M at concurrency 8, request 8, 199 of 200.
 - **Refused and diagnostic runs are not kept.** Three F16 concurrency-8
   runs were refused (one lost request each; the first also under the
   uncorrected count, the third with pings off) and one Q8_0

@@ -82,14 +82,22 @@ def _losses(n, lost):
                    errors=[""] * ok + [LOSS] * lost)
 
 
-def test_transport_losses_up_to_five_percent_accepted():
-    out = bf.fix(_losses(100, 5), L, L * 96, 0)
-    assert out["lost_requests"] == [95, 96, 97, 98, 99]
+def test_transport_losses_up_to_one_percent_accepted():
+    out = bf.fix(_losses(200, 2), L, L * 199, 0)
+    assert out["lost_requests"] == [198, 199]
 
 
-def test_transport_losses_over_five_percent_refused():
-    with pytest.raises(ValueError, match=r"lost 6 of 100 requests .*\(limit 5%\)"):
-        bf.fix(_losses(100, 6), L, L * 95, 0)
+def test_transport_losses_over_one_percent_refused():
+    # the 2026-09-29 Q8_0 concurrency-8 run: 3 of 200 lost
+    with pytest.raises(ValueError, match=r"lost 3 of 200 requests .*\(limit 1%\)"):
+        bf.fix(_losses(200, 3), L, L * 198, 0)
+
+
+def test_one_loss_allowed_in_a_small_cell():
+    assert bf.fix(_losses(32, 1), L, L * 32, 0)["lost_requests"] == [31]
+    # the Q4_K_M sweep's concurrency-2 cell: 4 of 32 lost
+    with pytest.raises(ValueError, match=r"lost 4 of 32 requests"):
+        bf.fix(_losses(32, 4), L, L * 29, 0)
 
 
 def test_lost_request_must_not_have_generated():

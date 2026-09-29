@@ -518,8 +518,8 @@ kubectl -n financial-agent scale deploy api worker streamlit mcp --replicas=1
 - **A lost request** (aiohttp `Server disconnected` before any response
   header, never reaching the server: llama-server closes every streamed
   response's connection while advertising keep-alive) is recorded, not
-  retried; more than 5% of prompts lost, or any other error, refuses the
-  run. Low-concurrency llama.cpp cells are the most exposed (the Q4_K_M
+  retried; more than 1% of prompts lost (at least one allowed), or any
+  other error, refuses the run. Low-concurrency llama.cpp cells are the most exposed (the Q4_K_M
   sweep's concurrency-2 cell lost 4 of 32). Do not rerun a refused run
   until one passes; record it as refused.
 - **Calibration count.** `data/sections_dataset.jsonl` has 104 rows;

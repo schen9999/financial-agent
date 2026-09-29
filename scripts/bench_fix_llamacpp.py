@@ -31,11 +31,12 @@ not retry. Seen on 2026-09-29: 0-1 of 200 lost per F16 concurrency-8 run
 lost request frees its concurrency slot at once, so the server's load is
 unchanged. A run is accepted with such losses only if every error is that
 one, the server count above holds for the completed requests (proving the
-lost ones generated nothing), and at most 5% of prompts are lost, so the
-prompt set stays at least 95% the same across engines (a 1% limit, set
-before the mechanism was known, refused the Q8_0 run). Their indices go
-in "lost_requests"; the metrics, as the client computes them, cover the
-completed requests. Any other error refuses the run.
+lost ones generated nothing), and at most 1% of prompts are lost (at
+least one allowed). A 5% limit was considered once the mechanism was
+measured and not adopted: no committed result needs it (the Q8_0 run with
+3 of 200 lost was refused and its rerun lost none). Indices of the lost
+requests go in "lost_requests"; the metrics, as the client computes them,
+cover the completed requests. Any other error refuses the run.
 
 The client's own figures are kept under "client_retokenized". Input: a
 result saved with --save-detailed; the bulky per-request arrays are
@@ -53,7 +54,7 @@ COUNT_KEYS = ("total_output_tokens", "output_throughput", "total_token_throughpu
               "p50_tpot_ms", "p90_tpot_ms", "p99_tpot_ms")
 DETAIL_KEYS = ("input_lens", "output_lens", "ttfts", "itls", "generated_texts", "errors")
 TRANSPORT_LOSS = "ServerDisconnectedError"
-MAX_LOST_PCT = 5
+MAX_LOST_PCT = 1
 
 
 def percentile(xs, p):
