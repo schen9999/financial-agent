@@ -694,7 +694,7 @@ writes; attributed claims): 15/96 = 15.62% (9.7–24.2%) vs 15/112 =
 13.39% (8.3–20.9%), p = 0.70. All other claims: 8/248 vs 10/273,
 p = 0.82.
 
-- **No detectable grounding difference from quantizing.** That is not
+- **No detectable difference at this sample size.** That is not
   equivalence: each arm's interval spans about five points, so a
   difference of a few points would not show at this size.
 - **Hosted, for reference, not a new claim.** The W4A16 arm trails the
@@ -704,9 +704,11 @@ p = 0.82.
   same image and node. The hosted arm on this image moved from 1.04% to
   1.80% between two days (p = 0.55), so run-to-run variation of that size
   is expected.
-- **Fewer claims.** The synthesis made 344 claims against 385, and 69
-  against 85 restated Financial Health. Claim counts come from the
-  synthesis, so the per-section buckets differ in size across arms.
+- **Fewer checkable claims.** The quantized arm produced 344 judged
+  claims against the BF16 arm's 385, and 69 against 85 restated
+  Financial Health. Claim counts come from the synthesis, so the rates
+  sit on different denominators and the per-section buckets differ in
+  size across arms.
 - Five free-form verdicts carry `claim=null` (AMZN, MSFT and NVDA
   UNSUPPORTED, OMER INFERENCE, VERV SUPPORTED); they count in the totals
   and land in "unattributed". The aggregate's estimated run cost was
