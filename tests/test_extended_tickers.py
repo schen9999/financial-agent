@@ -36,3 +36,18 @@ def test_local_arm_yaml_matches_txt_exactly():
 def test_local_arm_yaml_sets_local_model_arm():
     text = (REPO / "argo" / "eval-run-extended-local.yaml").read_text(encoding="utf-8")
     assert re.search(r"name: arms\s+value: local-model", text)
+
+
+def _spec_lines(name):
+    """The file's YAML without comments (the manifest itself)."""
+    text = (REPO / "argo" / name).read_text(encoding="utf-8")
+    return [ln for ln in text.splitlines() if ln.strip() and not ln.lstrip().startswith("#")]
+
+
+def test_w4a16_arm_identical_to_local_arm_except_name_prefix():
+    local = _spec_lines("eval-run-extended-local.yaml")
+    w4 = _spec_lines("eval-run-extended-local-w4a16.yaml")
+    diff = [(a, b) for a, b in zip(local, w4) if a != b]
+    assert len(local) == len(w4)
+    assert diff == [("  generateName: grounding-eval-extended-local-",
+                     "  generateName: grounding-eval-extended-local-w4a16-")]
