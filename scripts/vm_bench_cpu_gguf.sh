@@ -24,8 +24,12 @@
 #   (each request needs 1024 + 256; the margin covers re-tokenization), T
 #   threads bound one per physical core (default 14 = vCPUs 2,4,...,28,
 #   strict placement for generation and prompt processing), in cpuset
-#   2-29, 64 GB, 127.0.0.1:8100, Prometheus /metrics on. Everything else is
-#   llama-server's default, prompt caching included.
+#   2-29, 64 GB, 127.0.0.1:8100, Prometheus /metrics on, SSE keep-alive
+#   pings off. Everything else is llama-server's default, prompt caching
+#   included. Pings off because with them on (default every 30 s) the F16
+#   concurrency-8 run lost request 109 of 200 to "Server disconnected" in
+#   both of two runs, a request that never reached the server (2026-09-29);
+#   with them off, 200 of 200. The client skips pings, so no metric uses them.
 # bench: `vllm bench serve` from the vLLM CPU image, exactly as
 #   vm_bench_cpu.sh: random 1024 in / 256 out, --ignore-eos, rate inf,
 #   /v1/completions, tokenizer /models/financial-lora (qwen-ft), client on
@@ -133,7 +137,7 @@ serve() {
     -m "/models/gguf/$(basename "$file")" --alias "$served" --host 127.0.0.1 --port "$PORT" \
     --ctx-size $((PARALLEL * SLOT_CTX)) --parallel "$PARALLEL" \
     --threads "$THREADS" --threads-batch "$THREADS" --cpu-mask "$mask" --cpu-strict 1 \
-    --metrics --no-webui >/dev/null
+    --metrics --no-webui --sse-ping-interval -1 >/dev/null
   for _ in $(seq 180); do
     docker ps -q -f name="^$NAME\$" | grep -q . || { docker logs --tail 50 "$NAME" >&2; echo "server exited" >&2; exit 1; }
     curl -sf "http://127.0.0.1:$PORT/v1/models" >/dev/null && break
