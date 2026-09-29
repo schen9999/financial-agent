@@ -670,6 +670,74 @@ is `qwen-ft/model.safetensors` on the node.) The full per-run table
 Raw results: `eval/runs/bench/a10-quant-2026-09-29/` (the JSON `date`
 field is the pod's local time, UTC−7; the runs were 05:00-05:02 UTC).
 
+### Grounding: W4A16 vs the BF16 fine-tune
+
+`grounding-eval-extended-local-w4a16-r5nzh`, 2026-09-29 05:03-05:27 UTC,
+submitted from `argo/eval-run-extended-local-w4a16.yaml` (the local-arm
+file with a different name prefix; a test holds the two equal otherwise)
+while vLLM served `qwen-ft-w4a16` as `financial-lora-w4a16`. Arm
+`local-model`, judge v2, the 40 extended tickers, 40/40 completed with no
+skips. Same node, WorkflowTemplate, pinned local sampling (the aggregate
+header prints it) and app image as the four-arm set: the image built
+2026-09-23 22:13 UTC, not rebuilt since. The comparison of interest is
+W4A16 vs the BF16 fine-tune `v924f`, and that is the only claim this run
+supports.
+
+| Arm (writes FH + RF) | Workflow | Claims | Sup/Uns/Inf | Unsupported, judge-flagged (Wilson 95% CI) | Gate (≤5%) |
+|---|---|---|---|---|---|
+| financial-lora, BF16 (2026-09-23) | grounding-eval-extended-local-v924f | 385 | 346/25/14 | 6.49% (4.4–9.4%) | FAILED |
+| financial-lora, GPTQ W4A16 (2026-09-29) | grounding-eval-extended-local-w4a16-r5nzh | 344 | 308/23/13 | 6.69% (4.5–9.8%) | FAILED |
+
+Exact two-sided Fisher, W4A16 vs BF16: all claims 23/344 vs 25/385,
+**p = 1.00**. Financial Health + Risk Factors (the sections the model
+writes; attributed claims): 15/96 = 15.62% (9.7–24.2%) vs 15/112 =
+13.39% (8.3–20.9%), p = 0.70. All other claims: 8/248 vs 10/273,
+p = 0.82.
+
+- **No detectable grounding difference from quantizing.** That is not
+  equivalence: each arm's interval spans about five points, so a
+  difference of a few points would not show at this size.
+- **Hosted, for reference, not a new claim.** The W4A16 arm trails the
+  hosted runs as the BF16 fine-tune does: p = 4.6e-05 vs `kcf7s`, 0.0011
+  vs `dvvxk`, 1.1e-05 vs both pooled (11/772).
+- **Six days apart.** `v924f` ran 2026-09-23, `r5nzh` 2026-09-29, on the
+  same image and node. The hosted arm on this image moved from 1.04% to
+  1.80% between two days (p = 0.55), so run-to-run variation of that size
+  is expected.
+- **Fewer claims.** The synthesis made 344 claims against 385, and 69
+  against 85 restated Financial Health. Claim counts come from the
+  synthesis, so the per-section buckets differ in size across arms.
+- Five free-form verdicts carry `claim=null` (AMZN, MSFT and NVDA
+  UNSUPPORTED, OMER INFERENCE, VERV SUPPORTED); they count in the totals
+  and land in "unattributed". The aggregate's estimated run cost was
+  $2.40.
+- Judge-flagged rates (judge v2; calibration of record: precision 60%
+  (9/15, CI 35.7–80.2%), population-weighted recall 32.5% on the baseline
+  run (CI 16.0–52.4%)). No reweighted estimate: the calibration miss
+  rates were measured on `j4cnp`/`lsnnc` claims and are not extended to
+  other models. The comparison holds in direction because both arms share
+  the judge.
+
+Stats (every pair, the pooled hosted test and the per-section breakdown):
+
+```bash
+python eval/multi_arm_stats.py \
+  --run hosted eval/runs/kcf7s-claims.jsonl eval/runs/raw/kcf7s-findings \
+  --run financial-lora eval/runs/v924f-claims.jsonl eval/runs/raw/v924f-findings \
+  --run lora-w4a16 eval/runs/r5nzh-claims.jsonl eval/runs/raw/r5nzh-findings \
+  --run qwen1.5b-base eval/runs/4nfsm-claims.jsonl eval/runs/raw/4nfsm-findings \
+  --run qwen7b-base eval/runs/cnkp2-claims.jsonl eval/runs/raw/cnkp2-findings \
+  --run hosted-rerun eval/runs/dvvxk-claims.jsonl eval/runs/raw/dvvxk-findings \
+  --pool hosted-pooled hosted hosted-rerun
+```
+
+Artifacts: aggregate `eval/runs/r5nzh-aggregate.txt`, findings
+`eval/runs/raw/r5nzh-findings/` (the hostPath copy, identical to the pods'
+dumps), rows `eval/runs/r5nzh-claims.jsonl` (`eval/parse_run_log.py`, no
+count mismatches), contexts `eval/runs/r5nzh-contexts/`.
+`tests/test_multi_arm_stats.py` holds the committed rows to 23/344 and
+p = 1.00.
+
 ## Dated A/B on the single-VM target (2026-09-03)
 
 Same VM, same harness, same judge (v1), ~40 minutes apart, 10/10
