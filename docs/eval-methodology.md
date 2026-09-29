@@ -599,6 +599,77 @@ through `scripts/bench_table.py` for the figures above:
 `eval/runs/bench/cpu-2026-09-28/first-pass/` (the 2026-09-23 A10 file is
 `eval/runs/bench/financial-lora.json`).
 
+## Quantization benchmark (2026-09-29, a dated measurement)
+
+What quantizing the fine-tune does to serving speed on the node's A10,
+and to grounding quality with A10 serving. Same node as the CPU benchmark
+above (`vm-a10-inst-2`), same benchmark client and shape. Nothing here is
+a number of record.
+
+**Engine vs precision.** On the A10 only the precision changes: BF16 and
+W4A16 both run on vLLM v0.10.2 with the committed serving args.
+
+**Quantized weights (A10).** GPTQ W4A16 with llm-compressor 0.7.1
+`oneshot`: int4 weights, symmetric, group size 128, activations 16-bit,
+every Linear layer except `lm_head`. The output is a compressed-tensors
+checkpoint (compressed-tensors 0.11.0, the version vLLM v0.10.2 pins).
+`scripts/quantize_w4a16.py`, run in a throwaway venv on the node's A10
+(256 s). Its record, `quant_meta.json`, is committed beside the results.
+
+- **Calibration set:** `data/sections_dataset.jsonl`, the fine-tune's own
+  training pairs (78 Financial Health, 26 Risk Factors). All 104 rows were
+  used, in a seed-42 order, each rendered with the chat template over the
+  user and assistant turns: 69,986 tokens, none truncated at 2048. The
+  file has 104 rows, so the planned 256 samples were not possible, and the
+  script refuses to fill the gap with repeats.
+- **Size:** 1.61 GB on disk, against 3.09 GB for the FP16 checkpoint.
+  llm-compressor saved the tied embedding untied: `lm_head` is a separate
+  FP16 tensor, byte-identical to `embed_tokens`, which is byte-identical
+  to the source's. So 0.93 GB of the 1.61 GB is the FP16 embedding twice
+  over. The untying changes the size on disk, not the weights.
+- **Serving:** `make vm-vllm MODEL_DIR=qwen-ft-w4a16
+  SERVED_NAME=financial-lora-w4a16 MAX_LEN=4096` needed no code or
+  manifest change and no `--quantization` flag, since vLLM reads the
+  scheme from the weights' `config.json`. The pod logged
+  `Using MarlinLinearKernel for CompressedTensorsWNA16`, and 18.07 GiB of
+  KV cache against the BF16 deployment's 16.72 GiB.
+
+### A10: BF16 vs W4A16
+
+`scripts/vm_bench_serve.sh` against the k3s pod, the 2026-09-28 A10 shape
+and seeds: concurrency 8 × 200 prompts (seed 1) and concurrency 1 × 50
+(seed 2), each after a 16-prompt warmup on seed 1000, with api, worker,
+streamlit and mcp scaled to 0; the W4A16 pod was fresh. The prompts are identical to
+the 2026-09-28 BF16 files (same total input tokens: 204,537 and 50,992).
+BF16 is the 2026-09-28 run from the CPU benchmark above, on the same node
+and pod spec.
+
+```bash
+python scripts/bench_table.py --matrix eval/runs/bench/a10-2026-09-28 \
+  eval/runs/bench/a10-quant-2026-09-29 \
+  --weights-bytes eval/runs/bench/a10-2026-09-28=3087466808
+```
+
+| Engine | Precision | Device | Output tok/s (c=8) | Mean E2E s (c=1) | TTFT p50 ms (c=1) | Weights on disk (GB) |
+|---|---|---|---|---|---|---|
+| vllm 0.10.2 | bfloat16 | NVIDIA A10 | 708.3 | 2.3 | 52 | 3.09 |
+| vllm 0.10.2 | w4a16-g128 | NVIDIA A10 | 1075.7 | 1.3 | 58 | 1.61 |
+
+(The BF16 files predate the `weights_bytes` metadata; 3,087,466,808 bytes
+is `qwen-ft/model.safetensors` on the node.) The full per-run table
+(`python scripts/bench_table.py` over the same four files) adds:
+
+- **Decode is faster.** Median TPOT at concurrency 1 was 5.0 ms against
+  8.8 ms (1.72× the output tok/s: 190.9 vs 111.1), and 6.4 against
+  10.5 ms at concurrency 8 (1.52×: 1075.7 vs 708.3).
+- **Prefill is not.** Median TTFT rose at both concurrencies: 58 vs 52 ms
+  at concurrency 1, 286 vs 197 ms at concurrency 8.
+- **Prefix cache:** 0.5% and 1.9% of prompt tokens hit, about the
+  client's initial test request re-sending the first prompt.
+
+Raw results: `eval/runs/bench/a10-quant-2026-09-29/` (the JSON `date`
+field is the pod's local time, UTC−7; the runs were 05:00-05:02 UTC).
+
 ## Dated A/B on the single-VM target (2026-09-03)
 
 Same VM, same harness, same judge (v1), ~40 minutes apart, 10/10
