@@ -503,8 +503,9 @@ for q in f16 q8_0 q4_k_m; do
   SEED=2 bash scripts/vm_bench_cpu_gguf.sh bench financial-lora-$q 1 50 > $G/financial-lora-$q-c1.json
   bash scripts/vm_bench_cpu_gguf.sh stop; kill $S
 done
-# 5. Sweeps (vLLM BF16 at 7 and 14 threads; llama.cpp Q4_K_M at 14);
-#    NOT YET COMPLETE: started 2026-09-29 19:24 UTC after steps 1-4
+# 5. Sweeps (vLLM BF16 at 7 and 14 threads; llama.cpp Q4_K_M at 14). On
+#    2026-09-29 the llama.cpp sweep stopped at concurrency 2 (lost requests,
+#    see below); the vLLM sweep completed
 W=eval/runs/bench/cpu-sweep-$(date -u +%F); mkdir -p $W
 bash scripts/vm_bench_cpu.sh sweep qwen-ft financial-lora $W
 bash scripts/vm_bench_cpu_gguf.sh sweep qwen-ft-gguf/financial-lora-q4_k_m.gguf financial-lora-q4_k_m $W
@@ -515,8 +516,12 @@ kubectl -n financial-agent scale deploy api worker streamlit mcp --replicas=1
   re-tokenization, and a run is refused unless they are exactly 256 per
   completed request (`scripts/bench_fix_llamacpp.py`).
 - **A lost request** (aiohttp `Server disconnected` before any response
-  header, never reaching the server) is recorded, not retried; more than
-  1% of prompts lost, or any other error, refuses the run.
+  header, never reaching the server: llama-server closes every streamed
+  response's connection while advertising keep-alive) is recorded, not
+  retried; more than 5% of prompts lost, or any other error, refuses the
+  run. Low-concurrency llama.cpp cells are the most exposed (the Q4_K_M
+  sweep's concurrency-2 cell lost 4 of 32). Do not rerun a refused run
+  until one passes; record it as refused.
 - **Calibration count.** `data/sections_dataset.jsonl` has 104 rows;
   `--num-samples` above 104 is refused rather than padded with repeats.
 

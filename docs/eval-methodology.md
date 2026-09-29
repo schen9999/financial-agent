@@ -817,6 +817,53 @@ python scripts/bench_table.py --matrix eval/runs/bench/a10-2026-09-28 \
 
 Raw results: `eval/runs/bench/cpu-gguf-2026-09-29/`.
 
+### CPU sweep: concurrency × threads
+
+vLLM BF16 on the CPU (`scripts/vm_bench_cpu.sh sweep`): concurrency 1, 2,
+4, 8 and 16 at 7 and 14 OMP threads, one per physical core from core 1
+(vCPUs 2,4,...,14 or 2,4,...,28; the cpuset stays 2-29). One fresh server
+per thread count with `--max-num-seqs 16`, the only serving arg the sweep
+changes, so concurrency 16 is admitted. Each cell is its own timed run
+with its own seed (threads × 100 + concurrency) and max(32, 8 ×
+concurrency) prompts, after the usual warmup; quiet node as above. Cells
+hold 32-128 prompts, fewer than the 200/50 of the main runs.
+
+```bash
+python scripts/bench_table.py --sweep eval/runs/bench/cpu-sweep-2026-09-29
+```
+
+Output tok/s / median TTFT ms / median TPOT ms:
+
+| Concurrency | 7 threads | 14 threads |
+|---|---|---|
+| 1 | 9.9 / 11776 / 56.4 | 14.9 / 6124 / 44.0 |
+| 2 | 10.8 / 12699 / 100.7 | 17.3 / 6672 / 72.4 |
+| 4 | 12.2 / 23646 / 241.5 | 19.5 / 12277 / 160.2 |
+| 8 | 13.1 / 35029 / 477.8 | 23.0 / 15505 / 281.0 |
+| 16 | 12.1 / 46670 / 1126.1 | 25.4 / 23848 / 539.4 |
+
+- **Threads.** Doubling from 7 to 14 threads raised output throughput by
+  1.5× at concurrency 1 (9.9 to 14.9 tok/s) and 2.1× at concurrency 16
+  (12.1 to 25.4), and roughly halved median TTFT at every concurrency.
+- **Concurrency.** At 7 threads throughput peaked at concurrency 8 (13.1)
+  and fell at 16 (12.1). At 14 threads it was still rising at 16 (25.4,
+  against 23.0 at 8), so this sweep does not show where it saturates.
+  Batching costs latency: median TTFT at 14 threads went from 6.1 s at
+  concurrency 1 to 23.8 s at 16.
+- **Consistent with the main runs.** The 14-thread cells at concurrency 1
+  and 8 (14.9 and 23.0 tok/s) match the 2026-09-28 files (15.0 and 22.9)
+  within 1%, on different seeds and a different `--max-num-seqs`.
+- **llama.cpp Q4_K_M sweep: concurrency 1 only.** 37.9 tok/s, median
+  TTFT 1987 ms, median TPOT 18.9 ms at 14 threads, in line with the main
+  Q4_K_M run (37.5 tok/s). The concurrency-2 cell lost 4 of 32 requests to
+  the keep-alive close below, over the 5% limit, so it was refused and the
+  rest of that sweep did not run. It was not retried: retrying until a
+  run passes would select runs by luck. No llama.cpp concurrency or
+  thread scaling was measured.
+
+Raw results: `eval/runs/bench/cpu-sweep-2026-09-29/` (load logs beside
+them).
+
 ### Method notes (llama.cpp)
 
 - **Output tokens are counted on the server.** `vllm bench serve` v0.10.2
