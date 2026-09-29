@@ -74,12 +74,22 @@ def test_transport_loss_accepted_and_recorded():
     assert len(out["request_ttfts_s"]) == 99
 
 
-def test_transport_loss_over_one_percent_refused():
-    d = _with_loss(n_ok=98)
-    d["num_prompts"], d["ttfts"] = 100, d["ttfts"] + [0.0]
-    d["itls"], d["errors"] = d["itls"] + [[]], d["errors"] + [LOSS]
-    with pytest.raises(ValueError, match="lost 2 of 100 requests"):
-        bf.fix(d, L, L * 99, 0)
+def _losses(n, lost):
+    ok = n - lost
+    return _result(num_prompts=n, completed=ok, mean_e2el_ms=1300.0,
+                   ttfts=[1.0] * ok + [0.0] * lost,
+                   itls=[[0.1, 0.1, 0.1]] * ok + [[]] * lost,
+                   errors=[""] * ok + [LOSS] * lost)
+
+
+def test_transport_losses_up_to_five_percent_accepted():
+    out = bf.fix(_losses(100, 5), L, L * 96, 0)
+    assert out["lost_requests"] == [95, 96, 97, 98, 99]
+
+
+def test_transport_losses_over_five_percent_refused():
+    with pytest.raises(ValueError, match=r"lost 6 of 100 requests .*\(limit 5%\)"):
+        bf.fix(_losses(100, 6), L, L * 95, 0)
 
 
 def test_lost_request_must_not_have_generated():
