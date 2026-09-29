@@ -59,13 +59,18 @@ COLUMNS = [
 ]
 
 
+def is_result(path):
+    """A `vllm bench serve` result, not a sidecar such as quant_meta.json."""
+    return "num_prompts" in json.loads(path.read_text(encoding="utf-8"))
+
+
 def expand(specs):
-    """A directory spec becomes one spec per *.json in it, in name order."""
+    """A directory spec becomes one spec per result *.json in it, in name order."""
     out = []
     for spec in specs:
         path, _, _ = spec.partition("=")
         p = Path(path)
-        out += [str(f) for f in sorted(p.glob("*.json"))] if p.is_dir() else [spec]
+        out += [str(f) for f in sorted(p.glob("*.json")) if is_result(f)] if p.is_dir() else [spec]
     return out
 
 

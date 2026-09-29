@@ -109,6 +109,7 @@ def test_directory_expands_to_its_json_files(tmp_path):
     _write(tmp_path, "b.json")
     _write(tmp_path, "a.json")
     (tmp_path / "load.log").write_text("x", encoding="utf-8")
+    (tmp_path / "quant_meta.json").write_text('{"scheme": "W4A16"}', encoding="utf-8")
     assert [pathlib.Path(p).name for p in bt.expand([str(tmp_path)])] == ["a.json", "b.json"]
 
 
