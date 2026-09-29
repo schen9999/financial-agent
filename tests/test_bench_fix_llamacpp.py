@@ -1,0 +1,65 @@
+"""scripts/bench_fix_llamacpp.py: output-token counts come from the server,
+count-dependent metrics are recomputed with the client's formulas, and a
+run with a failed request or a short server count is refused."""
+import importlib.util
+import pathlib
+
+import pytest
+
+_MOD_PATH = pathlib.Path(__file__).resolve().parents[1] / "scripts" / "bench_fix_llamacpp.py"
+_spec = importlib.util.spec_from_file_location("bench_fix_llamacpp", _MOD_PATH)
+bf = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(bf)
+
+L = 4  # output tokens per request
+
+
+def _result(**kw):
+    # two requests: TTFT 1 s / 2 s, three ITLs each summing to 0.3 s / 0.6 s
+    d = {"num_prompts": 2, "completed": 2, "duration": 10.0, "total_input_tokens": 100,
+         "total_output_tokens": 7, "output_throughput": 0.7, "total_token_throughput": 10.7,
+         "mean_tpot_ms": 1.0, "median_tpot_ms": 1.0, "std_tpot_ms": 0.0,
+         "p50_tpot_ms": 1.0, "p90_tpot_ms": 1.0, "p99_tpot_ms": 1.0,
+         "mean_e2el_ms": 1950.0, "mean_ttft_ms": 1500.0,
+         "input_lens": [50, 50], "output_lens": [4, 3], "ttfts": [1.0, 2.0],
+         "itls": [[0.1, 0.1, 0.1], [0.2, 0.2, 0.2]], "generated_texts": ["a", "b"],
+         "errors": ["", ""]}
+    d.update(kw)
+    return d
+
+
+def test_counts_and_tpot_recomputed():
+    out = bf.fix(_result(), L, L * 3, 99)
+    assert out["total_output_tokens"] == 8
+    assert out["output_throughput"] == pytest.approx(0.8)
+    assert out["total_token_throughput"] == pytest.approx(10.8)
+    assert out["mean_tpot_ms"] == pytest.approx(150.0)  # (100 + 200) / 2 ms
+    assert out["p50_tpot_ms"] == pytest.approx(150.0)
+    assert out["p99_tpot_ms"] == pytest.approx(199.0)
+    assert out["std_tpot_ms"] == pytest.approx(50.0)
+    assert out["client_retokenized"]["total_output_tokens"] == 7
+    assert out["mean_ttft_ms"] == 1500.0 and out["mean_e2el_ms"] == 1950.0
+    assert out["request_decode_s"] == pytest.approx([0.3, 0.6])
+    assert "itls" not in out and "generated_texts" not in out
+    assert out["llamacpp_tokens_predicted"] == 12 and out["llamacpp_prompt_tokens_processed"] == 99
+
+
+def test_failed_request_refused_with_error_text():
+    d = _result(completed=1, errors=["", "Never received a valid chunk"])
+    with pytest.raises(ValueError, match="completed 1 of 2.*Never received a valid chunk"):
+        bf.fix(d, L, L * 3, 0)
+
+
+def test_short_server_count_refused():
+    with pytest.raises(ValueError, match=r"server generated 11 tokens, want 4 x \(2 \+ 1\)"):
+        bf.fix(_result(), L, 11, 0)
+
+
+def test_detail_must_reproduce_client_e2e():
+    with pytest.raises(ValueError, match="do not reproduce"):
+        bf.fix(_result(mean_e2el_ms=2500.0), L, L * 3, 0)
+
+
+def test_percentile_matches_numpy_linear():
+    assert bf.percentile([1, 2, 3, 4], 90) == pytest.approx(3.7)
+    assert bf.percentile([5], 99) == 5

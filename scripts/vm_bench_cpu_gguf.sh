@@ -29,9 +29,9 @@
 # bench: `vllm bench serve` from the vLLM CPU image, exactly as
 #   vm_bench_cpu.sh: random 1024 in / 256 out, --ignore-eos, rate inf,
 #   /v1/completions, tokenizer /models/financial-lora (qwen-ft), client on
-#   vCPUs 0-1, untimed 16-prompt warmup on WARMUP_SEED. A run whose output
-#   total is not exactly 256 tokens per prompt is refused (it would mean
-#   ignore_eos or the usage count did not hold on this server).
+#   vCPUs 0-1, untimed 16-prompt warmup on WARMUP_SEED. The timed run adds
+#   --save-detailed (what the client saves, not what it sends) for the
+#   token-count correction below.
 # sweep: concurrency SWEEP_CONC (1 2 4 8 16) at SWEEP_THREADS (14), one
 #   fresh server per thread count with --parallel 16, seed T*100 + C and
 #   max(32, 8*C) prompts per cell, as in vm_bench_cpu.sh sweep: the same
@@ -47,8 +47,11 @@
 #
 # Token counting: llama-server sends usage in the same chunk as the last
 # (empty) choice, and the v0.10.2 client reads usage only from a choice-less
-# chunk, so the client counts output tokens by re-tokenizing the text. The
-# 256-per-prompt check below is what keeps that count exact.
+# chunk, so the client counts output tokens by re-tokenizing the text, which
+# undercounts. scripts/bench_fix_llamacpp.py refuses the run unless every
+# request completed and the server generated exactly 256 tokens each, then
+# recomputes output throughput and TPOT at 256 with the client's formulas
+# (the client's figures stay in the JSON under client_retokenized).
 set -euo pipefail
 SERVER_IMAGE=${LLAMA_SERVER_IMAGE:-ghcr.io/ggml-org/llama.cpp:server-b11223@sha256:8fdfad183be053cdb72d4b6a5930c3a2475730f932855ee9260193422c2564ed}
 FULL_IMAGE=${LLAMA_FULL_IMAGE:-ghcr.io/ggml-org/llama.cpp:full-b11223@sha256:faa6d3bbf5bead65550bf888138118cd253d865fb50a32e7555ba35ac4e719bf}
@@ -170,8 +173,8 @@ bench() {
     || { echo "warmup failed" >&2; exit 1; }
   local p0 p1 g0 g1
   p0=$(counter prompt_tokens); g0=$(counter tokens_predicted)
-  "${client[@]}" "${args[@]}" --seed "$seed" --num-prompts "$num" --save-result --result-dir /out \
-    --result-filename bench.json --metadata device=cpu backend=llama.cpp \
+  "${client[@]}" "${args[@]}" --seed "$seed" --num-prompts "$num" --save-result --save-detailed \
+    --result-dir /out --result-filename bench.json --metadata device=cpu backend=llama.cpp \
     "backend_version=$build" "dtype=$precision" "quantization=$precision" \
     "weights_bytes=$(stat -c %s "$src/$(basename "$model")")" "weights_file=$(basename "$model")" \
     "pinned_cores=$(server_arg --threads)" "server_cpuset=$SERVER_CPUS" \
@@ -179,15 +182,8 @@ bench() {
     "ctx_size=$(server_arg --ctx-size)" "server_image=$SERVER_IMAGE" \
     "seed=$seed" "warmup_seed=$WARMUP_SEED" "cpu_model=$(lscpu | sed -n 's/^Model name: *//p')" >&2
   p1=$(counter prompt_tokens); g1=$(counter tokens_predicted)
-  python3 -c 'import json, sys
-d = json.load(open(sys.argv[1]))
-want = int(sys.argv[3]) * d["num_prompts"]
-if d["completed"] != d["num_prompts"] or d["total_output_tokens"] != want:
-    sys.exit("refused: completed %s of %s, output tokens %s (want %d)"
-             % (d["completed"], d["num_prompts"], d["total_output_tokens"], want))
-d["llamacpp_prompt_tokens_processed"] = int(sys.argv[2])
-d["llamacpp_tokens_predicted"] = int(sys.argv[4])
-print(json.dumps(d))' "$out/bench.json" $((p1 - p0)) "$OUTPUT_LEN" $((g1 - g0))
+  python3 "$(dirname "$0")/bench_fix_llamacpp.py" "$out/bench.json" "$OUTPUT_LEN" \
+    $((g1 - g0)) $((p1 - p0))
 }
 
 case "${1:-}" in
