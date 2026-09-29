@@ -1,5 +1,7 @@
 # terraform/oci — OKE migration target
 
+> **Status:** Authored and reviewed, never applied: no OKE compartment was provisioned. The demo runs on single-node k3s on OCI A10 VMs.
+
 Terraform for the OCI deployment (Phase 1 of the OKE migration; see
 [CLAUDE.md](../../CLAUDE.md)). The AWS config in [infra/](../../infra/) is the
 separate ECS deployment (a single FastAPI container + RDS, normally scaled to

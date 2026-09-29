@@ -1,5 +1,7 @@
 # Deploy runbook
 
+> **Status:** Authored and reviewed, never applied: no OKE compartment was provisioned. The demo runs on single-node k3s on OCI A10 VMs.
+
 Three targets, one manifest tree: `kind` (local, fully working today),
 `k3s` (single-VM validation, Phase 1.75), and `oke` (OCI, Phase 2).
 Anything not yet executed is marked **NOT YET EXECUTED** with its phase;
