@@ -81,3 +81,19 @@ def test_pooled_tests_outsiders_against_concatenated_members(tmp_path):
 def test_fmt_p():
     assert mas.fmt_p(0.0764) == "0.0764"
     assert mas.fmt_p(7.8e-05) == "7.8e-05"
+
+
+def test_committed_w4a16_arm_reproduces():
+    """The 2026-09-29 W4A16 arm (r5nzh) against the BF16 fine-tune (v924f):
+    the committed rows reproduce the aggregate and the recorded Fisher p."""
+    import pathlib
+    runs_dir = pathlib.Path(__file__).resolve().parents[1] / "eval" / "runs"
+    runs = {name: mas.load_run(runs_dir / f"{name}-claims.jsonl",
+                               runs_dir / "raw" / f"{name}-findings")
+            for name in ("v924f", "r5nzh")}
+    assert mas.tally(runs["r5nzh"]) == (23, 344)
+    assert mas.tally(runs["v924f"]) == (25, 385)
+    (_, _, *_, p), = mas.pairwise(runs)
+    assert mas.fmt_p(p) == "1.0000"
+    owned = lambda r: r["attributed"] in mas.OWNED  # noqa: E731
+    assert mas.tally(runs["r5nzh"], owned) == (15, 96)

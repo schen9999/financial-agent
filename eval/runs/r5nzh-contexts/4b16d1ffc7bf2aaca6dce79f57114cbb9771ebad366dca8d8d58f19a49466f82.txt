@@ -1,0 +1,112 @@
+STOCK DATA:
+{
+  "ticker": "AAPL",
+  "company_name": "Apple Inc.",
+  "current_price": 338.4,
+  "currency": "USD",
+  "market_cap": 4938670276608.0,
+  "pe_ratio": 39.076214,
+  "forward_pe": 35.303875,
+  "week_52_high": 345.34,
+  "week_52_low": 243.42,
+  "revenue": 466822987776.0,
+  "net_income": 128929996800.0,
+  "profit_margin": 0.27618998,
+  "dividend_yield": 0.32,
+  "sector": "Technology",
+  "industry": "Consumer Electronics"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": "Regarding the Provenance of Charm Within Meta",
+    "source": "Bloomberg",
+    "published_at": "2026-09-25T17:07:33Z",
+    "description": null
+  },
+  {
+    "title": "Dixon Technologies sets sights on global top five as it expands beyond smartphones",
+    "source": "Bloomberg",
+    "published_at": "2026-09-23T02:29:42Z",
+    "description": "Dixon Technologies aims to enter the global top 10 EMS rankings in five years and top five in 10 years by expanding beyond smartphones."
+  },
+  {
+    "title": "Apple debuts foldable iPhone Duo in biggest-ever device revamp",
+    "source": "Bloomberg",
+    "published_at": "2026-09-09T19:47:14Z",
+    "description": "Apple increased the price of the Pro models by $100. The iPhone 18 Pro will be $1,199, while the Pro Max will cost $1,299."
+  },
+  {
+    "title": "Apple to unveil $2,000 foldable iPhone duo at high-stakes event",
+    "source": "Bloomberg",
+    "published_at": "2026-09-09T09:08:19Z",
+    "description": "Apple unveils a $2,000 foldable iPhone Duo alongside the iPhone 18 Pro, new watches, and AirPods at a major event."
+  },
+  {
+    "title": "Meta ran over 300 ads with suspected AI child abuse, NGO says",
+    "source": "Bloomberg",
+    "published_at": "2026-09-09T04:39:32Z",
+    "description": "TTP says that the ads collectively reached more than 29,000 people and typically used artificial intelligence to depict young children being molested"
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2025-10-31",
+    "summary": "Item 1A. Risk Factors The following summarizes factors that could have a material adverse effect on the Company\u2019s business, reputation, results of operations, financial condition and stock price. The Company may not be able to accurately predict, control or mitigate these risks. Statements in this section are based on the Company\u2019s beliefs and opinions regarding matters that could materially adversely affect the Company in the future and are not representations as to whether such matters have or have not occurred previously. The risks and uncertainties described below are not exhaustive and should not be considered a complete statement of all potential risks or uncertainties that the Company faces or may face in the future. This section should be read in conjunction with Part II, Item 7, \u201c"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-07-31",
+    "summary": "Item 1A. Risk Factors 21 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 24 Item 3. Defaults Upon Senior Securities 24 Item 4. Mine Safety Disclosures 24 Item 5. Other Information 25 Item 6. Exhibits 25 PART I \u2014 FINANCIAL INFORMATION Item 1. Financial Statements Apple Inc. CONDENSED CONSOLIDATED STATEMENTS OF OPERATIONS (Unaudited) (In millions, except number of shares, which are reflected in thousands, and per-share amounts) Three Months Ended Nine Months Ended June 27, 2026 June 28, 2025 June 27, 2026 June 28, 2025 Net sales: Products $ 78,678 $ 66,613 $ 272,629 $ 233,287 Services 30,739 27,423 91,728 80,408 Total net sales 109,417 94,036 364,357 313,695 Cost of sales: Products 47,153 43,620 163,810 147,097 Services 7,494 6,698 21,765 19,738 Total cost of sales 54,647"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I can only provide information based on the context given, which contains excerpts from Apple's 2025 Form 10-K focusing on risk factors. I don't have access to a complete 10-Q filing in the provided context.
+
+Based on the 10-K excerpts available, the key takeaways are:
+
+**Macroeconomic and Operational Risks:**
+- Global economic conditions significantly impact the company's performance, with adverse factors like recession, inflation, and currency fluctuations affecting consumer demand
+- Public health crises and pandemics can disrupt operations, supply chains, and sales channels, requiring substantial recovery time and expenditures
+
+**Competitive Pressures:**
+- The company operates in highly competitive markets with aggressive price competition and rapid technological change
+- Competitors have broad product lines, large installed bases, and some can operate at minimal or negative profit margins
+- The company holds only a minority market share in smartphones, PCs, tablets, and wearables
+
+**Supply Chain Vulnerabilities:**
+- Heavy reliance on single or limited sources for critical components creates significant risk
+- Manufacturing is concentrated in specific countries (China, India, Japan, South Korea, Taiwan, Vietnam), making the company vulnerable to trade restrictions and geopolitical tensions
+- International trade restrictions, tariffs, and controls can increase costs and disrupt operations
+
+**Innovation and Intellectual Property:**
+- Success depends on continuous development of innovative products with attractive margins
+- Intellectual property protection varies by country, and competitors frequently imitate products and infringe on patents
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses several major categories of risk factors:
+
+## Macroeconomic and Industry Risks
+- Adverse global and regional economic conditions, including slow growth, recession, high unemployment, inflation, and currency fluctuations that can reduce consumer spending and demand
+- Impact from changes in fiscal and monetary policy, financial market volatility, and declines in asset values
+- Effects on suppliers, manufacturers, logistics providers, and other business partners, potentially leading to financial instability or insolvency
+
+## Geopolitical and Business Interruption Risks
+- Political events, trade disputes, geopolitical tensions, conflict, terrorism, and natural disasters
+- Public health issues and pandemics that disrupt operations, supply chains, and sales channels
+- Restrictions on international trade, including tariffs and controls on imports/exports, which can increase costs and limit product availability
+- Business interruptions affecting single or limited sources of critical components
+
+## Competitive Risks
+- Highly competitive global markets with aggressive price competition and downward pressure on margins
+- Rapid technological change and short product life cycles requiring continuous innovation
+- Competitors with significant resources, broad product lines, low-cost structures, and ability to operate at minimal or negative profit margins
+- The company's minority market share in key markets like smartphones, personal computers, tablets, and wearables
+- Need to successfully manage frequent product introductions and transitions to remain competitive

@@ -1,0 +1,29 @@
+{
+  "created_utc": "2026-09-29T04:46:52Z",
+  "source_dir": "/home/ubuntu/models/qwen-ft",
+  "source_weights_sha256": {
+    "model.safetensors": "3768f934867a55518f01ee31ef1c4bba5e61b0781dd2d16d16676cf0b4a5a430"
+  },
+  "convert": "convert_hf_to_gguf.py --outtype f16",
+  "quantize": "llama-quantize from the F16 file, no imatrix",
+  "full_image": "ghcr.io/ggml-org/llama.cpp:full-b11223@sha256:faa6d3bbf5bead65550bf888138118cd253d865fb50a32e7555ba35ac4e719bf",
+  "server_image": "ghcr.io/ggml-org/llama.cpp:server-b11223@sha256:8fdfad183be053cdb72d4b6a5930c3a2475730f932855ee9260193422c2564ed",
+  "llama_cpp_build": "b11223 4da633776",
+  "files": {
+    "F16": {
+      "file": "financial-lora-f16.gguf",
+      "bytes": 3093668928,
+      "sha256": "cb62b49c723ecb2f9b00236e987af8da383fcec1c1ab8223d7713ba09ce6e7e5"
+    },
+    "Q8_0": {
+      "file": "financial-lora-q8_0.gguf",
+      "bytes": 1646572608,
+      "sha256": "06b25385d4ac3eb0f386c4876bb7726089683227a75b894d4275f04b74eecc25"
+    },
+    "Q4_K_M": {
+      "file": "financial-lora-q4_k_m.gguf",
+      "bytes": 986048064,
+      "sha256": "6906ab26ca10c320c0794c244cfca670a7a84bd759b33d2dc17917cb3c871072"
+    }
+  }
+}

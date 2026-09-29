@@ -52,8 +52,8 @@ Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (2749 lines, 186 tests collected: 185 passed + 1 skipped,
-   the credit-gated judge test, as of 2026-09-28) must pass on every commit. Canonical
+3. The pytest suite (3065 lines, 213 tests collected: 212 passed + 1 skipped,
+   the credit-gated judge test, as of 2026-09-29) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
 4. Celery stays request-time async; Argo owns eval orchestration. Do not merge them.
@@ -208,8 +208,15 @@ Phase 3 — demo polish:
   same-image rerun `dvvxk` 7/389 = 1.80% (CI 0.9–3.7%, p = 0.55), fine-tune `v924f`
   25/385 = 6.49% (CI 4.4–9.4%), 1.5B base `4nfsm` 31/400 = 7.75% (CI
   5.5–10.8%), 7B base `cnkp2` 18/393 = 4.58% (CI 2.9–7.1%); quote it as a
-  dated set with run IDs and CIs. Still gated: serving on OKE — update this
-  line when that actually runs.
+  dated set with run IDs and CIs. Also legitimate as of 2026-09-29: vLLM
+  v0.10.2 served the fine-tune quantized to GPTQ W4A16 (`financial-lora-w4a16`,
+  llm-compressor compressed-tensors, Marlin kernels) on vm-a10-inst-2
+  (single-node k3s via `make vm-vllm`, no manifest change), and the eval DAG
+  ran against it: `r5nzh`, 40 tickers, judge v2, 23/344 = 6.69% (CI
+  4.5–9.8%) vs the BF16 fine-tune `v924f` 6.49%, p = 1.00 — no detectable
+  difference at this sample size; a dated comparison, not a number of
+  record. Still gated: serving on OKE — update this line when that
+  actually runs.
 - Cross-encoder reranking and the multi-agent supervisor shipped default-off
   because evals showed no grounding gain at higher cost/latency. State it that way.
 - Any new number in docs must come from a committed, re-runnable harness.

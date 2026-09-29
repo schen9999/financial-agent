@@ -50,6 +50,18 @@ ARGS=(--backend vllm --base-url http://localhost:8000 --endpoint /v1/completions
 VERSION=$(kubectl -n "$NS" exec "$POD" -- python3 -c 'import vllm; print(vllm.__version__)')
 GPU=$(kubectl -n "$NS" exec "$POD" -- nvidia-smi --query-gpu=name --format=csv,noheader | head -1)
 DTYPE=$(kubectl -n "$NS" get "$POD" -o jsonpath='{.spec.containers[0].args}' | grep -o 'dtype=[a-z0-9]*' | cut -d= -f2)
+# Weight precision as served (the quantization_config vLLM read from the
+# weights' config.json, e.g. w4a16-g128, or none) and the weight files' size
+# on disk; recorded since 2026-09-28 (quant-bench), earlier files carry neither
+read -r QUANT WEIGHTS_BYTES < <(kubectl -n "$NS" exec "$POD" -- python3 -c 'import glob, json, os
+d = "/models/financial-lora"
+q = json.load(open(d + "/config.json")).get("quantization_config")
+name = "none"
+if q:
+    g = next(iter(q["config_groups"].values()))
+    act = (g.get("input_activations") or {}).get("num_bits", 16)
+    name = "w%da%d-g%s" % (g["weights"]["num_bits"], act, g["weights"]["group_size"])
+print(name, sum(os.path.getsize(p) for p in glob.glob(d + "/*.safetensors")))')
 
 # Cumulative prefix-cache counter (hits|queries, in tokens) from the pod's /metrics
 prefix_cache() {
@@ -68,6 +80,7 @@ H0=$(prefix_cache hits); Q0=$(prefix_cache queries)
 kubectl -n "$NS" exec "$POD" -- vllm bench serve "${ARGS[@]}" --seed "$SEED" --num-prompts "$NUM" \
   --save-result --result-dir /tmp --result-filename bench.json \
   --metadata device=gpu backend=vllm "backend_version=$VERSION" "dtype=$DTYPE" "gpu_model=$GPU" \
+  "quantization=$QUANT" "weights_bytes=$WEIGHTS_BYTES" \
   "seed=$SEED" "warmup_seed=$WARMUP_SEED" >&2
 H1=$(prefix_cache hits); Q1=$(prefix_cache queries)
 kubectl -n "$NS" exec "$POD" -- python3 -c 'import json, sys

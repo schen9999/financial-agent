@@ -1,0 +1,91 @@
+STOCK DATA:
+{
+  "ticker": "NTLA",
+  "company_name": "Intellia Therapeutics, Inc.",
+  "current_price": 11.42,
+  "currency": "USD",
+  "market_cap": 1600246784.0,
+  "forward_pe": -4.393947,
+  "week_52_high": 28.25,
+  "week_52_low": 7.95,
+  "revenue": 59506000.0,
+  "net_income": -399975008.0,
+  "profit_margin": 0.0,
+  "sector": "Healthcare",
+  "industry": "Biotechnology"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-26",
+    "summary": "Item 1A. Risk Factors Investing in our common stock involves a high degree of risk. In evaluating us and our business, careful consideration should be given to the following risk factors, in addition to the other information set forth in this Annual Report on Form 10-K for the year ended December 31, 2025 and in other documents that we file with the Securities and Exchange Commission (\u201cSEC\u201d). If any of the following risks and uncertainties actually occurs, our business, prospects, financial condition and results of operations could be materially and adversely affected. The risks described below are not intended to be exhaustive and are not the only risks facing us. New risk factors can emerge from time to time, and we cannot predict the impact that any factor or combination of factors may "
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-06",
+    "summary": "Item 1A. Risk Factors Investing in our common stock involves a high degree of risk. In evaluating us and our business, careful consideration should be given to the following risk factors, in addition to the other information set forth in this Quarterly Report on Form 10-Q, our Annual Report on Form 10-K for the year ended December 31, 2025, and in other documents that we file with the Securities and Exchange Commission (\u201cSEC\u201d). If any of the following risks and uncertainties actually occurs, our business, prospects, financial condition and results of operations could be materially and adversely affected. The risks described below are not intended to be exhaustive and are not the only risks facing us. New risk factors can emerge from time to time, and we cannot predict the impact that any f"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I can only provide information based on the context given, which contains excerpts from the Risk Factors section of a 10-K filing for the year ended December 31, 2025. The context does not include a 10-Q filing or comprehensive information from the full 10-K.
+
+Based on the available risk factors disclosure, the key takeaways are:
+
+**Technology and Development Stage:**
+- The company is developing CRISPR genome editing therapeutics, including both in vivo and ex vivo approaches
+- CRISPR technology for human therapeutic use is relatively new with largely unproven therapeutic utility
+- No in vivo genome editing therapy has been approved in the U.S., EU, or other key jurisdictions to date
+
+**Current Product Pipeline:**
+- Two CRISPR-based therapies are in clinical-stage development: nexiguran ziclumeran (NTLA-2001) and lonvoguran ziclumeran (NTLA-2002)
+- Additional in vivo and ex vivo candidates are advancing toward clinical testing
+
+**Major Risk Areas:**
+- Significant regulatory uncertainty, particularly regarding FDA and other regulatory agencies' limited experience with CRISPR-based therapeutics
+- Challenges in manufacturing, delivery mechanisms, and demonstrating safety and efficacy
+- Physician and patient adoption challenges due to the novel nature of the therapies
+- Clinical trial execution risks, including enrollment, site management, and potential safety findings
+- Profitability is contingent on successful development, regulatory approval, and commercialization
+
+The context provided does not include sufficient information to summarize the complete 10-K or any 10-Q filing.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses several primary risk factors related to its business:
+
+## Technology and Development Risks
+- CRISPR genome editing technology has only recently been clinically validated for human therapeutic use, and in vivo CRISPR-based technologies remain relatively new with largely unproven therapeutic utility
+- The approaches being pursued are unproven and may never lead to marketable products
+- Successful development requires solving numerous technical challenges, including safe delivery of therapeutic agents to target cells and demonstrating safety, efficacy, potency, purity and selectivity
+- No genome editing in vivo therapy has been approved in the U.S., EU or other key jurisdictions
+
+## Clinical Development Risks
+- Clinical development is lengthy, expensive, and has uncertain outcomes
+- All programs are still in discovery, preclinical, or clinical stages
+- Clinical trials can fail at any stage, and preclinical results may not predict clinical success
+- Regulatory requirements for later-phase trials are more stringent
+- There is uncertainty about whether clinical trials will begin or be completed on schedule
+
+## Market Adoption and Perception Risks
+- Public perception and media coverage of safety or efficacy issues may discourage clinical trial participation and physician/patient acceptance
+- Ethical concerns about genome editing may adversely influence adoption
+- Physicians and healthcare providers are often slow to adopt new technologies and may view these therapies as too complex or risky
+- Certain patients may not be candidates for the therapies due to health conditions or genetic profiles
+
+## Regulatory and Profitability Risks
+- New legislation, regulations, or medical standards could limit development, commercialization, or regulatory approval
+- If viable products cannot be developed or approved, the company may never achieve profitability
