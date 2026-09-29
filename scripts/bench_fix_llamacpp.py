@@ -10,14 +10,27 @@ Output throughput and TPOT depend on that count; TTFT, ITL and E2E do not.
 With --ignore-eos, llama-server bans end-of-generation tokens, so every
 completed request generates exactly --random-output-len tokens. This
 script checks that on the server's own counter (llamacpp:tokens_predicted
-over the timed run = output_len x (prompts + 1), the +1 being the client's
-initial test request), then recomputes the count-dependent metrics with the
-client's formulas at the true length:
+over the timed run = output_len x (completed + 1), the +1 being the
+client's initial test request), then recomputes the count-dependent
+metrics with the client's formulas at the true length:
 
   output_throughput        = output_len x completed / duration
   total_token_throughput   = (total_input_tokens + output tokens) / duration
   TPOT per request         = (E2E - TTFT) / (output_len - 1), E2E - TTFT
                              being the sum of that request's ITLs
+
+Lost requests. On 2026-09-29, 3 of 4 F16 concurrency-8 runs lost one
+request of 200 to aiohttp's ServerDisconnectedError, raised while waiting
+for the response headers on a reused keep-alive connection; the server
+log showed the request never arrived (its task count matched the completed
+requests), in two runs with llama-server's SSE pings on and one with them
+off. The client does not retry, and neither side exposes a keep-alive
+setting that removes it. A run is accepted with such losses only if every
+error is that one, at most 1% of prompts are lost, and the server count
+above holds for the completed requests (proving the lost ones generated
+nothing). Their indices go in "lost_requests"; the metrics, as the client
+computes them, cover the completed requests. Any other error refuses the
+run.
 
 The client's own figures are kept under "client_retokenized". Input: a
 result saved with --save-detailed; the bulky per-request arrays are
@@ -34,6 +47,7 @@ COUNT_KEYS = ("total_output_tokens", "output_throughput", "total_token_throughpu
               "mean_tpot_ms", "median_tpot_ms", "std_tpot_ms",
               "p50_tpot_ms", "p90_tpot_ms", "p99_tpot_ms")
 DETAIL_KEYS = ("input_lens", "output_lens", "ttfts", "itls", "generated_texts", "errors")
+TRANSPORT_LOSS = "ServerDisconnectedError"
 
 
 def percentile(xs, p):
@@ -45,15 +59,26 @@ def percentile(xs, p):
     return s[lo] + (s[hi] - s[lo]) * (k - lo)
 
 
+def is_transport_loss(error):
+    """Disconnected while awaiting the response headers: never served."""
+    return TRANSPORT_LOSS in error and "resp.start" in error
+
+
 def fix(d, output_len, predicted, processed):
-    n = d["num_prompts"]
-    errors = [e for e in d.get("errors", []) if e]
-    if d["completed"] != n:
-        raise ValueError(f"completed {d['completed']} of {n}; first errors: {errors[:2]}")
-    if predicted != output_len * (n + 1):
-        raise ValueError(f"server generated {predicted} tokens, want {output_len} x ({n} + 1)")
-    ttfts = d["ttfts"]
-    decode = [sum(itl) for itl in d["itls"]]
+    n, done = d["num_prompts"], d["completed"]
+    errors = d.get("errors") or [""] * n
+    lost = [i for i, e in enumerate(errors) if e]
+    other = [errors[i] for i in lost if not is_transport_loss(errors[i])]
+    if other or done + len(lost) != n:
+        raise ValueError(f"completed {done} of {n}; first errors: "
+                         f"{(other or [errors[i] for i in lost])[:2]}")
+    if len(lost) > max(1, n // 100):
+        raise ValueError(f"lost {len(lost)} of {n} requests to {TRANSPORT_LOSS} (limit 1%)")
+    if predicted != output_len * (done + 1):
+        raise ValueError(f"server generated {predicted} tokens, want {output_len} x ({done} + 1)")
+    ok = [i for i in range(n) if not errors[i]]
+    ttfts = [d["ttfts"][i] for i in ok]
+    decode = [sum(d["itls"][i]) for i in ok]
     e2e_ms = [1000 * (t + s) for t, s in zip(ttfts, decode)]
     # TTFT comes from its own perf_counter() call, microseconds off the chunk time
     if abs(statistics.mean(e2e_ms) - d["mean_e2el_ms"]) > 1e-4 * d["mean_e2el_ms"]:
@@ -61,7 +86,7 @@ def fix(d, output_len, predicted, processed):
     tpots = [1000 * s / (output_len - 1) for s in decode]
     out = {k: v for k, v in d.items() if k not in DETAIL_KEYS}
     out["client_retokenized"] = {k: d[k] for k in COUNT_KEYS}
-    tokens = output_len * n
+    tokens = output_len * done
     out.update({
         "total_output_tokens": tokens,
         "output_throughput": tokens / d["duration"],
@@ -72,6 +97,7 @@ def fix(d, output_len, predicted, processed):
         "p99_tpot_ms": percentile(tpots, 99),
         "output_token_source": "llama-server tokens_predicted (ignore_eos); "
                                "client re-tokenized count under client_retokenized",
+        "lost_requests": lost,
         "llamacpp_tokens_predicted": predicted,
         "llamacpp_prompt_tokens_processed": processed,
         "request_ttfts_s": ttfts, "request_decode_s": decode,

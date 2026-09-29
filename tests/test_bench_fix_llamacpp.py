@@ -50,6 +50,50 @@ def test_failed_request_refused_with_error_text():
         bf.fix(d, L, L * 3, 0)
 
 
+# the 2026-09-29 traceback, abridged
+LOSS = ('Traceback ...\n  File "aiohttp/client.py", line 748, in _connect_and_send_request\n'
+        '    await resp.start(conn)\n'
+        '  File "aiohttp/client_reqrep.py", line 532, in start\n'
+        '    message, payload = await protocol.read()\n'
+        'aiohttp.client_exceptions.ServerDisconnectedError: Server disconnected\n')
+
+
+def _with_loss(n_ok=99):
+    """n_ok requests like the first of _result, plus one transport loss."""
+    n = n_ok + 1
+    return _result(num_prompts=n, completed=n_ok, mean_e2el_ms=1300.0,
+                   ttfts=[1.0] * n_ok + [0.0], itls=[[0.1, 0.1, 0.1]] * n_ok + [[]],
+                   errors=[""] * n_ok + [LOSS])
+
+
+def test_transport_loss_accepted_and_recorded():
+    out = bf.fix(_with_loss(), L, L * 100, 0)
+    assert out["lost_requests"] == [99]
+    assert out["total_output_tokens"] == 4 * 99
+    assert out["mean_tpot_ms"] == pytest.approx(100.0)
+    assert len(out["request_ttfts_s"]) == 99
+
+
+def test_transport_loss_over_one_percent_refused():
+    d = _with_loss(n_ok=98)
+    d["num_prompts"], d["ttfts"] = 100, d["ttfts"] + [0.0]
+    d["itls"], d["errors"] = d["itls"] + [[]], d["errors"] + [LOSS]
+    with pytest.raises(ValueError, match="lost 2 of 100 requests"):
+        bf.fix(d, L, L * 99, 0)
+
+
+def test_lost_request_must_not_have_generated():
+    with pytest.raises(ValueError, match=r"want 4 x \(99 \+ 1\)"):
+        bf.fix(_with_loss(), L, L * 101, 0)
+
+
+def test_other_error_refused_even_when_single():
+    d = _with_loss()
+    d["errors"][-1] = "aiohttp.client_exceptions.ClientPayloadError: mid-stream"
+    with pytest.raises(ValueError, match="completed 99 of 100.*ClientPayloadError"):
+        bf.fix(d, L, L * 100, 0)
+
+
 def test_short_server_count_refused():
     with pytest.raises(ValueError, match=r"server generated 11 tokens, want 4 x \(2 \+ 1\)"):
         bf.fix(_result(), L, 11, 0)

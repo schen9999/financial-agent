@@ -166,3 +166,11 @@ def test_committed_cpu_table_unchanged():
     root = pathlib.Path(__file__).resolve().parents[1]
     out = bt.table([str(root / "eval/runs/bench/cpu-2026-09-28/financial-lora-c8.json") + "=CPU"])
     assert "| CPU | Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz | vllm-cpu 0.10.2 | bfloat16 | 14 | 8 | 200 | 22.9 |" in out
+
+
+def test_recorded_transport_loss_shown_not_refused(tmp_path):
+    p = _write(tmp_path, "lossy.json", completed=49, lost_requests=[8])
+    assert "| 1 | 49 of 50 |" in bt.table([str(p)]).splitlines()[2]
+    q = _write(tmp_path, "short.json", completed=48, lost_requests=[8])
+    with pytest.raises(ValueError, match="completed 48 of 50"):
+        bt.table([str(q)])

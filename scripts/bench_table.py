@@ -100,12 +100,20 @@ def hardware(d):
     return d.get("gpu_model", d["device"]), backend, dtype, "n/a"
 
 
+def prompts(label, d):
+    """Prompt count, refusing an incomplete run unless its only losses are the
+    transport losses scripts/bench_fix_llamacpp.py recorded (never served)."""
+    done, n = d.get("completed"), d.get("num_prompts")
+    lost = len(d.get("lost_requests", []))
+    if done + lost != n:
+        raise ValueError(f"{label}: completed {done} of {n} prompts")
+    return f"{done} of {n}" if lost else str(n)
+
+
 def row(label, d):
     device, backend, dtype, cores = hardware(d)
-    if d.get("completed") != d.get("num_prompts"):
-        raise ValueError(f"{label}: completed {d.get('completed')} of {d.get('num_prompts')} prompts")
     cells = [label, device, backend, dtype, cores,
-             str(d["max_concurrency"]), str(d["num_prompts"])]
+             str(d["max_concurrency"]), prompts(label, d)]
     for _, key, fmt in COLUMNS:
         keys = key if isinstance(key, tuple) else (key,)
         cells.append(" / ".join(fmt.format(d[k]) for k in keys))
@@ -155,8 +163,7 @@ def group_key(d):
 def grouped(specs):
     groups = {}
     for label, d in map(load, expand(specs)):
-        if d.get("completed") != d.get("num_prompts"):
-            raise ValueError(f"{label}: completed {d.get('completed')} of {d.get('num_prompts')} prompts")
+        prompts(label, d)
         groups.setdefault(group_key(d), []).append((label, d))
     return groups
 
