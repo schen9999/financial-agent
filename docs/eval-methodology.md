@@ -601,13 +601,20 @@ through `scripts/bench_table.py` for the figures above:
 
 ## Quantization benchmark (2026-09-29, a dated measurement)
 
-What quantizing the fine-tune does to serving speed on the node's A10,
-and to grounding quality with A10 serving. Same node as the CPU benchmark
-above (`vm-a10-inst-2`), same benchmark client and shape. Nothing here is
-a number of record.
+What quantizing the fine-tune does to serving speed on the node's A10
+and Xeon, and to grounding quality with A10 serving. Same node as the CPU
+benchmark above (`vm-a10-inst-2`), same benchmark client and shape.
+Nothing here is a number of record. GGUF quantization quality was not
+evaluated; only the W4A16 arm ran through the grounding eval.
 
 **Engine vs precision.** On the A10 only the precision changes: BF16 and
-W4A16 both run on vLLM v0.10.2 with the committed serving args.
+W4A16 both run on vLLM v0.10.2 with the committed serving args. On the
+CPU, 4-bit runs on a different engine (llama.cpp), so the CPU results are
+two separate effects. vLLM BF16 vs llama.cpp F16 is the engine effect:
+the same weights at 16 bits on both (stored FP16; vLLM casts them to
+BF16, llama.cpp keeps F16, so the 16-bit formats also differ). llama.cpp
+F16 vs Q8_0 vs Q4_K_M is the precision effect, on one engine. vLLM BF16
+vs llama.cpp Q4_K_M mixes the two and is not a quantization speedup.
 
 **Quantized weights (A10).** GPTQ W4A16 with llm-compressor 0.7.1
 `oneshot`: int4 weights, symmetric, group size 128, activations 16-bit,
@@ -739,6 +746,120 @@ dumps), rows `eval/runs/r5nzh-claims.jsonl` (`eval/parse_run_log.py`, no
 count mismatches), contexts `eval/runs/r5nzh-contexts/`.
 `tests/test_multi_arm_stats.py` holds the committed rows to 23/344 and
 p = 1.00.
+
+### CPU: engine and precision (llama.cpp GGUF)
+
+vLLM's CPU backend is not the engine for 4-bit on this Xeon, so the
+precision ladder ran on llama.cpp's `llama-server`: the official CPU image
+at build b11223, pinned by digest, in plain Docker outside k3s.
+`scripts/vm_bench_cpu_gguf.sh`.
+
+- **Weights:** `convert_hf_to_gguf.py --outtype f16` on the merged
+  fine-tune (pre-tokenizer recognized as `qwen2`), then `llama-quantize`
+  from that F16 file to Q8_0 and Q4_K_M, without an importance matrix.
+  Sizes 3.09, 1.65 and 0.99 GB; images, hashes and build in
+  `gguf_meta.json` beside the results.
+- **Server:** the vLLM CPU run's pinning (cpuset 2-29, 14 threads, one per
+  physical core, strict placement), port and memory limit; `--parallel 8`
+  with 1536 tokens of context per slot (1024 in + 256 out, with margin);
+  llama-server's defaults otherwise, prompt caching included.
+- **Client and prompts:** the vLLM CPU run's `vllm bench serve`
+  invocation, seeds and warmup, from the same client image and core. The
+  prompts match the 2026-09-28 vLLM BF16 CPU files (total input tokens
+  204,537 and 50,992), except one run that lost a request (below).
+- **Quiet node:** api, worker, streamlit and mcp scaled to 0, the GPU pod
+  idle on the BF16 fine-tune (5-17 millicores); the server container ran
+  at a median of about 1397% (its 14 threads). Load logs beside the
+  results, from `scripts/vm_load_sampler.sh`.
+
+```bash
+python scripts/bench_table.py --matrix eval/runs/bench/a10-2026-09-28 \
+  eval/runs/bench/a10-quant-2026-09-29 \
+  eval/runs/bench/cpu-2026-09-28/financial-lora-c8.json \
+  eval/runs/bench/cpu-2026-09-28/financial-lora-c1.json \
+  eval/runs/bench/cpu-gguf-2026-09-29 \
+  --weights-bytes eval/runs/bench/a10-2026-09-28=3087466808 \
+  --weights-bytes eval/runs/bench/cpu-2026-09-28=3087466808
+```
+
+| Engine | Precision | Device | Output tok/s (c=8) | Mean E2E s (c=1) | TTFT p50 ms (c=1) | Weights on disk (GB) |
+|---|---|---|---|---|---|---|
+| vllm 0.10.2 | bfloat16 | NVIDIA A10 | 708.3 | 2.3 | 52 | 3.09 |
+| vllm 0.10.2 | w4a16-g128 | NVIDIA A10 | 1075.7 | 1.3 | 58 | 1.61 |
+| vllm-cpu 0.10.2 | bfloat16 | Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz | 22.9 | 17.1 | 6110 | 3.09 |
+| llama.cpp b11223 | F16 | Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz | 52.3 | 11.5 | 2582 | 3.09 |
+| llama.cpp b11223 | Q4_K_M | Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz | 64.5 | 6.8 | 2018 | 0.99 |
+| llama.cpp b11223 | Q8_0 | Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz | 51.7 | 9.4 | 2680 | 1.65 |
+
+(The vLLM BF16 rows are the 2026-09-28 files; the full per-run table is
+`python scripts/bench_table.py eval/runs/bench/cpu-gguf-2026-09-29`.)
+
+- **Engine effect (vLLM BF16 vs llama.cpp F16, both 16-bit):** output
+  throughput at concurrency 8 went from 22.9 to 52.3 tok/s. At
+  concurrency 1, median TTFT for a 1024-token prompt went from 6110 to
+  2582 ms, and median TPOT from 43.4 to 35.3 ms. Of the 5.5 s difference
+  in mean E2E at concurrency 1 (17.1 vs 11.5 s), 3.5 s is prompt
+  processing (mean TTFT 5985 vs 2523 ms).
+- **Precision effect (llama.cpp F16 → Q8_0 → Q4_K_M):** at concurrency 1,
+  median TPOT fell from 35.3 to 26.7 to 19.0 ms (22.2, 27.1 and 37.5
+  output tok/s), and mean E2E from 11.5 to 9.4 to 6.8 s. At concurrency 8,
+  Q8_0 gained nothing over F16 (51.7 vs 52.3 tok/s) and Q4_K_M reached
+  64.5. Prefill barely moved (median TTFT at concurrency 1: 2582, 2680,
+  2018 ms).
+- **Per brief** (the serial estimate above, 2 × mean TTFT + T × mean
+  TPOT, T = 530 tokens for the fine-tune): F16 23.8 s, Q8_0 19.4 s, Q4_K_M
+  14.0 s on this CPU, against vLLM BF16 35.0 s on the CPU and 4.8 s on the
+  A10 (41.2, 32.6 and 23.4 s at the 1024-token cap).
+- GGUF quantization quality was not evaluated; only the W4A16 arm ran
+  through the grounding eval. Q4_K_M without an importance matrix is a
+  lossier build than W4A16 with GPTQ; nothing here says how it would
+  score.
+
+Raw results: `eval/runs/bench/cpu-gguf-2026-09-29/`.
+
+### Method notes (llama.cpp)
+
+- **Output tokens are counted on the server.** `vllm bench serve` v0.10.2
+  reads a response's usage only from a stream chunk without choices;
+  llama-server sends usage with the last (empty) choice, so the client
+  counts output tokens by re-tokenizing the generated text, which ran
+  0.5-4.5% low here (50,733 of 51,200 for F16 at concurrency 8, 12,222 of
+  12,800 at concurrency 1).
+  With `--ignore-eos`, llama-server bans end-of-generation tokens, so
+  every completed request generates exactly 256.
+  `scripts/bench_fix_llamacpp.py` refuses a run unless the server's own
+  `llamacpp:tokens_predicted` counter equals 256 × (completed + 1) (the +1
+  is the client's test request), then recomputes output throughput and
+  TPOT with the client's formulas at 256. The client's own figures stay
+  in each JSON under `client_retokenized`. TTFT and E2E do not depend on
+  the count.
+- **Lost requests (keep-alive).** llama-server answers with
+  `Keep-Alive: timeout=5, max=100` but closes the connection itself, its
+  FIN in the same packet as the stream's final `data: [DONE]` chunk
+  (every one of 217 served connections in a packet capture). The client
+  pools the connection as reusable; a request that picks it up before the
+  FIN is read goes to a closing socket and fails with
+  `ServerDisconnectedError` before any response header, never reaching the
+  server. The client does not retry. It lost 0-1 of 200 requests per F16
+  concurrency-8 run and 3 of 200 in one Q8_0 run. Turning off
+  llama-server's SSE keep-alive pings was tried and did not stop it (the
+  next run lost one), so the committed server keeps its default. A lost
+  request frees its concurrency slot at once, so the server's load is
+  unchanged. A run is accepted with losses only if every error is this
+  one, the server's token count proves the lost requests generated
+  nothing, and at most 5% of prompts are lost; the indices are recorded
+  in `lost_requests`, and the table prints the run as "199 of 200". The
+  limit was 1% until the mechanism was measured; the Q8_0 run with 3
+  losses was refused under it and rerun (0 lost), so no committed file
+  depends on the change. One committed run has a loss: Q4_K_M at
+  concurrency 8, request 8, 199 of 200.
+- **Refused and diagnostic runs are not kept.** Three F16 concurrency-8
+  runs were refused (one lost request each; the first also under the
+  uncorrected count, the third with pings off) and one Q8_0
+  concurrency-8 run (3 lost). Two diagnostic runs passed but are not
+  results: F16 with pings off (0 lost) and Q8_0 under packet capture
+  (0 lost). Only runs by the committed scripts that passed the current
+  checks are committed.
 
 ## Dated A/B on the single-VM target (2026-09-03)
 
