@@ -22,11 +22,27 @@ Health + Risk Factors) at T output tokens per brief:
 tokens, and the pipeline sends the two sections in parallel, not serially.
 T comes from scripts/cost_per_brief_selfhost.py (docs/model-recommendation.md).
 
+A directory argument stands for every *.json in it, labeled by file name.
+
+--matrix prints one row per engine x precision x device instead: output
+tok/s at concurrency 8, mean E2E, TTFT p50 at concurrency 1, and the
+weights' size on disk. Each group needs exactly one concurrency-8 and one
+concurrency-1 file. Precision is the run's quantization (W4A16 on vLLM, the
+GGUF type on llama.cpp), else its dtype. Size comes from the run's
+weights_bytes metadata (recorded since quant-bench, 2026-09-28);
+--weights-bytes PATH=BYTES supplies it for older files under PATH.
+
+--sweep prints the sweep files (scripts/vm_bench_cpu.sh and
+vm_bench_cpu_gguf.sh `sweep`) as one concurrency x threads table per
+engine x precision x device: output tok/s / TTFT p50 ms / TPOT p50 ms.
+
 Usage:
   python scripts/bench_table.py \\
       eval/runs/bench/financial-lora.json=A10 \\
       eval/runs/bench/cpu-2026-09-28/financial-lora-c8.json=CPU \\
       --section-tokens 530 --section-tokens 1024
+  python scripts/bench_table.py --matrix eval/runs/bench/a10-quant-2026-09-28 ...
+  python scripts/bench_table.py --sweep eval/runs/bench/cpu-sweep-2026-09-28
 """
 import argparse
 import json
@@ -43,10 +59,27 @@ COLUMNS = [
 ]
 
 
+def expand(specs):
+    """A directory spec becomes one spec per *.json in it, in name order."""
+    out = []
+    for spec in specs:
+        path, _, _ = spec.partition("=")
+        p = Path(path)
+        out += [str(f) for f in sorted(p.glob("*.json"))] if p.is_dir() else [spec]
+    return out
+
+
 def load(spec):
     path, _, label = spec.partition("=")
     data = json.loads(Path(path).read_text(encoding="utf-8"))
+    data["_path"] = path
     return (label or Path(path).stem), data
+
+
+def precision(d):
+    """The quantization the run served (w4a16-g128, Q4_K_M, ...), else its dtype."""
+    q = d.get("quantization", "none")
+    return d.get("dtype", "?") if q in ("none", d.get("dtype")) else q
 
 
 def hardware(d):
@@ -54,10 +87,12 @@ def hardware(d):
     if "device" not in d:
         return "A10 (pre-metadata)", "vllm 0.10.2", "bfloat16", "n/a"
     backend = f"{d.get('backend', '?')} {d.get('backend_version', '?')}"
+    dtype = d.get("dtype", "?")
+    if precision(d) != dtype:
+        dtype = f"{precision(d)} ({dtype})"
     if d["device"] == "cpu":
-        return (d.get("cpu_model", "cpu"), backend, d.get("dtype", "?"),
-                str(d.get("pinned_cores", "?")))
-    return d.get("gpu_model", d["device"]), backend, d.get("dtype", "?"), "n/a"
+        return d.get("cpu_model", "cpu"), backend, dtype, str(d.get("pinned_cores", "?"))
+    return d.get("gpu_model", d["device"]), backend, dtype, "n/a"
 
 
 def row(label, d):
@@ -75,6 +110,8 @@ def row(label, d):
 
 def prefix_cache(d):
     """Share of the timed run's prompt tokens served from the prefix cache."""
+    if "llamacpp_prompt_tokens_processed" in d:
+        return "n/a (llama.cpp)"
     if "prefix_cache_query_tokens" not in d:
         return "not recorded"
     hits, queries = d["prefix_cache_hit_tokens"], d["prefix_cache_query_tokens"]
@@ -104,12 +141,115 @@ def section_lines(specs, token_counts):
     return lines
 
 
+def group_key(d):
+    """(engine, precision, device) of a run."""
+    device, backend, _, _ = hardware(d)
+    return backend, precision(d), device
+
+
+def grouped(specs):
+    groups = {}
+    for label, d in map(load, expand(specs)):
+        if d.get("completed") != d.get("num_prompts"):
+            raise ValueError(f"{label}: completed {d.get('completed')} of {d.get('num_prompts')} prompts")
+        groups.setdefault(group_key(d), []).append((label, d))
+    return groups
+
+
+def weights_bytes(d, overrides):
+    if "weights_bytes" in d:
+        return int(d["weights_bytes"])
+    path = Path(d["_path"]).resolve()
+    for prefix, n in overrides.items():
+        if path.is_relative_to(Path(prefix).resolve()):
+            return n
+    return None
+
+
+def matrix(specs, overrides=None):
+    """Engine x precision x device: c=8 throughput, c=1 latency, weights size."""
+    overrides = overrides or {}
+    head = ["Engine", "Precision", "Device", "Output tok/s (c=8)", "Mean E2E s (c=1)",
+            "TTFT p50 ms (c=1)", "Weights on disk (GB)"]
+    lines = ["| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
+    for (engine, prec, device), runs in grouped(specs).items():
+        by_conc = {}
+        for label, d in runs:
+            if d["max_concurrency"] in by_conc:
+                raise ValueError(f"{engine} {prec} {device}: two concurrency-"
+                                 f"{d['max_concurrency']} files")
+            by_conc[d["max_concurrency"]] = d
+        if set(by_conc) != {1, 8}:
+            raise ValueError(f"{engine} {prec} {device}: needs one concurrency-8 and one "
+                             f"concurrency-1 file, got {sorted(by_conc)}")
+        sizes = {weights_bytes(d, overrides) for d in by_conc.values()} - {None}
+        if len(sizes) > 1:
+            raise ValueError(f"{engine} {prec} {device}: weights sizes differ {sorted(sizes)}")
+        size = f"{sizes.pop() / 1e9:.2f}" if sizes else "not recorded"
+        c8, c1 = by_conc[8], by_conc[1]
+        lines.append("| " + " | ".join([
+            engine, prec, device, f"{c8['output_throughput']:.1f}",
+            f"{c1['mean_e2el_ms'] / 1000:.1f}", f"{c1['median_ttft_ms']:.0f}", size]) + " |")
+    return "\n".join(lines)
+
+
+def sweep(specs):
+    """One concurrency x threads table per engine x precision x device."""
+    blocks = []
+    for (engine, prec, device), runs in grouped(specs).items():
+        cells = {}
+        for label, d in runs:
+            key = (d["max_concurrency"], int(d["pinned_cores"]))
+            if key in cells:
+                raise ValueError(f"{label}: second file for concurrency {key[0]}, "
+                                 f"{key[1]} threads")
+            cells[key] = d
+        concs = sorted({c for c, _ in cells})
+        threads = sorted({t for _, t in cells})
+        head = ["Concurrency"] + [f"{t} threads" for t in threads]
+        lines = [f"{engine}, {prec}, {device}: output tok/s / TTFT p50 ms / TPOT p50 ms",
+                 "", "| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
+        for c in concs:
+            row = [str(c)]
+            for t in threads:
+                d = cells.get((c, t))
+                row.append(f"{d['output_throughput']:.1f} / {d['median_ttft_ms']:.0f} / "
+                           f"{d['median_tpot_ms']:.1f}" if d else "not run")
+            lines.append("| " + " | ".join(row) + " |")
+        blocks.append("\n".join(lines))
+    return "\n\n".join(blocks)
+
+
+def parse_weights(values):
+    out = {}
+    for v in values:
+        path, sep, n = v.rpartition("=")
+        if not sep or not n.isdigit():
+            raise SystemExit(f"--weights-bytes {v!r}: expected PATH=BYTES")
+        out[path] = int(n)
+    return out
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("files", nargs="+", help="result JSON, optionally path=Label")
+    ap.add_argument("files", nargs="+", help="result JSON (optionally path=Label) or a directory")
     ap.add_argument("--section-tokens", type=int, action="append", default=[],
                     help="FH + RF output tokens per brief; repeatable")
+    mode = ap.add_mutually_exclusive_group()
+    mode.add_argument("--matrix", action="store_true",
+                      help="engine x precision x device table (c=8 and c=1 files per group)")
+    mode.add_argument("--sweep", action="store_true",
+                      help="concurrency x threads tables from sweep files")
+    ap.add_argument("--weights-bytes", action="append", default=[], metavar="PATH=BYTES",
+                    help="weights size for files under PATH that predate weights_bytes")
     args = ap.parse_args(argv)
+    if args.matrix:
+        print(matrix(args.files, parse_weights(args.weights_bytes)))
+        return 0
+    if args.sweep:
+        print(sweep(args.files))
+        return 0
+    args.files = expand(args.files)
     print(table(args.files))
     if args.section_tokens:
         print("\nTwo local sections, serial: 2 x mean TTFT + T x mean TPOT (concurrency-1 files)")
