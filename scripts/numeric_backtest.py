@@ -93,11 +93,15 @@ PARTIAL_SCOPE = "partial: Exec Summary + Outlook only"
 BOOT_DRAWS = 10_000
 BOOT_SEED = 42
 
-# Fine-tune run-to-run comparisons (difference = first minus second). lsnnc
-# and v924f are the same BF16 model on different images, so their gap is the
-# run-to-run yardstick for the W4A16 run r5nzh.
-FINE_TUNE_COMPARISONS = (("lsnnc", "v924f"), ("r5nzh", "v924f"),
+# Fine-tune comparisons (difference = first minus second). r5nzh - v924f is
+# the primary W4A16 comparison: same app image, WorkflowTemplate, eval-run
+# parameters and vLLM args, only the weights' precision differs (see
+# SAME_IMAGE_EVIDENCE). lsnnc - v924f (same BF16 weights, earlier image) shows
+# what an image/pipeline change alone does to this metric. r5nzh - lsnnc
+# mixes both and backs no claim.
+FINE_TUNE_COMPARISONS = (("r5nzh", "v924f"), ("lsnnc", "v924f"),
                          ("r5nzh", "lsnnc"))
+SAME_IMAGE_EVIDENCE = "eval/numeric_check/provenance-v924f-r5nzh.md"
 
 
 def stock_from_context(context: str) -> dict | None:
@@ -274,10 +278,14 @@ def bootstrap_difference(a: dict, b: dict, draws: int = BOOT_DRAWS,
 
 
 def fine_tune_comparisons(briefs: list[dict], draws: int = BOOT_DRAWS) -> dict:
-    """The FINE_TUNE_COMPARISONS differences, plus the verdict on whether
-    W4A16 vs BF16 separates from run-to-run variation on this metric: only
-    if r5nzh differs from BOTH BF16 runs in the same direction with each
-    difference CI excluding zero."""
+    """The FINE_TUNE_COMPARISONS differences and their statements.
+
+    Primary: r5nzh - v924f. Both ran the same app image, WorkflowTemplate,
+    eval-run parameters and vLLM serving args; only the weights' precision
+    (and the date) differ (evidence: SAME_IMAGE_EVIDENCE). lsnnc - v924f is
+    reported on its own as evidence that pipeline/image changes also move
+    this metric, not as noise that cancels the W4A16 effect. r5nzh - lsnnc
+    confounds precision with image and is not used for any claim."""
     by_run = defaultdict(dict)
     for b in briefs:
         by_run[b["run"]][b["ticker"]] = b["counts"]
@@ -285,23 +293,31 @@ def fine_tune_comparisons(briefs: list[dict], draws: int = BOOT_DRAWS) -> dict:
     for x, y in FINE_TUNE_COMPARISONS:
         if x in by_run and y in by_run:
             out[f"{x} - {y}"] = bootstrap_difference(by_run[x], by_run[y], draws)
-    q = [out.get("r5nzh - v924f"), out.get("r5nzh - lsnnc")]
-    separable = all(d and d["excludes_zero"] for d in q) and \
-        len({d["difference"] > 0 for d in q}) == 1
-    out["w4a16_vs_bf16_separable"] = separable
-    bf16 = out.get("lsnnc - v924f")
-    out["statement"] = (
-        "On this metric (unadjudicated numeric-check mismatches per checked "
-        "number), W4A16 vs BF16 "
-        + ("IS separable from run-to-run variation: r5nzh differs from both "
-           "BF16 runs in the same direction with bootstrap CIs excluding zero."
-           if separable else
-           "is not separable from run-to-run variation: r5nzh does not differ "
-           "from both BF16 fine-tune runs in the same direction with bootstrap "
-           "CIs excluding zero"
-           + (f", and the two BF16 runs themselves differ by "
-              f"{bf16['difference']:+.1%} (CI {bf16['ci95'][0]:+.1%} to "
-              f"{bf16['ci95'][1]:+.1%})." if bf16 else ".")))
+    out["primary"] = "r5nzh - v924f"
+    out["same_image_evidence"] = SAME_IMAGE_EVIDENCE
+
+    def pts(v):
+        return f"{v * 100:+.1f} pts"
+
+    p = out.get("r5nzh - v924f")
+    if p:
+        ci = f"paired cluster bootstrap CI {pts(p['ci95'][0])[:-4]} to {pts(p['ci95'][1])}"
+        out["statement"] = (
+            f"W4A16 shows {pts(p['difference'])} section-level numeric mismatches "
+            f"vs same-image BF16 ({ci}), on unadjudicated flags."
+            if p["excludes_zero"] else
+            f"W4A16 vs same-image BF16: {pts(p['difference'])} section-level "
+            f"numeric mismatches ({ci}); the interval includes zero, so no "
+            f"difference is shown, on unadjudicated flags.")
+    i = out.get("lsnnc - v924f")
+    if i:
+        out["image_change_statement"] = (
+            f"Separately, the same BF16 weights on an earlier image (lsnnc, "
+            f"2026-09-05/06) sit {pts(i['difference'])} vs v924f (paired "
+            f"cluster bootstrap CI {pts(i['ci95'][0])[:-4]} to "
+            f"{pts(i['ci95'][1])}): pipeline/image changes also move this "
+            f"metric. That is a second effect, not noise that cancels the "
+            f"W4A16 one, which is measured within one image.")
     return out
 
 
@@ -378,10 +394,8 @@ def _pct(r: dict) -> str:
     return f"{r['rate']:.1%} ({r['ci95'][0]:.1%}–{r['ci95'][1]:.1%})"
 
 
-def _ci(ci: list[float], signed: bool = False) -> str:
-    f = "{:+.1%}" if signed else "{:.1%}"
-    return f"{f.format(ci[0])} to {f.format(ci[1])}" if signed else \
-        f"{f.format(ci[0])}–{f.format(ci[1])}"
+def _ci(ci: list[float]) -> str:
+    return f"{ci[0]:.1%}–{ci[1]:.1%}"
 
 
 TABLE_NOTE = (
@@ -437,22 +451,28 @@ def table_markdown(summary: dict, comparisons: dict | None = None) -> str:
                          "pooled: " + ", ".join(g["runs"])))
     lines += ["", TABLE_NOTE]
     if comparisons:
-        lines += ["", "Fine-tune run-to-run comparisons (difference = first "
-                  "run minus second; cluster bootstrap on briefs, paired by "
-                  "ticker)", "",
+        lines += ["", "Fine-tune comparisons (difference = first run minus "
+                  "second; cluster bootstrap on briefs, paired by ticker)", "",
                   "| Comparison | What differs | Difference | Bootstrap 95% CI | "
                   "Bootstrap p (two-sided) | CI excludes 0 |",
                   "|---|---|---|---|---|---|"]
-        what = {"lsnnc - v924f": "same BF16 model, different images (2026-09-05/06 vs 2026-09-23)",
-                "r5nzh - v924f": "W4A16 vs BF16, same image, six days apart",
-                "r5nzh - lsnnc": "W4A16 vs BF16, different images"}
+        what = {"r5nzh - v924f": "**primary**: W4A16 vs BF16, same image, "
+                                 "template and serving args, six days apart",
+                "lsnnc - v924f": "same BF16 weights, earlier image (2026-09-05/06 "
+                                 "vs 2026-09-23): the image/pipeline effect",
+                "r5nzh - lsnnc": "precision and image both differ: confounded, "
+                                 "backs no claim"}
         for key, d in comparisons.items():
             if not isinstance(d, dict):
                 continue
-            lines.append(f"| {key} | {what.get(key, '')} | {d['difference']:+.1%} | "
-                         f"{_ci(d['ci95'], signed=True)} | {d['p_two_sided_bootstrap']} | "
+            lo, hi = (100 * v for v in d["ci95"])
+            lines.append(f"| {key} | {what.get(key, '')} | "
+                         f"{100 * d['difference']:+.1f} pts | "
+                         f"{lo:+.1f} to {hi:+.1f} pts | {d['p_two_sided_bootstrap']} | "
                          f"{'yes' if d['excludes_zero'] else 'no'} |")
-        lines += ["", comparisons["statement"]]
+        lines += ["", comparisons["statement"], "",
+                  comparisons.get("image_change_statement", ""), "",
+                  f"Same-image evidence: {comparisons['same_image_evidence']}."]
     return "\n".join(lines) + "\n"
 
 

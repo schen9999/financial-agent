@@ -497,11 +497,19 @@ def _runs(rates):
     return out
 
 
-def test_w4a16_separable_only_against_both_bf16_runs():
-    sep = nb.fine_tune_comparisons(_runs({"lsnnc": 2, "v924f": 2, "r5nzh": 8}), draws=1000)
-    assert sep["w4a16_vs_bf16_separable"] and "IS separable" in sep["statement"]
-    # r5nzh sits with one BF16 run, not the other: not separable.
-    mixed = nb.fine_tune_comparisons(_runs({"lsnnc": 8, "v924f": 2, "r5nzh": 8}), draws=1000)
-    assert not mixed["w4a16_vs_bf16_separable"]
-    assert "is not separable from run-to-run variation" in mixed["statement"]
-    assert "two BF16 runs themselves differ" in mixed["statement"]
+def test_primary_w4a16_comparison_is_same_image_r5nzh_vs_v924f():
+    # lsnnc far off (an image effect) must not cancel the same-image result.
+    res = nb.fine_tune_comparisons(_runs({"lsnnc": 8, "v924f": 2, "r5nzh": 8}), draws=1000)
+    assert res["primary"] == "r5nzh - v924f"
+    assert res["same_image_evidence"].endswith("provenance-v924f-r5nzh.md")
+    assert res["statement"].startswith(
+        "W4A16 shows +30.0 pts section-level numeric mismatches vs same-image BF16 "
+        "(paired cluster bootstrap CI +")
+    assert res["statement"].endswith("pts), on unadjudicated flags.")
+    assert "pipeline/image changes also move this metric" in res["image_change_statement"]
+    assert "not noise that cancels the" in res["image_change_statement"]
+
+
+def test_primary_w4a16_comparison_says_so_when_ci_includes_zero():
+    res = nb.fine_tune_comparisons(_runs({"lsnnc": 2, "v924f": 2, "r5nzh": 2}), draws=1000)
+    assert "the interval includes zero, so no difference is shown" in res["statement"]
