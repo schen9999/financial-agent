@@ -572,31 +572,126 @@ def test_replay_seeds_are_distinct_and_arm_independent():
     assert len(seeds) == 240
 
 
-def _replay_briefs(k_bf16, k_w4a16):
+def _variant(k, n=10):
+    return {"report": {"findings": [1] * k, "checked": n, "unchecked": 5},
+            "distinct": [], "counts": (k, n)}
+
+
+def _replay_briefs(k_bf16, k_w4a16, label="replication", samples=3, trunc_k=None):
+    """Synthetic replay briefs; trunc_k overrides the no_trunc count."""
     out = []
     for arm, kk in (("bf16", k_bf16), ("w4a16", k_w4a16)):
         for t in range(30):
-            for s in (1, 2, 3):
+            for s in range(1, samples + 1):
                 k = kk if t % 2 else 0
-                out.append({"replay": "replay-x", "arm": arm, "model": arm,
-                            "ticker": f"T{t}", "sample": s, "counts": (k, 10),
-                            "report": {"findings": [1] * k, "checked": 10, "unchecked": 5}})
+                kn = (trunc_k[arm] if t % 2 else 0) if trunc_k else k
+                out.append({"label": label, "replay": f"replay-{label}-x", "arm": arm,
+                            "model": arm, "ticker": f"T{t}", "sample": s, "sections": 2,
+                            "truncated": [], "variants": {"all": _variant(k),
+                                                          "no_trunc": _variant(kn)}})
     return out
 
 
-def test_replay_statement_reproduces_or_not():
-    yes = nb.replay_analysis(_replay_briefs(1, 6), [], draws=1000)
-    assert yes["statement"].startswith("The regression reproduces on identical inputs")
-    no = nb.replay_analysis(_replay_briefs(2, 2), [], draws=1000)
-    assert no["statement"].startswith("The live-run gap is not reproduced")
-    assert "may reflect input drift" in no["statement"]
-    assert yes["arms"]["bf16"]["sample_spread"]["range"] == 0
+def test_replication_statement_follows_the_preregistered_rule():
+    up = nb.replay_analysis({"replication": _replay_briefs(1, 6)}, [], None, draws=1000)
+    R = up["labels"]["replication"]
+    assert R["statement"].startswith("The W4A16 regression replicates on identical inputs")
+    assert "truncated sections excluded, unadjudicated flags." in R["statement"]
+    assert R["secondary_statement"].startswith("Secondary (all sections")
+    flat = nb.replay_analysis({"replication": _replay_briefs(2, 2)}, [], None, draws=1000)
+    assert flat["labels"]["replication"]["statement"].startswith(
+        "The W4A16 regression does not replicate on identical inputs")
+    down = nb.replay_analysis({"replication": _replay_briefs(6, 1)}, [], None, draws=1000)
+    assert down["labels"]["replication"]["statement"].startswith(
+        "On identical inputs W4A16 has fewer mismatches than BF16")
 
 
-def test_precision_reports_replay_rows_separately():
-    rows = [dict(_adj("replay-x/w4a16/s1", "replay", "TRUE_ERROR"), arm="w4a16"),
-            dict(_adj("replay-x/w4a16/s2", "replay", "FALSE_POSITIVE"), arm="w4a16"),
+def test_replication_primary_uses_the_truncation_excluded_variant():
+    # All sections: no gap; truncated excluded: a clear gap. Primary decides.
+    bs = _replay_briefs(3, 3, trunc_k={"bf16": 1, "w4a16": 6})
+    R = nb.replay_analysis({"replication": bs}, [], None, draws=1000)["labels"]["replication"]
+    assert not R["difference"]["all"]["excludes_zero"]
+    assert R["difference"]["no_trunc"]["excludes_zero"]
+    assert R["statement"].startswith("The W4A16 regression replicates")
+
+
+def test_pilot_statement_and_truncation_sentence():
+    P = nb.replay_analysis({"pilot": _replay_briefs(2, 2, label="pilot")}, [], None,
+                           draws=1000)["labels"]["pilot"]
+    assert P["statement"].startswith("Pilot: the live-run gap is not reproduced")
+    assert P["context_statements"][0].startswith("With truncated sections excluded")
+
+
+def test_load_replay_splits_truncated_sections_from_the_pilot():
+    pilot = REPO / "eval" / "runs" / "replay-pilot-2026-09-30"
+    bs = nb.load_replay(pilot, "pilot")
+    assert len(bs) == 240
+    trunc = [b for b in bs if b["truncated"]]
+    assert trunc and all(b["variants"]["no_trunc"]["counts"][1]
+                         <= b["variants"]["all"]["counts"][1] for b in bs)
+    assert sum(len(b["truncated"]) for b in bs if b["arm"] == "bf16") == 56
+
+
+def _sample_briefs():
+    """Replication-like briefs with mismatch findings in two fields."""
+    bs = []
+    for arm in ("bf16", "w4a16"):
+        for t in range(50):
+            f = {"section": "Financial Health", "kind": "mismatch",
+                 "field": "market_cap" if t < 40 else "revenue", "stated": f"${t}B",
+                 "sentence": f"s{t}", "source": 1.0, "ratio": 2.0, "occurrences": 1}
+            v = {"report": {}, "distinct": [f], "counts": (1, 3)}
+            bs.append({"replay": "replay-replication-x", "arm": arm, "model": arm,
+                       "ticker": f"T{t}", "sample": 1, "variants": {"no_trunc": v}})
+    return bs
+
+
+def test_replication_sample_is_stratified_seeded_and_sized():
+    rows, rec = nb.replication_sample(_sample_briefs(), per_arm=20, seed=42)
+    rows2, _ = nb.replication_sample(_sample_briefs(), per_arm=20, seed=42)
+    assert rows == rows2
+    a = rec["arms"]["bf16"]
+    assert a["flags"] == 50 and a["checked_distinct"] == 150 and a["sampled"] == 20
+    assert a["population_by_field"] == {"market_cap": 40, "revenue": 10}
+    assert a["allocation_by_field"] == {"market_cap": 16, "revenue": 4}
+    assert all(r["scope"] == "replication" for r in rows) and len(rows) == 40
+    small, rec_small = nb.replication_sample(_sample_briefs(), per_arm=100)
+    assert rec_small["arms"]["bf16"]["sampled"] == 50
+
+
+def test_applied_precision_is_stratum_weighted_and_states_the_sample():
+    rows, rec = nb.replication_sample(_sample_briefs(), per_arm=20, seed=42)
+    for r in rows:
+        r["verdict"] = "TRUE_ERROR" if r["field"] == "market_cap" else "FALSE_POSITIVE"
+    res = nb.replication_applied_precision(rows, rec)["bf16"]
+    assert res["sample_size"] == 20 and res["labelled"] == 20
+    t = res["other_defect_as_tp"]
+    assert t["precision_weighted"] == 0.8          # 40/50 weight on a stratum at 1.0
+    assert t["estimated_true_mismatches"] == 40.0
+    assert t["adjusted_rate"] == round(40 / 150, 4)
+
+
+def test_precision_reports_replication_rows_separately():
+    rows = [dict(_adj("replay-replication-x/w4a16/s1", "replication", "TRUE_ERROR"), arm="w4a16"),
+            dict(_adj("replay-replication-x/w4a16/s2", "replication", "FALSE_POSITIVE"), arm="w4a16"),
             _adj("r", "full", "TRUE_ERROR")]
     res = nb.precision(rows)
-    assert res["replay"]["replay-x:w4a16"]["rows"] == 2
+    assert res["replication"]["replay-replication-x:w4a16"]["rows"] == 2
     assert res["all_full"]["rows"] == 1
+
+
+def test_live_sections_cut_from_a_findings_block():
+    spec = importlib.util.spec_from_file_location(
+        "section_token_counts", REPO / "scripts" / "section_token_counts.py")
+    stc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(stc)
+    from eval.label import parse_findings_file
+    block = parse_findings_file((V924F / "CRBU_local-model.md").read_text(encoding="utf-8"))["section_block"]
+    secs = stc.live_sections(block)
+    assert secs["financial-health"].startswith("### Financial Health")
+    assert "Recent Developments" not in secs["financial-health"]
+    assert secs["risk-factors"].lstrip().startswith("###")
+    tc = {"threshold": 505, "live": {"v924f": {"CRBU": {"financial-health": 510,
+                                                         "risk-factors": 100}}}}
+    assert nb.live_truncated(tc, "v924f", "CRBU") == frozenset({"financial-health"})
+    assert nb.live_truncated(None, "v924f", "CRBU") == frozenset()

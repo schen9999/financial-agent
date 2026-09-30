@@ -391,9 +391,20 @@ def backtest(briefs: list[dict]) -> tuple[dict, list[dict]]:
 
 
 # --- frozen-input replay (scripts/replay_sections.py) ------------------------
+# Two labelled replays: the 3-sample "pilot" and the pre-registered
+# 10-sample "replication" (eval/numeric_check/replication-plan.md). Every
+# metric comes in two variants: "all" sections, and "no_trunc", which drops
+# sections that hit the 512-token cap (vLLM finish_reason "length"); no_trunc
+# is the replication's pre-registered primary metric.
 
 LOCAL_SECTION_KEYS = {"financial-health", "risk-factors"}
 REPLAY_ARMS = ("bf16", "w4a16")
+REPLAY_LABELS = ("pilot", "replication")
+VARIANTS = ("all", "no_trunc")
+TOKEN_COUNTS = REPO / "eval" / "numeric_check" / "section-token-counts.json"
+REPLICATION_SAMPLE = REPO / "eval" / "numeric_check" / "replication-sample.json"
+SAMPLE_PER_ARM = 60
+SAMPLE_SEED = 42
 
 
 def _read_replay_file(path: Path) -> dict:
@@ -406,11 +417,11 @@ def _read_replay_file(path: Path) -> dict:
     return mod.read_replay_file(path)
 
 
-def local_section_counts(report: dict) -> tuple[int, int]:
+def local_section_counts(report: dict, exclude: frozenset = frozenset()) -> tuple[int, int]:
     """(distinct mismatches, distinct checked numbers) restricted to the two
-    sections the local model writes, so a live run compares like for like
-    with a replay (which regenerates only those two)."""
-    keep = lambda s: section_key(s) in LOCAL_SECTION_KEYS  # noqa: E731
+    sections the local model writes, minus any canonical section in
+    `exclude`, so a live run compares like for like with a replay."""
+    keep = lambda s: section_key(s) in LOCAL_SECTION_KEYS - exclude  # noqa: E731
     mism = {(f["section"], f["field"], f["stated"], f["sentence"])
             for f in report["findings"] if f["kind"] == "mismatch" and keep(f["section"])}
     chk = {(b["section"], b["field"], b["stated"], b["sentence"])
@@ -418,21 +429,54 @@ def local_section_counts(report: dict) -> tuple[int, int]:
     return len(mism), len(chk)
 
 
-def load_replay(replay_dir: Path) -> list[dict]:
-    """Every <replay_dir>/<arm>/<T>-s<k>.md as a checked brief."""
+def load_token_counts(path: Path = TOKEN_COUNTS) -> dict | None:
+    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
+
+
+def live_truncated(tc: dict | None, run: str, ticker: str) -> frozenset:
+    """Canonical sections of a live brief estimated to have hit the cap
+    (scripts/section_token_counts.py)."""
+    if not tc:
+        return frozenset()
+    counts = tc["live"].get(run, {}).get(ticker, {})
+    return frozenset(k for k, v in counts.items() if v is not None and v >= tc["threshold"])
+
+
+def find_replays() -> dict:
+    """{label: latest eval/runs/replay-<label>-<date>/ directory}."""
+    out = {}
+    for label in REPLAY_LABELS:
+        dirs = sorted(p for p in (REPO / "eval" / "runs").glob(f"replay-{label}-*") if p.is_dir())
+        if dirs:
+            out[label] = dirs[-1]
+    return out
+
+
+def _variant(report: dict) -> dict:
+    distinct = _distinct(report["findings"])
+    return {"report": report, "distinct": distinct,
+            "counts": (sum(f["kind"] == "mismatch" for f in distinct),
+                       _checked_distinct(report))}
+
+
+def load_replay(replay_dir: Path, label: str) -> list[dict]:
+    """Every <replay_dir>/<arm>/<T>-s<k>.md as a checked brief, in both
+    variants (all sections; truncated sections dropped)."""
     out = []
     for arm in REPLAY_ARMS:
         for p in sorted((replay_dir / arm).glob("*-s*.md"), key=lambda p: p.name):
             r = _read_replay_file(p)
             m = r["meta"]
-            report = nc.check_sections(r["sections"], r["stock"])
-            distinct = _distinct(report["findings"])
+            finish = {name: m.get(f"{name.lower().replace(' ', '_')}_finish_reason")
+                      for name, _ in r["sections"]}
+            kept = [(n, t) for n, t in r["sections"] if finish[n] != "length"]
             out.append({
-                "replay": replay_dir.name, "arm": arm, "model": m["served_name"],
-                "ticker": m["ticker"], "sample": int(m["sample"]),
-                "report": report, "distinct": distinct,
-                "counts": (sum(f["kind"] == "mismatch" for f in distinct),
-                           _checked_distinct(report)),
+                "label": label, "replay": replay_dir.name, "arm": arm,
+                "model": m["served_name"], "ticker": m["ticker"],
+                "sample": int(m["sample"]), "sections": len(r["sections"]),
+                "truncated": [n for n, _ in r["sections"] if finish[n] == "length"],
+                "variants": {"all": _variant(nc.check_sections(r["sections"], r["stock"])),
+                             "no_trunc": _variant(nc.check_sections(kept, r["stock"]))},
             })
     return out
 
@@ -446,158 +490,347 @@ def _sum_by_ticker(briefs: list[dict], counts_key=lambda b: b["counts"]) -> dict
     return {t: tuple(v) for t, v in by.items()}
 
 
-def replay_analysis(replay_briefs: list[dict], live_briefs: list[dict],
+def _arm_metrics(bs: list[dict], variant: str, draws: int) -> dict:
+    vs = [b["variants"][variant] for b in bs]
+    k = sum(v["counts"][0] for v in vs)
+    n = sum(v["counts"][1] for v in vs)
+    checked = sum(v["report"]["checked"] for v in vs)
+    unchecked = sum(v["report"]["unchecked"] for v in vs)
+    per_sample = {}
+    for s in sorted({b["sample"] for b in bs}):
+        ss = [b["variants"][variant] for b in bs if b["sample"] == s]
+        sk, sn = sum(v["counts"][0] for v in ss), sum(v["counts"][1] for v in ss)
+        per_sample[f"s{s}"] = {"briefs_flagged": sum(bool(v["report"]["findings"]) for v in ss),
+                               "mismatches": sk, "checked_distinct": sn,
+                               "rate": round(sk / sn, 4) if sn else None}
+    rates = [v["rate"] for v in per_sample.values() if v["rate"] is not None]
+    rate = _rate(k, n)
+    rate["cluster_bootstrap"] = cluster_bootstrap_ci(
+        [list(_sum_by_ticker(bs, lambda b: b["variants"][variant]["counts"]).values())],
+        draws=draws)
+    rate["cluster_bootstrap"]["method"] += (
+        f" (clusters: tickers, {len(per_sample)} samples each)")
+    return {
+        "model": bs[0]["model"], "briefs": len(bs), "tickers": len({b["ticker"] for b in bs}),
+        "samples": len(per_sample),
+        "briefs_flagged": sum(bool(v["report"]["findings"]) for v in vs),
+        "checked": checked, "checked_distinct": n, "unchecked": unchecked,
+        "coverage": round(checked / (checked + unchecked), 4) if checked + unchecked else None,
+        "mismatches_per_checked": rate, "per_sample": per_sample,
+        "sample_spread": {"min": min(rates), "max": max(rates),
+                          "range": round(max(rates) - min(rates), 4)} if rates else None,
+    }
+
+
+def _gap(d: dict) -> str:
+    return (f"W4A16 - BF16 = {100 * d['difference']:+.1f} pts (paired ticker-cluster "
+            f"bootstrap CI {100 * d['ci95'][0]:+.1f} to {100 * d['ci95'][1]:+.1f} pts)")
+
+
+def replication_statement(d: dict) -> str:
+    """The pre-registered wording (replication-plan.md, "Decision rule")."""
+    tail = ("on the replayed Financial Health + Risk Factors sections, truncated "
+            "sections excluded, unadjudicated flags.")
+    if d["excludes_zero"] and d["difference"] > 0:
+        return f"The W4A16 regression replicates on identical inputs: {_gap(d)} {tail}"
+    if d["excludes_zero"]:
+        return f"On identical inputs W4A16 has fewer mismatches than BF16: {_gap(d)} {tail}"
+    return f"The W4A16 regression does not replicate on identical inputs: {_gap(d)} {tail}"
+
+
+def replay_analysis(label_briefs: dict, live_briefs: list[dict], tc: dict | None,
                     draws: int = BOOT_DRAWS) -> dict:
-    """Per-arm replay metrics, the within-arm spread over samples, the paired
-    (by ticker) W4A16 - BF16 difference, the like-for-like live difference
-    (r5nzh - v924f on Financial Health + Risk Factors only) and the
-    generated statement."""
-    out = {"replay": replay_briefs[0]["replay"] if replay_briefs else None,
-           "arms": {}}
-    for arm in REPLAY_ARMS:
-        bs = [b for b in replay_briefs if b["arm"] == arm]
+    """Per label (pilot, replication): truncation per arm, per-arm metrics and
+    the paired W4A16 - BF16 difference in both variants, and statements; plus
+    the like-for-like live difference (r5nzh - v924f, FH + RF only) with and
+    without estimated-truncated sections, and live truncation per run."""
+    out = {"labels": {}}
+    for label, bs in label_briefs.items():
         if not bs:
             continue
-        k = sum(b["counts"][0] for b in bs)
-        n = sum(b["counts"][1] for b in bs)
-        checked = sum(b["report"]["checked"] for b in bs)
-        unchecked = sum(b["report"]["unchecked"] for b in bs)
-        per_sample = {}
-        for s in sorted({b["sample"] for b in bs}):
-            ss = [b for b in bs if b["sample"] == s]
-            sk, sn = sum(b["counts"][0] for b in ss), sum(b["counts"][1] for b in ss)
-            per_sample[f"s{s}"] = {"briefs": len(ss),
-                                   "briefs_flagged": sum(bool(b["report"]["findings"]) for b in ss),
-                                   "mismatches": sk, "checked_distinct": sn,
-                                   "rate": round(sk / sn, 4) if sn else None}
-        rates = [v["rate"] for v in per_sample.values() if v["rate"] is not None]
-        rate = _rate(k, n)
-        rate["cluster_bootstrap"] = cluster_bootstrap_ci(
-            [list(_sum_by_ticker(bs).values())], draws=draws)
-        rate["cluster_bootstrap"]["method"] += " (clusters: tickers, 3 samples each)"
-        out["arms"][arm] = {
-            "model": bs[0]["model"], "briefs": len(bs),
-            "tickers": len({b["ticker"] for b in bs}),
-            "briefs_flagged": sum(bool(b["report"]["findings"]) for b in bs),
-            "checked": checked, "checked_distinct": n, "unchecked": unchecked,
-            "coverage": round(checked / (checked + unchecked), 4) if checked + unchecked else None,
-            "mismatches_per_checked": rate,
-            "per_sample": per_sample,
-            "sample_spread": {"min": min(rates), "max": max(rates),
-                              "range": round(max(rates) - min(rates), 4)} if rates else None,
+        L = {"replay": bs[0]["replay"], "truncation": {}, "arms": {}, "difference": {}}
+        for arm in REPLAY_ARMS:
+            ab = [b for b in bs if b["arm"] == arm]
+            if not ab:
+                continue
+            t = sum(len(b["truncated"]) for b in ab)
+            s = sum(b["sections"] for b in ab)
+            L["truncation"][arm] = {"sections": s, "truncated": t, "rate": round(t / s, 4)}
+            L["arms"].setdefault("all", {})[arm] = _arm_metrics(ab, "all", draws)
+            L["arms"].setdefault("no_trunc", {})[arm] = _arm_metrics(ab, "no_trunc", draws)
+        if set(REPLAY_ARMS) <= set(L["truncation"]):
+            for v in VARIANTS:
+                w = _sum_by_ticker([b for b in bs if b["arm"] == "w4a16"],
+                                   lambda b, v=v: b["variants"][v]["counts"])
+                f = _sum_by_ticker([b for b in bs if b["arm"] == "bf16"],
+                                   lambda b, v=v: b["variants"][v]["counts"])
+                L["difference"][v] = bootstrap_difference(w, f, draws)
+        out["labels"][label] = L
+
+    live_runs = ("r5nzh", "v924f")
+    live = {}
+    for v in VARIANTS:
+        live[v] = {r: _sum_by_ticker(
+            [b for b in live_briefs if b["run"] == r],
+            lambda b, v=v: local_section_counts(
+                b["report"], live_truncated(tc, b["run"], b["ticker"]) if v == "no_trunc"
+                else frozenset()))
+            for r in live_runs}
+    if all(live["all"].values()):
+        out["live"] = {
+            "difference": {v: bootstrap_difference(live[v]["r5nzh"], live[v]["v924f"], draws)
+                           for v in VARIANTS if tc or v == "all"},
+            "rates": {v: {r: _rate(sum(x[0] for x in live[v][r].values()),
+                                   sum(x[1] for x in live[v][r].values()))
+                          for r in live_runs}
+                      for v in VARIANTS if tc or v == "all"},
         }
-    if set(REPLAY_ARMS) <= set(out["arms"]):
-        w = _sum_by_ticker([b for b in replay_briefs if b["arm"] == "w4a16"])
-        f = _sum_by_ticker([b for b in replay_briefs if b["arm"] == "bf16"])
-        out["difference_w4a16_minus_bf16"] = bootstrap_difference(w, f, draws)
-    live = {r: _sum_by_ticker([b for b in live_briefs if b["run"] == r],
-                              lambda b: local_section_counts(b["report"]))
-            for r in ("r5nzh", "v924f")}
-    if all(live.values()):
-        out["live_fh_rf_r5nzh_minus_v924f"] = bootstrap_difference(
-            live["r5nzh"], live["v924f"], draws)
-        out["live_fh_rf_rates"] = {
-            r: _rate(sum(v[0] for v in live[r].values()), sum(v[1] for v in live[r].values()))
-            for r in live}
-    d = out.get("difference_w4a16_minus_bf16")
-    if d:
-        ci = f"paired cluster bootstrap CI {100 * d['ci95'][0]:+.1f} to {100 * d['ci95'][1]:+.1f} pts"
-        diff = f"W4A16 - BF16 = {100 * d['difference']:+.1f} pts ({ci})"
-        if d["excludes_zero"] and d["difference"] > 0:
-            out["statement"] = (
-                f"The regression reproduces on identical inputs: {diff} on the "
-                f"replayed Financial Health + Risk Factors sections, on "
-                f"unadjudicated flags.")
-        else:
-            out["statement"] = (
-                f"The live-run gap is not reproduced on identical inputs "
-                f"({diff} on the replayed Financial Health + Risk Factors "
-                f"sections, unadjudicated flags) and may reflect input drift.")
-        # Context, also generated from the numbers.
-        extra = []
-        lv = out.get("live_fh_rf_r5nzh_minus_v924f")
+    if tc:
+        out["live_truncation"] = {
+            run: {"sections": sum(len(d) for d in t.values()),
+                  "unknown": sum(x is None for d in t.values() for x in d.values()),
+                  "truncated_est": sum(x is not None and x >= tc["threshold"]
+                                       for d in t.values() for x in d.values())}
+            for run, t in tc["live"].items()}
+        out["truncation_method"] = {"threshold": tc["threshold"], "cap": tc["cap"],
+                                    "validation_on_pilot": tc["validation_on_pilot"]}
+
+    P = out["labels"].get("pilot")
+    if P and P["difference"]:
+        d, dn = P["difference"]["all"], P["difference"]["no_trunc"]
+        P["statement"] = (
+            f"Pilot: the live-run gap is not reproduced on identical inputs "
+            f"({_gap(d)} on the replayed Financial Health + Risk Factors "
+            f"sections, unadjudicated flags) and may reflect input drift."
+            if not (d["excludes_zero"] and d["difference"] > 0) else
+            f"Pilot: the regression reproduces on identical inputs: {_gap(d)} on "
+            f"the replayed Financial Health + Risk Factors sections, on "
+            f"unadjudicated flags.")
+        extra = [f"With truncated sections excluded, the pilot gap is {_gap(dn)}."]
+        lv = out.get("live", {}).get("difference", {}).get("all")
         if lv and d["ci95"][0] <= lv["difference"] <= d["ci95"][1]:
-            extra.append(
-                f"The replay interval also contains the like-for-like live gap "
-                f"({100 * lv['difference']:+.1f} pts), so the replay neither "
-                f"confirms nor excludes it.")
-        rates = out.get("live_fh_rf_rates", {})
-        bf = out["arms"].get("bf16")
+            extra.append(f"The pilot interval also contains the like-for-like live gap "
+                         f"({100 * lv['difference']:+.1f} pts), so the pilot neither "
+                         f"confirms nor excludes it.")
+        rates = out.get("live", {}).get("rates", {}).get("all", {})
+        bf = P["arms"]["all"].get("bf16")
         if bf and "v924f" in rates:
             ps = " / ".join(f"{v['rate']:.1%}" for v in bf["per_sample"].values())
             extra.append(
                 f"Same weights, same inputs: replayed BF16 gives "
-                f"{bf['mismatches_per_checked']['rate']:.1%} (samples {ps}) "
-                f"against v924f's single live draw of {rates['v924f']['rate']:.1%} "
-                f"on these sections, so sampling alone moves this rate by that "
-                f"much, which a one-draw-per-ticker live comparison cannot "
-                f"separate from precision.")
-        out["context_statements"] = extra
+                f"{bf['mismatches_per_checked']['rate']:.1%} (samples {ps}) against "
+                f"v924f's single live draw of {rates['v924f']['rate']:.1%} on these "
+                f"sections, so sampling alone moves this rate by that much, which a "
+                f"one-draw-per-ticker live comparison cannot separate from precision.")
+        P["context_statements"] = extra
+    R = out["labels"].get("replication")
+    if R and R["difference"]:
+        R["statement"] = replication_statement(R["difference"]["no_trunc"])
+        R["secondary_statement"] = (
+            f"Secondary (all sections, truncated included): {_gap(R['difference']['all'])}.")
     return out
 
 
-def replay_rows(replay_briefs: list[dict]) -> list[dict]:
-    """Adjudication rows for replay findings, scope=replay."""
-    rows = []
-    for b in replay_briefs:
-        for f in b["distinct"]:
-            rows.append({
-                "run": f"{b['replay']}/{b['arm']}/s{b['sample']}", "scope": "replay",
-                "arm": b["arm"], "model": b["model"], "ticker": b["ticker"],
-                "section": f["section"], "kind": f["kind"],
-                "field": f["field"] or "", "sentence": f["sentence"],
-                "stated": f["stated"],
-                "source": "" if f["source"] is None else f["source"],
-                "ratio": "" if f["ratio"] is None else f"{f['ratio']:.4g}",
-                "occurrences": f["occurrences"], "verdict": "",
-            })
-    return rows
+# --- replication adjudication sample -------------------------------------------
+
+def _row(b: dict, f: dict, scope: str) -> dict:
+    return {
+        "run": f"{b['replay']}/{b['arm']}/s{b['sample']}", "scope": scope,
+        "arm": b["arm"], "model": b["model"], "ticker": b["ticker"],
+        "section": f["section"], "kind": f["kind"], "field": f["field"] or "",
+        "sentence": f["sentence"], "stated": f["stated"],
+        "source": "" if f["source"] is None else f["source"],
+        "ratio": "" if f["ratio"] is None else f"{f['ratio']:.4g}",
+        "occurrences": f["occurrences"], "verdict": "",
+    }
 
 
-def replay_markdown(rep: dict) -> list[str]:
-    lines = ["", f"Frozen-input replay ({rep['replay']}): the two local sections "
-             "(Financial Health, Risk Factors) regenerated from v924f's recorded "
-             "contexts with the pipeline's own prompts, 3 seeded samples per "
-             "ticker per arm, same seeds in both arms (scripts/replay_sections.py)",
-             "",
-             "| Arm | Served model | Briefs (tickers x samples) | Briefs flagged | "
-             "Checked (distinct) | Coverage | Mismatches per checked number | "
-             "Wilson 95% CI (naive, too narrow) | Cluster bootstrap 95% CI (tickers) | "
-             "Per-sample rates (s1 / s2 / s3) | Spread (max - min) |",
-             "|---|---|---|---|---|---|---|---|---|---|---|"]
-    for arm, a in rep["arms"].items():
-        m = a["mismatches_per_checked"]
-        ps = " / ".join(f"{v['rate']:.1%}" for v in a["per_sample"].values())
-        sp = a["sample_spread"]
-        lines.append(
-            f"| {arm} | {a['model']} | {a['briefs']} ({a['tickers']} x "
-            f"{len(a['per_sample'])}) | {a['briefs_flagged']} | {a['checked_distinct']} | "
-            f"{a['coverage']:.1%} | {m['k']} = {m['rate']:.1%} | {_ci(m['ci95'])} | "
-            f"{_ci(m['cluster_bootstrap']['ci95']) if m['k'] else 'n/a (0 events)'} | "
-            f"{ps} | {100 * sp['range']:.1f} pts |")
-    lines += ["", "| Comparison | Difference | Bootstrap 95% CI | Bootstrap p (two-sided) | CI excludes 0 |",
-              "|---|---|---|---|---|"]
-    for key, label in (("difference_w4a16_minus_bf16", "replay: W4A16 - BF16, identical inputs"),
-                       ("live_fh_rf_r5nzh_minus_v924f",
-                        "live, like for like: r5nzh - v924f, Financial Health + Risk Factors only")):
-        d = rep.get(key)
-        if d:
-            lines.append(f"| {label} | {100 * d['difference']:+.1f} pts | "
-                         f"{100 * d['ci95'][0]:+.1f} to {100 * d['ci95'][1]:+.1f} pts | "
-                         f"{d['p_two_sided_bootstrap']} | {'yes' if d['excludes_zero'] else 'no'} |")
-    if rep.get("statement"):
-        lines += ["", rep["statement"]]
-    for s in rep.get("context_statements", []):
-        lines += ["", s]
-    rates = rep.get("live_fh_rf_rates")
-    if rates:
-        lines += ["", "Live Financial Health + Risk Factors rates (one draw per "
-                  "ticker): " + "; ".join(
-                      f"{r} {v['k']}/{v['n']} = {v['rate']:.1%}" for r, v in rates.items()) + "."]
-    lines += ["", "The live-run rows above also count the hosted Exec Summary and "
-              "Outlook, which restate the local sections' figures; the replay "
-              "regenerates only the two local sections, so its like-for-like "
-              "live comparison is the Financial Health + Risk Factors row."]
+def _allocate(sizes: dict, total: int) -> dict:
+    """Proportional allocation with largest remainders; all rows if the
+    frame is smaller than `total`."""
+    n = sum(sizes.values())
+    if n <= total:
+        return dict(sizes)
+    quotas = {k: total * v / n for k, v in sizes.items()}
+    alloc = {k: int(q) for k, q in quotas.items()}
+    for k in sorted(quotas, key=lambda k: (-(quotas[k] - alloc[k]), k))[:total - sum(alloc.values())]:
+        alloc[k] += 1
+    return alloc
+
+
+def replication_sample(briefs: list[dict], per_arm: int = SAMPLE_PER_ARM,
+                       seed: int = SAMPLE_SEED) -> tuple[list[dict], dict]:
+    """The pre-registered adjudication sample: per arm, `per_arm` mismatch
+    rows from the primary metric's flags (truncated sections excluded),
+    stratified by field with proportional allocation, drawn with
+    random.Random(seed) per arm over a deterministically ordered frame.
+    Returns (rows, record)."""
+    rows, record = [], {"per_arm": per_arm, "seed": seed, "stratified_by": "field",
+                        "frame": "distinct mismatch findings, truncated sections excluded",
+                        "arms": {}}
+    for arm in REPLAY_ARMS:
+        frame = sorted(
+            (_row(b, f, "replication") for b in briefs if b["arm"] == arm
+             for f in b["variants"]["no_trunc"]["distinct"] if f["kind"] == "mismatch"),
+            key=lambda r: (r["ticker"], r["run"], r["section"], r["field"], r["stated"], r["sentence"]))
+        strata = defaultdict(list)
+        for r in frame:
+            strata[r["field"]].append(r)
+        alloc = _allocate({k: len(v) for k, v in strata.items()}, per_arm)
+        rng = random.Random(seed)
+        picked = []
+        for field in sorted(strata):
+            picked += rng.sample(strata[field], alloc[field])
+        rows += picked
+        record["arms"][arm] = {
+            "flags": len(frame),
+            "checked_distinct": sum(b["variants"]["no_trunc"]["counts"][1]
+                                    for b in briefs if b["arm"] == arm),
+            "population_by_field": {k: len(v) for k, v in sorted(strata.items())},
+            "allocation_by_field": dict(sorted(alloc.items())),
+            "sampled": len(picked),
+            "sampled_keys": [[r[k] for k in _ADJ_KEY] for r in picked],
+        }
+    return rows, record
+
+
+def replication_applied_precision(rows: list[dict], record: dict) -> dict:
+    """Per arm: stratum-weighted precision from the labelled sample (two
+    ways), applied to the replication's primary flag count and rate; the
+    sample size is stated. Strata without a label contribute nothing and are
+    listed."""
+    out = {}
+    for arm, rec in record["arms"].items():
+        labelled = [r for r in rows if r["scope"] == "replication" and r["arm"] == arm
+                    and r["verdict"].strip()]
+        pop = rec["population_by_field"]
+        res = {"sample_size": rec["sampled"], "labelled": len(labelled),
+               "flags": rec["flags"]}
+        for mode in ("other_defect_as_tp", "other_defect_excluded"):
+            num = den = 0.0
+            missing = []
+            for field, n_h in pop.items():
+                lab = [r["verdict"].strip() for r in labelled if r["field"] == field]
+                tp = lab.count("TRUE_ERROR") + (lab.count("OTHER_DEFECT") if mode == "other_defect_as_tp" else 0)
+                d = tp + lab.count("FALSE_POSITIVE") + (lab.count("OTHER_DEFECT") if mode == "other_defect_as_tp" else 0)
+                if d:
+                    num += n_h * tp / d
+                    den += n_h
+                else:
+                    missing.append(field)
+            p = num / den if den else None
+            lab_all = [r["verdict"].strip() for r in labelled]
+            tp_all = lab_all.count("TRUE_ERROR") + (lab_all.count("OTHER_DEFECT") if mode == "other_defect_as_tp" else 0)
+            d_all = tp_all + lab_all.count("FALSE_POSITIVE") + (lab_all.count("OTHER_DEFECT") if mode == "other_defect_as_tp" else 0)
+            entry = {"precision_weighted": round(p, 4) if p is not None else None,
+                     "sample_unweighted": _rate(tp_all, d_all),
+                     "strata_without_labels": missing}
+            if p is not None:
+                k, n = rec["flags"], rec["checked_distinct"]
+                entry["estimated_true_mismatches"] = round(p * k, 1)
+                entry["adjusted_rate"] = round(p * k / n, 4) if n else None
+            res[mode] = entry
+        out[arm] = res
+    return out
+
+
+def replay_markdown(rep: dict, applied: dict | None = None) -> list[str]:
+    lines = []
+    if rep.get("live_truncation") or any(L["truncation"] for L in rep["labels"].values()):
+        lines += ["", "Truncation at the 512-token cap (sections whose generation hit "
+                  "max_tokens): replays from vLLM's recorded finish_reason; live runs "
+                  "estimated by re-tokenizing the saved section text "
+                  "(scripts/section_token_counts.py)", "",
+                  "| Source | Arm / run | Sections | Truncated | Rate |", "|---|---|---|---|---|"]
+        for label, L in rep["labels"].items():
+            for arm, t in L["truncation"].items():
+                lines.append(f"| {label} (exact) | {arm} | {t['sections']} | {t['truncated']} | {t['rate']:.1%} |")
+        for run, t in rep.get("live_truncation", {}).items():
+            known = t["sections"] - t["unknown"]
+            unk = f" ({t['unknown']} not located)" if t["unknown"] else ""
+            lines.append(f"| live (estimated) | {run} | {t['sections']}{unk} | "
+                         f"{t['truncated_est']} | {t['truncated_est'] / known:.1%} |")
+        tm = rep.get("truncation_method")
+        if tm:
+            v = tm["validation_on_pilot"]
+            lines += ["", f"Estimation check on the pilot's {v['sections']} sections: "
+                      f"re-tokenized counts equal vLLM's recorded counts for "
+                      f"{v['exact_count_matches']} (largest difference {v['max_abs_diff']} "
+                      f"tokens); the >= {v['threshold']}-token rule agrees with "
+                      f"finish_reason for {v['threshold_agrees_with_finish_reason']}."]
+
+    head = ("| Arm | Variant | Served model | Briefs (tickers x samples) | Briefs flagged | "
+            "Checked (distinct) | Coverage | Mismatches per checked number | "
+            "Wilson 95% CI (naive, too narrow) | Cluster bootstrap 95% CI (tickers) | "
+            "Per-sample rate range | Spread (max - min) |\n"
+            "|---|---|---|---|---|---|---|---|---|---|---|---|")
+    diff_head = ("| Comparison | Difference | Bootstrap 95% CI | Bootstrap p (two-sided) | CI excludes 0 |\n"
+                 "|---|---|---|---|---|")
+    vname = {"all": "all sections", "no_trunc": "truncated excluded"}
+
+    def drow(label, d):
+        return (f"| {label} | {100 * d['difference']:+.1f} pts | "
+                f"{100 * d['ci95'][0]:+.1f} to {100 * d['ci95'][1]:+.1f} pts | "
+                f"{d['p_two_sided_bootstrap']} | {'yes' if d['excludes_zero'] else 'no'} |")
+
+    titles = {
+        "pilot": "Pilot frozen-input replay ({}): 3 seeded samples per ticker per arm "
+                 "(seed base 42), exploratory",
+        "replication": "Pre-registered replication ({}): 10 seeded samples per ticker per "
+                       "arm (seed base 1000000, disjoint from the pilot); plan: "
+                       "eval/numeric_check/replication-plan.md; primary metric: "
+                       "mismatches per checked number, truncated sections excluded",
+    }
+    for label, L in rep["labels"].items():
+        lines += ["", titles[label].format(L["replay"]) + ". Financial Health and Risk "
+                  "Factors regenerated from v924f's recorded contexts with the pipeline's "
+                  "own prompts, same seeds in both arms (scripts/replay_sections.py).", "", head]
+        for v in VARIANTS:
+            for arm, a in L["arms"].get(v, {}).items():
+                m = a["mismatches_per_checked"]
+                sp = a["sample_spread"]
+                lines.append(
+                    f"| {arm} | {vname[v]} | {a['model']} | {a['briefs']} ({a['tickers']} x "
+                    f"{a['samples']}) | {a['briefs_flagged']} | {a['checked_distinct']} | "
+                    f"{a['coverage']:.1%} | {m['k']} = {m['rate']:.1%} | {_ci(m['ci95'])} | "
+                    f"{_ci(m['cluster_bootstrap']['ci95']) if m['k'] else 'n/a (0 events)'} | "
+                    f"{sp['min']:.1%}–{sp['max']:.1%} | {100 * sp['range']:.1f} pts |")
+        lines += ["", diff_head]
+        for v in VARIANTS:
+            if v in L["difference"]:
+                lines.append(drow(f"{label}: W4A16 - BF16, {vname[v]}", L["difference"][v]))
+        for s in [L.get("statement"), L.get("secondary_statement"), *L.get("context_statements", [])]:
+            if s:
+                lines += ["", s]
+        if label == "replication" and applied:
+            lines += ["", "Adjudication sample (pre-registered): per arm, "
+                      f"{SAMPLE_PER_ARM} of the primary metric's mismatch flags, stratified by "
+                      f"field, seed {SAMPLE_SEED}. Stratum-weighted precision is applied to "
+                      "that arm's flag count.", "",
+                      "| Arm | Flags | Sample size | Labelled | Precision, OTHER_DEFECT as TP | "
+                      "Precision, OTHER_DEFECT excluded | Adjusted rate (as TP / excluded) |",
+                      "|---|---|---|---|---|---|---|"]
+            for arm, a in applied.items():
+                t, x = a["other_defect_as_tp"], a["other_defect_excluded"]
+                f = lambda e: "pending" if e["precision_weighted"] is None else f"{e['precision_weighted']:.1%}"  # noqa: E731
+                adj = ("pending" if t.get("adjusted_rate") is None else
+                       f"{t['adjusted_rate']:.1%} / {x['adjusted_rate']:.1%}")
+                lines.append(f"| {arm} | {a['flags']} | {a['sample_size']} | {a['labelled']} | "
+                             f"{f(t)} | {f(x)} | {adj} |")
+
+    live = rep.get("live")
+    if live:
+        lines += ["", "Live, like for like (one draw per ticker; FH + RF only)", "", diff_head]
+        for v, d in live["difference"].items():
+            name = vname[v] + (" (estimated)" if v == "no_trunc" else "")
+            lines.append(drow(f"live: r5nzh - v924f, {name}", d))
+        for v, rates in live["rates"].items():
+            lines += ["", f"Live FH + RF rates, {vname[v]}: " + "; ".join(
+                f"{r} {x['k']}/{x['n']} = {x['rate']:.1%}" for r, x in rates.items()) + "."]
+    lines += ["", "The live-run rows further up also count the hosted Exec Summary and "
+              "Outlook, which restate the local sections' figures; the replays "
+              "regenerate only the two local sections, so their like-for-like live "
+              "comparison is the FH + RF block above."]
     return lines
 
 
@@ -623,7 +856,7 @@ TABLE_NOTE = (
 
 
 def table_markdown(summary: dict, comparisons: dict | None = None,
-                   replay: dict | None = None) -> str:
+                   replay: dict | None = None, applied: dict | None = None) -> str:
     """Per-run table (full runs grouped by arm, partial runs last), the
     per-arm rows, and the fine-tune run-to-run comparisons. Unadjudicated
     flags only."""
@@ -685,8 +918,8 @@ def table_markdown(summary: dict, comparisons: dict | None = None,
         lines += ["", comparisons["statement"], "",
                   comparisons.get("image_change_statement", ""), "",
                   f"Same-image evidence: {comparisons['same_image_evidence']}."]
-    if replay and replay.get("arms"):
-        lines += replay_markdown(replay)
+    if replay and replay.get("labels"):
+        lines += replay_markdown(replay, applied)
     return "\n".join(lines) + "\n"
 
 
@@ -725,7 +958,7 @@ def _merge_verdicts(rows: list[dict], path: Path) -> int:
 
 
 def write_adjudication(rows: list[dict], path: Path) -> int:
-    order = {"full": 0, "partial": 1, "replay": 2}
+    order = {"full": 0, "partial": 1, "replication": 2}
     rows.sort(key=lambda r: (order.get(r["scope"], 3), r["run"], r["ticker"],
                              r["section"], r["kind"], r["field"], r["stated"]))
     kept = _merge_verdicts(rows, path)
@@ -756,11 +989,11 @@ def precision(rows: list[dict]) -> dict:
         if r["scope"] == "full":
             keys += [("arm", r["arm"]), ("arm_model", f"{r['arm']}:{r['model']}"),
                      ("all_full", "all_full")]
-        elif r["scope"] == "replay":
-            keys += [("replay", f"{r['run'].split('/')[0]}:{r['arm']}")]
+        elif r["scope"] == "replication":
+            keys += [("replication", f"{r['run'].split('/')[0]}:{r['arm']}")]
         for k in keys:
             groups[k][v] += 1
-    out = {"run": {}, "arm": {}, "arm_model": {}, "replay": {}}
+    out = {"run": {}, "arm": {}, "arm_model": {}, "replication": {}}
     for (kind, name), c in sorted(groups.items()):
         tp, fp, od = c["TRUE_ERROR"], c["FALSE_POSITIVE"], c["OTHER_DEFECT"]
         res = {"rows": sum(c.values()), "unlabeled": c["UNLABELED"],
@@ -839,14 +1072,17 @@ def main():
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--out", help="default eval/runs/numeric-backtest-<date>.json")
     ap.add_argument("--adjudication", default=str(ADJ_PATH))
-    ap.add_argument("--replay-dir", help="default: the latest eval/runs/replay-*")
     ap.add_argument("--precision", action="store_true",
                     help="report adjudicated precision from --adjudication")
     args = ap.parse_args()
 
     if args.precision:
         with open(args.adjudication, newline="", encoding="utf-8") as f:
-            res = precision(list(csv.DictReader(f)))
+            adj_rows = list(csv.DictReader(f))
+        res = precision(adj_rows)
+        if REPLICATION_SAMPLE.exists():
+            res["replication_applied"] = replication_applied_precision(
+                adj_rows, json.loads(REPLICATION_SAMPLE.read_text(encoding="utf-8")))
         print(json.dumps(res, indent=2))
         return
 
@@ -863,14 +1099,22 @@ def main():
     crbu = assert_crbu(briefs)
     recall = injection_recall(briefs, args.seed)
     comparisons = fine_tune_comparisons(briefs)
-    replay = None
-    replay_dirs = sorted(p for p in (REPO / "eval" / "runs").glob("replay-*") if p.is_dir())
-    if args.replay_dir or replay_dirs:
-        rdir = Path(args.replay_dir) if args.replay_dir else replay_dirs[-1]
-        rbriefs = load_replay(rdir)
-        replay = replay_analysis(rbriefs, briefs)
-        rows += replay_rows(rbriefs)
+    replay = applied = None
+    replays = find_replays()
+    if replays:
+        label_briefs = {label: load_replay(d, label) for label, d in replays.items()}
+        replay = replay_analysis(label_briefs, briefs, load_token_counts())
+        if label_briefs.get("replication"):
+            srows, record = replication_sample(label_briefs["replication"])
+            rows += srows
+            REPLICATION_SAMPLE.write_text(json.dumps(record, indent=2) + "\n",
+                                          encoding="utf-8", newline="\n")
     kept = write_adjudication(rows, Path(args.adjudication))
+    if REPLICATION_SAMPLE.exists() and replay and "replication" in replay["labels"]:
+        with open(args.adjudication, newline="", encoding="utf-8") as f:
+            applied = replication_applied_precision(
+                list(csv.DictReader(f)),
+                json.loads(REPLICATION_SAMPLE.read_text(encoding="utf-8")))
 
     result = {
         "date": args.date,
@@ -888,6 +1132,7 @@ def main():
         "injection": recall,
         "fine_tune_comparisons": comparisons,
         "replay": replay,
+        "replication_applied_precision": applied,
         "adjudication": {"path": _rel(Path(args.adjudication)),
                          "verdicts": list(VERDICTS),
                          "rows": len(rows), "verdicts_kept": kept},
@@ -896,7 +1141,7 @@ def main():
         REPO / "eval" / "runs" / f"numeric-backtest-{args.date}.json"
     out.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8",
                    newline="\n")
-    table = table_markdown(summary, comparisons, replay)
+    table = table_markdown(summary, comparisons, replay, applied)
     out.with_suffix(".md").write_text(
         f"# Numeric-check backtest, {args.date} (unadjudicated)\n\n"
         f"Generated by scripts/numeric_backtest.py; see {out.name}.\n\n"
