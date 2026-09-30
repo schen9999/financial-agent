@@ -401,3 +401,60 @@ def test_swap_skips_the_two_ends_of_a_range():
     secs = [("Financial Health", "The 52-week range ($1.38-$3.54) is wide.")]
     base = nc.check_sections(secs, STOCK)
     assert inject_numeric(secs, base["bindings"], "swap_fields", random.Random(0)) is None
+
+
+# --- backtest bookkeeping (scripts/numeric_backtest.py) ----------------------
+
+def test_run_labels_lsnnc_is_the_fine_tune_and_separate_from_v924f(monkeypatch):
+    monkeypatch.chdir(REPO)
+    raw = pathlib.Path("eval/runs/raw")  # relative on purpose (was a crash)
+    ls = nb.load_brief(raw / "lsnnc-findings" / "CRBU_local-model.md", raw)
+    v9 = nb.load_brief(raw / "v924f-findings" / "CRBU_local-model.md", raw)
+    assert (ls["run"], ls["model"]) == ("lsnnc", "financial-lora")
+    assert (v9["run"], v9["model"]) == ("v924f", "financial-lora")
+    assert "2026-09-05/06" in nb.RUN_INFO["lsnnc"]["label"]
+
+
+def _brief(run, prewritten, text, ticker="ACME"):
+    return {"run": run, "arm": "baseline", "model": "hosted", "ticker": ticker,
+            "stock": STOCK, "sections": [("Financial Health", text)],
+            "has_prewritten": prewritten}
+
+
+def test_partial_runs_listed_separately_and_kept_out_of_arm_rates():
+    bad = "It has a market capitalization of $16.8 billion."
+    good = "It trades at $1.57 with a market cap of $168.3 million."
+    briefs = [_brief("full1", True, bad), _brief("full1", True, good, "B"),
+              _brief("part1", False, bad)]
+    summary, rows = nb.backtest(briefs)
+    assert summary["partial_runs"] == ["part1"]
+    assert summary["run"]["part1"]["scope"].startswith("partial")
+    assert summary["arm"]["baseline"]["runs"] == ["full1"]
+    assert summary["arm"]["baseline"]["briefs"] == 2
+    assert summary["all_full"]["briefs_flagged"] == 1
+    rate = summary["arm"]["baseline"]["mismatches_per_checked"]
+    assert (rate["k"], rate["n"]) == (1, 3)  # one wrong of three checked
+    assert {r["run"]: r["scope"] for r in rows} == {"full1": "full", "part1": "partial"}
+
+
+def _adj(run, scope, verdict, arm="baseline", model="hosted"):
+    return {"id": "1", "run": run, "scope": scope, "arm": arm, "model": model,
+            "verdict": verdict}
+
+
+def test_precision_reported_two_ways_for_other_defect():
+    rows = [_adj("r", "full", v) for v in
+            ("TRUE_ERROR", "TRUE_ERROR", "FALSE_POSITIVE", "OTHER_DEFECT", "")]
+    rows.append(_adj("p", "partial", "FALSE_POSITIVE"))
+    res = nb.precision(rows)
+    a = res["arm"]["baseline"]
+    assert (a["TRUE_ERROR"], a["FALSE_POSITIVE"], a["OTHER_DEFECT"], a["unlabeled"]) == (2, 1, 1, 1)
+    assert (a["precision_other_defect_as_tp"]["k"], a["precision_other_defect_as_tp"]["n"]) == (3, 4)
+    assert (a["precision_other_defect_excluded"]["k"], a["precision_other_defect_excluded"]["n"]) == (2, 3)
+    assert res["run"]["p"]["FALSE_POSITIVE"] == 1 and res["all_full"]["rows"] == 5
+
+
+def test_precision_rejects_unknown_verdicts():
+    with pytest.raises(ValueError):
+        nb.precision([_adj("r", "full", "MAYBE")])
+    assert set(nb.VERDICTS) == {"TRUE_ERROR", "FALSE_POSITIVE", "OTHER_DEFECT"}

@@ -7,19 +7,27 @@ For every eval/runs/raw/<run>-findings/**/*.md it reads the STOCK DATA block
 the "Pre-written sections" block (when the file has it) plus the "Audited"
 Exec Summary + Outlook — and runs the check over all of it.
 
+A run whose files lack the pre-written sections (9j2dj: Exec Summary +
+Outlook only) is PARTIAL: it is listed on its own and kept out of every
+per-arm and pooled figure, since fewer sections means fewer chances to flag.
+
 Outputs:
-  eval/runs/numeric-backtest-<date>.json
-      per run, per arm and per (arm, served model): briefs, checked and
-      unchecked numbers (with out-of-scope reasons), briefs flagged,
-      findings by kind, field and section; plus synthetic-injection recall
-      per perturbation type with Wilson 95% CIs (eval/perturb.py
-      inject_numeric, seeded).
+  eval/runs/numeric-backtest-<date>.json   (+ a .md table beside it)
+      per run (labelled: arm, served model, what the run was), per arm and
+      per (arm, model) over full runs only: briefs, briefs flagged, checked
+      and unchecked numbers (with out-of-scope reasons), distinct mismatches
+      per distinct checked number (Wilson 95% CI), findings by kind, field
+      and section; plus synthetic-injection recall per perturbation type
+      (eval/perturb.py inject_numeric, seeded, Wilson 95% CIs).
   eval/numeric_check/adjudication.csv
       every distinct finding (identical repeats collapsed into
-      `occurrences`) with an empty `verdict` column for a human to fill:
-      TRUE_ERROR or FALSE_POSITIVE. Re-running keeps verdicts already
-      entered (matched on run, ticker, section, kind, field, stated,
-      sentence). The script never labels anything itself.
+      `occurrences`) with an empty `verdict` column for a human to fill with
+      one of VERDICTS. Re-running keeps verdicts already entered (matched
+      on run, ticker, section, kind, field, stated, sentence). The script
+      never labels anything itself.
+
+--precision reads the adjudicated CSV instead and reports precision two
+ways: OTHER_DEFECT counted as a true positive, and OTHER_DEFECT excluded.
 
 Required assertion: lsnnc CRBU is flagged for market_cap (ratio ~100) and for
 the "[City Name]" placeholder; the script exits non-zero otherwise.
@@ -29,6 +37,7 @@ only an error once adjudicated.
 
 Usage:
   python scripts/numeric_backtest.py [--date 2026-09-29] [--seed 42]
+  python scripts/numeric_backtest.py --precision
 """
 import argparse
 import csv
@@ -49,9 +58,33 @@ from eval.section_attribution import canonical_section  # noqa: E402
 from eval.stats import wilson_interval  # noqa: E402
 
 RAW = REPO / "eval" / "runs" / "raw"
-ADJ_FIELDS = ["id", "run", "arm", "ticker", "section", "kind", "field",
-              "sentence", "stated", "source", "ratio", "occurrences", "verdict"]
+ADJ_PATH = REPO / "eval" / "numeric_check" / "adjudication.csv"
+ADJ_FIELDS = ["id", "run", "scope", "arm", "model", "ticker", "section", "kind",
+              "field", "sentence", "stated", "source", "ratio", "occurrences",
+              "verdict"]
 _ADJ_KEY = ("run", "ticker", "section", "kind", "field", "stated", "sentence")
+
+# TRUE_ERROR: the brief states the field wrong. FALSE_POSITIVE: the check is
+# wrong (misbinding, right number judged wrong). OTHER_DEFECT: the flag
+# points at a real defect that is not a wrong number, e.g. a truncated brief
+# whose figure is cut off ("net loss of -$3").
+VERDICTS = ("TRUE_ERROR", "FALSE_POSITIVE", "OTHER_DEFECT")
+
+# What each run was, from CLAUDE.md's dated records. `model` fills in the
+# served model where the findings metadata predates the field (lsnnc).
+RUN_INFO = {
+    "j4cnp": {"label": "hosted baseline of record, 40 tickers, 2026-09-05/06"},
+    "lsnnc": {"model": "financial-lora",
+              "label": "financial-lora fine-tune, 40 tickers, 2026-09-05/06 "
+                       "(the original A/B against j4cnp)"},
+    "kcf7s": {"label": "hosted, four-arm set, 2026-09-23"},
+    "v924f": {"label": "financial-lora fine-tune, four-arm set, 2026-09-23"},
+    "4nfsm": {"label": "Qwen2.5-1.5B-Instruct base, four-arm set, 2026-09-23"},
+    "cnkp2": {"label": "Qwen2.5-7B-Instruct base, four-arm set, 2026-09-23"},
+    "dvvxk": {"label": "hosted, same-image rerun of kcf7s, 2026-09-24"},
+    "r5nzh": {"label": "financial-lora GPTQ W4A16, 40 tickers, 2026-09-29"},
+}
+PARTIAL_SCOPE = "partial: Exec Summary + Outlook only"
 
 
 def stock_from_context(context: str) -> dict | None:
@@ -78,23 +111,28 @@ def load_brief(path: Path, raw_dir: Path) -> dict | None:
         return None
     meta = parsed.get("metadata", {})
     stem_ticker, _, stem_arm = path.stem.rpartition("_")
-    run = path.relative_to(raw_dir).parts[0].removesuffix("-findings")
+    run = path.resolve().relative_to(raw_dir.resolve()).parts[0] \
+        .removesuffix("-findings")
+    arm = meta.get("arm", stem_arm)
     audited = parsed["audited"].split("\n---\n")[0]  # drop the disclaimer
     prewritten = parsed.get("section_block")
     sections = (nc.split_sections(prewritten) if prewritten else []) \
         + nc.split_sections(audited)
+    model = meta.get("local_model_served_name") \
+        or RUN_INFO.get(run, {}).get("model") \
+        or ("hosted" if arm == "baseline" else "unrecorded")
     return {
-        "path": str(path.relative_to(REPO)).replace("\\", "/"),
-        "run": run,
-        "arm": meta.get("arm", stem_arm),
-        "model": meta.get("local_model_served_name",
-                          "hosted" if meta.get("arm", stem_arm) == "baseline"
-                          else "unrecorded"),
+        "path": _rel(path),
+        "run": run, "arm": arm, "model": model,
         "ticker": meta.get("ticker", stem_ticker),
-        "stock": stock,
-        "sections": sections,
+        "stock": stock, "sections": sections,
         "has_prewritten": prewritten is not None,
     }
+
+
+def partial_runs(briefs: list[dict]) -> set[str]:
+    """Runs with any file missing the pre-written sections."""
+    return {b["run"] for b in briefs if not b["has_prewritten"]}
 
 
 def section_key(heading: str) -> str:
@@ -109,20 +147,33 @@ def section_key(heading: str) -> str:
 
 
 def _new_bucket() -> dict:
-    return {"briefs": 0, "briefs_with_prewritten": 0, "checked": 0,
-            "unchecked": 0, "unchecked_reasons": Counter(),
-            "briefs_flagged": 0, "briefs_flagged_mismatch": 0,
-            "briefs_flagged_placeholder": 0, "findings": 0,
-            "distinct_findings": 0, "by_kind": Counter(),
-            "by_field": Counter(), "by_section": Counter()}
+    return {"runs": set(), "briefs": 0, "briefs_flagged": 0,
+            "briefs_flagged_mismatch": 0, "briefs_flagged_placeholder": 0,
+            "checked": 0, "checked_distinct": 0, "unchecked": 0,
+            "unchecked_reasons": Counter(), "findings": 0,
+            "distinct_findings": 0, "distinct_mismatches": 0,
+            "by_kind": Counter(), "by_field": Counter(),
+            "by_section": Counter()}
+
+
+def _rate(k: int, n: int) -> dict:
+    lo, hi = wilson_interval(k, n) if n else (0.0, 1.0)
+    return {"k": k, "n": n, "rate": round(k / n, 4) if n else None,
+            "ci95": [round(lo, 4), round(hi, 4)]}
 
 
 def _finish(bucket: dict) -> dict:
     out = dict(bucket)
+    out["runs"] = sorted(bucket["runs"])
     for k in ("unchecked_reasons", "by_kind", "by_field", "by_section"):
         out[k] = dict(sorted(bucket[k].items()))
     total = bucket["checked"] + bucket["unchecked"]
     out["coverage"] = round(bucket["checked"] / total, 4) if total else None
+    out["briefs_flagged_rate"] = _rate(bucket["briefs_flagged"], bucket["briefs"])
+    # Flags per checked number, both counted distinct within a brief so a
+    # degenerate repeated sentence counts once on each side.
+    out["mismatches_per_checked"] = _rate(bucket["distinct_mismatches"],
+                                          bucket["checked_distinct"])
     return out
 
 
@@ -138,35 +189,48 @@ def _distinct(findings: list[dict]) -> list[dict]:
     return list(seen.values())
 
 
+def _checked_distinct(report: dict) -> int:
+    return len({(b["section"], b["field"], b["stated"], b["sentence"])
+                for b in report["bindings"] if b["status"] == "checked"})
+
+
 def backtest(briefs: list[dict]) -> tuple[dict, list[dict]]:
-    """Per-run / per-arm / per-(arm, model) summary, plus adjudication rows."""
+    """Per-run summary (every run, labelled) and per-arm / per-(arm, model) /
+    pooled summaries over full runs only; plus adjudication rows."""
+    partial = partial_runs(briefs)
     groups = defaultdict(_new_bucket)
     rows = []
     for b in briefs:
         report = nc.check_sections(b["sections"], b["stock"])
         b["report"] = report
         distinct = _distinct(report["findings"])
-        keys = [("run", b["run"]), ("arm", b["arm"]),
-                ("arm_model", f"{b['arm']}:{b['model']}"), ("all", "all")]
+        keys = [("run", b["run"])]
+        if b["run"] not in partial:
+            keys += [("arm", b["arm"]), ("arm_model", f"{b['arm']}:{b['model']}"),
+                     ("all_full", "all_full")]
         for key in keys:
             g = groups[key]
+            g["runs"].add(b["run"])
             g["briefs"] += 1
-            g["briefs_with_prewritten"] += b["has_prewritten"]
-            g["checked"] += report["checked"]
-            g["unchecked"] += report["unchecked"]
-            g["unchecked_reasons"].update(report["unchecked_reasons"])
             g["briefs_flagged"] += bool(report["findings"])
             g["briefs_flagged_mismatch"] += bool(report["mismatches"])
             g["briefs_flagged_placeholder"] += bool(report["placeholders"])
+            g["checked"] += report["checked"]
+            g["checked_distinct"] += _checked_distinct(report)
+            g["unchecked"] += report["unchecked"]
+            g["unchecked_reasons"].update(report["unchecked_reasons"])
             g["findings"] += len(report["findings"])
             g["distinct_findings"] += len(distinct)
+            g["distinct_mismatches"] += sum(f["kind"] == "mismatch" for f in distinct)
             for f in distinct:
                 g["by_kind"][f["kind"]] += 1
                 g["by_field"][f["field"] or "(placeholder)"] += 1
                 g["by_section"][section_key(f["section"])] += 1
         for f in distinct:
             rows.append({
-                "run": b["run"], "arm": b["arm"], "ticker": b["ticker"],
+                "run": b["run"],
+                "scope": "partial" if b["run"] in partial else "full",
+                "arm": b["arm"], "model": b["model"], "ticker": b["ticker"],
                 "section": f["section"], "kind": f["kind"],
                 "field": f["field"] or "", "sentence": f["sentence"],
                 "stated": f["stated"],
@@ -174,13 +238,62 @@ def backtest(briefs: list[dict]) -> tuple[dict, list[dict]]:
                 "ratio": "" if f["ratio"] is None else f"{f['ratio']:.4g}",
                 "occurrences": f["occurrences"], "verdict": "",
             })
-    summary = {kind: {} for kind in ("run", "arm", "arm_model")}
+    summary = {"run": {}, "arm": {}, "arm_model": {},
+               "partial_runs": sorted(partial)}
     for (kind, name), g in sorted(groups.items()):
-        if kind == "all":
-            summary["all"] = _finish(g)
-        else:
-            summary[kind][name] = _finish(g)
+        if kind == "all_full":
+            summary["all_full"] = _finish(g)
+            continue
+        out = _finish(g)
+        if kind == "run":
+            first = next(b for b in briefs if b["run"] == name)
+            out.update({
+                "arm": first["arm"], "model": first["model"],
+                "label": RUN_INFO.get(name, {}).get("label", ""),
+                "scope": PARTIAL_SCOPE if name in partial else "full",
+            })
+        summary[kind][name] = out
     return summary, rows
+
+
+def _pct(r: dict) -> str:
+    return f"{r['rate']:.1%} ({r['ci95'][0]:.1%}–{r['ci95'][1]:.1%})"
+
+
+def table_markdown(summary: dict) -> str:
+    """Per-run table (full runs grouped by arm, partial runs last), then the
+    per-arm rows. Unadjudicated flags only."""
+    head = ("| Run | Arm / model | What it was | Briefs | Briefs flagged | "
+            "Checked (distinct) | Mismatches per checked number (95% CI) | "
+            "Unchecked | Distinct findings |\n|---|---|---|---|---|---|---|---|---|")
+    runs = summary["run"]
+    order = sorted(runs, key=lambda n: (runs[n]["scope"] != "full",
+                                        runs[n]["arm"], runs[n]["model"], n))
+
+    def row(name, g, what):
+        return (f"| {name} | {g.get('arm', '')}{' / ' + g['model'] if g.get('model') else ''}"
+                f" | {what} | {g['briefs']} | {g['briefs_flagged']} "
+                f"({g['briefs_flagged_rate']['rate']:.1%}) | {g['checked_distinct']} | "
+                f"{g['distinct_mismatches']} = {_pct(g['mismatches_per_checked'])} | "
+                f"{g['unchecked']} | {g['distinct_findings']} |")
+
+    lines = ["Per run", "", head]
+    for n in order:
+        g = runs[n]
+        what = g["label"] or ""
+        if g["scope"] != "full":
+            what = (what + "; " if what else "") + \
+                f"**{g['scope']}; excluded from per-arm rates**"
+        lines.append(row(n, g, what))
+    lines += ["", "Per arm (full runs only)", "", head]
+    for name, g in summary["arm"].items():
+        lines.append(row(name, dict(g, arm=name, model=""),
+                         "pooled: " + ", ".join(g["runs"])))
+    for name, g in summary["arm_model"].items():
+        arm, _, model = name.partition(":")
+        lines.append(row(name, dict(g, arm=arm, model=model),
+                         "pooled: " + ", ".join(g["runs"])))
+    return "\n".join(lines) + "\n"
 
 
 def assert_crbu(briefs: list[dict]) -> dict:
@@ -218,8 +331,8 @@ def _merge_verdicts(rows: list[dict], path: Path) -> int:
 
 
 def write_adjudication(rows: list[dict], path: Path) -> int:
-    rows.sort(key=lambda r: (r["run"], r["ticker"], r["section"], r["kind"],
-                             r["field"], r["stated"]))
+    rows.sort(key=lambda r: (r["scope"] != "full", r["run"], r["ticker"],
+                             r["section"], r["kind"], r["field"], r["stated"]))
     kept = _merge_verdicts(rows, path)
     for i, r in enumerate(rows, 1):
         r["id"] = i
@@ -229,6 +342,39 @@ def write_adjudication(rows: list[dict], path: Path) -> int:
         w.writeheader()
         w.writerows(rows)
     return kept
+
+
+def precision(rows: list[dict]) -> dict:
+    """Adjudicated precision per run, per arm and per (arm, model) — arm and
+    pooled figures over full runs only — two ways: OTHER_DEFECT counted as a
+    true positive, and OTHER_DEFECT excluded from the denominator. The unit
+    is a distinct finding (an adjudication row). Raises on any verdict
+    outside VERDICTS."""
+    bad = [(r["id"], r["verdict"]) for r in rows
+           if r["verdict"].strip() and r["verdict"].strip() not in VERDICTS]
+    if bad:
+        raise ValueError(f"verdicts outside {VERDICTS}: {bad[:10]}")
+    groups = defaultdict(Counter)
+    for r in rows:
+        v = r["verdict"].strip() or "UNLABELED"
+        keys = [("run", r["run"])]
+        if r["scope"] == "full":
+            keys += [("arm", r["arm"]), ("arm_model", f"{r['arm']}:{r['model']}"),
+                     ("all_full", "all_full")]
+        for k in keys:
+            groups[k][v] += 1
+    out = {"run": {}, "arm": {}, "arm_model": {}}
+    for (kind, name), c in sorted(groups.items()):
+        tp, fp, od = c["TRUE_ERROR"], c["FALSE_POSITIVE"], c["OTHER_DEFECT"]
+        res = {"rows": sum(c.values()), "unlabeled": c["UNLABELED"],
+               "TRUE_ERROR": tp, "FALSE_POSITIVE": fp, "OTHER_DEFECT": od,
+               "precision_other_defect_as_tp": _rate(tp + od, tp + fp + od),
+               "precision_other_defect_excluded": _rate(tp, tp + fp)}
+        if kind == "all_full":
+            out["all_full"] = res
+        else:
+            out[kind][name] = res
+    return out
 
 
 def _detected(inj: dict, report: dict) -> bool:
@@ -246,7 +392,9 @@ def _detected(inj: dict, report: dict) -> bool:
 
 def injection_recall(briefs: list[dict], seed: int) -> dict:
     """One injection per (clean brief, perturbation type), seeded; recall per
-    type with Wilson 95% CIs. Clean = the brief produced zero findings."""
+    type with Wilson 95% CIs. Clean = the brief produced zero findings.
+    Partial-run briefs take part: this measures the checker on brief text,
+    not a flag rate."""
     rng = random.Random(seed)
     clean = [b for b in briefs if not b["report"]["findings"]]
     out = {"seed": seed, "clean_briefs": len(clean), "by_type": {},
@@ -283,15 +431,26 @@ def injection_recall(briefs: list[dict], seed: int) -> dict:
     return out
 
 
+def _rel(p: Path) -> str:
+    return str(p.resolve().relative_to(REPO)).replace("\\", "/")
+
+
 def main():
     ap = argparse.ArgumentParser(description="Offline numeric-check backtest.")
     ap.add_argument("--raw-dir", default=str(RAW))
     ap.add_argument("--date", default=datetime.date.today().isoformat())
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--out", help="default eval/runs/numeric-backtest-<date>.json")
-    ap.add_argument("--adjudication",
-                    default=str(REPO / "eval" / "numeric_check" / "adjudication.csv"))
+    ap.add_argument("--adjudication", default=str(ADJ_PATH))
+    ap.add_argument("--precision", action="store_true",
+                    help="report adjudicated precision from --adjudication")
     args = ap.parse_args()
+
+    if args.precision:
+        with open(args.adjudication, newline="", encoding="utf-8") as f:
+            res = precision(list(csv.DictReader(f)))
+        print(json.dumps(res, indent=2))
+        return
 
     raw_dir = Path(args.raw_dir)
     files = sorted(raw_dir.glob("*-findings/**/*.md"))
@@ -315,33 +474,32 @@ def main():
         "note": ("Flags are unadjudicated; a flag is an error only once a "
                  "human verdict says so (see adjudication.csv). Stock-field "
                  "numbers only; news and filing numbers are out of scope. "
+                 "Partial runs are excluded from per-arm and pooled figures. "
                  "Not a number of record."),
         "files": len(files), "briefs": len(briefs), "skipped": skipped,
         "summary": summary,
         "crbu_assertion": crbu,
         "injection": recall,
-        "adjudication": {"path": str(Path(args.adjudication).relative_to(REPO))
-                         .replace("\\", "/"),
+        "adjudication": {"path": _rel(Path(args.adjudication)),
+                         "verdicts": list(VERDICTS),
                          "rows": len(rows), "verdicts_kept": kept},
     }
     out = Path(args.out) if args.out else \
         REPO / "eval" / "runs" / f"numeric-backtest-{args.date}.json"
     out.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8",
                    newline="\n")
+    table = table_markdown(summary)
+    out.with_suffix(".md").write_text(
+        f"# Numeric-check backtest, {args.date} (unadjudicated)\n\n"
+        f"Generated by scripts/numeric_backtest.py; see {out.name}.\n\n"
+        + table, encoding="utf-8", newline="\n")
 
-    a = summary["all"]
-    print(f"{a['briefs']} briefs: {a['checked']} checked, {a['unchecked']} "
-          f"unchecked (coverage {a['coverage']:.1%}); {a['briefs_flagged']} "
-          f"flagged, {a['distinct_findings']} distinct findings")
-    for name, g in summary["run"].items():
-        print(f"  {name:6} {g['briefs']:3} briefs  checked {g['checked']:4}  "
-              f"unchecked {g['unchecked']:4}  flagged {g['briefs_flagged']:3}  "
-              f"distinct findings {g['distinct_findings']}")
+    print(table)
     print(f"CRBU assertion: {crbu}")
     for kind, r in recall["by_type"].items():
         print(f"  inject {kind:12} {r['detected']:3}/{r['n']:3} "
               f"recall {r['recall']} CI {r['ci95']}")
-    print(f"wrote {out.relative_to(REPO)} and {len(rows)} adjudication rows "
+    print(f"wrote {_rel(out)} (+ .md) and {len(rows)} adjudication rows "
           f"({kept} verdicts kept)")
 
 
