@@ -86,6 +86,19 @@ RUN_INFO = {
 }
 PARTIAL_SCOPE = "partial: Exec Summary + Outlook only"
 
+# Brief-level cluster bootstrap. Numbers in one brief are not independent
+# (one model output, one stock dict, repeated phrasing), so a Wilson interval
+# over numbers treats a 40-brief run as ~400 independent trials and is too
+# narrow. Resampling whole briefs keeps each brief's numbers together.
+BOOT_DRAWS = 10_000
+BOOT_SEED = 42
+
+# Fine-tune run-to-run comparisons (difference = first minus second). lsnnc
+# and v924f are the same BF16 model on different images, so their gap is the
+# run-to-run yardstick for the W4A16 run r5nzh.
+FINE_TUNE_COMPARISONS = (("lsnnc", "v924f"), ("r5nzh", "v924f"),
+                         ("r5nzh", "lsnnc"))
+
 
 def stock_from_context(context: str) -> dict | None:
     """The JSON object after "STOCK DATA:" in a findings file's context."""
@@ -194,21 +207,123 @@ def _checked_distinct(report: dict) -> int:
                 for b in report["bindings"] if b["status"] == "checked"})
 
 
+def _quantiles(values: list[float]) -> list[float]:
+    """2.5th and 97.5th percentiles (nearest rank on the sorted draws)."""
+    v = sorted(values)
+    lo = v[int(0.025 * (len(v) - 1))]
+    hi = v[-1 - int(0.025 * (len(v) - 1))]
+    return [round(lo, 4), round(hi, 4)]
+
+
+def cluster_bootstrap_ci(strata: list[list[tuple[int, int]]],
+                         draws: int = BOOT_DRAWS, seed: int = BOOT_SEED) -> dict:
+    """Percentile CI for sum(k) / sum(n) resampling whole briefs with
+    replacement. `strata` is a list of per-run lists of (k, n) per brief;
+    each stratum is resampled at its own size (a pooled arm keeps its run
+    composition). Draws with n = 0 are dropped and counted."""
+    rng = random.Random(seed)
+    stats, empty = [], 0
+    for _ in range(draws):
+        k = n = 0
+        for s in strata:
+            for bk, bn in rng.choices(s, k=len(s)):
+                k += bk
+                n += bn
+        if n:
+            stats.append(k / n)
+        else:
+            empty += 1
+    return {"method": f"brief-level cluster bootstrap, {draws} draws, seed {seed}",
+            "ci95": _quantiles(stats) if stats else [0.0, 1.0],
+            "empty_draws": empty}
+
+
+def bootstrap_difference(a: dict, b: dict, draws: int = BOOT_DRAWS,
+                         seed: int = BOOT_SEED) -> dict:
+    """Rate difference a - b, where a and b map ticker -> (k, n). With the
+    same tickers on both sides the resample draws tickers and takes both
+    runs' briefs for each (paired by ticker); otherwise each run is
+    resampled on its own."""
+    rng = random.Random(seed)
+
+    def rate(pairs):
+        n = sum(p[1] for p in pairs)
+        return sum(p[0] for p in pairs) / n if n else None
+
+    paired = set(a) == set(b)
+    tickers = sorted(a) if paired else None
+    diffs = []
+    for _ in range(draws):
+        if paired:
+            pick = rng.choices(tickers, k=len(tickers))
+            ra, rb = rate([a[t] for t in pick]), rate([b[t] for t in pick])
+        else:
+            ra = rate(rng.choices(list(a.values()), k=len(a)))
+            rb = rate(rng.choices(list(b.values()), k=len(b)))
+        if ra is not None and rb is not None:
+            diffs.append(ra - rb)
+    point = rate(list(a.values())) - rate(list(b.values()))
+    lo, hi = _quantiles(diffs)
+    below = sum(d <= 0 for d in diffs) / len(diffs)
+    above = sum(d >= 0 for d in diffs) / len(diffs)
+    return {"difference": round(point, 4), "ci95": [lo, hi],
+            "p_two_sided_bootstrap": round(min(1.0, 2 * min(below, above)), 4),
+            "excludes_zero": lo > 0 or hi < 0,
+            "paired_by_ticker": paired,
+            "method": f"cluster bootstrap on briefs, {draws} draws, seed {seed}"}
+
+
+def fine_tune_comparisons(briefs: list[dict], draws: int = BOOT_DRAWS) -> dict:
+    """The FINE_TUNE_COMPARISONS differences, plus the verdict on whether
+    W4A16 vs BF16 separates from run-to-run variation on this metric: only
+    if r5nzh differs from BOTH BF16 runs in the same direction with each
+    difference CI excluding zero."""
+    by_run = defaultdict(dict)
+    for b in briefs:
+        by_run[b["run"]][b["ticker"]] = b["counts"]
+    out = {}
+    for x, y in FINE_TUNE_COMPARISONS:
+        if x in by_run and y in by_run:
+            out[f"{x} - {y}"] = bootstrap_difference(by_run[x], by_run[y], draws)
+    q = [out.get("r5nzh - v924f"), out.get("r5nzh - lsnnc")]
+    separable = all(d and d["excludes_zero"] for d in q) and \
+        len({d["difference"] > 0 for d in q}) == 1
+    out["w4a16_vs_bf16_separable"] = separable
+    bf16 = out.get("lsnnc - v924f")
+    out["statement"] = (
+        "On this metric (unadjudicated numeric-check mismatches per checked "
+        "number), W4A16 vs BF16 "
+        + ("IS separable from run-to-run variation: r5nzh differs from both "
+           "BF16 runs in the same direction with bootstrap CIs excluding zero."
+           if separable else
+           "is not separable from run-to-run variation: r5nzh does not differ "
+           "from both BF16 fine-tune runs in the same direction with bootstrap "
+           "CIs excluding zero"
+           + (f", and the two BF16 runs themselves differ by "
+              f"{bf16['difference']:+.1%} (CI {bf16['ci95'][0]:+.1%} to "
+              f"{bf16['ci95'][1]:+.1%})." if bf16 else ".")))
+    return out
+
+
 def backtest(briefs: list[dict]) -> tuple[dict, list[dict]]:
     """Per-run summary (every run, labelled) and per-arm / per-(arm, model) /
     pooled summaries over full runs only; plus adjudication rows."""
     partial = partial_runs(briefs)
     groups = defaultdict(_new_bucket)
+    strata = defaultdict(lambda: defaultdict(list))  # group -> run -> [(k, n)]
     rows = []
     for b in briefs:
         report = nc.check_sections(b["sections"], b["stock"])
         b["report"] = report
         distinct = _distinct(report["findings"])
+        b["counts"] = (sum(f["kind"] == "mismatch" for f in distinct),
+                       _checked_distinct(report))
         keys = [("run", b["run"])]
         if b["run"] not in partial:
             keys += [("arm", b["arm"]), ("arm_model", f"{b['arm']}:{b['model']}"),
                      ("all_full", "all_full")]
         for key in keys:
+            strata[key][b["run"]].append(b["counts"])
             g = groups[key]
             g["runs"].add(b["run"])
             g["briefs"] += 1
@@ -241,10 +356,13 @@ def backtest(briefs: list[dict]) -> tuple[dict, list[dict]]:
     summary = {"run": {}, "arm": {}, "arm_model": {},
                "partial_runs": sorted(partial)}
     for (kind, name), g in sorted(groups.items()):
-        if kind == "all_full":
-            summary["all_full"] = _finish(g)
-            continue
         out = _finish(g)
+        # Beside the naive Wilson CI, which is too narrow (see BOOT_DRAWS).
+        out["mismatches_per_checked"]["cluster_bootstrap"] = cluster_bootstrap_ci(
+            [strata[(kind, name)][r] for r in sorted(strata[(kind, name)])])
+        if kind == "all_full":
+            summary["all_full"] = out
+            continue
         if kind == "run":
             first = next(b for b in briefs if b["run"] == name)
             out.update({
@@ -260,21 +378,45 @@ def _pct(r: dict) -> str:
     return f"{r['rate']:.1%} ({r['ci95'][0]:.1%}–{r['ci95'][1]:.1%})"
 
 
-def table_markdown(summary: dict) -> str:
-    """Per-run table (full runs grouped by arm, partial runs last), then the
-    per-arm rows. Unadjudicated flags only."""
+def _ci(ci: list[float], signed: bool = False) -> str:
+    f = "{:+.1%}" if signed else "{:.1%}"
+    return f"{f.format(ci[0])} to {f.format(ci[1])}" if signed else \
+        f"{f.format(ci[0])}–{f.format(ci[1])}"
+
+
+TABLE_NOTE = (
+    "Mismatches are unadjudicated numeric-check flags, counted distinct per "
+    "brief on both sides of the rate. The Wilson CI treats every checked "
+    "number as an independent trial; numbers in one brief share a model "
+    "output and a stock dict, so **the naive Wilson intervals are too "
+    f"narrow**. The cluster bootstrap resamples whole briefs ({BOOT_DRAWS:,} "
+    f"draws, seed {BOOT_SEED}; pooled rows resample within each run) and is "
+    "the interval to quote. Where the two come out close, mismatches in that "
+    "run are spread thinly across briefs. With zero mismatches every "
+    "resample is zero, so the bootstrap gives no interval (n/a); the Wilson "
+    "upper bound is the only bound there.")
+
+
+def table_markdown(summary: dict, comparisons: dict | None = None) -> str:
+    """Per-run table (full runs grouped by arm, partial runs last), the
+    per-arm rows, and the fine-tune run-to-run comparisons. Unadjudicated
+    flags only."""
     head = ("| Run | Arm / model | What it was | Briefs | Briefs flagged | "
-            "Checked (distinct) | Mismatches per checked number (95% CI) | "
-            "Unchecked | Distinct findings |\n|---|---|---|---|---|---|---|---|---|")
+            "Checked (distinct) | Mismatches per checked number | "
+            "Wilson 95% CI (naive, too narrow) | Cluster bootstrap 95% CI | "
+            "Unchecked | Distinct findings |\n"
+            "|---|---|---|---|---|---|---|---|---|---|---|")
     runs = summary["run"]
     order = sorted(runs, key=lambda n: (runs[n]["scope"] != "full",
                                         runs[n]["arm"], runs[n]["model"], n))
 
     def row(name, g, what):
+        m = g["mismatches_per_checked"]
         return (f"| {name} | {g.get('arm', '')}{' / ' + g['model'] if g.get('model') else ''}"
                 f" | {what} | {g['briefs']} | {g['briefs_flagged']} "
                 f"({g['briefs_flagged_rate']['rate']:.1%}) | {g['checked_distinct']} | "
-                f"{g['distinct_mismatches']} = {_pct(g['mismatches_per_checked'])} | "
+                f"{g['distinct_mismatches']} = {m['rate']:.1%} | {_ci(m['ci95'])} | "
+                f"{_ci(m['cluster_bootstrap']['ci95']) if m['k'] else 'n/a (0 events)'} | "
                 f"{g['unchecked']} | {g['distinct_findings']} |")
 
     lines = ["Per run", "", head]
@@ -293,6 +435,24 @@ def table_markdown(summary: dict) -> str:
         arm, _, model = name.partition(":")
         lines.append(row(name, dict(g, arm=arm, model=model),
                          "pooled: " + ", ".join(g["runs"])))
+    lines += ["", TABLE_NOTE]
+    if comparisons:
+        lines += ["", "Fine-tune run-to-run comparisons (difference = first "
+                  "run minus second; cluster bootstrap on briefs, paired by "
+                  "ticker)", "",
+                  "| Comparison | What differs | Difference | Bootstrap 95% CI | "
+                  "Bootstrap p (two-sided) | CI excludes 0 |",
+                  "|---|---|---|---|---|---|"]
+        what = {"lsnnc - v924f": "same BF16 model, different images (2026-09-05/06 vs 2026-09-23)",
+                "r5nzh - v924f": "W4A16 vs BF16, same image, six days apart",
+                "r5nzh - lsnnc": "W4A16 vs BF16, different images"}
+        for key, d in comparisons.items():
+            if not isinstance(d, dict):
+                continue
+            lines.append(f"| {key} | {what.get(key, '')} | {d['difference']:+.1%} | "
+                         f"{_ci(d['ci95'], signed=True)} | {d['p_two_sided_bootstrap']} | "
+                         f"{'yes' if d['excludes_zero'] else 'no'} |")
+        lines += ["", comparisons["statement"]]
     return "\n".join(lines) + "\n"
 
 
@@ -464,6 +624,7 @@ def main():
     summary, rows = backtest(briefs)
     crbu = assert_crbu(briefs)
     recall = injection_recall(briefs, args.seed)
+    comparisons = fine_tune_comparisons(briefs)
     kept = write_adjudication(rows, Path(args.adjudication))
 
     result = {
@@ -480,6 +641,7 @@ def main():
         "summary": summary,
         "crbu_assertion": crbu,
         "injection": recall,
+        "fine_tune_comparisons": comparisons,
         "adjudication": {"path": _rel(Path(args.adjudication)),
                          "verdicts": list(VERDICTS),
                          "rows": len(rows), "verdicts_kept": kept},
@@ -488,7 +650,7 @@ def main():
         REPO / "eval" / "runs" / f"numeric-backtest-{args.date}.json"
     out.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8",
                    newline="\n")
-    table = table_markdown(summary)
+    table = table_markdown(summary, comparisons)
     out.with_suffix(".md").write_text(
         f"# Numeric-check backtest, {args.date} (unadjudicated)\n\n"
         f"Generated by scripts/numeric_backtest.py; see {out.name}.\n\n"

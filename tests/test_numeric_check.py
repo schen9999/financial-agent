@@ -458,3 +458,50 @@ def test_precision_rejects_unknown_verdicts():
     with pytest.raises(ValueError):
         nb.precision([_adj("r", "full", "MAYBE")])
     assert set(nb.VERDICTS) == {"TRUE_ERROR", "FALSE_POSITIVE", "OTHER_DEFECT"}
+
+
+# --- cluster bootstrap and fine-tune comparisons -----------------------------
+
+def test_cluster_bootstrap_is_seeded_and_wider_than_wilson_when_clustered():
+    from eval.stats import wilson_interval
+    # 4 briefs with every number wrong, 36 with none: 40/400 = 10%.
+    run = [(10, 10)] * 4 + [(0, 10)] * 36
+    a = nb.cluster_bootstrap_ci([run], draws=2000, seed=42)
+    b = nb.cluster_bootstrap_ci([run], draws=2000, seed=42)
+    assert a == b
+    lo, hi = a["ci95"]
+    wlo, whi = wilson_interval(40, 400)
+    assert lo <= 0.10 <= hi
+    assert (hi - lo) > 2 * (whi - wlo)
+
+
+def test_cluster_bootstrap_zero_events_is_degenerate():
+    assert nb.cluster_bootstrap_ci([[(0, 5)] * 10], draws=500)["ci95"] == [0.0, 0.0]
+
+
+def test_bootstrap_difference_paired_by_ticker():
+    a = {f"T{i}": (1, 10) for i in range(30)}
+    d = nb.bootstrap_difference(a, dict(a), draws=1000)
+    assert d["paired_by_ticker"] and d["difference"] == 0
+    assert not d["excludes_zero"] and d["ci95"] == [0.0, 0.0]
+    hi = {t: (6, 10) for t in a}
+    d = nb.bootstrap_difference(hi, a, draws=1000)
+    assert d["excludes_zero"] and d["difference"] == pytest.approx(0.5)
+
+
+def _runs(rates):
+    out = []
+    for run, k in rates.items():
+        for i in range(30):
+            out.append({"run": run, "ticker": f"T{i}", "counts": (k if i % 2 else 0, 10)})
+    return out
+
+
+def test_w4a16_separable_only_against_both_bf16_runs():
+    sep = nb.fine_tune_comparisons(_runs({"lsnnc": 2, "v924f": 2, "r5nzh": 8}), draws=1000)
+    assert sep["w4a16_vs_bf16_separable"] and "IS separable" in sep["statement"]
+    # r5nzh sits with one BF16 run, not the other: not separable.
+    mixed = nb.fine_tune_comparisons(_runs({"lsnnc": 8, "v924f": 2, "r5nzh": 8}), draws=1000)
+    assert not mixed["w4a16_vs_bf16_separable"]
+    assert "is not separable from run-to-run variation" in mixed["statement"]
+    assert "two BF16 runs themselves differ" in mixed["statement"]
