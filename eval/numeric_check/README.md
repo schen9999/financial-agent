@@ -32,3 +32,27 @@ ticker, section, kind, field, stated, sentence).
 
 See `upstream-findings.md` for two stock-data defects (reporting currency,
 profit-margin fraction) that bear on some verdicts.
+
+## Adjudication rules (written before labeling, 2026-09-30)
+
+1. TRUE_ERROR: the brief states a wrong figure for that company, field and
+   period, beyond normal rounding.
+2. FALSE_POSITIVE: the brief's statement is correct and the check misread
+   it: wrong field bound, unit parsed wrong, a different period, another
+   company, or a correctly computed derived figure.
+3. OTHER_DEFECT: the brief is broken but not because a number is wrong,
+   e.g. text truncated mid-figure ("net loss of -$3").
+4. Placeholders ("[City Name]" and similar): TRUE_ERROR. The check claimed a
+   placeholder was present, and it was.
+5. Currency (TM, TSM, NVO, BABA, SAP; revenue and net_income only): compare
+   the brief's dollar figure to the company's real value in USD. A figure
+   in yen/TWD/DKK/CNY/EUR magnitude written as dollars is TRUE_ERROR. A
+   correct USD conversion flagged only because the source is mislabeled is
+   FALSE_POSITIVE.
+6. Profit margin with |source| > 1: the source is a fraction (-2.49 means
+   -249%). A brief that writes "-2.49%" is TRUE_ERROR.
+7. Rounding: a figure correct to its own stated precision ("$16.8B" for
+   16.83B) is FALSE_POSITIVE.
+8. Unsure: choose the best verdict and add a note starting "doubt:". If
+   doubt notes exceed about 5% of rows labeled so far, stop and revise these
+   rules in a dated amendment before continuing; do not relabel silently.
