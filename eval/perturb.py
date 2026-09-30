@@ -170,6 +170,135 @@ def build_fixtures(findings_dir: Path, arms: list[str], count: int, seed: int,
     return fixtures
 
 
+# --- Numeric-check injections ------------------------------------------------
+# Known-error fixtures for agent/numeric_check.py recall. No LLM: each
+# injection edits one labeled stock-field number that the check already
+# compares (status "checked") in a brief with zero findings, so any finding
+# the edited copy produces is attributable to the injection.
+
+NUMERIC_PERTURBATIONS = ("x10", "x100", "x0.01", "sign_flip", "swap_fields",
+                         "unit_down", "placeholder")
+# Template fillers a generator leaves behind. The first five are the forms
+# seen in committed briefs; the rest are plausible ones the detector was not
+# written against, so placeholder recall is not 100% by construction.
+PLACEHOLDER_TOKENS = ("[City Name]", "[Company]", "[X]", "[insert date]",
+                      "$X", "N/A", "{market_cap}", "TBD", "XX", "[●]")
+_UNIT_DOWN = {"trillion": "billion", "billion": "million", "T": "B", "B": "M",
+              "bn": "mn", "tn": "bn"}
+_FORM_CLASS = {"market_cap": "money", "revenue": "money", "net_income": "money",
+               "current_price": "price", "week_52_high": "price",
+               "week_52_low": "price", "pe_ratio": "pe", "forward_pe": "pe"}
+
+
+def _num_span(text: str, span: tuple[int, int]):
+    """The number inside a binding's value text: (start, end, num_text)."""
+    from agent.numeric_check import _VALUE_RE
+    vm = _VALUE_RE.match(text, span[0])
+    if not vm or vm.end() > span[1] + 1:
+        return None
+    s, e = vm.span("num")
+    return s, e, vm
+
+
+def _scaled(num_text: str, factor: float) -> str:
+    """num_text scaled by factor, keeping comma style and enough decimals to
+    stay at >= 3 significant digits."""
+    import math
+    raw = float(num_text.replace(",", "")) * factor
+    dec = len(num_text.split(".")[1]) if "." in num_text else 0
+    if raw:
+        dec = max(dec, 2 - int(math.floor(math.log10(abs(raw)))))
+    out = f"{raw:,.{dec}f}" if "," in num_text else f"{raw:.{dec}f}"
+    return out
+
+
+def _edit(sections, index, start, end, new):
+    out = list(sections)
+    heading, text = out[index]
+    out[index] = (heading, text[:start] + new + text[end:])
+    return out
+
+
+def inject_numeric(sections: list[tuple[str, str]], bindings: list[dict],
+                   kind: str, rng: random.Random) -> dict | None:
+    """One injection of `kind` into a copy of `sections`, or None when the
+    brief has no eligible binding. Returns {kind, sections, targets
+    [(section_index, field)], expect ("mismatch"|"placeholder"), note}."""
+    pool = [b for b in bindings if b["status"] == "checked"
+            and b.get("stated_value")]
+    rng.shuffle(pool)
+    for b in pool:
+        i, span = b["section_index"], b["span"]
+        text = sections[i][1]
+        ns = _num_span(text, span)
+        if not ns:
+            continue
+        s, e, vm = ns
+        num = text[s:e]
+        if kind in ("x10", "x100", "x0.01"):
+            factor = {"x10": 10, "x100": 100, "x0.01": 0.01}[kind]
+            new = _scaled(num, factor)
+            return {"kind": kind, "sections": _edit(sections, i, s, e, new),
+                    "targets": [(i, b["field"])], "expect": "mismatch",
+                    "note": f"{b['field']}: {num} -> {new}"}
+        if kind == "sign_flip":
+            if b["sign_fixed"]:
+                continue
+            vs, ve = span
+            val = text[vs:ve]
+            m = re.search(r"[-−]", val[: e - vs])
+            new_text = (text[:vs + m.start()] + text[vs + m.end():] if m
+                        else text[:vs] + "-" + text[vs:])
+            out = list(sections)
+            out[i] = (sections[i][0], new_text)
+            return {"kind": kind, "sections": out,
+                    "targets": [(i, b["field"])], "expect": "mismatch",
+                    "note": f"{b['field']}: sign flipped on {b['stated']}"}
+        if kind == "unit_down":
+            unit = vm.group("unit") or vm.group("abbr")
+            if unit not in _UNIT_DOWN:
+                continue
+            us, ue = vm.span("unit") if vm.group("unit") else vm.span("abbr")
+            new = _UNIT_DOWN[unit]
+            return {"kind": kind, "sections": _edit(sections, i, us, ue, new),
+                    "targets": [(i, b["field"])], "expect": "mismatch",
+                    "note": f"{b['field']}: {unit} -> {new}"}
+        if kind == "placeholder":
+            tok = rng.choice(PLACEHOLDER_TOKENS)
+            vs, ve = span
+            return {"kind": kind, "sections": _edit(sections, i, vs, ve, tok),
+                    "targets": [(i, b["field"])], "expect": "placeholder",
+                    "note": f"{b['field']}: {b['stated']} -> {tok}",
+                    "token": tok}
+        if kind == "swap_fields":
+            # Same-form partners only (money<->money, price<->price,
+            # P/E<->P/E): the realistic confusion. A cross-form swap
+            # ("market cap of 45.3%") fails the form test and is unchecked
+            # by design.
+            for o in pool:
+                if (o is b or o["field"] == b["field"]
+                        or (b.get("in_range") and o.get("in_range"))
+                        or _FORM_CLASS.get(o["field"]) != _FORM_CLASS.get(b["field"])
+                        or o["section_index"] != i
+                        or abs(o["stated_value"] - b["stated_value"])
+                        <= 0.05 * max(abs(o["stated_value"]), abs(b["stated_value"]))):
+                    continue
+                (a0, a1), (b0, b1) = sorted([span, o["span"]])
+                if a1 > b0:
+                    continue
+                t = text
+                t = t[:a0] + t[b0:b1] + t[a1:b0] + t[a0:a1] + t[b1:]
+                out = list(sections)
+                out[i] = (sections[i][0], t)
+                return {"kind": kind, "sections": out,
+                        "targets": [(i, b["field"]), (i, o["field"])],
+                        "expect": "mismatch",
+                        "note": f"swapped {b['field']} {b['stated']} <-> "
+                                f"{o['field']} {o['stated']}"}
+            continue
+    return None
+
+
 def main():
     ap = argparse.ArgumentParser(description="Build perturbed judge fixtures.")
     ap.add_argument("--findings-dir", default=str(REPO / "eval_findings"))
