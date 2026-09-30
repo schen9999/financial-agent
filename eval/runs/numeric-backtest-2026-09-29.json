@@ -1380,17 +1380,6 @@
     }
   },
   "fine_tune_comparisons": {
-    "lsnnc - v924f": {
-      "difference": 0.0745,
-      "ci95": [
-        0.001,
-        0.1598
-      ],
-      "p_two_sided_bootstrap": 0.0452,
-      "excludes_zero": true,
-      "paired_by_ticker": true,
-      "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
-    },
     "r5nzh - v924f": {
       "difference": 0.1064,
       "ci95": [
@@ -1398,6 +1387,17 @@
         0.1738
       ],
       "p_two_sided_bootstrap": 0.0008,
+      "excludes_zero": true,
+      "paired_by_ticker": true,
+      "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+    },
+    "lsnnc - v924f": {
+      "difference": 0.0745,
+      "ci95": [
+        0.001,
+        0.1598
+      ],
+      "p_two_sided_bootstrap": 0.0452,
       "excludes_zero": true,
       "paired_by_ticker": true,
       "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
@@ -1413,8 +1413,10 @@
       "paired_by_ticker": true,
       "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
     },
-    "w4a16_vs_bf16_separable": false,
-    "statement": "On this metric (unadjudicated numeric-check mismatches per checked number), W4A16 vs BF16 is not separable from run-to-run variation: r5nzh does not differ from both BF16 fine-tune runs in the same direction with bootstrap CIs excluding zero, and the two BF16 runs themselves differ by +7.4% (CI +0.1% to +16.0%)."
+    "primary": "r5nzh - v924f",
+    "same_image_evidence": "eval/numeric_check/provenance-v924f-r5nzh.md",
+    "statement": "W4A16 shows +10.6 pts section-level numeric mismatches vs same-image BF16 (paired cluster bootstrap CI +4.1 to +17.4 pts), on unadjudicated flags.",
+    "image_change_statement": "Separately, the same BF16 weights on an earlier image (lsnnc, 2026-09-05/06) sit +7.4 pts vs v924f (paired cluster bootstrap CI +0.1 to +16.0 pts): pipeline/image changes also move this metric. That is a second effect, not noise that cancels the W4A16 one, which is measured within one image."
   },
   "adjudication": {
     "path": "eval/numeric_check/adjudication.csv",

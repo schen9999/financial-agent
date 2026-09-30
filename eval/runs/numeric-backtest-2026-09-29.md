@@ -31,12 +31,16 @@ Per arm (full runs only)
 
 Mismatches are unadjudicated numeric-check flags, counted distinct per brief on both sides of the rate. The Wilson CI treats every checked number as an independent trial; numbers in one brief share a model output and a stock dict, so **the naive Wilson intervals are too narrow**. The cluster bootstrap resamples whole briefs (10,000 draws, seed 42; pooled rows resample within each run) and is the interval to quote. Where the two come out close, mismatches in that run are spread thinly across briefs. With zero mismatches every resample is zero, so the bootstrap gives no interval (n/a); the Wilson upper bound is the only bound there.
 
-Fine-tune run-to-run comparisons (difference = first run minus second; cluster bootstrap on briefs, paired by ticker)
+Fine-tune comparisons (difference = first run minus second; cluster bootstrap on briefs, paired by ticker)
 
 | Comparison | What differs | Difference | Bootstrap 95% CI | Bootstrap p (two-sided) | CI excludes 0 |
 |---|---|---|---|---|---|
-| lsnnc - v924f | same BF16 model, different images (2026-09-05/06 vs 2026-09-23) | +7.4% | +0.1% to +16.0% | 0.0452 | yes |
-| r5nzh - v924f | W4A16 vs BF16, same image, six days apart | +10.6% | +4.1% to +17.4% | 0.0008 | yes |
-| r5nzh - lsnnc | W4A16 vs BF16, different images | +3.2% | -8.3% to +13.8% | 0.5412 | no |
+| r5nzh - v924f | **primary**: W4A16 vs BF16, same image, template and serving args, six days apart | +10.6 pts | +4.1 to +17.4 pts | 0.0008 | yes |
+| lsnnc - v924f | same BF16 weights, earlier image (2026-09-05/06 vs 2026-09-23): the image/pipeline effect | +7.4 pts | +0.1 to +16.0 pts | 0.0452 | yes |
+| r5nzh - lsnnc | precision and image both differ: confounded, backs no claim | +3.2 pts | -8.3 to +13.8 pts | 0.5412 | no |
 
-On this metric (unadjudicated numeric-check mismatches per checked number), W4A16 vs BF16 is not separable from run-to-run variation: r5nzh does not differ from both BF16 fine-tune runs in the same direction with bootstrap CIs excluding zero, and the two BF16 runs themselves differ by +7.4% (CI +0.1% to +16.0%).
+W4A16 shows +10.6 pts section-level numeric mismatches vs same-image BF16 (paired cluster bootstrap CI +4.1 to +17.4 pts), on unadjudicated flags.
+
+Separately, the same BF16 weights on an earlier image (lsnnc, 2026-09-05/06) sit +7.4 pts vs v924f (paired cluster bootstrap CI +0.1 to +16.0 pts): pipeline/image changes also move this metric. That is a second effect, not noise that cancels the W4A16 one, which is measured within one image.
+
+Same-image evidence: eval/numeric_check/provenance-v924f-r5nzh.md.
