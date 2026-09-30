@@ -12,7 +12,11 @@ collapsed into `occurrences`). A human fills `verdict`; the script never does.
 
 `scope` is `partial` for runs whose files persist only the Exec Summary and
 Outlook (9j2dj); those rows are adjudicated like any other but kept out of
-per-arm and pooled figures.
+per-arm and pooled figures. `scope` is `replay` for the frozen-input replay
+(`scripts/replay_sections.py`, outputs in `eval/runs/replay-<date>/`):
+`run` is `<replay>/<arm>/s<sample>`, `arm` is `bf16` or `w4a16`, and only
+Financial Health and Risk Factors exist there. Replay precision is reported
+separately, per replay arm.
 
 Precision, from the filled CSV, two ways (OTHER_DEFECT counted as a true
 positive, and OTHER_DEFECT excluded), per run, per arm and per (arm, model),

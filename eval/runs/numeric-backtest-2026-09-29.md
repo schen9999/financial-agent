@@ -44,3 +44,25 @@ W4A16 shows +10.6 pts section-level numeric mismatches vs same-image BF16 (paire
 Separately, the same BF16 weights on an earlier image (lsnnc, 2026-09-05/06) sit +7.4 pts vs v924f (paired cluster bootstrap CI +0.1 to +16.0 pts): pipeline/image changes also move this metric. That is a second effect, not noise that cancels the W4A16 one, which is measured within one image.
 
 Same-image evidence: eval/numeric_check/provenance-v924f-r5nzh.md.
+
+Frozen-input replay (replay-2026-09-30): the two local sections (Financial Health, Risk Factors) regenerated from v924f's recorded contexts with the pipeline's own prompts, 3 seeded samples per ticker per arm, same seeds in both arms (scripts/replay_sections.py)
+
+| Arm | Served model | Briefs (tickers x samples) | Briefs flagged | Checked (distinct) | Coverage | Mismatches per checked number | Wilson 95% CI (naive, too narrow) | Cluster bootstrap 95% CI (tickers) | Per-sample rates (s1 / s2 / s3) | Spread (max - min) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| bf16 | financial-lora | 120 (40 x 3) | 73 | 377 | 45.8% | 177 = 46.9% | 42.0%–52.0% | 36.3%–57.3% | 44.4% / 41.9% / 52.7% | 10.8 pts |
+| w4a16 | financial-lora-w4a16 | 120 (40 x 3) | 78 | 343 | 35.6% | 192 = 56.0% | 50.7%–61.1% | 44.2%–68.1% | 61.5% / 53.5% / 52.5% | 9.0 pts |
+
+| Comparison | Difference | Bootstrap 95% CI | Bootstrap p (two-sided) | CI excludes 0 |
+|---|---|---|---|---|
+| replay: W4A16 - BF16, identical inputs | +9.0 pts | -0.9 to +19.5 pts | 0.0784 | no |
+| live, like for like: r5nzh - v924f, Financial Health + Risk Factors only | +16.6 pts | +5.2 to +27.4 pts | 0.0026 | yes |
+
+The live-run gap is not reproduced on identical inputs (W4A16 - BF16 = +9.0 pts (paired cluster bootstrap CI -0.9 to +19.5 pts) on the replayed Financial Health + Risk Factors sections, unadjudicated flags) and may reflect input drift.
+
+The replay interval also contains the like-for-like live gap (+16.6 pts), so the replay neither confirms nor excludes it.
+
+Same weights, same inputs: replayed BF16 gives 46.9% (samples 44.4% / 41.9% / 52.7%) against v924f's single live draw of 38.9% on these sections, so sampling alone moves this rate by that much, which a one-draw-per-ticker live comparison cannot separate from precision.
+
+Live Financial Health + Risk Factors rates (one draw per ticker): r5nzh 65/117 = 55.6%; v924f 44/113 = 38.9%.
+
+The live-run rows above also count the hosted Exec Summary and Outlook, which restate the local sections' figures; the replay regenerates only the two local sections, so its like-for-like live comparison is the Financial Health + Risk Factors row.
