@@ -704,6 +704,16 @@ p = 0.82.
 - **No detectable difference at this sample size.** That is not
   equivalence: each arm's interval spans about five points, so a
   difference of a few points would not show at this size.
+- **Scope: the judge's audited sections only.** The judge audits the
+  claims in the Executive Summary and Outlook. The Financial Health + Risk
+  Factors figures above are those audited claims attributed back to the
+  section they restate, not an audit of the Financial Health or Risk
+  Factors text itself. So "no detectable difference" covers grounding of
+  the Exec Summary + Outlook only. Section-level numeric accuracy (the
+  stock-data figures every section states) is covered by the
+  deterministic numeric check (`agent/numeric_check.py`, backtest
+  `scripts/numeric_backtest.py`); its flags are not yet adjudicated and
+  are not quoted here.
 - **Hosted, for reference, not a new claim.** The W4A16 arm trails the
   hosted runs as the BF16 fine-tune does: p = 4.6e-05 vs `kcf7s`, 0.0011
   vs `dvvxk`, 1.1e-05 vs both pooled (11/772).

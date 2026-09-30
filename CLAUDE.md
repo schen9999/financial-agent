@@ -214,8 +214,9 @@ Phase 3 — demo polish:
   (single-node k3s via `make vm-vllm`, no manifest change), and the eval DAG
   ran against it: `r5nzh`, 40 tickers, judge v2, 23/344 = 6.69% (CI
   4.5–9.8%) vs the BF16 fine-tune `v924f` 6.49%, p = 1.00 — no detectable
-  difference at this sample size; a dated comparison, not a number of
-  record. Still gated: serving on OKE — update this line when that
+  difference at this sample size, on the judge's audited sections (Exec
+  Summary + Outlook) only; section-level numeric accuracy is the numeric
+  check's to report. A dated comparison, not a number of record. Still gated: serving on OKE — update this line when that
   actually runs.
 - Cross-encoder reranking and the multi-agent supervisor shipped default-off
   because evals showed no grounding gain at higher cost/latency. State it that way.

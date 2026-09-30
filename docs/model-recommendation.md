@@ -64,7 +64,11 @@ significant at 0.05). The two hosted runs on the same image: p = 0.55.
 image and settings six days after the other arms. Its only supported
 claim is against the BF16 fine-tune: 23/344 vs 25/385, p = 1.00 (on
 FH + RF, 15/96 vs 15/112, p = 0.70): no detectable difference at this
-sample size, which is not proof of equivalence. The quantized arm also
+sample size, which is not proof of equivalence. That finding covers the
+judge's audited sections (Exec Summary + Outlook; the FH + RF split is
+audited claims attributed back to those sections) only; section-level
+numeric accuracy is covered by the deterministic numeric check
+(eval-methodology), not by this comparison. The quantized arm also
 produced fewer checkable claims (344 vs 385). It serves faster: 1075.7
 vs 708.3 output tok/s at concurrency 8 against a 2026-09-28 BF16 rerun
 with the same prompts (the table's 711.5 is the 2026-09-23 file). Its
