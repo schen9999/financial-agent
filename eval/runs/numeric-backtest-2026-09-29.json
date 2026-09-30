@@ -3,35 +3,67 @@
   "harness": "scripts/numeric_backtest.py",
   "check": "agent/numeric_check.py",
   "rel_tol": 0.02,
-  "note": "Flags are unadjudicated; a flag is an error only once a human verdict says so (see adjudication.csv). Stock-field numbers only; news and filing numbers are out of scope. Not a number of record.",
-  "files": 330,
-  "briefs": 330,
+  "note": "Flags are unadjudicated; a flag is an error only once a human verdict says so (see adjudication.csv). Stock-field numbers only; news and filing numbers are out of scope. Partial runs are excluded from per-arm and pooled figures. Not a number of record.",
+  "files": 370,
+  "briefs": 370,
   "skipped": [],
   "summary": {
     "run": {
       "2nh8v": {
+        "runs": [
+          "2nh8v"
+        ],
         "briefs": 10,
-        "briefs_with_prewritten": 10,
+        "briefs_flagged": 0,
+        "briefs_flagged_mismatch": 0,
+        "briefs_flagged_placeholder": 0,
         "checked": 132,
+        "checked_distinct": 132,
         "unchecked": 55,
         "unchecked_reasons": {
           "period": 4,
           "subline": 1
         },
-        "briefs_flagged": 0,
-        "briefs_flagged_mismatch": 0,
-        "briefs_flagged_placeholder": 0,
         "findings": 0,
         "distinct_findings": 0,
+        "distinct_mismatches": 0,
         "by_kind": {},
         "by_field": {},
         "by_section": {},
-        "coverage": 0.7059
+        "coverage": 0.7059,
+        "briefs_flagged_rate": {
+          "k": 0,
+          "n": 10,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.2775
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 0,
+          "n": 132,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0283
+          ]
+        },
+        "arm": "baseline",
+        "model": "hosted",
+        "label": "",
+        "scope": "full"
       },
       "4nfsm": {
+        "runs": [
+          "4nfsm"
+        ],
         "briefs": 40,
-        "briefs_with_prewritten": 40,
+        "briefs_flagged": 34,
+        "briefs_flagged_mismatch": 29,
+        "briefs_flagged_placeholder": 16,
         "checked": 422,
+        "checked_distinct": 422,
         "unchecked": 372,
         "unchecked_reasons": {
           "bound": 5,
@@ -40,11 +72,9 @@
           "other_entity": 2,
           "period": 33
         },
-        "briefs_flagged": 34,
-        "briefs_flagged_mismatch": 29,
-        "briefs_flagged_placeholder": 16,
         "findings": 82,
         "distinct_findings": 82,
+        "distinct_mismatches": 63,
         "by_kind": {
           "mismatch": 63,
           "placeholder": 19
@@ -61,39 +91,91 @@
           "financial-health": 66,
           "sec-filing-highlights": 2
         },
-        "coverage": 0.5315
+        "coverage": 0.5315,
+        "briefs_flagged_rate": {
+          "k": 34,
+          "n": 40,
+          "rate": 0.85,
+          "ci95": [
+            0.7093,
+            0.9294
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 63,
+          "n": 422,
+          "rate": 0.1493,
+          "ci95": [
+            0.1185,
+            0.1864
+          ]
+        },
+        "arm": "local-model",
+        "model": "qwen2.5-1.5b-instruct",
+        "label": "Qwen2.5-1.5B-Instruct base, four-arm set, 2026-09-23",
+        "scope": "full"
       },
       "9j2dj": {
+        "runs": [
+          "9j2dj"
+        ],
         "briefs": 40,
-        "briefs_with_prewritten": 0,
+        "briefs_flagged": 0,
+        "briefs_flagged_mismatch": 0,
+        "briefs_flagged_placeholder": 0,
         "checked": 167,
+        "checked_distinct": 167,
         "unchecked": 80,
         "unchecked_reasons": {
           "period": 5
         },
-        "briefs_flagged": 0,
-        "briefs_flagged_mismatch": 0,
-        "briefs_flagged_placeholder": 0,
         "findings": 0,
         "distinct_findings": 0,
+        "distinct_mismatches": 0,
         "by_kind": {},
         "by_field": {},
         "by_section": {},
-        "coverage": 0.6761
+        "coverage": 0.6761,
+        "briefs_flagged_rate": {
+          "k": 0,
+          "n": 40,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0876
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 0,
+          "n": 167,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0225
+          ]
+        },
+        "arm": "baseline",
+        "model": "hosted",
+        "label": "",
+        "scope": "partial: Exec Summary + Outlook only"
       },
       "cnkp2": {
+        "runs": [
+          "cnkp2"
+        ],
         "briefs": 40,
-        "briefs_with_prewritten": 40,
+        "briefs_flagged": 12,
+        "briefs_flagged_mismatch": 11,
+        "briefs_flagged_placeholder": 1,
         "checked": 511,
+        "checked_distinct": 511,
         "unchecked": 236,
         "unchecked_reasons": {
           "period": 11
         },
-        "briefs_flagged": 12,
-        "briefs_flagged_mismatch": 11,
-        "briefs_flagged_placeholder": 1,
         "findings": 24,
         "distinct_findings": 24,
+        "distinct_mismatches": 20,
         "by_kind": {
           "mismatch": 20,
           "placeholder": 4
@@ -109,22 +191,48 @@
           "executive-summary": 4,
           "financial-health": 20
         },
-        "coverage": 0.6841
+        "coverage": 0.6841,
+        "briefs_flagged_rate": {
+          "k": 12,
+          "n": 40,
+          "rate": 0.3,
+          "ci95": [
+            0.1807,
+            0.4543
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 20,
+          "n": 511,
+          "rate": 0.0391,
+          "ci95": [
+            0.0255,
+            0.0597
+          ]
+        },
+        "arm": "local-model",
+        "model": "qwen2.5-7b-instruct",
+        "label": "Qwen2.5-7B-Instruct base, four-arm set, 2026-09-23",
+        "scope": "full"
       },
       "dvvxk": {
+        "runs": [
+          "dvvxk"
+        ],
         "briefs": 40,
-        "briefs_with_prewritten": 40,
+        "briefs_flagged": 3,
+        "briefs_flagged_mismatch": 3,
+        "briefs_flagged_placeholder": 0,
         "checked": 550,
+        "checked_distinct": 550,
         "unchecked": 233,
         "unchecked_reasons": {
           "bound": 1,
           "period": 8
         },
-        "briefs_flagged": 3,
-        "briefs_flagged_mismatch": 3,
-        "briefs_flagged_placeholder": 0,
         "findings": 4,
         "distinct_findings": 4,
+        "distinct_mismatches": 4,
         "by_kind": {
           "mismatch": 4
         },
@@ -137,21 +245,47 @@
           "recent-developments": 1,
           "sec-filing-highlights": 1
         },
-        "coverage": 0.7024
+        "coverage": 0.7024,
+        "briefs_flagged_rate": {
+          "k": 3,
+          "n": 40,
+          "rate": 0.075,
+          "ci95": [
+            0.0258,
+            0.1986
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 4,
+          "n": 550,
+          "rate": 0.0073,
+          "ci95": [
+            0.0028,
+            0.0185
+          ]
+        },
+        "arm": "baseline",
+        "model": "hosted",
+        "label": "hosted, same-image rerun of kcf7s, 2026-09-24",
+        "scope": "full"
       },
       "j4cnp": {
+        "runs": [
+          "j4cnp"
+        ],
         "briefs": 40,
-        "briefs_with_prewritten": 40,
+        "briefs_flagged": 5,
+        "briefs_flagged_mismatch": 5,
+        "briefs_flagged_placeholder": 0,
         "checked": 543,
+        "checked_distinct": 543,
         "unchecked": 222,
         "unchecked_reasons": {
           "period": 12
         },
-        "briefs_flagged": 5,
-        "briefs_flagged_mismatch": 5,
-        "briefs_flagged_placeholder": 0,
         "findings": 8,
         "distinct_findings": 8,
+        "distinct_mismatches": 8,
         "by_kind": {
           "mismatch": 8
         },
@@ -166,22 +300,48 @@
           "recent-developments": 2,
           "sec-filing-highlights": 1
         },
-        "coverage": 0.7098
+        "coverage": 0.7098,
+        "briefs_flagged_rate": {
+          "k": 5,
+          "n": 40,
+          "rate": 0.125,
+          "ci95": [
+            0.0546,
+            0.2611
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 8,
+          "n": 543,
+          "rate": 0.0147,
+          "ci95": [
+            0.0075,
+            0.0288
+          ]
+        },
+        "arm": "baseline",
+        "model": "hosted",
+        "label": "hosted baseline of record, 40 tickers, 2026-09-05/06",
+        "scope": "full"
       },
       "kcf7s": {
+        "runs": [
+          "kcf7s"
+        ],
         "briefs": 40,
-        "briefs_with_prewritten": 40,
+        "briefs_flagged": 3,
+        "briefs_flagged_mismatch": 3,
+        "briefs_flagged_placeholder": 0,
         "checked": 571,
+        "checked_distinct": 571,
         "unchecked": 223,
         "unchecked_reasons": {
           "bound": 2,
           "period": 9
         },
-        "briefs_flagged": 3,
-        "briefs_flagged_mismatch": 3,
-        "briefs_flagged_placeholder": 0,
         "findings": 7,
         "distinct_findings": 7,
+        "distinct_mismatches": 7,
         "by_kind": {
           "mismatch": 7
         },
@@ -196,12 +356,40 @@
           "recent-developments": 1,
           "sec-filing-highlights": 1
         },
-        "coverage": 0.7191
+        "coverage": 0.7191,
+        "briefs_flagged_rate": {
+          "k": 3,
+          "n": 40,
+          "rate": 0.075,
+          "ci95": [
+            0.0258,
+            0.1986
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 7,
+          "n": 571,
+          "rate": 0.0123,
+          "ci95": [
+            0.006,
+            0.0251
+          ]
+        },
+        "arm": "baseline",
+        "model": "hosted",
+        "label": "hosted, four-arm set, 2026-09-23",
+        "scope": "full"
       },
       "lsnnc": {
+        "runs": [
+          "lsnnc"
+        ],
         "briefs": 40,
-        "briefs_with_prewritten": 40,
+        "briefs_flagged": 27,
+        "briefs_flagged_mismatch": 26,
+        "briefs_flagged_placeholder": 2,
         "checked": 363,
+        "checked_distinct": 363,
         "unchecked": 432,
         "unchecked_reasons": {
           "bound": 1,
@@ -210,11 +398,9 @@
           "other_entity": 3,
           "period": 69
         },
-        "briefs_flagged": 27,
-        "briefs_flagged_mismatch": 26,
-        "briefs_flagged_placeholder": 2,
         "findings": 87,
         "distinct_findings": 87,
+        "distinct_mismatches": 85,
         "by_kind": {
           "mismatch": 85,
           "placeholder": 2
@@ -232,12 +418,103 @@
           "recent-developments": 2,
           "sec-filing-highlights": 2
         },
-        "coverage": 0.4566
+        "coverage": 0.4566,
+        "briefs_flagged_rate": {
+          "k": 27,
+          "n": 40,
+          "rate": 0.675,
+          "ci95": [
+            0.5202,
+            0.7992
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 85,
+          "n": 363,
+          "rate": 0.2342,
+          "ci95": [
+            0.1935,
+            0.2804
+          ]
+        },
+        "arm": "local-model",
+        "model": "financial-lora",
+        "label": "financial-lora fine-tune, 40 tickers, 2026-09-05/06 (the original A/B against j4cnp)",
+        "scope": "full"
+      },
+      "r5nzh": {
+        "runs": [
+          "r5nzh"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 30,
+        "briefs_flagged_mismatch": 30,
+        "briefs_flagged_placeholder": 1,
+        "checked": 343,
+        "checked_distinct": 327,
+        "unchecked": 319,
+        "unchecked_reasons": {
+          "bound": 2,
+          "form": 3,
+          "period": 49,
+          "subline": 1
+        },
+        "findings": 102,
+        "distinct_findings": 88,
+        "distinct_mismatches": 87,
+        "by_kind": {
+          "mismatch": 87,
+          "placeholder": 1
+        },
+        "by_field": {
+          "(placeholder)": 1,
+          "market_cap": 20,
+          "net_income": 44,
+          "profit_margin": 4,
+          "revenue": 17,
+          "week_52_low": 2
+        },
+        "by_section": {
+          "executive-summary": 18,
+          "financial-health": 65,
+          "recent-developments": 3,
+          "risk-factors": 1,
+          "sec-filing-highlights": 1
+        },
+        "coverage": 0.5181,
+        "briefs_flagged_rate": {
+          "k": 30,
+          "n": 40,
+          "rate": 0.75,
+          "ci95": [
+            0.5981,
+            0.8581
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 87,
+          "n": 327,
+          "rate": 0.2661,
+          "ci95": [
+            0.2211,
+            0.3165
+          ]
+        },
+        "arm": "local-model",
+        "model": "financial-lora-w4a16",
+        "label": "financial-lora GPTQ W4A16, 40 tickers, 2026-09-29",
+        "scope": "full"
       },
       "v924f": {
+        "runs": [
+          "v924f"
+        ],
         "briefs": 40,
-        "briefs_with_prewritten": 40,
+        "briefs_flagged": 25,
+        "briefs_flagged_mismatch": 25,
+        "briefs_flagged_placeholder": 2,
         "checked": 400,
+        "checked_distinct": 357,
         "unchecked": 394,
         "unchecked_reasons": {
           "form": 11,
@@ -245,11 +522,9 @@
           "other_entity": 1,
           "period": 44
         },
-        "briefs_flagged": 25,
-        "briefs_flagged_mismatch": 25,
-        "briefs_flagged_placeholder": 2,
         "findings": 102,
         "distinct_findings": 59,
+        "distinct_mismatches": 57,
         "by_kind": {
           "mismatch": 57,
           "placeholder": 2
@@ -267,25 +542,54 @@
           "recent-developments": 1,
           "sec-filing-highlights": 1
         },
-        "coverage": 0.5038
+        "coverage": 0.5038,
+        "briefs_flagged_rate": {
+          "k": 25,
+          "n": 40,
+          "rate": 0.625,
+          "ci95": [
+            0.4703,
+            0.7578
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 57,
+          "n": 357,
+          "rate": 0.1597,
+          "ci95": [
+            0.1253,
+            0.2013
+          ]
+        },
+        "arm": "local-model",
+        "model": "financial-lora",
+        "label": "financial-lora fine-tune, four-arm set, 2026-09-23",
+        "scope": "full"
       }
     },
     "arm": {
       "baseline": {
-        "briefs": 170,
-        "briefs_with_prewritten": 130,
-        "checked": 1963,
-        "unchecked": 813,
-        "unchecked_reasons": {
-          "bound": 3,
-          "period": 38,
-          "subline": 1
-        },
+        "runs": [
+          "2nh8v",
+          "dvvxk",
+          "j4cnp",
+          "kcf7s"
+        ],
+        "briefs": 130,
         "briefs_flagged": 11,
         "briefs_flagged_mismatch": 11,
         "briefs_flagged_placeholder": 0,
+        "checked": 1796,
+        "checked_distinct": 1796,
+        "unchecked": 733,
+        "unchecked_reasons": {
+          "bound": 3,
+          "period": 33,
+          "subline": 1
+        },
         "findings": 19,
         "distinct_findings": 19,
+        "distinct_mismatches": 19,
         "by_kind": {
           "mismatch": 19
         },
@@ -301,61 +605,115 @@
           "recent-developments": 4,
           "sec-filing-highlights": 3
         },
-        "coverage": 0.7071
+        "coverage": 0.7102,
+        "briefs_flagged_rate": {
+          "k": 11,
+          "n": 130,
+          "rate": 0.0846,
+          "ci95": [
+            0.0479,
+            0.1452
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 19,
+          "n": 1796,
+          "rate": 0.0106,
+          "ci95": [
+            0.0068,
+            0.0165
+          ]
+        }
       },
       "local-model": {
-        "briefs": 160,
-        "briefs_with_prewritten": 160,
-        "checked": 1696,
-        "unchecked": 1434,
+        "runs": [
+          "4nfsm",
+          "cnkp2",
+          "lsnnc",
+          "r5nzh",
+          "v924f"
+        ],
+        "briefs": 200,
+        "briefs_flagged": 128,
+        "briefs_flagged_mismatch": 121,
+        "briefs_flagged_placeholder": 22,
+        "checked": 2039,
+        "checked_distinct": 1980,
+        "unchecked": 1753,
         "unchecked_reasons": {
-          "bound": 6,
-          "form": 18,
+          "bound": 8,
+          "form": 21,
           "no_source": 24,
           "other_entity": 6,
-          "period": 157
+          "period": 206,
+          "subline": 1
         },
-        "briefs_flagged": 98,
-        "briefs_flagged_mismatch": 91,
-        "briefs_flagged_placeholder": 21,
-        "findings": 295,
-        "distinct_findings": 252,
+        "findings": 397,
+        "distinct_findings": 340,
+        "distinct_mismatches": 312,
         "by_kind": {
-          "mismatch": 225,
-          "placeholder": 27
+          "mismatch": 312,
+          "placeholder": 28
         },
         "by_field": {
-          "(placeholder)": 26,
-          "market_cap": 97,
-          "net_income": 81,
-          "profit_margin": 21,
-          "revenue": 27
+          "(placeholder)": 27,
+          "market_cap": 117,
+          "net_income": 125,
+          "profit_margin": 25,
+          "revenue": 44,
+          "week_52_low": 2
         },
         "by_section": {
-          "executive-summary": 41,
-          "financial-health": 203,
-          "recent-developments": 3,
-          "sec-filing-highlights": 5
+          "executive-summary": 59,
+          "financial-health": 268,
+          "recent-developments": 6,
+          "risk-factors": 1,
+          "sec-filing-highlights": 6
         },
-        "coverage": 0.5419
+        "coverage": 0.5377,
+        "briefs_flagged_rate": {
+          "k": 128,
+          "n": 200,
+          "rate": 0.64,
+          "ci95": [
+            0.5714,
+            0.7033
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 312,
+          "n": 1980,
+          "rate": 0.1576,
+          "ci95": [
+            0.1422,
+            0.1743
+          ]
+        }
       }
     },
     "arm_model": {
       "baseline:hosted": {
-        "briefs": 170,
-        "briefs_with_prewritten": 130,
-        "checked": 1963,
-        "unchecked": 813,
-        "unchecked_reasons": {
-          "bound": 3,
-          "period": 38,
-          "subline": 1
-        },
+        "runs": [
+          "2nh8v",
+          "dvvxk",
+          "j4cnp",
+          "kcf7s"
+        ],
+        "briefs": 130,
         "briefs_flagged": 11,
         "briefs_flagged_mismatch": 11,
         "briefs_flagged_placeholder": 0,
+        "checked": 1796,
+        "checked_distinct": 1796,
+        "unchecked": 733,
+        "unchecked_reasons": {
+          "bound": 3,
+          "period": 33,
+          "subline": 1
+        },
         "findings": 19,
         "distinct_findings": 19,
+        "distinct_mismatches": 19,
         "by_kind": {
           "mismatch": 19
         },
@@ -371,47 +729,154 @@
           "recent-developments": 4,
           "sec-filing-highlights": 3
         },
-        "coverage": 0.7071
+        "coverage": 0.7102,
+        "briefs_flagged_rate": {
+          "k": 11,
+          "n": 130,
+          "rate": 0.0846,
+          "ci95": [
+            0.0479,
+            0.1452
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 19,
+          "n": 1796,
+          "rate": 0.0106,
+          "ci95": [
+            0.0068,
+            0.0165
+          ]
+        }
       },
       "local-model:financial-lora": {
-        "briefs": 40,
-        "briefs_with_prewritten": 40,
-        "checked": 400,
-        "unchecked": 394,
+        "runs": [
+          "lsnnc",
+          "v924f"
+        ],
+        "briefs": 80,
+        "briefs_flagged": 52,
+        "briefs_flagged_mismatch": 51,
+        "briefs_flagged_placeholder": 4,
+        "checked": 763,
+        "checked_distinct": 720,
+        "unchecked": 826,
         "unchecked_reasons": {
-          "form": 11,
-          "no_source": 9,
-          "other_entity": 1,
-          "period": 44
+          "bound": 1,
+          "form": 13,
+          "no_source": 11,
+          "other_entity": 4,
+          "period": 113
         },
-        "briefs_flagged": 25,
-        "briefs_flagged_mismatch": 25,
-        "briefs_flagged_placeholder": 2,
-        "findings": 102,
-        "distinct_findings": 59,
+        "findings": 189,
+        "distinct_findings": 146,
+        "distinct_mismatches": 142,
         "by_kind": {
-          "mismatch": 57,
-          "placeholder": 2
+          "mismatch": 142,
+          "placeholder": 4
         },
         "by_field": {
-          "(placeholder)": 2,
-          "market_cap": 24,
-          "net_income": 28,
-          "profit_margin": 2,
-          "revenue": 3
+          "(placeholder)": 4,
+          "market_cap": 51,
+          "net_income": 70,
+          "profit_margin": 8,
+          "revenue": 13
         },
         "by_section": {
-          "executive-summary": 11,
-          "financial-health": 46,
-          "recent-developments": 1,
+          "executive-summary": 23,
+          "financial-health": 117,
+          "recent-developments": 3,
+          "sec-filing-highlights": 3
+        },
+        "coverage": 0.4802,
+        "briefs_flagged_rate": {
+          "k": 52,
+          "n": 80,
+          "rate": 0.65,
+          "ci95": [
+            0.5408,
+            0.7455
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 142,
+          "n": 720,
+          "rate": 0.1972,
+          "ci95": [
+            0.1698,
+            0.2279
+          ]
+        }
+      },
+      "local-model:financial-lora-w4a16": {
+        "runs": [
+          "r5nzh"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 30,
+        "briefs_flagged_mismatch": 30,
+        "briefs_flagged_placeholder": 1,
+        "checked": 343,
+        "checked_distinct": 327,
+        "unchecked": 319,
+        "unchecked_reasons": {
+          "bound": 2,
+          "form": 3,
+          "period": 49,
+          "subline": 1
+        },
+        "findings": 102,
+        "distinct_findings": 88,
+        "distinct_mismatches": 87,
+        "by_kind": {
+          "mismatch": 87,
+          "placeholder": 1
+        },
+        "by_field": {
+          "(placeholder)": 1,
+          "market_cap": 20,
+          "net_income": 44,
+          "profit_margin": 4,
+          "revenue": 17,
+          "week_52_low": 2
+        },
+        "by_section": {
+          "executive-summary": 18,
+          "financial-health": 65,
+          "recent-developments": 3,
+          "risk-factors": 1,
           "sec-filing-highlights": 1
         },
-        "coverage": 0.5038
+        "coverage": 0.5181,
+        "briefs_flagged_rate": {
+          "k": 30,
+          "n": 40,
+          "rate": 0.75,
+          "ci95": [
+            0.5981,
+            0.8581
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 87,
+          "n": 327,
+          "rate": 0.2661,
+          "ci95": [
+            0.2211,
+            0.3165
+          ]
+        }
       },
       "local-model:qwen2.5-1.5b-instruct": {
+        "runs": [
+          "4nfsm"
+        ],
         "briefs": 40,
-        "briefs_with_prewritten": 40,
+        "briefs_flagged": 34,
+        "briefs_flagged_mismatch": 29,
+        "briefs_flagged_placeholder": 16,
         "checked": 422,
+        "checked_distinct": 422,
         "unchecked": 372,
         "unchecked_reasons": {
           "bound": 5,
@@ -420,11 +885,9 @@
           "other_entity": 2,
           "period": 33
         },
-        "briefs_flagged": 34,
-        "briefs_flagged_mismatch": 29,
-        "briefs_flagged_placeholder": 16,
         "findings": 82,
         "distinct_findings": 82,
+        "distinct_mismatches": 63,
         "by_kind": {
           "mismatch": 63,
           "placeholder": 19
@@ -441,21 +904,43 @@
           "financial-health": 66,
           "sec-filing-highlights": 2
         },
-        "coverage": 0.5315
+        "coverage": 0.5315,
+        "briefs_flagged_rate": {
+          "k": 34,
+          "n": 40,
+          "rate": 0.85,
+          "ci95": [
+            0.7093,
+            0.9294
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 63,
+          "n": 422,
+          "rate": 0.1493,
+          "ci95": [
+            0.1185,
+            0.1864
+          ]
+        }
       },
       "local-model:qwen2.5-7b-instruct": {
+        "runs": [
+          "cnkp2"
+        ],
         "briefs": 40,
-        "briefs_with_prewritten": 40,
+        "briefs_flagged": 12,
+        "briefs_flagged_mismatch": 11,
+        "briefs_flagged_placeholder": 1,
         "checked": 511,
+        "checked_distinct": 511,
         "unchecked": 236,
         "unchecked_reasons": {
           "period": 11
         },
-        "briefs_flagged": 12,
-        "briefs_flagged_mismatch": 11,
-        "briefs_flagged_placeholder": 1,
         "findings": 24,
         "distinct_findings": 24,
+        "distinct_mismatches": 20,
         "by_kind": {
           "mismatch": 20,
           "placeholder": 4
@@ -471,82 +956,98 @@
           "executive-summary": 4,
           "financial-health": 20
         },
-        "coverage": 0.6841
-      },
-      "local-model:unrecorded": {
-        "briefs": 40,
-        "briefs_with_prewritten": 40,
-        "checked": 363,
-        "unchecked": 432,
-        "unchecked_reasons": {
-          "bound": 1,
-          "form": 2,
-          "no_source": 2,
-          "other_entity": 3,
-          "period": 69
+        "coverage": 0.6841,
+        "briefs_flagged_rate": {
+          "k": 12,
+          "n": 40,
+          "rate": 0.3,
+          "ci95": [
+            0.1807,
+            0.4543
+          ]
         },
-        "briefs_flagged": 27,
-        "briefs_flagged_mismatch": 26,
-        "briefs_flagged_placeholder": 2,
-        "findings": 87,
-        "distinct_findings": 87,
-        "by_kind": {
-          "mismatch": 85,
-          "placeholder": 2
-        },
-        "by_field": {
-          "(placeholder)": 2,
-          "market_cap": 27,
-          "net_income": 42,
-          "profit_margin": 6,
-          "revenue": 10
-        },
-        "by_section": {
-          "executive-summary": 12,
-          "financial-health": 71,
-          "recent-developments": 2,
-          "sec-filing-highlights": 2
-        },
-        "coverage": 0.4566
+        "mismatches_per_checked": {
+          "k": 20,
+          "n": 511,
+          "rate": 0.0391,
+          "ci95": [
+            0.0255,
+            0.0597
+          ]
+        }
       }
     },
-    "all": {
+    "partial_runs": [
+      "9j2dj"
+    ],
+    "all_full": {
+      "runs": [
+        "2nh8v",
+        "4nfsm",
+        "cnkp2",
+        "dvvxk",
+        "j4cnp",
+        "kcf7s",
+        "lsnnc",
+        "r5nzh",
+        "v924f"
+      ],
       "briefs": 330,
-      "briefs_with_prewritten": 290,
-      "checked": 3659,
-      "unchecked": 2247,
+      "briefs_flagged": 139,
+      "briefs_flagged_mismatch": 132,
+      "briefs_flagged_placeholder": 22,
+      "checked": 3835,
+      "checked_distinct": 3776,
+      "unchecked": 2486,
       "unchecked_reasons": {
-        "bound": 9,
-        "form": 18,
+        "bound": 11,
+        "form": 21,
         "no_source": 24,
         "other_entity": 6,
-        "period": 195,
-        "subline": 1
+        "period": 239,
+        "subline": 2
       },
-      "briefs_flagged": 109,
-      "briefs_flagged_mismatch": 102,
-      "briefs_flagged_placeholder": 21,
-      "findings": 314,
-      "distinct_findings": 271,
+      "findings": 416,
+      "distinct_findings": 359,
+      "distinct_mismatches": 331,
       "by_kind": {
-        "mismatch": 244,
-        "placeholder": 27
+        "mismatch": 331,
+        "placeholder": 28
       },
       "by_field": {
-        "(placeholder)": 26,
-        "market_cap": 97,
-        "net_income": 83,
-        "profit_margin": 32,
-        "revenue": 32,
-        "week_52_low": 1
+        "(placeholder)": 27,
+        "market_cap": 117,
+        "net_income": 127,
+        "profit_margin": 36,
+        "revenue": 49,
+        "week_52_low": 3
       },
       "by_section": {
-        "executive-summary": 45,
-        "financial-health": 211,
-        "recent-developments": 7,
-        "sec-filing-highlights": 8
+        "executive-summary": 63,
+        "financial-health": 276,
+        "recent-developments": 10,
+        "risk-factors": 1,
+        "sec-filing-highlights": 9
       },
-      "coverage": 0.6195
+      "coverage": 0.6067,
+      "briefs_flagged_rate": {
+        "k": 139,
+        "n": 330,
+        "rate": 0.4212,
+        "ci95": [
+          0.3691,
+          0.4751
+        ]
+      },
+      "mismatches_per_checked": {
+        "k": 331,
+        "n": 3776,
+        "rate": 0.0877,
+        "ci95": [
+          0.0791,
+          0.0971
+        ]
+      }
     }
   },
   "crbu_assertion": {
@@ -557,178 +1058,178 @@
   },
   "injection": {
     "seed": 42,
-    "clean_briefs": 221,
+    "clean_briefs": 231,
     "by_type": {
       "x10": {
-        "n": 204,
-        "detected": 204,
+        "n": 211,
+        "detected": 211,
         "recall": 1.0,
         "ci95": [
-          0.9815,
+          0.9821,
           1.0
         ],
         "example_misses": []
       },
       "x100": {
-        "n": 204,
-        "detected": 204,
+        "n": 211,
+        "detected": 211,
         "recall": 1.0,
         "ci95": [
-          0.9815,
+          0.9821,
           1.0
         ],
         "example_misses": []
       },
       "x0.01": {
-        "n": 204,
-        "detected": 204,
+        "n": 211,
+        "detected": 211,
         "recall": 1.0,
         "ci95": [
-          0.9815,
+          0.9821,
           1.0
         ],
         "example_misses": []
       },
       "sign_flip": {
-        "n": 203,
-        "detected": 203,
+        "n": 210,
+        "detected": 210,
         "recall": 1.0,
         "ci95": [
-          0.9814,
+          0.982,
           1.0
         ],
         "example_misses": []
       },
       "swap_fields": {
-        "n": 191,
-        "detected": 191,
+        "n": 194,
+        "detected": 194,
         "recall": 1.0,
         "ci95": [
-          0.9803,
+          0.9806,
           1.0
         ],
         "example_misses": []
       },
       "unit_down": {
-        "n": 165,
-        "detected": 165,
+        "n": 168,
+        "detected": 168,
         "recall": 1.0,
         "ci95": [
-          0.9772,
+          0.9776,
           1.0
         ],
         "example_misses": []
       },
       "placeholder": {
-        "n": 204,
-        "detected": 145,
-        "recall": 0.7108,
+        "n": 211,
+        "detected": 138,
+        "recall": 0.654,
         "ci95": [
-          0.6451,
-          0.7687
+          0.5876,
+          0.7149
         ],
         "example_misses": [
-          "2nh8v AAPL: net_income: $128.9 billion -> N/A",
-          "2nh8v AMZN: profit_margin: 17.4% -> [\u25cf]",
-          "2nh8v META: pe_ratio: 28.06 -> XX",
-          "9j2dj AAPL: net_income: $128.9 billion -> [\u25cf]",
-          "9j2dj BEAM: week_52_low: $19.36 -> TBD",
-          "9j2dj CALM: forward_pe: 20.82 -> XX",
-          "9j2dj CHGG: week_52_high: $1.90 -> XX",
-          "9j2dj EVGO: revenue: $403 million -> XX",
-          "9j2dj NVO: profit_margin: 35.3% -> [\u25cf]",
-          "9j2dj SANA: net_income: $211.8 million -> [\u25cf]"
+          "2nh8v AMZN: current_price: $249.27 -> [\u25cf]",
+          "2nh8v JPM: pe_ratio: 14.5x -> N/A",
+          "2nh8v META: profit_margin: 29.8% -> TBD",
+          "2nh8v WMT: forward_pe: 34.22 -> [\u25cf]",
+          "9j2dj AAPL: market_cap: $4.67 trillion -> TBD",
+          "9j2dj BYND: market_cap: $202.7 million -> XX",
+          "9j2dj EVGO: market_cap: $475 million -> XX",
+          "9j2dj MSFT: net_income: $133.7 billion -> XX",
+          "9j2dj PTON: pe_ratio: 38.57x -> TBD",
+          "9j2dj SANA: current_price: $3.85 -> [\u25cf]"
         ]
       }
     },
     "placeholder_by_token": {
       "$X": {
-        "n": 21,
-        "detected": 21,
+        "n": 28,
+        "detected": 28,
         "recall": 1.0,
         "ci95": [
-          0.8454,
+          0.8794,
           1.0
         ]
       },
       "N/A": {
-        "n": 24,
+        "n": 23,
         "detected": 17,
-        "recall": 0.7083,
+        "recall": 0.7391,
         "ci95": [
-          0.5083,
-          0.8509
+          0.5353,
+          0.8745
         ]
       },
       "TBD": {
-        "n": 11,
+        "n": 22,
         "detected": 0,
         "recall": 0.0,
         "ci95": [
           0.0,
-          0.2588
+          0.1487
         ]
       },
       "XX": {
-        "n": 17,
+        "n": 20,
         "detected": 0,
         "recall": 0.0,
         "ci95": [
           0.0,
-          0.1843
+          0.1611
         ]
       },
       "[City Name]": {
-        "n": 15,
-        "detected": 15,
+        "n": 16,
+        "detected": 16,
         "recall": 1.0,
         "ci95": [
-          0.7961,
+          0.8064,
           1.0
         ]
       },
       "[Company]": {
-        "n": 20,
-        "detected": 20,
+        "n": 16,
+        "detected": 16,
         "recall": 1.0,
         "ci95": [
-          0.8389,
+          0.8064,
           1.0
         ]
       },
       "[X]": {
-        "n": 24,
-        "detected": 24,
+        "n": 27,
+        "detected": 27,
         "recall": 1.0,
         "ci95": [
-          0.862,
+          0.8754,
           1.0
         ]
       },
       "[insert date]": {
-        "n": 26,
-        "detected": 26,
+        "n": 16,
+        "detected": 16,
         "recall": 1.0,
         "ci95": [
-          0.8713,
+          0.8064,
           1.0
         ]
       },
       "[\u25cf]": {
-        "n": 24,
+        "n": 25,
         "detected": 0,
         "recall": 0.0,
         "ci95": [
           0.0,
-          0.138
+          0.1332
         ]
       },
       "{market_cap}": {
-        "n": 22,
-        "detected": 22,
+        "n": 18,
+        "detected": 18,
         "recall": 1.0,
         "ci95": [
-          0.8513,
+          0.8241,
           1.0
         ]
       }
@@ -736,7 +1237,12 @@
   },
   "adjudication": {
     "path": "eval/numeric_check/adjudication.csv",
-    "rows": 271,
+    "verdicts": [
+      "TRUE_ERROR",
+      "FALSE_POSITIVE",
+      "OTHER_DEFECT"
+    ],
+    "rows": 359,
     "verdicts_kept": 0
   }
 }
