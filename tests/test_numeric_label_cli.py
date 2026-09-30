@@ -4,7 +4,7 @@ import csv
 import io
 
 from eval.numeric_check.label_cli import (CURRENCY_REMINDER, KEYS, MARGIN_REMINDER,
-                                          AdjudicationFile, highlight, reminders, run)
+                                          AdjudicationFile, highlight, reminders, run, show)
 from scripts.numeric_backtest import ADJ_FIELDS, VERDICTS, _merge_verdicts
 
 
@@ -128,6 +128,58 @@ def test_reminders():
     assert reminders(_row(1, "r", "full", "baseline", source="-2.49214", **margin))         == [MARGIN_REMINDER]
     assert reminders(_row(1, "r", "full", "baseline", source="0.453", **margin)) == []
     assert reminders(_row(1, "r", "full", "baseline", source="", **margin)) == []
+
+
+def _doubt_file(tmp_path, labeled, doubts, extra_notes=()):
+    """`labeled` rows with verdicts (the first `doubts` carry a doubt note),
+    then one unlabeled row per extra note."""
+    rows = []
+    for i in range(labeled):
+        r = _row(i + 1, "j4cnp", "full", "baseline")
+        r["verdict"] = VERDICTS[i % len(VERDICTS)]
+        r["note"] = "doubt: which period?" if i < doubts else ""
+        rows.append(r)
+    for j, note in enumerate(extra_notes, labeled + 1):
+        r = _row(j, "j4cnp", "full", "baseline")
+        r["note"] = note
+        rows.append(r)
+    rows.append(_row(len(rows) + 1, "j4cnp", "full", "baseline"))
+    path = tmp_path / "adjudication.csv"
+    _write(path, rows)
+    return AdjudicationFile(path)
+
+
+def _progress(af):
+    out = io.StringIO()
+    show(af, af.first_unlabeled(), out)
+    return out.getvalue()
+
+
+def test_doubt_counter_on_progress_line(tmp_path):
+    text = _progress(_doubt_file(tmp_path, 12, 1))
+    assert "labeled 12/13   doubt notes: 1/12" in text
+    assert "rule 8" not in text  # under 20 labeled: never warns
+
+
+def test_doubt_warning_only_above_five_percent_of_at_least_twenty(tmp_path):
+    assert "rule 8" not in _progress(_doubt_file(tmp_path, 19, 3))  # 15.8%, < 20
+    assert "rule 8" not in _progress(_doubt_file(tmp_path, 20, 1))  # 5.0%, not above
+    warned = _progress(_doubt_file(tmp_path, 20, 2))                 # 10%
+    assert warned.count("rule 8") == 1
+    assert "doubt notes: 2/20" in warned
+
+
+def test_doubt_counts_labeled_doubt_notes_only(tmp_path):
+    af = _doubt_file(tmp_path, 20, 0, extra_notes=["doubt: unlabeled row"])
+    af.rows[0]["note"] = "rounding? no doubt: here"   # doubt: not at a start
+    af.rows[1]["note"] = "checked 10-K | Doubt: FY24 or FY25"
+    af.rows[2]["note"] = "  doubt:leading space"
+    assert af.doubt_count() == 2
+    # Verdicts never enter the count.
+    for r in af.rows:
+        if r["verdict"]:
+            r["verdict"] = "FALSE_POSITIVE"
+    assert af.doubt_count() == 2
 
 
 def test_highlight_marks_every_occurrence():

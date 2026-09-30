@@ -18,7 +18,11 @@ reminder of that adjudication rule (eval/numeric_check/README.md).
   q           save and quit
 
 No tally of verdicts and no precision is shown while labeling. The progress
-line counts the rows that have a verdict, never which verdicts they got.
+line counts the rows that have a verdict, never which verdicts they got,
+and the labeled rows carrying a doubt note (a note, or a " | "-joined part
+of one, starting "doubt:"; rule 8). Once at least 20 rows are labeled and
+doubt notes exceed 5% of them, one warning line is printed under the
+progress line (no pause).
 
 Saving: after every verdict and every note the file is rewritten
 atomically (temp file in the same directory, then os.replace), UTF-8, with
@@ -44,6 +48,11 @@ HERE = Path(__file__).resolve().parent
 DEFAULT_CSV = HERE / "adjudication.csv"
 KEYS = {"t": "TRUE_ERROR", "f": "FALSE_POSITIVE", "o": "OTHER_DEFECT"}
 LIVE_SCOPES = ("full", "partial")
+# Rule 8: warn when doubt notes exceed this share of labeled rows, once
+# enough rows are labeled that one early doubt cannot trip it.
+DOUBT_PREFIX = "doubt:"
+DOUBT_SHARE = 0.05
+DOUBT_MIN_LABELED = 20
 
 # Tickers whose revenue/net_income the stock dict carries in the filer's
 # home currency but labels USD (upstream-findings.md (a)).
@@ -106,6 +115,14 @@ class AdjudicationFile:
     def labeled_count(self) -> int:
         return sum(1 for r in self.rows if r["verdict"].strip())
 
+    def doubt_count(self) -> int:
+        """Labeled rows with a doubt note; reads notes only, never verdicts."""
+        return sum(1 for r in self.rows if r["verdict"].strip() and has_doubt(r["note"]))
+
+
+def has_doubt(note: str) -> bool:
+    return any(part.strip().lower().startswith(DOUBT_PREFIX) for part in note.split(" | "))
+
 
 def reminders(r: dict) -> list[str]:
     out = []
@@ -148,9 +165,13 @@ def fmt_source(source: str) -> str:
 def show(af: AdjudicationFile, k: int, out) -> None:
     r = af.rows[k]
     mark = _highlighter(out)
+    labeled, doubts = af.labeled_count(), af.doubt_count()
     out.write("\n" + "=" * 78 + "\n")
     out.write(f"id {r['id']}   position {af.order.index(k) + 1}/{len(af.rows)}   "
-              f"labeled {af.labeled_count()}/{len(af.rows)}\n")
+              f"labeled {labeled}/{len(af.rows)}   doubt notes: {doubts}/{labeled}\n")
+    if labeled >= DOUBT_MIN_LABELED and doubts > DOUBT_SHARE * labeled:
+        out.write(f"!! doubt notes exceed {DOUBT_SHARE:.0%} of labeled rows: rule 8 says "
+                  "stop and write a dated amendment before continuing\n")
     out.write(f"run        : {r['run']}   scope: {r['scope']}   arm: {r['arm']}\n")
     out.write(f"model      : {r['model']}\n")
     out.write(f"ticker     : {r['ticker']}   section: {r['section']}   "
