@@ -1,0 +1,742 @@
+{
+  "date": "2026-09-29",
+  "harness": "scripts/numeric_backtest.py",
+  "check": "agent/numeric_check.py",
+  "rel_tol": 0.02,
+  "note": "Flags are unadjudicated; a flag is an error only once a human verdict says so (see adjudication.csv). Stock-field numbers only; news and filing numbers are out of scope. Not a number of record.",
+  "files": 330,
+  "briefs": 330,
+  "skipped": [],
+  "summary": {
+    "run": {
+      "2nh8v": {
+        "briefs": 10,
+        "briefs_with_prewritten": 10,
+        "checked": 132,
+        "unchecked": 55,
+        "unchecked_reasons": {
+          "period": 4,
+          "subline": 1
+        },
+        "briefs_flagged": 0,
+        "briefs_flagged_mismatch": 0,
+        "briefs_flagged_placeholder": 0,
+        "findings": 0,
+        "distinct_findings": 0,
+        "by_kind": {},
+        "by_field": {},
+        "by_section": {},
+        "coverage": 0.7059
+      },
+      "4nfsm": {
+        "briefs": 40,
+        "briefs_with_prewritten": 40,
+        "checked": 422,
+        "unchecked": 372,
+        "unchecked_reasons": {
+          "bound": 5,
+          "form": 5,
+          "no_source": 13,
+          "other_entity": 2,
+          "period": 33
+        },
+        "briefs_flagged": 34,
+        "briefs_flagged_mismatch": 29,
+        "briefs_flagged_placeholder": 16,
+        "findings": 82,
+        "distinct_findings": 82,
+        "by_kind": {
+          "mismatch": 63,
+          "placeholder": 19
+        },
+        "by_field": {
+          "(placeholder)": 18,
+          "market_cap": 39,
+          "net_income": 5,
+          "profit_margin": 9,
+          "revenue": 11
+        },
+        "by_section": {
+          "executive-summary": 14,
+          "financial-health": 66,
+          "sec-filing-highlights": 2
+        },
+        "coverage": 0.5315
+      },
+      "9j2dj": {
+        "briefs": 40,
+        "briefs_with_prewritten": 0,
+        "checked": 167,
+        "unchecked": 80,
+        "unchecked_reasons": {
+          "period": 5
+        },
+        "briefs_flagged": 0,
+        "briefs_flagged_mismatch": 0,
+        "briefs_flagged_placeholder": 0,
+        "findings": 0,
+        "distinct_findings": 0,
+        "by_kind": {},
+        "by_field": {},
+        "by_section": {},
+        "coverage": 0.6761
+      },
+      "cnkp2": {
+        "briefs": 40,
+        "briefs_with_prewritten": 40,
+        "checked": 511,
+        "unchecked": 236,
+        "unchecked_reasons": {
+          "period": 11
+        },
+        "briefs_flagged": 12,
+        "briefs_flagged_mismatch": 11,
+        "briefs_flagged_placeholder": 1,
+        "findings": 24,
+        "distinct_findings": 24,
+        "by_kind": {
+          "mismatch": 20,
+          "placeholder": 4
+        },
+        "by_field": {
+          "(placeholder)": 4,
+          "market_cap": 7,
+          "net_income": 6,
+          "profit_margin": 4,
+          "revenue": 3
+        },
+        "by_section": {
+          "executive-summary": 4,
+          "financial-health": 20
+        },
+        "coverage": 0.6841
+      },
+      "dvvxk": {
+        "briefs": 40,
+        "briefs_with_prewritten": 40,
+        "checked": 550,
+        "unchecked": 233,
+        "unchecked_reasons": {
+          "bound": 1,
+          "period": 8
+        },
+        "briefs_flagged": 3,
+        "briefs_flagged_mismatch": 3,
+        "briefs_flagged_placeholder": 0,
+        "findings": 4,
+        "distinct_findings": 4,
+        "by_kind": {
+          "mismatch": 4
+        },
+        "by_field": {
+          "profit_margin": 3,
+          "revenue": 1
+        },
+        "by_section": {
+          "financial-health": 2,
+          "recent-developments": 1,
+          "sec-filing-highlights": 1
+        },
+        "coverage": 0.7024
+      },
+      "j4cnp": {
+        "briefs": 40,
+        "briefs_with_prewritten": 40,
+        "checked": 543,
+        "unchecked": 222,
+        "unchecked_reasons": {
+          "period": 12
+        },
+        "briefs_flagged": 5,
+        "briefs_flagged_mismatch": 5,
+        "briefs_flagged_placeholder": 0,
+        "findings": 8,
+        "distinct_findings": 8,
+        "by_kind": {
+          "mismatch": 8
+        },
+        "by_field": {
+          "profit_margin": 6,
+          "revenue": 1,
+          "week_52_low": 1
+        },
+        "by_section": {
+          "executive-summary": 2,
+          "financial-health": 3,
+          "recent-developments": 2,
+          "sec-filing-highlights": 1
+        },
+        "coverage": 0.7098
+      },
+      "kcf7s": {
+        "briefs": 40,
+        "briefs_with_prewritten": 40,
+        "checked": 571,
+        "unchecked": 223,
+        "unchecked_reasons": {
+          "bound": 2,
+          "period": 9
+        },
+        "briefs_flagged": 3,
+        "briefs_flagged_mismatch": 3,
+        "briefs_flagged_placeholder": 0,
+        "findings": 7,
+        "distinct_findings": 7,
+        "by_kind": {
+          "mismatch": 7
+        },
+        "by_field": {
+          "net_income": 2,
+          "profit_margin": 2,
+          "revenue": 3
+        },
+        "by_section": {
+          "executive-summary": 2,
+          "financial-health": 3,
+          "recent-developments": 1,
+          "sec-filing-highlights": 1
+        },
+        "coverage": 0.7191
+      },
+      "lsnnc": {
+        "briefs": 40,
+        "briefs_with_prewritten": 40,
+        "checked": 363,
+        "unchecked": 432,
+        "unchecked_reasons": {
+          "bound": 1,
+          "form": 2,
+          "no_source": 2,
+          "other_entity": 3,
+          "period": 69
+        },
+        "briefs_flagged": 27,
+        "briefs_flagged_mismatch": 26,
+        "briefs_flagged_placeholder": 2,
+        "findings": 87,
+        "distinct_findings": 87,
+        "by_kind": {
+          "mismatch": 85,
+          "placeholder": 2
+        },
+        "by_field": {
+          "(placeholder)": 2,
+          "market_cap": 27,
+          "net_income": 42,
+          "profit_margin": 6,
+          "revenue": 10
+        },
+        "by_section": {
+          "executive-summary": 12,
+          "financial-health": 71,
+          "recent-developments": 2,
+          "sec-filing-highlights": 2
+        },
+        "coverage": 0.4566
+      },
+      "v924f": {
+        "briefs": 40,
+        "briefs_with_prewritten": 40,
+        "checked": 400,
+        "unchecked": 394,
+        "unchecked_reasons": {
+          "form": 11,
+          "no_source": 9,
+          "other_entity": 1,
+          "period": 44
+        },
+        "briefs_flagged": 25,
+        "briefs_flagged_mismatch": 25,
+        "briefs_flagged_placeholder": 2,
+        "findings": 102,
+        "distinct_findings": 59,
+        "by_kind": {
+          "mismatch": 57,
+          "placeholder": 2
+        },
+        "by_field": {
+          "(placeholder)": 2,
+          "market_cap": 24,
+          "net_income": 28,
+          "profit_margin": 2,
+          "revenue": 3
+        },
+        "by_section": {
+          "executive-summary": 11,
+          "financial-health": 46,
+          "recent-developments": 1,
+          "sec-filing-highlights": 1
+        },
+        "coverage": 0.5038
+      }
+    },
+    "arm": {
+      "baseline": {
+        "briefs": 170,
+        "briefs_with_prewritten": 130,
+        "checked": 1963,
+        "unchecked": 813,
+        "unchecked_reasons": {
+          "bound": 3,
+          "period": 38,
+          "subline": 1
+        },
+        "briefs_flagged": 11,
+        "briefs_flagged_mismatch": 11,
+        "briefs_flagged_placeholder": 0,
+        "findings": 19,
+        "distinct_findings": 19,
+        "by_kind": {
+          "mismatch": 19
+        },
+        "by_field": {
+          "net_income": 2,
+          "profit_margin": 11,
+          "revenue": 5,
+          "week_52_low": 1
+        },
+        "by_section": {
+          "executive-summary": 4,
+          "financial-health": 8,
+          "recent-developments": 4,
+          "sec-filing-highlights": 3
+        },
+        "coverage": 0.7071
+      },
+      "local-model": {
+        "briefs": 160,
+        "briefs_with_prewritten": 160,
+        "checked": 1696,
+        "unchecked": 1434,
+        "unchecked_reasons": {
+          "bound": 6,
+          "form": 18,
+          "no_source": 24,
+          "other_entity": 6,
+          "period": 157
+        },
+        "briefs_flagged": 98,
+        "briefs_flagged_mismatch": 91,
+        "briefs_flagged_placeholder": 21,
+        "findings": 295,
+        "distinct_findings": 252,
+        "by_kind": {
+          "mismatch": 225,
+          "placeholder": 27
+        },
+        "by_field": {
+          "(placeholder)": 26,
+          "market_cap": 97,
+          "net_income": 81,
+          "profit_margin": 21,
+          "revenue": 27
+        },
+        "by_section": {
+          "executive-summary": 41,
+          "financial-health": 203,
+          "recent-developments": 3,
+          "sec-filing-highlights": 5
+        },
+        "coverage": 0.5419
+      }
+    },
+    "arm_model": {
+      "baseline:hosted": {
+        "briefs": 170,
+        "briefs_with_prewritten": 130,
+        "checked": 1963,
+        "unchecked": 813,
+        "unchecked_reasons": {
+          "bound": 3,
+          "period": 38,
+          "subline": 1
+        },
+        "briefs_flagged": 11,
+        "briefs_flagged_mismatch": 11,
+        "briefs_flagged_placeholder": 0,
+        "findings": 19,
+        "distinct_findings": 19,
+        "by_kind": {
+          "mismatch": 19
+        },
+        "by_field": {
+          "net_income": 2,
+          "profit_margin": 11,
+          "revenue": 5,
+          "week_52_low": 1
+        },
+        "by_section": {
+          "executive-summary": 4,
+          "financial-health": 8,
+          "recent-developments": 4,
+          "sec-filing-highlights": 3
+        },
+        "coverage": 0.7071
+      },
+      "local-model:financial-lora": {
+        "briefs": 40,
+        "briefs_with_prewritten": 40,
+        "checked": 400,
+        "unchecked": 394,
+        "unchecked_reasons": {
+          "form": 11,
+          "no_source": 9,
+          "other_entity": 1,
+          "period": 44
+        },
+        "briefs_flagged": 25,
+        "briefs_flagged_mismatch": 25,
+        "briefs_flagged_placeholder": 2,
+        "findings": 102,
+        "distinct_findings": 59,
+        "by_kind": {
+          "mismatch": 57,
+          "placeholder": 2
+        },
+        "by_field": {
+          "(placeholder)": 2,
+          "market_cap": 24,
+          "net_income": 28,
+          "profit_margin": 2,
+          "revenue": 3
+        },
+        "by_section": {
+          "executive-summary": 11,
+          "financial-health": 46,
+          "recent-developments": 1,
+          "sec-filing-highlights": 1
+        },
+        "coverage": 0.5038
+      },
+      "local-model:qwen2.5-1.5b-instruct": {
+        "briefs": 40,
+        "briefs_with_prewritten": 40,
+        "checked": 422,
+        "unchecked": 372,
+        "unchecked_reasons": {
+          "bound": 5,
+          "form": 5,
+          "no_source": 13,
+          "other_entity": 2,
+          "period": 33
+        },
+        "briefs_flagged": 34,
+        "briefs_flagged_mismatch": 29,
+        "briefs_flagged_placeholder": 16,
+        "findings": 82,
+        "distinct_findings": 82,
+        "by_kind": {
+          "mismatch": 63,
+          "placeholder": 19
+        },
+        "by_field": {
+          "(placeholder)": 18,
+          "market_cap": 39,
+          "net_income": 5,
+          "profit_margin": 9,
+          "revenue": 11
+        },
+        "by_section": {
+          "executive-summary": 14,
+          "financial-health": 66,
+          "sec-filing-highlights": 2
+        },
+        "coverage": 0.5315
+      },
+      "local-model:qwen2.5-7b-instruct": {
+        "briefs": 40,
+        "briefs_with_prewritten": 40,
+        "checked": 511,
+        "unchecked": 236,
+        "unchecked_reasons": {
+          "period": 11
+        },
+        "briefs_flagged": 12,
+        "briefs_flagged_mismatch": 11,
+        "briefs_flagged_placeholder": 1,
+        "findings": 24,
+        "distinct_findings": 24,
+        "by_kind": {
+          "mismatch": 20,
+          "placeholder": 4
+        },
+        "by_field": {
+          "(placeholder)": 4,
+          "market_cap": 7,
+          "net_income": 6,
+          "profit_margin": 4,
+          "revenue": 3
+        },
+        "by_section": {
+          "executive-summary": 4,
+          "financial-health": 20
+        },
+        "coverage": 0.6841
+      },
+      "local-model:unrecorded": {
+        "briefs": 40,
+        "briefs_with_prewritten": 40,
+        "checked": 363,
+        "unchecked": 432,
+        "unchecked_reasons": {
+          "bound": 1,
+          "form": 2,
+          "no_source": 2,
+          "other_entity": 3,
+          "period": 69
+        },
+        "briefs_flagged": 27,
+        "briefs_flagged_mismatch": 26,
+        "briefs_flagged_placeholder": 2,
+        "findings": 87,
+        "distinct_findings": 87,
+        "by_kind": {
+          "mismatch": 85,
+          "placeholder": 2
+        },
+        "by_field": {
+          "(placeholder)": 2,
+          "market_cap": 27,
+          "net_income": 42,
+          "profit_margin": 6,
+          "revenue": 10
+        },
+        "by_section": {
+          "executive-summary": 12,
+          "financial-health": 71,
+          "recent-developments": 2,
+          "sec-filing-highlights": 2
+        },
+        "coverage": 0.4566
+      }
+    },
+    "all": {
+      "briefs": 330,
+      "briefs_with_prewritten": 290,
+      "checked": 3659,
+      "unchecked": 2247,
+      "unchecked_reasons": {
+        "bound": 9,
+        "form": 18,
+        "no_source": 24,
+        "other_entity": 6,
+        "period": 195,
+        "subline": 1
+      },
+      "briefs_flagged": 109,
+      "briefs_flagged_mismatch": 102,
+      "briefs_flagged_placeholder": 21,
+      "findings": 314,
+      "distinct_findings": 271,
+      "by_kind": {
+        "mismatch": 244,
+        "placeholder": 27
+      },
+      "by_field": {
+        "(placeholder)": 26,
+        "market_cap": 97,
+        "net_income": 83,
+        "profit_margin": 32,
+        "revenue": 32,
+        "week_52_low": 1
+      },
+      "by_section": {
+        "executive-summary": 45,
+        "financial-health": 211,
+        "recent-developments": 7,
+        "sec-filing-highlights": 8
+      },
+      "coverage": 0.6195
+    }
+  },
+  "crbu_assertion": {
+    "market_cap_ratio": 99.81,
+    "market_cap_stated": "$16.8 billion",
+    "placeholder": "[City Name]",
+    "passed": true
+  },
+  "injection": {
+    "seed": 42,
+    "clean_briefs": 221,
+    "by_type": {
+      "x10": {
+        "n": 204,
+        "detected": 204,
+        "recall": 1.0,
+        "ci95": [
+          0.9815,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "x100": {
+        "n": 204,
+        "detected": 204,
+        "recall": 1.0,
+        "ci95": [
+          0.9815,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "x0.01": {
+        "n": 204,
+        "detected": 204,
+        "recall": 1.0,
+        "ci95": [
+          0.9815,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "sign_flip": {
+        "n": 203,
+        "detected": 203,
+        "recall": 1.0,
+        "ci95": [
+          0.9814,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "swap_fields": {
+        "n": 191,
+        "detected": 191,
+        "recall": 1.0,
+        "ci95": [
+          0.9803,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "unit_down": {
+        "n": 165,
+        "detected": 165,
+        "recall": 1.0,
+        "ci95": [
+          0.9772,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "placeholder": {
+        "n": 204,
+        "detected": 145,
+        "recall": 0.7108,
+        "ci95": [
+          0.6451,
+          0.7687
+        ],
+        "example_misses": [
+          "2nh8v AAPL: net_income: $128.9 billion -> N/A",
+          "2nh8v AMZN: profit_margin: 17.4% -> [\u25cf]",
+          "2nh8v META: pe_ratio: 28.06 -> XX",
+          "9j2dj AAPL: net_income: $128.9 billion -> [\u25cf]",
+          "9j2dj BEAM: week_52_low: $19.36 -> TBD",
+          "9j2dj CALM: forward_pe: 20.82 -> XX",
+          "9j2dj CHGG: week_52_high: $1.90 -> XX",
+          "9j2dj EVGO: revenue: $403 million -> XX",
+          "9j2dj NVO: profit_margin: 35.3% -> [\u25cf]",
+          "9j2dj SANA: net_income: $211.8 million -> [\u25cf]"
+        ]
+      }
+    },
+    "placeholder_by_token": {
+      "$X": {
+        "n": 21,
+        "detected": 21,
+        "recall": 1.0,
+        "ci95": [
+          0.8454,
+          1.0
+        ]
+      },
+      "N/A": {
+        "n": 24,
+        "detected": 17,
+        "recall": 0.7083,
+        "ci95": [
+          0.5083,
+          0.8509
+        ]
+      },
+      "TBD": {
+        "n": 11,
+        "detected": 0,
+        "recall": 0.0,
+        "ci95": [
+          0.0,
+          0.2588
+        ]
+      },
+      "XX": {
+        "n": 17,
+        "detected": 0,
+        "recall": 0.0,
+        "ci95": [
+          0.0,
+          0.1843
+        ]
+      },
+      "[City Name]": {
+        "n": 15,
+        "detected": 15,
+        "recall": 1.0,
+        "ci95": [
+          0.7961,
+          1.0
+        ]
+      },
+      "[Company]": {
+        "n": 20,
+        "detected": 20,
+        "recall": 1.0,
+        "ci95": [
+          0.8389,
+          1.0
+        ]
+      },
+      "[X]": {
+        "n": 24,
+        "detected": 24,
+        "recall": 1.0,
+        "ci95": [
+          0.862,
+          1.0
+        ]
+      },
+      "[insert date]": {
+        "n": 26,
+        "detected": 26,
+        "recall": 1.0,
+        "ci95": [
+          0.8713,
+          1.0
+        ]
+      },
+      "[\u25cf]": {
+        "n": 24,
+        "detected": 0,
+        "recall": 0.0,
+        "ci95": [
+          0.0,
+          0.138
+        ]
+      },
+      "{market_cap}": {
+        "n": 22,
+        "detected": 22,
+        "recall": 1.0,
+        "ci95": [
+          0.8513,
+          1.0
+        ]
+      }
+    }
+  },
+  "adjudication": {
+    "path": "eval/numeric_check/adjudication.csv",
+    "rows": 271,
+    "verdicts_kept": 0
+  }
+}
