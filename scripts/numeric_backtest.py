@@ -22,9 +22,10 @@ Outputs:
   eval/numeric_check/adjudication.csv
       every distinct finding (identical repeats collapsed into
       `occurrences`) with an empty `verdict` column for a human to fill with
-      one of VERDICTS. Re-running keeps verdicts already entered (matched
-      on run, ticker, section, kind, field, stated, sentence). The script
-      never labels anything itself.
+      one of VERDICTS, and a `note` column for the adjudicator. Re-running
+      keeps verdicts and notes already entered (matched on run, ticker,
+      section, kind, field, stated, sentence). The script never labels
+      anything itself.
 
 --precision reads the adjudicated CSV instead and reports precision two
 ways: OTHER_DEFECT counted as a true positive, and OTHER_DEFECT excluded.
@@ -61,7 +62,7 @@ RAW = REPO / "eval" / "runs" / "raw"
 ADJ_PATH = REPO / "eval" / "numeric_check" / "adjudication.csv"
 ADJ_FIELDS = ["id", "run", "scope", "arm", "model", "ticker", "section", "kind",
               "field", "sentence", "stated", "source", "ratio", "occurrences",
-              "verdict"]
+              "verdict", "note"]
 _ADJ_KEY = ("run", "ticker", "section", "kind", "field", "stated", "sentence")
 
 # TRUE_ERROR: the brief states the field wrong. FALSE_POSITIVE: the check is
@@ -367,7 +368,7 @@ def backtest(briefs: list[dict]) -> tuple[dict, list[dict]]:
                 "stated": f["stated"],
                 "source": "" if f["source"] is None else f["source"],
                 "ratio": "" if f["ratio"] is None else f"{f['ratio']:.4g}",
-                "occurrences": f["occurrences"], "verdict": "",
+                "occurrences": f["occurrences"], "verdict": "", "note": "",
             })
     summary = {"run": {}, "arm": {}, "arm_model": {},
                "partial_runs": sorted(partial)}
@@ -641,7 +642,7 @@ def _row(b: dict, f: dict, scope: str) -> dict:
         "sentence": f["sentence"], "stated": f["stated"],
         "source": "" if f["source"] is None else f["source"],
         "ratio": "" if f["ratio"] is None else f"{f['ratio']:.4g}",
-        "occurrences": f["occurrences"], "verdict": "",
+        "occurrences": f["occurrences"], "verdict": "", "note": "",
     }
 
 
@@ -941,16 +942,18 @@ def assert_crbu(briefs: list[dict]) -> dict:
 
 
 def _merge_verdicts(rows: list[dict], path: Path) -> int:
-    """Carry verdicts already entered in an existing adjudication file over
-    to the regenerated rows. Returns how many were kept."""
+    """Carry verdicts (and adjudicator notes) already entered in an existing
+    adjudication file over to the regenerated rows. Returns how many
+    verdicts were kept."""
     if not path.exists():
         return 0
     with open(path, newline="", encoding="utf-8") as f:
-        old = {tuple(r[k] for k in _ADJ_KEY): r.get("verdict", "")
+        old = {tuple(r[k] for k in _ADJ_KEY): (r.get("verdict", ""), r.get("note") or "")
                for r in csv.DictReader(f)}
     kept = 0
     for r in rows:
-        v = old.get(tuple(str(r[k]) for k in _ADJ_KEY), "")
+        v, note = old.get(tuple(str(r[k]) for k in _ADJ_KEY), ("", ""))
+        r["note"] = note
         if v.strip():
             r["verdict"] = v
             kept += 1

@@ -33,6 +33,15 @@ ticker, section, kind, field, stated, sentence).
 See `upstream-findings.md` for two stock-data defects (reporting currency,
 profit-margin fraction) that bear on some verdicts.
 
+Label with the terminal labeler (live hosted rows first, then live
+local-model, then replication; resumes at the first unlabeled row; shows no
+tally or precision while labeling):
+
+    python eval/numeric_check/label_cli.py
+
+`note` holds free-text adjudicator notes (key `n`); re-running the backtest
+keeps them alongside the verdicts.
+
 ## Adjudication rules (written before labeling, 2026-09-30)
 
 1. TRUE_ERROR: the brief states a wrong figure for that company, field and
