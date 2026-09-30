@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from agent.core import run_research
+from agent.core import run_research_checked
 from agent.react_agent import answer_question
 from agent.tools.stock import get_stock_data, get_price_history
 from celery.result import AsyncResult
@@ -23,6 +23,9 @@ class ResearchRequest(BaseModel):
 class ResearchResponse(BaseModel):
     ticker: str
     brief: str
+    # Deterministic numeric-check report (agent/numeric_check.py); None when
+    # NUMERIC_CHECK=off.
+    numeric_check: dict | None = None
 
 
 class AskRequest(BaseModel):
@@ -71,9 +74,10 @@ def research_stock(request: ResearchRequest):
     Saves the result to PostgreSQL for future retrieval.
     """
     try:
-        brief = run_research(request.ticker.upper())
-        save_brief(ticker=request.ticker.upper(), brief=brief)
-        return ResearchResponse(ticker=request.ticker.upper(), brief=brief)
+        out = run_research_checked(request.ticker.upper())
+        save_brief(ticker=request.ticker.upper(), brief=out["brief"])
+        return ResearchResponse(ticker=request.ticker.upper(), brief=out["brief"],
+                                numeric_check=out["numeric_check"])
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
