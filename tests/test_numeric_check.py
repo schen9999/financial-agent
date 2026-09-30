@@ -513,3 +513,90 @@ def test_primary_w4a16_comparison_is_same_image_r5nzh_vs_v924f():
 def test_primary_w4a16_comparison_says_so_when_ci_includes_zero():
     res = nb.fine_tune_comparisons(_runs({"lsnnc": 2, "v924f": 2, "r5nzh": 2}), draws=1000)
     assert "the interval includes zero, so no difference is shown" in res["statement"]
+
+
+# --- frozen-input replay (scripts/replay_sections.py) -------------------------
+
+_rs_spec = importlib.util.spec_from_file_location(
+    "replay_sections", REPO / "scripts" / "replay_sections.py")
+rs = importlib.util.module_from_spec(_rs_spec)
+_rs_spec.loader.exec_module(rs)
+V924F = REPO / "eval" / "runs" / "raw" / "v924f-findings"
+
+
+def test_replay_contexts_round_trip_byte_exact_for_every_v924f_file():
+    files = sorted(V924F.glob("*_local-model.md"), key=lambda p: p.name)
+    assert len(files) == 40
+    for f in files:
+        ctx = rs.load_context(f)  # raises unless byte-exact and sha-matched
+        assert rs.sha256(ctx["context"]) == ctx["context_sha256"]
+
+
+def test_replay_prompts_come_from_the_pipeline_and_restore_it(monkeypatch):
+    from langsmith import tracing_context
+
+    import agent.core as core
+    monkeypatch.setenv("USE_LOCAL_MODEL", "true")
+    monkeypatch.setenv("LOCAL_MODEL_BACKEND", "openai")
+    ctx = rs.load_context(V924F / "CRBU_local-model.md")
+    original = core._section_llm
+    with tracing_context(enabled=False):
+        reqs = rs.build_requests(ctx)
+    assert core._section_llm is original
+    fh, rf = reqs
+    assert [r["heading"] for r in reqs] == list(rs.SECTIONS)
+    fh_prompt, rf_prompt = fh["messages"][0].content, rf["messages"][0].content
+    assert core._data_context(ctx["stock"], ctx["news"], ctx["sec"]) in fh_prompt
+    assert ctx["rag_risks"] in rf_prompt
+    assert "### Financial Health" in fh_prompt and "Caribou" in fh_prompt
+    body = rs.payload(fh, "financial-lora", seed=7)
+    assert body["seed"] == 7 and body["temperature"] == 0.1
+    assert body["top_k"] == 20 and body["messages"][0]["role"] == "user"
+
+
+def test_replay_file_round_trip(tmp_path):
+    p = tmp_path / "AAPL-s1.md"
+    meta = {"ticker": "AAPL", "arm": "bf16", "sample": 1, "served_name": "x",
+            "financial_health_seed": 42, "sampling": {"temperature": 0.1}}
+    outs = {"### Financial Health": "### Financial Health\nIt trades at $1.57.",
+            "### Risk Factors": "- one\n- two"}
+    rs.write_replay_file(p, meta, STOCK, outs)
+    r = rs.read_replay_file(p)
+    assert r["meta"] == meta and r["stock"] == STOCK
+    assert r["sections"] == [("Financial Health", outs["### Financial Health"]),
+                             ("Risk Factors", outs["### Risk Factors"])]
+
+
+def test_replay_seeds_are_distinct_and_arm_independent():
+    seeds = {rs.seed_for(42, t, s, k) for t in range(40) for s in range(2) for k in (1, 2, 3)}
+    assert len(seeds) == 240
+
+
+def _replay_briefs(k_bf16, k_w4a16):
+    out = []
+    for arm, kk in (("bf16", k_bf16), ("w4a16", k_w4a16)):
+        for t in range(30):
+            for s in (1, 2, 3):
+                k = kk if t % 2 else 0
+                out.append({"replay": "replay-x", "arm": arm, "model": arm,
+                            "ticker": f"T{t}", "sample": s, "counts": (k, 10),
+                            "report": {"findings": [1] * k, "checked": 10, "unchecked": 5}})
+    return out
+
+
+def test_replay_statement_reproduces_or_not():
+    yes = nb.replay_analysis(_replay_briefs(1, 6), [], draws=1000)
+    assert yes["statement"].startswith("The regression reproduces on identical inputs")
+    no = nb.replay_analysis(_replay_briefs(2, 2), [], draws=1000)
+    assert no["statement"].startswith("The live-run gap is not reproduced")
+    assert "may reflect input drift" in no["statement"]
+    assert yes["arms"]["bf16"]["sample_spread"]["range"] == 0
+
+
+def test_precision_reports_replay_rows_separately():
+    rows = [dict(_adj("replay-x/w4a16/s1", "replay", "TRUE_ERROR"), arm="w4a16"),
+            dict(_adj("replay-x/w4a16/s2", "replay", "FALSE_POSITIVE"), arm="w4a16"),
+            _adj("r", "full", "TRUE_ERROR")]
+    res = nb.precision(rows)
+    assert res["replay"]["replay-x:w4a16"]["rows"] == 2
+    assert res["all_full"]["rows"] == 1
