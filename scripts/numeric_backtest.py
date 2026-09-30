@@ -326,7 +326,8 @@ def main():
     }
     out = Path(args.out) if args.out else \
         REPO / "eval" / "runs" / f"numeric-backtest-{args.date}.json"
-    out.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    out.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8",
+                   newline="\n")
 
     a = summary["all"]
     print(f"{a['briefs']} briefs: {a['checked']} checked, {a['unchecked']} "
