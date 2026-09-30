@@ -51,6 +51,8 @@ Truncation at the 512-token cap (sections whose generation hit max_tokens): repl
 |---|---|---|---|---|
 | pilot (exact) | bf16 | 240 | 56 | 23.3% |
 | pilot (exact) | w4a16 | 240 | 55 | 22.9% |
+| replication (exact) | bf16 | 800 | 153 | 19.1% |
+| replication (exact) | w4a16 | 800 | 184 | 23.0% |
 | live (estimated) | v924f | 80 | 18 | 22.5% |
 | live (estimated) | r5nzh | 80 (1 not located) | 17 | 21.5% |
 | live (estimated) | lsnnc | 80 | 14 | 17.5% |
@@ -80,6 +82,31 @@ With truncated sections excluded, the pilot gap is W4A16 - BF16 = +10.0 pts (pai
 The pilot interval also contains the like-for-like live gap (+16.6 pts), so the pilot neither confirms nor excludes it.
 
 Same weights, same inputs: replayed BF16 gives 46.9% (samples 44.4% / 41.9% / 52.7%) against v924f's single live draw of 38.9% on these sections, so sampling alone moves this rate by that much, which a one-draw-per-ticker live comparison cannot separate from precision.
+
+Pre-registered replication (replay-replication-2026-09-30): 10 seeded samples per ticker per arm (seed base 1000000, disjoint from the pilot); plan: eval/numeric_check/replication-plan.md; primary metric: mismatches per checked number, truncated sections excluded. Financial Health and Risk Factors regenerated from v924f's recorded contexts with the pipeline's own prompts, same seeds in both arms (scripts/replay_sections.py).
+
+| Arm | Variant | Served model | Briefs (tickers x samples) | Briefs flagged | Checked (distinct) | Coverage | Mismatches per checked number | Wilson 95% CI (naive, too narrow) | Cluster bootstrap 95% CI (tickers) | Per-sample rate range | Spread (max - min) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| bf16 | all sections | financial-lora | 400 (40 x 10) | 264 | 1275 | 45.0% | 582 = 45.6% | 42.9%–48.4% | 35.6%–55.8% | 40.7%–50.4% | 9.6 pts |
+| w4a16 | all sections | financial-lora-w4a16 | 400 (40 x 10) | 247 | 1248 | 42.0% | 703 = 56.3% | 53.6%–59.1% | 43.2%–69.4% | 50.5%–59.5% | 9.0 pts |
+| bf16 | truncated excluded | financial-lora | 400 (40 x 10) | 232 | 1068 | 46.5% | 430 = 40.3% | 37.4%–43.2% | 30.9%–50.6% | 36.6%–45.8% | 9.1 pts |
+| w4a16 | truncated excluded | financial-lora-w4a16 | 400 (40 x 10) | 204 | 888 | 43.5% | 405 = 45.6% | 42.4%–48.9% | 36.4%–55.7% | 38.7%–52.0% | 13.3 pts |
+
+| Comparison | Difference | Bootstrap 95% CI | Bootstrap p (two-sided) | CI excludes 0 |
+|---|---|---|---|---|
+| replication: W4A16 - BF16, all sections | +10.7 pts | -0.3 to +21.5 pts | 0.0592 | no |
+| replication: W4A16 - BF16, truncated excluded | +5.3 pts | -1.1 to +11.6 pts | 0.0982 | no |
+
+The W4A16 regression does not replicate on identical inputs: W4A16 - BF16 = +5.3 pts (paired ticker-cluster bootstrap CI -1.1 to +11.6 pts) on the replayed Financial Health + Risk Factors sections, truncated sections excluded, unadjudicated flags.
+
+Secondary (all sections, truncated included): W4A16 - BF16 = +10.7 pts (paired ticker-cluster bootstrap CI -0.3 to +21.5 pts).
+
+Adjudication sample (pre-registered): per arm, 60 of the primary metric's mismatch flags, stratified by field, seed 42. Stratum-weighted precision is applied to that arm's flag count.
+
+| Arm | Flags | Sample size | Labelled | Precision, OTHER_DEFECT as TP | Precision, OTHER_DEFECT excluded | Adjusted rate (as TP / excluded) |
+|---|---|---|---|---|---|---|
+| bf16 | 430 | 60 | 0 | pending | pending | pending |
+| w4a16 | 405 | 60 | 0 | pending | pending | pending |
 
 Live, like for like (one draw per ticker; FH + RF only)
 
