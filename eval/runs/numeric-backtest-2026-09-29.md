@@ -45,24 +45,51 @@ Separately, the same BF16 weights on an earlier image (lsnnc, 2026-09-05/06) sit
 
 Same-image evidence: eval/numeric_check/provenance-v924f-r5nzh.md.
 
-Frozen-input replay (replay-2026-09-30): the two local sections (Financial Health, Risk Factors) regenerated from v924f's recorded contexts with the pipeline's own prompts, 3 seeded samples per ticker per arm, same seeds in both arms (scripts/replay_sections.py)
+Truncation at the 512-token cap (sections whose generation hit max_tokens): replays from vLLM's recorded finish_reason; live runs estimated by re-tokenizing the saved section text (scripts/section_token_counts.py)
 
-| Arm | Served model | Briefs (tickers x samples) | Briefs flagged | Checked (distinct) | Coverage | Mismatches per checked number | Wilson 95% CI (naive, too narrow) | Cluster bootstrap 95% CI (tickers) | Per-sample rates (s1 / s2 / s3) | Spread (max - min) |
-|---|---|---|---|---|---|---|---|---|---|---|
-| bf16 | financial-lora | 120 (40 x 3) | 73 | 377 | 45.8% | 177 = 46.9% | 42.0%–52.0% | 36.3%–57.3% | 44.4% / 41.9% / 52.7% | 10.8 pts |
-| w4a16 | financial-lora-w4a16 | 120 (40 x 3) | 78 | 343 | 35.6% | 192 = 56.0% | 50.7%–61.1% | 44.2%–68.1% | 61.5% / 53.5% / 52.5% | 9.0 pts |
+| Source | Arm / run | Sections | Truncated | Rate |
+|---|---|---|---|---|
+| pilot (exact) | bf16 | 240 | 56 | 23.3% |
+| pilot (exact) | w4a16 | 240 | 55 | 22.9% |
+| live (estimated) | v924f | 80 | 18 | 22.5% |
+| live (estimated) | r5nzh | 80 (1 not located) | 17 | 21.5% |
+| live (estimated) | lsnnc | 80 | 14 | 17.5% |
+| live (estimated) | 4nfsm | 80 | 0 | 0.0% |
+| live (estimated) | cnkp2 | 80 | 0 | 0.0% |
+
+Estimation check on the pilot's 480 sections: re-tokenized counts equal vLLM's recorded counts for 470 (largest difference 2 tokens); the >= 505-token rule agrees with finish_reason for 478.
+
+Pilot frozen-input replay (replay-pilot-2026-09-30): 3 seeded samples per ticker per arm (seed base 42), exploratory. Financial Health and Risk Factors regenerated from v924f's recorded contexts with the pipeline's own prompts, same seeds in both arms (scripts/replay_sections.py).
+
+| Arm | Variant | Served model | Briefs (tickers x samples) | Briefs flagged | Checked (distinct) | Coverage | Mismatches per checked number | Wilson 95% CI (naive, too narrow) | Cluster bootstrap 95% CI (tickers) | Per-sample rate range | Spread (max - min) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| bf16 | all sections | financial-lora | 120 (40 x 3) | 73 | 377 | 45.8% | 177 = 46.9% | 42.0%–52.0% | 36.3%–57.3% | 41.9%–52.7% | 10.8 pts |
+| w4a16 | all sections | financial-lora-w4a16 | 120 (40 x 3) | 78 | 343 | 35.6% | 192 = 56.0% | 50.7%–61.1% | 44.2%–68.1% | 52.5%–61.5% | 9.0 pts |
+| bf16 | truncated excluded | financial-lora | 120 (40 x 3) | 59 | 280 | 45.5% | 113 = 40.4% | 34.8%–46.2% | 29.8%–51.7% | 36.8%–43.6% | 6.8 pts |
+| w4a16 | truncated excluded | financial-lora-w4a16 | 120 (40 x 3) | 67 | 274 | 44.2% | 138 = 50.4% | 44.5%–56.2% | 40.6%–60.8% | 47.3%–53.7% | 6.4 pts |
 
 | Comparison | Difference | Bootstrap 95% CI | Bootstrap p (two-sided) | CI excludes 0 |
 |---|---|---|---|---|
-| replay: W4A16 - BF16, identical inputs | +9.0 pts | -0.9 to +19.5 pts | 0.0784 | no |
-| live, like for like: r5nzh - v924f, Financial Health + Risk Factors only | +16.6 pts | +5.2 to +27.4 pts | 0.0026 | yes |
+| pilot: W4A16 - BF16, all sections | +9.0 pts | -0.9 to +19.5 pts | 0.0784 | no |
+| pilot: W4A16 - BF16, truncated excluded | +10.0 pts | +3.2 to +16.7 pts | 0.0052 | yes |
 
-The live-run gap is not reproduced on identical inputs (W4A16 - BF16 = +9.0 pts (paired cluster bootstrap CI -0.9 to +19.5 pts) on the replayed Financial Health + Risk Factors sections, unadjudicated flags) and may reflect input drift.
+Pilot: the live-run gap is not reproduced on identical inputs (W4A16 - BF16 = +9.0 pts (paired ticker-cluster bootstrap CI -0.9 to +19.5 pts) on the replayed Financial Health + Risk Factors sections, unadjudicated flags) and may reflect input drift.
 
-The replay interval also contains the like-for-like live gap (+16.6 pts), so the replay neither confirms nor excludes it.
+With truncated sections excluded, the pilot gap is W4A16 - BF16 = +10.0 pts (paired ticker-cluster bootstrap CI +3.2 to +16.7 pts).
+
+The pilot interval also contains the like-for-like live gap (+16.6 pts), so the pilot neither confirms nor excludes it.
 
 Same weights, same inputs: replayed BF16 gives 46.9% (samples 44.4% / 41.9% / 52.7%) against v924f's single live draw of 38.9% on these sections, so sampling alone moves this rate by that much, which a one-draw-per-ticker live comparison cannot separate from precision.
 
-Live Financial Health + Risk Factors rates (one draw per ticker): r5nzh 65/117 = 55.6%; v924f 44/113 = 38.9%.
+Live, like for like (one draw per ticker; FH + RF only)
 
-The live-run rows above also count the hosted Exec Summary and Outlook, which restate the local sections' figures; the replay regenerates only the two local sections, so its like-for-like live comparison is the Financial Health + Risk Factors row.
+| Comparison | Difference | Bootstrap 95% CI | Bootstrap p (two-sided) | CI excludes 0 |
+|---|---|---|---|---|
+| live: r5nzh - v924f, all sections | +16.6 pts | +5.2 to +27.4 pts | 0.0026 | yes |
+| live: r5nzh - v924f, truncated excluded (estimated) | +14.5 pts | +4.7 to +23.8 pts | 0.005 | yes |
+
+Live FH + RF rates, all sections: r5nzh 65/117 = 55.6%; v924f 44/113 = 38.9%.
+
+Live FH + RF rates, truncated excluded: r5nzh 51/103 = 49.5%; v924f 35/100 = 35.0%.
+
+The live-run rows further up also count the hosted Exec Summary and Outlook, which restate the local sections' figures; the replays regenerate only the two local sections, so their like-for-like live comparison is the FH + RF block above.

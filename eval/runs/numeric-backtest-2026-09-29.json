@@ -1419,167 +1419,379 @@
     "image_change_statement": "Separately, the same BF16 weights on an earlier image (lsnnc, 2026-09-05/06) sit +7.4 pts vs v924f (paired cluster bootstrap CI +0.1 to +16.0 pts): pipeline/image changes also move this metric. That is a second effect, not noise that cancels the W4A16 one, which is measured within one image."
   },
   "replay": {
-    "replay": "replay-2026-09-30",
-    "arms": {
-      "bf16": {
-        "model": "financial-lora",
-        "briefs": 120,
-        "tickers": 40,
-        "briefs_flagged": 73,
-        "checked": 496,
-        "checked_distinct": 377,
-        "unchecked": 587,
-        "coverage": 0.458,
-        "mismatches_per_checked": {
-          "k": 177,
-          "n": 377,
-          "rate": 0.4695,
-          "ci95": [
-            0.4197,
-            0.5199
-          ],
-          "cluster_bootstrap": {
-            "method": "brief-level cluster bootstrap, 10000 draws, seed 42 (clusters: tickers, 3 samples each)",
+    "labels": {
+      "pilot": {
+        "replay": "replay-pilot-2026-09-30",
+        "truncation": {
+          "bf16": {
+            "sections": 240,
+            "truncated": 56,
+            "rate": 0.2333
+          },
+          "w4a16": {
+            "sections": 240,
+            "truncated": 55,
+            "rate": 0.2292
+          }
+        },
+        "arms": {
+          "all": {
+            "bf16": {
+              "model": "financial-lora",
+              "briefs": 120,
+              "tickers": 40,
+              "samples": 3,
+              "briefs_flagged": 73,
+              "checked": 496,
+              "checked_distinct": 377,
+              "unchecked": 587,
+              "coverage": 0.458,
+              "mismatches_per_checked": {
+                "k": 177,
+                "n": 377,
+                "rate": 0.4695,
+                "ci95": [
+                  0.4197,
+                  0.5199
+                ],
+                "cluster_bootstrap": {
+                  "method": "brief-level cluster bootstrap, 10000 draws, seed 42 (clusters: tickers, 3 samples each)",
+                  "ci95": [
+                    0.3634,
+                    0.5732
+                  ],
+                  "empty_draws": 0
+                }
+              },
+              "per_sample": {
+                "s1": {
+                  "briefs_flagged": 23,
+                  "mismatches": 56,
+                  "checked_distinct": 126,
+                  "rate": 0.4444
+                },
+                "s2": {
+                  "briefs_flagged": 23,
+                  "mismatches": 44,
+                  "checked_distinct": 105,
+                  "rate": 0.419
+                },
+                "s3": {
+                  "briefs_flagged": 27,
+                  "mismatches": 77,
+                  "checked_distinct": 146,
+                  "rate": 0.5274
+                }
+              },
+              "sample_spread": {
+                "min": 0.419,
+                "max": 0.5274,
+                "range": 0.1084
+              }
+            },
+            "w4a16": {
+              "model": "financial-lora-w4a16",
+              "briefs": 120,
+              "tickers": 40,
+              "samples": 3,
+              "briefs_flagged": 78,
+              "checked": 357,
+              "checked_distinct": 343,
+              "unchecked": 647,
+              "coverage": 0.3556,
+              "mismatches_per_checked": {
+                "k": 192,
+                "n": 343,
+                "rate": 0.5598,
+                "ci95": [
+                  0.5069,
+                  0.6114
+                ],
+                "cluster_bootstrap": {
+                  "method": "brief-level cluster bootstrap, 10000 draws, seed 42 (clusters: tickers, 3 samples each)",
+                  "ci95": [
+                    0.442,
+                    0.6814
+                  ],
+                  "empty_draws": 0
+                }
+              },
+              "per_sample": {
+                "s1": {
+                  "briefs_flagged": 26,
+                  "mismatches": 72,
+                  "checked_distinct": 117,
+                  "rate": 0.6154
+                },
+                "s2": {
+                  "briefs_flagged": 26,
+                  "mismatches": 68,
+                  "checked_distinct": 127,
+                  "rate": 0.5354
+                },
+                "s3": {
+                  "briefs_flagged": 26,
+                  "mismatches": 52,
+                  "checked_distinct": 99,
+                  "rate": 0.5253
+                }
+              },
+              "sample_spread": {
+                "min": 0.5253,
+                "max": 0.6154,
+                "range": 0.0901
+              }
+            }
+          },
+          "no_trunc": {
+            "bf16": {
+              "model": "financial-lora",
+              "briefs": 120,
+              "tickers": 40,
+              "samples": 3,
+              "briefs_flagged": 59,
+              "checked": 281,
+              "checked_distinct": 280,
+              "unchecked": 336,
+              "coverage": 0.4554,
+              "mismatches_per_checked": {
+                "k": 113,
+                "n": 280,
+                "rate": 0.4036,
+                "ci95": [
+                  0.3478,
+                  0.462
+                ],
+                "cluster_bootstrap": {
+                  "method": "brief-level cluster bootstrap, 10000 draws, seed 42 (clusters: tickers, 3 samples each)",
+                  "ci95": [
+                    0.2985,
+                    0.5171
+                  ],
+                  "empty_draws": 0
+                }
+              },
+              "per_sample": {
+                "s1": {
+                  "briefs_flagged": 19,
+                  "mismatches": 35,
+                  "checked_distinct": 95,
+                  "rate": 0.3684
+                },
+                "s2": {
+                  "briefs_flagged": 20,
+                  "mismatches": 37,
+                  "checked_distinct": 91,
+                  "rate": 0.4066
+                },
+                "s3": {
+                  "briefs_flagged": 20,
+                  "mismatches": 41,
+                  "checked_distinct": 94,
+                  "rate": 0.4362
+                }
+              },
+              "sample_spread": {
+                "min": 0.3684,
+                "max": 0.4362,
+                "range": 0.0678
+              }
+            },
+            "w4a16": {
+              "model": "financial-lora-w4a16",
+              "briefs": 120,
+              "tickers": 40,
+              "samples": 3,
+              "briefs_flagged": 67,
+              "checked": 277,
+              "checked_distinct": 274,
+              "unchecked": 349,
+              "coverage": 0.4425,
+              "mismatches_per_checked": {
+                "k": 138,
+                "n": 274,
+                "rate": 0.5036,
+                "ci95": [
+                  0.4448,
+                  0.5624
+                ],
+                "cluster_bootstrap": {
+                  "method": "brief-level cluster bootstrap, 10000 draws, seed 42 (clusters: tickers, 3 samples each)",
+                  "ci95": [
+                    0.4056,
+                    0.6084
+                  ],
+                  "empty_draws": 0
+                }
+              },
+              "per_sample": {
+                "s1": {
+                  "briefs_flagged": 24,
+                  "mismatches": 51,
+                  "checked_distinct": 95,
+                  "rate": 0.5368
+                },
+                "s2": {
+                  "briefs_flagged": 20,
+                  "mismatches": 44,
+                  "checked_distinct": 93,
+                  "rate": 0.4731
+                },
+                "s3": {
+                  "briefs_flagged": 23,
+                  "mismatches": 43,
+                  "checked_distinct": 86,
+                  "rate": 0.5
+                }
+              },
+              "sample_spread": {
+                "min": 0.4731,
+                "max": 0.5368,
+                "range": 0.0637
+              }
+            }
+          }
+        },
+        "difference": {
+          "all": {
+            "difference": 0.0903,
             "ci95": [
-              0.3634,
-              0.5732
+              -0.0091,
+              0.1949
             ],
-            "empty_draws": 0
+            "p_two_sided_bootstrap": 0.0784,
+            "excludes_zero": false,
+            "paired_by_ticker": true,
+            "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+          },
+          "no_trunc": {
+            "difference": 0.1001,
+            "ci95": [
+              0.0322,
+              0.1665
+            ],
+            "p_two_sided_bootstrap": 0.0052,
+            "excludes_zero": true,
+            "paired_by_ticker": true,
+            "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
           }
         },
-        "per_sample": {
-          "s1": {
-            "briefs": 40,
-            "briefs_flagged": 23,
-            "mismatches": 56,
-            "checked_distinct": 126,
-            "rate": 0.4444
-          },
-          "s2": {
-            "briefs": 40,
-            "briefs_flagged": 23,
-            "mismatches": 44,
-            "checked_distinct": 105,
-            "rate": 0.419
-          },
-          "s3": {
-            "briefs": 40,
-            "briefs_flagged": 27,
-            "mismatches": 77,
-            "checked_distinct": 146,
-            "rate": 0.5274
-          }
+        "statement": "Pilot: the live-run gap is not reproduced on identical inputs (W4A16 - BF16 = +9.0 pts (paired ticker-cluster bootstrap CI -0.9 to +19.5 pts) on the replayed Financial Health + Risk Factors sections, unadjudicated flags) and may reflect input drift.",
+        "context_statements": [
+          "With truncated sections excluded, the pilot gap is W4A16 - BF16 = +10.0 pts (paired ticker-cluster bootstrap CI +3.2 to +16.7 pts).",
+          "The pilot interval also contains the like-for-like live gap (+16.6 pts), so the pilot neither confirms nor excludes it.",
+          "Same weights, same inputs: replayed BF16 gives 46.9% (samples 44.4% / 41.9% / 52.7%) against v924f's single live draw of 38.9% on these sections, so sampling alone moves this rate by that much, which a one-draw-per-ticker live comparison cannot separate from precision."
+        ]
+      }
+    },
+    "live": {
+      "difference": {
+        "all": {
+          "difference": 0.1662,
+          "ci95": [
+            0.0522,
+            0.2735
+          ],
+          "p_two_sided_bootstrap": 0.0026,
+          "excludes_zero": true,
+          "paired_by_ticker": true,
+          "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
         },
-        "sample_spread": {
-          "min": 0.419,
-          "max": 0.5274,
-          "range": 0.1084
+        "no_trunc": {
+          "difference": 0.1451,
+          "ci95": [
+            0.047,
+            0.2376
+          ],
+          "p_two_sided_bootstrap": 0.005,
+          "excludes_zero": true,
+          "paired_by_ticker": true,
+          "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
         }
       },
-      "w4a16": {
-        "model": "financial-lora-w4a16",
-        "briefs": 120,
-        "tickers": 40,
-        "briefs_flagged": 78,
-        "checked": 357,
-        "checked_distinct": 343,
-        "unchecked": 647,
-        "coverage": 0.3556,
-        "mismatches_per_checked": {
-          "k": 192,
-          "n": 343,
-          "rate": 0.5598,
-          "ci95": [
-            0.5069,
-            0.6114
-          ],
-          "cluster_bootstrap": {
-            "method": "brief-level cluster bootstrap, 10000 draws, seed 42 (clusters: tickers, 3 samples each)",
+      "rates": {
+        "all": {
+          "r5nzh": {
+            "k": 65,
+            "n": 117,
+            "rate": 0.5556,
             "ci95": [
-              0.442,
-              0.6814
-            ],
-            "empty_draws": 0
+              0.4652,
+              0.6424
+            ]
+          },
+          "v924f": {
+            "k": 44,
+            "n": 113,
+            "rate": 0.3894,
+            "ci95": [
+              0.3045,
+              0.4815
+            ]
           }
         },
-        "per_sample": {
-          "s1": {
-            "briefs": 40,
-            "briefs_flagged": 26,
-            "mismatches": 72,
-            "checked_distinct": 117,
-            "rate": 0.6154
+        "no_trunc": {
+          "r5nzh": {
+            "k": 51,
+            "n": 103,
+            "rate": 0.4951,
+            "ci95": [
+              0.4005,
+              0.5901
+            ]
           },
-          "s2": {
-            "briefs": 40,
-            "briefs_flagged": 26,
-            "mismatches": 68,
-            "checked_distinct": 127,
-            "rate": 0.5354
-          },
-          "s3": {
-            "briefs": 40,
-            "briefs_flagged": 26,
-            "mismatches": 52,
-            "checked_distinct": 99,
-            "rate": 0.5253
+          "v924f": {
+            "k": 35,
+            "n": 100,
+            "rate": 0.35,
+            "ci95": [
+              0.2636,
+              0.4475
+            ]
           }
-        },
-        "sample_spread": {
-          "min": 0.5253,
-          "max": 0.6154,
-          "range": 0.0901
         }
       }
     },
-    "difference_w4a16_minus_bf16": {
-      "difference": 0.0903,
-      "ci95": [
-        -0.0091,
-        0.1949
-      ],
-      "p_two_sided_bootstrap": 0.0784,
-      "excludes_zero": false,
-      "paired_by_ticker": true,
-      "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
-    },
-    "live_fh_rf_r5nzh_minus_v924f": {
-      "difference": 0.1662,
-      "ci95": [
-        0.0522,
-        0.2735
-      ],
-      "p_two_sided_bootstrap": 0.0026,
-      "excludes_zero": true,
-      "paired_by_ticker": true,
-      "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
-    },
-    "live_fh_rf_rates": {
-      "r5nzh": {
-        "k": 65,
-        "n": 117,
-        "rate": 0.5556,
-        "ci95": [
-          0.4652,
-          0.6424
-        ]
-      },
+    "live_truncation": {
       "v924f": {
-        "k": 44,
-        "n": 113,
-        "rate": 0.3894,
-        "ci95": [
-          0.3045,
-          0.4815
-        ]
+        "sections": 80,
+        "unknown": 0,
+        "truncated_est": 18
+      },
+      "r5nzh": {
+        "sections": 80,
+        "unknown": 1,
+        "truncated_est": 17
+      },
+      "lsnnc": {
+        "sections": 80,
+        "unknown": 0,
+        "truncated_est": 14
+      },
+      "4nfsm": {
+        "sections": 80,
+        "unknown": 0,
+        "truncated_est": 0
+      },
+      "cnkp2": {
+        "sections": 80,
+        "unknown": 0,
+        "truncated_est": 0
       }
     },
-    "statement": "The live-run gap is not reproduced on identical inputs (W4A16 - BF16 = +9.0 pts (paired cluster bootstrap CI -0.9 to +19.5 pts) on the replayed Financial Health + Risk Factors sections, unadjudicated flags) and may reflect input drift.",
-    "context_statements": [
-      "The replay interval also contains the like-for-like live gap (+16.6 pts), so the replay neither confirms nor excludes it.",
-      "Same weights, same inputs: replayed BF16 gives 46.9% (samples 44.4% / 41.9% / 52.7%) against v924f's single live draw of 38.9% on these sections, so sampling alone moves this rate by that much, which a one-draw-per-ticker live comparison cannot separate from precision."
-    ]
+    "truncation_method": {
+      "threshold": 505,
+      "cap": 512,
+      "validation_on_pilot": {
+        "sections": 480,
+        "exact_count_matches": 470,
+        "max_abs_diff": 2,
+        "threshold": 505,
+        "threshold_agrees_with_finish_reason": 478
+      }
+    }
   },
+  "replication_applied_precision": null,
   "adjudication": {
     "path": "eval/numeric_check/adjudication.csv",
     "verdicts": [
@@ -1587,7 +1799,7 @@
       "FALSE_POSITIVE",
       "OTHER_DEFECT"
     ],
-    "rows": 744,
+    "rows": 359,
     "verdicts_kept": 0
   }
 }
