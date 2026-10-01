@@ -712,8 +712,9 @@ p = 0.82.
   the Exec Summary + Outlook only. Section-level numeric accuracy (the
   stock-data figures every section states) is covered by the
   deterministic numeric check (`agent/numeric_check.py`, backtest
-  `scripts/numeric_backtest.py`); its flags are not yet adjudicated and
-  are not quoted here.
+  `scripts/numeric_backtest.py`). Its flags were adjudicated on
+  2026-10-01; the numeric W4A16 vs BF16 result is in
+  ["Numeric check: adjudicated flags and the W4A16 replication"](#numeric-check-adjudicated-flags-and-the-w4a16-replication-2026-10-01-dated).
 - **Hosted, for reference, not a new claim.** The W4A16 arm trails the
   hosted runs as the BF16 fine-tune does: p = 4.6e-05 vs `kcf7s`, 0.0011
   vs `dvvxk`, 1.1e-05 vs both pooled (11/772).
@@ -918,6 +919,203 @@ them).
   results: F16 with pings off (0 lost) and Q8_0 under packet capture
   (0 lost). Only runs by the committed scripts that passed the current
   checks are committed.
+
+## Numeric check: adjudicated flags and the W4A16 replication (2026-10-01, dated)
+
+What the deterministic numeric check's flags are worth once a human has
+read every one, and what that changes in the W4A16 vs BF16 comparison.
+Nothing here is a number of record.
+
+**The check.** `agent/numeric_check.py` binds every stock-data figure a
+brief states (market cap, revenue, net income, profit margin, price,
+52-week range) to the stock dict the pipeline gave the generators, and
+flags a figure outside tolerance (a *mismatch*) or a template placeholder
+left in the text. News and filing numbers are out of scope. In the app it
+runs as `NUMERIC_CHECK` (`off|warn|block`, default `warn`). The rate below
+is distinct mismatches per distinct checked number, both counted within a
+brief. `scripts/numeric_backtest.py` runs the check over the committed
+findings of the nine live runs and the frozen-input replays
+(`eval/runs/numeric-backtest-2026-09-29.md`).
+
+**Adjudication.** Every live flag (359 rows, nine runs) and the
+pre-registered stratified sample of the replication's flags (60 per arm)
+got one verdict each: TRUE_ERROR, FALSE_POSITIVE or OTHER_DEFECT (a broken
+brief whose problem is not a wrong number, such as a truncated "-$3"). The
+eight rules were committed before any row was labeled (4ef7ec6,
+`eval/numeric_check/README.md`), and the 479 verdicts were committed
+before any figure below was computed (a27264b). One adjudicator, using
+`eval/numeric_check/label_cli.py`, which shows run, arm and model, so the
+labeling was not blind to arm. There was no second rater, so there is no
+agreement figure. The adjudicator recorded no doubt notes (rule 8: 0 of
+479) and no notes of any kind.
+
+```bash
+python scripts/numeric_backtest.py --precision          # registered precision, Wilson CIs
+python scripts/numeric_adjudicated.py --date 2026-10-01 # everything below
+```
+
+Output: `eval/runs/numeric-adjudicated-2026-10-01.{json,md}`. The script
+reads the verdicts and never writes them. It rebuilds each flag from the
+raw files and fails if any flag lacks a verdict, if any verdict lacks a
+flag, or if the replication frame differs from the registered sample
+record. Its unadjudicated replication gap equals the committed one to the
+digit.
+
+### Precision
+
+Unit: one adjudication row, i.e. a distinct finding. Two ways: OTHER_DEFECT
+as a true positive, and OTHER_DEFECT excluded. The cluster bootstrap
+resamples whole briefs (10,000 draws, seed 42). Where every flag in a
+group got the same verdict, there is nothing to resample, and the Wilson
+lower bound is the only bound. Wilson treats flags as independent, so
+that bound is optimistic.
+
+| Group (full runs) | Rows | TRUE_ERROR / FALSE_POSITIVE / OTHER_DEFECT | Precision, OD as TP (Wilson; cluster bootstrap) | Precision, OD excluded (Wilson; cluster bootstrap) |
+|---|---|---|---|---|
+| Hosted (`j4cnp`, `kcf7s`, `dvvxk`; `2nh8v` had no flags) | 19 | 19 / 0 / 0 | 19/19 = 100% (83.2–100%; n/a) | 19/19 = 100% (83.2–100%; n/a) |
+| Local-model, all five runs | 340 | 323 / 2 / 15 | 338/340 = 99.4% (97.9–99.8%; 98.5–100%) | 323/325 = 99.4% (97.8–99.8%; 98.4–100%) |
+| of which W4A16 `r5nzh` | 88 | 74 / 2 / 12 | 86/88 = 97.7% (92.1–99.4%; 93.9–100%) | 74/76 = 97.4% (90.9–99.3%; 93.3–100%) |
+| All live | 359 | 342 / 2 / 15 | 357/359 = 99.4% (98.0–99.9%; 98.6–100%) | 342/344 = 99.4% (97.9–99.8%; 98.5–100%) |
+
+Every other run's flags were all TRUE_ERROR, apart from one OTHER_DEFECT
+each in `lsnnc`, `v924f` and `4nfsm` (two cut-off figures and an "N/A"
+margin). Twelve of the 14 non-TRUE_ERROR verdicts are in `r5nzh`:
+
+- **OTHER_DEFECT (12):** ten from one BLNK section that counts up "over
+  the past N years … net losses of $N00 billion". That section hit the
+  512-token cap. The other two are a per-share figure bound to net income
+  (AMZN) and a sign contradiction (SNAP).
+- **FALSE_POSITIVE (2):** a cumulative "since inception" loss (LCID) and
+  a cash-position sentence bound to net income (OMER).
+
+Replication, using the registered estimator (stratum-weighted precision of
+the 60-per-arm sample, `replication_applied_precision`, unchanged since
+registration): 60 of 60 TRUE_ERROR in each arm (sample Wilson 94.0–100%).
+The weighted precision is 100% both ways, so the estimated true mismatches
+equal the flag counts, 430 (BF16) and 405 (W4A16). W4A16's `current_price`
+stratum (2 of its 405 flags) drew no sample and is **unlabeled**. The
+registered estimator gives it the labeled strata's weighted precision.
+
+So the check's flags are almost all real errors. This is precision only.
+The check misses errors it cannot bind, and rule 5 had the adjudicator
+judge currency rows against real USD values from outside the committed
+data.
+
+### Mismatch rates on TRUE_ERROR flags only
+
+All sections, full runs. "Excl. upstream" also drops the TRUE_ERRORs that
+trace to the two upstream data defects (next subsection). Both of those
+defects get fixed in a later dated change, not here.
+
+| Run / arm | Flags (unadjudicated) | TRUE_ERROR only (cluster bootstrap 95%) | TRUE_ERROR excl. upstream (cluster bootstrap 95%) |
+|---|---|---|---|
+| Hosted `j4cnp` | 8/543 = 1.5% | 8/543 = 1.5% (0.4–2.9%) | 1/543 = 0.2% (0.0–0.6%) |
+| Hosted `kcf7s` | 7/571 = 1.2% | 7/571 = 1.2% (0.0–3.2%) | 0/571 |
+| Hosted `dvvxk` | 4/550 = 0.7% | 4/550 = 0.7% (0.0–1.7%) | 0/550 |
+| Hosted `2nh8v` (10 tickers) | 0/132 | 0/132 | 0/132 |
+| Qwen2.5-7B `cnkp2` | 20/511 = 3.9% | 20/511 = 3.9% (1.7–6.9%) | 9/511 = 1.8% (0.4–3.8%) |
+| Qwen2.5-1.5B `4nfsm` | 63/422 = 14.9% | 63/422 = 14.9% (11.5–18.6%) | 55/422 = 13.0% (9.8–16.5%) |
+| Fine-tune BF16 `lsnnc` (2026-09-05 image) | 85/363 = 23.4% | 84/363 = 23.1% (15.2–31.7%) | 72/363 = 19.8% (12.0–28.8%) |
+| Fine-tune BF16 `v924f` | 57/357 = 16.0% | 56/357 = 15.7% (11.7–19.6%) | 49/357 = 13.7% (9.9–17.7%) |
+| Fine-tune W4A16 `r5nzh` | 87/327 = 26.6% | 73/327 = 22.3% (17.2–27.9%) | 60/327 = 18.4% (13.1–24.1%) |
+| **Hosted arm, pooled** | 19/1796 = 1.1% | 19/1796 = 1.1% (0.4–1.8%) | 1/1796 = 0.1% (0.0–0.2%) |
+| **Local-model arm, pooled** | 312/1980 = 15.8% | 296/1980 = 14.9% (12.7–17.3%) | 245/1980 = 12.4% (10.3–14.8%) |
+
+The local-model arm minus the hosted arm (pooled, paired by ticker,
+cluster bootstrap) is +13.9 pts on TRUE_ERROR only (CI +11.2 to +16.8),
+against +14.7 on flags. Excluding upstream it is +12.3 (CI +9.4 to +15.5).
+Bootstrap p < 0.0002 for all three. The local-model arm pools four
+different models, so the per-run rows are the ones to compare.
+
+**Live same-image gap, W4A16 `r5nzh` minus BF16 `v924f`.** Financial
+Health + Risk Factors only, one draw per ticker:
+
+| Counting | Sections | `r5nzh` | `v924f` | Difference (bootstrap 95% CI) | Bootstrap p |
+|---|---|---|---|---|---|
+| Flags | all | 65/117 = 55.6% | 44/113 = 38.9% | +16.6 pts (+5.2 to +27.4) | 0.0026 |
+| Flags | truncated excluded (estimated) | 51/103 = 49.5% | 35/100 = 35.0% | +14.5 pts (+4.7 to +23.8) | 0.005 |
+| TRUE_ERROR only | all | 52/117 = 44.4% | 43/113 = 38.0% | +6.4 pts (−4.1 to +15.8) | 0.21 |
+| TRUE_ERROR only | truncated excluded (estimated) | 49/103 = 47.6% | 35/100 = 35.0% | +12.6 pts (+2.9 to +21.7) | 0.012 |
+
+On all sections, adjudication removes most of the live gap: it was
+mostly the degenerate BLNK section. That section hit the cap, so
+excluding truncated sections had already removed it, and the
+truncation-excluded gap barely moves. It still excludes zero. Truncation
+for live runs is estimated by re-tokenizing the saved text.
+
+**Replication.** The pre-registered replication is the confirmatory test,
+and its result stays primary: **the W4A16 regression does not replicate
+on identical inputs**. W4A16 − BF16 = +5.3 pts (paired ticker-cluster
+bootstrap CI −1.1 to +11.6, p = 0.098), on the replayed Financial Health
++ Risk Factors, truncated sections excluded, unadjudicated flags
+(`replay-replication-2026-09-30`, 40 tickers × 10 seeded samples per arm).
+The adjudication-adjusted figures are secondary. Each flag is weighted by
+its field stratum's TRUE_ERROR share, and the paired ticker draws are the
+same as the registered bootstrap's, with each stratum's labels resampled
+alongside:
+
+- Unlabeled stratum at the weighted share (the registered treatment):
+  +5.3 pts (CI −1.1 to +11.6). Adjusted rates: W4A16 45.6%, BF16 40.3%.
+- Unlabeled stratum counted as 0% true: +5.1 pts (CI −1.5 to +11.4).
+- Precision the 60/60 samples cannot rule out: if one arm sat at its
+  Wilson lower bound (94.0%) and the other at 100%, the point gap would
+  be +2.6 pts (W4A16 at the bound) or +7.8 pts (BF16 at the bound). The
+  bootstrap cannot show this, because a 60/60 sample resamples to 60/60.
+
+The replication's secondary all-sections gap (+10.7 pts, CI −0.3 to
++21.5) is not adjusted: the sample was drawn from the primary metric's
+flags only.
+
+Adjudication leaves the replication result as it was. The live one-draw
+gap survives adjudication on the truncation-excluded estimate, but the
+replication was built to test exactly that. It does not exclude zero.
+The pilot had already shown how far one draw can sit from the same model
+on the same inputs. On these sections (all sections, flags), the
+replayed BF16 samples gave 41.9–52.7% against `v924f`'s single live draw
+of 38.9%. The supported statement: **on identical inputs, W4A16 is not
+shown to state more wrong stock figures than BF16, and it is not shown to
+state the same number either.** The interval allows up to +11.6 pts.
+This is not a measured regression.
+
+### TRUE_ERRORs tracing to the upstream data findings
+
+`eval/numeric_check/upstream-findings.md` records two defects in the stock
+dict:
+
+- **(a) Currency.** Home-currency revenue and net income for foreign
+  filers are labeled USD.
+- **(b) Margin fraction.** profit_margin is a raw fraction, so a margin
+  above 100% in magnitude can be written 100x too small.
+
+The rule used to attribute a TRUE_ERROR to one of them (`upstream_cause`)
+is mechanical:
+
+- **Currency:** TM, TSM, NVO or BABA revenue/net_income whose stated
+  figure is a power-of-ten rescaling of the mislabeled source.
+- **Margin fraction:** a profit_margin with |source| > 1, stated at
+  ratio ~0.01.
+
+SAP is listed, not attributed, because EUR and USD are within 2x.
+Margins off by 10x on those tickers (-15.73% for -1.57) are listed too.
+
+| Arm | TRUE_ERRORs (mismatches) | Currency | Margin fraction | Upstream total | Listed, not attributed |
+|---|---|---|---|---|---|
+| Hosted (live) | 19 (19) | 7 | 11 | **18** | 0 |
+| Local-model (live) | 323 (296) | 35 | 16 | 51 | SAP 3, margin at 10x 3 |
+| of which BF16 fine-tune `lsnnc` + `v924f` | 144 (140) | 12 | 7 | 19 | SAP 2 |
+| of which W4A16 `r5nzh` | 74 (73) | 10 | 3 | 13 | SAP 1, margin 1 |
+| of which Qwen2.5-1.5B `4nfsm` | 81 (63) | 6 | 2 | 8 | margin 2 |
+| of which Qwen2.5-7B `cnkp2` | 24 (20) | 7 | 4 | 11 | 0 |
+| Replication BF16 (sample of 60) | 60 (60) | 4 | 1 | 5 | 0 |
+| Replication W4A16 (sample of 60) | 60 (60) | 3 | 2 | 5 | SAP 1 |
+
+Eighteen of the hosted arm's 19 TRUE_ERRORs are the upstream data showing
+through. The one that is not is `j4cnp` OCGN, a 52-week low stated as
+$1.36 against $1.01. Hosted models make the margin-fraction error as
+often as the local ones. For the local-model arm, the upstream share is
+small (51 of 323). Its own errors are mostly power-of-ten slips: 239 of
+the 245 other TRUE_ERROR mismatches, mainly market cap (117) and net
+income (86).
 
 ## Dated A/B on the single-VM target (2026-09-03)
 
