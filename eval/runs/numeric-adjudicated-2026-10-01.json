@@ -1,0 +1,2952 @@
+{
+  "date": "2026-10-01",
+  "harness": "scripts/numeric_adjudicated.py",
+  "adjudication": "eval/numeric_check/adjudication.csv",
+  "verdicts_commit": "a27264b",
+  "note": "Adjudicated numeric-check results. Not a number of record.",
+  "precision": {
+    "live": {
+      "run": {
+        "2nh8v": {
+          "rows": 0,
+          "TRUE_ERROR": 0,
+          "FALSE_POSITIVE": 0,
+          "OTHER_DEFECT": 0,
+          "other_defect_as_tp": {
+            "k": 0,
+            "n": 0,
+            "rate": null,
+            "ci95": [
+              0.0,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                0.0,
+                1.0
+              ],
+              "empty_draws": 10000
+            }
+          },
+          "other_defect_excluded": {
+            "k": 0,
+            "n": 0,
+            "rate": null,
+            "ci95": [
+              0.0,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                0.0,
+                1.0
+              ],
+              "empty_draws": 10000
+            }
+          }
+        },
+        "4nfsm": {
+          "rows": 82,
+          "TRUE_ERROR": 81,
+          "FALSE_POSITIVE": 0,
+          "OTHER_DEFECT": 1,
+          "other_defect_as_tp": {
+            "k": 82,
+            "n": 82,
+            "rate": 1.0,
+            "ci95": [
+              0.9552,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          },
+          "other_defect_excluded": {
+            "k": 81,
+            "n": 81,
+            "rate": 1.0,
+            "ci95": [
+              0.9547,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          }
+        },
+        "9j2dj": {
+          "rows": 0,
+          "TRUE_ERROR": 0,
+          "FALSE_POSITIVE": 0,
+          "OTHER_DEFECT": 0,
+          "other_defect_as_tp": {
+            "k": 0,
+            "n": 0,
+            "rate": null,
+            "ci95": [
+              0.0,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                0.0,
+                1.0
+              ],
+              "empty_draws": 10000
+            }
+          },
+          "other_defect_excluded": {
+            "k": 0,
+            "n": 0,
+            "rate": null,
+            "ci95": [
+              0.0,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                0.0,
+                1.0
+              ],
+              "empty_draws": 10000
+            }
+          }
+        },
+        "cnkp2": {
+          "rows": 24,
+          "TRUE_ERROR": 24,
+          "FALSE_POSITIVE": 0,
+          "OTHER_DEFECT": 0,
+          "other_defect_as_tp": {
+            "k": 24,
+            "n": 24,
+            "rate": 1.0,
+            "ci95": [
+              0.862,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          },
+          "other_defect_excluded": {
+            "k": 24,
+            "n": 24,
+            "rate": 1.0,
+            "ci95": [
+              0.862,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          }
+        },
+        "dvvxk": {
+          "rows": 4,
+          "TRUE_ERROR": 4,
+          "FALSE_POSITIVE": 0,
+          "OTHER_DEFECT": 0,
+          "other_defect_as_tp": {
+            "k": 4,
+            "n": 4,
+            "rate": 1.0,
+            "ci95": [
+              0.5101,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 421
+            }
+          },
+          "other_defect_excluded": {
+            "k": 4,
+            "n": 4,
+            "rate": 1.0,
+            "ci95": [
+              0.5101,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 421
+            }
+          }
+        },
+        "j4cnp": {
+          "rows": 8,
+          "TRUE_ERROR": 8,
+          "FALSE_POSITIVE": 0,
+          "OTHER_DEFECT": 0,
+          "other_defect_as_tp": {
+            "k": 8,
+            "n": 8,
+            "rate": 1.0,
+            "ci95": [
+              0.6756,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 58
+            }
+          },
+          "other_defect_excluded": {
+            "k": 8,
+            "n": 8,
+            "rate": 1.0,
+            "ci95": [
+              0.6756,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 58
+            }
+          }
+        },
+        "kcf7s": {
+          "rows": 7,
+          "TRUE_ERROR": 7,
+          "FALSE_POSITIVE": 0,
+          "OTHER_DEFECT": 0,
+          "other_defect_as_tp": {
+            "k": 7,
+            "n": 7,
+            "rate": 1.0,
+            "ci95": [
+              0.6457,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 471
+            }
+          },
+          "other_defect_excluded": {
+            "k": 7,
+            "n": 7,
+            "rate": 1.0,
+            "ci95": [
+              0.6457,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 471
+            }
+          }
+        },
+        "lsnnc": {
+          "rows": 87,
+          "TRUE_ERROR": 86,
+          "FALSE_POSITIVE": 0,
+          "OTHER_DEFECT": 1,
+          "other_defect_as_tp": {
+            "k": 87,
+            "n": 87,
+            "rate": 1.0,
+            "ci95": [
+              0.9577,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          },
+          "other_defect_excluded": {
+            "k": 86,
+            "n": 86,
+            "rate": 1.0,
+            "ci95": [
+              0.9572,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          }
+        },
+        "r5nzh": {
+          "rows": 88,
+          "TRUE_ERROR": 74,
+          "FALSE_POSITIVE": 2,
+          "OTHER_DEFECT": 12,
+          "other_defect_as_tp": {
+            "k": 86,
+            "n": 88,
+            "rate": 0.9773,
+            "ci95": [
+              0.9209,
+              0.9937
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                0.9394,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          },
+          "other_defect_excluded": {
+            "k": 74,
+            "n": 76,
+            "rate": 0.9737,
+            "ci95": [
+              0.909,
+              0.9928
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                0.9333,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          }
+        },
+        "v924f": {
+          "rows": 59,
+          "TRUE_ERROR": 58,
+          "FALSE_POSITIVE": 0,
+          "OTHER_DEFECT": 1,
+          "other_defect_as_tp": {
+            "k": 59,
+            "n": 59,
+            "rate": 1.0,
+            "ci95": [
+              0.9389,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          },
+          "other_defect_excluded": {
+            "k": 58,
+            "n": 58,
+            "rate": 1.0,
+            "ci95": [
+              0.9379,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          }
+        }
+      },
+      "arm": {
+        "baseline": {
+          "rows": 19,
+          "TRUE_ERROR": 19,
+          "FALSE_POSITIVE": 0,
+          "OTHER_DEFECT": 0,
+          "other_defect_as_tp": {
+            "k": 19,
+            "n": 19,
+            "rate": 1.0,
+            "ci95": [
+              0.8318,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          },
+          "other_defect_excluded": {
+            "k": 19,
+            "n": 19,
+            "rate": 1.0,
+            "ci95": [
+              0.8318,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          }
+        },
+        "local-model": {
+          "rows": 340,
+          "TRUE_ERROR": 323,
+          "FALSE_POSITIVE": 2,
+          "OTHER_DEFECT": 15,
+          "other_defect_as_tp": {
+            "k": 338,
+            "n": 340,
+            "rate": 0.9941,
+            "ci95": [
+              0.9788,
+              0.9984
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                0.9848,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          },
+          "other_defect_excluded": {
+            "k": 323,
+            "n": 325,
+            "rate": 0.9938,
+            "ci95": [
+              0.9778,
+              0.9983
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                0.984,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          }
+        }
+      },
+      "arm_model": {
+        "baseline:hosted": {
+          "rows": 19,
+          "TRUE_ERROR": 19,
+          "FALSE_POSITIVE": 0,
+          "OTHER_DEFECT": 0,
+          "other_defect_as_tp": {
+            "k": 19,
+            "n": 19,
+            "rate": 1.0,
+            "ci95": [
+              0.8318,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          },
+          "other_defect_excluded": {
+            "k": 19,
+            "n": 19,
+            "rate": 1.0,
+            "ci95": [
+              0.8318,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          }
+        },
+        "local-model:financial-lora": {
+          "rows": 146,
+          "TRUE_ERROR": 144,
+          "FALSE_POSITIVE": 0,
+          "OTHER_DEFECT": 2,
+          "other_defect_as_tp": {
+            "k": 146,
+            "n": 146,
+            "rate": 1.0,
+            "ci95": [
+              0.9744,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          },
+          "other_defect_excluded": {
+            "k": 144,
+            "n": 144,
+            "rate": 1.0,
+            "ci95": [
+              0.974,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          }
+        },
+        "local-model:financial-lora-w4a16": {
+          "rows": 88,
+          "TRUE_ERROR": 74,
+          "FALSE_POSITIVE": 2,
+          "OTHER_DEFECT": 12,
+          "other_defect_as_tp": {
+            "k": 86,
+            "n": 88,
+            "rate": 0.9773,
+            "ci95": [
+              0.9209,
+              0.9937
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                0.9394,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          },
+          "other_defect_excluded": {
+            "k": 74,
+            "n": 76,
+            "rate": 0.9737,
+            "ci95": [
+              0.909,
+              0.9928
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                0.9333,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          }
+        },
+        "local-model:qwen2.5-1.5b-instruct": {
+          "rows": 82,
+          "TRUE_ERROR": 81,
+          "FALSE_POSITIVE": 0,
+          "OTHER_DEFECT": 1,
+          "other_defect_as_tp": {
+            "k": 82,
+            "n": 82,
+            "rate": 1.0,
+            "ci95": [
+              0.9552,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          },
+          "other_defect_excluded": {
+            "k": 81,
+            "n": 81,
+            "rate": 1.0,
+            "ci95": [
+              0.9547,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          }
+        },
+        "local-model:qwen2.5-7b-instruct": {
+          "rows": 24,
+          "TRUE_ERROR": 24,
+          "FALSE_POSITIVE": 0,
+          "OTHER_DEFECT": 0,
+          "other_defect_as_tp": {
+            "k": 24,
+            "n": 24,
+            "rate": 1.0,
+            "ci95": [
+              0.862,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          },
+          "other_defect_excluded": {
+            "k": 24,
+            "n": 24,
+            "rate": 1.0,
+            "ci95": [
+              0.862,
+              1.0
+            ],
+            "cluster_bootstrap": {
+              "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+              "ci95": [
+                1.0,
+                1.0
+              ],
+              "empty_draws": 0
+            }
+          }
+        }
+      },
+      "all_full": {
+        "rows": 359,
+        "TRUE_ERROR": 342,
+        "FALSE_POSITIVE": 2,
+        "OTHER_DEFECT": 15,
+        "other_defect_as_tp": {
+          "k": 357,
+          "n": 359,
+          "rate": 0.9944,
+          "ci95": [
+            0.9799,
+            0.9985
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.9855,
+              1.0
+            ],
+            "empty_draws": 0
+          }
+        },
+        "other_defect_excluded": {
+          "k": 342,
+          "n": 344,
+          "rate": 0.9942,
+          "ci95": [
+            0.9791,
+            0.9984
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.9849,
+              1.0
+            ],
+            "empty_draws": 0
+          }
+        }
+      }
+    },
+    "replication": {
+      "bf16": {
+        "registered": {
+          "sample_size": 60,
+          "labelled": 60,
+          "flags": 430,
+          "other_defect_as_tp": {
+            "precision_weighted": 1.0,
+            "sample_unweighted": {
+              "k": 60,
+              "n": 60,
+              "rate": 1.0,
+              "ci95": [
+                0.9398,
+                1.0
+              ]
+            },
+            "strata_without_labels": [],
+            "estimated_true_mismatches": 430.0,
+            "adjusted_rate": 0.4026
+          },
+          "other_defect_excluded": {
+            "precision_weighted": 1.0,
+            "sample_unweighted": {
+              "k": 60,
+              "n": 60,
+              "rate": 1.0,
+              "ci95": [
+                0.9398,
+                1.0
+              ]
+            },
+            "strata_without_labels": [],
+            "estimated_true_mismatches": 430.0,
+            "adjusted_rate": 0.4026
+          }
+        },
+        "verdicts": {
+          "TRUE_ERROR": 60
+        },
+        "labels_by_field": {
+          "market_cap": {
+            "TRUE_ERROR": 25
+          },
+          "net_income": {
+            "TRUE_ERROR": 27
+          },
+          "profit_margin": {
+            "TRUE_ERROR": 3
+          },
+          "revenue": {
+            "TRUE_ERROR": 5
+          }
+        },
+        "unlabelled_strata": {},
+        "other_defect_as_tp": {
+          "within_stratum_bootstrap_ci95": [
+            1.0,
+            1.0
+          ],
+          "method": "labels resampled within field strata, 10000 draws, seed 42"
+        },
+        "other_defect_excluded": {
+          "within_stratum_bootstrap_ci95": [
+            1.0,
+            1.0
+          ],
+          "method": "labels resampled within field strata, 10000 draws, seed 42"
+        }
+      },
+      "w4a16": {
+        "registered": {
+          "sample_size": 60,
+          "labelled": 60,
+          "flags": 405,
+          "other_defect_as_tp": {
+            "precision_weighted": 1.0,
+            "sample_unweighted": {
+              "k": 60,
+              "n": 60,
+              "rate": 1.0,
+              "ci95": [
+                0.9398,
+                1.0
+              ]
+            },
+            "strata_without_labels": [
+              "current_price"
+            ],
+            "estimated_true_mismatches": 405.0,
+            "adjusted_rate": 0.4561
+          },
+          "other_defect_excluded": {
+            "precision_weighted": 1.0,
+            "sample_unweighted": {
+              "k": 60,
+              "n": 60,
+              "rate": 1.0,
+              "ci95": [
+                0.9398,
+                1.0
+              ]
+            },
+            "strata_without_labels": [
+              "current_price"
+            ],
+            "estimated_true_mismatches": 405.0,
+            "adjusted_rate": 0.4561
+          }
+        },
+        "verdicts": {
+          "TRUE_ERROR": 60
+        },
+        "labels_by_field": {
+          "market_cap": {
+            "TRUE_ERROR": 22
+          },
+          "net_income": {
+            "TRUE_ERROR": 23
+          },
+          "profit_margin": {
+            "TRUE_ERROR": 3
+          },
+          "revenue": {
+            "TRUE_ERROR": 12
+          }
+        },
+        "unlabelled_strata": {
+          "current_price": 2
+        },
+        "other_defect_as_tp": {
+          "within_stratum_bootstrap_ci95": [
+            1.0,
+            1.0
+          ],
+          "method": "labels resampled within field strata, 10000 draws, seed 42"
+        },
+        "other_defect_excluded": {
+          "within_stratum_bootstrap_ci95": [
+            1.0,
+            1.0
+          ],
+          "method": "labels resampled within field strata, 10000 draws, seed 42"
+        }
+      }
+    }
+  },
+  "notes": {
+    "labelled": 479,
+    "doubt_notes": 0,
+    "notes": []
+  },
+  "true_error_rates": {
+    "flags": {
+      "run": {
+        "2nh8v": {
+          "k": 0,
+          "n": 132,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0283
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "empty_draws": 0
+          }
+        },
+        "4nfsm": {
+          "k": 63,
+          "n": 422,
+          "rate": 0.1493,
+          "ci95": [
+            0.1185,
+            0.1864
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.1148,
+              0.1859
+            ],
+            "empty_draws": 0
+          }
+        },
+        "9j2dj": {
+          "k": 0,
+          "n": 167,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0225
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "empty_draws": 0
+          }
+        },
+        "cnkp2": {
+          "k": 20,
+          "n": 511,
+          "rate": 0.0391,
+          "ci95": [
+            0.0255,
+            0.0597
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0165,
+              0.0686
+            ],
+            "empty_draws": 0
+          }
+        },
+        "dvvxk": {
+          "k": 4,
+          "n": 550,
+          "rate": 0.0073,
+          "ci95": [
+            0.0028,
+            0.0185
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0169
+            ],
+            "empty_draws": 0
+          }
+        },
+        "j4cnp": {
+          "k": 8,
+          "n": 543,
+          "rate": 0.0147,
+          "ci95": [
+            0.0075,
+            0.0288
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0036,
+              0.0288
+            ],
+            "empty_draws": 0
+          }
+        },
+        "kcf7s": {
+          "k": 7,
+          "n": 571,
+          "rate": 0.0123,
+          "ci95": [
+            0.006,
+            0.0251
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0319
+            ],
+            "empty_draws": 0
+          }
+        },
+        "lsnnc": {
+          "k": 85,
+          "n": 363,
+          "rate": 0.2342,
+          "ci95": [
+            0.1935,
+            0.2804
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.1518,
+              0.3244
+            ],
+            "empty_draws": 0
+          }
+        },
+        "r5nzh": {
+          "k": 87,
+          "n": 327,
+          "rate": 0.2661,
+          "ci95": [
+            0.2211,
+            0.3165
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.1975,
+              0.3382
+            ],
+            "empty_draws": 0
+          }
+        },
+        "v924f": {
+          "k": 57,
+          "n": 357,
+          "rate": 0.1597,
+          "ci95": [
+            0.1253,
+            0.2013
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.1197,
+              0.1988
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "arm": {
+        "baseline": {
+          "k": 19,
+          "n": 1796,
+          "rate": 0.0106,
+          "ci95": [
+            0.0068,
+            0.0165
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0044,
+              0.0184
+            ],
+            "empty_draws": 0
+          }
+        },
+        "local-model": {
+          "k": 312,
+          "n": 1980,
+          "rate": 0.1576,
+          "ci95": [
+            0.1422,
+            0.1743
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.133,
+              0.184
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "arm_model": {
+        "baseline:hosted": {
+          "k": 19,
+          "n": 1796,
+          "rate": 0.0106,
+          "ci95": [
+            0.0068,
+            0.0165
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0044,
+              0.0184
+            ],
+            "empty_draws": 0
+          }
+        },
+        "local-model:financial-lora": {
+          "k": 142,
+          "n": 720,
+          "rate": 0.1972,
+          "ci95": [
+            0.1698,
+            0.2279
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.1518,
+              0.25
+            ],
+            "empty_draws": 0
+          }
+        },
+        "local-model:financial-lora-w4a16": {
+          "k": 87,
+          "n": 327,
+          "rate": 0.2661,
+          "ci95": [
+            0.2211,
+            0.3165
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.1975,
+              0.3382
+            ],
+            "empty_draws": 0
+          }
+        },
+        "local-model:qwen2.5-1.5b-instruct": {
+          "k": 63,
+          "n": 422,
+          "rate": 0.1493,
+          "ci95": [
+            0.1185,
+            0.1864
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.1148,
+              0.1859
+            ],
+            "empty_draws": 0
+          }
+        },
+        "local-model:qwen2.5-7b-instruct": {
+          "k": 20,
+          "n": 511,
+          "rate": 0.0391,
+          "ci95": [
+            0.0255,
+            0.0597
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0165,
+              0.0686
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "all_full": {
+        "k": 331,
+        "n": 3776,
+        "rate": 0.0877,
+        "ci95": [
+          0.0791,
+          0.0971
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            0.0741,
+            0.1026
+          ],
+          "empty_draws": 0
+        }
+      },
+      "local_minus_hosted": {
+        "difference": 0.147,
+        "ci95": [
+          0.1177,
+          0.1778
+        ],
+        "p_two_sided_bootstrap": 0.0,
+        "excludes_zero": true,
+        "paired_by_ticker": true,
+        "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+      }
+    },
+    "true_error": {
+      "run": {
+        "2nh8v": {
+          "k": 0,
+          "n": 132,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0283
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "empty_draws": 0
+          }
+        },
+        "4nfsm": {
+          "k": 63,
+          "n": 422,
+          "rate": 0.1493,
+          "ci95": [
+            0.1185,
+            0.1864
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.1148,
+              0.1859
+            ],
+            "empty_draws": 0
+          }
+        },
+        "9j2dj": {
+          "k": 0,
+          "n": 167,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0225
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "empty_draws": 0
+          }
+        },
+        "cnkp2": {
+          "k": 20,
+          "n": 511,
+          "rate": 0.0391,
+          "ci95": [
+            0.0255,
+            0.0597
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0165,
+              0.0686
+            ],
+            "empty_draws": 0
+          }
+        },
+        "dvvxk": {
+          "k": 4,
+          "n": 550,
+          "rate": 0.0073,
+          "ci95": [
+            0.0028,
+            0.0185
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0169
+            ],
+            "empty_draws": 0
+          }
+        },
+        "j4cnp": {
+          "k": 8,
+          "n": 543,
+          "rate": 0.0147,
+          "ci95": [
+            0.0075,
+            0.0288
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0036,
+              0.0288
+            ],
+            "empty_draws": 0
+          }
+        },
+        "kcf7s": {
+          "k": 7,
+          "n": 571,
+          "rate": 0.0123,
+          "ci95": [
+            0.006,
+            0.0251
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0319
+            ],
+            "empty_draws": 0
+          }
+        },
+        "lsnnc": {
+          "k": 84,
+          "n": 363,
+          "rate": 0.2314,
+          "ci95": [
+            0.191,
+            0.2775
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.1518,
+              0.3169
+            ],
+            "empty_draws": 0
+          }
+        },
+        "r5nzh": {
+          "k": 73,
+          "n": 327,
+          "rate": 0.2232,
+          "ci95": [
+            0.1815,
+            0.2714
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.172,
+              0.2789
+            ],
+            "empty_draws": 0
+          }
+        },
+        "v924f": {
+          "k": 56,
+          "n": 357,
+          "rate": 0.1569,
+          "ci95": [
+            0.1228,
+            0.1982
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.117,
+              0.1955
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "arm": {
+        "baseline": {
+          "k": 19,
+          "n": 1796,
+          "rate": 0.0106,
+          "ci95": [
+            0.0068,
+            0.0165
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0044,
+              0.0184
+            ],
+            "empty_draws": 0
+          }
+        },
+        "local-model": {
+          "k": 296,
+          "n": 1980,
+          "rate": 0.1495,
+          "ci95": [
+            0.1345,
+            0.1659
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.1273,
+              0.1735
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "arm_model": {
+        "baseline:hosted": {
+          "k": 19,
+          "n": 1796,
+          "rate": 0.0106,
+          "ci95": [
+            0.0068,
+            0.0165
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0044,
+              0.0184
+            ],
+            "empty_draws": 0
+          }
+        },
+        "local-model:financial-lora": {
+          "k": 140,
+          "n": 720,
+          "rate": 0.1944,
+          "ci95": [
+            0.1672,
+            0.2249
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.1503,
+              0.2449
+            ],
+            "empty_draws": 0
+          }
+        },
+        "local-model:financial-lora-w4a16": {
+          "k": 73,
+          "n": 327,
+          "rate": 0.2232,
+          "ci95": [
+            0.1815,
+            0.2714
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.172,
+              0.2789
+            ],
+            "empty_draws": 0
+          }
+        },
+        "local-model:qwen2.5-1.5b-instruct": {
+          "k": 63,
+          "n": 422,
+          "rate": 0.1493,
+          "ci95": [
+            0.1185,
+            0.1864
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.1148,
+              0.1859
+            ],
+            "empty_draws": 0
+          }
+        },
+        "local-model:qwen2.5-7b-instruct": {
+          "k": 20,
+          "n": 511,
+          "rate": 0.0391,
+          "ci95": [
+            0.0255,
+            0.0597
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0165,
+              0.0686
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "all_full": {
+        "k": 315,
+        "n": 3776,
+        "rate": 0.0834,
+        "ci95": [
+          0.075,
+          0.0927
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            0.071,
+            0.0972
+          ],
+          "empty_draws": 0
+        }
+      },
+      "local_minus_hosted": {
+        "difference": 0.1389,
+        "ci95": [
+          0.1116,
+          0.1679
+        ],
+        "p_two_sided_bootstrap": 0.0,
+        "excludes_zero": true,
+        "paired_by_ticker": true,
+        "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+      }
+    },
+    "true_error_ex_upstream": {
+      "run": {
+        "2nh8v": {
+          "k": 0,
+          "n": 132,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0283
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "empty_draws": 0
+          }
+        },
+        "4nfsm": {
+          "k": 55,
+          "n": 422,
+          "rate": 0.1303,
+          "ci95": [
+            0.1015,
+            0.1658
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0977,
+              0.1646
+            ],
+            "empty_draws": 0
+          }
+        },
+        "9j2dj": {
+          "k": 0,
+          "n": 167,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0225
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "empty_draws": 0
+          }
+        },
+        "cnkp2": {
+          "k": 9,
+          "n": 511,
+          "rate": 0.0176,
+          "ci95": [
+            0.0093,
+            0.0331
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0039,
+              0.0384
+            ],
+            "empty_draws": 0
+          }
+        },
+        "dvvxk": {
+          "k": 0,
+          "n": 550,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0069
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "empty_draws": 0
+          }
+        },
+        "j4cnp": {
+          "k": 1,
+          "n": 543,
+          "rate": 0.0018,
+          "ci95": [
+            0.0003,
+            0.0104
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0059
+            ],
+            "empty_draws": 0
+          }
+        },
+        "kcf7s": {
+          "k": 0,
+          "n": 571,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0067
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "empty_draws": 0
+          }
+        },
+        "lsnnc": {
+          "k": 72,
+          "n": 363,
+          "rate": 0.1983,
+          "ci95": [
+            0.1606,
+            0.2424
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.1199,
+              0.2879
+            ],
+            "empty_draws": 0
+          }
+        },
+        "r5nzh": {
+          "k": 60,
+          "n": 327,
+          "rate": 0.1835,
+          "ci95": [
+            0.1453,
+            0.229
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.1314,
+              0.2415
+            ],
+            "empty_draws": 0
+          }
+        },
+        "v924f": {
+          "k": 49,
+          "n": 357,
+          "rate": 0.1373,
+          "ci95": [
+            0.1054,
+            0.1768
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.099,
+              0.1771
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "arm": {
+        "baseline": {
+          "k": 1,
+          "n": 1796,
+          "rate": 0.0006,
+          "ci95": [
+            0.0001,
+            0.0031
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0017
+            ],
+            "empty_draws": 0
+          }
+        },
+        "local-model": {
+          "k": 245,
+          "n": 1980,
+          "rate": 0.1237,
+          "ci95": [
+            0.11,
+            0.139
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.1026,
+              0.1477
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "arm_model": {
+        "baseline:hosted": {
+          "k": 1,
+          "n": 1796,
+          "rate": 0.0006,
+          "ci95": [
+            0.0001,
+            0.0031
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0017
+            ],
+            "empty_draws": 0
+          }
+        },
+        "local-model:financial-lora": {
+          "k": 121,
+          "n": 720,
+          "rate": 0.1681,
+          "ci95": [
+            0.1425,
+            0.1971
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.1247,
+              0.2204
+            ],
+            "empty_draws": 0
+          }
+        },
+        "local-model:financial-lora-w4a16": {
+          "k": 60,
+          "n": 327,
+          "rate": 0.1835,
+          "ci95": [
+            0.1453,
+            0.229
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.1314,
+              0.2415
+            ],
+            "empty_draws": 0
+          }
+        },
+        "local-model:qwen2.5-1.5b-instruct": {
+          "k": 55,
+          "n": 422,
+          "rate": 0.1303,
+          "ci95": [
+            0.1015,
+            0.1658
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0977,
+              0.1646
+            ],
+            "empty_draws": 0
+          }
+        },
+        "local-model:qwen2.5-7b-instruct": {
+          "k": 9,
+          "n": 511,
+          "rate": 0.0176,
+          "ci95": [
+            0.0093,
+            0.0331
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0039,
+              0.0384
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "all_full": {
+        "k": 246,
+        "n": 3776,
+        "rate": 0.0651,
+        "ci95": [
+          0.0577,
+          0.0735
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            0.0538,
+            0.0783
+          ],
+          "empty_draws": 0
+        }
+      },
+      "local_minus_hosted": {
+        "difference": 0.1232,
+        "ci95": [
+          0.0937,
+          0.1549
+        ],
+        "p_two_sided_bootstrap": 0.0,
+        "excludes_zero": true,
+        "paired_by_ticker": true,
+        "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+      }
+    }
+  },
+  "live_gap": {
+    "flags": {
+      "all": {
+        "difference": 0.1662,
+        "ci95": [
+          0.0522,
+          0.2735
+        ],
+        "p_two_sided_bootstrap": 0.0026,
+        "excludes_zero": true,
+        "paired_by_ticker": true,
+        "method": "cluster bootstrap on briefs, 10000 draws, seed 42",
+        "rates": {
+          "r5nzh": {
+            "k": 65,
+            "n": 117,
+            "rate": 0.5556,
+            "ci95": [
+              0.4652,
+              0.6424
+            ]
+          },
+          "v924f": {
+            "k": 44,
+            "n": 113,
+            "rate": 0.3894,
+            "ci95": [
+              0.3045,
+              0.4815
+            ]
+          }
+        }
+      },
+      "no_trunc": {
+        "difference": 0.1451,
+        "ci95": [
+          0.047,
+          0.2376
+        ],
+        "p_two_sided_bootstrap": 0.005,
+        "excludes_zero": true,
+        "paired_by_ticker": true,
+        "method": "cluster bootstrap on briefs, 10000 draws, seed 42",
+        "rates": {
+          "r5nzh": {
+            "k": 51,
+            "n": 103,
+            "rate": 0.4951,
+            "ci95": [
+              0.4005,
+              0.5901
+            ]
+          },
+          "v924f": {
+            "k": 35,
+            "n": 100,
+            "rate": 0.35,
+            "ci95": [
+              0.2636,
+              0.4475
+            ]
+          }
+        }
+      }
+    },
+    "true_error": {
+      "all": {
+        "difference": 0.0639,
+        "ci95": [
+          -0.0409,
+          0.1575
+        ],
+        "p_two_sided_bootstrap": 0.2088,
+        "excludes_zero": false,
+        "paired_by_ticker": true,
+        "method": "cluster bootstrap on briefs, 10000 draws, seed 42",
+        "rates": {
+          "r5nzh": {
+            "k": 52,
+            "n": 117,
+            "rate": 0.4444,
+            "ci95": [
+              0.3576,
+              0.5348
+            ]
+          },
+          "v924f": {
+            "k": 43,
+            "n": 113,
+            "rate": 0.3805,
+            "ci95": [
+              0.2963,
+              0.4726
+            ]
+          }
+        }
+      },
+      "no_trunc": {
+        "difference": 0.1257,
+        "ci95": [
+          0.0287,
+          0.2172
+        ],
+        "p_two_sided_bootstrap": 0.0122,
+        "excludes_zero": true,
+        "paired_by_ticker": true,
+        "method": "cluster bootstrap on briefs, 10000 draws, seed 42",
+        "rates": {
+          "r5nzh": {
+            "k": 49,
+            "n": 103,
+            "rate": 0.4757,
+            "ci95": [
+              0.3819,
+              0.5713
+            ]
+          },
+          "v924f": {
+            "k": 35,
+            "n": 100,
+            "rate": 0.35,
+            "ci95": [
+              0.2636,
+              0.4475
+            ]
+          }
+        }
+      }
+    }
+  },
+  "replication_adjusted": {
+    "replay": "replay-replication-2026-09-30",
+    "primary_statement": "The W4A16 regression does not replicate on identical inputs: W4A16 - BF16 = +5.3 pts (paired ticker-cluster bootstrap CI -1.1 to +11.6 pts) on the replayed Financial Health + Risk Factors sections, truncated sections excluded, unadjudicated flags.",
+    "unadjusted": {
+      "difference": 0.0535,
+      "ci95": [
+        -0.0115,
+        0.1155
+      ],
+      "p_two_sided_bootstrap": 0.0982,
+      "excludes_zero": false,
+      "paired_by_ticker": true,
+      "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+    },
+    "reproduces_registered": true,
+    "adjusted": {
+      "weighted": {
+        "difference": 0.0535,
+        "ci95": [
+          -0.0115,
+          0.1155
+        ],
+        "excludes_zero": false,
+        "unlabelled_strata_as": "weighted",
+        "adjusted_rates": {
+          "bf16": 0.4026,
+          "w4a16": 0.4561
+        },
+        "estimated_true": {
+          "bf16": 430.0,
+          "w4a16": 405.0
+        },
+        "method": "paired ticker-cluster bootstrap (seed 42) with within-stratum label resampling (seed 43), 10000 draws"
+      },
+      "zero": {
+        "difference": 0.0512,
+        "ci95": [
+          -0.0147,
+          0.1144
+        ],
+        "excludes_zero": false,
+        "unlabelled_strata_as": "zero",
+        "adjusted_rates": {
+          "bf16": 0.4026,
+          "w4a16": 0.4538
+        },
+        "estimated_true": {
+          "bf16": 430.0,
+          "w4a16": 403.0
+        },
+        "method": "paired ticker-cluster bootstrap (seed 42) with within-stratum label resampling (seed 43), 10000 draws"
+      },
+      "one": {
+        "difference": 0.0535,
+        "ci95": [
+          -0.0115,
+          0.1155
+        ],
+        "excludes_zero": false,
+        "unlabelled_strata_as": "one",
+        "adjusted_rates": {
+          "bf16": 0.4026,
+          "w4a16": 0.4561
+        },
+        "estimated_true": {
+          "bf16": 430.0,
+          "w4a16": 405.0
+        },
+        "method": "paired ticker-cluster bootstrap (seed 42) with within-stratum label resampling (seed 43), 10000 draws"
+      }
+    },
+    "precision_bound_sensitivity": {
+      "sample_true_error_share": {
+        "bf16": {
+          "k": 60,
+          "n": 60,
+          "rate": 1.0,
+          "ci95": [
+            0.9398,
+            1.0
+          ]
+        },
+        "w4a16": {
+          "k": 60,
+          "n": 60,
+          "rate": 1.0,
+          "ci95": [
+            0.9398,
+            1.0
+          ]
+        }
+      },
+      "w4a16_at_lower_bound": 0.026,
+      "bf16_at_lower_bound": 0.0777
+    }
+  },
+  "upstream": {
+    "by_group": {
+      "baseline": {
+        "true_errors": 19,
+        "true_error_mismatches": 19,
+        "currency": 7,
+        "margin_fraction": 11,
+        "upstream_total": 18,
+        "not_attributed_sap": 0,
+        "not_attributed_margin_other_scale": 0
+      },
+      "baseline:hosted": {
+        "true_errors": 19,
+        "true_error_mismatches": 19,
+        "currency": 7,
+        "margin_fraction": 11,
+        "upstream_total": 18,
+        "not_attributed_sap": 0,
+        "not_attributed_margin_other_scale": 0
+      },
+      "local-model": {
+        "true_errors": 323,
+        "true_error_mismatches": 296,
+        "currency": 35,
+        "margin_fraction": 16,
+        "upstream_total": 51,
+        "not_attributed_sap": 3,
+        "not_attributed_margin_other_scale": 3
+      },
+      "local-model:financial-lora": {
+        "true_errors": 144,
+        "true_error_mismatches": 140,
+        "currency": 12,
+        "margin_fraction": 7,
+        "upstream_total": 19,
+        "not_attributed_sap": 2,
+        "not_attributed_margin_other_scale": 0
+      },
+      "local-model:financial-lora-w4a16": {
+        "true_errors": 74,
+        "true_error_mismatches": 73,
+        "currency": 10,
+        "margin_fraction": 3,
+        "upstream_total": 13,
+        "not_attributed_sap": 1,
+        "not_attributed_margin_other_scale": 1
+      },
+      "local-model:qwen2.5-1.5b-instruct": {
+        "true_errors": 81,
+        "true_error_mismatches": 63,
+        "currency": 6,
+        "margin_fraction": 2,
+        "upstream_total": 8,
+        "not_attributed_sap": 0,
+        "not_attributed_margin_other_scale": 2
+      },
+      "local-model:qwen2.5-7b-instruct": {
+        "true_errors": 24,
+        "true_error_mismatches": 20,
+        "currency": 7,
+        "margin_fraction": 4,
+        "upstream_total": 11,
+        "not_attributed_sap": 0,
+        "not_attributed_margin_other_scale": 0
+      },
+      "replication:bf16 (sample of 60)": {
+        "true_errors": 60,
+        "true_error_mismatches": 60,
+        "currency": 4,
+        "margin_fraction": 1,
+        "upstream_total": 5,
+        "not_attributed_sap": 0,
+        "not_attributed_margin_other_scale": 0
+      },
+      "replication:w4a16 (sample of 60)": {
+        "true_errors": 60,
+        "true_error_mismatches": 60,
+        "currency": 3,
+        "margin_fraction": 2,
+        "upstream_total": 5,
+        "not_attributed_sap": 1,
+        "not_attributed_margin_other_scale": 0
+      }
+    },
+    "rows": [
+      {
+        "id": "26",
+        "run": "4nfsm",
+        "ticker": "EDIT",
+        "field": "profit_margin",
+        "stated": "-15.73%",
+        "ratio": "0.09999",
+        "cause": "not attributed (margin_other_scale)"
+      },
+      {
+        "id": "34",
+        "run": "4nfsm",
+        "ticker": "LCID",
+        "field": "profit_margin",
+        "stated": "-24.92%",
+        "ratio": "0.09999",
+        "cause": "not attributed (margin_other_scale)"
+      },
+      {
+        "id": "48",
+        "run": "4nfsm",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "stated": "3.25%",
+        "ratio": "0.01",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "50",
+        "run": "4nfsm",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "stated": "3.25%",
+        "ratio": "0.01",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "69",
+        "run": "4nfsm",
+        "ticker": "TM",
+        "field": "net_income",
+        "stated": "$44,837,969,592.32",
+        "ratio": "0.01",
+        "cause": "currency"
+      },
+      {
+        "id": "70",
+        "run": "4nfsm",
+        "ticker": "TM",
+        "field": "revenue",
+        "stated": "$519,570,246,860.80",
+        "ratio": "0.01",
+        "cause": "currency"
+      },
+      {
+        "id": "71",
+        "run": "4nfsm",
+        "ticker": "TM",
+        "field": "revenue",
+        "stated": "$519,570,246,860.80",
+        "ratio": "0.01",
+        "cause": "currency"
+      },
+      {
+        "id": "72",
+        "run": "4nfsm",
+        "ticker": "TM",
+        "field": "net_income",
+        "stated": "$4.5 billion",
+        "ratio": "0.001004",
+        "cause": "currency"
+      },
+      {
+        "id": "73",
+        "run": "4nfsm",
+        "ticker": "TM",
+        "field": "revenue",
+        "stated": "$52.0 billion",
+        "ratio": "0.001001",
+        "cause": "currency"
+      },
+      {
+        "id": "74",
+        "run": "4nfsm",
+        "ticker": "TSM",
+        "field": "revenue",
+        "stated": "$444 billion",
+        "ratio": "0.09999",
+        "cause": "currency"
+      },
+      {
+        "id": "84",
+        "run": "cnkp2",
+        "ticker": "BYND",
+        "field": "profit_margin",
+        "stated": "1.16%",
+        "ratio": "0.01001",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "85",
+        "run": "cnkp2",
+        "ticker": "EDIT",
+        "field": "profit_margin",
+        "stated": "-1.57%",
+        "ratio": "0.00998",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "87",
+        "run": "cnkp2",
+        "ticker": "LCID",
+        "field": "profit_margin",
+        "stated": "-2.49%",
+        "ratio": "0.009991",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "88",
+        "run": "cnkp2",
+        "ticker": "NVO",
+        "field": "net_income",
+        "stated": "$11.64 billion",
+        "ratio": "0.09996",
+        "cause": "currency"
+      },
+      {
+        "id": "93",
+        "run": "cnkp2",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "stated": "3.25%",
+        "ratio": "0.01",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "100",
+        "run": "cnkp2",
+        "ticker": "TM",
+        "field": "net_income",
+        "stated": "$448.38 billion",
+        "ratio": "0.1",
+        "cause": "currency"
+      },
+      {
+        "id": "101",
+        "run": "cnkp2",
+        "ticker": "TM",
+        "field": "revenue",
+        "stated": "$5195.7 billion",
+        "ratio": "0.1",
+        "cause": "currency"
+      },
+      {
+        "id": "102",
+        "run": "cnkp2",
+        "ticker": "TSM",
+        "field": "net_income",
+        "stated": "$222 billion",
+        "ratio": "0.1001",
+        "cause": "currency"
+      },
+      {
+        "id": "103",
+        "run": "cnkp2",
+        "ticker": "TSM",
+        "field": "revenue",
+        "stated": "$444 billion",
+        "ratio": "0.09999",
+        "cause": "currency"
+      },
+      {
+        "id": "104",
+        "run": "cnkp2",
+        "ticker": "TSM",
+        "field": "net_income",
+        "stated": "$222 billion",
+        "ratio": "0.1001",
+        "cause": "currency"
+      },
+      {
+        "id": "105",
+        "run": "cnkp2",
+        "ticker": "TSM",
+        "field": "revenue",
+        "stated": "$444 billion",
+        "ratio": "0.09999",
+        "cause": "currency"
+      },
+      {
+        "id": "107",
+        "run": "dvvxk",
+        "ticker": "LCID",
+        "field": "profit_margin",
+        "stated": "-2.49%",
+        "ratio": "0.009991",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "108",
+        "run": "dvvxk",
+        "ticker": "LCID",
+        "field": "profit_margin",
+        "stated": "-2.49%",
+        "ratio": "0.009991",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "109",
+        "run": "dvvxk",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "stated": "3.25%",
+        "ratio": "0.01",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "110",
+        "run": "dvvxk",
+        "ticker": "TM",
+        "field": "revenue",
+        "stated": "$52.0 billion",
+        "ratio": "0.001001",
+        "cause": "currency"
+      },
+      {
+        "id": "111",
+        "run": "j4cnp",
+        "ticker": "BYND",
+        "field": "profit_margin",
+        "stated": "1.16%",
+        "ratio": "0.01001",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "112",
+        "run": "j4cnp",
+        "ticker": "BYND",
+        "field": "profit_margin",
+        "stated": "1.16%",
+        "ratio": "0.01001",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "113",
+        "run": "j4cnp",
+        "ticker": "LCID",
+        "field": "profit_margin",
+        "stated": "-2.49%",
+        "ratio": "0.009991",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "114",
+        "run": "j4cnp",
+        "ticker": "LCID",
+        "field": "profit_margin",
+        "stated": "-2.49%",
+        "ratio": "0.009991",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "116",
+        "run": "j4cnp",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "stated": "3.25%",
+        "ratio": "0.01",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "117",
+        "run": "j4cnp",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "stated": "3.25%",
+        "ratio": "0.01",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "118",
+        "run": "j4cnp",
+        "ticker": "TM",
+        "field": "revenue",
+        "stated": "$52.0 billion",
+        "ratio": "0.001001",
+        "cause": "currency"
+      },
+      {
+        "id": "119",
+        "run": "kcf7s",
+        "ticker": "BYND",
+        "field": "profit_margin",
+        "stated": "1.16%",
+        "ratio": "0.01001",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "120",
+        "run": "kcf7s",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "stated": "3.25%",
+        "ratio": "0.01",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "121",
+        "run": "kcf7s",
+        "ticker": "TM",
+        "field": "net_income",
+        "stated": "$4.5 billion",
+        "ratio": "0.001004",
+        "cause": "currency"
+      },
+      {
+        "id": "122",
+        "run": "kcf7s",
+        "ticker": "TM",
+        "field": "revenue",
+        "stated": "$52.0 billion",
+        "ratio": "0.001001",
+        "cause": "currency"
+      },
+      {
+        "id": "123",
+        "run": "kcf7s",
+        "ticker": "TM",
+        "field": "net_income",
+        "stated": "$4.5 billion",
+        "ratio": "0.001004",
+        "cause": "currency"
+      },
+      {
+        "id": "124",
+        "run": "kcf7s",
+        "ticker": "TM",
+        "field": "revenue",
+        "stated": "$52.0 billion",
+        "ratio": "0.001001",
+        "cause": "currency"
+      },
+      {
+        "id": "125",
+        "run": "kcf7s",
+        "ticker": "TM",
+        "field": "revenue",
+        "stated": "$52.0 billion",
+        "ratio": "0.001001",
+        "cause": "currency"
+      },
+      {
+        "id": "127",
+        "run": "lsnnc",
+        "ticker": "BABA",
+        "field": "revenue",
+        "stated": "$104.5 billion",
+        "ratio": "0.1",
+        "cause": "currency"
+      },
+      {
+        "id": "128",
+        "run": "lsnnc",
+        "ticker": "BABA",
+        "field": "revenue",
+        "stated": "$104.5 billion",
+        "ratio": "0.1",
+        "cause": "currency"
+      },
+      {
+        "id": "132",
+        "run": "lsnnc",
+        "ticker": "BYND",
+        "field": "profit_margin",
+        "stated": "1.16%",
+        "ratio": "0.01001",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "135",
+        "run": "lsnnc",
+        "ticker": "BYND",
+        "field": "profit_margin",
+        "stated": "1.16%",
+        "ratio": "0.01001",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "137",
+        "run": "lsnnc",
+        "ticker": "BYND",
+        "field": "profit_margin",
+        "stated": "1.16%",
+        "ratio": "0.01001",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "158",
+        "run": "lsnnc",
+        "ticker": "LCID",
+        "field": "profit_margin",
+        "stated": "-2.49%",
+        "ratio": "0.009991",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "162",
+        "run": "lsnnc",
+        "ticker": "NVO",
+        "field": "net_income",
+        "stated": "$11.64 billion",
+        "ratio": "0.09996",
+        "cause": "currency"
+      },
+      {
+        "id": "164",
+        "run": "lsnnc",
+        "ticker": "NVO",
+        "field": "net_income",
+        "stated": "$11.64 billion",
+        "ratio": "0.09996",
+        "cause": "currency"
+      },
+      {
+        "id": "172",
+        "run": "lsnnc",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "stated": "3.2%",
+        "ratio": "0.00985",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "200",
+        "run": "lsnnc",
+        "ticker": "SAP",
+        "field": "net_income",
+        "stated": "$77.96 billion",
+        "ratio": "10",
+        "cause": "not attributed (sap)"
+      },
+      {
+        "id": "206",
+        "run": "lsnnc",
+        "ticker": "TM",
+        "field": "net_income",
+        "stated": "$4.5 billion",
+        "ratio": "0.001004",
+        "cause": "currency"
+      },
+      {
+        "id": "207",
+        "run": "lsnnc",
+        "ticker": "TM",
+        "field": "revenue",
+        "stated": "$52.0 billion",
+        "ratio": "0.001001",
+        "cause": "currency"
+      },
+      {
+        "id": "208",
+        "run": "lsnnc",
+        "ticker": "TSM",
+        "field": "net_income",
+        "stated": "$221.7 billion",
+        "ratio": "0.1",
+        "cause": "currency"
+      },
+      {
+        "id": "219",
+        "run": "r5nzh",
+        "ticker": "BABA",
+        "field": "net_income",
+        "stated": "$73.3 million",
+        "ratio": "0.0009997",
+        "cause": "currency"
+      },
+      {
+        "id": "236",
+        "run": "r5nzh",
+        "ticker": "BYND",
+        "field": "profit_margin",
+        "stated": "1.16%",
+        "ratio": "0.01001",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "247",
+        "run": "r5nzh",
+        "ticker": "EDIT",
+        "field": "profit_margin",
+        "stated": "-15.8%",
+        "ratio": "0.1004",
+        "cause": "not attributed (margin_other_scale)"
+      },
+      {
+        "id": "258",
+        "run": "r5nzh",
+        "ticker": "LCID",
+        "field": "profit_margin",
+        "stated": "-2.49%",
+        "ratio": "0.009991",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "272",
+        "run": "r5nzh",
+        "ticker": "NVO",
+        "field": "net_income",
+        "stated": "$11.64 billion",
+        "ratio": "0.09996",
+        "cause": "currency"
+      },
+      {
+        "id": "274",
+        "run": "r5nzh",
+        "ticker": "NVO",
+        "field": "net_income",
+        "stated": "$11.64 billion",
+        "ratio": "0.09996",
+        "cause": "currency"
+      },
+      {
+        "id": "277",
+        "run": "r5nzh",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "stated": "3.25%",
+        "ratio": "0.01",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "287",
+        "run": "r5nzh",
+        "ticker": "SAP",
+        "field": "net_income",
+        "stated": "$77.96 billion",
+        "ratio": "10",
+        "cause": "not attributed (sap)"
+      },
+      {
+        "id": "291",
+        "run": "r5nzh",
+        "ticker": "TM",
+        "field": "net_income",
+        "stated": "$44.8 billion",
+        "ratio": "0.009992",
+        "cause": "currency"
+      },
+      {
+        "id": "292",
+        "run": "r5nzh",
+        "ticker": "TM",
+        "field": "revenue",
+        "stated": "$519.6 billion",
+        "ratio": "0.01",
+        "cause": "currency"
+      },
+      {
+        "id": "294",
+        "run": "r5nzh",
+        "ticker": "TM",
+        "field": "net_income",
+        "stated": "$44.8 billion",
+        "ratio": "0.009992",
+        "cause": "currency"
+      },
+      {
+        "id": "295",
+        "run": "r5nzh",
+        "ticker": "TM",
+        "field": "revenue",
+        "stated": "$519.6 billion",
+        "ratio": "0.01",
+        "cause": "currency"
+      },
+      {
+        "id": "297",
+        "run": "r5nzh",
+        "ticker": "TSM",
+        "field": "revenue",
+        "stated": "$444.0 billion",
+        "ratio": "0.09999",
+        "cause": "currency"
+      },
+      {
+        "id": "298",
+        "run": "r5nzh",
+        "ticker": "TSM",
+        "field": "net_income",
+        "stated": "$22.2 billion",
+        "ratio": "0.01001",
+        "cause": "currency"
+      },
+      {
+        "id": "299",
+        "run": "r5nzh",
+        "ticker": "TSM",
+        "field": "revenue",
+        "stated": "$444.0 billion",
+        "ratio": "0.09999",
+        "cause": "currency"
+      },
+      {
+        "id": "329",
+        "run": "v924f",
+        "ticker": "NVO",
+        "field": "net_income",
+        "stated": "$11.6 billion",
+        "ratio": "0.09962",
+        "cause": "currency"
+      },
+      {
+        "id": "330",
+        "run": "v924f",
+        "ticker": "NVO",
+        "field": "net_income",
+        "stated": "$11.6 billion",
+        "ratio": "0.09962",
+        "cause": "currency"
+      },
+      {
+        "id": "334",
+        "run": "v924f",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "stated": "3.25%",
+        "ratio": "0.01",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "335",
+        "run": "v924f",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "stated": "3.25%",
+        "ratio": "0.01",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "346",
+        "run": "v924f",
+        "ticker": "SAP",
+        "field": "net_income",
+        "stated": "$77.96 billion",
+        "ratio": "10",
+        "cause": "not attributed (sap)"
+      },
+      {
+        "id": "351",
+        "run": "v924f",
+        "ticker": "TM",
+        "field": "net_income",
+        "stated": "$44.8 billion",
+        "ratio": "0.009992",
+        "cause": "currency"
+      },
+      {
+        "id": "353",
+        "run": "v924f",
+        "ticker": "TM",
+        "field": "revenue",
+        "stated": "$52 billion",
+        "ratio": "0.001001",
+        "cause": "currency"
+      },
+      {
+        "id": "354",
+        "run": "v924f",
+        "ticker": "TSM",
+        "field": "net_income",
+        "stated": "$22.2 billion",
+        "ratio": "0.01001",
+        "cause": "currency"
+      },
+      {
+        "id": "363",
+        "run": "replay-replication-2026-09-30/bf16/s10",
+        "ticker": "BABA",
+        "field": "revenue",
+        "stated": "$104.5 billion",
+        "ratio": "0.1",
+        "cause": "currency"
+      },
+      {
+        "id": "369",
+        "run": "replay-replication-2026-09-30/bf16/s2",
+        "ticker": "BABA",
+        "field": "net_income",
+        "stated": "$73.3 million",
+        "ratio": "0.0009997",
+        "cause": "currency"
+      },
+      {
+        "id": "383",
+        "run": "replay-replication-2026-09-30/bf16/s4",
+        "ticker": "BABA",
+        "field": "revenue",
+        "stated": "$104.5 billion",
+        "ratio": "0.1",
+        "cause": "currency"
+      },
+      {
+        "id": "400",
+        "run": "replay-replication-2026-09-30/bf16/s6",
+        "ticker": "NVO",
+        "field": "net_income",
+        "stated": "$11.6 billion",
+        "ratio": "0.09962",
+        "cause": "currency"
+      },
+      {
+        "id": "413",
+        "run": "replay-replication-2026-09-30/bf16/s9",
+        "ticker": "BYND",
+        "field": "profit_margin",
+        "stated": "1.16%",
+        "ratio": "0.01001",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "427",
+        "run": "replay-replication-2026-09-30/w4a16/s2",
+        "ticker": "BYND",
+        "field": "profit_margin",
+        "stated": "1.16%",
+        "ratio": "0.01001",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "434",
+        "run": "replay-replication-2026-09-30/w4a16/s2",
+        "ticker": "SAP",
+        "field": "net_income",
+        "stated": "$77.96 billion",
+        "ratio": "10",
+        "cause": "not attributed (sap)"
+      },
+      {
+        "id": "457",
+        "run": "replay-replication-2026-09-30/w4a16/s7",
+        "ticker": "BYND",
+        "field": "profit_margin",
+        "stated": "1.16%",
+        "ratio": "0.01001",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "465",
+        "run": "replay-replication-2026-09-30/w4a16/s8",
+        "ticker": "BABA",
+        "field": "net_income",
+        "stated": "$7.3 billion",
+        "ratio": "0.09956",
+        "cause": "currency"
+      },
+      {
+        "id": "469",
+        "run": "replay-replication-2026-09-30/w4a16/s8",
+        "ticker": "NVO",
+        "field": "net_income",
+        "stated": "$11.64 billion",
+        "ratio": "0.09996",
+        "cause": "currency"
+      },
+      {
+        "id": "477",
+        "run": "replay-replication-2026-09-30/w4a16/s9",
+        "ticker": "NVO",
+        "field": "net_income",
+        "stated": "$11.64 billion",
+        "ratio": "0.09996",
+        "cause": "currency"
+      }
+    ]
+  }
+}
