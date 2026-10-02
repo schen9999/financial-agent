@@ -53,3 +53,14 @@ def test_no_leak_between_arms(monkeypatch):
 def test_uses_local_model():
     assert uses_local_model("local-model")
     assert not any(uses_local_model(a) for a in ("baseline", "context5", "rerank3", "rerank5"))
+
+
+@pytest.mark.parametrize("arm,ep", [("slm-full-cpu", "cpu"), ("slm-full-gpu", "gpu")])
+def test_slm_arms(arm, ep):
+    from eval.arms import slm_endpoint_name, uses_slm
+    env = arm_env(arm)
+    assert (env["SLM_FULL"], env["SLM_ENDPOINT"], env["USE_LOCAL_MODEL"]) == ("true", ep, "false")
+    # same retrieval settings as the baseline it is compared against
+    assert (env["RERANKING_ENABLED"], env["BASELINE_TOP_K"]) == ("false", "3")
+    assert uses_slm(arm) and slm_endpoint_name(arm) == f"slm-{ep}"
+    assert not any(uses_slm(a) for a in _LEGACY)

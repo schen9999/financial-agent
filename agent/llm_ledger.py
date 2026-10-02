@@ -121,13 +121,15 @@ def summarize(records: list[dict]) -> dict:
         out["errors"] = sum(1 for r in rows if r["error"])
         return out
 
-    by_site = {}
+    by_site, by_endpoint = {}, {}
     for r in records:
         by_site.setdefault(r["site"], []).append(r)
+        by_endpoint.setdefault(r["endpoint"], []).append(r)
     return {
         "total": agg(records),
         "by_site": {s: agg(rows) for s, rows in sorted(by_site.items())},
-        "endpoints": sorted({r["endpoint"] for r in records}),
+        "by_endpoint": {e: agg(rows) for e, rows in sorted(by_endpoint.items())},
+        "endpoints": sorted(by_endpoint),
     }
 
 

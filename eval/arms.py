@@ -31,6 +31,21 @@ ARMS = {
         "label": "Local model (2 sec) + Haiku",
         "env": {"RERANKING_ENABLED": "false", "BASELINE_TOP_K": "3", "USE_LOCAL_MODEL": "true"},
     },
+    # Every agent LLM call on a self-served SLM (agent/tools/slm.py); the
+    # judge stays Sonnet v2. One arm per endpoint so the arm name in every
+    # findings file and result row says which endpoint served it. The
+    # endpoint URLs/keys/served name reach the pods from app-config and the
+    # slm-endpoints Secret.
+    "slm-full-cpu": {
+        "label": "SLM full (CPU llama.cpp)",
+        "env": {"RERANKING_ENABLED": "false", "BASELINE_TOP_K": "3",
+                "SLM_FULL": "true", "SLM_ENDPOINT": "cpu"},
+    },
+    "slm-full-gpu": {
+        "label": "SLM full (GPU llama.cpp)",
+        "env": {"RERANKING_ENABLED": "false", "BASELINE_TOP_K": "3",
+                "SLM_FULL": "true", "SLM_ENDPOINT": "gpu"},
+    },
 }
 
 # Every arm explicitly sets the flags it depends on so values can't leak across
@@ -39,6 +54,7 @@ ARMS = {
 ARM_ENV_DEFAULTS = {
     "RERANKING_ENABLED": "false", "BASELINE_TOP_K": "3",
     "RERANK_CANDIDATES": "20", "RERANK_TOP_N": "3", "USE_LOCAL_MODEL": "false",
+    "SLM_FULL": "false", "SLM_ENDPOINT": "",
 }
 
 
@@ -56,3 +72,12 @@ def apply_arm_env(arm: str):
 
 def uses_local_model(arm: str) -> bool:
     return ARMS[arm]["env"].get("USE_LOCAL_MODEL") == "true"
+
+
+def uses_slm(arm: str) -> bool:
+    return ARMS[arm]["env"].get("SLM_FULL") == "true"
+
+
+def slm_endpoint_name(arm: str) -> str | None:
+    """The ledger endpoint name every agent call of an SLM arm must carry."""
+    return f"slm-{ARMS[arm]['env']['SLM_ENDPOINT']}" if uses_slm(arm) else None
