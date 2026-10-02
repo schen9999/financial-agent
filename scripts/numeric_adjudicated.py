@@ -539,9 +539,18 @@ def markdown(res: dict) -> str:
           "| Counting | Sections | r5nzh | v924f | Difference | Bootstrap p |", "|---|---|---|---|---|---|"]
     for m, vs in G.items():
         for v, d in vs.items():
-            L.append(f"| {m} | {'all' if v == 'all' else 'truncated excluded (estimated)'} | "
+            sec = "all" if v == "all" else "truncated excluded (estimated)"
+            if m == "true_error" and v == "no_trunc":
+                sec += "; exploratory, post hoc"
+            L.append(f"| {m} | {sec} | "
                      f"{_p(d['rates']['r5nzh'])} | {_p(d['rates']['v924f'])} | {_pts(d)} | "
                      f"{_pval(d)} |")
+    t = G.get("true_error", {}).get("no_trunc")
+    if t:
+        L += ["", f"The truncation-excluded TRUE_ERROR gap ({_pts(t)}, p = {_pval(t)}) is "
+              "exploratory and post hoc: one draw per ticker, and the truncation subset was "
+              "chosen after the pilot. The pre-registered replication below remains the "
+              "primary result."]
 
     A = res["replication_adjusted"]
     L += ["", "Replication, primary metric (truncated sections excluded). The pre-registered "

@@ -1040,13 +1040,20 @@ Health + Risk Factors only, one draw per ticker:
 | Flags | all | 65/117 = 55.6% | 44/113 = 38.9% | +16.6 pts (+5.2 to +27.4) | 0.0026 |
 | Flags | truncated excluded (estimated) | 51/103 = 49.5% | 35/100 = 35.0% | +14.5 pts (+4.7 to +23.8) | 0.005 |
 | TRUE_ERROR only | all | 52/117 = 44.4% | 43/113 = 38.0% | +6.4 pts (−4.1 to +15.8) | 0.21 |
-| TRUE_ERROR only | truncated excluded (estimated) | 49/103 = 47.6% | 35/100 = 35.0% | +12.6 pts (+2.9 to +21.7) | 0.012 |
+| TRUE_ERROR only | truncated excluded (estimated); exploratory, post hoc | 49/103 = 47.6% | 35/100 = 35.0% | +12.6 pts (+2.9 to +21.7) | 0.012 |
 
 On all sections, adjudication removes most of the live gap: it was
 mostly the degenerate BLNK section. That section hit the cap, so
 excluding truncated sections had already removed it, and the
-truncation-excluded gap barely moves. It still excludes zero. Truncation
-for live runs is estimated by re-tokenizing the saved text.
+truncation-excluded gap barely moves. Truncation for live runs is
+estimated by re-tokenizing the saved text.
+
+**The truncation-excluded live gap is exploratory and post hoc:** +12.6
+pts in true errors (CI +2.9 to +21.7, p = 0.012). It rests on one draw
+per ticker, and the truncation-excluded subset was chosen after the pilot
+had been seen. Its interval excluding zero is therefore not a test. The
+pre-registered replication (+5.3 pts, CI −1.1 to +11.6) remains the
+primary result.
 
 **Replication.** The pre-registered replication is the confirmatory test,
 and its result stays primary: **the W4A16 regression does not replicate
@@ -1072,8 +1079,9 @@ The replication's secondary all-sections gap (+10.7 pts, CI −0.3 to
 flags only.
 
 Adjudication leaves the replication result as it was. The live one-draw
-gap survives adjudication on the truncation-excluded estimate, but the
-replication was built to test exactly that. It does not exclude zero.
+gap survives adjudication on the truncation-excluded estimate, but that
+figure is exploratory and post hoc (above), and the replication was built
+to test exactly that gap. It does not exclude zero.
 The pilot had already shown how far one draw can sit from the same model
 on the same inputs. On these sections (all sections, flags), the
 replayed BF16 samples gave 41.9–52.7% against `v924f`'s single live draw

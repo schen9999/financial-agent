@@ -117,11 +117,12 @@ The two upstream defects are foreign filers' home-currency revenue and
 net income labeled USD, and profit margin passed as a raw fraction. They
 are recorded in `eval/numeric_check/upstream-findings.md` and not yet
 fixed. On the live runs, W4A16 `r5nzh` vs BF16 `v924f` on the two
-sections they write is +12.6 pts in true errors (CI +2.9 to +21.7),
-truncated sections excluded (estimated). That is one draw per ticker. The
-pre-registered replication on identical inputs (10 seeded samples per
-ticker) is the confirmatory test, and it gives +5.3 pts (CI -1.1 to
-+11.6): the regression does not replicate. All 120 of its sampled flags
+sections they write is +12.6 pts in true errors (CI +2.9 to +21.7,
+p = 0.012), truncated sections excluded (estimated). That figure is
+exploratory and post hoc: one draw per ticker, and the truncation subset
+was chosen after the pilot. The pre-registered replication on identical
+inputs (10 seeded samples per ticker) remains the primary result, and it
+gives +5.3 pts (CI -1.1 to +11.6): the regression does not replicate. All 120 of its sampled flags
 were true errors, so adjudication leaves that unchanged. Method, precision
 and the full tables: eval-methodology,
 ["Numeric check: adjudicated flags and the W4A16 replication"](eval-methodology.md#numeric-check-adjudicated-flags-and-the-w4a16-replication-2026-10-01-dated).

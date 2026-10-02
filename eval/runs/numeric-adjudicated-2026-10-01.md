@@ -77,7 +77,9 @@ Live same-image gap, r5nzh (W4A16) - v924f (BF16), Financial Health + Risk Facto
 | flags | all | 65/117 = 55.6% | 44/113 = 38.9% | +16.6 pts (CI +5.2 to +27.4) | 0.0026 |
 | flags | truncated excluded (estimated) | 51/103 = 49.5% | 35/100 = 35.0% | +14.5 pts (CI +4.7 to +23.8) | 0.005 |
 | true_error | all | 52/117 = 44.4% | 43/113 = 38.0% | +6.4 pts (CI -4.1 to +15.8) | 0.2088 |
-| true_error | truncated excluded (estimated) | 49/103 = 47.6% | 35/100 = 35.0% | +12.6 pts (CI +2.9 to +21.7) | 0.0122 |
+| true_error | truncated excluded (estimated); exploratory, post hoc | 49/103 = 47.6% | 35/100 = 35.0% | +12.6 pts (CI +2.9 to +21.7) | 0.0122 |
+
+The truncation-excluded TRUE_ERROR gap (+12.6 pts (CI +2.9 to +21.7), p = 0.0122) is exploratory and post hoc: one draw per ticker, and the truncation subset was chosen after the pilot. The pre-registered replication below remains the primary result.
 
 Replication, primary metric (truncated sections excluded). The pre-registered result on unadjudicated flags stays the primary result; the adjusted rows are secondary.
 
