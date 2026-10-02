@@ -466,6 +466,65 @@ python scripts/bench_table.py $A/financial-lora-c8.json=A10 $A/financial-lora-c1
   the A10 file with the same seed and prompt count.
 - **Nothing is exposed.** The server binds 127.0.0.1:8100 on the host.
 
+### Quantization benchmark (executed 2026-09-29 on `vm-a10-inst-2`)
+
+W4A16 on the A10 (speed and a grounding arm), GGUF builds on the Xeon.
+Results and method: eval-methodology, "Quantization benchmark". From a
+checkout of the branch on the node, with the node as left by the CPU
+benchmark above. Long CPU steps belong in tmux so a dropped ssh session
+does not end them.
+
+```bash
+# 1. W4A16 weights (throwaway venv; llm-compressor stays out of the image)
+python3 -m venv ~/venvs/llmc && ~/venvs/llmc/bin/pip install llmcompressor==0.7.1
+kubectl -n financial-agent scale deployment/vllm --replicas=0   # free the A10
+~/venvs/llmc/bin/python scripts/quantize_w4a16.py --num-samples 104
+# 2. Serve it (vLLM reads the scheme from config.json) and bench, quiet node
+make vm-vllm MODEL_DIR=qwen-ft-w4a16 SERVED_NAME=financial-lora-w4a16 MAX_LEN=4096
+kubectl -n financial-agent scale deploy api worker streamlit mcp --replicas=0
+A=eval/runs/bench/a10-quant-$(date -u +%F); mkdir -p $A
+cp /home/ubuntu/models/qwen-ft-w4a16/quant_meta.json $A/
+SEED=1 bash scripts/vm_bench_serve.sh financial-lora-w4a16 > $A/financial-lora-w4a16-c8.json
+CONCURRENCY=1 NUM_PROMPTS=50 SEED=2 bash scripts/vm_bench_serve.sh financial-lora-w4a16 \
+  > $A/financial-lora-w4a16-c1.json
+kubectl -n financial-agent scale deploy api worker streamlit mcp --replicas=1
+# 3. Grounding arm on the same image (no vm-images), then findings capture below
+make eval-run EVAL_RUN_FILE=argo/eval-run-extended-local-w4a16.yaml
+make vm-vllm                                   # back to the BF16 fine-tune
+# 4. GGUF: convert, then per file serve / c8 x 200 seed 1 / c1 x 50 seed 2 / stop
+bash scripts/vm_bench_cpu_gguf.sh convert qwen-ft
+kubectl -n financial-agent scale deploy api worker streamlit mcp --replicas=0
+G=eval/runs/bench/cpu-gguf-$(date -u +%F); mkdir -p $G
+cp /home/ubuntu/models/qwen-ft-gguf/gguf_meta.json $G/
+for q in f16 q8_0 q4_k_m; do
+  bash scripts/vm_load_sampler.sh llama-cpu $G/load-financial-lora-$q.log & S=$!
+  bash scripts/vm_bench_cpu_gguf.sh serve qwen-ft-gguf/financial-lora-$q.gguf financial-lora-$q
+  SEED=1 bash scripts/vm_bench_cpu_gguf.sh bench financial-lora-$q 8 200 > $G/financial-lora-$q-c8.json
+  SEED=2 bash scripts/vm_bench_cpu_gguf.sh bench financial-lora-$q 1 50 > $G/financial-lora-$q-c1.json
+  bash scripts/vm_bench_cpu_gguf.sh stop; kill $S
+done
+# 5. Sweeps (vLLM BF16 at 7 and 14 threads; llama.cpp Q4_K_M at 14). On
+#    2026-09-29 the llama.cpp sweep stopped at concurrency 2 (lost requests,
+#    see below); the vLLM sweep completed
+W=eval/runs/bench/cpu-sweep-$(date -u +%F); mkdir -p $W
+bash scripts/vm_bench_cpu.sh sweep qwen-ft financial-lora $W
+bash scripts/vm_bench_cpu_gguf.sh sweep qwen-ft-gguf/financial-lora-q4_k_m.gguf financial-lora-q4_k_m $W
+kubectl -n financial-agent scale deploy api worker streamlit mcp --replicas=1
+```
+
+- **Token counts on llama.cpp** come from the server, not the client's
+  re-tokenization, and a run is refused unless they are exactly 256 per
+  completed request (`scripts/bench_fix_llamacpp.py`).
+- **A lost request** (aiohttp `Server disconnected` before any response
+  header, never reaching the server: llama-server closes every streamed
+  response's connection while advertising keep-alive) is recorded, not
+  retried; more than 1% of prompts lost (at least one allowed), or any
+  other error, refuses the run. Low-concurrency llama.cpp cells are the most exposed (the Q4_K_M
+  sweep's concurrency-2 cell lost 4 of 32). Do not rerun a refused run
+  until one passes; record it as refused.
+- **Calibration count.** `data/sections_dataset.jsonl` has 104 rows;
+  `--num-samples` above 104 is refused rather than padded with repeats.
+
 ## Findings capture — after any eval run
 
 Every eval pod and the aggregate print a base64 tar of

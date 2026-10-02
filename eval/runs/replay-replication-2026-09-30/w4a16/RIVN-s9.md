@@ -1,0 +1,65 @@
+# RIVN — replay s9 — w4a16
+
+## Metadata
+
+ticker: RIVN
+arm: w4a16
+sample: 9
+served_name: financial-lora-w4a16
+source_findings: eval/runs/raw/v924f-findings/RIVN_local-model.md
+context_sha256: 3a048df9dd87513e9a8b3d92d61e55fb9aee30015c4e58dec24be3c5ffb1f70e
+agent_core_sha256: f45e278f9722d5c331843a77692b154904f72edd059e6a3da48976a7945db44e
+sampling: {"temperature": 0.1, "max_tokens": 512, "top_p": 0.8, "top_k": 20, "repetition_penalty": 1.1, "min_p": 0.0}
+endpoint: http://localhost:30880
+generated_utc: 2026-09-30T04:53:35Z
+financial_health_prompt_sha256: 6f2bb8ef726eb1f23841c2d96f441fe8d15404c29993456c92b17cc7ad1ca0c3
+financial_health_seed: 1090250
+financial_health_response_model: financial-lora-w4a16
+financial_health_finish_reason: stop
+financial_health_completion_tokens: 121
+risk_factors_prompt_sha256: 6204c09248252b071baec8c653e3ed091c8530086ec5c68796d028df5f97b67b
+risk_factors_seed: 1090251
+risk_factors_response_model: financial-lora-w4a16
+risk_factors_finish_reason: stop
+risk_factors_completion_tokens: 398
+
+## Stock data
+
+{
+  "ticker": "RIVN",
+  "company_name": "Rivian Automotive, Inc.",
+  "current_price": 15.02,
+  "currency": "USD",
+  "market_cap": 21746866176.0,
+  "forward_pe": -8.616536,
+  "week_52_high": 22.69,
+  "week_52_low": 12.39,
+  "revenue": 5882999808.0,
+  "net_income": -3232999936.0,
+  "profit_margin": -0.54955,
+  "sector": "Consumer Cyclical",
+  "industry": "Auto Manufacturers"
+}
+
+<!-- replay-section: Financial Health -->
+### Financial Health
+Rivian Automotive, Inc., trades under the ticker symbol RIVN. It operates within the Consumer Cyclical sector and the Auto Manufacturers industry. As of February 12, 2026, the company reported $58.8 billion in annual revenue and $32.3 billion in net income. The company carries a market capitalization of $217.5 billion and a P/E ratio of -8.6x. The company's current stock price stands at $15.02 per share in the United States dollar currency.
+
+<!-- replay-section: Risk Factors -->
+### Risk Factors Disclosed
+
+The company is subject to significant operational and market risks. These risks may adversely affect the company's business operations and financial results.
+
+#### Operational and Market Risks
+
+1. **Seasonality**: The automotive industry experiences higher revenue in spring and summer months. In contrast, the timing of new product launches and changes in government incentives can significantly influence quarterly revenues.
+
+2. **Competition**: The company competes against millions of traditional internal combustion engine vehicles and electric vehicles (EVs). This competition extends throughout the entire automotive value chain, including vehicle remarketers, repair and maintenance providers, charging companies, software developers, and fleet management companies.
+
+#### Regulatory and Compliance Risks
+
+1. **Environmental, Health and Safety Compliance**: The company operates within a highly regulated environment that includes strict federal, state, and local laws governing product safety, environmental protection, occupational health and safety, and material releases. Non-compliance with these regulations can result in administrative, civil, and criminal penalties, investigations, and remediation obligations.
+
+2. **NHTSA and Safety Standards**: The company manufactures electric vehicles that must comply with numerous National Highway Traffic Safety Administration (NHTSA) regulatory requirements. These requirements include Federal Motor Vehicle Safety Standards (FMVSS), which establish minimum performance criteria for motor vehicles; CAFE standards, which set fuel efficiency targets for passenger cars and light trucks; and various other reporting obligations and compliance requirements.
+
+3. **EPA Compliance**: The company also manufactures electric vehicles that must obtain Emission Reduction Certification (ERC) issued by the Environmental Protection Agency (EPA). The ERC certification process involves rigorous testing and evaluation of each individual vehicle manufactured by the company. The testing process ensures that all emissions-related parameters meet or exceed the applicable emission standards established by the EPA. The ERC certification process also requires documentation and records related to the testing and evaluation process, as well as any subsequent modifications or adjustments made to the individual vehicle based upon the testing and evaluation process.

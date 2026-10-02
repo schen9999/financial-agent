@@ -1,0 +1,1128 @@
+{
+  "per_arm": 60,
+  "seed": 42,
+  "stratified_by": "field",
+  "frame": "distinct mismatch findings, truncated sections excluded",
+  "arms": {
+    "bf16": {
+      "flags": 430,
+      "checked_distinct": 1068,
+      "population_by_field": {
+        "market_cap": 181,
+        "net_income": 191,
+        "profit_margin": 24,
+        "revenue": 34
+      },
+      "allocation_by_field": {
+        "market_cap": 25,
+        "net_income": 27,
+        "profit_margin": 3,
+        "revenue": 5
+      },
+      "sampled": 60,
+      "sampled_keys": [
+        [
+          "replay-replication-2026-09-30/bf16/s8",
+          "TM",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$2.25 trillion",
+          "The company carries a market capitalization of $2.25 trillion and a P/E ratio of 8.5x (12.0x forward), a premium valuation compared to its peers."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s2",
+          "CALM",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$335 billion",
+          "The company carries a market capitalization of $335 billion and a P/E ratio of 10.8x (24.6x forward)."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s1",
+          "BLNK",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$8.2 billion",
+          "It carries a market capitalization of $8.2 billion and a P/E ratio of -24x."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s5",
+          "EVGO",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$42.8 billion",
+          "It carries a market capitalization of $42.8 billion and a forward P/E ratio of -3.1x."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s3",
+          "EDIT",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$41.3 billion",
+          "It carries a market capitalization of $41.3 billion and a net income of -$7.4 billion over the past year."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s6",
+          "CRBU",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$13.8 billion",
+          "The company carries a market capitalization of $13.8 billion and a forward P/E ratio of -1.0x."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s9",
+          "CALM",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$335.0 billion",
+          "The company carries a market capitalization of $335.0 billion in USD."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s1",
+          "CALM",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$335.0 billion",
+          "The company carries a market capitalization of $335.0 billion in USD."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s5",
+          "SANA",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$92.2 billion",
+          "The company carries a current market capitalization of $92.2 billion (in USD), as reported on March 3, 2026.]"
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s6",
+          "BYND",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$1.72 trillion",
+          "**Market Capitalization:** $1.72 trillion."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s9",
+          "SFIX",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$376.26 billion",
+          "The company carries a market capitalization of $376.26 billion in USD."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s7",
+          "OCGN",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$33.9 billion",
+          "The company carries a market capitalization of $33.9 billion and a forward P/E ratio of -3.7x."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s2",
+          "BLNK",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$8.2 billion",
+          "It carries a market capitalization of $8.2 billion and a P/E ratio of -24x."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s10",
+          "BLNK",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$8.2 billion",
+          "It carries a market capitalization of $8.2 billion and a P/E ratio of -24x."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s7",
+          "BYND",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$1.72 trillion",
+          "**Market Capitalization:** $1.72 trillion."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s10",
+          "CRBU",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$138.3 billion",
+          "The company reports a market capitalization of $138.3 billion and a forward P/E ratio of -1.0x."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s8",
+          "CRBU",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$138.3 billion",
+          "The company reports a market capitalization of $138.3 billion and a forward P/E ratio of -1.0x."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s6",
+          "RIVN",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$2.17 trillion",
+          "As of February 12, 2026, the company reported a market capitalization of $2.17 trillion and a forward P/E ratio of -8.6x."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s3",
+          "SNAP",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$894.6 billion",
+          "It carries a market capitalization of $894.6 billion and a forward P/E ratio of 6.8x."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s7",
+          "WMT",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$8.79 trillion",
+          "**Market Capitalization:** $8.79 trillion"
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s10",
+          "SFIX",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$376.3 billion",
+          "It carries a market capitalization of $376.3 billion and a forward P/E ratio of -35.8x."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s7",
+          "COIN",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$5.2 trillion",
+          "It carries a market capitalization of $5.2 trillion and a forward P/E ratio of 69.9x."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s7",
+          "UPST",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$237.9 billion",
+          "As of February 10, 2026, the company carries a market capitalization of $237.9 billion and a P/E ratio of 46.1x (7.0x forward)."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s6",
+          "OCGN",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$33.9 billion",
+          "The company carries a market capitalization of $33.9 billion and a forward P/E ratio of -3.7x."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s5",
+          "CRBU",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$13.8 billion",
+          "As of June 30, 2026, it carries a market capitalization of $13.8 billion and a current share price of $1.29 per share in the U.S."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s2",
+          "OCGN",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "-$8.1 billion",
+          "In terms of net income, the company reports a net loss of -$8.1 billion over the past year."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s4",
+          "SFIX",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "-$1.91 billion",
+          "As of June 11, 2026, the company reports net income of -$1.91 billion in USD."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s9",
+          "COIN",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "-$98.8 billion",
+          "The company reports net income of -$98.8 billion and a net loss per share of -$1.63."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s3",
+          "AFRM",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$19.3 billion",
+          "The company reports net income of $19.3 billion over the past year."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s2",
+          "BYND",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$258.9 billion",
+          "**Net Income:** $258.9 billion"
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s10",
+          "UPST",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$6.0 billion",
+          "The company reports net income of $6.0 billion and a net profit margin of 4.69%."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s6",
+          "NVO",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$11.6 billion",
+          "Novo Nordisk reports net income of $11.6 billion annually, a net profit margin of 35.3%."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s2",
+          "NTLA",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "-$39.9 billion",
+          "As of August 6, 2026, the company reports net income of -$39.9 billion, a significant negative figure indicating substantial losses over the past fiscal period."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s4",
+          "V",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$223.98 billion",
+          "**Net Income:** $223.98 billion"
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s10",
+          "BYND",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$258.9 billion",
+          "**Net Income:** $258.9 billion"
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s8",
+          "CALM",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$31.7 billion",
+          "The company reports net income of $31.7 billion and a net profit margin of 10.8%."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s1",
+          "NTLA",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "-$39.9 billion",
+          "Additionally, the company reports a net loss of -$39.9 billion annually, indicating a consistent net loss across multiple reporting periods."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s8",
+          "BEAM",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$865.2 million",
+          "This represents a net loss of $865.2 million over the past twelve months."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s5",
+          "BEAM",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$865.2 million",
+          "This represents a net loss of $865.2 million for the same period."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s4",
+          "NVDA",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$19.3 billion",
+          "The company reports net income of $19.3 billion and a net profit margin of 63.7%."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s6",
+          "BEAM",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$865.2 million",
+          "This represents a net loss of $865.2 million over the past twelve months."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s9",
+          "NTLA",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "-$39.9 billion",
+          "As of August 6, 2026, the company reports net income of -$39.9 billion, a significant negative net income of -$39.9 billion."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s5",
+          "NTLA",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "-$39.9 billion",
+          "As of August 6, 2026, the company reports net income of -$39.9 billion, a significant negative figure indicating substantial losses over the past fiscal period."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s8",
+          "SFIX",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "-$1.91 billion",
+          "The company reports net income of -$1.91 billion and a net profit margin of -0.0143x."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s5",
+          "COIN",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "-$9.9 billion",
+          "Over the past year, it has reported net income of -$9.9 billion and a net loss per share of -$0.16."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s2",
+          "BABA",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$73.3 million",
+          "The company carries a market capitalization of $275.4 billion and a P/E ratio of 25.0x (12.0x forward), a net income of $73.3 million and a net profit margin of 7.0%."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s4",
+          "OCGN",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "-$8.1 billion",
+          "In terms of net income, Ocugen reports a net loss of -$8.1 billion over the past year."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s3",
+          "SANA",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "-$21.2 billion",
+          "As of August 10, 2026, the company reports net income of -$21.2 billion (USD)."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s4",
+          "BLNK",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$5.1 billion",
+          "Over the past year, it has seen a net loss of $5.1 billion."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s3",
+          "NVDA",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$19.3 billion",
+          "The company reports net income of $19.3 billion annually, a net profit margin of 63.7%."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s2",
+          "BEAM",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$865.2 million",
+          "This represents a net loss of $865.2 million for the same period."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s9",
+          "SANA",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "-$21.2 billion",
+          "Over the past year, the company has reported net income of -$21.2 billion and a net profit margin of 0%."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s9",
+          "BYND",
+          "Financial Health",
+          "mismatch",
+          "profit_margin",
+          "1.16%",
+          "**Profit Margin:** 1.16%."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s5",
+          "RIVN",
+          "Financial Health",
+          "mismatch",
+          "profit_margin",
+          "-0.55%",
+          "The company carries a P/E ratio of -8.6x and a net profit margin of -0.55%."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s9",
+          "PTON",
+          "Financial Health",
+          "mismatch",
+          "profit_margin",
+          "0.259%",
+          "The company reports net income of $632 million and a net profit margin of 0.259%."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s3",
+          "META",
+          "Financial Health",
+          "mismatch",
+          "revenue",
+          "$22.8 billion",
+          "As of January 29, 2026, Meta reported net income of $68.1 billion and total revenue of $22.8 billion."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s3",
+          "BYND",
+          "Financial Health",
+          "mismatch",
+          "revenue",
+          "$258.8 billion",
+          "**Revenue:** $258.8 billion"
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s4",
+          "BABA",
+          "Financial Health",
+          "mismatch",
+          "revenue",
+          "$104.5 billion",
+          "The company reports $104.5 billion in annual revenue and $73.3 million in net income."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s10",
+          "BABA",
+          "Financial Health",
+          "mismatch",
+          "revenue",
+          "$104.5 billion",
+          "The company reports $104.5 billion in annual revenue and $73.3 million in net income."
+        ],
+        [
+          "replay-replication-2026-09-30/bf16/s5",
+          "BYND",
+          "Financial Health",
+          "mismatch",
+          "revenue",
+          "$258.8 billion",
+          "**Revenue:** $258.8 billion"
+        ]
+      ]
+    },
+    "w4a16": {
+      "flags": 405,
+      "checked_distinct": 888,
+      "population_by_field": {
+        "current_price": 2,
+        "market_cap": 145,
+        "net_income": 155,
+        "profit_margin": 19,
+        "revenue": 84
+      },
+      "allocation_by_field": {
+        "current_price": 0,
+        "market_cap": 22,
+        "net_income": 23,
+        "profit_margin": 3,
+        "revenue": 12
+      },
+      "sampled": 60,
+      "sampled_keys": [
+        [
+          "replay-replication-2026-09-30/w4a16/s1",
+          "COIN",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$522.74 billion",
+          "It carries a market capitalization of $522.74 billion in the United States dollars."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s8",
+          "AFRM",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$229.75 billion",
+          "It carries a market capitalization of $229.75 billion and a P/E ratio of 12.3x (14.1x forward)."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s6",
+          "MSFT",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$371.7 billion",
+          "The company carries a market capitalization of $371.7 billion and a P/E ratio of 28.08x (21.14x forward), a week 52 high of $553.72 and a week 52 low of $349.20."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s6",
+          "LCID",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$163.9 billion",
+          "It carries a market capitalization of $163.9 billion and a current P/E ratio of -0.8x."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s1",
+          "LCID",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$163.9 billion",
+          "The company's current market capitalization stands at $163.9 billion."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s1",
+          "CRBU",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$13.8 billion",
+          "The company carries a current market capitalization of $13.8 billion (USD), based on a closing share price of $1.29 per share)."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s8",
+          "CALM",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$33.5 billion",
+          "The company carries a market capitalization of $33.5 billion and a P/E ratio of 10.8x (24.6x forward)."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s4",
+          "CALM",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$33.5 billion",
+          "The company carries a market capitalization of $33.5 billion and a P/E ratio of 10.8x (24.6x forward)."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s4",
+          "OMER",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$150.13 billion USD",
+          "The corporation's total market capitalization stands at $150.13 billion USD."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s1",
+          "BEAM",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$251.7 billion",
+          "The company carries a market capitalization of $251.7 billion as of February 24, 2026."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s9",
+          "AFRM",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$229.75 billion",
+          "As of August 27, 2026, it reports a total market capitalization of $229.75 billion."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s5",
+          "CALM",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$33.5 billion",
+          "The company carries a market capitalization of $33.5 billion and a P/E ratio of 10.8x (24.6x forward)."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s9",
+          "GOOGL",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$41.3 trillion",
+          "- **Market Capitalization**: $41.3 trillion (as of September 2026))"
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s2",
+          "LCID",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$163.9 billion",
+          "The company's current market capitalization stands at $163.9 billion."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s8",
+          "SANA",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$9.2 billion",
+          "It carries a market capitalization of $9.2 billion and a forward P/E ratio of -5.5x."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s6",
+          "TSM",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$231.6 billion",
+          "The company carries a market capitalization of $231.6 billion and a P/E ratio of 33.3x (20.4x forward), a premium valuation compared to its peers."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s8",
+          "EDIT",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$41.3 billion",
+          "It carries a market capitalization of $41.3 billion and a net income of -$7.4 billion over the past year."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s2",
+          "OMER",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$150.13 billion",
+          "It carries a market capitalization of $150.13 billion and a P/E ratio of 12.57x (16.86x forward), a premium valuation compared to its peers."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s8",
+          "TSM",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$231.6 billion",
+          "The company carries a market capitalization of $231.6 billion and a P/E ratio of 33.3x (20.4x forward), a premium valuation compared to its peers."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s8",
+          "TM",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$2.25 trillion",
+          "The company carries a market capitalization of $2.25 trillion and a P/E ratio of 8.5x (12.06x forward), a premium valuation multiple."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s4",
+          "NTLA",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$17.3 billion",
+          "As of the date of this report, the company has a market capitalization of $17.3 billion, which represents a market capitalization of $17.3 billion, a premium of $17.3 billion compared to its peer group."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s7",
+          "TM",
+          "Financial Health",
+          "mismatch",
+          "market_cap",
+          "$2.25 trillion",
+          "The company carries a market capitalization of $2.25 trillion and a P/E ratio of 8.5x (12.06x forward), a premium valuation compared to its peers."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s5",
+          "AFRM",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$19.3 billion",
+          "It reports net income of $19.3 billion over the past twelve months, a net profit margin of 45.3%."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s3",
+          "EDIT",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "-$7.4 billion",
+          "The company reports net income of -$7.4 billion over the past year."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s9",
+          "ROKU",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$35.5 million",
+          "As of December 31, 2025, the company reported $52.1 billion in annualized revenue and $35.5 million in net income."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s9",
+          "NVO",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$11.64 billion",
+          "The company reports net income of $11.64 billion and a net profit margin of 35.35%."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s3",
+          "NVDA",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$19.3 billion",
+          "As of February 25, 2026, NVIDIA Corporation reported $30.3 billion in annual revenue and $19.3 billion in net income."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s2",
+          "EDIT",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "-$7.4 billion",
+          "The company reports net income of -$7.4 billion over the past year (as of December 31, 2025)."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s3",
+          "LCID",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$460.5 billion",
+          "As of February 24, 2026, the company reported $154.7 billion in annual revenue and $460.5 billion in net income."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s8",
+          "NVO",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$11.64 billion",
+          "The company reports net income of $11.64 billion and a net profit margin of 35.35%."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s6",
+          "COIN",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$-9.88 billion",
+          "The company reports $60.44 billion in annual revenue and $-9.88 billion in net income over the past year."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s10",
+          "COIN",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$-9.88 billion",
+          "The company reports $60.44 billion in annual revenue and $-9.88 billion in net income over the past year."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s5",
+          "PTON",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$6.3 billion",
+          "As of December 31, 2022, the company reported $24.5 billion in annualized revenue and $6.3 billion in net income."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s2",
+          "COIN",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$9.88 billion",
+          "This represents a net loss of $9.88 billion over the last twelve months."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s7",
+          "OCGN",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "-$8.18 billion",
+          "In addition to these key financial metrics, the company reports net income of -$8.18 billion and a net loss of -$8.18 billion over the past year."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s2",
+          "OCGN",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$8.18 billion",
+          "In terms of net income, Ocugen reports a net loss of $8.18 billion per year."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s8",
+          "NTLA",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$3.9 billion",
+          "It reports $5.9 billion in annual revenue and $3.9 billion in net income."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s8",
+          "BABA",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$7.3 billion",
+          "The company carries a market capitalization of $275.4 billion and a P/E ratio of 25.0x (12.0x forward), a net income of $7.3 billion and a net profit margin of 7.0%."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s2",
+          "SAP",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$77.96 billion",
+          "The company reports net income of $77.96 billion and a net profit margin of 0.20x."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s3",
+          "TSLA",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$380.6 million",
+          "It reports net income of $380.6 million and a net loss of $380.6 million over the past year."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s5",
+          "CRBU",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "-$10.3 billion",
+          "The company carries a current market capitalization of $13.8 billion (as of June 30, 2026)), a forward P/E ratio of -1.0x (-1.0211109), a week 52 high of $3.54 ($3.535), a week 52 low of $1.25 ($1.25), and net income of -$10.3 billion (-$10.3403 million))."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s3",
+          "PTON",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$6.3 billion",
+          "As of December 31, 2022, the company reported $24.5 billion in annualized revenue and $6.3 billion in net income."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s5",
+          "BYND",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$258.9 billion",
+          "**Net Income:** $258.9 billion"
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s7",
+          "NVDA",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$19.3 billion",
+          "As of February 25, 2026, NVIDIA Corporation reported $30.3 billion in annual revenue and $19.3 billion in net income."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s2",
+          "OMER",
+          "Financial Health",
+          "mismatch",
+          "net_income",
+          "$11.65 billion",
+          "It reports net income of $11.65 billion and a net profit margin of 3.25%, indicating it generates significant profits relative to its revenues."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s9",
+          "SFIX",
+          "Financial Health",
+          "mismatch",
+          "profit_margin",
+          "-0.01432%",
+          "The company carries a net profit margin of -0.01432%, indicating that it loses money relative to its revenues."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s7",
+          "BYND",
+          "Financial Health",
+          "mismatch",
+          "profit_margin",
+          "1.16%",
+          "It carries a net profit margin of 1.16%."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s2",
+          "BYND",
+          "Financial Health",
+          "mismatch",
+          "profit_margin",
+          "1.16%",
+          "Its net profit margin stands at 1.16%."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s9",
+          "BYND",
+          "Financial Health",
+          "mismatch",
+          "revenue",
+          "$258.8 billion",
+          "**Revenue:** $258.8 billion"
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s6",
+          "NTLA",
+          "Financial Health",
+          "mismatch",
+          "revenue",
+          "$5.9 billion",
+          "The company reports $5.9 billion in annual revenue and $3.9 billion in net income."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s7",
+          "NVDA",
+          "Financial Health",
+          "mismatch",
+          "revenue",
+          "$30.3 billion",
+          "As of February 25, 2026, NVIDIA Corporation reported $30.3 billion in annual revenue and $19.3 billion in net income."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s5",
+          "CRBU",
+          "Financial Health",
+          "mismatch",
+          "revenue",
+          "$1.0 billion",
+          "In terms of revenue, the company reports $1.0 billion in annual revenue ($100.35 million)."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s8",
+          "WMT",
+          "Financial Health",
+          "mismatch",
+          "revenue",
+          "$735.8 trillion",
+          "**Revenue:** $735.8 trillion"
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s7",
+          "CRBU",
+          "Financial Health",
+          "mismatch",
+          "revenue",
+          "$1.0 billion",
+          "reports $1.0 billion in annual revenue ($1.0035 million)."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s7",
+          "RIVN",
+          "Financial Health",
+          "mismatch",
+          "revenue",
+          "$58.83 billion",
+          "The company reports $58.83 billion in annualized net revenue and $-32.33 billion in annualized net income."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s4",
+          "NVDA",
+          "Financial Health",
+          "mismatch",
+          "revenue",
+          "$30.3 billion",
+          "As of February 25, 2026, NVIDIA Corporation reported $30.3 billion in annual revenue and $19.3 billion in net income."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s2",
+          "SFIX",
+          "Financial Health",
+          "mismatch",
+          "revenue",
+          "$133.5 billion",
+          "As of September 25, 2025, the company reported $133.5 billion in annual revenue and $19.1 billion in net income."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s10",
+          "RIVN",
+          "Financial Health",
+          "mismatch",
+          "revenue",
+          "$58.8 billion",
+          "As of February 12, 2026, the company reported $58.8 billion in annual revenue and $32.3 billion in net income."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s1",
+          "LCID",
+          "Financial Health",
+          "mismatch",
+          "revenue",
+          "$154.7 billion",
+          "As of February 24, 2026, the company reported $154.7 billion in annual revenue and $460.5 billion in net income."
+        ],
+        [
+          "replay-replication-2026-09-30/w4a16/s4",
+          "RIVN",
+          "Financial Health",
+          "mismatch",
+          "revenue",
+          "$58.8 billion",
+          "As of February 12, 2026, the company reported $58.8 billion in annual revenue and $-32.3 billion in net income."
+        ]
+      ]
+    }
+  }
+}

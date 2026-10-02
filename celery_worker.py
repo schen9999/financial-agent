@@ -54,7 +54,7 @@ def research_task(self, ticker: str) -> dict:
     """
     try:
         self.update_state(state="PROGRESS", meta={"status": f"Researching {ticker}..."})
-        from agent.core import run_research
+        from agent.core import run_research_checked
         from agent.tracing import tracing_enabled
 
         if tracing_enabled():
@@ -65,10 +65,11 @@ def research_task(self, ticker: str) -> dict:
                 tags=["full_brief", "async"],
                 metadata={"request_type": "full_brief", "async": True, "ticker": ticker},
             ):
-                result = run_research(ticker)
+                result = run_research_checked(ticker)
         else:
-            result = run_research(ticker)
-        return {"status": "complete", "ticker": ticker, "brief": result}
+            result = run_research_checked(ticker)
+        return {"status": "complete", "ticker": ticker, "brief": result["brief"],
+                "numeric_check": result["numeric_check"]}
     except Exception:
         # Just re-raise: Celery records FAILURE with proper exception metadata.
         # Manually calling update_state(state="FAILURE", meta={...}) writes a

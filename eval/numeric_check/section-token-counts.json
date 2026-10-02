@@ -1,0 +1,825 @@
+{
+  "cap": 512,
+  "threshold": 505,
+  "tokenizer": "tokenizer.json",
+  "tokenizer_sha256": "3fd169731d2cbde95e10bf356d66d5997fd885dd8dbb6fb4684da3f23b2585d8",
+  "validation_on_pilot": {
+    "sections": 480,
+    "exact_count_matches": 470,
+    "max_abs_diff": 2,
+    "threshold": 505,
+    "threshold_agrees_with_finish_reason": 478
+  },
+  "live": {
+    "v924f": {
+      "AAPL": {
+        "financial-health": 97,
+        "risk-factors": 328
+      },
+      "AFRM": {
+        "financial-health": 55,
+        "risk-factors": 426
+      },
+      "AMZN": {
+        "financial-health": 63,
+        "risk-factors": 512
+      },
+      "BABA": {
+        "financial-health": 131,
+        "risk-factors": 512
+      },
+      "BEAM": {
+        "financial-health": 512,
+        "risk-factors": 229
+      },
+      "BLNK": {
+        "financial-health": 64,
+        "risk-factors": 512
+      },
+      "BYND": {
+        "financial-health": 512,
+        "risk-factors": 464
+      },
+      "CALM": {
+        "financial-health": 105,
+        "risk-factors": 304
+      },
+      "CHGG": {
+        "financial-health": 55,
+        "risk-factors": 362
+      },
+      "COIN": {
+        "financial-health": 111,
+        "risk-factors": 271
+      },
+      "CRBU": {
+        "financial-health": 74,
+        "risk-factors": 512
+      },
+      "EDIT": {
+        "financial-health": 512,
+        "risk-factors": 384
+      },
+      "EVGO": {
+        "financial-health": 512,
+        "risk-factors": 372
+      },
+      "GOOGL": {
+        "financial-health": 66,
+        "risk-factors": 367
+      },
+      "JPM": {
+        "financial-health": 97,
+        "risk-factors": 379
+      },
+      "LCID": {
+        "financial-health": 97,
+        "risk-factors": 512
+      },
+      "META": {
+        "financial-health": 64,
+        "risk-factors": 307
+      },
+      "MSFT": {
+        "financial-health": 144,
+        "risk-factors": 186
+      },
+      "NTLA": {
+        "financial-health": 153,
+        "risk-factors": 320
+      },
+      "NVDA": {
+        "financial-health": 158,
+        "risk-factors": 225
+      },
+      "NVO": {
+        "financial-health": 114,
+        "risk-factors": 512
+      },
+      "OCGN": {
+        "financial-health": 80,
+        "risk-factors": 319
+      },
+      "OMER": {
+        "financial-health": 102,
+        "risk-factors": 221
+      },
+      "PTON": {
+        "financial-health": 105,
+        "risk-factors": 314
+      },
+      "RDFN": {
+        "financial-health": 44,
+        "risk-factors": 512
+      },
+      "RIVN": {
+        "financial-health": 238,
+        "risk-factors": 113
+      },
+      "ROKU": {
+        "financial-health": 512,
+        "risk-factors": 512
+      },
+      "SANA": {
+        "financial-health": 202,
+        "risk-factors": 512
+      },
+      "SAP": {
+        "financial-health": 104,
+        "risk-factors": 512
+      },
+      "SFIX": {
+        "financial-health": 101,
+        "risk-factors": 512
+      },
+      "SNAP": {
+        "financial-health": 145,
+        "risk-factors": 358
+      },
+      "TM": {
+        "financial-health": 139,
+        "risk-factors": 61
+      },
+      "TSLA": {
+        "financial-health": 104,
+        "risk-factors": 411
+      },
+      "TSM": {
+        "financial-health": 101,
+        "risk-factors": 512
+      },
+      "UNH": {
+        "financial-health": 178,
+        "risk-factors": 349
+      },
+      "UPST": {
+        "financial-health": 114,
+        "risk-factors": 320
+      },
+      "VERV": {
+        "financial-health": 242,
+        "risk-factors": 272
+      },
+      "V": {
+        "financial-health": 97,
+        "risk-factors": 95
+      },
+      "WMT": {
+        "financial-health": 74,
+        "risk-factors": 190
+      },
+      "XOM": {
+        "financial-health": 143,
+        "risk-factors": 512
+      }
+    },
+    "r5nzh": {
+      "AAPL": {
+        "financial-health": 52,
+        "risk-factors": 511
+      },
+      "AFRM": {
+        "financial-health": 71,
+        "risk-factors": 512
+      },
+      "AMZN": {
+        "financial-health": 187,
+        "risk-factors": 512
+      },
+      "BABA": {
+        "financial-health": 143,
+        "risk-factors": 192
+      },
+      "BEAM": {
+        "financial-health": 87,
+        "risk-factors": 240
+      },
+      "BLNK": {
+        "financial-health": 512,
+        "risk-factors": 512
+      },
+      "BYND": {
+        "financial-health": 83,
+        "risk-factors": 303
+      },
+      "CALM": {
+        "financial-health": 80,
+        "risk-factors": 340
+      },
+      "CHGG": {
+        "financial-health": 94,
+        "risk-factors": 358
+      },
+      "COIN": {
+        "financial-health": 174,
+        "risk-factors": 201
+      },
+      "CRBU": {
+        "financial-health": 88,
+        "risk-factors": 512
+      },
+      "EDIT": {
+        "financial-health": 80,
+        "risk-factors": 312
+      },
+      "EVGO": {
+        "financial-health": 77,
+        "risk-factors": 433
+      },
+      "GOOGL": {
+        "financial-health": 93,
+        "risk-factors": 378
+      },
+      "JPM": {
+        "financial-health": 166,
+        "risk-factors": 373
+      },
+      "LCID": {
+        "financial-health": 114,
+        "risk-factors": 512
+      },
+      "META": {
+        "financial-health": 86,
+        "risk-factors": 145
+      },
+      "MSFT": {
+        "financial-health": 110,
+        "risk-factors": 512
+      },
+      "NTLA": {
+        "financial-health": 178,
+        "risk-factors": 342
+      },
+      "NVDA": {
+        "financial-health": 234,
+        "risk-factors": 237
+      },
+      "NVO": {
+        "financial-health": 126,
+        "risk-factors": 512
+      },
+      "OCGN": {
+        "financial-health": 95,
+        "risk-factors": 511
+      },
+      "OMER": {
+        "financial-health": 512,
+        "risk-factors": 316
+      },
+      "PTON": {
+        "financial-health": 205,
+        "risk-factors": 280
+      },
+      "RDFN": {
+        "financial-health": 38,
+        "risk-factors": 511
+      },
+      "RIVN": {
+        "financial-health": 96,
+        "risk-factors": 512
+      },
+      "ROKU": {
+        "financial-health": 219,
+        "risk-factors": 70
+      },
+      "SANA": {
+        "financial-health": 55,
+        "risk-factors": 429
+      },
+      "SAP": {
+        "financial-health": 101,
+        "risk-factors": 512
+      },
+      "SFIX": {
+        "financial-health": 45,
+        "risk-factors": 451
+      },
+      "SNAP": {
+        "financial-health": 94,
+        "risk-factors": 512
+      },
+      "TM": {
+        "financial-health": 151,
+        "risk-factors": 512
+      },
+      "TSLA": {
+        "financial-health": 40,
+        "risk-factors": 313
+      },
+      "TSM": {
+        "financial-health": 144,
+        "risk-factors": 512
+      },
+      "UNH": {
+        "financial-health": 89,
+        "risk-factors": 334
+      },
+      "UPST": {
+        "financial-health": 143,
+        "risk-factors": null
+      },
+      "VERV": {
+        "financial-health": 77,
+        "risk-factors": 278
+      },
+      "V": {
+        "financial-health": 73,
+        "risk-factors": 43
+      },
+      "WMT": {
+        "financial-health": 63,
+        "risk-factors": 167
+      },
+      "XOM": {
+        "financial-health": 102,
+        "risk-factors": 65
+      }
+    },
+    "lsnnc": {
+      "AAPL": {
+        "financial-health": 141,
+        "risk-factors": 220
+      },
+      "AFRM": {
+        "financial-health": 103,
+        "risk-factors": 342
+      },
+      "AMZN": {
+        "financial-health": 93,
+        "risk-factors": 512
+      },
+      "BABA": {
+        "financial-health": 112,
+        "risk-factors": 512
+      },
+      "BEAM": {
+        "financial-health": 86,
+        "risk-factors": 134
+      },
+      "BLNK": {
+        "financial-health": 63,
+        "risk-factors": 512
+      },
+      "BYND": {
+        "financial-health": 127,
+        "risk-factors": 317
+      },
+      "CALM": {
+        "financial-health": 200,
+        "risk-factors": 360
+      },
+      "CHGG": {
+        "financial-health": 199,
+        "risk-factors": 511
+      },
+      "COIN": {
+        "financial-health": 101,
+        "risk-factors": 253
+      },
+      "CRBU": {
+        "financial-health": 76,
+        "risk-factors": 203
+      },
+      "EDIT": {
+        "financial-health": 52,
+        "risk-factors": 325
+      },
+      "EVGO": {
+        "financial-health": 512,
+        "risk-factors": 389
+      },
+      "GOOGL": {
+        "financial-health": 93,
+        "risk-factors": 306
+      },
+      "JPM": {
+        "financial-health": 104,
+        "risk-factors": 329
+      },
+      "LCID": {
+        "financial-health": 128,
+        "risk-factors": 512
+      },
+      "META": {
+        "financial-health": 111,
+        "risk-factors": 298
+      },
+      "MSFT": {
+        "financial-health": 135,
+        "risk-factors": 191
+      },
+      "NTLA": {
+        "financial-health": 512,
+        "risk-factors": 308
+      },
+      "NVDA": {
+        "financial-health": 121,
+        "risk-factors": 307
+      },
+      "NVO": {
+        "financial-health": 109,
+        "risk-factors": 511
+      },
+      "OCGN": {
+        "financial-health": 192,
+        "risk-factors": 322
+      },
+      "OMER": {
+        "financial-health": 94,
+        "risk-factors": 287
+      },
+      "PTON": {
+        "financial-health": 103,
+        "risk-factors": 283
+      },
+      "RDFN": {
+        "financial-health": 75,
+        "risk-factors": 512
+      },
+      "RIVN": {
+        "financial-health": 512,
+        "risk-factors": 193
+      },
+      "ROKU": {
+        "financial-health": 155,
+        "risk-factors": 512
+      },
+      "SANA": {
+        "financial-health": 512,
+        "risk-factors": 352
+      },
+      "SAP": {
+        "financial-health": 118,
+        "risk-factors": 149
+      },
+      "SFIX": {
+        "financial-health": 83,
+        "risk-factors": 465
+      },
+      "SNAP": {
+        "financial-health": 77,
+        "risk-factors": 322
+      },
+      "TM": {
+        "financial-health": 143,
+        "risk-factors": 512
+      },
+      "TSLA": {
+        "financial-health": 82,
+        "risk-factors": 397
+      },
+      "TSM": {
+        "financial-health": 120,
+        "risk-factors": 217
+      },
+      "UNH": {
+        "financial-health": 512,
+        "risk-factors": 398
+      },
+      "UPST": {
+        "financial-health": 121,
+        "risk-factors": 366
+      },
+      "VERV": {
+        "financial-health": 237,
+        "risk-factors": 319
+      },
+      "V": {
+        "financial-health": 77,
+        "risk-factors": 306
+      },
+      "WMT": {
+        "financial-health": 165,
+        "risk-factors": 188
+      },
+      "XOM": {
+        "financial-health": 133,
+        "risk-factors": 97
+      }
+    },
+    "4nfsm": {
+      "AAPL": {
+        "financial-health": 299,
+        "risk-factors": 134
+      },
+      "AFRM": {
+        "financial-health": 203,
+        "risk-factors": 142
+      },
+      "AMZN": {
+        "financial-health": 319,
+        "risk-factors": 99
+      },
+      "BABA": {
+        "financial-health": 186,
+        "risk-factors": 112
+      },
+      "BEAM": {
+        "financial-health": 169,
+        "risk-factors": 255
+      },
+      "BLNK": {
+        "financial-health": 255,
+        "risk-factors": 99
+      },
+      "BYND": {
+        "financial-health": 247,
+        "risk-factors": 73
+      },
+      "CALM": {
+        "financial-health": 218,
+        "risk-factors": 268
+      },
+      "CHGG": {
+        "financial-health": 170,
+        "risk-factors": 148
+      },
+      "COIN": {
+        "financial-health": 211,
+        "risk-factors": 154
+      },
+      "CRBU": {
+        "financial-health": 154,
+        "risk-factors": 97
+      },
+      "EDIT": {
+        "financial-health": 181,
+        "risk-factors": 347
+      },
+      "EVGO": {
+        "financial-health": 221,
+        "risk-factors": 314
+      },
+      "GOOGL": {
+        "financial-health": 395,
+        "risk-factors": 81
+      },
+      "JPM": {
+        "financial-health": 286,
+        "risk-factors": 80
+      },
+      "LCID": {
+        "financial-health": 244,
+        "risk-factors": 82
+      },
+      "META": {
+        "financial-health": 273,
+        "risk-factors": 80
+      },
+      "MSFT": {
+        "financial-health": 368,
+        "risk-factors": 239
+      },
+      "NTLA": {
+        "financial-health": 176,
+        "risk-factors": 305
+      },
+      "NVDA": {
+        "financial-health": 272,
+        "risk-factors": 106
+      },
+      "NVO": {
+        "financial-health": 262,
+        "risk-factors": 77
+      },
+      "OCGN": {
+        "financial-health": 140,
+        "risk-factors": 135
+      },
+      "OMER": {
+        "financial-health": 306,
+        "risk-factors": 133
+      },
+      "PTON": {
+        "financial-health": 175,
+        "risk-factors": 120
+      },
+      "RDFN": {
+        "financial-health": 203,
+        "risk-factors": 83
+      },
+      "RIVN": {
+        "financial-health": 268,
+        "risk-factors": 188
+      },
+      "ROKU": {
+        "financial-health": 238,
+        "risk-factors": 167
+      },
+      "SANA": {
+        "financial-health": 219,
+        "risk-factors": 159
+      },
+      "SAP": {
+        "financial-health": 242,
+        "risk-factors": 73
+      },
+      "SFIX": {
+        "financial-health": 261,
+        "risk-factors": 70
+      },
+      "SNAP": {
+        "financial-health": 222,
+        "risk-factors": 249
+      },
+      "TM": {
+        "financial-health": 186,
+        "risk-factors": 79
+      },
+      "TSLA": {
+        "financial-health": 246,
+        "risk-factors": 212
+      },
+      "TSM": {
+        "financial-health": 266,
+        "risk-factors": 113
+      },
+      "UNH": {
+        "financial-health": 309,
+        "risk-factors": 197
+      },
+      "UPST": {
+        "financial-health": 258,
+        "risk-factors": 301
+      },
+      "VERV": {
+        "financial-health": 228,
+        "risk-factors": 163
+      },
+      "V": {
+        "financial-health": 293,
+        "risk-factors": 145
+      },
+      "WMT": {
+        "financial-health": 301,
+        "risk-factors": 51
+      },
+      "XOM": {
+        "financial-health": 285,
+        "risk-factors": 159
+      }
+    },
+    "cnkp2": {
+      "AAPL": {
+        "financial-health": 134,
+        "risk-factors": 70
+      },
+      "AFRM": {
+        "financial-health": 133,
+        "risk-factors": 84
+      },
+      "AMZN": {
+        "financial-health": 123,
+        "risk-factors": 64
+      },
+      "BABA": {
+        "financial-health": 115,
+        "risk-factors": 101
+      },
+      "BEAM": {
+        "financial-health": 110,
+        "risk-factors": 85
+      },
+      "BLNK": {
+        "financial-health": 123,
+        "risk-factors": 68
+      },
+      "BYND": {
+        "financial-health": 126,
+        "risk-factors": 62
+      },
+      "CALM": {
+        "financial-health": 132,
+        "risk-factors": 51
+      },
+      "CHGG": {
+        "financial-health": 115,
+        "risk-factors": 79
+      },
+      "COIN": {
+        "financial-health": 113,
+        "risk-factors": 58
+      },
+      "CRBU": {
+        "financial-health": 117,
+        "risk-factors": 92
+      },
+      "EDIT": {
+        "financial-health": 115,
+        "risk-factors": 108
+      },
+      "EVGO": {
+        "financial-health": 138,
+        "risk-factors": 46
+      },
+      "GOOGL": {
+        "financial-health": 123,
+        "risk-factors": 84
+      },
+      "JPM": {
+        "financial-health": 134,
+        "risk-factors": 67
+      },
+      "LCID": {
+        "financial-health": 109,
+        "risk-factors": 62
+      },
+      "META": {
+        "financial-health": 137,
+        "risk-factors": 99
+      },
+      "MSFT": {
+        "financial-health": 120,
+        "risk-factors": 67
+      },
+      "NTLA": {
+        "financial-health": 116,
+        "risk-factors": 71
+      },
+      "NVDA": {
+        "financial-health": 122,
+        "risk-factors": 73
+      },
+      "NVO": {
+        "financial-health": 124,
+        "risk-factors": 67
+      },
+      "OCGN": {
+        "financial-health": 120,
+        "risk-factors": 97
+      },
+      "OMER": {
+        "financial-health": 132,
+        "risk-factors": 79
+      },
+      "PTON": {
+        "financial-health": 115,
+        "risk-factors": 65
+      },
+      "RDFN": {
+        "financial-health": 101,
+        "risk-factors": 89
+      },
+      "RIVN": {
+        "financial-health": 109,
+        "risk-factors": 83
+      },
+      "ROKU": {
+        "financial-health": 147,
+        "risk-factors": 63
+      },
+      "SANA": {
+        "financial-health": 121,
+        "risk-factors": 59
+      },
+      "SAP": {
+        "financial-health": 107,
+        "risk-factors": 87
+      },
+      "SFIX": {
+        "financial-health": 122,
+        "risk-factors": 52
+      },
+      "SNAP": {
+        "financial-health": 102,
+        "risk-factors": 89
+      },
+      "TM": {
+        "financial-health": 113,
+        "risk-factors": 82
+      },
+      "TSLA": {
+        "financial-health": 132,
+        "risk-factors": 80
+      },
+      "TSM": {
+        "financial-health": 113,
+        "risk-factors": 64
+      },
+      "UNH": {
+        "financial-health": 120,
+        "risk-factors": 87
+      },
+      "UPST": {
+        "financial-health": 133,
+        "risk-factors": 75
+      },
+      "VERV": {
+        "financial-health": 112,
+        "risk-factors": 84
+      },
+      "V": {
+        "financial-health": 123,
+        "risk-factors": 61
+      },
+      "WMT": {
+        "financial-health": 140,
+        "risk-factors": 74
+      },
+      "XOM": {
+        "financial-health": 115,
+        "risk-factors": 64
+      }
+    }
+  }
+}

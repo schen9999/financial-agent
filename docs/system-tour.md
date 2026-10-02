@@ -392,9 +392,9 @@ python eval/reweight_calibration.py \
   --run lsnnc eval/runs/lsnnc-claims.jsonl eval/runs/raw/lsnnc-findings
 ```
 
-**Tests.** `python -m pytest tests/`: 2749 lines, 186 tests collected —
-185 passed + 1 skipped, the credit-gated judge test that runs only under
-`CRITIC_INJECTION=1` (as of 2026-09-28).
+**Tests.** `python -m pytest tests/`: 4096 lines, 343 tests collected:
+342 passed + 1 skipped, the credit-gated judge test that runs only under
+`CRITIC_INJECTION=1` (as of 2026-10-01).
 
 ## Known limitations and next steps
 
@@ -444,8 +444,12 @@ Summary + Outlook), not the four pre-written sections. A fine-tune
 section error that the synthesis drops never reaches the gate — the
 CRBU market-cap and placeholder errors above were both absent from the
 audited text. The measured 8.15% therefore understates the fine-tune's
-raw section error rate. Auditing the sections directly is an open piece
-of harness work.
+raw section error rate. Since 2026-10-01 the deterministic numeric check
+covers the stock-data figures in every section, the four pre-written ones
+included, with every flag adjudicated (eval-methodology.md, ["Numeric
+check: adjudicated flags and the W4A16
+replication"](eval-methodology.md#numeric-check-adjudicated-flags-and-the-w4a16-replication-2026-10-01-dated)).
+Non-numeric claims in the four middle sections remain unaudited.
 
 **Judge reliability.** Nobody knows the judge is right; what is known is
 how wrong it is, and that travels with every number. v1 measured kappa
@@ -480,7 +484,24 @@ labels, not the judge, are the ground truth.
    untuned base (p = 0.58), so training was not the cause. Model size is
    the lever the data points at, and only weakly: 1.5B → 7B was
    borderline (p = 0.076), and every open-weight arm still trailed hosted
-   (7B vs hosted p = 0.0039). Next: pair the inputs (replay one snapshot
-   of retrieved context to every arm) and test larger models on
+   (7B vs hosted p = 0.0039). Paired inputs: done for the two fine-tune
+   precisions. The [pre-registered
+   replication](eval-methodology.md#numeric-check-adjudicated-flags-and-the-w4a16-replication-2026-10-01-dated)
+   replayed `v924f`'s recorded contexts to BF16 and W4A16 and scored
+   them with the numeric check: W4A16 − BF16 = +5.3 pts (paired
+   ticker-cluster bootstrap CI −1.1 to +11.6, p = 0.098), the W4A16
+   regression does not replicate (numbers-of-record, dated run records).
+   The other arms were not replayed. Next: test larger models on
    Financial Health, where every local error in that set sat. The serving
    path is proven; no local model tested so far matches hosted.
+6. Fix the two upstream stock-data defects (foreign-filer currency,
+   profit margin as a raw fraction), then rerun the hosted eval before
+   quoting new rates (`eval/numeric_check/upstream-findings.md`).
+7. Switch the numeric check from warn to block once the data defects are
+   fixed.
+8. Evaluate GGUF quantization quality on CPU; only W4A16 went through the
+   grounding eval.
+9. Benchmark other CPU targets (AMD EPYC, AMX-capable Xeon), and add OCI
+   Generative AI as a hosted arm on the same harness.
+10. Test whether a multi-agent supervisor improves a small open-weight
+    model on CPU.

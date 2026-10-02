@@ -1,0 +1,64 @@
+{
+  "created_utc": "2026-09-29T04:57:57Z",
+  "input_dir": "/home/ubuntu/models/qwen-ft",
+  "output_dir": "/home/ubuntu/models/qwen-ft-w4a16",
+  "algorithm": "GPTQ",
+  "scheme": "W4A16",
+  "group_size": 128,
+  "ignore": [
+    "lm_head"
+  ],
+  "saved_quantization_config": {
+    "format": "pack-quantized",
+    "config_groups": {
+      "group_0": {
+        "format": "pack-quantized",
+        "input_activations": null,
+        "output_activations": null,
+        "targets": [
+          "Linear"
+        ],
+        "weights": {
+          "actorder": null,
+          "block_structure": null,
+          "dynamic": false,
+          "group_size": 128,
+          "num_bits": 4,
+          "observer": "minmax",
+          "observer_kwargs": {},
+          "strategy": "group",
+          "symmetric": true,
+          "type": "int"
+        }
+      }
+    },
+    "ignore": [
+      "lm_head"
+    ]
+  },
+  "calibration": {
+    "dataset": "data/sections_dataset.jsonl",
+    "dataset_sha256": "5f5db9c5cd663939eae4cb01922fb79b9b7bf1bd0e31ea759cd251b262be4894",
+    "dataset_rows": 104,
+    "num_samples": 104,
+    "seed": 42,
+    "max_seq_length": 2048,
+    "tokens": 69986,
+    "samples_truncated": 0,
+    "text": "chat template over the user + assistant turns"
+  },
+  "oneshot_seconds": 256.1,
+  "gpu": "NVIDIA A10",
+  "source_dtype": "float16",
+  "source_weights_sha256": {
+    "model.safetensors": "3768f934867a55518f01ee31ef1c4bba5e61b0781dd2d16d16676cf0b4a5a430"
+  },
+  "weights_bytes": 1609439512,
+  "tokenizer_extra_special_tokens_stripped": false,
+  "versions": {
+    "llmcompressor": "0.7.1",
+    "compressed-tensors": "0.11.0",
+    "torch": "2.8.0",
+    "transformers": "4.55.2"
+  }
+}
