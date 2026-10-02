@@ -98,7 +98,10 @@ def endpoint() -> dict:
 SITE_PROFILES = {
     "section":   {"temperature": 0.1, "max_tokens": 768},
     "synthesis": {"temperature": 0.2, "max_tokens": 4096},
-    "rag":       {"temperature": 0.1, "max_tokens": 1024},
+    # RAG matches the hosted cap exactly: llama_index's Anthropic default
+    # (DEFAULT_ANTHROPIC_MAX_TOKENS = 512), so both arms' RAG answers get
+    # the same budget; truncations are counted.
+    "rag":       {"temperature": 0.1, "max_tokens": 512},
     "planner":   {"temperature": 0.0, "max_tokens": 1024},
     "react":     {"temperature": 0.0, "max_tokens": 1024},
 }

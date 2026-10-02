@@ -1169,11 +1169,13 @@ DRY / XTC / typical / top-n-sigma neutral. Thinking off per request
 Qwen3.6 thinks by default and does not support the `/no_think` switch.
 `max_tokens` per site, sized from the largest committed outputs
 (`python eval/findings_scan.py eval/runs/raw/*-findings`, chars/4): sections
-768 (hosted max 331), synthesis 4096 (hosted max 1,719), RAG 1024 (max 693;
-RAG is answered by hosted Haiku in every committed arm), planner and ReAct
-1024. The hosted RAG LLM itself runs llama_index's default cap of 512
-tokens; the SLM's is larger, an asymmetry recorded here. The full set is in
-each run's provenance.
+768 (hosted max 331), synthesis 4096 (hosted max 1,719), planner and ReAct
+1024. RAG is capped at 512, matching the hosted arm exactly: the hosted RAG
+LLM runs llama_index's default Anthropic cap of 512 tokens, so both arms'
+RAG answers get the same budget. (Committed RAG answers reach 693 tokens by
+chars/4 under that same 512-token cap, so chars/4 overstates Claude's token
+count; the Qwen tokenizer's count differs again, and SLM RAG truncations
+are counted per run.) The full set is in each run's provenance.
 
 **Counted per run** (the LLM ledger, `agent/llm_ledger.py`; findings
 metadata, result rows, aggregate): calls, prompt/completion tokens and
