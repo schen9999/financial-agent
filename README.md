@@ -561,7 +561,7 @@ make cluster-down    # tear down
 
 | What | Command | Notes |
 |---|---|---|
-| Unit and integration tests | `python -m pytest tests/` | 186 collected: 185 pass + 1 skipped (as of 2026-09-28). Runs in CI on every pull request and push to `main`. |
+| Unit and integration tests | `python -m pytest tests/` | 343 collected: 342 passed + 1 skipped, 4096 lines (as of 2026-10-01). Runs in CI on every pull request and push to `main`. A fresh clone needs `REDIS_URL` and `ANTHROPIC_API_KEY` set for the suite to collect; dummy values are fine (`ci.yml` sets a dummy `REDIS_URL`). Three tests in `tests/test_tools.py` call yfinance live and need network access. |
 | Credit-gated judge test | `CRITIC_INJECTION=1 python -m pytest tests/test_critic_injection.py -q -s` | Calls the paid Sonnet judge, so it is skipped in the default run and never runs on push, PR or a schedule. `critic-injection.yml` runs it on manual dispatch only and asserts recall ≥ 0.8. |
 | Kubernetes smoke test | `make smoke-test` | On kind: 13 assertions covering a sync brief, a Celery async task, a cache hit and miss, and the MCP server. |
 | Manifest equivalence | `python3 scripts/render_diff.py LEFT RIGHT` | Semantic diff of two rendered manifest sets; exit 0 means identical. How it proves the overlays: [docs/verification.md](docs/verification.md). |
