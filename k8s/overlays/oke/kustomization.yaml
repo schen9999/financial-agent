@@ -1,4 +1,6 @@
-# OKE overlay — Phase 2 target; NOT applied until OCI access lands.
+# OKE overlay for the TERRAFORM-created cluster (terraform/oci, Phase 2) —
+# never applied: no compartment for that cluster exists yet. The provided
+# OKE cluster (no Terraform, GHCR images, no LBs) uses k8s/overlays/oke-provided.
 # CHANGEME values come from terraform outputs (ocir_app_repo_url) after the
 # Phase 2 image push; applying with them unset fails loudly at pull time.
 apiVersion: kustomize.config.k8s.io/v1beta1

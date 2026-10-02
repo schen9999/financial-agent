@@ -1,5 +1,7 @@
-# OKE overlay — Phase 2 target; NOT applied until OCI access lands. CHANGEME
-# comes from terraform outputs (ocir_app_repo_url) after the image push.
+# OKE overlay for the TERRAFORM-created cluster (terraform/oci, Phase 2) —
+# never applied: no compartment for that cluster exists yet. The provided OKE
+# cluster uses argo/overlays/oke-provided. CHANGEME comes from terraform
+# outputs (ocir_app_repo_url) after the image push.
 # JSON6902 with template indices because kustomize strategic merge would
 # replace a CRD's whole templates list (and the images: transformer does not
 # reach CRD fields without custom configuration).
