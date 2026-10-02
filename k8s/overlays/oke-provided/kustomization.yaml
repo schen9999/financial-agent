@@ -1,0 +1,54 @@
+# OKE overlay for the PROVIDED cluster (not created by terraform/oci): OKE
+# v1.34, four VM.Standard.E5.Flex CPU nodes, cri-o, default StorageClass
+# oci-bv. Hosted models only — no vLLM, no GPU resources, USE_LOCAL_MODEL
+# stays false from base. Runbook: docs/deploy-runbook.md "OKE (provided
+# cluster)". The Terraform cluster keeps k8s/overlays/oke, untouched.
+#
+# Deltas from base, and nothing else:
+#   - app image from GHCR, pinned to the git sha it was built from
+#     (`make oke-images` rewrites newTag; `make oke-up` refuses UNPINNED)
+#   - postgres/redis fully qualified: cri-o resolves short names only as the
+#     node's registries.conf allows, so never depend on it
+#   - ghcr-pull-secret on every Deployment (created on the operator from a
+#     read:packages PAT, never committed; only consulted for ghcr.io pulls)
+#   - Postgres PVC on oci-bv at 50Gi, the OCI block volume floor (a smaller
+#     request is rounded up to it anyway)
+# No Service patches: base Services are ClusterIP, so nothing is exposed —
+# no LoadBalancer, no NodePort; access is kubectl port-forward on the
+# operator behind ssh -L.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+
+images:
+  - name: financial-agent-app
+    newName: ghcr.io/schen9999/financial-agent-app
+    newTag: UNPINNED
+  - name: postgres
+    newName: docker.io/library/postgres
+  - name: redis
+    newName: docker.io/library/redis
+
+patches:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+    patch: |-
+      - op: add
+        path: /spec/template/spec/imagePullSecrets
+        value:
+          - name: ghcr-pull-secret
+
+  - patch: |-
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: postgres-data
+        namespace: financial-agent
+      spec:
+        storageClassName: oci-bv
+        resources:
+          requests:
+            storage: 50Gi

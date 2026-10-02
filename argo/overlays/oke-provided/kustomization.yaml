@@ -1,0 +1,51 @@
+# Argo overlay for the PROVIDED OKE cluster (see k8s/overlays/oke-provided).
+# The Terraform cluster keeps argo/overlays/oke, untouched.
+#
+# Deltas from base, and nothing else:
+#   - eval-one + aggregate run the GHCR app image, pinned to the same git sha
+#     as the app overlay (`make oke-images` rewrites both newTags together)
+#   - workflow-level ghcr-pull-secret: Argo hands it to every pod the
+#     workflow spawns; the CronWorkflow inherits it via workflowTemplateRef
+#   - findings stay on the base emptyDir (multi-node: no hostPath); the
+#     per-pod ===EVAL_FINDINGS_TGZ=== stdout dump is the durable channel,
+#     recovered with scripts/extract_findings.py
+#   - ttlStrategy 7 days (base: 1 day), so pods and their logs — and with
+#     them the findings dumps — survive a weekend
+#   - nightly CronWorkflow suspended: every fire spends Anthropic credits;
+#     evals here are submitted by hand (make eval-run)
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+
+configurations:
+  - kustomizeconfig.yaml
+
+images:
+  - name: financial-agent-app
+    newName: ghcr.io/schen9999/financial-agent-app
+    newTag: UNPINNED
+
+patches:
+  - target:
+      group: argoproj.io
+      version: v1alpha1
+      kind: WorkflowTemplate
+      name: grounding-eval
+    patch: |-
+      - op: add
+        path: /spec/imagePullSecrets
+        value:
+          - name: ghcr-pull-secret
+      - op: replace
+        path: /spec/ttlStrategy/secondsAfterCompletion
+        value: 604800
+  - target:
+      group: argoproj.io
+      version: v1alpha1
+      kind: CronWorkflow
+      name: grounding-eval-nightly
+    patch: |-
+      - op: add
+        path: /spec/suspend
+        value: true

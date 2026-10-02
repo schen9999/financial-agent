@@ -1,0 +1,7 @@
+# Teach kustomize's images: transformer where a WorkflowTemplate keeps its
+# container images, so this overlay pins the app image with one images:
+# entry (same form as k8s/overlays/oke-provided) instead of JSON6902 index
+# patches. Without this, images: does not reach CRD fields.
+images:
+  - path: spec/templates/container/image
+    kind: WorkflowTemplate
