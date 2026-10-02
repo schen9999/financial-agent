@@ -4,24 +4,23 @@ An AI agent that researches stocks and answers follow-up questions using live fi
 
 **Live Demo:** [financial-research-agent.streamlit.app](https://financial-research-agent.streamlit.app) | **Built with Claude Code**
 
-**Documentation:** start at [docs/README.md](docs/README.md) — every question a reviewer might ask, mapped to the document that answers it.
-
-**[Model recommendation](docs/model-recommendation.md):** hosted Haiku or an open-weight model on the A10 for section writing, from the four-arm comparison.
+**Documentation:** start at [docs/README.md](docs/README.md), which maps each question a reviewer might ask to the document that answers it.
 
 ---
 
-## Summary
+## What it does
 
-A research agent that turns live market data, news, and SEC filings into
-investment briefs, and audits the quantitative and forward-looking claims in
-each brief's Executive Summary and Outlook against the sources it retrieved,
-using an LLM judge whose own accuracy is measured against blind human labels. It runs as a six-service stack (FastAPI, Celery,
-Redis, PostgreSQL, Streamlit, MCP server) on Kubernetes, with the grounding
-eval as a gated Argo Workflows DAG. On OCI it runs on single-node k3s on A10
-GPU VMs, where vLLM serves a QLoRA fine-tune that was measured against the
-hosted models and ships disabled. Every rate this repository quotes names its
-judge version and the run or source it came from, with a Wilson confidence
-interval wherever the claim counts are on record.
+- **Generate Brief:** enter a ticker. The app fetches stock data (yfinance), news (NewsAPI) and SEC filing summaries (EDGAR), and grounds the SEC Filing Highlights and Risk Factors sections in filing text with Pinecone RAG. Claude Haiku writes the four middle sections in parallel, then Claude Sonnet streams the Executive Summary and Outlook. The brief is cached in Redis (exact key `research:{TICKER}`) and PostgreSQL.
+- **Ask a follow-up:** a LangGraph ReAct agent answers free-form questions, picking the tools it needs (stock data, news, SEC filings, or RAG search).
+- **Two execution paths:** the Streamlit UI runs the `agent/` pipeline in-process, and the FastAPI app runs the same code behind REST endpoints (the app Kubernetes deploys). There is no Streamlit-to-FastAPI hop.
+
+## Highlights
+
+- **Grounding.** An LLM judge checks each brief's Executive Summary and Outlook against the retrieved sources. Hosted pipeline, 40 tickers: 12/392 = 3.06% unsupported (Wilson 95% CI 1.8–5.3%), run `j4cnp` (2026-09-05/06), judge v2. That is the judge-flagged rate. The judge's calibration of record is precision 60% (9/15, CI 35.7–80.2%) and population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), so the reweighted true-rate estimate is 5.7% (CI 3.5–9.9%). [Numbers of record](docs/numbers-of-record.md#current)
+- **Fine-tune vs hosted.** The QLoRA fine-tune, served in-cluster by vLLM, had 30/368 = 8.15% unsupported (CI 5.8–11.4%) against the hosted 12/392 = 3.06% (CI 1.8–5.3%) in the 40-ticker A/B (`lsnnc` vs `j4cnp`, judge v2), Fisher p = 0.0023. The reweighted estimates are 8.3% (CI 5.5–12.5%) vs 5.7% (CI 3.5–9.9%). It fails the 5% gate, so it ships disabled. [Dated run records](docs/numbers-of-record.md#dated-run-records), [model recommendation](docs/model-recommendation.md)
+- **Deterministic numeric check.** It compares every stock-data figure a brief states (market cap, revenue, net income, profit margin, price, 52-week range) with the stock data the pipeline supplied. Of 359 live flags, 342 were true errors, 2 false positives and 15 other defects: precision 99.4% (Wilson 97.9–99.8%, other defects excluded), labeled by the author and not blind. Wrong stock figures per checked number (true errors only, all sections): hosted 19/1796 = 1.1% (cluster bootstrap 95% CI 0.4–1.8%) vs local-model 296/1980 = 14.9% (CI 12.7–17.3%). 18 of the 19 hosted errors trace to two upstream data defects, recorded and not yet fixed. [Method and tables](docs/eval-methodology.md#numeric-check-adjudicated-flags-and-the-w4a16-replication-2026-10-01-dated)
+- **4-bit (W4A16) on the A10.** Quantizing the fine-tune raised output throughput from 708.3 to 1075.7 tok/s at concurrency 8. The judge found no detectable difference on its audited sections: 23/344 = 6.69% (CI 4.5–9.8%) vs 25/385 = 6.49% (CI 4.4–9.4%), p = 1.00, judge v2, which is not proof of equivalence. A pre-registered section-level replication did not demonstrate a regression in wrong stock figures: +5.3 pts (CI −1.1 to +11.6). [Quantization benchmark](docs/eval-methodology.md#quantization-benchmark-2026-09-29-a-dated-measurement), [replication](docs/eval-methodology.md#numeric-check-adjudicated-flags-and-the-w4a16-replication-2026-10-01-dated)
+- **CPU serving on the Xeon.** The engine and the precision were measured separately, at concurrency 8. Engine: vLLM BF16 to llama.cpp F16 raised output from 22.9 to 52.3 tok/s. Precision, on llama.cpp: F16 / Q8_0 / Q4_K_M gave 52.3 / 51.7 / 64.5 tok/s. GGUF quantization quality was not evaluated. [CPU engine and precision](docs/eval-methodology.md#cpu-engine-and-precision-llamacpp-gguf)
 
 ---
 
@@ -63,21 +62,9 @@ reweighted true-rate estimate 5.7% (CI 3.5–9.9%).
 | Four-arm comparison (40 tickers) | hosted 4/383 = 1.04% (0.4–2.7%), same-image rerun 7/389 = 1.80% (0.9–3.7%); fine-tune 25/385 = 6.49% (4.4–9.4%); untuned Qwen2.5-1.5B 31/400 = 7.75% (5.5–10.8%); untuned Qwen2.5-7B 18/393 = 4.58% (2.9–7.1%) | `kcf7s`, `v924f`, `4nfsm`, `cnkp2`, 2026-09-23; `dvvxk` 2026-09-24 | v2 | [dated comparison set, not numbers of record](docs/numbers-of-record.md#dated-run-records) |
 | Judge calibration of record (blind labels) | kappa 0.580; UNSUPPORTED precision 9/15 = 60.0% (35.7–80.2%), population-weighted recall 32.5% on `j4cnp` (16.0–52.4%) | `holdout_sample.csv` (2026-09-06) + blind relabel `relabel_S.csv` (2026-09-24) | v2 | [current](docs/numbers-of-record.md#current) |
 | Cost per brief | $0.0366 (3-ticker mean; no interval computed) | `cost_record_post_fix.json`, 2026-09-06 | n/a (not a judged rate) | [cost of record](docs/numbers-of-record.md#current) |
-
----
-
-## What It Does
-
-**Generate Brief** -- enter a ticker and the app produces a structured investment brief:
-1. Fetches stock data (yfinance), news (NewsAPI), and SEC filing summaries (EDGAR)
-2. Runs two concurrent Pinecone RAG queries to ground the SEC Filing Highlights and Risk Factors sections in actual filing text (a retrieval defect that indexed exhibit text instead of Item 1A for most tickers was found and fixed 2026-09-04 — see [docs/eval-methodology.md](docs/eval-methodology.md), "Retrieval defect")
-3. Generates four middle sections in parallel using Claude Haiku
-4. Streams the Executive Summary and Outlook from Claude Sonnet, which receives the pre-written sections as context
-5. Caches the completed brief in Redis (exact key `research:{TICKER}`) and PostgreSQL
-
-**Ask a follow-up** -- a LangGraph ReAct agent answers free-form questions, selecting whichever tools it needs (stock data, news, SEC filings, or RAG search).
-
-**Two execution paths, by design:** the Streamlit UI imports the agent and runs the pipeline **in-process** (so the hosted demo needs no backend and can stream tokens directly), while the FastAPI app runs the same `agent/` code behind REST endpoints for programmatic consumers (and is what ECS/Kubernetes deploy). Same pipeline, two entry points -- there is no Streamlit→FastAPI hop.
+| Numeric check, adjudicated (live flags) | precision 342/344 = 99.4% (97.9–99.8%), other defects excluded; wrong stock figures per checked number, true errors only: hosted 19/1796 = 1.1% vs local-model 296/1980 = 14.9% (cluster bootstrap 95% CIs 0.4–1.8% and 12.7–17.3%) | `j4cnp`, `kcf7s`, `dvvxk`, `2nh8v`, `lsnnc`, `v924f`, `r5nzh`, `4nfsm`, `cnkp2`; adjudicated 2026-10-01 | n/a (not a judged rate) | [dated measurement, not a number of record](docs/numbers-of-record.md#dated-run-records) |
+| W4A16 vs BF16 fine-tune | A10 output 1075.7 vs 708.3 tok/s at concurrency 8; judge 23/344 = 6.69% (4.5–9.8%) vs 25/385 = 6.49% (4.4–9.4%), Fisher p = 1.00; pre-registered replication on identical inputs (wrong stock figures, Financial Health + Risk Factors): +5.3 pts (paired bootstrap CI −1.1 to +11.6), the regression does not replicate | serving 2026-09-29; `r5nzh` (2026-09-29) vs `v924f` (2026-09-23); `replay-replication-2026-09-30` | v2 (judge result only) | [dated measurement (throughput); dated comparison, not a number of record (judge, replication)](docs/numbers-of-record.md#dated-run-records) |
+| CPU engine and precision (Xeon, concurrency 8) | engine: vLLM BF16 22.9 vs llama.cpp F16 52.3 tok/s; precision on llama.cpp: F16 / Q8_0 / Q4_K_M 52.3 / 51.7 / 64.5 tok/s | `vm-a10-inst-2`, 2026-09-29 (`eval/runs/bench/cpu-gguf-2026-09-29/`) | n/a (not a judged rate) | [dated measurement, not a number of record](docs/numbers-of-record.md#dated-run-records) |
 
 ---
 
