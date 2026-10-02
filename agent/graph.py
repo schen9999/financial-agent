@@ -43,13 +43,13 @@ from agent.core import (
     _rag_contexts,
     _SECTIONS,
     _haiku_section,
-    _synthesis_prompt,
+    synthesize,
     _trim_stock, _trim_news, _trim_sec, _data_context,
-    _llm as _sonnet,
     DEFAULT_HIGHLIGHTS_QUERY,
     DEFAULT_RISKS_QUERY,
 )
 from agent.grounding import grade_brief, extract_exec_and_outlook
+from agent.tools.slm import slm_full_enabled, structured
 from agent.tracing import traceable
 
 
@@ -147,10 +147,42 @@ def _get_planner_llm():
     return _planner_llm
 
 
+class _RequiredResearchPlan(ResearchPlan):
+    """ResearchPlan with every field required in its JSON schema — what the
+    SLM's grammar-constrained decoding is given. ResearchPlan's defaults make
+    all fields optional, and a small model then omits the two queries
+    (observed against a Qwen3.5 llama-server, 2026-10-02)."""
+
+    @classmethod
+    def model_json_schema(cls, *args, **kwargs):
+        schema = super().model_json_schema(*args, **kwargs)
+        schema["required"] = sorted(schema.get("properties", {}))
+        return schema
+
+
+def _make_plan_slm(company: str, ticker: str, context: str) -> dict:
+    """SLM planner: schema-constrained JSON, one parse retry, then SLMParseError
+    propagates — the brief fails visibly instead of silently using defaults.
+    Blank queries still fall back to the defaults, exactly as the hosted path."""
+    plan = structured("planner", [
+        {"role": "system", "content": _PLANNER_SYSTEM},
+        {"role": "user", "content": _planner_user(company, ticker, context)},
+    ], _RequiredResearchPlan)
+    return {
+        "highlights_query": plan.highlights_query.strip() or DEFAULT_HIGHLIGHTS_QUERY,
+        "risks_query": plan.risks_query.strip() or DEFAULT_RISKS_QUERY,
+        "coverage": plan.coverage,
+        "sub_questions": plan.sub_questions,
+    }
+
+
 def _make_plan(company: str, ticker: str, context: str) -> dict:
     """Call the planner LLM; fall back to the default RAG sub-questions (today's
     hardcoded behaviour) if the planner errors or returns blanks, so a planner
-    hiccup can never break a brief."""
+    hiccup can never break a brief. Under SLM_FULL the SLM planner runs instead
+    and its failures are NOT swallowed (see _make_plan_slm)."""
+    if slm_full_enabled():
+        return _make_plan_slm(company, ticker, context)
     try:
         plan: ResearchPlan = _get_planner_llm().invoke([
             SystemMessage(content=_PLANNER_SYSTEM),
@@ -251,12 +283,10 @@ def research_node(state: BriefState) -> dict:
         sections = state["sections"]
         source_context = state["source_context"]
 
-    prompt = _synthesis_prompt(ticker, company, sections)
-    feedback = state.get("feedback")
-    if feedback:
-        prompt = f"{feedback}\n\n{prompt}"
-
-    brief = _sonnet.invoke([HumanMessage(content=prompt)]).content
+    # Sonnet, or the SLM under SLM_FULL (format-guarded there); the critic
+    # below stays on Sonnet either way — the one hosted dependency of the
+    # multi-agent path under SLM_FULL.
+    brief = synthesize(ticker, company, sections, state.get("feedback"))
 
     return {
         "rag_highlights": highlights, "rag_risks": risks,

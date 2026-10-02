@@ -18,7 +18,7 @@ def test_answer_question_end_to_end():
         ]
     }
 
-    with patch.object(react_agent_module, "_graph", mock_graph):
+    with patch.dict(react_agent_module._graphs, {"hosted": mock_graph}):
         result = react_agent_module.answer_question("AAPL", "What is the P/E ratio?")
 
     assert isinstance(result, str)
@@ -34,7 +34,7 @@ def test_answer_question_fallback_on_empty_messages():
     mock_graph = MagicMock()
     mock_graph.invoke.return_value = {"messages": []}
 
-    with patch.object(react_agent_module, "_graph", mock_graph):
+    with patch.dict(react_agent_module._graphs, {"hosted": mock_graph}):
         result = react_agent_module.answer_question("AAPL", "anything")
 
     assert result == "Could not generate an answer."
@@ -55,7 +55,7 @@ def test_answer_question_skips_tool_call_messages():
         ]
     }
 
-    with patch.object(react_agent_module, "_graph", mock_graph):
+    with patch.dict(react_agent_module._graphs, {"hosted": mock_graph}):
         result = react_agent_module.answer_question("AAPL", "What is the price?")
 
     assert "$185" in result

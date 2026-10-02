@@ -10,6 +10,7 @@ from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+import agent.core as core
 import agent.graph as graph
 from agent.graph import (
     planner_node, supervisor_node, _make_plan, ResearchPlan, build_graph,
@@ -84,14 +85,15 @@ def _run_graph_with(grade_side_effect):
         "coverage": [], "sub_questions": [],
     }
     compiled = build_graph().compile()
+    # research_node synthesises via core.synthesize, whose hosted model is
+    # core._synthesis_llm (the Sonnet instance graph used to alias as _sonnet).
     with patch.multiple(
         graph,
         _make_plan=MagicMock(return_value=fixed_plan),
         _rag_contexts=MagicMock(return_value=("highlights text", "risks text")),
         _generate_sections=MagicMock(return_value=_SECTIONS),
-        _sonnet=sonnet,
         grade_brief=MagicMock(side_effect=grade_side_effect),
-    ):
+    ), patch.object(core, "_synthesis_llm", sonnet):
         final = compiled.invoke(_seed_state())
     return final, sonnet
 
