@@ -64,3 +64,28 @@ def test_credit_balance_error_raises_system_exit():
 def test_ordinary_errors_pass_through():
     assert check_fatal_api_error(ConnectionError("connection reset")) is None
     assert check_fatal_api_error(TimeoutError("timed out")) is None
+
+
+def test_keyed_check_sends_bearer(monkeypatch):
+    seen = []
+
+    class _R:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def read(self):
+            return b'{"data": [{"id": "qwen3.6-35b-a3b-q4km"}]}'
+
+    def fake_urlopen(req, timeout=None):
+        seen.append(req)
+        return _R()
+
+    monkeypatch.setattr(runtime_guards.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(runtime_guards.json, "load", lambda r: __import__("json").loads(r.read()))
+    assert check_local_model_served("http://n2:30880", "qwen3.6-35b-a3b-q4km",
+                                    api_key="sekret") == ["qwen3.6-35b-a3b-q4km"]
+    assert seen[0].full_url == "http://n2:30880/v1/models"
+    assert seen[0].get_header("Authorization") == "Bearer sekret"

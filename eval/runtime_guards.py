@@ -7,7 +7,8 @@ import json
 import urllib.request
 
 
-def check_local_model_served(url: str, name: str, timeout: float = 15.0) -> list[str]:
+def check_local_model_served(url: str, name: str, timeout: float = 15.0,
+                             api_key: str | None = None) -> list[str]:
     """Confirm the OpenAI-compatible server at `url` lists `name` on
     /v1/models; return the served ids, or raise SystemExit.
 
@@ -18,8 +19,12 @@ def check_local_model_served(url: str, name: str, timeout: float = 15.0) -> list
     it from a gate failure afterwards.
     """
     endpoint = f"{url.rstrip('/')}/v1/models"
+    # Keyed servers (llama-server --api-key) refuse /v1/models without it;
+    # keyless calls are exactly as before (a plain URL).
+    target = (urllib.request.Request(endpoint, headers={"Authorization": f"Bearer {api_key}"})
+              if api_key else endpoint)
     try:
-        with urllib.request.urlopen(endpoint, timeout=timeout) as resp:
+        with urllib.request.urlopen(target, timeout=timeout) as resp:
             ids = [m.get("id") for m in json.load(resp).get("data", [])]
     except Exception as e:  # noqa: BLE001 — any failure here is fatal by design
         raise SystemExit(

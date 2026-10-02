@@ -14,6 +14,8 @@ Configuration (env; keys from a Secret, never a ConfigMap):
   SLM_CPU_URL, SLM_GPU_URL base URLs (no /v1)
   SLM_CPU_API_KEY, SLM_GPU_API_KEY
   SLM_MODEL_NAME           served alias the endpoint must list on /v1/models
+                           (SLM_CPU_MODEL_NAME / SLM_GPU_MODEL_NAME override
+                           it per endpoint)
   SLM_ARTIFACT             weights identity recorded in provenance
   LOCAL_MODEL_THINKING     "off" (default) | "on" — sent per request as
                            chat_template_kwargs.enable_thinking
@@ -72,10 +74,13 @@ def endpoint() -> dict:
         raise SLMConfigError(f"SLM_FULL is on but SLM_ENDPOINT is {name!r}; "
                              f"expected one of {ENDPOINTS}")
     up = name.upper()
+    # Served alias: per endpoint when set (a hybrid GPU deployment serves a
+    # different alias, see k8s/llamacpp), else the shared SLM_MODEL_NAME.
     cfg = {"name": f"slm-{name}",
            "url": os.getenv(f"SLM_{up}_URL", "").strip().rstrip("/"),
            "api_key": os.getenv(f"SLM_{up}_API_KEY", "").strip(),
-           "model": os.getenv("SLM_MODEL_NAME", "").strip()}
+           "model": (os.getenv(f"SLM_{up}_MODEL_NAME", "").strip()
+                     or os.getenv("SLM_MODEL_NAME", "").strip())}
     missing = [var for var, val in ((f"SLM_{up}_URL", cfg["url"]),
                                     (f"SLM_{up}_API_KEY", cfg["api_key"]),
                                     ("SLM_MODEL_NAME", cfg["model"])) if not val]

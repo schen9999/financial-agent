@@ -51,3 +51,23 @@ def test_w4a16_arm_identical_to_local_arm_except_name_prefix():
     assert len(local) == len(w4)
     assert diff == [("  generateName: grounding-eval-extended-local-",
                      "  generateName: grounding-eval-extended-local-w4a16-")]
+
+
+import pytest  # noqa: E402
+
+_SLM_RUNS = [("eval-run-extended-slm-cpu.yaml", "slm-full-cpu", True),
+             ("eval-run-extended-slm-gpu.yaml", "slm-full-gpu", True),
+             ("eval-run-slm-cpu-smoke.yaml", "slm-full-cpu", False),
+             ("eval-run-slm-gpu-smoke.yaml", "slm-full-gpu", False)]
+
+
+@pytest.mark.parametrize("name,arm,extended", _SLM_RUNS)
+def test_slm_run_files(name, arm, extended):
+    spec = "\n".join(_spec_lines(name))
+    assert re.search(rf"name: arms\s+value: {arm}\n", spec + "\n")
+    assert "name: ticker-deadline-seconds" in spec  # CPU tickers outlast the 1200s default
+    if extended:
+        assert _yaml_tickers(name) == _txt_tickers()
+    else:
+        assert "name: tickers" not in spec  # smoke = the template's 10 default tickers
+    assert "baseline" not in spec  # one arm per run; the baseline is eval-run-extended.yaml

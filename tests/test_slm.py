@@ -71,6 +71,12 @@ def test_endpoint_requires_every_setting(slm_env, monkeypatch):
         slm.endpoint()
 
 
+def test_per_endpoint_model_name_overrides(slm_env, monkeypatch):
+    assert slm.endpoint()["model"] == CFG["SLM_MODEL_NAME"]
+    monkeypatch.setenv("SLM_CPU_MODEL_NAME", "qwen3.6-35b-a3b-q4km-hybrid-ncmoe4")
+    assert slm.endpoint()["model"] == "qwen3.6-35b-a3b-q4km-hybrid-ncmoe4"
+
+
 def test_thinking_value_validated(slm_env, monkeypatch):
     monkeypatch.setenv("LOCAL_MODEL_THINKING", "maybe")
     with pytest.raises(slm.SLMConfigError):

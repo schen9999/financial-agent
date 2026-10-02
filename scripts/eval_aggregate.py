@@ -192,6 +192,12 @@ def main():
               f"{p.get('slm_model_ftype')}, n_ctx {p.get('slm_n_ctx')}, "
               f"{p.get('slm_total_slots')} slots, thinking {p.get('slm_thinking')}")
         print(f"  slm sampling      : {p.get('slm_sampling')}")
+        if "-hybrid-" in (p.get("slm_served_name") or ""):
+            print("  slm layout        : HYBRID — MoE expert weights partly in host RAM "
+                  "(--n-cpu-moe); label this run 'hybrid' in every table, never 'GPU'")
+        elif p.get("slm_endpoint") == "slm-gpu":
+            print("  slm layout        : all layers on GPU per the served alias — confirm "
+                  "'offloaded N/N layers to GPU' in the server log for the record")
     if len(slm_provs) > 1:
         print("  WARNING: rows served by more than one SLM endpoint/config — this run "
               "is not a single-endpoint measurement")

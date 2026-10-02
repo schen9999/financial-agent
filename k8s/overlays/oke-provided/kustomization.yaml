@@ -13,6 +13,9 @@
 #     read:packages PAT, never committed; only consulted for ghcr.io pulls)
 #   - Postgres PVC on oci-bv at 50Gi, the OCI block volume floor (a smaller
 #     request is rounded up to it anyway)
+#   - self-served SLM settings in app-config (SLM_FULL=false for the app)
+#     plus the optional slm-endpoints Secret on the four app Deployments;
+#     the endpoint itself is the separate k8s/llamacpp tree
 # No Service patches: base Services are ClusterIP, so nothing is exposed —
 # no LoadBalancer, no NodePort; access is kubectl port-forward on the
 # operator behind ssh -L.
@@ -52,3 +55,39 @@ patches:
         resources:
           requests:
             storage: 50Gi
+
+  # ── Self-served SLM (agent/tools/slm.py; endpoint k8s/llamacpp). Off for
+  #    the app (SLM_FULL=false; `make oke-slm-app` flips it); the eval's
+  #    slm-full-* arms set it per arm. Keys and the GPU endpoint URL (node 2's
+  #    address stays out of git) come from the slm-endpoints Secret, created
+  #    on the operator — optional, so the harness deploys without it.
+  - patch: |-
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: app-config
+        namespace: financial-agent
+      data:
+        SLM_FULL: "false"
+        SLM_ENDPOINT: "cpu"
+        SLM_CPU_URL: "http://llamacpp.financial-agent.svc:8080"
+        SLM_MODEL_NAME: "qwen3.6-35b-a3b-q4km"
+        SLM_ARTIFACT: "ggml-org/Qwen3.6-35B-A3B-GGUF@baec3ebee244827cda0f4557eafa8b28f7545fa6:Qwen3.6-35B-A3B-Q4_K_M.gguf sha256:671e47e0ec53c665d048b98c3ecbfd5236b5ca9c3e02ed19fc8f81f7b85140c7"
+        SLM_CONTEXT_WINDOW: "32768"
+        SLM_TIMEOUT: "900"
+        LOCAL_MODEL_THINKING: "off"
+        # Second judge pass per ticker: each RAG answer vs its own chunks,
+        # on every arm (eval/rag_faithfulness.py; ~+$0.04/ticker).
+        EVAL_RAG_FAITHFULNESS: "true"
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: ^(api|worker|streamlit|mcp)$
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/envFrom/-
+        value:
+          secretRef:
+            name: slm-endpoints
+            optional: true
