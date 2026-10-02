@@ -10,6 +10,7 @@ from agent.tools.news import get_company_news
 from agent.tools.sec import get_sec_filings
 from agent.tools.rag import query_sec_filing
 from agent.tools.local_model import use_local_model, is_local_section, LocalChat
+from agent.numeric_check import apply_numeric_check, numeric_check_mode
 from agent.tracing import traceable
 from cache import get_cached_response, set_cached_response
 
@@ -242,9 +243,11 @@ def stream_synthesis(ticker: str, stock_data: dict, news_data, sec_data: dict):
     # stream the final brief once (final-only — a draft may be revised by the
     # critic, so it can't stream token-by-token). Preserves the generator contract.
     from agent.graph import multi_agent_enabled, run_multi_agent
+    mode = numeric_check_mode()
     if multi_agent_enabled():
         brief = run_multi_agent(ticker, stock_data, news_data, sec_data)
-        set_cached_response(ticker, brief)
+        brief, report = apply_numeric_check(brief, stock_data, mode)
+        set_cached_response(ticker, brief, numeric_check=report)
         yield brief
         return
 
@@ -263,35 +266,60 @@ def stream_synthesis(ticker: str, stock_data: dict, news_data, sec_data: dict):
     for chunk in _synthesis_llm.stream([HumanMessage(content=_synthesis_prompt(ticker, company, sections))]):
         if chunk.content:
             full_response.append(chunk.content)
-            yield chunk.content
+            # block mode may withhold sections, so it streams nothing until
+            # the check has run; off/warn stream token by token as before.
+            if mode != "block":
+                yield chunk.content
 
     brief = "".join(full_response)
     print(f"[timing:{ticker}] {_synthesis_label}_stream={time.perf_counter() - t1:.2f}s  chars={len(brief)}")
     print(f"[timing:{ticker}] total_llm={time.perf_counter() - t0:.2f}s")
-    set_cached_response(ticker, brief)
+    checked, report = apply_numeric_check(brief, stock_data, mode)
+    if mode == "block":
+        yield checked
+    elif checked != brief:
+        yield checked[len(brief):]  # warn: the appended note
+    set_cached_response(ticker, checked, numeric_check=report)
+
+
+def run_research(ticker: str) -> str:
+    """Non-streaming path, brief only (benchmark and cost harnesses)."""
+    return run_research_checked(ticker)["brief"]
 
 
 @traceable(run_type="chain", name="run_research", tags=["full_brief"],
            metadata={"request_type": "full_brief", "synthesis_model": "claude-sonnet-4-6",
                      "section_model": "claude-haiku-4-5-20251001"})
-def run_research(ticker: str) -> str:
-    """Non-streaming path used by FastAPI and Celery workers."""
+def run_research_checked(ticker: str) -> dict:
+    """Non-streaming path used by FastAPI and Celery workers: the brief plus
+    the numeric-check report, {"brief": str, "numeric_check": dict | None}
+    (None when NUMERIC_CHECK=off, or for a cache entry written before the
+    check existed)."""
     t_total = time.perf_counter()
+    mode = numeric_check_mode()
 
     t0 = time.perf_counter()
     cached = get_cached_response(ticker)
     print(f"[timing:{ticker}] cache_check={time.perf_counter() - t0:.2f}s")
     if cached:
-        return cached["result"]
+        return {"brief": cached["result"],
+                "numeric_check": cached.get("numeric_check")}
 
-    # Multi-agent path (flag-gated): the supervisor graph fetches data, plans,
-    # researches, and runs the inline grounding critic. Same brief schema out.
+    # Multi-agent path (flag-gated): the supervisor graph plans, researches,
+    # and runs the inline grounding critic. Same brief schema out. With the
+    # numeric check on, the data is fetched here and handed to the graph
+    # (which then skips its own fetch) so the check can see the stock dict.
     from agent.graph import multi_agent_enabled, run_multi_agent
     if multi_agent_enabled():
-        brief = run_multi_agent(ticker)
-        set_cached_response(ticker, brief)
+        if mode == "off":
+            brief, report = run_multi_agent(ticker), None
+        else:
+            stock_data, news_data, sec_data = fetch_research_data(ticker)
+            brief = run_multi_agent(ticker, stock_data, news_data, sec_data)
+            brief, report = apply_numeric_check(brief, stock_data, mode)
+        set_cached_response(ticker, brief, numeric_check=report)
         print(f"[timing:{ticker}] total(multi_agent)={time.perf_counter() - t_total:.2f}s")
-        return brief
+        return {"brief": brief, "numeric_check": report}
 
     print(f"\nResearching {ticker.upper()}...\n")
     stock_data, news_data, sec_data = fetch_research_data(ticker)
@@ -310,7 +338,7 @@ def run_research(ticker: str) -> str:
     response = _synthesis_llm.invoke([HumanMessage(content=_synthesis_prompt(ticker, company, sections))])
     print(f"[timing:{ticker}] {_synthesis_label}_invoke={time.perf_counter() - t_llm:.2f}s")
 
-    brief = response.content
-    set_cached_response(ticker, brief)
+    brief, report = apply_numeric_check(response.content, stock_data, mode)
+    set_cached_response(ticker, brief, numeric_check=report)
     print(f"[timing:{ticker}] total={time.perf_counter() - t_total:.2f}s")
-    return brief
+    return {"brief": brief, "numeric_check": report}

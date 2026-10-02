@@ -1,0 +1,62 @@
+# TM — replay s10 — bf16
+
+## Metadata
+
+ticker: TM
+arm: bf16
+sample: 10
+served_name: financial-lora
+source_findings: eval/runs/raw/v924f-findings/TM_local-model.md
+context_sha256: 54dcc3ff59319df8036d5400cfaeb954cf2cdd979008d1d9f1fb1698728acc2f
+agent_core_sha256: f45e278f9722d5c331843a77692b154904f72edd059e6a3da48976a7945db44e
+sampling: {"temperature": 0.1, "max_tokens": 512, "top_p": 0.8, "top_k": 20, "repetition_penalty": 1.1, "min_p": 0.0}
+endpoint: http://localhost:30880
+generated_utc: 2026-09-30T04:48:58Z
+financial_health_prompt_sha256: 5256782785d900ac5df9b0dba279912684e78232c6b18a6c8918cb097c3e5a71
+financial_health_seed: 1100310
+financial_health_response_model: financial-lora
+financial_health_finish_reason: stop
+financial_health_completion_tokens: 111
+risk_factors_prompt_sha256: 6cbd67074edc2791639aaf572907dc4de57db62b53f125c4556df297905a30c0
+risk_factors_seed: 1100311
+risk_factors_response_model: financial-lora
+risk_factors_finish_reason: length
+risk_factors_completion_tokens: 512
+
+## Stock data
+
+{
+  "ticker": "TM",
+  "company_name": "Toyota Motor Corporation",
+  "current_price": 190.36,
+  "currency": "USD",
+  "market_cap": 225421164544.0,
+  "pe_ratio": 8.509611,
+  "forward_pe": 12.063372,
+  "week_52_high": 248.9,
+  "week_52_low": 166.1,
+  "revenue": 51957024686080.0,
+  "net_income": 4483796959232.0,
+  "profit_margin": 0.0863,
+  "dividend_yield": 3.26,
+  "sector": "Consumer Cyclical",
+  "industry": "Auto Manufacturers"
+}
+
+<!-- replay-section: Financial Health -->
+### Financial Health
+Toyota Motor Corporation trades at $190.36 per share in the consumer cyclical sector. The company carries a market capitalization of $2.25 trillion and a P/E ratio of 8.5x (12.06x forward), a premium valuation compared to its peers. The net income stands at $44.8 billion, representing a net profit margin of 8.6%. The dividend yield is 3.26%, providing investors with an attractive return on their investment.
+
+<!-- replay-section: Risk Factors -->
+### Risk Factors
+
+- The global automotive industry is highly competitive and subject to rapid technological change.
+- Our business may be adversely affected if we fail to successfully develop new products or technologies that meet customer needs and expectations.
+- We face significant competition in our markets, including from established companies and emerging competitors.
+- Our success depends on our ability to attract and retain qualified personnel, including engineers, designers, sales professionals, and other technical and non-technical employees.
+- We are subject to various laws and regulations relating to environmental protection, product safety, labor relations, consumer protection, privacy, data security, and other matters.
+- We are also subject to various laws and regulations relating to intellectual property rights, including trademarks, copyrights, patents, trade secrets, and other proprietary rights.
+- We are also subject to various laws and regulations relating to employment practices, including equal opportunity employment, affirmative action programs, employee benefits plans, health insurance coverage, workers' compensation coverage, disability insurance coverage, retirement savings plans, payroll taxes, unemployment taxes, and other related matters.
+- We are also subject to various laws and regulations relating to tax compliance and reporting requirements, including income tax returns, foreign tax credits, withholding taxes, excise taxes, value-added taxes, customs duties, import/export tariffs, and other similar taxes and fees.
+- We are also subject to various laws and regulations relating to corporate governance and regulatory compliance, including insider trading laws, securities fraud laws, antitrust laws, fair lending laws, consumer protection laws, privacy laws, data security laws, anti-corruption laws, international trade laws, export control laws, sanctions laws, and other similar laws and regulations.
+- We are also subject to various laws and regulations relating to environmental protection and sustainability, including air quality laws, water quality laws, soil contamination laws, hazardous waste management laws, solid waste disposal laws, recycling laws, composting laws, energy efficiency laws, greenhouse gas emissions reduction laws, carbon footprint reduction laws, sustainable development laws, circular economy laws, eco-friendly manufacturing laws, green transportation laws, clean energy production laws, renewable resource utilization laws, sustainable agriculture laws, organic farming laws, agroecology laws, food sovereignty laws, local food systems laws, regional food systems laws, national food systems laws, international food systems laws, food distribution networks laws, food supply chain laws, food retail laws, food service laws, food preparation laws, food storage laws, food handling laws, food packaging laws, food labeling laws, food advertising laws, food promotion laws, food sponsorship laws, food giveaways laws,

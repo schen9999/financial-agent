@@ -73,6 +73,7 @@ def get_cached_response(ticker: str) -> dict | None:
             "result": data["result"],
             "ticker": data["ticker"],
             "cache_hit": True,
+            "numeric_check": data.get("numeric_check"),
         }
 
     except Exception as e:
@@ -80,9 +81,11 @@ def get_cached_response(ticker: str) -> dict | None:
         return None
 
 
-def set_cached_response(ticker: str, result: str):
+def set_cached_response(ticker: str, result: str, numeric_check: dict | None = None):
     """
-    Stores a research brief in Redis under research:{TICKER}.
+    Stores a research brief in Redis under research:{TICKER}, with its
+    numeric-check report (agent/numeric_check.py) when one was produced, so a
+    cache hit returns the same findings the original response carried.
     Silently skips on any Redis error so caching is best-effort.
     Skips writing entirely when BYPASS_CACHE is set so eval runs never pollute
     the live cache with arm-specific briefs.
@@ -96,6 +99,8 @@ def set_cached_response(ticker: str, result: str):
             "ticker": ticker.upper(),
             "result": result,
         }
+        if numeric_check is not None:
+            data["numeric_check"] = numeric_check
 
         redis_client.setex(cache_key, CACHE_TTL, json.dumps(data))
         print(f"Cached response for {ticker.upper()}")

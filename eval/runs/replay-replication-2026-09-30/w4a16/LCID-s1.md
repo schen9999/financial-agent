@@ -1,0 +1,74 @@
+# LCID — replay s1 — w4a16
+
+## Metadata
+
+ticker: LCID
+arm: w4a16
+sample: 1
+served_name: financial-lora-w4a16
+source_findings: eval/runs/raw/v924f-findings/LCID_local-model.md
+context_sha256: 449aa9589e362df541ecdbd829246e2f595374e977fa0e5f3d37cf5f5a902b57
+agent_core_sha256: f45e278f9722d5c331843a77692b154904f72edd059e6a3da48976a7945db44e
+sampling: {"temperature": 0.1, "max_tokens": 512, "top_p": 0.8, "top_k": 20, "repetition_penalty": 1.1, "min_p": 0.0}
+endpoint: http://localhost:30880
+generated_utc: 2026-09-30T04:53:35Z
+financial_health_prompt_sha256: 1df3cb267aee2cda810bf6e3bba9646137ffb5e9889eb4dbdd391104077d11cb
+financial_health_seed: 1010150
+financial_health_response_model: financial-lora-w4a16
+financial_health_finish_reason: stop
+financial_health_completion_tokens: 102
+risk_factors_prompt_sha256: 18e3402069a0e0504b86b8aec34b6293642854cddf0cc2ec94a616fa964ce315
+risk_factors_seed: 1010151
+risk_factors_response_model: financial-lora-w4a16
+risk_factors_finish_reason: length
+risk_factors_completion_tokens: 512
+
+## Stock data
+
+{
+  "ticker": "LCID",
+  "company_name": "Lucid Group, Inc.",
+  "current_price": 4.16,
+  "currency": "USD",
+  "market_cap": 1639331840.0,
+  "forward_pe": -0.83158416,
+  "week_52_high": 25.23,
+  "week_52_low": 2.37,
+  "revenue": 1547122048.0,
+  "net_income": -4604930048.0,
+  "profit_margin": -2.49214,
+  "sector": "Consumer Cyclical",
+  "industry": "Auto Manufacturers"
+}
+
+<!-- replay-section: Financial Health -->
+### Financial Health
+
+Lucid Group, Inc., trades under the ticker symbol LCID on the Nasdaq Stock Market. As of February 24, 2026, the company reported $154.7 billion in annual revenue and $460.5 billion in net income. The company's current market capitalization stands at $163.9 billion. Over the past five years, the company has experienced a net loss of $460.5 billion.
+
+<!-- replay-section: Risk Factors -->
+### Primary Risk Factors Disclosed
+
+The company faces numerous significant risks and uncertainties across several key areas:
+
+#### Operational and Financial Risks
+- **Limited Operating History:** The company has only two commercially available vehicles and minimal experience manufacturing at scale.
+- **Substantial Net Losses Since Inception:** The company has experienced net losses since its inception, with an accumulated deficit of $15.6 billion as of December 31, 2025.
+- **Inability to Adequately Control Substantial Operational Costs:** The company is unable to adequately control substantial operational costs.
+- **Difficulty Accurately Estimating Supply and Demand for Vehicles:** The company experiences difficulty in accurately estimating supply and demand for vehicles.
+- **Challenges in Constructing and Tooling Manufacturing Facilities:** The company faces challenges in constructing and tooling manufacturing facilities.
+- **Limited Experience Servicing Vehicles and Integrated Software:** The company lacks experience servicing vehicles and integrated software.
+- **Challenges Providing Charging Solutions Domestically and Internationally:** The company encounters challenges in providing charging solutions both domestically and internationally.
+
+#### Product and Manufacturing Risks
+- **Significant Delays in Design, Launch, and Manufacture of Vehicles:** The company experiences significant delays in the design, launch, and manufacture of vehicles.
+- **Limited Experience in High-Volume Manufacturing:** The company lacks extensive experience in high-volume manufacturing.
+- **Risk That Vehicles May Fail to Perform as Expected:** There is risk that vehicles may fail to perform as expected.
+- **Challenges in Completing and Managing the Supply Chain:** The company faces challenges in completing and managing the supply chain.
+- **Limited Experience Servicing Vehicles and Integrated Software:** The company lacks experience servicing vehicles and integrated software.
+- **Loss of Key Employees or Ability to Attract Qualified Personnel:** The company faces potential loss of key employees or difficulty attracting qualified personnel.
+- **Cybersecurity and Data Privacy Compliance Obligations:** The company must comply with cybersecurity and data privacy compliance obligations.
+- **Need for Additional Capital to Support Growth:** The company requires additional capital to support future growth.
+- **Loss of Key Customers or Failure to Maintain Existing Customer Relationships:** The company faces potential loss of key customers or difficulties maintaining existing customer relationships.
+- **Failure to Meet Regulatory Requirements or Failure to Obtain Necessary Permits or Approvals:** The company faces potential failure to meet regulatory requirements or difficulties obtaining necessary permits or approvals.
+- **Failure to Achieve Desired Levels of Quality, Safety, Environmental Performance, Energy Efficiency, and/or Other Sustainability Metrics:** The company
