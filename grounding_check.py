@@ -78,41 +78,10 @@ from agent.grounding import (  # single source of truth for the judge
 
 ALL_TICKERS = ["AAPL", "NVDA", "JPM", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "V", "WMT"]
 
-# Retrieval arms: env overrides applied per arm. Config in core/rag/reranker is
-# read at call-time, so toggling these in-process re-routes the next query.
-ARMS = {
-    "baseline": {
-        "label": "Baseline (top_k=3, no rerank)",
-        "env": {"RERANKING_ENABLED": "false", "BASELINE_TOP_K": "3"},
-    },
-    "context5": {
-        "label": "Plain top-5 (no rerank)",
-        "env": {"RERANKING_ENABLED": "false", "BASELINE_TOP_K": "5"},
-    },
-    "rerank3": {
-        "label": "Rerank 20 -> 3",
-        "env": {"RERANKING_ENABLED": "true", "RERANK_CANDIDATES": "20", "RERANK_TOP_N": "3"},
-    },
-    "rerank5": {
-        "label": "Rerank 20 -> 5",
-        "env": {"RERANKING_ENABLED": "true", "RERANK_CANDIDATES": "20", "RERANK_TOP_N": "5"},
-    },
-    "local-model": {
-        # Fine-tuned Qwen2.5-1.5B (Ollama) serves the 2 trained sections
-        # (Financial Health, Risk Factors); Haiku keeps Recent Developments and
-        # SEC Filing Highlights. Requires `ollama serve` + the model loaded.
-        "label": "Local model (2 sec) + Haiku",
-        "env": {"RERANKING_ENABLED": "false", "BASELINE_TOP_K": "3", "USE_LOCAL_MODEL": "true"},
-    },
-}
-
-# Every arm explicitly sets the flags it depends on so values can't leak across
-# arms within one process. Fill in the ones an arm leaves unset with inert
-# defaults (e.g. a baseline arm still resets RERANKING_ENABLED / USE_LOCAL_MODEL).
-_ARM_ENV_DEFAULTS = {
-    "RERANKING_ENABLED": "false", "BASELINE_TOP_K": "3",
-    "RERANK_CANDIDATES": "20", "RERANK_TOP_N": "3", "USE_LOCAL_MODEL": "false",
-}
+# Arms (env overrides per arm) live in eval/arms.py, importable by tests.
+from eval.arms import ARMS  # noqa: E402
+from eval.arms import apply_arm_env as _apply_arm_env  # noqa: E402
+from eval.arms import uses_local_model as _uses_local_model  # noqa: E402
 
 # Haiku 4.5 pricing (USD per million tokens) for the cost estimate. Update if
 # rates change; cost is reported as an estimate from char/4 token approximation.
@@ -120,10 +89,6 @@ _HAIKU_IN_PER_MTOK = 1.00
 _HAIKU_OUT_PER_MTOK = 5.00
 from agent.tools.local_model import LOCAL_SECTIONS as _LOCAL_SECTIONS  # canonical routing set
 from agent.tools.local_model import LocalChat, local_model_backend
-
-
-def _uses_local_model(arm: str) -> bool:
-    return ARMS[arm]["env"].get("USE_LOCAL_MODEL") == "true"
 
 
 def _local_model_provenance(arm: str) -> dict | None:
@@ -266,14 +231,6 @@ def fetch_base(ticker: str) -> dict:
 
 
 # ── Per-arm pipeline ────────────────────────────────────────────────────────────
-
-def _apply_arm_env(arm: str):
-    # Reset every controlled flag to its inert default, then apply this arm's
-    # overrides — so no flag leaks from the previously-run arm.
-    env = {**_ARM_ENV_DEFAULTS, **ARMS[arm]["env"]}
-    for k, v in env.items():
-        os.environ[k] = v
-
 
 def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
     _apply_arm_env(arm)
