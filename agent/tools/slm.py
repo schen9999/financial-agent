@@ -93,8 +93,8 @@ def endpoint() -> dict:
 # Per-call-site profile. temperature = the hosted call it replaces (Haiku
 # sections 0.1, Sonnet synthesis 0.2, llama_index's Anthropic default 0.1
 # for RAG, the Haiku planner and Sonnet ReAct agent at 0). max_tokens sized
-# from the measured maxima of every committed hosted run (chars/4): sections
-# <= ~331, synthesis <= ~1.9k, RAG answers <= ~646 tokens — about 2x headroom.
+# from the largest committed outputs (eval/findings_scan.py, chars/4):
+# hosted sections <= 331, hosted synthesis <= 1,719, RAG answers <= 693.
 SITE_PROFILES = {
     "section":   {"temperature": 0.1, "max_tokens": 768},
     "synthesis": {"temperature": 0.2, "max_tokens": 4096},

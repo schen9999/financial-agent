@@ -1130,6 +1130,122 @@ small (51 of 323). Its own errors are mostly power-of-ten slips: 239 of
 the 245 other TRUE_ERROR mismatches, mainly market cap (117) and net
 income (86).
 
+## Self-served SLM arm (`slm-full-*`): method, set up 2026-10-02 — NOT YET RUN
+
+No `slm-full` run exists yet; this section is the method the runs will be
+reported under. Model: Qwen3.6-35B-A3B (MoE, 35B total / 3B active,
+vision-language; served text-only), one artifact for both endpoints:
+`ggml-org/Qwen3.6-35B-A3B-GGUF` @`baec3eb` `Qwen3.6-35B-A3B-Q4_K_M.gguf`
+(20,419,565,568 bytes, sha256 `671e47e0…40c7`), on llama.cpp `llama-server`
+build b11347 (`5fc4f3c`).
+
+**What it routes.** Under `SLM_FULL=true` every agent LLM call goes to one
+OpenAI-compatible endpoint (`agent/tools/slm.py`): the four sections, the
+synthesis, the SEC RAG answer synthesis (per query; `Settings.llm` is never
+touched), and — outside the eval — the multi-agent planner and synthesis
+and the ReAct `/ask` agent. The grounding judge stays Sonnet,
+`JUDGE_PROMPT_VERSION` v2, inputs unchanged, so the v2 calibration applies
+to the main rate. The multi-agent critic also stays Sonnet: it is the one
+hosted dependency of the SLM path, and only when `MULTI_AGENT_ENABLED` is on.
+There is no hosted fallback; config errors, HTTP errors and unparseable
+structured output raise.
+
+**Arms and endpoints.** `slm-full-cpu` → llama.cpp CPU build on OKE
+(`k8s/llamacpp/overlays/oke-cpu`: 8 threads, 8 CPU / 30Gi, VM.Standard.E5.Flex);
+`slm-full-gpu` → CUDA 12.8.1 build on node 2's A10
+(`k8s/llamacpp/overlays/k3s-gpu`, all layers on the GPU). Same GGUF, same
+engine release, same server args except threads / GPU layers, so CPU vs GPU
+compares hardware only. If the GPU needs `--n-cpu-moe`, the endpoint serves
+`…-hybrid-ncmoe<n>` and every table labels that run **hybrid**, never GPU.
+Retrieval is the baseline arm's (no rerank, top-3).
+
+**Request settings, sent explicitly on every call** (llama-server applies
+its own defaults to anything omitted, `min_p` 0.05 among them). Temperature
+mirrors the hosted call each site replaces (sections 0.1, synthesis 0.2,
+RAG 0.1, planner and ReAct 0); `top_p` 0.8 and `top_k` 20 from the Qwen3.6
+card; `min_p` 0, presence/frequency penalty 0, `repeat_penalty` 1.0 (none),
+DRY / XTC / typical / top-n-sigma neutral. Thinking off per request
+(`chat_template_kwargs.enable_thinking: false`, `LOCAL_MODEL_THINKING`);
+Qwen3.6 thinks by default and does not support the `/no_think` switch.
+`max_tokens` per site, sized from the largest committed outputs
+(`python eval/findings_scan.py eval/runs/raw/*-findings`, chars/4): sections
+768 (hosted max 331), synthesis 4096 (hosted max 1,719), RAG 1024 (max 693;
+RAG is answered by hosted Haiku in every committed arm), planner and ReAct
+1024. The hosted RAG LLM itself runs llama_index's default cap of 512
+tokens; the SLM's is larger, an asymmetry recorded here. The full set is in
+each run's provenance.
+
+**Counted per run** (the LLM ledger, `agent/llm_ledger.py`; findings
+metadata, result rows, aggregate): calls, prompt/completion tokens and
+latency per call site, per-step wall time, truncations (`finish_reason`
+length), repetition loops (a run of 5–60 words repeated three times back to
+back; retroactively, `eval/findings_scan.py` finds 0 in every committed
+hosted, 1.5B-base and 7B-base run and 19 in the fine-tune arms' sections —
+`lsnnc` 3, `r5nzh` 5, `v924f` 11, each one sentence restated back to back),
+parse failures (unparseable tool calls; planner JSON, retried once),
+format failures (Executive Summary / Outlook missing: retried once, then
+the ticker fails loudly — 0 of the 370 committed findings files would have),
+retries, and `stock block empty`. Failed tickers keep their ledger.
+
+**Traffic proof.** llama-server has no request counter, but its token
+counters are exact: over a run, Δ`tokens_predicted_total` and
+Δ(`prompt_tokens_total` + `prompt_tokens_cached_total`) equal the summed
+`usage` the harness recorded (verified against a live llama-server b11347).
+`make slm-eval-run` snapshots `/metrics` before and after and reconciles
+them with the aggregate's `SLM_TRAFFIC` line (`scripts/slm_traffic_proof.py`):
+EXACT, LOWER-BOUND (excess only from calls the harness saw fail), or FAIL.
+Each SLM ticker also fails if any agent call was served by anything but its
+arm's endpoint. A run without a passing proof is not an SLM result.
+
+**RAG faithfulness — a separate, unvalidated metric.** The main judge treats
+the RAG answers as source text, so an unfaithful RAG answer reads as
+supported there. With `EVAL_RAG_FAITHFULNESS=true` (on in `oke-provided`,
+every arm) each RAG answer is judged against exactly the chunks it was
+written from (`eval/rag_faithfulness.py`, prompt `rf-v1`, Sonnet,
+temperature 0). No human labels exist for `rf-v1`: report it as a
+judge-flagged rate, in its own column, never folded into the grounding rate.
+
+**Reporting.** Each SLM arm against the hosted baseline arm run on the SAME
+pinned OKE image (`argo/eval-run-extended.yaml`); unsupported rate with
+Wilson 95% CI, Fisher exact vs that baseline, per-section attribution
+(`eval/section_attribution.py`), parse/format failures, stock-block-empty
+count, the judge v2 calibration note; CPU vs GPU in one table only with the
+quant stated (both Q4_K_M here). Dated runs only.
+
+### Dated finding (computed, not booted): no 4-bit Qwen3.6-35B-A3B fits one A10 under vLLM (2026-10-02)
+
+Qwen publishes Qwen3.6-35B-A3B in BF16 and FP8 only (FP8 has no native
+Ampere support, and its weights exceed 24 GB). The community 4-bit builds,
+weighed from their safetensors headers with `--language-model-only`
+(vision tower skipped) and no MTP draft layers, against the A10's 23,028
+MiB (22.49 GiB):
+
+| Repo @ revision | Quant | On disk | Language model | At util 0.90 (20.24 GiB) | At 0.95 (21.36 GiB) |
+|---|---|---|---|---|---|
+| `palmfuture/Qwen3.6-35B-A3B-GPTQ-Int4` @`00a6698` | GPTQ int4 g128 | 22.73 GiB | 20.32 GiB | weights alone exceed it by 0.08 | 1.04 GiB left |
+| `QuantTrio/Qwen3.6-35B-A3B-AWQ` @`119886a` | AWQ int4 g128 | 23.70 GiB | 21.30 GiB | exceed by 1.06 | 0.07 GiB left |
+| `cyankiwi/Qwen3.6-35B-A3B-AWQ-4bit` @`00fcea2` | AWQ int4 g32 | 23.24 GiB | 21.90 GiB | exceed by 1.66 | exceed by 0.54 |
+
+Only the routed experts are 4-bit; attention, Gated DeltaNet, shared
+experts, embeddings and `lm_head` stay 16-bit (~4.5 GiB). The 1.04 GiB
+best case must hold the CUDA context, activations, CUDA graphs, the KV
+cache (~20 KiB/token: 10 full-attention layers × 2 KV heads × 256) and the
+per-sequence DeltaNet state, against a harness that sends up to ~8
+concurrent requests of up to ~5k tokens: no usable context. Separately,
+node 2's driver 570.124.06 supports CUDA 12.8; vLLM ≥ 0.19.0 (the card's
+minimum; Qwen3.5-architecture support since 0.17.0, quantized-GDN fix in
+0.19.0) publishes no CUDA 12.8 image — 0.19.x defaults to CUDA 12.9 and
+0.20+ to 13.0, which needs a 580-series driver. vLLM was **not booted**;
+these are arithmetic and published-artifact facts. The GPU arm runs
+llama.cpp's CUDA 12.8.1 build on the same GGUF instead. Reproduce:
+
+```bash
+python scripts/hf_safetensors_breakdown.py palmfuture/Qwen3.6-35B-A3B-GPTQ-Int4 \
+  --revision 00a66983516f8f8057741221277eed4141c9e431 --gpu-mib 23028 --util 0.90
+# QuantTrio/Qwen3.6-35B-A3B-AWQ @119886a1072372348f73ef0df2d801cdcc0f455b
+# cyankiwi/Qwen3.6-35B-A3B-AWQ-4bit @00fcea2d3bcf5389b518d4fc082e5590e0ba4844
+```
+
 ## Dated A/B on the single-VM target (2026-09-03)
 
 Same VM, same harness, same judge (v1), ~40 minutes apart, 10/10

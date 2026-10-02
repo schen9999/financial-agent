@@ -54,6 +54,28 @@ explicit `env` entry on a container wins over all three.
 | `LOCAL_MODEL_TIMEOUT` | `180` (seconds) | Per-request timeout to the local model | `.env` only |
 | `LOCAL_MODEL_MAX_TOKENS` | `512` | `max_tokens` on each OpenAI-backend request (sampling is otherwise pinned in `agent/tools/local_model.py`) | `.env` only |
 
+## Self-served SLM (`SLM_FULL`, llama.cpp)
+
+Every agent LLM call on one endpoint (`agent/tools/slm.py`); the judge stays
+Sonnet. Sampling and per-site `max_tokens` are code constants
+(`SITE_PROFILES`, `SAMPLING`), recorded in every run's provenance — not env.
+
+| Variable | Default | Purpose | Set in |
+|---|---|---|---|
+| `SLM_FULL` | `false` | Route sections, synthesis, RAG answering, planner and `/ask` to the SLM; no hosted fallback | `oke-provided` `app-config` (`false`); `make oke-slm-app ON=…`; the `slm-full-*` eval arms set it themselves |
+| `SLM_ENDPOINT` | unset | `cpu` or `gpu` | `oke-provided` `app-config` (`cpu`); eval arms |
+| `SLM_CPU_URL` | unset | CPU endpoint base URL | `oke-provided` `app-config` (`http://llamacpp.financial-agent.svc:8080`) |
+| `SLM_GPU_URL` | unset | GPU endpoint base URL (node 2, NodePort 30880) | `slm-endpoints` Secret (keeps the node address out of git) |
+| `SLM_CPU_API_KEY`, `SLM_GPU_API_KEY` | unset | Bearer keys; the CPU server reads `SLM_CPU_API_KEY` too | `slm-endpoints` Secret only — never a ConfigMap |
+| `SLM_MODEL_NAME` | unset | Served alias the endpoint must list on `/v1/models` | `oke-provided` `app-config` (`qwen3.6-35b-a3b-q4km`) |
+| `SLM_CPU_MODEL_NAME`, `SLM_GPU_MODEL_NAME` | `SLM_MODEL_NAME` | Per-endpoint alias (a hybrid GPU layout serves `…-hybrid-ncmoe<n>`) | `slm-endpoints` Secret, when needed |
+| `SLM_ARTIFACT` | `unrecorded` | GGUF identity (repo@rev:file sha256), provenance only | `oke-provided` `app-config` (a test keeps it equal to `k8s/llamacpp`'s pin) |
+| `SLM_CONTEXT_WINDOW` | `32768` | Context the RAG query engine packs to (the endpoints' `--ctx-size`) | `oke-provided` `app-config` |
+| `SLM_TIMEOUT` | `900` (seconds) | Per-request timeout | `oke-provided` `app-config` |
+| `LOCAL_MODEL_THINKING` | `off` | Qwen3.6 thinking, sent per request as `chat_template_kwargs.enable_thinking` | `oke-provided` `app-config` (`off`) |
+| `EVAL_RAG_FAITHFULNESS` | `false` | Eval only: judge each RAG answer against its own chunks (separate, unvalidated metric `rf-v1`) | `oke-provided` `app-config` (`true`) |
+| `LLAMA_API_KEY` | — | llama-server's key (server side) | node 2: `llamacpp-api-key` Secret; OKE: from `slm-endpoints` |
+
 ## Multi-agent orchestration
 
 | Variable | Default | Purpose | Set in |

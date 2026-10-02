@@ -48,9 +48,11 @@ Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
   provisioned for us, NOT by terraform/oci — never run Terraform against
   it. OKE v1.34.1, 4x VM.Standard.E5.Flex amd64 at 16 vCPU (two ~28 GiB,
   two ~58 GiB allocatable), no GPUs, cri-o (no image import), default
-  StorageClass oci-bv. HOSTED MODELS ONLY, CPU-only harness: no vLLM or
-  GPU resources, USE_LOCAL_MODEL=false; no doc may claim vLLM or SLM
-  serving on it. Overlays k8s/overlays/oke-provided +
+  StorageClass oci-bv. CPU-only harness: no vLLM or GPU resources,
+  USE_LOCAL_MODEL=false; hosted models unless SLM_FULL. An optional CPU
+  SLM endpoint is authored for it (k8s/llamacpp/overlays/oke-cpu, NOT YET
+  EXECUTED); no doc may claim vLLM, or SLM serving, on it until the
+  runbook step runs. Overlays k8s/overlays/oke-provided +
   argo/overlays/oke-provided (oke stays the Terraform path); app image
   from GHCR pinned by git sha (make oke-images on the laptop, WSL);
   make oke-up on the private operator host (ssh oke-operator, ProxyJump
@@ -66,7 +68,7 @@ Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (4324 lines, 364 tests collected: 363 passed + 1 skipped,
+3. The pytest suite (5163 lines, 442 tests collected: 441 passed + 1 skipped,
    the credit-gated judge test, as of 2026-10-02) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
@@ -232,6 +234,19 @@ Phase 3 — demo polish:
   Summary + Outlook) only; section-level numeric accuracy is the numeric
   check's to report. A dated comparison, not a number of record. Still gated: serving on OKE — update this line when that
   actually runs.
+- Self-served Qwen3.6-35B-A3B (authored 2026-10-02, NOTHING RUN): llama.cpp
+  b11347 serving ggml-org Q4_K_M @baec3eb on a CPU endpoint on the provided
+  OKE cluster and a GPU endpoint on vm-a10-inst-2 (same GGUF, same engine).
+  No doc may say either served anything, or quote any slm-full number,
+  until its runbook step is EXECUTED and the run's traffic proof passed
+  (EXACT or LOWER-BOUND). A GPU run with --n-cpu-moe > 0 (served alias
+  -hybrid-ncmoe<n>) is HYBRID in every table, never "GPU". Under SLM_FULL
+  the judge and the multi-agent critic stay Sonnet (the critic is the one
+  hosted dependency of the SLM app path). vLLM for this model on one A10:
+  computed infeasible from the published 4-bit builds and driver 570, not
+  booted — state it that way (eval-methodology). The RAG-faithfulness
+  metric (rf-v1) is unvalidated: judge-flagged, its own column, never part
+  of the grounding rate.
 - Cross-encoder reranking and the multi-agent supervisor shipped default-off
   because evals showed no grounding gain at higher cost/latency. State it that way.
 - Any new number in docs must come from a committed, re-runnable harness.

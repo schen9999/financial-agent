@@ -729,6 +729,118 @@ reached as `ssh oke-operator` (ProxyJump through `oke-bastion`).
     GHCR image versions stay until deleted from the package's settings on
     github.com.
 
+## SLM endpoints: Qwen3.6-35B-A3B on llama.cpp (CPU on OKE, GPU on node 2)
+
+The self-served SLM behind the `slm-full-*` arms and `SLM_FULL`
+(`agent/tools/slm.py`; method: [eval-methodology.md](eval-methodology.md),
+"Self-served SLM arm"). One GGUF (ggml-org Q4_K_M @`baec3eb`, 20.4 GB,
+sha256-verified by the init container) and one engine build (llama.cpp
+b11347) on both endpoints, `k8s/llamacpp/`. **Nothing here has run; no doc
+may claim either endpoint served anything until its step is EXECUTED.**
+Node 1 (`oci1`) is frozen: nothing below touches it.
+
+Prerequisite: the OKE harness runs an image built from a branch with this
+code (`make oke-images` on it, commit the pin, `make oke-up`,
+`make argo-deploy ARGO_OVERLAY=oke-provided`). A new image means a new
+same-image hosted baseline (step 6).
+
+1. **[NOT YET EXECUTED]** Keys — laptop (WSL). One key per endpoint, never
+   on disk, never in a ConfigMap; the GPU key goes to both clusters:
+   ```bash
+   GPU_KEY=$(openssl rand -hex 32)
+   printf %s "$GPU_KEY" | ssh oci2 'KUBECONFIG=$HOME/.kube/config kubectl -n financial-agent \
+     create secret generic llamacpp-api-key --from-file=LLAMA_API_KEY=/dev/stdin'
+   printf %s "$GPU_KEY" | ssh oke-operator 'kubectl -n financial-agent create secret generic slm-endpoints \
+     --from-literal=SLM_CPU_API_KEY=$(openssl rand -hex 32) \
+     --from-file=SLM_GPU_API_KEY=/dev/stdin \
+     --from-literal=SLM_GPU_URL=http://<node-2-public-ip>:30880'
+   unset GPU_KEY
+   ssh oke-operator 'kubectl -n financial-agent rollout restart deployment/api deployment/worker deployment/streamlit deployment/mcp'
+   ```
+   (`--from-file=KEY=/dev/stdin` stores the piped bytes exactly, no
+   trailing newline — checked on kind.) The CPU key is generated on the
+   operator and lives only in `slm-endpoints`, which both the CPU server and
+   the harness read. The restart lets the app pods pick up the new Secret.
+2. **[NOT YET EXECUTED]** CPU endpoint — operator:
+   ```bash
+   make oke-llamacpp
+   ```
+   Applies `k8s/llamacpp/overlays/oke-cpu`; the init container downloads
+   and verifies the GGUF into a 50Gi `oci-bv` PVC (first rollout only),
+   then llama-server loads it. 30Gi requested == limit, so it can only land
+   on a ~58 GiB node (`kubectl -n financial-agent get pod -l
+   app.kubernetes.io/name=llamacpp -o wide`). The target prints the
+   fetch-gguf result, the server's build / `n_threads` lines (record them
+   with the run), and `server_facts()` from inside the api pod — the
+   harness's own path (app-config + Secret, key, `/v1/models`, `/props`).
+3. **[NOT YET EXECUTED]** GPU endpoint — node 2 only (`ssh oci2`):
+   ```bash
+   cd ~/financial-agent && git fetch && git checkout <branch> && git pull
+   export KUBECONFIG=$HOME/.kube/config
+   make vm-llamacpp           # scales the financial-lora vLLM to 0, deletes its Service, takes 30880
+   ```
+   First run downloads 20.4 GB into `/home/ubuntu/models/qwen3.6-35b-a3b-gguf`.
+   The target prints the GPU layout: **`offloaded N/N layers to GPU`** means
+   all layers on the A10 — record the line. If the model does not load
+   (CUDA out of memory in the log), do not lower anything else: rerun with
+   `make vm-llamacpp NCMOE=<n>` (smallest n that loads) — the served alias
+   becomes `qwen3.6-35b-a3b-q4km-hybrid-ncmoe<n>`; patch the OKE side to
+   match (`kubectl -n financial-agent patch secret slm-endpoints --type merge
+   -p '{"stringData":{"SLM_GPU_MODEL_NAME":"<that alias>"}}'`), and every
+   result from it is labelled **hybrid**. Then, on node 2:
+   ```bash
+   curl -s -o /dev/null -w '%{http_code}\n' localhost:30880/v1/models   # 401: the key is enforced
+   curl -s localhost:30880/health                                          # {"status":"ok"} (public by design)
+   ```
+4. **[NOT YET EXECUTED]** Exposure — only after step 3 shows 401 without
+   the key, and only port 30880. The VCN security list is the boundary
+   (k3s NodePorts route around ufw — see the single-VM network baseline);
+   ufw is defense in depth:
+   ```bash
+   sudo ufw allow from 129.80.187.92 to any port 30880 proto tcp   # node 2
+   ```
+   Then the security-list rule: TCP 30880 from 129.80.187.92/32 only — never
+   a range (node 2's app NodePorts 30080/30501 have no auth). The financial-
+   lora vLLM (unkeyed) is at 0 replicas with no Service, so nothing unkeyed
+   answers on 30880. From the OKE side:
+   ```bash
+   kubectl -n financial-agent exec deploy/api -- env SLM_FULL=true SLM_ENDPOINT=gpu python -c \
+     "import json; from agent.tools.slm import server_facts; print(json.dumps(server_facts(), indent=1))"
+   ```
+5. **[NOT YET EXECUTED]** Tool-use check, one route at a time (no LLM judge;
+   ~10 hosted Sonnet calls for the hosted route):
+   ```bash
+   for r in hosted cpu gpu; do
+     kubectl -n financial-agent exec deploy/api -- python eval/tool_use_check.py --route $r --json-out /tmp/tool_use_$r.json
+     kubectl -n financial-agent cp $(kubectl -n financial-agent get pod -l app.kubernetes.io/name=api -o name | head -1 | sed 's|pod/||'):/tmp/tool_use_$r.json ~/tool_use_$r.json
+   done
+   ```
+6. **[NOT YET EXECUTED]** Runs, in order, each through the traffic proof
+   (operator; nothing else may use that endpoint during a run — the proof
+   FAILs on foreign traffic):
+   ```bash
+   make slm-eval-run ENDPOINT=cpu EVAL_RUN_FILE=argo/eval-run-slm-cpu-smoke.yaml
+   make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-slm-gpu-smoke.yaml   # after the seclist rule
+   make eval-run EVAL_RUN_FILE=argo/eval-run-extended.yaml                         # same-image hosted baseline
+   make slm-eval-run ENDPOINT=cpu EVAL_RUN_FILE=argo/eval-run-extended-slm-cpu.yaml
+   make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-extended-slm-gpu.yaml
+   ```
+   `slm-eval-run` snapshots `/metrics` (from the api pod, the harness's
+   network path), runs `eval-run`, captures every pod's log into
+   `~/slm-proof/<wf>.log`, snapshots again and prints `TRAFFIC PROOF:
+   EXACT | LOWER-BOUND | FAIL`; it exits non-zero on FAIL even if the gate
+   passed. Stop after each smoke and check the aggregate's `Loop`, `Trunc`,
+   `Parse`, `Fmt` columns and failure kinds before going on; loops in the
+   smoke mean stop and review before any penalty change. Findings: as
+   "Findings capture" above, from `~/slm-proof/<wf>.log`.
+7. **[NOT YET EXECUTED]** Live app on the SLM (optional, for the demo):
+   `make oke-slm-app ON=true ENDPOINT=cpu` (cache keys become
+   `research:slm-cpu:<T>`, so no hosted brief is served as an SLM one);
+   `make oke-slm-app ON=false` to return.
+8. **[NOT YET EXECUTED]** Restore node 2's financial-lora vLLM (node 2):
+   `make vm-llamacpp-down && make vm-vllm` — but first remove the ufw rule
+   and the security-list rule: the vLLM endpoint has no key.
+
 ## OKE (OCI) — Phase 2
 
 All OCI infrastructure is authored in `terraform/oci/` (fmt + validate
