@@ -22,6 +22,17 @@ An AI agent that researches stocks and answers follow-up questions using live fi
 - **4-bit (W4A16) on the A10.** 4-bit weights serve about 1.5x faster on the A10, with no demonstrated loss in grounding or numeric accuracy. Quantizing the fine-tune raised output throughput from 708.3 to 1075.7 tok/s at concurrency 8. The judge found no detectable difference on its audited sections: 23/344 = 6.69% (CI 4.5–9.8%) vs 25/385 = 6.49% (CI 4.4–9.4%), p = 1.00, judge v2, which is not proof of equivalence. A pre-registered section-level replication did not demonstrate a regression in wrong stock figures: +5.3 pts (CI −1.1 to +11.6). [Quantization benchmark](docs/eval-methodology.md#quantization-benchmark-2026-09-29-a-dated-measurement), [replication](docs/eval-methodology.md#numeric-check-adjudicated-flags-and-the-w4a16-replication-2026-10-01-dated)
 - **CPU serving on the Xeon.** On this Xeon, switching serving engines mattered more than quantizing. The engine and the precision were measured separately, at concurrency 8. Engine: vLLM BF16 to llama.cpp F16 raised output from 22.9 to 52.3 tok/s. Precision, on llama.cpp: F16 / Q8_0 / Q4_K_M gave 52.3 / 51.7 / 64.5 tok/s. GGUF quantization quality was not evaluated. [CPU engine and precision](docs/eval-methodology.md#cpu-engine-and-precision-llamacpp-gguf)
 
+## Next steps
+
+- Fix the two upstream data defects (foreign-filer currency, profit margin as a raw fraction), then rerun the hosted eval before quoting new rates.
+- Apply the OKE Terraform when a compartment is available, and verify the vLLM `oke-gpu` overlay on the A10 pool.
+- Turn the numeric check from `warn` to `block` for the hosted path once the data defects are fixed.
+- Evaluate GGUF quantization quality on CPU (only W4A16 went through the grounding eval).
+- Benchmark other CPU targets (AMD EPYC, AMX-capable Xeon) and add OCI Generative AI as a hosted arm on the same harness.
+- Test the multi-agent supervisor with a small open-weight model on CPU.
+
+The fuller list, with the reasoning behind it: [Known limitations and next steps](docs/system-tour.md#known-limitations-and-next-steps).
+
 ---
 
 ## Deployed on OCI
@@ -39,10 +50,13 @@ An AI agent that researches stocks and answers follow-up questions using live fi
 - **One manifest set:** a kustomize base with `kind`, `k3s`, and `oke`
   overlays; `scripts/render_diff.py` proves overlay changes never alter the
   kind render ([docs/verification.md](docs/verification.md)).
-- **OKE:** Terraform for an OKE basic cluster, both node pools (including an
-  A10 GPU pool), OCIR, an Object Storage bucket, and a Block Volume storage
-  class is written and passes `terraform validate`, but has **never been
-  applied**. The k3s VMs are the running target.
+- **OKE:** the OCI access for this build was two A10 VMs, so single-node
+  k3s on those VMs is the running target. The OKE Terraform (an OKE basic
+  cluster, both node pools including the A10 GPU pool, OCIR, an Object
+  Storage bucket, and a Block Volume storage class) is written, passes
+  `terraform validate`, and is ready to apply, after filling
+  `terraform.tfvars`, once a compartment with OKE is available. It has
+  **never been applied**.
 - **How to deploy it:** [docs/operations.md](docs/operations.md) (current
   procedure, teardown, troubleshooting); [docs/deploy-runbook.md](docs/deploy-runbook.md)
   is the dated history and the OKE steps. Configuration:
