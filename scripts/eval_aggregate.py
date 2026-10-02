@@ -77,6 +77,15 @@ def local_models(results):
     return seen
 
 
+def stock_block_counts(results):
+    """(tickers whose brief saw an empty STOCK DATA block, rows that don't
+    record it). Detection only — never a gate failure (eval/stock_block.py).
+    Rows from images before the check carry no field: unrecorded, not clean."""
+    empty = sorted(r["ticker"] for r in results if r.get("stock_block_empty") is True)
+    unrecorded = sum(1 for r in results if r.get("stock_block_empty") is None)
+    return empty, unrecorded
+
+
 def main():
     parser = argparse.ArgumentParser(description="Aggregate fanned-out grounding results.")
     parser.add_argument("--input", required=True,
@@ -129,6 +138,13 @@ def main():
     print()
     print(f"  tickers completed : {n}")
     print(f"  tickers skipped   : {len(skipped)}{' (' + ', '.join(skipped) + ')' if skipped else ''}")
+    stock_empty, stock_unrecorded = stock_block_counts(results)
+    print(f"  stock block empty : {len(stock_empty)}/{n}"
+          f"{' (' + ', '.join(stock_empty) + ')' if stock_empty else ''}"
+          f"{f'   ({stock_unrecorded} row(s) unrecorded)' if stock_unrecorded else ''}")
+    if stock_empty:
+        print("  WARNING: briefs above were written WITHOUT stock data (failed stock "
+              "fetch, e.g. a yfinance 429) — the gate does not catch this")
     print(f"  unsupported rate  : {unsupported_pct:.2f}%   (gate: <= {args.max_unsupported_pct}%)")
     print(f"  95% CI (Wilson)   : {format_rate_ci(uns, tot)}")
     print(f"  total claims      : {tot}   (gate: >= {args.min_claims})")
@@ -156,6 +172,9 @@ def main():
             "unsupported_ci_95": [round(x * 100, 2) for x in wilson_interval(uns, tot)],
             "mean_retrieval_s": round(mean_retr, 2), "mean_pipeline_s": round(mean_pipe, 2),
             "tickers_completed": n, "tickers_skipped": len(skipped),
+            "stock_block_empty": len(stock_empty),
+            "stock_block_empty_tickers": stock_empty,
+            "stock_block_unrecorded": stock_unrecorded,
         },
         "gate": {
             "max_unsupported_pct": args.max_unsupported_pct,

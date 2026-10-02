@@ -43,6 +43,7 @@ from concurrent.futures import ThreadPoolExecutor
 from eval.stats import fisher_exact, format_rate_ci
 from eval.runtime_guards import check_fatal_api_error, check_local_model_served
 from eval.label import count_labels_deduped
+from eval.stock_block import stock_block_empty
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -322,6 +323,13 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
 
     exec_and_outlook = extract_exec_and_outlook(brief)
     section_block    = "\n\n".join(sections)
+    # Detection only (eval/stock_block.py): a failed stock fetch is not
+    # retried or skipped — the brief is written without stock data. Record
+    # it so the aggregate can count it; behaviour is unchanged.
+    stock_empty = stock_block_empty(source_context)
+    if stock_empty:
+        print(f"  [{ticker} | {arm}] NOTE: STOCK DATA block is empty — brief "
+              f"written without stock data (yfinance failure?)", flush=True)
 
     print(f"  [{ticker} | {arm}] judging...", flush=True)
     # Shared judge; retry-wrap the LLM call so one transient error can't waste a
@@ -372,6 +380,7 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
         "judge_version": JUDGE_PROMPT_VERSION,
         "retrieval_s": retrieval_s, "pipeline_s": pipeline_s, "haiku_cost": haiku_cost,
         "est_cost": round(est_cost, 5),
+        "stock_block_empty": stock_empty,
         "inference_claims": grade.inference_claims,
         **counts,
         **({"local_model": provenance} if provenance else {}),
