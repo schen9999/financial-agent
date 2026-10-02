@@ -11,7 +11,7 @@ Manager on ECS.
 | Source | Applies to | How it is set |
 |---|---|---|
 | `.env` | local runs (Streamlit, `grounding_check.py`, scripts) | copy [`.env.example`](../.env.example) to `.env` |
-| `app-secrets` Secret | every Kubernetes pod (kind, k3s) | `make deploy` / `make vm-up` build it from `.env` (`--from-env-file`) |
+| `app-secrets` Secret | every Kubernetes pod (kind, k3s, oke-provided) | `make deploy` / `make vm-up` build it from `.env` (`--from-env-file`); on oke-provided the laptop streams `.env` over ssh (`--from-env-file=/dev/stdin`, runbook step 3) |
 | `infra-secrets` Secret | Kubernetes pods | created once by `make deploy` / `make vm-up`: `POSTGRES_PASSWORD` and `DATABASE_URL` for the in-cluster Postgres |
 | `app-config` ConfigMap | Kubernetes pods | [`k8s/base/10-configmap.yaml`](../k8s/base/10-configmap.yaml), patched by the k3s overlay and by `make vm-vllm` |
 | Deployment `env` | the MCP pod; the Argo eval pods | [`k8s/base/33-mcp.yaml`](../k8s/base/33-mcp.yaml); [`argo/base/eval-workflow.yaml`](../argo/base/eval-workflow.yaml) |

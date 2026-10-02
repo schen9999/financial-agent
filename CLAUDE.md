@@ -44,6 +44,20 @@ Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
   k3s overlays. The Sep 2 VM.GPU.A10.2 (Phase 1.75 validation box, where
   vLLM pinned to one GPU validated the A10.1-shaped oke-gpu serving config
   on 2026-09-03) is gone.
+- OKE, provided cluster (authored 2026-10-02, NOT YET EXECUTED): a cluster
+  provisioned for us, NOT by terraform/oci — never run Terraform against
+  it. OKE v1.34.1, 4x VM.Standard.E5.Flex amd64 at 16 vCPU (two ~28 GiB,
+  two ~58 GiB allocatable), no GPUs, cri-o (no image import), default
+  StorageClass oci-bv. HOSTED MODELS ONLY, CPU-only harness: no vLLM or
+  GPU resources, USE_LOCAL_MODEL=false; no doc may claim vLLM or SLM
+  serving on it. Overlays k8s/overlays/oke-provided +
+  argo/overlays/oke-provided (oke stays the Terraform path); app image
+  from GHCR pinned by git sha (make oke-images on the laptop, WSL);
+  make oke-up on the private operator host (ssh oke-operator, ProxyJump
+  oke-bastion); every Service ClusterIP, access by port-forward behind
+  ssh -L; nightly CronWorkflow suspended. Runbook "OKE (provided
+  cluster)". Yahoo has returned 429 from its egress IP: check the
+  aggregate's "stock block empty" count on every run there.
 - OKE (Phase 2, once the compartment lands): the Terraform-created cluster
   per the Goal section above.
 
@@ -52,8 +66,8 @@ Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (4096 lines, 343 tests collected: 342 passed + 1 skipped,
-   the credit-gated judge test, as of 2026-10-01) must pass on every commit. Canonical
+3. The pytest suite (4324 lines, 364 tests collected: 363 passed + 1 skipped,
+   the credit-gated judge test, as of 2026-10-02) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
 4. Celery stays request-time async; Argo owns eval orchestration. Do not merge them.
