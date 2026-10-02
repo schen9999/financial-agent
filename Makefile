@@ -16,7 +16,7 @@ ENV_FILE  ?= .env
 
 .PHONY: cluster-up deploy smoke-test cluster-down status logs \
         argo-install argo-deploy eval-run cost-report \
-        vm-images vm-up vm-eval vm-vllm
+        vm-images vm-up vm-eval vm-vllm oke-images oke-up
 
 cluster-up: ## Create the single-node kind cluster (or restart its stopped node)
 	@if kind get clusters 2>/dev/null | grep -qx $(CLUSTER); then \
@@ -84,6 +84,8 @@ argo-install: ## Install Argo Workflows (controller + server), pinned via argo/i
 ARGO_OVERLAY ?= kind
 
 argo-deploy: ## Apply eval workflow RBAC, WorkflowTemplate, and nightly CronWorkflow
+	@# the OKE overlay pins a GHCR build: refuse the UNPINNED placeholder
+	@if [ "$(ARGO_OVERLAY)" = "$(OKE_OVERLAY)" ]; then python3 scripts/pin_oke_image.py --overlay $(OKE_OVERLAY) --check; fi
 	kubectl apply -k argo/overlays/$(ARGO_OVERLAY)
 	@SUSPEND=$$(kubectl -n $(NAMESPACE) get cronworkflow grounding-eval-nightly -o jsonpath='{.spec.suspend}'); \
 	echo "Nightly eval: $$(kubectl -n $(NAMESPACE) get cronworkflow grounding-eval-nightly -o jsonpath='{.spec.schedule} {.spec.timezone}') suspend=$${SUSPEND:-<unset>}"
@@ -204,6 +206,57 @@ vm-local-model: ## Toggle app-plane local-model routing (ON=true|false); eval ar
 	kubectl -n $(NAMESPACE) patch configmap app-config --type merge -p '{"data":{"USE_LOCAL_MODEL":"$(ON)"}}'
 	kubectl -n $(NAMESPACE) rollout restart deployment/api deployment/worker deployment/streamlit
 	@echo "USE_LOCAL_MODEL=$(ON) (live patch — kubectl apply -k k8s/overlays/k3s restores the committed false)"
+
+# ── OKE, provided cluster (docs/deploy-runbook.md "OKE (provided cluster)") ──
+# Hosted models only: no vLLM, no GPU. cri-o cannot import images, so every
+# image comes from a registry: the app image from GHCR, tagged with the git
+# sha it was built from and pinned in both OKE_OVERLAY overlays (never
+# :latest). oke-images runs on the LAPTOP (WSL: docker + buildx, logged in to
+# ghcr.io with write:packages); oke-up runs on the OPERATOR host (kubectl).
+
+OKE_OVERLAY     ?= oke-provided
+GHCR_IMAGE      ?= ghcr.io/schen9999/financial-agent-app
+OKE_PULL_SECRET ?= ghcr-pull-secret
+
+oke-images: ## (laptop) Build the app image with BuildKit, push GHCR :<git-sha>, pin it in both OKE_OVERLAY overlays
+	@test -z "$$(git status --porcelain)" || { echo "ERROR: working tree is dirty — the image tag must be the commit it was built from. Commit or stash first:"; git status --short; exit 1; }
+	@git branch -r --contains HEAD | grep -q . || echo "WARNING: HEAD is not on any remote branch yet — push it so the image's commit is reachable"
+	@SHA=$$(git rev-parse HEAD); \
+	echo "building $(GHCR_IMAGE):$$SHA"; \
+	DOCKER_BUILDKIT=1 docker buildx build --platform linux/amd64 -f Dockerfile.k8s \
+		--label org.opencontainers.image.revision=$$SHA \
+		--label org.opencontainers.image.source=https://github.com/schen9999/financial-agent \
+		-t $(GHCR_IMAGE):$$SHA --push . && \
+	python3 scripts/pin_oke_image.py --overlay $(OKE_OVERLAY) --tag $$SHA && \
+	echo "Pushed and pinned. Commit the pin, push, then pull on the operator:" && \
+	echo "  git commit -am 'Pin $(OKE_OVERLAY) images to $$(echo $$SHA | cut -c1-12)' && git push"
+
+oke-up: ## (operator) Check pin + secrets, apply OKE_OVERLAY, wait for every rollout
+	@python3 scripts/pin_oke_image.py --overlay $(OKE_OVERLAY) --check
+	@kubectl get storageclass oci-bv >/dev/null || { echo "ERROR: StorageClass oci-bv not found — is KUBECONFIG pointing at the OKE cluster?"; exit 1; }
+	kubectl apply -f k8s/base/00-namespace.yaml
+	@kubectl -n $(NAMESPACE) get secret app-secrets -o jsonpath='{.data.ANTHROPIC_API_KEY}' 2>/dev/null | grep -q . || { \
+		echo "ERROR: app-secrets missing or without ANTHROPIC_API_KEY — stream it from the laptop (runbook, OKE step 3)"; exit 1; }
+	@test "$$(kubectl -n $(NAMESPACE) get secret $(OKE_PULL_SECRET) -o jsonpath='{.type}' 2>/dev/null)" = kubernetes.io/dockerconfigjson || { \
+		echo "ERROR: $(OKE_PULL_SECRET) (kubernetes.io/dockerconfigjson) missing in $(NAMESPACE) — create it (runbook, OKE step 3)"; exit 1; }
+	@kubectl -n $(NAMESPACE) get secret infra-secrets >/dev/null 2>&1 || { \
+		PGPASS=$$(openssl rand -hex 16); \
+		kubectl -n $(NAMESPACE) create secret generic infra-secrets \
+			--from-literal=POSTGRES_PASSWORD=$$PGPASS \
+			--from-literal=DATABASE_URL=postgresql://agent:$$PGPASS@postgres:5432/financial_agent; \
+		echo "created infra-secrets (random Postgres password)"; }
+	kubectl apply -k k8s/overlays/$(OKE_OVERLAY)
+	kubectl -n $(NAMESPACE) rollout status deployment/redis     --timeout=300s
+	@# first rollout: oci-bv provisions + attaches the 50Gi block volume (WaitForFirstConsumer)
+	kubectl -n $(NAMESPACE) rollout status deployment/postgres  --timeout=600s
+	kubectl -n $(NAMESPACE) rollout status deployment/api       --timeout=900s
+	kubectl -n $(NAMESPACE) rollout status deployment/worker    --timeout=900s
+	kubectl -n $(NAMESPACE) rollout status deployment/streamlit --timeout=900s
+	kubectl -n $(NAMESPACE) rollout status deployment/mcp       --timeout=900s
+	@kubectl -n $(NAMESPACE) get pvc postgres-data
+	@echo "Up. Nothing is exposed; on this host:"
+	@echo "  kubectl -n $(NAMESPACE) port-forward svc/streamlit 8501:8501 &  kubectl -n $(NAMESPACE) port-forward svc/api 8000:8000 &"
+	@echo "then on the laptop: ssh -N -L 32501:localhost:8501 -L 32080:localhost:8000 oke-operator"
 
 # ── vLLM (CPU mode — backs the default-off USE_LOCAL_MODEL flag) ─────────────
 
