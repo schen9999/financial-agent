@@ -26,10 +26,10 @@ An AI agent that researches stocks and answers follow-up questions using live fi
 
 - Fix the two upstream data defects (foreign-filer currency, profit margin as a raw fraction), then rerun the hosted eval before quoting new rates.
 - Apply the OKE Terraform when a compartment is available, and verify the vLLM `oke-gpu` overlay on the A10 pool.
-- Turn the numeric check from `warn` to `block` for the hosted path once the data defects are fixed.
+- Switch the numeric check from warn to block once the data defects are fixed.
 - Evaluate GGUF quantization quality on CPU (only W4A16 went through the grounding eval).
 - Benchmark other CPU targets (AMD EPYC, AMX-capable Xeon) and add OCI Generative AI as a hosted arm on the same harness.
-- Test the multi-agent supervisor with a small open-weight model on CPU.
+- Test whether a multi-agent supervisor improves a small open-weight model on CPU.
 
 The fuller list, with the reasoning behind it: [Known limitations and next steps](docs/system-tour.md#known-limitations-and-next-steps).
 
