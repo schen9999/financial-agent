@@ -581,8 +581,10 @@ Where commands run: **laptop = WSL** (docker + buildx, and the
 reached as `ssh oke-operator` (ProxyJump through `oke-bastion`).
 
 1. **[NOT YET EXECUTED]** Build, push, pin — laptop (WSL), clean tree on
-   the commit to deploy. GHCR login needs a PAT with `write:packages`
-   (a separate one from the cluster's read-only PAT):
+   the commit to deploy: `slm-harness`, which carries everything on
+   `oke-deploy` plus the SLM work, so one image serves the hosted smoke,
+   every SLM run and the hosted baseline. GHCR login needs a PAT with
+   `write:packages` (a separate one from the cluster's read-only PAT):
    ```bash
    docker login ghcr.io -u schen9999 --password-stdin   # paste the write PAT, then Ctrl-D
    make oke-images      # refuses a dirty tree; pushes ghcr.io/schen9999/financial-agent-app:<sha>
@@ -595,7 +597,7 @@ reached as `ssh oke-operator` (ProxyJump through `oke-bastion`).
    ```bash
    ssh oke-operator
    git clone https://github.com/schen9999/financial-agent.git && cd financial-agent
-   git checkout oke-deploy          # or git pull, if already cloned
+   git checkout slm-harness         # the branch carrying the pin; or git pull, if already cloned
    python3 scripts/pin_oke_image.py --check     # must print the sha just pinned
    kubectl get nodes -o wide && kubectl get storageclass   # 4 nodes; oci-bv (default)
    ```
@@ -678,10 +680,12 @@ reached as `ssh oke-operator` (ProxyJump through `oke-bastion`).
    ```
    Optional Argo UI: `kubectl -n argo port-forward svc/argo-server
    2746:2746` on the operator plus `-L 32746:localhost:2746`.
-8. **[NOT YET EXECUTED]** Platform-validation eval (10 tickers, hosted
-   baseline arm, judge v2; an estimated ~$0.59 of Anthropic credit,
-   scaling dvvxk's harness estimate of $2.34 per 40 tickers). On the
-   operator, in two shells:
+8. **[NOT YET EXECUTED]** Hosted smoke = platform validation (10 tickers,
+   hosted baseline arm, judge v2, RAG faithfulness on; the first eval on
+   the cluster, on the same pinned image as every later run). An
+   estimated ~$0.90 of Anthropic credit: dvvxk's harness estimate of
+   $2.34 per 40 tickers scaled to 10, plus ~$0.03/ticker for the two
+   RAG-faithfulness judge calls. On the operator, in two shells:
    ```bash
    make eval-run          # argo/eval-run.yaml; prints "submitted workflow: <wf>"
    ```
@@ -739,10 +743,10 @@ b11347) on both endpoints, `k8s/llamacpp/`. **Nothing here has run; no doc
 may claim either endpoint served anything until its step is EXECUTED.**
 Node 1 (`oci1`) is frozen: nothing below touches it.
 
-Prerequisite: the OKE harness runs an image built from a branch with this
-code (`make oke-images` on it, commit the pin, `make oke-up`,
-`make argo-deploy ARGO_OVERLAY=oke-provided`). A new image means a new
-same-image hosted baseline (step 6).
+Prerequisite: "OKE (provided cluster)" steps 1–8 done with the image built
+and pinned from `slm-harness` — one image for the hosted smoke (its step 8),
+every SLM run and the hosted baseline. A new image means a new same-image
+hosted baseline (step 6).
 
 1. **[NOT YET EXECUTED]** Keys — laptop (WSL). One key per endpoint, never
    on disk, never in a ConfigMap; the GPU key goes to both clusters:
@@ -819,17 +823,31 @@ same-image hosted baseline (step 6).
    (operator; nothing else may use that endpoint during a run — the proof
    FAILs on foreign traffic):
    ```bash
-   make slm-eval-run ENDPOINT=cpu EVAL_RUN_FILE=argo/eval-run-slm-cpu-smoke.yaml
-   make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-slm-gpu-smoke.yaml   # after the seclist rule
+   make slm-eval-run ENDPOINT=cpu EVAL_RUN_FILE=argo/eval-run-slm-cpu-smoke.yaml \
+     PROJECT_FOR=argo/eval-run-extended-slm-cpu.yaml       # prints measured + projected run time
+   make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-slm-gpu-smoke.yaml \
+     PROJECT_FOR=argo/eval-run-extended-slm-gpu.yaml       # after the seclist rule
    make eval-run EVAL_RUN_FILE=argo/eval-run-extended.yaml                         # same-image hosted baseline
-   make slm-eval-run ENDPOINT=cpu EVAL_RUN_FILE=argo/eval-run-extended-slm-cpu.yaml
-   make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-extended-slm-gpu.yaml
+   make run-time-check WF=<cpu smoke wf> NEXT=argo/eval-run-extended-slm-cpu.yaml && \
+     make slm-eval-run ENDPOINT=cpu EVAL_RUN_FILE=argo/eval-run-extended-slm-cpu.yaml
+   make run-time-check WF=<gpu smoke wf> NEXT=argo/eval-run-extended-slm-gpu.yaml && \
+     make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-extended-slm-gpu.yaml
    ```
    `slm-eval-run` snapshots `/metrics` (from the api pod, the harness's
    network path), runs `eval-run`, captures every pod's log into
    `~/slm-proof/<wf>.log`, snapshots again and prints `TRAFFIC PROOF:
    EXACT | LOWER-BOUND | FAIL`; it exits non-zero on FAIL even if the gate
-   passed. Stop after each smoke and check the aggregate's `Loop`, `Trunc`,
+   passed. With `PROJECT_FOR` it also prints the smoke's measured wall time
+   per ticker (`scripts/run_time_projection.py`: each task's Argo node,
+   retries included, under the run's own parallelism) and the projection
+   for the extended run. `run-time-check` is the gate: it exits non-zero —
+   and `&&` keeps the extended run from launching — unless the worst-case
+   projection (slowest smoke ticker × ⌈40 / parallelism⌉ waves + the
+   aggregate) fits the run file's `activeDeadlineSeconds`, the slowest smoke
+   ticker is within 75% of `ticker-deadline-seconds`, and the projection
+   plus a day of capture fits the 7-day TTL. Do not raise a deadline to make
+   it pass without saying so in the run's write-up.
+   Stop after each smoke and check the aggregate's `Loop`, `Trunc`,
    `Parse`, `Fmt` columns and failure kinds before going on; loops in the
    smoke mean stop and review before any penalty change. Findings: as
    "Findings capture" above, from `~/slm-proof/<wf>.log`.

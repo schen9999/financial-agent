@@ -17,7 +17,8 @@ ENV_FILE  ?= .env
 .PHONY: cluster-up deploy smoke-test cluster-down status logs \
         argo-install argo-deploy eval-run cost-report \
         vm-images vm-up vm-eval vm-vllm oke-images oke-up \
-        vm-llamacpp vm-llamacpp-down oke-llamacpp oke-llamacpp-down oke-slm-app slm-eval-run
+        vm-llamacpp vm-llamacpp-down oke-llamacpp oke-llamacpp-down oke-slm-app slm-eval-run \
+        run-time-check
 
 cluster-up: ## Create the single-node kind cluster (or restart its stopped node)
 	@if kind get clusters 2>/dev/null | grep -qx $(CLUSTER); then \
@@ -329,7 +330,15 @@ slm-eval-run: ## (operator) Snapshot the endpoint, run EVAL_RUN_FILE, capture lo
 	echo "=== traffic proof for $$WF (files in $$P) ==="; \
 	python3 scripts/slm_traffic_proof.py verify --before "$$P/$$WF-before.json" \
 		--after "$$P/$$WF-after.json" --log "$$P/$$WF.log"; prc=$$?; \
+	if [ -n "$(PROJECT_FOR)" ]; then \
+		echo "=== measured run time of $$WF, projected to $(PROJECT_FOR) ==="; \
+		kubectl -n $(NAMESPACE) get workflow $$WF -o json | python3 scripts/run_time_projection.py --next $(PROJECT_FOR); \
+	fi; \
 	echo "eval-run exit $$rc, traffic proof exit $$prc"; test $$rc -eq 0 -a $$prc -eq 0
+
+run-time-check: ## (operator) Gate a long run on a finished smoke's measured per-ticker time: WF=<smoke workflow> NEXT=<run file>
+	@test -n "$(WF)" -a -n "$(NEXT)" || { echo "usage: make run-time-check WF=<finished smoke workflow> NEXT=argo/<run file>"; exit 1; }
+	kubectl -n $(NAMESPACE) get workflow $(WF) -o json | python3 scripts/run_time_projection.py --next $(NEXT)
 
 # ── vLLM (CPU mode — backs the default-off USE_LOCAL_MODEL flag) ─────────────
 
