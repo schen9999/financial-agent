@@ -945,8 +945,13 @@ eight rules were committed before any row was labeled (4ef7ec6,
 `eval/numeric_check/README.md`), and the 479 verdicts were committed
 before any figure below was computed (a27264b). One adjudicator, using
 `eval/numeric_check/label_cli.py`, which shows run, arm and model, so the
-labeling was not blind to arm. There was no second rater, so there is no
-agreement figure. The adjudicator recorded no doubt notes (rule 8: 0 of
+labeling was not blind to arm. The adjudicator also saw the check's
+stated value, source value and ratio, and every row shown was a flag (no
+unflagged numbers were mixed in), so the labeling was not blind to the
+check's output either. Full blinding was not possible: a verdict needs the
+source value. That differs from the judge's held-out validation, where
+the human labels were blind to the judge's labels. There was no second
+rater, so there is no agreement figure. The adjudicator recorded no doubt notes (rule 8: 0 of
 479) and no notes of any kind.
 
 ```bash
