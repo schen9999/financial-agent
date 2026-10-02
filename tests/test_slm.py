@@ -286,3 +286,28 @@ def test_hosted_synthesis_unguarded_single_call(monkeypatch):
     with patch.object(core, "_synthesis_llm", sonnet):
         assert core.synthesize("AAPL", "Apple", ["s"]) == "no headings"
     assert sonnet.invoke.call_count == 1
+
+
+def test_cache_key_hosted_unchanged_slm_separate(monkeypatch):
+    import cache
+    monkeypatch.delenv("SLM_FULL", raising=False)
+    assert cache._cache_key("aapl") == "research:AAPL"  # the documented exact key
+    monkeypatch.setenv("SLM_FULL", "true")
+    monkeypatch.setenv("SLM_ENDPOINT", "gpu")
+    assert cache._cache_key("aapl") == "research:slm-gpu:AAPL"
+
+
+def test_slm_brief_cached_under_its_own_key(monkeypatch):
+    import cache
+    store = {}
+    fake = MagicMock()
+    fake.setex.side_effect = lambda k, ttl, v: store.__setitem__(k, v)
+    fake.get.side_effect = lambda k: store.get(k)
+    monkeypatch.setattr(cache, "redis_client", fake)
+    monkeypatch.delenv("BYPASS_CACHE", raising=False)
+    monkeypatch.setenv("SLM_FULL", "true")
+    monkeypatch.setenv("SLM_ENDPOINT", "cpu")
+    cache.set_cached_response("AAPL", "slm brief")
+    monkeypatch.setenv("SLM_FULL", "false")
+    assert cache.get_cached_response("AAPL") is None  # hosted path never sees it
+    assert list(store) == ["research:slm-cpu:AAPL"]

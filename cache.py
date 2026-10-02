@@ -46,6 +46,15 @@ def _make_redis_client(url: str) -> redis.Redis:
 redis_client = _make_redis_client(REDIS_URL)
 
 
+def _cache_key(ticker: str) -> str:
+    """research:{TICKER} — exactly as always for the hosted path. Under
+    SLM_FULL the endpoint is part of the key (research:slm-cpu:{TICKER}), so
+    a brief written by one model is never served as another's."""
+    if os.getenv("SLM_FULL", "false").strip().lower() == "true":
+        return f"research:slm-{os.getenv('SLM_ENDPOINT', '').strip().lower()}:{ticker.upper()}"
+    return f"research:{ticker.upper()}"
+
+
 def get_cached_response(ticker: str) -> dict | None:
     """
     Looks up the cached research brief for a ticker by its exact Redis key
@@ -61,7 +70,7 @@ def get_cached_response(ticker: str) -> dict | None:
         print(f"Cache BYPASS (read) for {ticker} -- BYPASS_CACHE=true")
         return None
     try:
-        cache_key = f"research:{ticker.upper()}"
+        cache_key = _cache_key(ticker)
         cached = redis_client.get(cache_key)
         if not cached:
             print(f"Cache MISS for {ticker}")
@@ -94,7 +103,7 @@ def set_cached_response(ticker: str, result: str, numeric_check: dict | None = N
         print(f"Cache BYPASS (write) for {ticker.upper()} -- BYPASS_CACHE=true")
         return
     try:
-        cache_key = f"research:{ticker.upper()}"
+        cache_key = _cache_key(ticker)
         data = {
             "ticker": ticker.upper(),
             "result": result,
