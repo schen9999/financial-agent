@@ -1130,10 +1130,12 @@ small (51 of 323). Its own errors are mostly power-of-ten slips: 239 of
 the 245 other TRUE_ERROR mismatches, mainly market cap (117) and net
 income (86).
 
-## Self-served SLM arm (`slm-full-*`): method, set up 2026-10-02 — NOT YET RUN
+## Self-served SLM arm (`slm-full-*`): method (set up 2026-10-02) and the 2026-10-03 smokes
 
-No `slm-full` run exists yet; this section is the method the runs will be
-reported under. Model: Qwen3.6-35B-A3B (MoE, 35B total / 3B active,
+This section is the method `slm-full` runs are reported under. Run so far:
+one 10-ticker CPU smoke (`nb6r6`, 2026-10-03, "Smokes on image `2dd1aa3`"
+below). No extended run exists, and no eval has run against the GPU
+endpoint. Model: Qwen3.6-35B-A3B (MoE, 35B total / 3B active,
 vision-language; served text-only), one artifact for both endpoints:
 `ggml-org/Qwen3.6-35B-A3B-GGUF` @`baec3eb` `Qwen3.6-35B-A3B-Q4_K_M.gguf`
 (20,419,565,568 bytes, sha256 `671e47e0…40c7`), on llama.cpp `llama-server`
@@ -1157,7 +1159,15 @@ structured output raise.
 engine release, same server args except threads / GPU layers, so CPU vs GPU
 compares hardware only. If the GPU needs `--n-cpu-moe`, the endpoint serves
 `…-hybrid-ncmoe<n>` and every table labels that run **hybrid**, never GPU.
-Retrieval is the baseline arm's (no rerank, top-3).
+The GPU layout is evidenced by llama-server's own memory in `nvidia-smi`,
+not by a log line: b11347 logs no layer offload at default verbosity. On
+2026-10-03 `/app/llama-server` held 20,488 MiB of the A10's 23,028 MiB
+with `--n-gpu-layers all --n-cpu-moe 0` — the whole GGUF on the GPU
+(`make vm-llamacpp` prints and checks this).
+Retrieval is the baseline arm's (no rerank, top-3), and both arms run the
+same RAG pipeline: llama_index's default `compact` response mode, one
+answer call per query (the three retrieved chunks fit one prompt under
+either arm's context window), same prompt template, temperature and cap.
 
 **Request settings, sent explicitly on every call** (llama-server applies
 its own defaults to anything omitted, `min_p` 0.05 among them). Temperature
@@ -1170,12 +1180,26 @@ Qwen3.6 thinks by default and does not support the `/no_think` switch.
 `max_tokens` per site, sized from the largest committed outputs
 (`python eval/findings_scan.py eval/runs/raw/*-findings`, chars/4): sections
 768 (hosted max 331), synthesis 4096 (hosted max 1,719), planner and ReAct
-1024. RAG is capped at 512, matching the hosted arm exactly: the hosted RAG
-LLM runs llama_index's default Anthropic cap of 512 tokens, so both arms'
-RAG answers get the same budget. (Committed RAG answers reach 693 tokens by
-chars/4 under that same 512-token cap, so chars/4 overstates Claude's token
-count; the Qwen tokenizer's count differs again, and SLM RAG truncations
-are counted per run.) The full set is in each run's provenance.
+1024. RAG answers get one budget in both arms: `RAG_MAX_TOKENS` = 2048
+(`agent/tools/slm.py`), read by the SLM `rag` profile and passed to the
+hosted llama_index Anthropic LLM (`agent/tools/rag.py`); a test holds the
+two together (`tests/test_rag_settings.py`). Through image `2dd1aa3` both
+arms ran llama_index's Anthropic default of 512, which truncated 13 of the
+20 SLM answers on smoke `nb6r6` and none of the hosted smoke's 20 (`x2cx8`,
+max 456 tokens). **Consequence for the hosted arm: a hosted run on an image
+with the 2048 cap is not the `j4cnp` pipeline exactly — hosted answers that
+were cut at 512 now complete.** On the 40-ticker set that is at least the
+SFIX risk-factors answer, which stops mid-structure in `j4cnp` (on a
+dangling `## Tax-Related Risks` heading), `kcf7s` (`## Tax`) and `dvvxk`
+(`**Intellectual Property**:`). Runs before the ledger recorded no finish
+reason, so a cut that happened to land on a sentence end cannot be counted;
+"at least one of ~70 answers per run" is all the committed findings show.
+`j4cnp` stays the number of record, measured under the 512 cap. (Committed
+RAG answers reach 693 tokens by chars/4 under that cap, so chars/4
+overstates Claude's token count.) The value is sized from a measurement
+("RAG natural-length pre-check" below: the smoke's 20 SLM answers ran to a
+max of 854 tokens when nothing cut them), and truncations stay counted per
+run. The full set is in each run's provenance.
 
 **Counted per run** (the LLM ledger, `agent/llm_ledger.py`; findings
 metadata, result rows, aggregate): calls, prompt/completion tokens and
@@ -1213,6 +1237,155 @@ Wilson 95% CI, Fisher exact vs that baseline, per-section attribution
 (`eval/section_attribution.py`), parse/format failures, stock-block-empty
 count, the judge v2 calibration note; CPU vs GPU in one table only with the
 quant stated (both Q4_K_M here). Dated runs only.
+
+### Smokes on image `2dd1aa3` (2026-10-03): dated, to be re-run on the next image
+
+Two 10-ticker smokes on the provided OKE cluster, same pinned image
+(`ghcr.io/schen9999/financial-agent-app:2dd1aa38…`), judge v2, RAG cap 512.
+They validate the platform and the SLM path; they are not numbers of
+record, and 10 tickers cannot separate the arms (the intervals overlap).
+Rates are judge-flagged (v2; the calibration of record applies, and no
+reweighted estimate exists for these runs).
+
+| Run | Arm | Unsupported | Wilson 95% CI | Agent LLM calls | Pipeline per ticker | RAG answers cut at 512 |
+|---|---|---|---|---|---|---|
+| `x2cx8` | hosted baseline | 2/84 = 2.38% | 0.7–8.3% | 70 (7.0/ticker); the aggregate printed 90, see below | 26.4 s | 0 of 20 |
+| `nb6r6` | `slm-full-cpu`, traffic proof EXACT | 3/73 = 4.11% | 1.4–11.4% | 70 (7.0/ticker) | 355.9 s | 13 of 20 (highlights 9/10, risks 4/10) |
+
+`nb6r6`'s proof: 70 calls, 92,282 prompt + 22,466 completion tokens on the
+harness side and on the server's `/metrics` over the run
+(`eval/runs/slm-proof-nb6r6/`). Both smokes re-run on the next image (the
+lock fix and the 2048 RAG cap change it), before any extended run.
+
+**Dated finding: the hosted RAG ledger rows of `x2cx8` are double-counted.**
+The aggregate reported 20 calls on each RAG site and 9.0 agent calls per
+ticker for the hosted arm, against 10 and 7.0 for the SLM arm. The hosted
+path makes one RAG answer call per query, like the SLM path. The brief's two
+RAG queries run in two threads; both reached `_ensure_settings()` in
+`agent/tools/rag.py` before either had finished loading the embedding model,
+and each registered its own usage handler, so every hosted RAG answer was
+written to the ledger twice. The SLM arm was unaffected (that handler skips
+SLM responses; the adapter records its own). Evidence, from the workflow
+object (`eval/runs/x2cx8-workflow.json`): every (ticker, site) has exactly
+two rows with the same tokens and the same latency (total = 2 × max to
+within 0.01 s, all 20 pairs), and TSLA's two risk-answer rows sum to 11.79 s
+inside a 7.09 s retrieval stage. Corrected, per real call:
+
+| Site | Calls | Prompt tokens | Completion tokens | Median | p95 | Max | Truncated |
+|---|---|---|---|---|---|---|---|
+| `rag:highlights` | 10 | 26,568 | 2,728 | 280 | 353 | 365 | 0 |
+| `rag:risks` | 10 | 25,352 | 3,613 | 366 | 435 | 456 | 0 |
+| both | 20 | 51,920 | 6,341 | 338 | 412 | 456 | 0 |
+
+(completion tokens per answer; p95 interpolated — with 10 answers per site
+it sits just under the max). Reproduce:
+
+```bash
+python scripts/rag_ledger_from_workflow.py eval/runs/x2cx8-workflow.json
+```
+
+Not affected: the grounding counts and the gate; the run's estimated cost
+($1.0318), which is built from chars/4 estimates of the sections, synthesis
+and judge plus the RAG-faithfulness judge's recorded usage and never
+included the RAG answer calls; and the **cost of record** — the handler was
+introduced on 2026-10-02 (commit `1a417be`, branch `slm-harness` only),
+`scripts/cost_report.py` counts RAG tokens through its own single
+`TokenCountingHandler`, and its recorded RAG input tokens for AAPL / NVDA /
+JPM (4,868 / 5,927 / 5,003, `cost_record_post_fix.json`) equal the corrected
+x2cx8 figures for the same tickers token for token. Fix: a lock around the
+one-time setup (which also loads the embedding model once per pod instead
+of twice); `tests/test_rag_settings.py` holds one handler and one ledger
+row per API call under two concurrent callers.
+
+**Resource readings** (`kubectl top` every 15 s;
+`eval/runs/top-hosted-smoke.txt`, `eval/runs/top-cpu-smoke.txt`; e.g.
+`grep llamacpp eval/runs/top-cpu-smoke.txt | sort -k2 -n | tail -1`).
+Hosted smoke: eval pods 3–6 millicores at steady state, ~600 MiB each; the
+one 560m reading is startup (imports and the embedding-model load) — the
+same pod reads 6m in the next sample. CPU smoke: the llama.cpp pod peaked
+at 7,998m, saturating its 8-CPU limit (8 vCPU = 4 physical cores with SMT),
+and at 27,424 MiB of its 30Gi; the harness beside it is near idle (worker ≤
+43m, api ≤ 5m, eval pods single-digit millicores at steady state with
+490–780m startup spikes). The CPU arm's 355.9 s per ticker against 26.4 s
+hosted is therefore the endpoint's time, not the harness's. Untested, for
+the later concurrency sweep: the server ran `--threads 8` on 4 physical
+cores and no other thread count was tried.
+
+### RAG natural-length pre-check on the GPU endpoint (2026-10-03, a dated check)
+
+A truncated answer only says the model wanted more than the cap. To size
+the shared cap, `nb6r6`'s 20 RAG answer calls were replayed with nothing
+cutting them: the prompts rebuilt from the smoke's captured log through
+the real query-engine path (`scripts/rag_natural_length.py build`), the
+`rag` site's sampling unchanged (temperature 0.1, every sampler explicit,
+thinking off), `max_tokens` 4096, sent to the GPU endpoint on node 2
+(`localhost:30880`, served alias `qwen3.6-35b-a3b-q4km`, build
+`b11347-5fc4f3c8c`, all layers on the A10), two at a time, one sample per
+prompt. **Prompt check EXACT, 20 of 20**: the GPU server counted exactly
+the prompt tokens `nb6r6`'s ledger recorded on the CPU endpoint for each
+request, so these are the smoke's prompts and the two endpoints tokenize
+them identically. Every answer ended on its own (`finish_reason` stop).
+
+| Site | n | Min | Median | p95 | Max | > 512 | > 800 | > 1024 | Hit 4096 |
+|---|---|---|---|---|---|---|---|---|---|
+| `rag:highlights` | 10 | 482 | 668 | 795 | 799 | 9 | 0 | 0 | 0 |
+| `rag:risks` | 10 | 101 | 449 | 738 | 854 | 3 | 1 | 0 | 0 |
+| both | 20 | 101 | 577 | 802 | 854 | 12 | 1 | 0 | 0 |
+
+(completion tokens; p95 interpolated; the max is MSFT `rag:risks`.)
+
+**CPU vs GPU length, where the CPU smoke was not truncated.** Seven of the
+smoke's 20 answers ended on their own on the CPU endpoint; the same
+prompts on the GPU endpoint gave:
+
+| Ticker, site | CPU smoke `nb6r6` | GPU pre-check | Difference |
+|---|---|---|---|
+| AMZN `rag:risks` | 325 | 323 | −2 |
+| AAPL `rag:highlights` | 487 | 482 | −5 |
+| JPM `rag:risks` | 494 | 472 | −22 |
+| TSLA `rag:risks` | 403 | 426 | +23 |
+| WMT `rag:risks` | 150 | 101 | −49 |
+| META `rag:risks` | 333 | 389 | +56 |
+| GOOGL `rag:risks` | 326 | 401 | +75 |
+
+Three agree within 22 tokens and four differ by 23 to 75. These are
+independent samples at temperature 0.1 on two builds of one engine (CPU
+and CUDA), so token-for-token equality is not expected; the lengths are of
+the same order in both directions (median difference −2). One more
+data point on that variance: AAPL `rag:risks` hit the 512 cap on the CPU
+smoke and finished at 486 on the GPU. The pre-check therefore measures a
+length distribution from one sample per prompt, not a fixed length per
+prompt.
+
+**Cap decision: 2048 for both arms.** 1024 would have cut none of these 20
+answers, but the margin over the measured max (854) is 1.2×, on 10
+tickers. The extended runs send 4× the prompts over a wider set of
+filings, and the hosted arm already shows how far the tail moves: its
+10-ticker smoke peaked at 456 tokens, yet on the 40-ticker set the SFIX
+risk-factors answer reached the 512 cap. 2048 is 2.4× the measured SLM
+max. It is a ceiling, not a target, and truncations are still counted in
+every run — a non-zero `Trunc` on a RAG site at 2048 is a finding to
+report, not something the cap is assumed to prevent. On the hosted arm the
+change only raises `max_tokens` in the request (smoke max 456; see the
+`j4cnp` caveat under "Request settings"). On the CPU arm the RAG stage
+will take longer than `nb6r6`'s, since answers the smoke cut at 512 now
+run to their natural length (median 577); the run-time gate re-measures
+that on the re-smoke.
+
+This is a dated check of 20 answers, not a number of record, and not an
+eval run: no traffic proof applies and it says nothing about grounding.
+Results: `eval/runs/rag-natural-length-gpu-nb6r6.{txt,json}`. Reproduce:
+
+```bash
+python scripts/rag_natural_length.py build \
+  --log eval/runs/slm-proof-nb6r6/grounding-eval-slm-cpu-nb6r6.log \
+  --out eval/runs/rag-natural-length-requests-nb6r6.json
+# node 2 (stdlib only), nothing else using the endpoint:
+LLAMA_API_KEY=... python3 scripts/rag_natural_length.py run \
+  --requests eval/runs/rag-natural-length-requests-nb6r6.json \
+  --url http://localhost:30880 --api-key-env LLAMA_API_KEY \
+  --out ~/rag-natural-length-gpu-nb6r6.json
+```
 
 ### Dated finding (computed, not booted): no 4-bit Qwen3.6-35B-A3B fits one A10 under vLLM (2026-10-02)
 

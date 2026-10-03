@@ -1,0 +1,71 @@
+submitted workflow: grounding-eval-x2cx8
+polling up to 4200 s (activeDeadlineSeconds=3600 + 600s margin)
+  [17:46:45] phase=Running progress=0/2
+  [17:47:06] phase=Running progress=0/2
+  [17:47:27] phase=Running progress=0/2
+  [17:47:49] phase=Running progress=0/2
+  [17:48:10] phase=Running progress=0/2
+  [17:48:31] phase=Running progress=2/4
+  [17:48:53] phase=Running progress=2/4
+  [17:49:15] phase=Running progress=2/4
+  [17:49:36] phase=Running progress=4/6
+  [17:49:58] phase=Running progress=4/6
+  [17:50:19] phase=Running progress=4/6
+  [17:50:40] phase=Running progress=4/6
+  [17:51:02] phase=Running progress=6/8
+  [17:51:23] phase=Running progress=6/8
+  [17:51:44] phase=Running progress=6/8
+  [17:52:06] phase=Running progress=6/8
+  [17:52:27] phase=Running progress=6/8
+  [17:52:48] phase=Running progress=8/10
+  [17:53:10] phase=Running progress=8/10
+  [17:53:31] phase=Running progress=8/10
+  [17:53:52] phase=Running progress=9/10
+  [17:54:14] phase=Running progress=10/11
+  [17:54:35] phase=Succeeded progress=11/11
+
+=== aggregate step output ===
+==============================================================================
+  NIGHTLY GROUNDING EVAL — AGGREGATE
+==============================================================================
+  judge prompt      : v2
+  Ticker    Sup  Uns  Inf  Tot  Retr(s)  Pipe(s)
+  --------------------------------------------
+  AAPL       11    2    0   13     5.53    26.29
+  AMZN        4    0    0    4     6.73    26.78
+  GOOGL       6    0    0    6     6.07    26.55
+  JPM         8    0    1    9     6.51    25.68
+  META       12    0    1   13     5.46    26.10
+  MSFT        7    0    0    7     5.50    25.21
+  NVDA        6    0    0    6     6.00    25.40
+  TSLA       11    0    0   11     7.09    27.57
+  V           5    0    1    6     6.05    29.33
+  WMT         8    0    1    9     4.27    24.88
+  --------------------------------------------
+  TOTAL      78    2    4   84     5.92    26.38
+
+  tickers completed : 10
+  tickers skipped   : 0
+  stock block empty : 0/10
+  unsupported rate  : 2.38%   (gate: <= 5.0%)
+  95% CI (Wilson)   : 2.38% (95% CI 0.7–8.3%)
+  total claims      : 84   (gate: >= 30)
+
+  LLM calls (agent) : 90 over 10 completed ticker(s) = 9.0/ticker; endpoints anthropic
+  Site                         Calls   Prompt   Compl   Lat(s)  Max(s) Trunc Loop Parse Fmt Retry Err
+  rag:highlights                  20    53136    5456     3.53    4.93     0    0     0   0     0   0
+  rag:risks                       20    50704    7226     4.66    5.90     0    0     0   0     0   0
+  section:financial_health        10     8684    1938     2.45    2.87     0    0     0   0     0   0
+  section:recent_developments     10     8614    1689     2.29    2.83     0    0     0   0     0   0
+  section:risk_factors            10     4324    1883     2.27    2.88     0    0     0   0     0   0
+  section:sec_filing_highlights    10     3519    1308     1.69    2.36     0    0     0   0     0   0
+  synthesis                       10    17638   11805    17.87   20.67     0    0     0   0     0   0
+  RAG faithfulness  : 5/230 RAG-answer claims unsupported by their own chunks, 2.17% (95% CI 0.9–5.0%) over 20 answers — judge rf-v1, UNVALIDATED, separate from the grounding rate above
+  est. run cost     : $1.0318   (chars/4 tokens priced from scripts/model_prices.json; excludes retries — cost of record stays scripts/cost_report.py)
+
+  GATE PASSED
+==============================================================================
+===EVAL_FINDINGS_TGZ_BEGIN pod=grounding-eval-x2cx8-aggregate-190278048===
+H4sIAAAAAAAAA+3OMQ6CQBQE0D3K3sAFXfY4hkQxJAYSQM8vodNCK6zea+YnM8W/Ptv7ueuHSz/c5kPYRVqVUrZcfeZ2V7luUn1KOeWQqvrYlBDzPu+8e8xLO8UYpnFcvu1+9QAAAAAAAAAAAPBHL3/Ii9MAKAAA
+===EVAL_FINDINGS_TGZ_END===
+time="2026-10-03T17:54:15.819Z" level=info msg="sub-process exited" argo=true error="<nil>"

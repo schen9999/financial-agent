@@ -44,19 +44,30 @@ Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
   k3s overlays. The Sep 2 VM.GPU.A10.2 (Phase 1.75 validation box, where
   vLLM pinned to one GPU validated the A10.1-shaped oke-gpu serving config
   on 2026-09-03) is gone.
-- OKE, provided cluster (authored 2026-10-02, NOT YET EXECUTED): a cluster
+- OKE, provided cluster (authored 2026-10-02; app plane, Argo,
+  metrics-server chart 3.14.0 and the hosted smoke x2cx8 EXECUTED
+  2026-10-03 — per-step status in the runbook): a cluster
   provisioned for us, NOT by terraform/oci — never run Terraform against
   it. OKE v1.34.1, 4x VM.Standard.E5.Flex amd64 at 16 vCPU (two ~28 GiB,
   two ~58 GiB allocatable), no GPUs, cri-o (no image import), default
   StorageClass oci-bv. CPU-only harness: no vLLM or GPU resources,
-  USE_LOCAL_MODEL=false; hosted models unless SLM_FULL. An optional CPU
-  SLM endpoint is authored for it (k8s/llamacpp/overlays/oke-cpu, NOT YET
-  EXECUTED); no doc may claim vLLM, or SLM serving, on it until the
-  runbook step runs. Overlays k8s/overlays/oke-provided +
+  USE_LOCAL_MODEL=false; hosted models unless SLM_FULL. Its optional CPU
+  SLM endpoint (k8s/llamacpp/overlays/oke-cpu) served one traffic-proven
+  smoke 2026-10-03 (see the Self-served bullet below); no doc may claim
+  vLLM on it, or SLM serving beyond the runbook's EXECUTED steps. Overlays
+  k8s/overlays/oke-provided +
   argo/overlays/oke-provided (oke stays the Terraform path); app image
-  from GHCR pinned by git sha (make oke-images on the laptop, WSL);
+  from GHCR pinned by git sha (make oke-images on node 2, oci2 — the
+  laptop's WSL disk filled during a build 2026-10-03; the pin edit goes
+  to the laptop as a patch — git diff on node 2, git apply + commit +
+  push on the laptop); a new image re-runs every arm on it.
   make oke-up on the private operator host (ssh oke-operator, ProxyJump
-  oke-bastion); every Service ClusterIP, access by port-forward behind
+  oke-bastion). Operator gotchas: kubectl's oci credential plugin
+  consumes ssh stdin and a non-login ssh lacks its PATH, so secrets go
+  over as a 0600 temp file (umask 077; cat > file), are created on the
+  operator, then shred -u — never streamed into kubectl (streaming works
+  on node 2's k3s); remote one-liners need bash -ic, bash -lc fails.
+  Every Service ClusterIP, access by port-forward behind
   ssh -L; nightly CronWorkflow suspended. Runbook "OKE (provided
   cluster)". Yahoo has returned 429 from its egress IP: check the
   aggregate's "stock block empty" count on every run there.
@@ -68,8 +79,8 @@ Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (5235 lines, 449 tests collected: 448 passed + 1 skipped,
-   the credit-gated judge test, as of 2026-10-02) must pass on every commit. Canonical
+3. The pytest suite (5532 lines, 462 tests collected: 461 passed + 1 skipped,
+   the credit-gated judge test, as of 2026-10-03) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
 4. Celery stays request-time async; Argo owns eval orchestration. Do not merge them.
@@ -234,12 +245,33 @@ Phase 3 — demo polish:
   Summary + Outlook) only; section-level numeric accuracy is the numeric
   check's to report. A dated comparison, not a number of record. Still gated: serving on OKE — update this line when that
   actually runs.
-- Self-served Qwen3.6-35B-A3B (authored 2026-10-02, NOTHING RUN): llama.cpp
+- Self-served Qwen3.6-35B-A3B (authored 2026-10-02): llama.cpp
   b11347 serving ggml-org Q4_K_M @baec3eb on a CPU endpoint on the provided
   OKE cluster and a GPU endpoint on vm-a10-inst-2 (same GGUF, same engine).
-  No doc may say either served anything, or quote any slm-full number,
-  until its runbook step is EXECUTED and the run's traffic proof passed
-  (EXACT or LOWER-BOUND). A GPU run with --n-cpu-moe > 0 (served alias
+  Legitimate as of 2026-10-03, dated smokes on image 2dd1aa3 only: the CPU
+  endpoint served the 10-ticker smoke `nb6r6` (judge v2, traffic proof
+  EXACT): 3/73 = 4.11% (CI 1.4–11.4%), beside the same-image hosted smoke
+  `x2cx8` 2/84 = 2.38% (CI 0.7–8.3%) — never numbers of record, never an
+  arm comparison, always with the caveat that 13 of 20 SLM RAG answers
+  were cut at the then-512 RAG cap, and both to be re-run on the next
+  image. The GPU endpoint loaded with all layers on the A10 (nvidia-smi:
+  llama-server 20,488 of 23,028 MiB, --n-cpu-moe 0; llama.cpp logs no
+  offload line, nvidia-smi process memory is the evidence) and enforces
+  its key; it answered the 20 requests of the RAG natural-length
+  pre-check (not an eval, no grounding claim); NO eval has run against it. No doc may say more of either
+  endpoint, or quote any other slm-full number, until its runbook step is
+  EXECUTED and the run's traffic proof passed (EXACT or LOWER-BOUND).
+  x2cx8's printed LLM-call table double-counts the hosted RAG sites (a
+  handler registered twice, fixed by a lock): the real figures are 10
+  calls per RAG site and 7.0 agent calls/ticker in both arms — quote the
+  corrected table (eval-methodology, scripts/rag_ledger_from_workflow.py);
+  the $0.0366 cost of record predates that handler and is unaffected.
+  Both arms' RAG answers share one cap (RAG_MAX_TOKENS, 2048 since
+  2026-10-03; 512 through image 2dd1aa3; sized from the dated GPU
+  pre-check — the smoke's 20 SLM answers uncut: median 577, p95 802, max
+  854; truncations still counted): a hosted run on that image is NOT the j4cnp
+  pipeline exactly — answers cut at 512 (SFIX risks in j4cnp, kcf7s,
+  dvvxk) now complete; say so wherever such a run sits beside j4cnp. A GPU run with --n-cpu-moe > 0 (served alias
   -hybrid-ncmoe<n>) is HYBRID in every table, never "GPU". Under SLM_FULL
   the judge and the multi-agent critic stay Sonnet (the critic is the one
   hosted dependency of the SLM app path). vLLM for this model on one A10:

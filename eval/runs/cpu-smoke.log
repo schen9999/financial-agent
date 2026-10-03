@@ -1,0 +1,171 @@
+Defaulted container "api" out of: api, wait-for-postgres (init)
+submitted workflow: grounding-eval-slm-cpu-nb6r6
+polling up to 22200 s (activeDeadlineSeconds=21600 + 600s margin)
+  [19:13:32] phase=Running progress=0/2
+  [19:13:54] phase=Running progress=0/2
+  [19:14:15] phase=Running progress=0/2
+  [19:14:36] phase=Running progress=0/2
+  [19:14:58] phase=Running progress=0/2
+  [19:15:19] phase=Running progress=0/2
+  [19:15:40] phase=Running progress=0/2
+  [19:16:02] phase=Running progress=0/2
+  [19:16:23] phase=Running progress=0/2
+  [19:16:44] phase=Running progress=0/2
+  [19:17:06] phase=Running progress=0/2
+  [19:17:27] phase=Running progress=0/2
+  [19:17:48] phase=Running progress=0/2
+  [19:18:10] phase=Running progress=0/2
+  [19:18:31] phase=Running progress=0/2
+  [19:18:53] phase=Running progress=0/2
+  [19:19:14] phase=Running progress=0/2
+  [19:19:35] phase=Running progress=0/2
+  [19:19:56] phase=Running progress=0/2
+  [19:20:18] phase=Running progress=0/2
+  [19:20:39] phase=Running progress=0/2
+  [19:21:01] phase=Running progress=0/2
+  [19:21:22] phase=Running progress=2/4
+  [19:21:43] phase=Running progress=2/4
+  [19:22:04] phase=Running progress=2/4
+  [19:22:26] phase=Running progress=2/4
+  [19:22:47] phase=Running progress=2/4
+  [19:23:08] phase=Running progress=2/4
+  [19:23:30] phase=Running progress=2/4
+  [19:23:51] phase=Running progress=2/4
+  [19:24:13] phase=Running progress=2/4
+  [19:24:34] phase=Running progress=2/4
+  [19:24:55] phase=Running progress=2/4
+  [19:25:17] phase=Running progress=2/4
+  [19:25:38] phase=Running progress=2/4
+  [19:25:59] phase=Running progress=2/4
+  [19:26:21] phase=Running progress=2/4
+  [19:26:42] phase=Running progress=2/4
+  [19:27:03] phase=Running progress=2/4
+  [19:27:25] phase=Running progress=2/4
+  [19:27:46] phase=Running progress=2/4
+  [19:28:08] phase=Running progress=3/5
+  [19:28:30] phase=Running progress=4/6
+  [19:28:51] phase=Running progress=4/6
+  [19:29:13] phase=Running progress=4/6
+  [19:29:34] phase=Running progress=4/6
+  [19:29:55] phase=Running progress=4/6
+  [19:30:17] phase=Running progress=4/6
+  [19:30:38] phase=Running progress=4/6
+  [19:30:59] phase=Running progress=4/6
+  [19:31:21] phase=Running progress=4/6
+  [19:31:42] phase=Running progress=4/6
+  [19:32:03] phase=Running progress=4/6
+  [19:32:25] phase=Running progress=4/6
+  [19:32:46] phase=Running progress=4/6
+  [19:33:08] phase=Running progress=4/6
+  [19:33:29] phase=Running progress=4/6
+  [19:33:50] phase=Running progress=4/6
+  [19:34:11] phase=Running progress=4/6
+  [19:34:33] phase=Running progress=4/6
+  [19:34:54] phase=Running progress=4/6
+  [19:35:15] phase=Running progress=6/8
+  [19:35:37] phase=Running progress=6/8
+  [19:35:59] phase=Running progress=6/8
+  [19:36:20] phase=Running progress=6/8
+  [19:36:42] phase=Running progress=6/8
+  [19:37:03] phase=Running progress=6/8
+  [19:37:24] phase=Running progress=6/8
+  [19:37:46] phase=Running progress=6/8
+  [19:38:07] phase=Running progress=6/8
+  [19:38:28] phase=Running progress=6/8
+  [19:38:50] phase=Running progress=6/8
+  [19:39:11] phase=Running progress=6/8
+  [19:39:32] phase=Running progress=6/8
+  [19:39:54] phase=Running progress=6/8
+  [19:40:15] phase=Running progress=6/8
+  [19:40:36] phase=Running progress=6/8
+  [19:40:58] phase=Running progress=6/8
+  [19:41:19] phase=Running progress=6/8
+  [19:41:40] phase=Running progress=6/8
+  [19:42:02] phase=Running progress=8/10
+  [19:42:23] phase=Running progress=8/10
+  [19:42:44] phase=Running progress=8/10
+  [19:43:06] phase=Running progress=8/10
+  [19:43:27] phase=Running progress=8/10
+  [19:43:48] phase=Running progress=8/10
+  [19:44:10] phase=Running progress=8/10
+  [19:44:31] phase=Running progress=8/10
+  [19:44:52] phase=Running progress=8/10
+  [19:45:13] phase=Running progress=8/10
+  [19:45:35] phase=Running progress=8/10
+  [19:45:56] phase=Running progress=8/10
+  [19:46:17] phase=Running progress=8/10
+  [19:46:39] phase=Running progress=8/10
+  [19:47:00] phase=Running progress=8/10
+  [19:47:21] phase=Running progress=8/10
+  [19:47:43] phase=Running progress=8/10
+  [19:48:04] phase=Running progress=8/10
+  [19:48:26] phase=Running progress=8/10
+  [19:48:47] phase=Running progress=8/10
+  [19:49:08] phase=Running progress=9/10
+  [19:49:30] phase=Running progress=10/11
+  [19:49:51] phase=Succeeded progress=11/11
+
+=== aggregate step output ===
+==============================================================================
+  NIGHTLY GROUNDING EVAL — AGGREGATE
+==============================================================================
+  judge prompt      : v2
+  slm endpoint      : slm-cpu http://llamacpp.financial-agent.svc:8080 — qwen3.6-35b-a3b-q4km (ggml-org/Qwen3.6-35B-A3B-GGUF@baec3ebee244827cda0f4557eafa8b28f7545fa6:Qwen3.6-35B-A3B-Q4_K_M.gguf sha256:671e47e0ec53c665d048b98c3ecbfd5236b5ca9c3e02ed19fc8f81f7b85140c7)
+  slm server        : build b11347-5fc4f3c8c, /models/Qwen3.6-35B-A3B-Q4_K_M.gguf Q4_K - Medium, n_ctx 32768, 4 slots, thinking off
+  slm sampling      : {"planner": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 1024, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.0, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}, "rag": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 512, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.1, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}, "react": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 1024, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.0, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}, "section": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 768, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.1, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}, "synthesis": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 4096, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.2, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}}
+  Ticker    Sup  Uns  Inf  Tot  Retr(s)  Pipe(s)
+  --------------------------------------------
+  AAPL        8    0    0    8   171.39   375.31
+  AMZN        4    0    0    4   143.59   322.16
+  GOOGL       8    2    1   11   150.66   350.12
+  JPM         3    0    0    3   161.42   346.95
+  META       10    0    0   10   179.31   354.32
+  MSFT        2    0    0    2   167.15   361.99
+  NVDA        7    0    1    8   170.64   378.84
+  TSLA       15    0    0   15   162.31   351.46
+  V           5    1    1    7   176.85   364.53
+  WMT         5    0    0    5   167.27   352.87
+  --------------------------------------------
+  TOTAL      67    3    3   73   165.06   355.85
+
+  tickers completed : 10
+  tickers skipped   : 0
+  stock block empty : 0/10
+  unsupported rate  : 4.11%   (gate: <= 5.0%)
+  95% CI (Wilson)   : 4.11% (95% CI 1.4–11.4%)
+  total claims      : 73   (gate: >= 30)
+
+  LLM calls (agent) : 70 over 10 completed ticker(s) = 7.0/ticker; endpoints slm-cpu
+  Site                         Calls   Prompt   Compl   Lat(s)  Max(s) Trunc Loop Parse Fmt Retry Err
+  rag:highlights                  10    25235    5095   162.84  178.18     9    0     0   0     0   0
+  rag:risks                       10    24072    4079   148.03  174.74     4    0     0   0     0   0
+  section:financial_health        10     9101    1404    74.08   88.91     0    0     0   0     0   0
+  section:recent_developments     10     9041    1204    64.46  103.75     0    0     0   0     0   0
+  section:risk_factors            10     4790    1409    70.66   97.57     0    0     0   0     0   0
+  section:sec_filing_highlights    10     5889    1183    69.12  108.30     0    0     0   0     0   0
+  synthesis                       10    14154    8092   110.45  132.04     0    0     0   0     0   0
+  SLM_TRAFFIC {"calls": 70, "calls_without_usage": 0, "completion_tokens": 22466, "endpoint": "slm-cpu", "errored_calls": 0, "prompt_tokens": 92282}
+  RAG faithfulness  : 2/325 RAG-answer claims unsupported by their own chunks, 0.62% (95% CI 0.2–2.2%) over 20 answers — judge rf-v1, UNVALIDATED, separate from the grounding rate above
+  est. run cost     : $0.8145   (chars/4 tokens priced from scripts/model_prices.json; excludes retries — cost of record stays scripts/cost_report.py)
+
+  GATE PASSED
+==============================================================================
+===EVAL_FINDINGS_TGZ_BEGIN pod=grounding-eval-slm-cpu-nb6r6-aggregate-4188324953===
+H4sIAAAAAAAAA+3OSwrCMBQF0CwlOzCJtFmOFPxQkBba6votnelAR3V0zuQ+uHfwLs/ufrr2w7kfbvMh7CKtaq1brj5zu3NT2lSaNqcSUi7HtobY7PPOu8e8dFOMYRrH5dvuVw8AAAAAAAAAAAB/9ALdZ0LJACgAAA==
+===EVAL_FINDINGS_TGZ_END===
+time="2026-10-03T19:49:24.239Z" level=info msg="sub-process exited" argo=true error="<nil>"
+Defaulted container "api" out of: api, wait-for-postgres (init)
+=== traffic proof for grounding-eval-slm-cpu-nb6r6 (files in /home/ubuntu/slm-proof) ===
+  harness: 70 calls, 92282 prompt + 22466 completion tokens (0 errored)
+  server : 92282 prompt + 22466 completion tokens over the window (b11347-5fc4f3c8c, /models/Qwen3.6-35B-A3B-Q4_K_M.gguf)
+TRAFFIC PROOF: EXACT
+=== measured run time of grounding-eval-slm-cpu-nb6r6, projected to argo/eval-run-extended-slm-cpu.yaml ===
+run-time check for grounding-eval-slm-cpu-nb6r6 against argo/eval-run-extended-slm-cpu.yaml
+  smoke: 10 tickers, parallelism 2, per ticker mean 0h07m, min 0h06m, max 0h07m; aggregate 0h00m
+  not Succeeded: none
+  projected 40 tickers (20 waves of 2): mean 2h22m, worst 2h30m
+  PASS  worst projection <= workflow deadline 16h00m
+  PASS  slowest smoke ticker 0h07m <= 75% of ticker deadline 1h30m
+  PASS  worst projection + 1 day capture < 7-day TTL
+RUN-TIME CHECK: PASS - ok to launch
+eval-run exit 0, traffic proof exit 0
