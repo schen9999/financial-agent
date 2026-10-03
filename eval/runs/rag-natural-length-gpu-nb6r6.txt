@@ -1,0 +1,30 @@
+endpoint http://localhost:30880: model qwen3.6-35b-a3b-q4km, build b11347-5fc4f3c8c; max_tokens 4096, 20 requests, concurrency 2
+  AAPL   rag:highlights  prompt  2306 (smoke  2306) completion   482 finish=stop       8.6s [smoke: 487]
+  AAPL   rag:risks       prompt  2295 (smoke  2295) completion   486 finish=stop      10.2s [smoke: 512 truncated]
+  AMZN   rag:risks       prompt  2331 (smoke  2331) completion   323 finish=stop       5.7s [smoke: 325]
+  AMZN   rag:highlights  prompt  2351 (smoke  2351) completion   604 finish=stop      12.1s [smoke: 512 truncated]
+  GOOGL  rag:highlights  prompt  2085 (smoke  2085) completion   567 finish=stop      10.1s [smoke: 512 truncated]
+  GOOGL  rag:risks       prompt  2381 (smoke  2381) completion   401 finish=stop       8.2s [smoke: 326]
+  JPM    rag:highlights  prompt  2371 (smoke  2371) completion   523 finish=stop       9.8s [smoke: 512 truncated]
+  JPM    rag:risks       prompt  2382 (smoke  2382) completion   472 finish=stop       9.4s [smoke: 494]
+  META   rag:risks       prompt  2426 (smoke  2426) completion   389 finish=stop       6.7s [smoke: 333]
+  META   rag:highlights  prompt  2915 (smoke  2915) completion   799 finish=stop      15.2s [smoke: 512 truncated]
+  MSFT   rag:highlights  prompt  2321 (smoke  2321) completion   591 finish=stop      10.6s [smoke: 512 truncated]
+  MSFT   rag:risks       prompt  2307 (smoke  2307) completion   854 finish=stop      14.4s [smoke: 512 truncated]
+  NVDA   rag:highlights  prompt  2965 (smoke  2965) completion   791 finish=stop      13.8s [smoke: 512 truncated]
+  NVDA   rag:risks       prompt  2635 (smoke  2635) completion   597 finish=stop      11.0s [smoke: 512 truncated]
+  TSLA   rag:highlights  prompt  2352 (smoke  2352) completion   733 finish=stop      12.6s [smoke: 512 truncated]
+  TSLA   rag:risks       prompt  2341 (smoke  2341) completion   426 finish=stop       8.6s [smoke: 403]
+  V      rag:risks       prompt  2322 (smoke  2322) completion   587 finish=stop       9.1s [smoke: 512 truncated]
+  V      rag:highlights  prompt  2368 (smoke  2368) completion   788 finish=stop      15.2s [smoke: 512 truncated]
+  WMT    rag:risks       prompt  2652 (smoke  2652) completion   101 finish=stop       3.1s [smoke: 150]
+  WMT    rag:highlights  prompt  3201 (smoke  3201) completion   749 finish=stop      11.7s [smoke: 512 truncated]
+
+natural completion tokens (max_tokens 4096, p95 interpolated):
+  site              n   min  median    p95   max  >512  >800  >1024  hit cap
+  rag:highlights   10   482     668    795   799     9     0      0        0
+  rag:risks        10   101     449    738   854     3     1      0        0
+  both             20   101     577    802   854    12     1      0        0
+
+PROMPT CHECK: EXACT - 20 of 20 requests tokenized to the smoke's recorded prompt_tokens
+written: /home/ubuntu/rag-natural-length-gpu-nb6r6.json
