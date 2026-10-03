@@ -787,6 +787,13 @@ depends on:
    the embedding-model load) — the same pod reads 6m in the next sample.
    The image this ran on is superseded: re-run this step on the next image
    before any SLM run is compared with it.
+
+   **Re-run on image `30c832b` (2026-10-03): `grounding-eval-hm527`**
+   Succeeded 11/11 — 10/10 tickers, 90 claims, 1/90 = 1.11% unsupported
+   (Wilson 95% CI 0.2–6.0%), judge v2, 70 agent calls = 7.0/ticker (the
+   ledger double count is gone), no truncation (`eval/runs/hm527-smoke.log`,
+   `eval/runs/hm527-top.txt`, findings in `eval/runs/raw/hm527-findings`).
+   Superseded in turn by the next image (attempt logging).
 9. **[PARTLY EXECUTED 2026-10-03 for `x2cx8`: in the repo are the
    `make eval-run` output (`eval/runs/hosted-smoke.log`), the top capture
    (`eval/runs/top-hosted-smoke.txt`) and the workflow object
@@ -803,10 +810,17 @@ depends on:
    # laptop (WSL), from the repo
    scp oke-operator:'~/<wf>.log' eval/runs/raw/<wf>.log
    scp oke-operator:'~/<wf>-top.txt' eval/runs/<wf>-top.txt
+   scp oke-operator:'~/<wf>-attempts.json' eval/runs/<wf>-attempts.json   # retries + failed attempts, written by make eval-run
    python3 scripts/extract_findings.py --log eval/runs/raw/<wf>.log --out eval/runs/raw/<wf>-findings/
    python3 eval/stock_block.py eval/runs/raw/<wf>-findings
    ```
-   then the per-claim rows as in "Findings capture" above.
+   then the per-claim rows as in "Findings capture" above. The capture
+   list for every run: the pod log, the top capture, the workflow object
+   (`kubectl get workflow <wf> -o json` → `eval/runs/<wf>-workflow.json`),
+   **`<wf>-attempts.json`**, and for SLM runs the `~/slm-proof/<wf>*`
+   files. `<wf>-attempts.json` can be rebuilt from the workflow object and
+   the pod log (`python3 eval/attempts.py --workflow … --log … --json-out
+   …`) while both exist.
 10. **[NOT YET EXECUTED]** Teardown — operator:
     ```bash
     pkill -f 'kubectl -n financial-agent port-forward'
@@ -1030,6 +1044,44 @@ smoke, then the extended runs with their same-image hosted baseline
    tail (4× the prompts): the 2026-10-03 max of 854 is why it is 2048 and
    not 1024. Copy both files into `eval/runs/`. Re-run this before
    changing the model, the quant, the sampling or the RAG prompt.
+
+   **CPU smoke re-run on image `30c832b` (2026-10-03):
+   `grounding-eval-slm-cpu-9jddz` — gate passed, TRAFFIC PROOF: FAIL,
+   explained.** 10/10 tickers, 53 claims, 1/53 = 1.89% unsupported (Wilson
+   95% CI 0.3–9.9%), judge v2, Trunc 0 on every site, 70 calls in the
+   final attempts. The Anthropic balance ran out mid-run: the first NVDA
+   attempt finished its SLM generation, failed at the judge on the
+   credit-balance 400 (the harness's FATAL guard, exit 1), and Argo retried
+   it after the balance was reloaded. The server counted 10,123 prompt +
+   2,943 completion tokens more than the final attempts sent — one NVDA
+   brief's worth — and that image did not record a failed attempt's calls,
+   so the proof cannot balance. It is recorded as **FAIL, explained: one
+   retry (NVDA) after credit exhaustion**, never as a pass
+   (`eval/runs/9jddz-smoke.log`, `eval/runs/slm-proof-9jddz/`,
+   `eval/runs/9jddz-workflow.json`; eval-methodology, "Smokes on image
+   `30c832b`"). **This run is not citable; the CPU baseline on the new
+   image is the next CPU smoke.** Check the Anthropic balance before every
+   run: an exhausted balance costs a retry on the CPU endpoint and, on
+   images up to `30c832b`, the proof.
+
+   **From the next image: retries are part of the report.** `make
+   eval-run` prints, under the aggregate's output, an attempts block from
+   the workflow object and every pod's log (`eval/attempts.py`): Argo
+   retries, the tickers, and each failed attempt's cause, LLM calls and
+   Trunc/Parse/Fmt/Err counts, labelled as from failed attempts. The
+   same report is written to `~/<workflow>-attempts.json` (`ATTEMPTS_DIR`)
+   — capture it with the run (OKE step 9). The aggregate pod itself only
+   names the retried tickers: it has no RBAC to read other pods' logs, by
+   decision. `slm-eval-run` saves the workflow object beside the pod log
+   and the proof counts the failed attempts' tokens (`--workflow`). A run
+   is citable only on **EXACT**, or on **LOWER-BOUND with every excess
+   token attributed to calls the harness itself logged as failed**; a
+   failed attempt without a complete call record is FAIL. The aggregate
+   also prints claims per ticker, numeric claims per ticker and the
+   numeric-claim unsupported rate next to the all-claims rate — read them
+   together (eval-methodology, "Dated finding: claim density"); for a
+   two-run comparison, `python3 eval/multi_arm_stats.py --run … --run …`
+   prints the numeric comparison and the density table.
 7. **[NOT YET EXECUTED]** Live app on the SLM (optional, for the demo):
    `make oke-slm-app ON=true ENDPOINT=cpu` (cache keys become
    `research:slm-cpu:<T>`, so no hosted brief is served as an SLM one);

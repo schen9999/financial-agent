@@ -79,7 +79,7 @@ Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (5532 lines, 462 tests collected: 461 passed + 1 skipped,
+3. The pytest suite (5948 lines, 486 tests collected: 485 passed + 1 skipped,
    the credit-gated judge test, as of 2026-10-03) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
@@ -254,7 +254,34 @@ Phase 3 — demo polish:
   `x2cx8` 2/84 = 2.38% (CI 0.7–8.3%) — never numbers of record, never an
   arm comparison, always with the caveat that 13 of 20 SLM RAG answers
   were cut at the then-512 RAG cap, and both to be re-run on the next
-  image. The GPU endpoint loaded with all layers on the A10 (nvidia-smi:
+  image. On image 30c832b (lock fix + 2048 RAG cap), same 10 tickers,
+  judge v2, no truncation: hosted smoke `hm527` 1/90 = 1.11% (CI
+  0.2–6.0%) and CPU smoke `9jddz` 1/53 = 1.89% (CI 0.3–9.9%). 9jddz's
+  TRAFFIC PROOF is FAIL, explained: one Argo retry (NVDA) after Anthropic
+  credits ran out; the failed attempt's SLM calls were not recorded on
+  that image. 9jddz is NOT CITABLE: quote it only with that status, never
+  as a pass, never as the CPU baseline — the CPU baseline on the new image
+  is the next CPU smoke. Which proof outcomes make an SLM run citable:
+  EXACT, or LOWER-BOUND with every excess token attributed to calls the
+  harness itself logged as failed. Nothing else: any FAIL, explained or
+  not, and any run with a failed attempt lacking a complete call record,
+  is not citable. From the next image failed attempts log their own
+  calls, eval/attempts.py reports retries with cause and counts labelled
+  as from failed attempts (printed under the aggregate by make eval-run
+  and written to ~/<workflow>-attempts.json; no RBAC for the aggregate
+  pod, by decision), and the proof counts every attempt. Numeric claims
+  are co-primary with the rate: every SLM-vs-hosted all-claims rate goes
+  with numeric claims per ticker and the numeric-claim unsupported rate
+  (hm527 6.1/ticker, 0/61; 9jddz 3.1/ticker, 0/31), plus claims per
+  ticker. The SLM synthesis states about half the figures of hosted (3.1
+  vs 6.1 numeric claims/ticker) because it follows the synthesis prompt
+  literally; judge v2's listing of qualitative claims varies run to run
+  (GOOGL 11 vs 2, V 6 vs 16) — recorded, not fixed: a scope change would
+  be a new judge version needing calibration. The numeric rate is a
+  judge-flagged subset rate, not separately calibrated
+  (eval/claim_density.py, run by eval/multi_arm_stats.py;
+  eval-methodology). A lower SLM rate alone is never "better grounding".
+  The GPU endpoint loaded with all layers on the A10 (nvidia-smi:
   llama-server 20,488 of 23,028 MiB, --n-cpu-moe 0; llama.cpp logs no
   offload line, nvidia-smi process memory is the evidence) and enforces
   its key; it answered the 20 requests of the RAG natural-length

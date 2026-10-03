@@ -1218,10 +1218,37 @@ counters are exact: over a run, Δ`tokens_predicted_total` and
 Δ(`prompt_tokens_total` + `prompt_tokens_cached_total`) equal the summed
 `usage` the harness recorded (verified against a live llama-server b11347).
 `make slm-eval-run` snapshots `/metrics` before and after and reconciles
-them with the aggregate's `SLM_TRAFFIC` line (`scripts/slm_traffic_proof.py`):
-EXACT, LOWER-BOUND (excess only from calls the harness saw fail), or FAIL.
-Each SLM ticker also fails if any agent call was served by anything but its
-arm's endpoint. A run without a passing proof is not an SLM result.
+them with the harness's tokens over **every attempt**
+(`scripts/slm_traffic_proof.py`): the aggregate's `SLM_TRAFFIC` line, which
+covers the final attempt of each ticker, plus the calls of every failed
+attempt Argo retried, read back from the pod logs (next paragraph). EXACT,
+LOWER-BOUND (excess only from calls the harness saw fail), or FAIL; a
+failed attempt that left no complete call record can never be explained
+away as LOWER-BOUND. Each SLM ticker also fails if any agent call was
+served by anything but its arm's endpoint. **A run is citable as an SLM
+result only on EXACT, or on LOWER-BOUND with every excess token attributed
+to calls the harness itself logged as failed.** Any FAIL — including an
+explained one — is not citable.
+
+**Retried attempts stay visible** (since the image after `30c832b`; added
+after smoke `9jddz`). The workflow retries a failed eval pod once and hands
+the aggregate only the final attempt, so a failed attempt used to vanish
+from the report and from the proof. Now every eval pod writes, to its own
+log, `EVAL_ATTEMPT_BEGIN`, one `EVAL_LLM_CALL` line per LLM call as it
+returns (tokens and the truncation / loop / parse / format / error flags),
+and `EVAL_ATTEMPT_END` with the outcome and cause on every exit Python
+still controls; the attempt number is Argo's `{{retries}}`, checked on
+Argo v3.7.18. `eval/attempts.py` reads the workflow object and the pod
+logs and reports the number of retries, the tickers, and for each failed
+attempt Argo's message, the cause from the pod log, its LLM calls per site
+and its failure counts — labelled as from failed attempts, never merged
+into the final-attempt table. `make eval-run` prints that report under the
+aggregate's output and writes it to `~/<workflow>-attempts.json` for the
+capture steps; the aggregate itself names the retried tickers (the
+aggregate pod cannot read other pods' logs and is given no RBAC to, so the
+detail comes from the run report). A pod that is killed (deadline, out of memory) leaves its
+calls but no END record: its record is marked incomplete and its listed
+calls are a lower bound.
 
 **RAG faithfulness — a separate, unvalidated metric.** The main judge treats
 the RAG answers as source text, so an unfaithful RAG answer reads as
@@ -1236,7 +1263,15 @@ pinned OKE image (`argo/eval-run-extended.yaml`); unsupported rate with
 Wilson 95% CI, Fisher exact vs that baseline, per-section attribution
 (`eval/section_attribution.py`), parse/format failures, stock-block-empty
 count, the judge v2 calibration note; CPU vs GPU in one table only with the
-quant stated (both Q4_K_M here). Dated runs only.
+quant stated (both Q4_K_M here). **Numeric claims are co-primary with the
+rate**: numeric claims per ticker (claims that quote a figure) and the
+unsupported rate over numeric claims sit beside every all-claims rate,
+with claims per ticker (mean, min) — in the aggregate, and in
+`eval/multi_arm_stats.py`, which runs `eval/claim_density.py` itself —
+because an arm that states fewer checkable facts gets a lower unsupported
+rate for free, and the count of qualitative claims is judge noise ("Dated
+finding: claim density" below). Retries and failed attempts are reported
+with the run. Dated runs only.
 
 ### Smokes on image `2dd1aa3` (2026-10-03): dated, to be re-run on the next image
 
@@ -1385,6 +1420,155 @@ LLAMA_API_KEY=... python3 scripts/rag_natural_length.py run \
   --requests eval/runs/rag-natural-length-requests-nb6r6.json \
   --url http://localhost:30880 --api-key-env LLAMA_API_KEY \
   --out ~/rag-natural-length-gpu-nb6r6.json
+```
+
+### Smokes on image `30c832b` (2026-10-03): dated; the CPU run's traffic proof is FAIL, explained
+
+The re-smokes on the image with the lock fix and the 2048 RAG cap, same 10
+tickers, judge v2 (judge-flagged rates; no reweighted estimate exists for
+these runs). Not numbers of record.
+
+| Run | Arm | Unsupported | Wilson 95% CI | Claims / ticker (mean, min) | Numeric claims / ticker | Numeric unsupported | Agent LLM calls | Pipeline per ticker | RAG answers truncated | Traffic proof |
+|---|---|---|---|---|---|---|---|---|---|---|
+| `hm527` | hosted baseline | 1/90 = 1.11% | 0.2–6.0% | 9.0, 3 | 6.1 | 0/61 (CI 0.0–5.9%) | 70 (7.0/ticker) | 26.9 s | 0 of 20 (max 564 tokens) | n/a (hosted) |
+| `9jddz` | `slm-full-cpu` — **not citable** | 1/53 = 1.89% | 0.3–9.9% | 5.3, 2 | 3.1 | 0/31 (CI 0.0–11.0%) | 70 (7.0/ticker), final attempts | 345.2 s | 0 of 20 (max 877 tokens) | **FAIL, explained** |
+
+What the image changed, as measured: the hosted ledger now shows 10 rows
+per RAG site and 70 calls (the double count is gone); no RAG answer was
+truncated in either arm (`scripts/rag_ledger_from_workflow.py` on each
+run's workflow object). The SLM answers ran to a median of 585 and a max of
+877 tokens, in line with the pre-check (577, 854). One hosted answer
+reached 564 tokens — above the old 512 cap — so the "not the `j4cnp`
+pipeline exactly" caveat already applies on the 10-ticker set.
+
+**`9jddz`: traffic proof FAIL, explained: one retry (NVDA) after credit
+exhaustion.** The Anthropic balance ran out during the run. The first NVDA
+attempt (`eval-ticker(1:NVDA)(0)`, pod `…-eval-one-2600813302`) finished
+its SLM generation, then hit the credit-balance 400 at the judge; the
+harness's guard stopped the pod with `FATAL: Anthropic credit balance too
+low` (exit 1), as designed. Argo retried NVDA after the balance was
+reloaded, and that attempt succeeded. The aggregate and the proof saw only
+the final attempts: harness 94,573 prompt + 24,754 completion tokens,
+server 104,696 + 27,697 — the server counted 10,123 prompt + 2,943
+completion tokens more. NVDA's successful attempt sent 10,109 + 2,939
+tokens, so the excess is the size of one NVDA brief to within 14 + 4
+tokens. That is consistent with the failed attempt, not a reconciliation:
+image `30c832b` did not log a failed attempt's calls, so what that attempt
+sent was never recorded. The verdict stays **FAIL** — it is not rewritten
+as a pass, and under the proof rule this run is **not citable** as an SLM
+result. Its figures are kept here as a dated record, always with that
+status; the CPU baseline is the next CPU smoke, on the image that logs
+failed attempts.
+Re-running the proof with the attempt-aware verifier gives the same
+verdict with the reason spelled out:
+
+```bash
+python eval/attempts.py --workflow eval/runs/9jddz-workflow.json \
+  --log eval/runs/slm-proof-9jddz/grounding-eval-slm-cpu-9jddz.log
+python scripts/slm_traffic_proof.py verify \
+  --before eval/runs/slm-proof-9jddz/grounding-eval-slm-cpu-9jddz-before.json \
+  --after eval/runs/slm-proof-9jddz/grounding-eval-slm-cpu-9jddz-after.json \
+  --log eval/runs/slm-proof-9jddz/grounding-eval-slm-cpu-9jddz.log \
+  --workflow eval/runs/9jddz-workflow.json     # TRAFFIC PROOF: FAIL
+```
+
+Both smokes re-run on the next image (attempt logging and the claim-density
+lines change it) before any extended run.
+
+### Dated finding: claim density differs between the arms, and between judge passes (2026-10-03)
+
+The hosted smoke `hm527` produced 90 judged claims and the CPU SLM smoke
+`9jddz` 53, over the same 10 tickers on the same image; the earlier SLM
+smoke `nb6r6` had 73. AMZN, GOOGL and V each have 2 claims in `9jddz`. The
+unsupported rate divides by judged claims, so this matters to every
+SLM-vs-hosted comparison. From `eval/claim_density.py`:
+
+| Run | Arm | Claims / ticker (mean, min) | Numeric claims / ticker (mean, min) | Numeric unsupported | Qualitative claims / ticker | Briefs audited on numbers only | Audited words / ticker | Numbers in audited text / ticker |
+|---|---|---|---|---|---|---|---|---|
+| `x2cx8` | hosted | 8.4, 4 | 5.8, 3 | 0/58 (CI 0.0–6.2%) | 2.6 | 3 of 10 | 338 | 5.9 |
+| `hm527` | hosted | 9.0, 3 | 6.1, 3 | 0/61 (CI 0.0–5.9%) | 2.9 | 3 of 10 | 347 | 6.2 |
+| `nb6r6` | SLM CPU | 7.3, 2 | 3.5, 2 | 0/35 (CI 0.0–9.9%) | 3.8 | 3 of 10 | 200 | 3.7 |
+| `9jddz` | SLM CPU (not citable) | 5.3, 2 | 3.1, 2 | 0/31 (CI 0.0–11.0%) | 2.2 | 5 of 10 | 201 | 3.1 |
+| `j4cnp` | hosted, 40 tickers | 9.8, 4 | 6.5, 2 | 4/260 = 1.54% (CI 0.6–3.9%) | 3.2 | 9 of 40 | 338 | 8.1 |
+
+("Numeric" = the judge's quoted claim contains a digit,
+`eval.label.numeric_claim_counts`; audited text = Executive Summary +
+Outlook without headings and the disclaimer. The numeric rate is a
+judge-flagged rate over a subset of the claims: the v2 calibration was
+measured over all claims and has not been repeated for this subset, and
+`j4cnp`'s number of record stays 12/392 over all claims.)
+
+Two separate effects:
+
+1. **The SLM writes less, and half the numbers.** Its audited text is about
+   200 words against the hosted arm's ~340, with ~3 numbers against ~6, in
+   both SLM smokes. It follows the synthesis prompt to the letter: a
+   three-sentence Executive Summary that cites two figures in its first
+   sentence, and a one-paragraph Outlook with no figure at all (the prompt
+   asks for a qualitative Outlook and forbids invented numbers). The hosted
+   model writes longer sentences that carry more figures and more named
+   specifics. No section is missing in any brief, and nothing was truncated.
+   Numeric claims track this directly: the judge extracted almost exactly
+   the numbers present (3.1 claims for 3.1 numbers in `9jddz`, 6.1 for 6.2
+   in `hm527`).
+2. **Whether the judge audits qualitative phrases varies from brief to
+   brief, and that swings the count.** The v2 prompt asks for quantitative
+   figures, named milestones and forward-looking numbers. Sometimes the
+   judge also lists qualitative phrases as claims, sometimes it declares
+   them out of scope. `nb6r6` and `9jddz` have the same amount of SLM text;
+   numeric claims fell by 4 (35 to 31) and qualitative claims by 16 (38 to
+   22). GOOGL is the clearest case: 11 claims in `nb6r6`, of which 9 are
+   phrases such as "dominant market position" and "strong cash generation"
+   (two of them labelled UNSUPPORTED), and 2 claims in `9jddz`, where the
+   judge wrote that everything but the two figures was qualitative and
+   outside the audit. The hosted arm shows the same instability: V has 6
+   claims in `x2cx8` and 16 in `hm527`, 10 of them qualitative.
+
+For the three 2-claim briefs in `9jddz` (AMZN, GOOGL, V) both effects
+coincide: each has exactly two figures, both in the Executive Summary; the
+Outlook is hedged and conditional but, more to the point, contains no
+number; and the judge audited numbers only in all three. Hedged wording is
+not what removed the claims — the hosted Outlooks are hedged the same way,
+and judge v2 treats a hedged claim like any other — the absence of
+checkable specifics is.
+
+In one sentence each, for the record:
+
+- **The SLM synthesis states about half the figures of the hosted one —
+  3.1 against 6.1 numeric claims per ticker (`9jddz` vs `hm527`) — because
+  it follows the synthesis prompt literally.**
+- **Judge v2's listing of qualitative claims varies from run to run (GOOGL
+  11 claims vs 2 across the two SLM smokes; V 6 vs 16 across the two
+  hosted smokes). This is recorded, not fixed: changing the judge's claim
+  scope would be a new judge version and would need its own calibration.**
+
+Consequences, applied from the next image on:
+
+- **Numeric claims are the co-primary metric.** Every all-claims rate is
+  reported with numeric claims per ticker (mean, min) and the unsupported
+  rate over numeric claims; claims per ticker (mean, min) stays beside
+  them. The numeric count is the stable part: it follows the numbers in
+  the text, not the judge's pass. The aggregate prints these lines (each
+  result row carries its numeric counts), and `eval/multi_arm_stats.py`
+  leads with the numeric comparison and runs `eval/claim_density.py`
+  itself. Supported claims per ticker was considered as the co-primary and
+  rejected: it carries the qualitative-claim noise.
+- A lower SLM unsupported rate is not evidence of better grounding unless
+  the density is comparable; state both. On these smokes the SLM's rate is
+  over about half as many checkable figures.
+- In all four smokes every unsupported claim was a qualitative one: the
+  numeric unsupported count is 0 in each (0/58, 0/61, 0/35, 0/31; note the
+  wide intervals). The all-claims rates of the smokes therefore measure
+  qualitative claims only — the part the judge lists inconsistently (2 of
+  `nb6r6`'s 3 unsupported claims were GOOGL's qualitative phrases).
+
+```bash
+python eval/claim_density.py --run x2cx8 eval/runs/raw/x2cx8-findings \
+  --run hm527 eval/runs/raw/hm527-findings --run nb6r6 eval/runs/raw/nb6r6-findings \
+  --run 9jddz eval/runs/raw/9jddz-findings --run j4cnp eval/runs/raw/j4cnp-findings \
+  --tickers AMZN GOOGL V
+python eval/multi_arm_stats.py --run hosted-hm527 eval/runs/hm527-claims.jsonl eval/runs/raw/hm527-findings \
+  --run slm-cpu-9jddz eval/runs/9jddz-claims.jsonl eval/runs/raw/9jddz-findings
 ```
 
 ### Dated finding (computed, not booted): no 4-bit Qwen3.6-35B-A3B fits one A10 under vLLM (2026-10-02)
