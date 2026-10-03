@@ -32,6 +32,11 @@ from agent.tools.slm import llama_index_llm, slm_full_enabled
 load_dotenv()
 
 _settings_configured = False
+# The two RAG queries of a brief run in two threads and both arrive here
+# before the embedding model has loaded; without the lock each registered
+# its own usage handler (every hosted RAG call recorded twice) and loaded
+# the embedding model a second time.
+_settings_lock = threading.Lock()
 
 # Retrieved chunk texts per question, for the eval's RAG-faithfulness metric
 # (the answer judged against exactly what it was written from). Kept only
@@ -96,16 +101,19 @@ def _ensure_settings():
     global _settings_configured
     if _settings_configured:
         return
-    Settings.llm = Anthropic(
-        model="claude-haiku-4-5-20251001",
-        api_key=os.getenv("ANTHROPIC_API_KEY"),
-    )
-    Settings.embed_model = HuggingFaceEmbedding(
-        model_name="BAAI/bge-small-en-v1.5"
-    )
-    from llama_index.core.instrumentation import get_dispatcher
-    get_dispatcher().add_event_handler(_HostedRagUsage().handler)
-    _settings_configured = True
+    with _settings_lock:
+        if _settings_configured:
+            return
+        Settings.llm = Anthropic(
+            model="claude-haiku-4-5-20251001",
+            api_key=os.getenv("ANTHROPIC_API_KEY"),
+        )
+        Settings.embed_model = HuggingFaceEmbedding(
+            model_name="BAAI/bge-small-en-v1.5"
+        )
+        from llama_index.core.instrumentation import get_dispatcher
+        get_dispatcher().add_event_handler(_HostedRagUsage().handler)
+        _settings_configured = True
 
 
 def _get_pinecone_index(index_name: str):
