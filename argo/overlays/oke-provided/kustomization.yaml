@@ -28,7 +28,7 @@ configurations:
 images:
   - name: financial-agent-app
     newName: ghcr.io/schen9999/financial-agent-app
-    newTag: UNPINNED
+    newTag: 2dd1aa38bb3e8dd2ba35e5460314b39242deb213
 
 patches:
   - target:
