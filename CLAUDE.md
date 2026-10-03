@@ -281,6 +281,18 @@ Phase 3 — demo polish:
   judge-flagged subset rate, not separately calibrated
   (eval/claim_density.py, run by eval/multi_arm_stats.py;
   eval-methodology). A lower SLM rate alone is never "better grounding".
+  Hosted smokes on the 10-ticker set, judge v2, dated: `x2cx8` 2/84 =
+  2.38% (CI 0.7–8.3%, 512 RAG cap, no hosted answer cut), `hm527` 1/90 =
+  1.11% (CI 0.2–6.0%), `7c66k` 8/101 = 7.92% (CI 4.1–14.9%, GATE FAILED:
+  all 8 on MSFT, where the judge listed 14 qualitative claims vs 1 and
+  0). Numeric unsupported is 0 in all three. This is smoke-level
+  run-to-run variance from judge listing, not a pipeline change: the same
+  ungrounded MSFT content is in all three syntheses, and the lower runs
+  are judge misses consistent with the population-weighted v2 recall, not
+  cleaner briefs. Never quote one smoke's rate as "the hosted rate", never
+  call 7c66k a regression or the low runs clean, never rank arms on
+  smokes: compare arms on the extended runs, numeric co-primary first. Do
+  not change the judge or the gate for it.
   The GPU endpoint loaded with all layers on the A10 (nvidia-smi:
   llama-server 20,488 of 23,028 MiB, --n-cpu-moe 0; llama.cpp logs no
   offload line, nvidia-smi process memory is the evidence) and enforces
@@ -306,6 +318,16 @@ Phase 3 — demo polish:
   booted — state it that way (eval-methodology). The RAG-faithfulness
   metric (rf-v1) is unvalidated: judge-flagged, its own column, never part
   of the grounding rate.
+- Known limitations, recorded 2026-10-03, NOT fixed during the SLM
+  comparison (either fix changes the pipeline and needs new baselines on
+  every arm; post-demo): (1) the synthesis prompt asks for watch-items
+  naming metrics, and judge v2 labels a hedged watch-item unsupported when
+  the context lacks the metric — a prompt/judge interaction in every arm;
+  (2) the highlights RAG query reaches only risk-factor text for AMZN,
+  JPM, MSFT, NVDA and WMT, so their RAG highlights answer is a refusal and
+  the "SEC Filing Highlights" section is a refusal for 4–5 of 10 briefs
+  per run. State both when describing brief quality; do not present the
+  briefs as having a working filing-highlights section for those tickers.
 - Cross-encoder reranking and the multi-agent supervisor shipped default-off
   because evals showed no grounding gain at higher cost/latency. State it that way.
 - Any new number in docs must come from a committed, re-runnable harness.

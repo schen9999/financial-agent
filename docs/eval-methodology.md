@@ -1571,6 +1571,112 @@ python eval/multi_arm_stats.py --run hosted-hm527 eval/runs/hm527-claims.jsonl e
   --run slm-cpu-9jddz eval/runs/9jddz-claims.jsonl eval/runs/raw/9jddz-findings
 ```
 
+### Hosted smokes on the 10-ticker set: smoke-level run-to-run variance (2026-10-03)
+
+Three hosted-baseline smokes on the same 10 tickers, judge v2, on three
+consecutive images of the same pipeline. Dated runs; none is a number of
+record. Rates are judge-flagged (v2; no reweighted estimate exists for these
+runs).
+
+| Run | Image | RAG cap | Unsupported | Wilson 95% CI | Gate (≤ 5%) | Numeric unsupported | Qualitative claims listed | MSFT claims (numeric + qualitative) | MSFT unsupported |
+|---|---|---|---|---|---|---|---|---|---|
+| `x2cx8` | `2dd1aa3` | 512 ¹ | 2/84 = 2.38% | 0.7–8.3% | passed | 0/58 | 26 | 6 + 1 | 0 |
+| `hm527` | `30c832b` | 2048 | 1/90 = 1.11% | 0.2–6.0% | passed | 0/61 | 29 | 9 + 0 | 0 |
+| `7c66k` | `1f51dad` | 2048 | 8/101 = 7.92% | 4.1–14.9% | **FAILED** | 0/59 | 42 | 8 + 14 | 8 |
+
+¹ `x2cx8` ran under the 512-token RAG cap, the other two under 2048. No
+hosted RAG answer was cut in `x2cx8` (max 456 tokens), so the cap did not
+bind in that run.
+
+**This is smoke-level run-to-run variance, and `7c66k`'s gate failure is
+one ticker.** All 8 of its unsupported claims are on MSFT; the other nine
+tickers have none. The judge listed 14 qualitative claims for MSFT in
+`7c66k`, against 1 in `x2cx8` and 0 in `hm527`, and labelled 8 of them
+UNSUPPORTED. Numeric unsupported is 0 in all three runs, and all 11
+unsupported claims across the three are qualitative. The gate and the
+judge are unchanged; `7c66k` stays recorded as a failed gate.
+
+**What did not change between the runs.** MSFT's retrieved chunks are
+identical in the three runs for both RAG queries, and the stock, news and
+SEC-summary blocks of every ticker are byte-identical between `hm527` and
+`7c66k`. The three MSFT syntheses say the same things, several near
+verbatim: `hm527`'s Outlook has "The primary tailwind is the secular
+enterprise demand for AI-integrated workflows, where Microsoft's deep
+customer relationships and existing platform footprint provide a
+meaningful distribution advantage", and `x2cx8`'s has "evidence of AI
+monetization gaining traction" and "watch the trajectory of profit margins
+as AI infrastructure spending scales" — none listed by the judge in those
+runs. `x2cx8` also has "uncertain returns on accelerating capital
+expenditure" inside a claim the judge labelled SUPPORTED; in `7c66k` the
+same wording is two of the eight UNSUPPORTED claims.
+
+**The eight claims** (all from the Outlook or the Executive Summary's
+last sentence; full text and the judge's reasons in
+`eval/runs/raw/7c66k-findings/MSFT_baseline.md`):
+
+- Absent from the context — the model's own knowledge or an editorial
+  assertion: "The primary tailwind is the secular enterprise demand for
+  cloud infrastructure and AI-integrated productivity tools"; "Microsoft's
+  deeply embedded customer relationships and broad platform footprint
+  provide a durable distribution advantage".
+- Watch-items and conditions naming a metric the context does not
+  contain: "watch the trajectory of cloud and AI services margins …";
+  "watch competitive win-rate signals in cloud workloads …"; "… would
+  strengthen if margin trends hold or improve alongside evidence of AI
+  monetization gaining traction".
+- Judge strictness on a qualifier: "accelerating capital expenditures for
+  AI infrastructure" and "the uncertain return timeline on accelerating
+  capital expenditures" (the context says "substantial capital
+  expenditures on an accelerated timeline"); "… the company's historically
+  strong profitability" (the context has one period's margin).
+
+**Interpretation.** The same ungrounded MSFT content appeared in all three
+syntheses. The lower runs are judge misses, not cleaner briefs — consistent
+with judge v2's population-weighted recall on UNSUPPORTED (32.5% on the
+baseline run, CI 16.0–52.4%; pooled 47.9%, CI 26.5–68.3%; "Calibration of
+record"). A 10-ticker smoke's all-claims rate is dominated by which
+qualitative phrases the judge lists in that pass: one ticker moved the
+rate from 1.11% to 7.92% with nothing else changing. So a smoke validates
+the platform and the plumbing (calls, truncation, retries, traffic proof);
+it does not rank arms. **Arms are compared on the extended runs, numeric
+co-primary first.**
+
+**Two known limitations, recorded and deliberately not changed.** Fixing
+either changes the pipeline and requires new baselines on every arm, so
+neither changes during this comparison; both are post-demo work.
+
+1. *Synthesis prompt and judge interact.* The synthesis prompt asks the
+   Outlook to "name the key variables an investor should watch" and gives
+   metric-style examples; judge v2 labels a hedged watch-item UNSUPPORTED
+   when the context lacks the metric it names (check 1: hedging does not
+   downgrade a missing fact). Every arm runs the same prompt and the same
+   judge, so every arm carries this — whenever the judge lists the
+   watch-item at all.
+2. *The highlights RAG query reaches only risk-factor text for half the
+   smoke tickers.* For AMZN, JPM, MSFT, NVDA and WMT the highlights query
+   retrieves only Item 1A chunks in all three runs, so the RAG highlights
+   answer is a refusal ("I cannot provide a summary of the latest 10-K and
+   10-Q … only excerpts from the Risk Factors section"), and the brief's
+   "SEC Filing Highlights" section is itself a refusal for 4–5 of the 10
+   briefs each run (5 in `x2cx8`, 4 in `hm527` and `7c66k`). MSFT's Item
+   1A anchor is working here (its first chunk starts "ITEM 1A. RISK
+   FACTORS"); the limit is what the index holds, not a failed anchor. It
+   leaves those briefs' Outlooks with little context to stand on when the
+   judge does list their qualitative phrases.
+
+```bash
+python eval/claim_density.py --run x2cx8 eval/runs/raw/x2cx8-findings \
+  --run hm527 eval/runs/raw/hm527-findings --run 7c66k eval/runs/raw/7c66k-findings --tickers MSFT
+python eval/compare_runs.py contexts --a hm527 eval/runs/raw/hm527-findings --b 7c66k eval/runs/raw/7c66k-findings
+# RAG highlights refusals, and SEC Filing Highlights sections that are refusals, per run:
+grep -lE '^\[From Pinecone cache\] I cannot provide a summary' eval/runs/raw/7c66k-findings/*_baseline.md
+for f in eval/runs/raw/7c66k-findings/*_baseline.md; do
+  grep -A2 '^### SEC Filing Highlights' $f | grep -qE 'cannot provide|Unable to provide' && basename $f _baseline.md
+done
+# MSFT's retrieved chunks, identical across the three runs:
+python -c "import json; c=[json.load(open(f'eval/runs/raw/{r}-findings/MSFT_baseline.ragf.json',encoding='utf-8'))['answers'] for r in ('x2cx8','hm527','7c66k')]; print(all(a[w]['chunks']==c[0][w]['chunks'] for a in c for w in ('highlights','risks')))"
+```
+
 ### Dated finding (computed, not booted): no 4-bit Qwen3.6-35B-A3B fits one A10 under vLLM (2026-10-02)
 
 Qwen publishes Qwen3.6-35B-A3B in BF16 and FP8 only (FP8 has no native

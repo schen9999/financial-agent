@@ -794,6 +794,21 @@ depends on:
    ledger double count is gone), no truncation (`eval/runs/hm527-smoke.log`,
    `eval/runs/hm527-top.txt`, findings in `eval/runs/raw/hm527-findings`).
    Superseded in turn by the next image (attempt logging).
+
+   **Re-run on image `1f51dad` (2026-10-03): `grounding-eval-7c66k` —
+   GATE FAILED.** 10/10 tickers, 101 claims, 8/101 = 7.92% unsupported
+   (Wilson 95% CI 4.1–14.9%), judge v2, 0 Argo retries, 70 agent calls, no
+   truncation; numeric unsupported 0/59. All 8 unsupported claims are
+   qualitative phrases in MSFT's brief, which the judge listed in this
+   pass (14 qualitative MSFT claims, against 1 and 0 in the two earlier
+   smokes on the same retrieved context and near-identical text). It is
+   recorded as a failed gate; the gate and the judge are not changed
+   (`eval/runs/hosted-smoke-3.log`, `eval/runs/raw/7c66k-findings`,
+   `eval/runs/grounding-eval-7c66k-attempts.json`; eval-methodology,
+   "Hosted smokes on the 10-ticker set"). The new aggregate lines and the
+   attempts block ran on OKE for the first time in this run. A smoke
+   validates the platform; arms are compared on the extended runs, numeric
+   co-primary first.
 9. **[PARTLY EXECUTED 2026-10-03 for `x2cx8`: in the repo are the
    `make eval-run` output (`eval/runs/hosted-smoke.log`), the top capture
    (`eval/runs/top-hosted-smoke.txt`) and the workflow object

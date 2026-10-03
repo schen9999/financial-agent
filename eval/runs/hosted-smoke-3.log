@@ -1,0 +1,83 @@
+submitted workflow: grounding-eval-7c66k
+polling up to 4200 s (activeDeadlineSeconds=3600 + 600s margin)
+  [22:55:10] phase=Running progress=0/2
+  [22:55:31] phase=Running progress=0/2
+  [22:55:52] phase=Running progress=0/2
+  [22:56:14] phase=Running progress=0/2
+  [22:56:35] phase=Running progress=0/2
+  [22:56:57] phase=Running progress=2/4
+  [22:57:18] phase=Running progress=2/4
+  [22:57:39] phase=Running progress=2/4
+  [22:58:00] phase=Running progress=2/4
+  [22:58:22] phase=Running progress=4/6
+  [22:58:43] phase=Running progress=4/6
+  [22:59:05] phase=Running progress=4/6
+  [22:59:26] phase=Running progress=4/6
+  [22:59:47] phase=Running progress=6/8
+  [23:00:09] phase=Running progress=6/8
+  [23:00:30] phase=Running progress=6/8
+  [23:00:51] phase=Running progress=6/8
+  [23:01:12] phase=Running progress=8/10
+  [23:01:34] phase=Running progress=8/10
+  [23:01:55] phase=Running progress=8/10
+  [23:02:17] phase=Running progress=8/10
+  [23:02:38] phase=Running progress=9/10
+  [23:02:59] phase=Failed progress=10/11
+
+=== aggregate step output ===
+==============================================================================
+  NIGHTLY GROUNDING EVAL — AGGREGATE
+==============================================================================
+  judge prompt      : v2
+  Ticker    Sup  Uns  Inf  Tot  Retr(s)  Pipe(s)
+  --------------------------------------------
+  AAPL       11    0    0   11     8.87    30.24
+  AMZN        4    0    0    4     6.30    26.93
+  GOOGL       8    0    0    8     5.26    24.42
+  JPM         7    0    0    7     6.48    25.33
+  META       13    0    0   13     7.18    26.54
+  MSFT        9    8    5   22     5.78    27.77
+  NVDA        6    0    0    6     8.86    29.07
+  TSLA       11    0    0   11     8.68    29.75
+  V          10    0    1   11    10.51    32.41
+  WMT         7    0    1    8     7.97    27.31
+  --------------------------------------------
+  TOTAL      86    8    7  101     7.59    27.98
+
+  tickers completed : 10
+  tickers skipped   : 0
+  stock block empty : 0/10
+  unsupported rate  : 7.92%   (gate: <= 5.0%)
+  95% CI (Wilson)   : 7.92% (95% CI 4.1–14.9%)
+  total claims      : 101   (gate: >= 30)
+  claims per ticker : mean 10.1, min 4 (AMZN)   — read the rate with this: fewer checkable claims lowers it for free
+  numeric claims    : 59 = mean 5.9/ticker, min 4 (AMZN)   — co-primary: claims that quote a figure (the judge's listing of qualitative phrases varies run to run)
+  numeric unsupported: 0/59 = 0.00% (95% CI 0.0–6.1%)
+  Argo retries      : 0
+
+  LLM calls (agent) : 70 over 10 completed ticker(s) = 7.0/ticker; endpoints anthropic
+  Site                         Calls   Prompt   Compl   Lat(s)  Max(s) Trunc Loop Parse Fmt Retry Err
+  rag:highlights                  10    26568    2757     3.60    4.95     0    0     0   0     0   0
+  rag:risks                       10    25352    3554     4.62    5.65     0    0     0   0     0   0
+  section:financial_health        10     8684    1965     2.47    2.79     0    0     0   0     0   0
+  section:recent_developments     10     8614    1641     2.21    2.76     0    0     0   0     0   0
+  section:risk_factors            10     4265    1858     2.21    3.13     0    0     0   0     0   0
+  section:sec_filing_highlights    10     3548    1420     1.84    2.50     0    0     0   0     0   0
+  synthesis                       10    17770   11814    17.74   19.21     0    0     0   0     0   0
+  RAG faithfulness  : 4/234 RAG-answer claims unsupported by their own chunks, 1.71% (95% CI 0.7–4.3%) over 20 answers — judge rf-v1, UNVALIDATED, separate from the grounding rate above
+  est. run cost     : $1.0568   (chars/4 tokens priced from scripts/model_prices.json; excludes retries — cost of record stays scripts/cost_report.py)
+
+  GATE FAILED: unsupported rate 7.92% exceeds 5.0%
+==============================================================================
+===EVAL_FINDINGS_TGZ_BEGIN pod=grounding-eval-7c66k-aggregate-2047292372===
+H4sIAAAAAAAAA+3OOw6CQBQFUJYyOxAGh1mOIfETEgMJoOt3QqeFVlid09yX3Fu8y7O/n67DeB7G23KodlEXOecti8/c7ibFrm7rYxfLroltTlVI+7zz7rGs/RxCNU/T+m33qwcAAAAAAAAAAIA/egFpvvJgACgAAA==
+===EVAL_FINDINGS_TGZ_END===
+time="2026-10-03T23:02:49.550Z" level=info msg="sub-process exited" argo=true error="<nil>"
+Error: exit status 1
+
+=== attempts: retries and failed attempts, from the workflow object and every pod's log (NOT in the aggregate above) ===
+attempts of grounding-eval-7c66k (Failed): 10 eval pod(s) for 10 ticker(s)
+  Argo retries      : 0
+  failed attempts   : 0 - every eval pod succeeded on its first attempt
+  attempts record written: /home/ubuntu/grounding-eval-7c66k-attempts.json
+make: *** [Makefile:107: eval-run] Error 1
