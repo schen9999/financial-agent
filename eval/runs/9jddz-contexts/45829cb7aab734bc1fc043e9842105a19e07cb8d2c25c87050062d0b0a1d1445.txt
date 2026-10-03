@@ -1,0 +1,94 @@
+STOCK DATA:
+{
+  "ticker": "AAPL",
+  "company_name": "Apple Inc.",
+  "current_price": 333.69,
+  "currency": "USD",
+  "market_cap": 4869931925504.0,
+  "pe_ratio": 38.31114,
+  "forward_pe": 34.821583,
+  "week_52_high": 345.34,
+  "week_52_low": 243.42,
+  "revenue": 466822987776.0,
+  "net_income": 128929996800.0,
+  "profit_margin": 0.27618998,
+  "dividend_yield": 0.32,
+  "sector": "Technology",
+  "industry": "Consumer Electronics"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": "Gurman Reports Apple Is Launching New \u2018Smart Home\u2019 Products on October 13",
+    "source": "Bloomberg",
+    "published_at": "2026-09-30T20:14:31Z",
+    "description": null
+  },
+  {
+    "title": "Apple will sell 6 million iPhone duos in 2026, Counterpoint says",
+    "source": "Bloomberg",
+    "published_at": "2026-09-30T06:20:00Z",
+    "description": "The figure hinges on how quickly Apple ramps up production of the new foldable hardware, says Counterpoint senior analyst Ivan Lam"
+  },
+  {
+    "title": "Nothing debuts $399 \u2018Pro\u2019\u00a0headphones with\u00a0glass, metal design",
+    "source": "Bloomberg",
+    "published_at": "2026-09-29T04:17:37Z",
+    "description": "Aimed at audio enthusiasts who want the most detailed and customizable listening experience, the new product\u2019s biggest enhancements\u00a0are performance-related"
+  },
+  {
+    "title": "Regarding the Provenance of Charm Within Meta",
+    "source": "Bloomberg",
+    "published_at": "2026-09-25T17:07:33Z",
+    "description": null
+  },
+  {
+    "title": "Dixon Technologies sets sights on global top five as it expands beyond smartphones",
+    "source": "Bloomberg",
+    "published_at": "2026-09-23T02:29:42Z",
+    "description": "Dixon Technologies aims to enter the global top 10 EMS rankings in five years and top five in 10 years by expanding beyond smartphones."
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2025-10-31",
+    "summary": "Item 1A. Risk Factors The following summarizes factors that could have a material adverse effect on the Company\u2019s business, reputation, results of operations, financial condition and stock price. The Company may not be able to accurately predict, control or mitigate these risks. Statements in this section are based on the Company\u2019s beliefs and opinions regarding matters that could materially adversely affect the Company in the future and are not representations as to whether such matters have or have not occurred previously. The risks and uncertainties described below are not exhaustive and should not be considered a complete statement of all potential risks or uncertainties that the Company faces or may face in the future. This section should be read in conjunction with Part II, Item 7, \u201c"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-07-31",
+    "summary": "Item 1A. Risk Factors 21 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 24 Item 3. Defaults Upon Senior Securities 24 Item 4. Mine Safety Disclosures 24 Item 5. Other Information 25 Item 6. Exhibits 25 PART I \u2014 FINANCIAL INFORMATION Item 1. Financial Statements Apple Inc. CONDENSED CONSOLIDATED STATEMENTS OF OPERATIONS (Unaudited) (In millions, except number of shares, which are reflected in thousands, and per-share amounts) Three Months Ended Nine Months Ended June 27, 2026 June 28, 2025 June 27, 2026 June 28, 2025 Net sales: Products $ 78,678 $ 66,613 $ 272,629 $ 233,287 Services 30,739 27,423 91,728 80,408 Total net sales 109,417 94,036 364,357 313,695 Cost of sales: Products 47,153 43,620 163,810 147,097 Services 7,494 6,698 21,765 19,738 Total cost of sales 54,647"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] Based on the provided excerpts from Apple Inc.'s 2025 Form 10-K, the key risk factors and business challenges include:
+
+**Public Health and Operational Disruptions**
+Major public health issues, such as pandemics, can materially adversely affect the company by impacting the global economy, consumer demand, and supply chains. Protective measures like travel restrictions and freight limitations can disrupt operations, delay new product production, and interrupt sales channels. Because the company relies on single or limited sources for many critical components, interruptions at these sources can exacerbate negative consequences. While insurance coverage exists, it may be insufficient to cover all potential losses.
+
+**Intense Global Competition**
+The company operates in highly competitive global markets characterized by aggressive price competition, downward pressure on gross margins, and rapid technological change. Competitors often imitate the company’s products, infringe on intellectual property, and compete on price, with some willing to offer products at little or no profit. The company holds a minority market share in global smartphone, personal computer, tablet, and wearables markets, some of which have experienced little to no growth or contraction. Success depends heavily on the timely introduction of innovative products and the effective protection of intellectual property rights, which can be hindered by regulatory requirements and litigation.
+
+**Macroeconomic and Geopolitical Risks**
+The company’s performance is significantly dependent on global and regional economic conditions, as the majority of its net sales occur outside the U.S. Adverse macroeconomic conditions, including recession, inflation, high unemployment, and currency fluctuations, can reduce consumer confidence and spending. Additionally, political events, trade disputes, tariffs, and geopolitical tensions can disrupt the complex global supply chain, which relies heavily on outsourcing partners in countries such as China, India, Japan, South Korea, Taiwan, and Vietnam. Restrictive trade measures can increase costs, limit the availability of raw materials, and force expensive and disruptive changes to business operations and supplier relationships.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] The primary risk factors disclosed include:
+
+**Macroeconomic and Industry Risks**
+*   **Economic Conditions:** Adverse global and regional economic conditions, such as slow growth, recession, high unemployment, inflation, tighter credit, higher interest rates, and currency fluctuations, can negatively impact consumer confidence, spending, and demand for products.
+*   **Political and Geopolitical Events:** Political events, trade disputes, geopolitical tensions, conflict, terrorism, natural disasters, public health issues, and industrial accidents can materially adversely affect the company, its customers, suppliers, and partners.
+*   **Trade Restrictions:** Restrictions on international trade, such as tariffs and controls on imports or exports, can increase costs, limit product availability, require supply chain restructuring, and disrupt operations.
+*   **Public Health Issues:** Major public health issues, including pandemics, can disrupt the global economy, impose safety measures (like travel restrictions), and interrupt operations, supply chains, and sales channels.
+
+**Competitive and Operational Risks**
+*   **Intense Competition:** The company operates in highly competitive global markets characterized by aggressive price competition, rapid technological change, short product life cycles, and evolving industry standards. Competitors may have significant resources, low-cost structures, or large customer bases, and some may engage in price cutting or intellectual property infringement.
+*   **Market Share and Growth:** The company holds a minority market share in global smartphone, personal computer, tablet, and wearables markets, some of which have experienced little to no growth or contraction.
+*   **Product Development and R&D:** Success depends on the timely introduction of innovative products and services. Significant investments in R&D may not achieve expected returns, and the company may fail to develop or market new products successfully.
+*   **Intellectual Property:** The company’s competitive advantage relies on the protection and enforcement of intellectual property rights. Regulatory requirements, litigation, or government investigations may force product modifications, withdrawals, or the sharing of innovations.
+*   **Supply Chain and Recovery:** The company relies on single or limited sources for many critical components. Business interruptions at these sources can exacerbate negative consequences. Recovery from interruptions can require substantial time and expenditures, and insurance coverage may be insufficient to cover all losses.

@@ -1,0 +1,308 @@
+== 2026-10-03T21:13:58Z
+api-85b4cf886-xfjn5          1m    481Mi     
+llamacpp-548f6b8bc6-dgxrf    1m    26836Mi   
+mcp-55b8d85dc4-pxfpq         1m    290Mi     
+postgres-6697f6d957-7jb46    2m    36Mi      
+redis-bd6fb5fbb-z9cs7        4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz   2m    64Mi      
+worker-85fdd8665d-gfx29      33m   59Mi      
+== 2026-10-03T21:14:14Z
+api-85b4cf886-xfjn5          1m    481Mi     
+llamacpp-548f6b8bc6-dgxrf    1m    26836Mi   
+mcp-55b8d85dc4-pxfpq         1m    290Mi     
+postgres-6697f6d957-7jb46    3m    36Mi      
+redis-bd6fb5fbb-z9cs7        4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz   2m    64Mi      
+worker-85fdd8665d-gfx29      19m   59Mi      
+== 2026-10-03T21:14:29Z
+api-85b4cf886-xfjn5          1m    481Mi     
+llamacpp-548f6b8bc6-dgxrf    1m    26836Mi   
+mcp-55b8d85dc4-pxfpq         1m    290Mi     
+postgres-6697f6d957-7jb46    2m    36Mi      
+redis-bd6fb5fbb-z9cs7        4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz   2m    64Mi      
+worker-85fdd8665d-gfx29      1m    59Mi      
+== 2026-10-03T21:14:45Z
+api-85b4cf886-xfjn5          1m    481Mi     
+llamacpp-548f6b8bc6-dgxrf    1m    26836Mi   
+mcp-55b8d85dc4-pxfpq         1m    290Mi     
+postgres-6697f6d957-7jb46    3m    36Mi      
+redis-bd6fb5fbb-z9cs7        4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz   2m    64Mi      
+worker-85fdd8665d-gfx29      17m   93Mi      
+== 2026-10-03T21:15:01Z
+api-85b4cf886-xfjn5                        1m    481Mi     
+grounding-eval-hm527-eval-one-1188643488   1m    583Mi     
+grounding-eval-hm527-eval-one-550588052    2m    585Mi     
+llamacpp-548f6b8bc6-dgxrf                  1m    26836Mi   
+mcp-55b8d85dc4-pxfpq                       1m    290Mi     
+postgres-6697f6d957-7jb46                  2m    36Mi      
+redis-bd6fb5fbb-z9cs7                      4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz                 2m    64Mi      
+worker-85fdd8665d-gfx29                    35m   59Mi      
+== 2026-10-03T21:15:16Z
+api-85b4cf886-xfjn5                        1m    481Mi     
+grounding-eval-hm527-eval-one-1188643488   4m    584Mi     
+grounding-eval-hm527-eval-one-550588052    4m    586Mi     
+llamacpp-548f6b8bc6-dgxrf                  1m    26836Mi   
+mcp-55b8d85dc4-pxfpq                       1m    290Mi     
+postgres-6697f6d957-7jb46                  2m    36Mi      
+redis-bd6fb5fbb-z9cs7                      4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz                 2m    64Mi      
+worker-85fdd8665d-gfx29                    1m    59Mi      
+== 2026-10-03T21:15:32Z
+api-85b4cf886-xfjn5                       1m    481Mi     
+grounding-eval-hm527-eval-one-550588052   1m    586Mi     
+llamacpp-548f6b8bc6-dgxrf                 1m    26836Mi   
+mcp-55b8d85dc4-pxfpq                      1m    290Mi     
+postgres-6697f6d957-7jb46                 3m    36Mi      
+redis-bd6fb5fbb-z9cs7                     4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz                2m    64Mi      
+worker-85fdd8665d-gfx29                   17m   59Mi      
+== 2026-10-03T21:15:48Z
+api-85b4cf886-xfjn5          1m    481Mi     
+llamacpp-548f6b8bc6-dgxrf    1m    26836Mi   
+mcp-55b8d85dc4-pxfpq         1m    290Mi     
+postgres-6697f6d957-7jb46    2m    36Mi      
+redis-bd6fb5fbb-z9cs7        4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz   2m    64Mi      
+worker-85fdd8665d-gfx29      24m   59Mi      
+== 2026-10-03T21:16:03Z
+api-85b4cf886-xfjn5          1m    481Mi     
+llamacpp-548f6b8bc6-dgxrf    1m    26836Mi   
+mcp-55b8d85dc4-pxfpq         1m    290Mi     
+postgres-6697f6d957-7jb46    2m    36Mi      
+redis-bd6fb5fbb-z9cs7        4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz   2m    64Mi      
+worker-85fdd8665d-gfx29      1m    59Mi      
+== 2026-10-03T21:16:19Z
+api-85b4cf886-xfjn5                       1m    481Mi     
+grounding-eval-hm527-eval-one-394286291   5m    582Mi     
+grounding-eval-hm527-eval-one-502290909   3m    581Mi     
+llamacpp-548f6b8bc6-dgxrf                 1m    26836Mi   
+mcp-55b8d85dc4-pxfpq                      1m    290Mi     
+postgres-6697f6d957-7jb46                 3m    36Mi      
+redis-bd6fb5fbb-z9cs7                     4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz                2m    64Mi      
+worker-85fdd8665d-gfx29                   17m   59Mi      
+== 2026-10-03T21:16:34Z
+api-85b4cf886-xfjn5                       1m    481Mi     
+grounding-eval-hm527-eval-one-394286291   3m    583Mi     
+grounding-eval-hm527-eval-one-502290909   3m    581Mi     
+llamacpp-548f6b8bc6-dgxrf                 1m    26836Mi   
+mcp-55b8d85dc4-pxfpq                      1m    290Mi     
+postgres-6697f6d957-7jb46                 2m    36Mi      
+redis-bd6fb5fbb-z9cs7                     4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz                2m    64Mi      
+worker-85fdd8665d-gfx29                   1m    59Mi      
+== 2026-10-03T21:16:50Z
+api-85b4cf886-xfjn5                       1m    481Mi     
+grounding-eval-hm527-eval-one-394286291   2m    583Mi     
+llamacpp-548f6b8bc6-dgxrf                 1m    26836Mi   
+mcp-55b8d85dc4-pxfpq                      1m    290Mi     
+postgres-6697f6d957-7jb46                 2m    36Mi      
+redis-bd6fb5fbb-z9cs7                     4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz                2m    64Mi      
+worker-85fdd8665d-gfx29                   54m   59Mi      
+== 2026-10-03T21:17:06Z
+api-85b4cf886-xfjn5          1m    481Mi     
+llamacpp-548f6b8bc6-dgxrf    1m    26836Mi   
+mcp-55b8d85dc4-pxfpq         1m    290Mi     
+postgres-6697f6d957-7jb46    3m    36Mi      
+redis-bd6fb5fbb-z9cs7        4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz   2m    64Mi      
+worker-85fdd8665d-gfx29      1m    59Mi      
+== 2026-10-03T21:17:21Z
+api-85b4cf886-xfjn5          1m    481Mi     
+llamacpp-548f6b8bc6-dgxrf    1m    26836Mi   
+mcp-55b8d85dc4-pxfpq         1m    290Mi     
+postgres-6697f6d957-7jb46    3m    36Mi      
+redis-bd6fb5fbb-z9cs7        4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz   2m    64Mi      
+worker-85fdd8665d-gfx29      17m   59Mi      
+== 2026-10-03T21:17:37Z
+api-85b4cf886-xfjn5                       1m    481Mi     
+grounding-eval-hm527-eval-one-146270182   1m    579Mi     
+llamacpp-548f6b8bc6-dgxrf                 1m    26836Mi   
+mcp-55b8d85dc4-pxfpq                      1m    290Mi     
+postgres-6697f6d957-7jb46                 2m    36Mi      
+redis-bd6fb5fbb-z9cs7                     4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz                2m    64Mi      
+worker-85fdd8665d-gfx29                   17m   59Mi      
+== 2026-10-03T21:17:53Z
+api-85b4cf886-xfjn5                        1m    481Mi     
+grounding-eval-hm527-eval-one-146270182    3m    579Mi     
+grounding-eval-hm527-eval-one-3387673193   1m    579Mi     
+llamacpp-548f6b8bc6-dgxrf                  1m    26836Mi   
+mcp-55b8d85dc4-pxfpq                       1m    290Mi     
+postgres-6697f6d957-7jb46                  2m    36Mi      
+redis-bd6fb5fbb-z9cs7                      4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz                 2m    64Mi      
+worker-85fdd8665d-gfx29                    17m   59Mi      
+== 2026-10-03T21:18:08Z
+api-85b4cf886-xfjn5                        1m    481Mi     
+grounding-eval-hm527-eval-one-146270182    3m    579Mi     
+grounding-eval-hm527-eval-one-3387673193   4m    581Mi     
+llamacpp-548f6b8bc6-dgxrf                  1m    26836Mi   
+mcp-55b8d85dc4-pxfpq                       1m    290Mi     
+postgres-6697f6d957-7jb46                  2m    36Mi      
+redis-bd6fb5fbb-z9cs7                      4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz                 2m    64Mi      
+worker-85fdd8665d-gfx29                    18m   59Mi      
+== 2026-10-03T21:18:24Z
+api-85b4cf886-xfjn5          1m    481Mi     
+llamacpp-548f6b8bc6-dgxrf    1m    26836Mi   
+mcp-55b8d85dc4-pxfpq         1m    290Mi     
+postgres-6697f6d957-7jb46    2m    36Mi      
+redis-bd6fb5fbb-z9cs7        4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz   2m    64Mi      
+worker-85fdd8665d-gfx29      23m   59Mi      
+== 2026-10-03T21:18:40Z
+api-85b4cf886-xfjn5          1m    481Mi     
+llamacpp-548f6b8bc6-dgxrf    1m    26836Mi   
+mcp-55b8d85dc4-pxfpq         1m    290Mi     
+postgres-6697f6d957-7jb46    3m    36Mi      
+redis-bd6fb5fbb-z9cs7        4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz   2m    64Mi      
+worker-85fdd8665d-gfx29      1m    59Mi      
+== 2026-10-03T21:18:55Z
+api-85b4cf886-xfjn5                        1m     481Mi     
+grounding-eval-hm527-eval-one-3935148401   622m   578Mi     
+llamacpp-548f6b8bc6-dgxrf                  1m     26836Mi   
+mcp-55b8d85dc4-pxfpq                       1m     290Mi     
+postgres-6697f6d957-7jb46                  3m     36Mi      
+redis-bd6fb5fbb-z9cs7                      4m     3Mi       
+streamlit-77fbbcb8b9-4kwcz                 2m     64Mi      
+worker-85fdd8665d-gfx29                    34m    59Mi      
+== 2026-10-03T21:19:11Z
+api-85b4cf886-xfjn5                        1m    481Mi     
+grounding-eval-hm527-eval-one-3846610031   1m    579Mi     
+grounding-eval-hm527-eval-one-3935148401   6m    580Mi     
+llamacpp-548f6b8bc6-dgxrf                  1m    26836Mi   
+mcp-55b8d85dc4-pxfpq                       1m    290Mi     
+postgres-6697f6d957-7jb46                  2m    36Mi      
+redis-bd6fb5fbb-z9cs7                      4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz                 2m    64Mi      
+worker-85fdd8665d-gfx29                    17m   59Mi      
+== 2026-10-03T21:19:27Z
+api-85b4cf886-xfjn5                        1m    481Mi     
+grounding-eval-hm527-eval-one-3846610031   3m    579Mi     
+grounding-eval-hm527-eval-one-3935148401   1m    580Mi     
+llamacpp-548f6b8bc6-dgxrf                  1m    26836Mi   
+mcp-55b8d85dc4-pxfpq                       1m    290Mi     
+postgres-6697f6d957-7jb46                  3m    36Mi      
+redis-bd6fb5fbb-z9cs7                      4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz                 2m    64Mi      
+worker-85fdd8665d-gfx29                    1m    59Mi      
+== 2026-10-03T21:19:42Z
+api-85b4cf886-xfjn5                        1m    481Mi     
+grounding-eval-hm527-eval-one-3846610031   3m    579Mi     
+grounding-eval-hm527-eval-one-3935148401   3m    581Mi     
+llamacpp-548f6b8bc6-dgxrf                  1m    26836Mi   
+mcp-55b8d85dc4-pxfpq                       1m    290Mi     
+postgres-6697f6d957-7jb46                  3m    36Mi      
+redis-bd6fb5fbb-z9cs7                      4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz                 2m    64Mi      
+worker-85fdd8665d-gfx29                    22m   59Mi      
+== 2026-10-03T21:19:58Z
+api-85b4cf886-xfjn5          1m    481Mi     
+llamacpp-548f6b8bc6-dgxrf    1m    26836Mi   
+mcp-55b8d85dc4-pxfpq         1m    290Mi     
+postgres-6697f6d957-7jb46    2m    36Mi      
+redis-bd6fb5fbb-z9cs7        4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz   2m    64Mi      
+worker-85fdd8665d-gfx29      32m   59Mi      
+== 2026-10-03T21:20:14Z
+api-85b4cf886-xfjn5          1m    481Mi     
+llamacpp-548f6b8bc6-dgxrf    1m    26836Mi   
+mcp-55b8d85dc4-pxfpq         1m    290Mi     
+postgres-6697f6d957-7jb46    2m    36Mi      
+redis-bd6fb5fbb-z9cs7        4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz   2m    64Mi      
+worker-85fdd8665d-gfx29      1m    59Mi      
+== 2026-10-03T21:20:29Z
+api-85b4cf886-xfjn5                        1m     481Mi     
+grounding-eval-hm527-eval-one-1389021628   4m     18Mi      
+grounding-eval-hm527-eval-one-1509610461   602m   566Mi     
+llamacpp-548f6b8bc6-dgxrf                  1m     26836Mi   
+mcp-55b8d85dc4-pxfpq                       1m     290Mi     
+postgres-6697f6d957-7jb46                  3m     36Mi      
+redis-bd6fb5fbb-z9cs7                      4m     3Mi       
+streamlit-77fbbcb8b9-4kwcz                 2m     64Mi      
+worker-85fdd8665d-gfx29                    17m    59Mi      
+== 2026-10-03T21:20:45Z
+api-85b4cf886-xfjn5          1m    481Mi     
+llamacpp-548f6b8bc6-dgxrf    1m    26836Mi   
+mcp-55b8d85dc4-pxfpq         1m    290Mi     
+postgres-6697f6d957-7jb46    2m    36Mi      
+redis-bd6fb5fbb-z9cs7        4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz   2m    64Mi      
+worker-85fdd8665d-gfx29      1m    59Mi      
+== 2026-10-03T21:21:01Z
+api-85b4cf886-xfjn5                        1m    481Mi     
+grounding-eval-hm527-eval-one-1389021628   4m    586Mi     
+grounding-eval-hm527-eval-one-1509610461   3m    584Mi     
+llamacpp-548f6b8bc6-dgxrf                  1m    26836Mi   
+mcp-55b8d85dc4-pxfpq                       1m    290Mi     
+postgres-6697f6d957-7jb46                  2m    36Mi      
+redis-bd6fb5fbb-z9cs7                      4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz                 2m    64Mi      
+worker-85fdd8665d-gfx29                    47m   59Mi      
+== 2026-10-03T21:21:16Z
+api-85b4cf886-xfjn5                        1m    481Mi     
+grounding-eval-hm527-eval-one-1389021628   1m    586Mi     
+llamacpp-548f6b8bc6-dgxrf                  1m    26836Mi   
+mcp-55b8d85dc4-pxfpq                       1m    290Mi     
+postgres-6697f6d957-7jb46                  3m    36Mi      
+redis-bd6fb5fbb-z9cs7                      4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz                 3m    64Mi      
+worker-85fdd8665d-gfx29                    1m    59Mi      
+== 2026-10-03T21:21:32Z
+api-85b4cf886-xfjn5                        1m    481Mi     
+grounding-eval-hm527-eval-one-1389021628   4m    586Mi     
+llamacpp-548f6b8bc6-dgxrf                  1m    26836Mi   
+mcp-55b8d85dc4-pxfpq                       1m    290Mi     
+postgres-6697f6d957-7jb46                  2m    36Mi      
+redis-bd6fb5fbb-z9cs7                      4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz                 2m    64Mi      
+worker-85fdd8665d-gfx29                    17m   59Mi      
+== 2026-10-03T21:21:48Z
+api-85b4cf886-xfjn5          1m    481Mi     
+llamacpp-548f6b8bc6-dgxrf    1m    26836Mi   
+mcp-55b8d85dc4-pxfpq         1m    290Mi     
+postgres-6697f6d957-7jb46    2m    36Mi      
+redis-bd6fb5fbb-z9cs7        4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz   2m    64Mi      
+worker-85fdd8665d-gfx29      41m   59Mi      
+== 2026-10-03T21:22:03Z
+api-85b4cf886-xfjn5          1m    481Mi     
+llamacpp-548f6b8bc6-dgxrf    1m    26836Mi   
+mcp-55b8d85dc4-pxfpq         1m    290Mi     
+postgres-6697f6d957-7jb46    2m    36Mi      
+redis-bd6fb5fbb-z9cs7        4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz   2m    64Mi      
+worker-85fdd8665d-gfx29      1m    59Mi      
+== 2026-10-03T21:22:19Z
+api-85b4cf886-xfjn5          1m    481Mi     
+llamacpp-548f6b8bc6-dgxrf    1m    26836Mi   
+mcp-55b8d85dc4-pxfpq         1m    290Mi     
+postgres-6697f6d957-7jb46    2m    36Mi      
+redis-bd6fb5fbb-z9cs7        4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz   2m    64Mi      
+worker-85fdd8665d-gfx29      18m   59Mi      
+== 2026-10-03T21:22:35Z
+api-85b4cf886-xfjn5          1m    481Mi     
+llamacpp-548f6b8bc6-dgxrf    1m    26836Mi   
+mcp-55b8d85dc4-pxfpq         1m    290Mi     
+postgres-6697f6d957-7jb46    2m    36Mi      
+redis-bd6fb5fbb-z9cs7        4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz   2m    64Mi      
+worker-85fdd8665d-gfx29      1m    59Mi      
+== 2026-10-03T21:22:50Z
+api-85b4cf886-xfjn5          1m    481Mi     
+llamacpp-548f6b8bc6-dgxrf    1m    26836Mi   
+mcp-55b8d85dc4-pxfpq         1m    290Mi     
+postgres-6697f6d957-7jb46    2m    36Mi      
+redis-bd6fb5fbb-z9cs7        4m    3Mi       
+streamlit-77fbbcb8b9-4kwcz   2m    64Mi      
+worker-85fdd8665d-gfx29      32m   59Mi      
