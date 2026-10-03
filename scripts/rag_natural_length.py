@@ -139,7 +139,9 @@ def build(args) -> int:
            "max_tokens": args.max_tokens,
            "sampling": {**slm.request_params("rag"), "max_tokens": args.max_tokens},
            "requests": reqs}
-    Path(args.out).write_text(json.dumps(doc, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+    # LF on every platform, so a rebuild is byte-identical to the committed file
+    Path(args.out).write_text(json.dumps(doc, indent=1, sort_keys=True) + "\n", encoding="utf-8",
+                              newline="\n")
     print(f"{len(reqs)} requests ({len(smoke)} tickers) -> {args.out}")
     print(f"  sampling: {json.dumps(doc['sampling'], sort_keys=True)}")
     return 0
