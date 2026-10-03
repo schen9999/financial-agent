@@ -196,8 +196,8 @@ def main():
             print("  slm layout        : HYBRID — MoE expert weights partly in host RAM "
                   "(--n-cpu-moe); label this run 'hybrid' in every table, never 'GPU'")
         elif p.get("slm_endpoint") == "slm-gpu":
-            print("  slm layout        : all layers on GPU per the served alias — confirm "
-                  "'offloaded N/N layers to GPU' in the server log for the record")
+            print("  slm layout        : all layers on GPU per the served alias — record "
+                  "llama-server's GPU memory from nvidia-smi (make vm-llamacpp prints it)")
     if len(slm_provs) > 1:
         print("  WARNING: rows served by more than one SLM endpoint/config — this run "
               "is not a single-endpoint measurement")

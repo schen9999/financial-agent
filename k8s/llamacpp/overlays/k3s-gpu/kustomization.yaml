@@ -6,7 +6,9 @@
 #
 # All layers on the GPU by default: --n-gpu-layers=all, --n-cpu-moe=0. The
 # 19.0 GiB GGUF + ~0.6 GiB KV + compute buffers should fit the A10's
-# 22.49 GiB; confirm "offloaded N/N layers to GPU" in the log. If it does
+# 22.49 GiB; `make vm-llamacpp` records llama-server's GPU memory from
+# nvidia-smi (b11347 logs no offload line at default verbosity; measured
+# 2026-10-03: 20,488 MiB of 23,028 MiB, all layers on the GPU). If it does
 # not fit, `make vm-llamacpp NCMOE=<n>` keeps the first n layers' MoE experts
 # in host RAM AND renames the served alias to ...-hybrid-ncmoe<n>, so a
 # hybrid run can never be reported as a GPU run (the eval checks the alias).

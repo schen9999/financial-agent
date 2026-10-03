@@ -220,8 +220,16 @@ vm-llamacpp: ## (node 2) Serve the Qwen3.6 GGUF via llama.cpp on the A10, keyed,
 	@# first rollout downloads 20.4 GB into /home/ubuntu/models/qwen3.6-35b-a3b-gguf, then loads it to VRAM
 	kubectl -n $(NAMESPACE) rollout status deployment/llamacpp --timeout=3600s
 	@kubectl -n $(NAMESPACE) logs deploy/llamacpp -c fetch-gguf | tail -2
-	@echo "── GPU layout (record it; 'offloaded N/N' = all layers on the GPU):"
-	@kubectl -n $(NAMESPACE) logs deploy/llamacpp -c llama-server | grep -E "build:|offloaded|n_cpu_moe|n_threads|n_slots|CUDA0" || true
+	@# b11347 prints no layer-offload line at default verbosity, so the layout
+	@# evidence is the deployed args plus llama-server's own memory on the A10
+	@# (2026-10-03, all layers on the GPU: 20,488 MiB of 23,028 MiB).
+	@echo "── GPU layout (record it): deployed args, then llama-server's memory on the GPU per nvidia-smi:"
+	@kubectl -n $(NAMESPACE) get deploy llamacpp -o jsonpath='{.spec.template.spec.containers[0].args}{"\n"}'
+	@nvidia-smi --query-compute-apps=pid,process_name,used_memory --format=csv
+	@nvidia-smi --query-gpu=name,memory.used,memory.total,driver_version --format=csv
+	@nvidia-smi --query-compute-apps=process_name --format=csv,noheader | grep -q llama-server || { \
+		echo "ERROR: no llama-server process holds GPU memory — the model is not on the A10"; exit 1; }
+	@kubectl -n $(NAMESPACE) logs deploy/llamacpp -c llama-server | grep -E "n_threads|n_slots" || true
 	LLAMA_API_KEY=$$(kubectl -n $(NAMESPACE) get secret llamacpp-api-key -o jsonpath='{.data.LLAMA_API_KEY}' | base64 -d) \
 		python3 scripts/wait_for_model.py --url http://localhost:30880 --timeout 300 --api-key-env LLAMA_API_KEY \
 		--name $$(python3 -c "import sys; sys.path.insert(0, 'scripts'); import llamacpp_layout as l; print(l.served_alias($(NCMOE)))")
