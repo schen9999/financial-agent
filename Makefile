@@ -98,6 +98,9 @@ EVAL_RUN_FILE ?= argo/eval-run.yaml
 # Poll pacing: ceiling = activeDeadlineSeconds + margin. Overridable so the
 # guard paths can be exercised in seconds with a fake kubectl.
 EVAL_POLL_MARGIN ?= 600
+# Where eval-run leaves <workflow>-attempts.json (retries and failed attempts,
+# eval/attempts.py) for the capture steps to pick up.
+ATTEMPTS_DIR ?= $(HOME)
 EVAL_POLL_INTERVAL ?= 20
 
 eval-run: ## Submit the grounding eval workflow now and follow it to completion
@@ -126,6 +129,11 @@ eval-run: ## Submit the grounding eval workflow now and follow it to completion
 	echo; echo "=== aggregate step output ==="; \
 	AGG=$$(kubectl -n $(NAMESPACE) get pods -l workflows.argoproj.io/workflow=$$WF -o name | grep aggregate | head -1); \
 	test -n "$$AGG" && kubectl -n $(NAMESPACE) logs $$AGG -c main --tail=80 || echo "(aggregate pod not found)"; \
+	echo; echo "=== attempts: retries and failed attempts, from the workflow object and every pod's log (NOT in the aggregate above) ==="; \
+	T=$$(mktemp -d); kubectl -n $(NAMESPACE) get workflow $$WF -o json > $$T/wf.json; \
+	kubectl -n $(NAMESPACE) logs -l workflows.argoproj.io/workflow=$$WF --prefix --tail=-1 > $$T/pods.log 2>/dev/null; \
+	python3 eval/attempts.py --workflow $$T/wf.json --log $$T/pods.log --json-out "$(ATTEMPTS_DIR)/$$WF-attempts.json" || echo "(attempts report failed — run eval/attempts.py on the captured workflow json and pod log)"; \
+	rm -rf $$T; \
 	test "$$(kubectl -n $(NAMESPACE) get workflow $$WF -o jsonpath='{.status.phase}')" = Succeeded
 
 cost-report: ## Re-runnable cost/brief measurement (runs locally; needs .env)
@@ -331,13 +339,14 @@ slm-eval-run: ## (operator) Snapshot the endpoint, run EVAL_RUN_FILE, capture lo
 	$(MAKE) --no-print-directory eval-run EVAL_RUN_FILE=$(EVAL_RUN_FILE); rc=$$?; \
 	WF=$$(kubectl -n $(NAMESPACE) get workflows --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[-1:].metadata.name}'); \
 	kubectl -n $(NAMESPACE) logs -l workflows.argoproj.io/workflow=$$WF --prefix --tail=-1 > "$$P/$$WF.log"; \
+	kubectl -n $(NAMESPACE) get workflow $$WF -o json > "$$P/$$WF-workflow.json"; \
 	kubectl -n $(NAMESPACE) exec deploy/api -- python scripts/slm_traffic_proof.py snapshot --endpoint $(ENDPOINT) \
 		> "$$P/$$STAMP-after.json"; \
 	mv "$$P/$$STAMP-before.json" "$$P/$$WF-before.json"; \
 	mv "$$P/$$STAMP-after.json" "$$P/$$WF-after.json"; \
 	echo "=== traffic proof for $$WF (files in $$P) ==="; \
 	python3 scripts/slm_traffic_proof.py verify --before "$$P/$$WF-before.json" \
-		--after "$$P/$$WF-after.json" --log "$$P/$$WF.log"; prc=$$?; \
+		--after "$$P/$$WF-after.json" --log "$$P/$$WF.log" --workflow "$$P/$$WF-workflow.json"; prc=$$?; \
 	if [ -n "$(PROJECT_FOR)" ]; then \
 		echo "=== measured run time of $$WF, projected to $(PROJECT_FOR) ==="; \
 		kubectl -n $(NAMESPACE) get workflow $$WF -o json | python3 scripts/run_time_projection.py --next $(PROJECT_FOR); \

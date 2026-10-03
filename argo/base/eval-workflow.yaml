@@ -104,6 +104,14 @@ spec:
           # must NEVER read or write the live exact-key cache.
           - name: BYPASS_CACHE
             value: "true"
+          # Which attempt this pod is (Argo's retry number, 0 = first) and
+          # its own name: the harness stamps both on its result rows and on
+          # the EVAL_ATTEMPT_* lines it writes to this pod's log, so a
+          # retried ticker's failed attempt stays visible (eval/attempts.py).
+          - name: EVAL_ATTEMPT
+            value: "{{retries}}"
+          - name: EVAL_POD
+            value: "{{pod.name}}"
         envFrom:
           - secretRef:
               name: app-secrets

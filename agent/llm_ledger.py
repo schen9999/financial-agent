@@ -7,7 +7,14 @@ long-running API process accumulates nothing. Recording is observation only —
 it never changes what a call sends or returns. Thread-safe: sections run
 concurrently. The call site for code that cannot name it directly (the RAG
 query engine's LLM) comes from a thread-local set by the caller (site()).
+
+emit_calls() additionally writes each record to stdout as it is made (one
+`EVAL_LLM_CALL {json}` line; later flag changes as `EVAL_LLM_FLAG`). The eval
+harness turns it on so that an attempt which is killed, or exits before it
+can report, still leaves its calls in the pod log — eval/attempts.py reads
+them back for retried tickers.
 """
+import json
 import re
 import threading
 import time
@@ -17,11 +24,34 @@ _lock = threading.Lock()
 _records: list[dict] = []
 _enabled = False
 _local = threading.local()
+_emit = None  # line sink while per-call emission is on
+_seq = 0
+
+CALL_PREFIX = "EVAL_LLM_CALL "
+FLAG_PREFIX = "EVAL_LLM_FLAG "
+_EMITTED = ("site", "endpoint", "prompt_tokens", "completion_tokens", "truncated",
+            "repeat_run", "retry", "parse_failure", "format_failure", "error")
 
 
 def enable(on: bool = True):
     global _enabled
     _enabled = on
+
+
+def _stdout(line: str):
+    print(line, flush=True)
+
+
+def emit_calls(sink=_stdout):
+    """Write every record (and later flag change) as one line to `sink`;
+    None turns it off. Lines are written under the ledger lock, in order."""
+    global _emit
+    _emit = sink
+
+
+def calls_emitted() -> int:
+    """How many EVAL_LLM_CALL lines this process has written."""
+    return _seq
 
 
 def enabled() -> bool:
@@ -62,8 +92,14 @@ def record(site_name: str, endpoint: str, model: str | None = None, *,
         "retry": retry, "parse_failure": parse_failure,
         "format_failure": format_failure, "error": error,
     }
+    global _seq
     with _lock:
         _records.append(rec)
+        if _emit:
+            _seq += 1
+            rec["seq"] = _seq
+            _emit(CALL_PREFIX + json.dumps({"seq": _seq, **{k: rec[k] for k in _EMITTED}},
+                                           sort_keys=True))
 
 
 def flag_last(site_name: str, **flags):
@@ -76,6 +112,8 @@ def flag_last(site_name: str, **flags):
         for rec in reversed(_records):
             if rec["site"] == site_name:
                 rec.update(flags)
+                if _emit and "seq" in rec:
+                    _emit(FLAG_PREFIX + json.dumps({"seq": rec["seq"], **flags}, sort_keys=True))
                 return
 
 

@@ -42,7 +42,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 from eval.stats import fisher_exact, format_rate_ci
 from eval.runtime_guards import check_fatal_api_error, check_local_model_served
-from eval.label import count_labels_deduped
+from eval.label import count_labels_deduped, numeric_claim_counts
+from eval import attempts as _attempts
 from eval.stock_block import stock_block_empty
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -435,6 +436,8 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
     return {
         "ticker": ticker, "arm": arm,
         "judge_version": JUDGE_PROMPT_VERSION,
+        "attempt": _attempt_number(),
+        "numeric_claims": numeric_claim_counts(grade.findings),
         "retrieval_s": retrieval_s, "pipeline_s": pipeline_s, "haiku_cost": haiku_cost,
         "est_cost": round(est_cost, 5),
         "stock_block_empty": stock_empty,
@@ -547,6 +550,16 @@ def print_comparison(results: list[dict], arms: list[str]):
     print(flush=True)
 
 
+# ── Attempt record ──────────────────────────────────────────────────────────────
+# The workflow retries a failed eval pod once, and the aggregate step only
+# ever receives the final attempt's result. So every attempt reports itself
+# to its own pod log (eval/attempts.py): BEGIN in main(), one EVAL_LLM_CALL
+# line per LLM call as it returns (agent/llm_ledger.emit_calls), END on
+# every exit path Python still controls. A killed pod leaves BEGIN and its
+# calls but no END.
+_attempt_number = _attempts.attempt_number
+
+
 # ── Main ─────────────────────────────────────────────────────────────────────────
 
 def main():
@@ -567,6 +580,9 @@ def main():
     print(f"BYPASS_CACHE={os.getenv('BYPASS_CACHE')} — Redis exact-key cache disabled for this run.",
           flush=True)
     print(f"Arms: {', '.join(args.arms)}   Tickers: {', '.join(args.tickers)}\n", flush=True)
+    _attempts.write_line(_attempts.BEGIN_PREFIX, tickers=args.tickers, arms=args.arms)
+    llm_ledger.enable()
+    llm_ledger.emit_calls()
 
     # A local-model arm must measure the model it claims to: confirm the
     # server lists LOCAL_MODEL_NAME before any ticker runs (exits otherwise).
@@ -600,7 +616,6 @@ def main():
                   f"n_ctx {f['slm_n_ctx']}, {f['slm_total_slots']} slots, build "
                   f"{f['slm_build']}); thinking {f['slm_thinking']}\n", flush=True)
 
-    llm_ledger.enable()
     results = []
     skipped = []
     failures = []
@@ -623,6 +638,7 @@ def main():
             print(f"  [{ticker}] SKIPPED after retries ({kind}): {type(e).__name__}: {e}", flush=True)
             skipped.append(ticker)
             failures.append({"ticker": ticker, "arm": arm, "kind": kind,
+                             "attempt": _attempt_number(),
                              "error": f"{type(e).__name__}: {str(e)[:300]}",
                              "llm": llm_ledger.summarize(llm_ledger.drain())})
 
@@ -661,4 +677,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    _attempts.run_recorded(main, llm_ledger.calls_emitted)

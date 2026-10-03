@@ -132,6 +132,37 @@ def rag_faithfulness_totals(results):
     return {"answers": answers, "supported": sup, "unsupported": uns, "claims": tot}
 
 
+def claim_density(results):
+    """Claims per completed ticker, and the numeric claims among them (the
+    judged claims that quote a figure — eval.label.numeric_claim_counts):
+    mean, min and the tickers at the min; for numeric claims also their own
+    unsupported count. Reported beside the unsupported rate because the rate
+    alone rewards an arm that states fewer checkable facts. Numeric claims
+    are the co-primary: how many qualitative phrases the judge lists varies
+    from run to run. Rows from images before the field carry no
+    `numeric_claims` and are counted as unrecorded, not as zero."""
+    def per_ticker(vals):
+        low = min(v for v, _ in vals) if vals else 0
+        return {"mean": round(sum(v for v, _ in vals) / len(vals), 2) if vals else 0.0,
+                "min": low, "min_tickers": sorted(t for v, t in vals if v == low)}
+    rec = [r for r in results if r.get("numeric_claims") is not None]
+    numeric = per_ticker([(r["numeric_claims"]["total"], r["ticker"]) for r in rec])
+    numeric.update(total=sum(r["numeric_claims"]["total"] for r in rec),
+                   unsupported=sum(r["numeric_claims"]["unsupported"] for r in rec),
+                   unrecorded=len(results) - len(rec))
+    return {"claims": per_ticker([(r["total"], r["ticker"]) for r in results]),
+            "numeric": numeric}
+
+
+def retried_tickers(rows):
+    """(tickers whose reported result or failure came from a retry attempt,
+    rows that do not record their attempt). Argo retries a failed eval pod
+    once and hands this step only the final attempt."""
+    retried = sorted({r["ticker"] for r in rows if (r.get("attempt") or 0) > 0})
+    unrecorded = sum(1 for r in rows if r.get("attempt") is None)
+    return retried, unrecorded
+
+
 def stock_block_counts(results):
     """(tickers whose brief saw an empty STOCK DATA block, rows that don't
     record it). Detection only — never a gate failure (eval/stock_block.py).
@@ -221,6 +252,31 @@ def main():
     print(f"  unsupported rate  : {unsupported_pct:.2f}%   (gate: <= {args.max_unsupported_pct}%)")
     print(f"  95% CI (Wilson)   : {format_rate_ci(uns, tot)}")
     print(f"  total claims      : {tot}   (gate: >= {args.min_claims})")
+    density = claim_density(results)
+    if results:
+        c, nm = density["claims"], density["numeric"]
+        print(f"  claims per ticker : mean {c['mean']:.1f}, min {c['min']} "
+              f"({', '.join(c['min_tickers'])})   — read the rate with this: fewer "
+              f"checkable claims lowers it for free")
+        if nm["unrecorded"] < len(results):
+            missing = f"   ({nm['unrecorded']} row(s) unrecorded)" if nm["unrecorded"] else ""
+            print(f"  numeric claims    : {nm['total']} = mean {nm['mean']:.1f}/ticker, min "
+                  f"{nm['min']} ({', '.join(nm['min_tickers'])})   — co-primary: claims that "
+                  f"quote a figure (the judge's listing of qualitative phrases varies run to "
+                  f"run){missing}")
+            print(f"  numeric unsupported: {nm['unsupported']}/{nm['total']} = "
+                  f"{format_rate_ci(nm['unsupported'], nm['total'])}")
+        else:
+            print("  numeric claims    : unrecorded (rows from an image before the field)")
+    retried, attempt_unrecorded = retried_tickers(results + failures)
+    print(f"  Argo retries      : {len(retried)}"
+          f"{' (' + ', '.join(retried) + ')' if retried else ''}"
+          f"{f'   ({attempt_unrecorded} row(s) from an image that does not record attempts)' if attempt_unrecorded else ''}")
+    if retried:
+        print("  WARNING: the rows above are the FINAL attempts only. The failed attempts' "
+              "LLM calls, tokens and Trunc/Parse/Fmt/Err counts are NOT in this output — "
+              "the run report lists them from the pod logs (eval/attempts.py; make eval-run "
+              "prints it), and the SLM traffic proof counts them")
     if failures:
         kinds = {}
         for f_ in failures:
@@ -301,6 +357,9 @@ def main():
             "stock_block_empty": len(stock_empty),
             "stock_block_empty_tickers": stock_empty,
             "stock_block_unrecorded": stock_unrecorded,
+            "claims_per_ticker": density["claims"],
+            "numeric_claims": density["numeric"],
+            "retried_tickers": retried,
         },
         "gate": {
             "max_unsupported_pct": args.max_unsupported_pct,
