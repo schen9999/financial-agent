@@ -123,6 +123,21 @@ def parse_claims(findings: str) -> list[dict]:
     return out
 
 
+def numeric_claim_counts(findings: str) -> dict:
+    """Label counts over the NUMERIC claims only: judged claims whose quoted
+    text contains a digit — the figures a brief states. Whether the judge
+    also lists qualitative phrases as claims varies from brief to brief
+    (2026-10-03: GOOGL 11 claims in one SLM smoke, 2 in the next, same
+    text size), so the numeric subset is the stable denominator; it is
+    reported beside the all-claims rate, never instead of it."""
+    out = {"total": 0, "supported": 0, "unsupported": 0, "inference": 0}
+    for c in parse_claims(findings):
+        if re.search(r"\d", c["claim"]):
+            out["total"] += 1
+            out[c["label"].lower()] += 1
+    return out
+
+
 _LABEL_RE = re.compile(r"\*{0,2}LABEL:\*{0,2}\s*([A-Za-z]+)")
 _VALID_LABELS = ("SUPPORTED", "UNSUPPORTED", "INFERENCE")
 

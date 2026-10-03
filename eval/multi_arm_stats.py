@@ -31,6 +31,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from eval import claim_density  # noqa: E402
 from eval.section_attribution import attribute, section_texts  # noqa: E402
 from eval.stats import fisher_exact, format_rate_ci  # noqa: E402
 
@@ -99,6 +100,26 @@ def main():
     for label, rows in runs.items():
         u, n = tally(rows)
         print(f"  {label:<14} {u}/{n} = {format_rate_ci(u, n)}")
+
+    # Co-primary: numeric claims (claims that quote a figure). The rate over
+    # all claims rewards an arm that states fewer checkable facts, and how
+    # many qualitative phrases the judge lists varies from run to run; the
+    # numeric subset is the stable denominator (eval/claim_density.py).
+    dens = {label: claim_density.run_density(Path(f)) for label, _c, f in args.run}
+    num = {label: claim_density.summarize(per) for label, per in dens.items()}
+    print("\nCo-primary, numeric claims (claims that quote a figure):")
+    for label, s in num.items():
+        print(f"  {label:<14} {s['numeric_mean']:.1f}/ticker (min {s['numeric_min']}, "
+              f"{s['tickers']} tickers)   unsupported {s['numeric_unsupported']}/{s['numeric']} = "
+              f"{format_rate_ci(s['numeric_unsupported'], s['numeric'])}")
+    print("Pairwise, exact two-sided Fisher (numeric claims):")
+    for a, b in combinations(num, 2):
+        ua, na, ub, nb = (num[a]["numeric_unsupported"], num[a]["numeric"],
+                          num[b]["numeric_unsupported"], num[b]["numeric"])
+        print(f"  {a:<14} vs {b:<14} {ua}/{na} vs {ub}/{nb}   "
+              f"p = {fmt_p(fisher_exact(ua, na - ua, ub, nb - ub))}")
+    print("\nClaim density (eval/claim_density.py):")
+    claim_density.print_report(dens)
 
     print("\nPairwise, exact two-sided Fisher (all claims):")
     for a, b, ua, na, ub, nb, p in pairwise(runs):
