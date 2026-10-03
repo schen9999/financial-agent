@@ -27,7 +27,7 @@ from agent.tools.reranker import (
 )
 
 from agent import llm_ledger
-from agent.tools.slm import llama_index_llm, slm_full_enabled
+from agent.tools.slm import RAG_MAX_TOKENS, llama_index_llm, slm_full_enabled
 
 load_dotenv()
 
@@ -107,6 +107,9 @@ def _ensure_settings():
         Settings.llm = Anthropic(
             model="claude-haiku-4-5-20251001",
             api_key=os.getenv("ANTHROPIC_API_KEY"),
+            # The SLM arm's RAG budget (agent/tools/slm.py), not llama_index's
+            # Anthropic default of 512: both arms answer under one cap.
+            max_tokens=RAG_MAX_TOKENS,
         )
         Settings.embed_model = HuggingFaceEmbedding(
             model_name="BAAI/bge-small-en-v1.5"

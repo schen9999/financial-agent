@@ -94,14 +94,23 @@ def endpoint() -> dict:
 # sections 0.1, Sonnet synthesis 0.2, llama_index's Anthropic default 0.1
 # for RAG, the Haiku planner and Sonnet ReAct agent at 0). max_tokens sized
 # from the largest committed outputs (eval/findings_scan.py, chars/4):
-# hosted sections <= 331, hosted synthesis <= 1,719, RAG answers <= 693.
+# hosted sections <= 331, hosted synthesis <= 1,719.
+
+# One RAG answer budget for both arms: the "rag" profile below and the hosted
+# llama_index Anthropic LLM (agent/tools/rag.py) both read it. The previous
+# 512 (llama_index's Anthropic default) truncated 13 of 20 SLM answers on
+# smoke nb6r6 and cut hosted answers on the 40-ticker set (SFIX risks in
+# j4cnp, kcf7s, dvvxk); hosted smoke x2cx8 peaked at 456. Sized from the
+# smoke's 20 SLM answers replayed without a binding cap (2026-10-03,
+# scripts/rag_natural_length.py): max 854, p95 802 on 10 tickers; the
+# 40-ticker runs have 4x the prompts and a longer tail. Truncations are
+# still counted per run (ledger Trunc column).
+RAG_MAX_TOKENS = 2048
+
 SITE_PROFILES = {
     "section":   {"temperature": 0.1, "max_tokens": 768},
     "synthesis": {"temperature": 0.2, "max_tokens": 4096},
-    # RAG matches the hosted cap exactly: llama_index's Anthropic default
-    # (DEFAULT_ANTHROPIC_MAX_TOKENS = 512), so both arms' RAG answers get
-    # the same budget; truncations are counted.
-    "rag":       {"temperature": 0.1, "max_tokens": 512},
+    "rag":       {"temperature": 0.1, "max_tokens": RAG_MAX_TOKENS},
     "planner":   {"temperature": 0.0, "max_tokens": 1024},
     "react":     {"temperature": 0.0, "max_tokens": 1024},
 }

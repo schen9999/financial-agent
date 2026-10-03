@@ -87,7 +87,7 @@ def test_thinking_value_validated(slm_env, monkeypatch):
 
 @pytest.mark.parametrize("site,temp,max_tokens", [
     ("section:financial_health", 0.1, 768), ("synthesis", 0.2, 4096),
-    ("rag:risks", 0.1, 512), ("planner", 0.0, 1024), ("react", 0.0, 1024)])
+    ("rag:risks", 0.1, 2048), ("planner", 0.0, 1024), ("react", 0.0, 1024)])
 def test_every_parameter_sent(slm_env, fake_post, site, temp, max_tokens):
     calls, _ = fake_post
     slm.chat_completion(site, [{"role": "user", "content": "hi"}])

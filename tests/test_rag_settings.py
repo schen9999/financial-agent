@@ -2,7 +2,8 @@
 brief run in two threads and both reach _ensure_settings() before either
 finishes (the embedding model takes seconds to load). Found on hosted smoke
 x2cx8 (2026-10-03): each thread registered its own usage handler, so every
-hosted RAG answer call was recorded twice in the ledger."""
+hosted RAG answer call was recorded twice in the ledger. Also: the hosted and
+SLM arms share one RAG answer budget."""
 import threading
 import time
 
@@ -12,7 +13,7 @@ from llama_index.core.embeddings import MockEmbedding
 from llama_index.core.instrumentation import get_dispatcher
 
 from agent import llm_ledger
-from agent.tools import rag
+from agent.tools import rag, slm
 
 
 class _SlowEmbedding(MockEmbedding):
@@ -81,3 +82,14 @@ def test_concurrent_callers_register_one_handler_one_record_per_api_call(fresh_s
     assert len(requests) == 1
     assert [(r["site"], r["prompt_tokens"], r["completion_tokens"]) for r in records] == [
         ("rag:highlights", 2650, 300)]
+
+
+def test_hosted_and_slm_rag_share_one_answer_budget(fresh_settings, monkeypatch):
+    rag._ensure_settings()
+    assert Settings.llm.max_tokens == slm.RAG_MAX_TOKENS == slm.SITE_PROFILES["rag"]["max_tokens"]
+    assert Settings.llm.metadata.num_output == slm.llama_index_llm("rag").metadata.num_output
+
+    requests = _stub_anthropic(monkeypatch)
+    index = VectorStoreIndex.from_documents([Document(text="Revenue grew. Margins held.")])
+    rag._run_rag_query(index, "Summarize the key takeaways")
+    assert [r["max_tokens"] for r in requests] == [slm.RAG_MAX_TOKENS]
