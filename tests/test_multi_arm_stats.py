@@ -99,8 +99,7 @@ def test_committed_w4a16_arm_reproduces():
     assert mas.tally(runs["r5nzh"], owned) == (15, 96)
 
 
-
-def test_report_runs_claim_density_and_leads_with_numeric_claims(monkeypatch, capsys):
+def test_report_runs_claim_density_and_leads_with_numeric_claims(monkeypatch):
     """The 2026-10-03 same-image smokes (hosted hm527, CPU SLM 9jddz): the
     report shows numeric claims per ticker and their own unsupported rate,
     and prints the claim-density table without being asked."""
@@ -111,8 +110,16 @@ def test_report_runs_claim_density_and_leads_with_numeric_claims(monkeypatch, ca
         argv += ["--run", label, str(runs_dir / f"{run}-claims.jsonl"),
                  str(runs_dir / "raw" / f"{run}-findings")]
     monkeypatch.setattr(mas.sys, "argv", argv)
+    # Collect the report's lines directly instead of through capsys: this
+    # test runs right after test_mcp_server, whose abandoned tool thread can
+    # leave its redirect_stdout block late and put sys.stdout back to an
+    # older stream — capsys then reads nothing (seen on a fresh checkout).
+    lines = []
+    for mod in (mas, mas.claim_density):
+        monkeypatch.setattr(mod, "print", lambda *a, **k: lines.append(" ".join(map(str, a))),
+                            raising=False)
     mas.main()
-    out = capsys.readouterr().out
+    out = "\n".join(lines)
     assert "hosted         6.1/ticker (min 3, 10 tickers)   unsupported 0/61" in out
     assert "slm-cpu        3.1/ticker (min 2, 10 tickers)   unsupported 0/31" in out
     assert "Pairwise, exact two-sided Fisher (numeric claims):" in out
