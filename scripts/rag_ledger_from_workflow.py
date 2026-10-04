@@ -19,7 +19,11 @@ Stdlib only.
 import argparse
 import json
 import math
+import os
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from workflow_nodes import expand  # noqa: E402  (status.compressedNodes -> status.nodes)
 
 RAG_SITES = ("rag:highlights", "rag:risks")
 
@@ -91,7 +95,7 @@ def main(argv=None) -> int:
     ap.add_argument("workflow", help="kubectl get workflow -o json output")
     args = ap.parse_args(argv)
     with open(args.workflow, encoding="utf-8") as f:
-        wf = json.load(f)
+        wf = expand(json.load(f))
     res = analyse(wf)
     print(f"{wf['metadata']['name']} ({wf['status'].get('phase')}): {len(res['tickers'])} tickers")
     for ticker, t in res["tickers"].items():

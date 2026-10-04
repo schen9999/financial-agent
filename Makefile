@@ -130,7 +130,7 @@ eval-run: ## Submit the grounding eval workflow now and follow it to completion
 	AGG=$$(kubectl -n $(NAMESPACE) get pods -l workflows.argoproj.io/workflow=$$WF -o name | grep aggregate | head -1); \
 	test -n "$$AGG" && kubectl -n $(NAMESPACE) logs $$AGG -c main --tail=80 || echo "(aggregate pod not found)"; \
 	echo; echo "=== attempts: retries and failed attempts, from the workflow object and every pod's log (NOT in the aggregate above) ==="; \
-	T=$$(mktemp -d); kubectl -n $(NAMESPACE) get workflow $$WF -o json > $$T/wf.json; \
+	T=$$(mktemp -d); kubectl -n $(NAMESPACE) get workflow $$WF -o json | python3 scripts/workflow_nodes.py expand > $$T/wf.json; \
 	kubectl -n $(NAMESPACE) logs -l workflows.argoproj.io/workflow=$$WF --prefix --tail=-1 > $$T/pods.log 2>/dev/null; \
 	python3 eval/attempts.py --workflow $$T/wf.json --log $$T/pods.log --json-out "$(ATTEMPTS_DIR)/$$WF-attempts.json" || echo "(attempts report failed — run eval/attempts.py on the captured workflow json and pod log)"; \
 	rm -rf $$T; \
@@ -339,7 +339,7 @@ slm-eval-run: ## (operator) Snapshot the endpoint, run EVAL_RUN_FILE, capture lo
 	$(MAKE) --no-print-directory eval-run EVAL_RUN_FILE=$(EVAL_RUN_FILE); rc=$$?; \
 	WF=$$(kubectl -n $(NAMESPACE) get workflows --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[-1:].metadata.name}'); \
 	kubectl -n $(NAMESPACE) logs -l workflows.argoproj.io/workflow=$$WF --prefix --tail=-1 > "$$P/$$WF.log"; \
-	kubectl -n $(NAMESPACE) get workflow $$WF -o json > "$$P/$$WF-workflow.json"; \
+	kubectl -n $(NAMESPACE) get workflow $$WF -o json | python3 scripts/workflow_nodes.py expand > "$$P/$$WF-workflow.json"; \
 	kubectl -n $(NAMESPACE) exec deploy/api -- python scripts/slm_traffic_proof.py snapshot --endpoint $(ENDPOINT) \
 		> "$$P/$$STAMP-after.json"; \
 	mv "$$P/$$STAMP-before.json" "$$P/$$WF-before.json"; \

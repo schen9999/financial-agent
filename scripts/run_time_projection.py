@@ -3,7 +3,8 @@
 larger run, checked against that run's deadlines — the gate before the CPU
 SLM extended run.
 
-Input: `kubectl get workflow <wf> -o json` of the smoke (stdin or --workflow).
+Input: `kubectl get workflow <wf> -o json` of the smoke (stdin or --workflow);
+compressed node status is read through scripts/workflow_nodes.py.
 Per-ticker time is each eval-ticker task's wall time as Argo recorded it
 (the Retry node when the task has one, so a retried ticker counts its full
 time), measured under the run's own parallelism — endpoint contention
@@ -26,8 +27,12 @@ Stdlib only, no newer-than-3.6 syntax.
 import argparse
 import json
 import math
+import os
 import re
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from workflow_nodes import expand  # noqa: E402  (status.compressedNodes -> status.nodes)
 from datetime import datetime
 
 TTL_SECONDS = 7 * 86400  # argo/overlays/oke-provided ttlStrategy
@@ -122,7 +127,7 @@ def main(argv=None):
     ap.add_argument("--workflow", help="kubectl get workflow -o json output (default: stdin)")
     ap.add_argument("--next", required=True, help="the run file about to be launched")
     args = ap.parse_args(argv)
-    wf = json.load(open(args.workflow) if args.workflow else sys.stdin)
+    wf = expand(json.load(open(args.workflow) if args.workflow else sys.stdin))
     with open(args.next) as f:
         ok, lines = project(wf, f.read())
     print("run-time check for %s against %s" % (wf.get("metadata", {}).get("name"), args.next))
