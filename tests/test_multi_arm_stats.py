@@ -125,3 +125,35 @@ def test_report_runs_claim_density_and_leads_with_numeric_claims(monkeypatch):
     assert "Pairwise, exact two-sided Fisher (numeric claims):" in out
     assert "Claim density (eval/claim_density.py):" in out
     assert out.index("Co-primary, numeric claims") < out.index("Pairwise, exact two-sided Fisher (all")
+
+
+def test_sign_test_and_paired_difference():
+    assert mas.sign_test(0, 0) == 1.0
+    assert mas.sign_test(5, 0) == 2 * (1 / 32)
+    assert mas.sign_test(3, 3) == 1.0
+    a = {t: {"numeric": n} for t, n in (("A", 7), ("B", 6), ("C", 5), ("D", 4), ("X", 9))}
+    b = {t: {"numeric": n} for t, n in (("A", 4), ("B", 4), ("C", 5), ("D", 5), ("Y", 1))}
+    pr = mas.paired(a, b)
+    assert (pr["tickers"], pr["a_more"], pr["equal"], pr["b_more"]) == (4, 2, 1, 1)
+    assert (pr["mean_a"], pr["mean_b"], pr["mean_diff"], pr["median_diff"]) == (5.5, 4.5, 1.0, 1.0)
+    assert pr["ci"][0] <= pr["mean_diff"] <= pr["ci"][1]
+    assert pr == mas.paired(a, b)  # seeded: the interval is reproducible
+    assert mas.paired(a, {"Z": {"numeric": 1}}) is None
+
+
+def test_rows_sections_from_the_committed_extended_runs():
+    """Hosted 9jzmj vs CPU SLM 8vpq6 (same image, 2026-10-04): rows read
+    from the workflow objects, compressed node status included."""
+    import pathlib
+    runs_dir = pathlib.Path(__file__).resolve().parents[1] / "eval" / "runs"
+    hosted = mas.load_rows(runs_dir / "9jzmj-workflow.json")
+    slm = mas.load_rows(runs_dir / "slm-proof-8vpq6" /
+                        "grounding-eval-extended-slm-cpu-8vpq6-workflow.json")
+    assert (len(hosted), len(slm)) == (40, 40)
+    assert mas.ragf_totals(hosted) == (14, 1017, 70)
+    assert mas.ragf_totals(slm) == (6, 1415, 70)
+    calls, mean, mx = mas.site_latency(slm)["synthesis"]
+    assert calls == 40 and round(mean, 2) == 114.45 and round(mx, 2) == 155.76
+    assert mas.site_latency(hosted)["rag:risks"][0] == 35
+    # the aggregate's input JSON is accepted as well as a workflow object
+    assert len(mas.load_rows(runs_dir / "9jzmj-results-rebuilt.json")) == 40
