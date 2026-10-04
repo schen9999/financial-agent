@@ -17,6 +17,13 @@ per ticker:
   audited words, numbers size of the audited text (Executive Summary +
                          Outlook) and how many numbers it contains
 
+Sensitivity: "numeric" is eval.label.numeric_claim_counts — the quoted claim
+contains a digit — so a positional phrase such as "near 52-week highs"
+counts as numeric though it quotes no figure. The report therefore also
+gives the numeric counts without the claims that are numeric only through
+"52-week" (strict). The definition itself is not changed here: it is used by
+the harness inside the pinned image.
+
 Found on the 2026-10-03 smokes (hosted hm527 vs CPU SLM 9jddz, same image):
 90 vs 53 claims over the same 10 tickers.
 
@@ -34,6 +41,18 @@ from eval.label import (count_labels_deduped, numeric_claim_counts, parse_claims
 from eval.stats import format_rate_ci  # noqa: E402
 
 _NUMBER = re.compile(r"\d[\d,.]*")
+PHRASE = "52-week"  # digits that are a label, not a figure
+
+
+def strict_numeric_counts(findings: str) -> dict:
+    """numeric_claim_counts without the claims whose only digits are in
+    "52-week": (total, unsupported)."""
+    total = unsupported = 0
+    for c in parse_claims(findings):
+        if re.search(r"\d", re.sub(r"(?i)52[- ]week", "", c["claim"])):
+            total += 1
+            unsupported += c["label"] == "UNSUPPORTED"
+    return {"total": total, "unsupported": unsupported}
 
 
 def brief_density(findings_text: str) -> dict | None:
@@ -44,9 +63,12 @@ def brief_density(findings_text: str) -> dict | None:
     claims = parse_claims(p["findings"])
     counts = count_labels_deduped(p["findings"])
     num = numeric_claim_counts(p["findings"])
+    strict = strict_numeric_counts(p["findings"])
     body = re.sub(r"(?m)^(#+ .*|---|\*This brief is for informational.*)$", "", p["audited"])
     return {"claims": counts["total"], "supported": counts["supported"],
             "numeric": num["total"], "numeric_unsupported": num["unsupported"],
+            "numeric_strict": strict["total"],
+            "numeric_strict_unsupported": strict["unsupported"],
             "qualitative": len(claims) - num["total"],
             "words": len(body.split()), "numbers": len(_NUMBER.findall(body))}
 
@@ -68,6 +90,10 @@ def summarize(per: dict) -> dict:
             "numeric": sum(d["numeric"] for d in per.values()),
             "numeric_unsupported": sum(d["numeric_unsupported"] for d in per.values()),
             "numeric_min": min((d["numeric"] for d in per.values()), default=0),
+            "numeric_strict": sum(d["numeric_strict"] for d in per.values()),
+            "numeric_strict_unsupported": sum(d["numeric_strict_unsupported"]
+                                              for d in per.values()),
+            "numeric_strict_mean": round(sum(d["numeric_strict"] for d in per.values()) / n, 2),
             **{f"{k}_mean": round(mean(k), 2)
                for k in ("claims", "supported", "numeric", "qualitative", "words", "numbers")},
             "claims_min": min((d["claims"] for d in per.values()), default=0),
@@ -91,6 +117,13 @@ def print_report(runs: dict, tickers=()) -> None:
         s = summarize(per)
         print(f"  {label:<14} {s['numeric_unsupported']}/{s['numeric']} = "
               f"{format_rate_ci(s['numeric_unsupported'], s['numeric'])}")
+    print(f'sensitivity, numeric claims without those numeric only through "{PHRASE}":')
+    for label, per in runs.items():
+        s = summarize(per)
+        print(f"  {label:<14} {s['numeric_strict_mean']:.2f}/ticker "
+              f"({s['numeric'] - s['numeric_strict']} of {s['numeric']} dropped)   unsupported "
+              f"{s['numeric_strict_unsupported']}/{s['numeric_strict']} = "
+              f"{format_rate_ci(s['numeric_strict_unsupported'], s['numeric_strict'])}")
     for label, per in runs.items():
         s = summarize(per)
         print(f"{label}: min claims at {', '.join(s['claims_min_tickers'])}; the judge audited "

@@ -10,6 +10,13 @@ Pairwise, exact two-sided Fisher (numeric claims):
 Paired per ticker, numeric claims, 40 common tickers (hosted-9jzmj - slm-cpu-8vpq6):
   mean 6.92 vs 4.03; mean difference +2.90 (95% bootstrap CI +2.15 to +3.70), median +3.0
   hosted-9jzmj has more on 35 tickers, equal on 3, slm-cpu-8vpq6 more on 2; exact two-sided sign test p = 1.0e-08
+Sensitivity, numeric claims without those numeric only through "52-week" (a label, not a figure):
+  hosted-9jzmj   6.78/ticker   unsupported 2/271 = 0.74% (95% CI 0.2–2.7%)
+  slm-cpu-8vpq6  3.95/ticker   unsupported 2/158 = 1.27% (95% CI 0.3–4.5%)
+  hosted-9jzmj   vs slm-cpu-8vpq6  2/271 vs 2/158   p = 0.6276  (exact two-sided Fisher)
+Paired per ticker, numeric claims without the 52-week ones, 40 common tickers (hosted-9jzmj - slm-cpu-8vpq6):
+  mean 6.78 vs 3.95; mean difference +2.83 (95% bootstrap CI +2.08 to +3.62), median +2.5
+  hosted-9jzmj has more on 35 tickers, equal on 3, slm-cpu-8vpq6 more on 2; exact two-sided sign test p = 1.0e-08
 
 Claim density (eval/claim_density.py):
 run            tickers claims claims/t  min numeric/t  min  qual/t 0-qual  words/t numbers/t
@@ -18,6 +25,9 @@ slm-cpu-8vpq6       40    248      6.2    2       4.0    0     2.1     16      2
 numeric claims (quote a figure), unsupported rate:
   hosted-9jzmj   2/277 = 0.72% (95% CI 0.2–2.6%)
   slm-cpu-8vpq6  3/161 = 1.86% (95% CI 0.6–5.3%)
+sensitivity, numeric claims without those numeric only through "52-week":
+  hosted-9jzmj   6.78/ticker (6 of 277 dropped)   unsupported 2/271 = 0.74% (95% CI 0.2–2.7%)
+  slm-cpu-8vpq6  3.95/ticker (3 of 161 dropped)   unsupported 2/158 = 1.27% (95% CI 0.3–4.5%)
 hosted-9jzmj: min claims at AMZN; the judge audited numbers only for AMZN, BLNK, BYND, SANA, TM, UPST, WMT
 slm-cpu-8vpq6: min claims at BYND, MSFT, V; the judge audited numbers only for AAPL, AMZN, BYND, GOOGL, META, MSFT, NVDA, NVO, PTON, SAP, TSM, UNH, UPST, V, VERV, WMT
 

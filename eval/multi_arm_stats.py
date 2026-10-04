@@ -233,17 +233,31 @@ def main():
                           num[b]["numeric_unsupported"], num[b]["numeric"])
         print(f"  {a:<14} vs {b:<14} {ua}/{na} vs {ub}/{nb}   "
               f"p = {fmt_p(fisher_exact(ua, na - ua, ub, nb - ub))}")
-    for a, b in combinations(dens, 2):
-        pr = paired(dens[a], dens[b])
-        if pr and pr["tickers"] > 1:
-            print(f"Paired per ticker, numeric claims, {pr['tickers']} common tickers "
-                  f"({a} - {b}):")
-            print(f"  mean {pr['mean_a']:.2f} vs {pr['mean_b']:.2f}; mean difference "
-                  f"{pr['mean_diff']:+.2f} (95% bootstrap CI {pr['ci'][0]:+.2f} to "
-                  f"{pr['ci'][1]:+.2f}), median {pr['median_diff']:+.1f}")
-            print(f"  {a} has more on {pr['a_more']} tickers, equal on {pr['equal']}, "
-                  f"{b} more on {pr['b_more']}; exact two-sided sign test p = "
-                  f"{fmt_p(pr['sign_p'])}")
+    def print_paired(field, what):
+        for a, b in combinations(dens, 2):
+            pr = paired(dens[a], dens[b], field)
+            if pr and pr["tickers"] > 1:
+                print(f"Paired per ticker, {what}, {pr['tickers']} common tickers ({a} - {b}):")
+                print(f"  mean {pr['mean_a']:.2f} vs {pr['mean_b']:.2f}; mean difference "
+                      f"{pr['mean_diff']:+.2f} (95% bootstrap CI {pr['ci'][0]:+.2f} to "
+                      f"{pr['ci'][1]:+.2f}), median {pr['median_diff']:+.1f}")
+                print(f"  {a} has more on {pr['a_more']} tickers, equal on {pr['equal']}, "
+                      f"{b} more on {pr['b_more']}; exact two-sided sign test p = "
+                      f"{fmt_p(pr['sign_p'])}")
+
+    print_paired("numeric", "numeric claims")
+    print(f'Sensitivity, numeric claims without those numeric only through '
+          f'"{claim_density.PHRASE}" (a label, not a figure):')
+    for label, s in num.items():
+        print(f"  {label:<14} {s['numeric_strict_mean']:.2f}/ticker   unsupported "
+              f"{s['numeric_strict_unsupported']}/{s['numeric_strict']} = "
+              f"{format_rate_ci(s['numeric_strict_unsupported'], s['numeric_strict'])}")
+    for a, b in combinations(num, 2):
+        ua, na, ub, nb = (num[a]["numeric_strict_unsupported"], num[a]["numeric_strict"],
+                          num[b]["numeric_strict_unsupported"], num[b]["numeric_strict"])
+        print(f"  {a:<14} vs {b:<14} {ua}/{na} vs {ub}/{nb}   "
+              f"p = {fmt_p(fisher_exact(ua, na - ua, ub, nb - ub))}  (exact two-sided Fisher)")
+    print_paired("numeric_strict", "numeric claims without the 52-week ones")
     print("\nClaim density (eval/claim_density.py):")
     claim_density.print_report(dens)
 

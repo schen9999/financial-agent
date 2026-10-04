@@ -75,3 +75,21 @@ REASON: absent.
     assert numeric_claim_counts(findings) == {"total": 3, "supported": 2, "unsupported": 1,
                                               "inference": 0}
     assert numeric_claim_counts("no claims here")["total"] == 0
+
+
+def test_strict_numeric_drops_claims_numeric_only_through_52_week(tmp_path):
+    findings = NUMBERS_ONLY + """
+CLAIM: "strong market sentiment near 52-week highs"
+LABEL: UNSUPPORTED
+REASON: positional.
+
+CLAIM: "trades near the upper end of its 52-week range of $349.20 to $553.72"
+LABEL: SUPPORTED
+REASON: arithmetic holds.
+"""
+    assert cd.strict_numeric_counts(findings) == {"total": 3, "unsupported": 0}
+    b = cd.run_density(_file(tmp_path, "META", findings))["META"]
+    assert (b["numeric"], b["numeric_unsupported"]) == (4, 1)
+    assert (b["numeric_strict"], b["numeric_strict_unsupported"]) == (3, 0)
+    s = cd.summarize({"META": b})
+    assert (s["numeric_strict"], s["numeric_strict_unsupported"], s["numeric_strict_mean"]) == (3, 0, 3.0)
