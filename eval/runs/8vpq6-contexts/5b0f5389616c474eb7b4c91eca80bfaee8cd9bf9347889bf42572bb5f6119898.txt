@@ -1,0 +1,70 @@
+STOCK DATA:
+{
+  "ticker": "COIN",
+  "company_name": "Coinbase Global, Inc.",
+  "current_price": 183.0,
+  "currency": "USD",
+  "market_cap": 48282157056.0,
+  "forward_pe": 64.659744,
+  "week_52_high": 402.16,
+  "week_52_low": 139.11,
+  "revenue": 6043752960.0,
+  "net_income": -987766016.0,
+  "profit_margin": -0.16344,
+  "sector": "Financial Services",
+  "industry": "Financial Data & Stock Exchanges"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-12",
+    "summary": "ITEM 1A. RISK FACTORS Investing in our Class A common stock involves a high degree of risk. You should carefully consider the risks and uncertainties described below, together with all of the other information in this Annual Report on Form 10-K, including the section titled \u201cManagement\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d and the Consolidated Financial Statements and related notes. The risks and uncertainties described below are not the only ones we face. Additional risks and uncertainties that we are unaware of or that we deem immaterial may also become important factors that adversely affect our business. If any of the following risks occur, our business, operating results, financial condition, and future prospects could be materially and adversely "
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-07-30",
+    "summary": "Item 1A Risk Factors in the Annual Report for additional details about these regulations. 41 Table of Contents We are required to hold corporate liquid assets at our subsidiaries to meet capital requirements established by our regulators based on the value of crypto assets and payment stablecoins held in custody. Our money-transmitting subsidiary, CB Inc., and our custodian subsidiary, Coinbase Custody Trust Company, LLC (\u201cCCTC\u201d), which is a fiduciary under New York State Law and a qualified custodian under the Investment Advisers Act of 1940, are required to maintain minimum net capital requirements under agreements with the New York State Department of Financial Services. These subsidiaries and other subsidiaries are also subject to maintenance capital requirements by other regulators bo"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] Based on the provided risk factors from the SEC EDGAR filings for ticker COIN, the key takeaways regarding the company's business and financial position are as follows:
+
+**High Volatility and Unpredictable Operating Results**
+The company’s operating results fluctuate significantly from quarter to quarter due to the highly volatile nature of crypto asset prices and market sentiments. These fluctuations are driven by unpredictable factors outside the company’s control, including crypto trading volumes, legislative changes, regulatory scrutiny, macroeconomic conditions (such as interest rates and inflation), and system failures or cyberattacks on the platform or third-party networks. Consequently, period-to-period comparisons of operating results may not be meaningful, and accurate forecasting of growth trends is difficult.
+
+**Revenue Dependence on Crypto Market Conditions**
+Total revenue is substantially dependent on the prices of crypto assets and the volume of transactions conducted on the platform. The company generates a large portion of its revenue from transaction fees associated with the purchase, sale, and trading of crypto assets, as well as spreads on consumer trading products. Additionally, subscription and services revenue has grown, primarily driven by stablecoin revenue related to payment stablecoins. A decline in crypto asset prices, transaction volumes, or market liquidity would adversely affect business results and could cause the stock price to decline.
+
+**Concentration of Revenue in Specific Assets**
+Net revenue is concentrated in a limited number of areas. Specifically:
+*   **Transaction Revenue:** A meaningful amount is derived from Bitcoin and Ethereum trading pairs, which drove approximately 45% and 46% of total trading volume for the years ended December 31, 2025, and 2024, respectively.
+*   **Subscription and Services Revenue:** This is heavily influenced by stablecoin revenue.
+If revenue from Bitcoin, Ethereum, or stablecoins declines and is not replaced by new demand, the company’s financial condition could be adversely affected.
+
+**Specific Risks Related to Bitcoin and Ethereum**
+The markets for Bitcoin and Ethereum present specific risks that could impact revenue, including:
+*   **Network and Technical Issues:** Reductions in blockchain transaction fees (e.g., block reward halving), network congestion, high fees, scalability challenges, and potential security vulnerabilities or hacks (such as 51% attacks or forks).
+*   **Regulatory and Legal Risks:** Adverse legal proceedings, regulatory restrictions on lending, mining, or staking, and potential determinations that these assets constitute controlled or other regulated instruments.
+*   **Market Sentiment and Adoption:** Public sentiment regarding environmental impacts, negative perception, the identification or transfer of Satoshi Nakamoto’s Bitcoins, and the ability to attract developers and customers for payment or store-of-value uses.
+*   **Technological Threats:** Advances in mathematics and technology, such as quantum computing, which could compromise the cryptography used by these networks.
+
+**Broader Market and Competitive Risks**
+The company faces risks from changes in the legislative or regulatory environment globally, including fines, orders, or consent decrees. Other risks include competition from other payment services or crypto assets, the inability to attract and retain talent, system outages, breaches of security or privacy, and the general instability of the global banking system. There is no assurance that any supported crypto asset will maintain its value or that meaningful levels of trading activity will continue.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] The primary risk factors disclosed include:
+
+*   **High Volatility and Fluctuating Operating Results:** Operating results fluctuate significantly due to the volatile nature of crypto asset prices, market sentiments, and movements in the broader onchain economy. This volatility makes it difficult to forecast growth trends accurately and renders period-to-period comparisons of operating results potentially meaningless.
+*   **Revenue Dependence on Crypto Prices and Volume:** Total revenue is substantially dependent on the prices of crypto assets and the volume of transactions conducted on the platform. Declines in these areas, or in market liquidity, could adversely affect business, operating results, and financial condition, potentially causing the stock price to decline.
+*   **Concentration of Revenue:** Net revenue is concentrated in a limited number of areas, specifically transactions in Bitcoin and Ethereum, and stablecoin revenue related to payment stablecoins. A decline in revenue from these areas without replacement by new demand could negatively impact the business.
+*   **Regulatory and Legal Risks:** Risks include changes in the legislative or regulatory environment, actions by U.S. or foreign governments or regulators (such as fines or consent decrees), and adverse legal proceedings or enforcement actions. Regulatory scrutiny may also impact the ability to offer certain products or services.
+*   **Market and Macroeconomic Conditions:** Risks encompass overall sentiment towards crypto, macroeconomic conditions (including interest rates, inflation, trade restrictions, and global banking system instability), and the speed of crypto adoption.
+*   **Operational and Technical Risks:** These include system failures, outages, or interruptions on the platform or third-party crypto networks; lack of control over decentralized blockchains that may experience downtime, cyberattacks, or software failures; and breaches of security or privacy.
+*   **Competitive and Strategic Risks:** Risks involve the ability to attract and retain customers, developers, and talent; the ability to diversify and grow subscription and services revenue; and competition from other payment services or crypto assets that may offer better speed, security, or scalability.
+*   **Blockchain Network Risks:** Risks include the maintenance and development of underlying blockchain networks, the ability of networks to attract miners or validators, legal changes affecting mining activities, and the technological viability and security of crypto assets and associated smart contracts.
