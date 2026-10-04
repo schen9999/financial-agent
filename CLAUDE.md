@@ -79,8 +79,8 @@ Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (5955 lines, 486 tests collected: 485 passed + 1 skipped,
-   the credit-gated judge test, as of 2026-10-03) must pass on every commit. Canonical
+3. The pytest suite (6217 lines, 500 tests collected: 499 passed + 1 skipped,
+   the credit-gated judge test, as of 2026-10-04) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
 4. Celery stays request-time async; Argo owns eval orchestration. Do not merge them.
@@ -318,6 +318,32 @@ Phase 3 — demo polish:
   booted — state it that way (eval-methodology). The RAG-faithfulness
   metric (rf-v1) is unvalidated: judge-flagged, its own column, never part
   of the grounding rate.
+- Hosted extended baseline on the comparison image: `9jzmj` (2026-10-04,
+  40 tickers, judge v2, image 1f51dad): 7/411 = 1.70% (CI 0.8–3.5%),
+  numeric 2/277 = 0.72% (CI 0.2–2.6%). ALWAYS with its status: workflow
+  Error at aggregate (controller lacked configmaps create for template
+  offload); rebuilt offline from all 40 pod findings dumps; gate evaluated
+  offline; est. run cost not reconstructable. Citable as the same-image
+  hosted extended baseline because the rebuild
+  (scripts/results_from_pod_log.py + the unchanged eval_aggregate.py)
+  reproduces 7c66k's in-cluster aggregate exactly apart from the
+  estimated-cost line. A dated run: j4cnp stays the number of record, and
+  9jzmj is not the j4cnp pipeline exactly (2048 RAG cap).
+- Argo template offload (found 2026-10-04): a step whose resolved template
+  exceeds 131,072 bytes (Argo v3.7.18 MaxEnvVarLen) is offloaded by the
+  CONTROLLER to a ConfigMap; the aggregate crosses that from 27 hosted /
+  18 SLM tickers since the 2026-10-02 LLM ledger grew the per-ticker rows
+  (about 4.9 KB hosted, 7.5 KB SLM; 0.6 KB before). argo/base/rbac.yaml
+  grants the controller SA (argo in namespace argo) configmaps [create]
+  in financial-agent — nothing wider; proven on kind, first OKE use is the
+  next extended run. KNOWN POST-COMPARISON CHANGE, deferred because it
+  changes the image: shrink the eval pod's output parameter to what the
+  aggregate reads, with a worst-case size test and a pre-submit warning.
+  Do not make that change while the comparison on 1f51dad is running.
+  eval/attempts.py and scripts/slm_traffic_proof.py run inside pods
+  (harness import; api-pod snapshots): do not edit them without saying so
+  — host-side fixes go in host-only files (scripts/workflow_nodes.py
+  expands status.compressedNodes for them).
 - Known limitations, recorded 2026-10-03, NOT fixed during the SLM
   comparison (either fix changes the pipeline and needs new baselines on
   every arm; post-demo): (1) the synthesis prompt asks for watch-items

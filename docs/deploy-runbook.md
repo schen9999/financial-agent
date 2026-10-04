@@ -552,6 +552,24 @@ second copy. Per-claim rows (commit these too) then come from
 with `--contexts-dir eval/runs/<wf>-contexts --out
 eval/runs/<wf>-claims.jsonl`.
 
+If a run's aggregate step did not run (workflow Error after every eval pod
+completed), the aggregate can be rebuilt from the same log with the
+unchanged aggregate code — and must be recorded as rebuilt:
+
+```bash
+python scripts/results_from_pod_log.py --log eval/runs/raw/<wf>.log \
+    --out eval/runs/<wf>-results-rebuilt.json --aggregate-out eval/runs/<wf>-aggregate.txt
+```
+
+It stops if a pod's printed counts, LLM call lines or attempt record do
+not agree with its findings; the estimated run cost cannot be rebuilt.
+Used for `9jzmj` (2026-10-04) after validating it line for line against
+`7c66k`'s in-cluster aggregate.
+
+A workflow object for a 40-ticker run carries its nodes in
+`status.compressedNodes`: read it through `python3 scripts/workflow_nodes.py
+expand` (the make targets do) before `eval/attempts.py`.
+
 Emergency fallback if the logs are gone too (used 2026-09-05 to recover
 9j2dj): deleted pods' written files survive in containerd snapshot upper
 layers — on the node, `find` the containerd root (k3s:
@@ -704,6 +722,18 @@ depends on:
    ```bash
    make argo-install
    make argo-deploy ARGO_OVERLAY=oke-provided    # must print suspend=true
+   ```
+   `argo-deploy` also applies the eval RBAC from `argo/base/rbac.yaml`,
+   including — since 2026-10-04 — the Role that lets the Argo
+   **controller** (ServiceAccount `argo` in namespace `argo`) create
+   ConfigMaps in `financial-agent`. A 40-ticker run needs it: the
+   aggregate's template exceeds Argo's 131,072-byte inline limit and is
+   offloaded to a ConfigMap (eval-methodology, "the aggregate step's
+   template outgrew Argo's inline limit"). Check it before any extended
+   run:
+   ```bash
+   kubectl -n financial-agent get role,rolebinding argo-controller-template-offload
+   kubectl auth can-i create configmaps -n financial-agent --as system:serviceaccount:argo:argo   # yes
    ```
    `argo-deploy` runs the same pin check for this overlay. The nightly
    CronWorkflow ships suspended (every fire spends Anthropic credits);
@@ -990,7 +1020,7 @@ smoke, then the extended runs with their same-image hosted baseline
      PROJECT_FOR=argo/eval-run-extended-slm-cpu.yaml       # prints measured + projected run time
    make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-slm-gpu-smoke.yaml \
      PROJECT_FOR=argo/eval-run-extended-slm-gpu.yaml       # after the seclist rule
-   make eval-run EVAL_RUN_FILE=argo/eval-run-extended.yaml                         # same-image hosted baseline
+   make eval-run EVAL_RUN_FILE=argo/eval-run-extended.yaml                         # same-image hosted baseline (9jzmj, 2026-10-04: see below)
    make run-time-check WF=<cpu smoke wf> NEXT=argo/eval-run-extended-slm-cpu.yaml && \
      make slm-eval-run ENDPOINT=cpu EVAL_RUN_FILE=argo/eval-run-extended-slm-cpu.yaml
    make run-time-check WF=<gpu smoke wf> NEXT=argo/eval-run-extended-slm-gpu.yaml && \
@@ -1078,6 +1108,23 @@ smoke, then the extended runs with their same-image hosted baseline
    image is the next CPU smoke.** Check the Anthropic balance before every
    run: an exhausted balance costs a retry on the CPU endpoint and, on
    images up to `30c832b`, the proof.
+
+   **Hosted extended on image `1f51dad` (2026-10-04):
+   `grounding-eval-extended-9jzmj` — workflow Error at aggregate
+   (controller lacked configmaps create for template offload); rebuilt
+   offline from all 40 pod findings dumps; gate evaluated offline; est.
+   run cost not reconstructable.** All 40 eval pods completed on their
+   first attempt. Rebuilt aggregate: 7/411 = 1.70% unsupported (Wilson 95%
+   CI 0.8–3.5%), numeric 2/277 = 0.72%, judge v2, no truncation, gate
+   passed (`eval/runs/9jzmj-aggregate.txt`,
+   `eval/runs/9jzmj-results-rebuilt.json`, findings in
+   `eval/runs/raw/9jzmj-findings`). The rebuild was validated first on
+   `7c66k`, where it reproduces the in-cluster aggregate exactly apart
+   from the estimated-cost line, so `9jzmj` is the same-image hosted
+   extended baseline. Before the next extended run, apply the controller
+   Role (OKE step 5) — every 40-ticker run depends on it until the eval
+   pod's output parameter is shrunk, which is deferred to after the
+   comparison because it changes the image.
 
    **From the next image: retries are part of the report.** `make
    eval-run` prints, under the aggregate's output, an attempts block from

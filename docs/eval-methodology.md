@@ -1677,6 +1677,146 @@ done
 python -c "import json; c=[json.load(open(f'eval/runs/raw/{r}-findings/MSFT_baseline.ragf.json',encoding='utf-8'))['answers'] for r in ('x2cx8','hm527','7c66k')]; print(all(a[w]['chunks']==c[0][w]['chunks'] for a in c for w in ('highlights','risks')))"
 ```
 
+### Hosted extended run `9jzmj` on image `1f51dad` (2026-10-04): the same-image hosted baseline
+
+**Status, stated first: workflow Error at aggregate (controller lacked
+configmaps create for template offload); rebuilt offline from all 40 pod
+findings dumps; gate evaluated offline; est. run cost not reconstructable.**
+
+`grounding-eval-extended-9jzmj` ran the 40-ticker set on the hosted baseline
+arm, judge v2, image `1f51dad` — the image the SLM extended runs use. All 40
+eval pods completed on their first attempt; the aggregate step never
+started (next section), so the workflow's phase is Error and no in-cluster
+aggregate exists. The aggregate below is `scripts/eval_aggregate.py` — the
+same code, unchanged since the image commit — run on per-ticker rows rebuilt
+from the pods' logs by `scripts/results_from_pod_log.py`.
+
+| | `9jzmj` (rebuilt offline) |
+|---|---|
+| Unsupported (judge-flagged, v2) | 7/411 = 1.70% (Wilson 95% CI 0.8–3.5%) |
+| Numeric claims (co-primary) | 277 = 6.9/ticker (min 1, RDFN); unsupported 2/277 = 0.72% (CI 0.2–2.6%) |
+| Claims per ticker | mean 10.3, min 2 (AMZN) |
+| Tickers | 40 completed, 0 skipped, stock block empty 0/40, 0 Argo retries |
+| Unsupported by ticker | LCID 3, AFRM 2, CHGG 1, NVO 1 |
+| Agent LLM calls | 270 (35 tickers × 7, and 5 tickers × 4 with no RAG answer: BABA, NVO, SAP, TM, TSM); no truncation, loop, parse, format or error flags |
+| RAG answers | 70; longest 786 tokens (above the old 512 cap) |
+| Gate (≤ 5%, ≥ 30 claims) | passed — evaluated offline |
+| Estimated run cost | not reconstructable (needs each brief's full text) |
+
+This is a judge-flagged rate with the v2 calibration of record applying; no
+reweighted estimate exists for this run. It is a dated run: `j4cnp` stays
+the number of record. `9jzmj` is the hosted arm on the comparison's own
+image — the pipeline with the 2048 RAG cap, so not the `j4cnp` pipeline
+exactly (see "Request settings").
+
+**Why the rebuild can be trusted.** The rows the aggregate would have
+received were Argo output parameters, which are not in the pod logs; what
+they were computed from is. For each pod the rebuild takes the label counts
+by recounting its findings dump with the harness's own function, the
+numeric counts and the stock-block check the same way, the per-site LLM
+ledger from the findings metadata, the RAG-faithfulness verdicts from the
+pod's `.ragf.json`, retrieval and pipeline time from the pod's result line
+and the attempt from its END record. It stops rather than guess if a
+pod's printed counts differ from the recount, if its `EVAL_LLM_CALL` lines
+disagree with its ledger in calls or tokens, or if an attempt did not end
+ok; none of that happened on either run.
+
+**Validation on `7c66k`** (same image, and it has a real in-cluster
+aggregate): the aggregate run on rows rebuilt from `7c66k`'s pod logs
+reproduces the cluster's printed aggregate **exactly — all 41 lines except
+the estimated-cost line**: every per-ticker row, the totals, 8/101 = 7.92%
+with its CI, numeric 0/59, the full per-site LLM table, the
+RAG-faithfulness line and the GATE FAILED verdict.
+`tests/test_results_from_pod_log.py` holds this against the committed
+files. On that basis `9jzmj` is citable as the same-image hosted extended
+baseline, always with the status line above.
+
+```bash
+python scripts/results_from_pod_log.py --log eval/runs/raw/7c66k.log \
+  --out eval/runs/7c66k-results-rebuilt.json --aggregate-out eval/runs/7c66k-aggregate-rebuilt.txt
+#   VALIDATION: EXACT apart from the estimated-cost line
+python scripts/results_from_pod_log.py --log eval/runs/raw/9jzmj.log \
+  --out eval/runs/9jzmj-results-rebuilt.json --aggregate-out eval/runs/9jzmj-aggregate.txt
+# from the committed rows alone (the raw logs are not committed):
+python scripts/eval_aggregate.py --input eval/runs/9jzmj-results-rebuilt.json
+```
+
+### Dated finding: the aggregate step's template outgrew Argo's inline limit (2026-10-04)
+
+**Mechanism (Argo v3.7.18, read from its source).** The controller hands
+each step its resolved template in the init container's `ARGO_TEMPLATE`
+env var. It clears `inputs.parameters` first and keeps `inputs.artifacts`,
+so the aggregate's template carries every ticker's result once, in the raw
+input artifact. When that template JSON is longer than
+`common.MaxEnvVarLen` = **131,072 bytes**, the controller writes it to a
+ConfigMap instead — named after the pod, in the workflow's namespace,
+owned by the Workflow — and mounts it at `/argo/config`. That takes
+`create` on configmaps in the workflow's namespace. The pinned
+`install.yaml` gives the controller only `get, watch, list`, so the step
+failed with `configmaps is forbidden: User "system:serviceaccount:argo:argo"
+cannot create resource "configmaps" … in the namespace "financial-agent"`.
+The workflow's `status.compressedNodes` is a separate mechanism (node-status
+compression near the 1 MB object limit), not the cause.
+
+**Size, from the captured smoke workflows** (results JSON-escaped as Go
+writes it; the rest of the template is about 1 KB):
+
+| Rows | Bytes per ticker | 10 tickers | Limit crossed from | 40 tickers |
+|---|---|---|---|---|
+| Hosted (`x2cx8`, `hm527`) | about 4,935 | 0.38× the limit | 27 tickers | about 198 KB, 1.5× |
+| SLM CPU (`9jddz`) | about 7,538 | 0.58× | 18 tickers | about 303 KB, 2.3× |
+| Hosted before the LLM ledger (`9j2dj`, 2026-09-05) | about 593 | — | not reached | about 24 KB |
+
+**Cause: the per-ticker LLM ledger added 2026-10-02** (and, on SLM arms,
+the endpoint provenance repeated in every row) made each row about eight
+times larger. That is why the September 40-ticker runs and every 10-ticker
+smoke passed, and the first 40-ticker run since the ledger did not.
+
+**Fixed now, no image change.** `argo/base/rbac.yaml` adds a Role
+(`configmaps: [create]`, in `financial-agent`) bound to the controller's
+ServiceAccount (`argo` in namespace `argo`) — every overlay inherits it;
+`render_diff` shows exactly that Role and RoleBinding added per overlay and
+nothing else. `create` is the only verb the controller uses; the ConfigMap
+goes with its Workflow through the owner reference. Proven on kind (Argo
+v3.7.18) with `scripts/template_offload_probe.py`,
+`eval/runs/kind-template-offload-2026-10-04.txt`:
+
+- without the Role, a 150 KB template ends in Error with the same
+  `configmaps is forbidden` message as on OKE, and no ConfigMap exists;
+- with it, the controller logs `Created configmap`, the ConfigMap holds
+  `ARGO_TEMPLATE` (150,343 bytes) owned by the Workflow, the init container
+  gets `ARGO_TEMPLATE=offloaded` and the `/argo/config` mount, the pod
+  reads all 150,014 payload bytes and the workflow succeeds; the controller
+  still cannot update or delete ConfigMaps;
+- a 100 KB template stays inline (no ConfigMap);
+- deleting the workflow garbage-collects the ConfigMap within seconds.
+
+The offload path has not run on OKE yet; the first extended run after the
+Role is applied is its first use there.
+
+**Known post-comparison change (deferred, recorded).** The eval pod's
+output parameter should carry only what the aggregate reads: the aggregate
+never uses `llm_eval`, `inference_claims`, `timing_s`, `haiku_cost` or the
+payload's own `aggregate`/`arms`/`tickers`, the ledger can be written
+compactly, and the SLM sampling can travel as a hash; the full result
+would ride the findings dump, so an aggregate can always be rebuilt
+offline. With that goes a test of the worst-case 40-ticker template size
+against 131,072 and a pre-submit warning in `make eval-run`. It changes
+`grounding_check.py`, which is in the image, so every arm would re-run on
+the new image: it waits until the comparison on `1f51dad` is finished.
+Until then a 40-ticker run depends on the template offload.
+
+**Host-side readers and compressed node status.** A 40-ticker workflow
+object has `status.compressedNodes` and no `status.nodes`; readers that
+only looked at `status.nodes` saw no pods. `scripts/workflow_nodes.py`
+reads either form and stops with a plain message when the nodes are
+offloaded to Argo's database. `scripts/run_time_projection.py` and
+`scripts/rag_ledger_from_workflow.py` use it directly; `eval/attempts.py`
+runs inside the eval pods (the harness imports it), so it is left exactly
+as built into the pinned image and `make eval-run` / `slm-eval-run` expand
+the workflow object before handing it over. Run by hand, pipe the object
+through `python3 scripts/workflow_nodes.py expand` first.
+
 ### Dated finding (computed, not booted): no 4-bit Qwen3.6-35B-A3B fits one A10 under vLLM (2026-10-02)
 
 Qwen publishes Qwen3.6-35B-A3B in BF16 and FP8 only (FP8 has no native
