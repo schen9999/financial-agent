@@ -1,0 +1,11 @@
+{
+ "eval_pods": 40,
+ "failed_attempts": [],
+ "failed_by_endpoint": {},
+ "phase": "Error",
+ "retried_tickers": [],
+ "retries": 0,
+ "tickers": 40,
+ "unrecorded": [],
+ "workflow": "grounding-eval-extended-9jzmj"
+}

@@ -73,6 +73,51 @@ def test_expand_cli_reads_stdin_and_reports_the_source(monkeypatch, capsys):
     assert wn.main([]) == 2
 
 
+REAL = _REPO / "eval/runs/9jzmj-workflow.json"  # a real 40-ticker object, as kubectl returned it
+
+
+def test_real_compressed_workflow_has_every_pod_and_no_retries():
+    wf = json.loads(REAL.read_text(encoding="utf-8"))
+    assert "nodes" not in wf["status"] and wf["status"]["compressedNodes"]
+    ns = wn.nodes(wf)
+    pods = [n for n in ns.values() if n["type"] == "Pod"]
+    assert (len(ns), len(pods)) == (83, 41)
+    assert sum(n["templateName"] == "eval-one" and n["phase"] == "Succeeded" for n in pods) == 40
+    (agg,) = [n for n in pods if n["templateName"] == "aggregate"]
+    assert agg["phase"] == "Error" and "configmaps is forbidden" in agg["message"]
+    rep = attempts.build_report(wn.expand(wf), {})
+    assert (rep["eval_pods"], rep["tickers"], rep["retries"], rep["failed_attempts"]) == (40, 40, 0, [])
+
+
+def test_stored_rows_of_9jzmj_give_the_same_aggregate_as_the_pod_log_rebuild(monkeypatch):
+    """The rows Argo stored for the aggregate step that never ran, against
+    the rows rebuilt from the pod logs: the aggregate prints the same
+    report, plus the estimated cost only the stored rows carry."""
+    agg = _load("eval_aggregate_nodes", "scripts/eval_aggregate.py")
+    rows = wn.eval_results(json.loads(REAL.read_text(encoding="utf-8")))
+    assert len(rows) == 40
+
+    def report(payloads, tmp):
+        tmp.write_text(json.dumps(payloads), encoding="utf-8")
+        lines = []
+        monkeypatch.setattr(agg, "print", lambda *a, **k: lines.append(" ".join(map(str, a))),
+                            raising=False)
+        monkeypatch.setattr(agg.sys, "argv", ["eval_aggregate.py", "--input", str(tmp)])
+        monkeypatch.delenv("EVAL_ARTIFACTS_PUT_URL", raising=False)
+        agg.main()
+        return [ln.rstrip() for ln in lines if ln.strip()]
+
+    import tempfile
+    with tempfile.TemporaryDirectory() as d:
+        stored = report(rows, pathlib.Path(d) / "stored.json")
+        rebuilt = report(json.loads((_REPO / "eval/runs/9jzmj-results-rebuilt.json")
+                                    .read_text(encoding="utf-8")), pathlib.Path(d) / "rebuilt.json")
+    extra = [ln for ln in stored if ln not in rebuilt]
+    assert [ln for ln in rebuilt if ln not in stored] == []
+    assert len(extra) == 1 and extra[0].startswith("  est. run cost     : $4.0998")
+    assert "  TOTAL     381    7   23  411     5.41    25.86" in stored
+
+
 def test_run_time_projection_and_rag_ledger_read_compressed_workflows(tmp_path, capsys):
     rtp = _load("run_time_projection_nodes", "scripts/run_time_projection.py")
     ledger = _load("rag_ledger_nodes", "scripts/rag_ledger_from_workflow.py")

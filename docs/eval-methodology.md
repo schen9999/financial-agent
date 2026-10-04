@@ -1701,7 +1701,7 @@ from the pods' logs by `scripts/results_from_pod_log.py`.
 | Agent LLM calls | 270 (35 tickers × 7, and 5 tickers × 4 with no RAG answer: BABA, NVO, SAP, TM, TSM); no truncation, loop, parse, format or error flags |
 | RAG answers | 70; longest 786 tokens (above the old 512 cap) |
 | Gate (≤ 5%, ≥ 30 claims) | passed — evaluated offline |
-| Estimated run cost | not reconstructable (needs each brief's full text) |
+| Estimated run cost | not reconstructable from the pod logs (it needs each brief's full text); $4.0998 per the rows stored in the workflow object, below |
 
 This is a judge-flagged rate with the v2 calibration of record applying; no
 reweighted estimate exists for this run. It is a dated run: `j4cnp` stays
@@ -1730,6 +1730,27 @@ RAG-faithfulness line and the GATE FAILED verdict.
 `tests/test_results_from_pod_log.py` holds this against the committed
 files. On that basis `9jzmj` is citable as the same-image hosted extended
 baseline, always with the status line above.
+
+**Second confirmation, from the workflow object itself**
+(`eval/runs/9jzmj-workflow.json`, fetched read-only 2026-10-04). The
+object still holds the output parameter each eval pod handed back — the
+exact rows the aggregate step would have received. Running the same
+aggregate on those 40 stored rows prints the same report as the pod-log
+rebuild, line for line, plus the one line the rebuild cannot produce:
+`est. run cost : $4.0998`. Field by field, the rebuilt rows equal the
+stored ones in everything the aggregate reads (counts, numeric counts,
+attempt, judge version, stock-block flag, timings to the printed two
+decimals, the per-site and per-endpoint ledger, RAG-faithfulness verdicts).
+The object also confirms the failure and the attempt count independently
+of the logs: 83 nodes — 40 eval pods Succeeded, each on attempt 0, and the
+aggregate node in Error with the `configmaps is forbidden` message.
+
+```bash
+python scripts/workflow_nodes.py results eval/runs/9jzmj-workflow.json > /tmp/9jzmj-stored-rows.json
+python scripts/eval_aggregate.py --input /tmp/9jzmj-stored-rows.json     # same report + est. run cost
+python scripts/workflow_nodes.py expand eval/runs/9jzmj-workflow.json > /tmp/9jzmj-expanded.json
+python eval/attempts.py --workflow /tmp/9jzmj-expanded.json --log eval/runs/raw/9jzmj.log   # 40 pods, 0 retries
+```
 
 ```bash
 python scripts/results_from_pod_log.py --log eval/runs/raw/7c66k.log \
@@ -1815,7 +1836,11 @@ offloaded to Argo's database. `scripts/run_time_projection.py` and
 runs inside the eval pods (the harness imports it), so it is left exactly
 as built into the pinned image and `make eval-run` / `slm-eval-run` expand
 the workflow object before handing it over. Run by hand, pipe the object
-through `python3 scripts/workflow_nodes.py expand` first.
+through `python3 scripts/workflow_nodes.py expand` first. Validated on
+`9jzmj`'s real object (`status.compressedNodes` of 109 KB, no `nodes` key):
+unexpanded, `eval/attempts.py` reports 0 eval pods; expanded, 40 eval pods
+for 40 tickers and 0 retries, matching the pod log, and the run-time
+projection reads all 40 tickers from it.
 
 ### Dated finding (computed, not booted): no 4-bit Qwen3.6-35B-A3B fits one A10 under vLLM (2026-10-02)
 

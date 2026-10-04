@@ -1121,7 +1121,10 @@ smoke, then the extended runs with their same-image hosted baseline
    `eval/runs/raw/9jzmj-findings`). The rebuild was validated first on
    `7c66k`, where it reproduces the in-cluster aggregate exactly apart
    from the estimated-cost line, so `9jzmj` is the same-image hosted
-   extended baseline. Before the next extended run, apply the controller
+   extended baseline. The workflow object
+   (`eval/runs/9jzmj-workflow.json`) confirms it independently: the
+   aggregate run on the rows Argo stored prints the same report, plus est.
+   run cost $4.0998. Before the next extended run, apply the controller
    Role (OKE step 5) — every 40-ticker run depends on it until the eval
    pod's output parameter is shrunk, which is deferred to after the
    comparison because it changes the image.

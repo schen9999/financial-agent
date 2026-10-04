@@ -79,7 +79,7 @@ Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (6217 lines, 500 tests collected: 499 passed + 1 skipped,
+3. The pytest suite (6262 lines, 502 tests collected: 501 passed + 1 skipped,
    the credit-gated judge test, as of 2026-10-04) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
@@ -327,7 +327,11 @@ Phase 3 — demo polish:
   hosted extended baseline because the rebuild
   (scripts/results_from_pod_log.py + the unchanged eval_aggregate.py)
   reproduces 7c66k's in-cluster aggregate exactly apart from the
-  estimated-cost line. A dated run: j4cnp stays the number of record, and
+  estimated-cost line, and because the aggregate run on the rows stored in
+  9jzmj's own workflow object (eval/runs/9jzmj-workflow.json,
+  scripts/workflow_nodes.py results) prints the same report, plus est. run
+  cost $4.0998 — "not reconstructable" applies to the pod logs only. A
+  dated run: j4cnp stays the number of record, and
   9jzmj is not the j4cnp pipeline exactly (2048 RAG cap).
 - Argo template offload (found 2026-10-04): a step whose resolved template
   exceeds 131,072 bytes (Argo v3.7.18 MaxEnvVarLen) is offloaded by the

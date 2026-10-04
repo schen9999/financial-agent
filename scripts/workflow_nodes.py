@@ -23,6 +23,14 @@ Makefile expands the object before handing it over).
 
   kubectl -n financial-agent get workflow <wf> -o json | python3 scripts/workflow_nodes.py expand > wf.json
 
+`results` prints the eval pods' stored output parameters — the exact rows
+the aggregate step receives — as the aggregate's --input, so the aggregate
+can be run offline on a workflow whose own aggregate step never started
+(9jzmj), estimated cost included:
+
+  python3 scripts/workflow_nodes.py results eval/runs/9jzmj-workflow.json > rows.json
+  python3 scripts/eval_aggregate.py --input rows.json
+
 Host-side only, stdlib only.
 """
 import base64
@@ -63,17 +71,39 @@ def expand(workflow):
     return out
 
 
+def eval_results(workflow, template="eval-one", parameter="result"):
+    """The succeeded eval pods' stored result payloads, in ticker order —
+    what `{{tasks.eval-ticker.outputs.parameters.result}}` hands the
+    aggregate. Failed attempts' pods carry no usable result and are skipped."""
+    out = []
+    for node in nodes(workflow).values():
+        if node.get("type") != "Pod" or node.get("templateName") != template \
+                or node.get("phase") != "Succeeded":
+            continue
+        for p in (node.get("outputs") or {}).get("parameters") or []:
+            if p.get("name") == parameter and p.get("value"):
+                out.append(json.loads(p["value"]))
+    return sorted(out, key=lambda v: [r.get("ticker") for r in v.get("results", [])]
+                  + list(v.get("skipped", [])))
+
+
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
-    if not argv or argv[0] != "expand" or len(argv) > 2:
-        print(__doc__.split("\n\n")[0] + "\n\nusage: workflow_nodes.py expand [workflow.json] "
-              "(default: stdin) > expanded.json", file=sys.stderr)
+    if not argv or argv[0] not in ("expand", "results") or len(argv) > 2:
+        print(__doc__.split("\n\n")[0] + "\n\nusage: workflow_nodes.py expand|results "
+              "[workflow.json] (default: stdin)", file=sys.stderr)
         return 2
     if len(argv) == 2:
         with open(argv[1], encoding="utf-8") as f:
             workflow = json.load(f)
     else:
         workflow = json.load(sys.stdin)
+    if argv[0] == "results":
+        rows = eval_results(workflow)
+        json.dump(rows, sys.stdout)
+        sys.stdout.write("\n")
+        print("workflow_nodes: %d eval result payload(s)" % len(rows), file=sys.stderr)
+        return 0
     was_compressed = bool((workflow.get("status") or {}).get("compressedNodes")
                           and not (workflow.get("status") or {}).get("nodes"))
     out = expand(workflow)
