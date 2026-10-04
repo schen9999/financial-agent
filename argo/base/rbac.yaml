@@ -36,3 +36,42 @@ roleRef:
   kind: Role
   name: argo-workflow-executor
   apiGroup: rbac.authorization.k8s.io
+---
+# The Argo CONTROLLER (ServiceAccount argo in namespace argo — not the
+# workflow pods) must be able to create ConfigMaps here. When a step's
+# resolved template exceeds 131,072 bytes (common.MaxEnvVarLen, Argo
+# v3.7.18) the controller offloads it to a ConfigMap named after the pod,
+# owned by the Workflow, instead of the ARGO_TEMPLATE env var. The pinned
+# install.yaml grants the controller only get/watch/list on configmaps, so
+# that offload is forbidden: the 40-ticker hosted run 9jzmj (2026-10-04)
+# finished all 40 eval pods and errored at the aggregate, whose raw input
+# artifact carries every ticker's result (about 198 KB). create is the only
+# verb the controller uses; the ConfigMap is garbage-collected with its
+# Workflow through the owner reference.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: argo-controller-template-offload
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/part-of: financial-agent
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argo-controller-template-offload
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/part-of: financial-agent
+subjects:
+  - kind: ServiceAccount
+    name: argo
+    namespace: argo
+roleRef:
+  kind: Role
+  name: argo-controller-template-offload
+  apiGroup: rbac.authorization.k8s.io
