@@ -1,0 +1,69 @@
+STOCK DATA:
+{
+  "ticker": "ROKU",
+  "company_name": "Roku, Inc.",
+  "current_price": 152.39,
+  "currency": "USD",
+  "market_cap": 22631536640.0,
+  "pe_ratio": 64.57204,
+  "forward_pe": 38.561295,
+  "week_52_high": 159.89,
+  "week_52_low": 78.53,
+  "revenue": 5209110016.0,
+  "net_income": 355204992.0,
+  "profit_margin": 0.06819,
+  "sector": "Communication Services",
+  "industry": "Entertainment"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-13",
+    "summary": "Item 1A. Risk Factors Our business involves significant risks, some of which are described below. You should carefully consider the risks and uncertainties described below, together with all the other information in this Annual Report, including \u201cManagement\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d and the consolidated financial statements and the related notes. If any of the following risks actually occur, our business, reputation, financial condition, results of operations, revenue, key performance metrics, and future prospects could be seriously harmed. In addition, you should consider the interrelationship and compounding effects of two or more risks occurring simultaneously. Unless otherwise indicated, references to our business being harmed in these "
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-06",
+    "summary": "Item 1A. Risk Factors Our business involves significant risks, some of which are described below. You should carefully consider the risks and uncertainties described below, together with all the other information in this Quarterly Report, including \u201cManagement\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d and the condensed consolidated financial statements and the related notes. If any of the following risks actually occur, our business, reputation, financial condition, results of operations, revenue, key performance metrics, and future prospects could be seriously harmed. In addition, you should consider the interrelationship and compounding effects of two or more risks occurring simultaneously. Unless otherwise indicated, references to our business being har"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I cannot provide a summary of the latest 10-K and 10-Q based on the information available. The provided materials contain only specific risk factor disclosures from SEC filings, not comprehensive summaries of financial performance, operational results, or other key sections typically found in complete 10-K and 10-Q reports.
+
+The excerpts focus specifically on:
+
+**Business and Competitive Risks:**
+- Intense competition in the TV streaming industry from major tech companies (Amazon, Apple, Google) and retailers (Walmart) that have greater financial resources
+- The need to continuously differentiate the streaming platform and invest in product development, marketing, and distribution infrastructure
+- Competition for user acquisition, retention, and engagement from various TV brands and service operators
+
+**Stock and Ownership Risks:**
+- Volatility in Class A common stock price
+- Potential dilution from future capital stock issuances
+- Dual class stock structure and anti-takeover provisions
+- Absence of dividend payments
+
+**Regulatory and Operational Risks:**
+- Compliance with taxation, content liability, and financial reporting requirements
+- Geopolitical and economic conditions affecting the business
+- Internet access network regulations
+
+To obtain a complete summary of the latest 10-K and 10-Q filings, you would need to review the full documents, including management's discussion and analysis, financial statements, and results of operations sections.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] I apologize, but the context information provided does not contain the specific details of the primary risk factors themselves. The excerpts only include introductory language from the Risk Factors section that explains the general nature and potential consequences of risks, but they do not list or describe the actual risk factors.
+
+To answer your question about the primary risk factors, I would need context that includes the substantive descriptions of individual risk factors (such as market risks, competitive risks, regulatory risks, operational risks, etc.). The provided information only contains the preamble to that section, which warns investors to consider the risks carefully and notes that materialization of these risks could harm the business, financial condition, and stock price.
