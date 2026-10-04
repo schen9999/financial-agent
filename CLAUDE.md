@@ -79,7 +79,7 @@ Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (6262 lines, 502 tests collected: 501 passed + 1 skipped,
+3. The pytest suite (6403 lines, 512 tests collected: 511 passed + 1 skipped,
    the credit-gated judge test, as of 2026-10-04) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
@@ -261,7 +261,8 @@ Phase 3 — demo polish:
   credits ran out; the failed attempt's SLM calls were not recorded on
   that image. 9jddz is NOT CITABLE: quote it only with that status, never
   as a pass, never as the CPU baseline — the CPU baseline on the new image
-  is the next CPU smoke. Which proof outcomes make an SLM run citable:
+  is the next CPU smoke (`wnrjr` on 1f51dad: 1/58 = 1.72%, CI 0.3–9.1%,
+  numeric 0/33, proof EXACT). Which proof outcomes make an SLM run citable:
   EXACT, or LOWER-BOUND with every excess token attributed to calls the
   harness itself logged as failed. Nothing else: any FAIL, explained or
   not, and any run with a failed attempt lacking a complete call record,
@@ -333,14 +334,40 @@ Phase 3 — demo polish:
   cost $4.0998 — "not reconstructable" applies to the pod logs only. A
   dated run: j4cnp stays the number of record, and
   9jzmj is not the j4cnp pipeline exactly (2048 RAG cap).
+- CPU SLM extended run on the comparison image: `8vpq6` (2026-10-04, 40
+  tickers, slm-full-cpu, judge v2, image 1f51dad) — a dated, CITABLE run:
+  traffic proof EXACT (270 calls, 342,244 + 96,811 tokens), 40/40 on the
+  first attempt, no Trunc/Loop/Parse/Fmt/Err. 9/248 = 3.63% (CI 1.9–6.8%)
+  vs hosted `9jzmj` 7/411 = 1.70% (CI 0.8–3.5%). HEADLINE, in these words:
+  no grounding difference detected at this sample size (Fisher p = 0.126
+  all claims; 0.362 numeric, 3/161 vs 2/277); numeric density is the
+  separated result (paired +2.90 numeric claims/ticker for hosted, CI
+  +2.15 to +3.70, sign test p = 1e-8, hosted higher on 35 of 40). Never
+  "equivalent", never "the SLM grounds as well": not detected is not
+  absent. Always with: the SLM states about 4.0 figures per ticker vs 6.9;
+  pipeline 355 s vs 26 s per ticker (13.7x) with the endpoint saturating
+  its 8-CPU limit; RAG faithfulness side by side with denominators and the
+  UNVALIDATED label (6/1415 vs 14/1017 over 70 answers each — the SLM's
+  answers are longer, so the lower rate is not a validated quality claim).
+  Of the SLM's three numeric unsupported claims only CHGG is a wrong
+  number (-52.997M written as -52.9M, truncation, from its Financial
+  Health section; hosted wrote $53M); BEAM is a context source conflict
+  (yfinance -86.52M vs the filing's -80.0M) judged against the filing;
+  META is judge error (price at 80% of range, same claim SUPPORTED in
+  9jzmj). "Numeric" = the claim text contains a digit, so "52-week"
+  phrases count (6/277 hosted, 3/161 SLM): quote the sensitivity row with
+  it (2/271 vs 2/158, p = 0.628; paired +2.83). Fixing that definition is
+  a post-comparison change (it is image code); do not change it now.
+  Numbers of record are unchanged. No GPU-endpoint eval has run.
 - Argo template offload (found 2026-10-04): a step whose resolved template
   exceeds 131,072 bytes (Argo v3.7.18 MaxEnvVarLen) is offloaded by the
   CONTROLLER to a ConfigMap; the aggregate crosses that from 27 hosted /
   18 SLM tickers since the 2026-10-02 LLM ledger grew the per-ticker rows
   (about 4.9 KB hosted, 7.5 KB SLM; 0.6 KB before). argo/base/rbac.yaml
   grants the controller SA (argo in namespace argo) configmaps [create]
-  in financial-agent — nothing wider; proven on kind, first OKE use is the
-  next extended run. KNOWN POST-COMPARISON CHANGE, deferred because it
+  in financial-agent — nothing wider; proven on kind, first live OKE use
+  in 8vpq6 (aggregate template 301,083 bytes, 2.30x the limit;
+  scripts/aggregate_template_size.py). KNOWN POST-COMPARISON CHANGE, deferred because it
   changes the image: shrink the eval pod's output parameter to what the
   aggregate reads, with a worst-case size test and a pre-submit warning.
   Do not make that change while the comparison on 1f51dad is running.
@@ -358,6 +385,12 @@ Phase 3 — demo polish:
   the "SEC Filing Highlights" section is a refusal for 4–5 of 10 briefs
   per run. State both when describing brief quality; do not present the
   briefs as having a working filing-highlights section for those tickers.
+  (3) the context can hold conflicting figures from different sources
+  (BEAM net income: yfinance -86.52M vs the filing's RAG answer -80.0M)
+  and nothing in the pipeline reconciles or flags them; (4) the SLM
+  truncates where it should round on at least one derived figure (CHGG,
+  -52.997M written as -52.9M). Same rule: recorded, post-demo, unchanged
+  during the comparison.
 - Cross-encoder reranking and the multi-agent supervisor shipped default-off
   because evals showed no grounding gain at higher cost/latency. State it that way.
 - Any new number in docs must come from a committed, re-runnable harness.

@@ -1011,7 +1011,11 @@ smoke, then the extended runs with their same-image hosted baseline
    `grounding-eval-slm-cpu-nb6r6` Succeeded 11/11, TRAFFIC PROOF: EXACT
    (70 calls, 92,282 prompt + 22,466 completion tokens on both sides),
    RUN-TIME CHECK: PASS (`eval/runs/cpu-smoke.log`,
-   `eval/runs/slm-proof-nb6r6/`); every other run NOT YET EXECUTED]**
+   `eval/runs/slm-proof-nb6r6/`). On image `1f51dad`, EXECUTED
+   2026-10-03/04: CPU smoke `wnrjr` (traffic proof EXACT), hosted extended
+   `9jzmj` (workflow Error at aggregate; rebuilt offline — below) and CPU
+   extended `8vpq6` (Succeeded, traffic proof EXACT, 40/40 on the first
+   attempt). The GPU smoke and GPU extended are NOT YET EXECUTED]**
    Runs, in order, each through the traffic proof
    (operator; nothing else may use that endpoint during a run — the proof
    FAILs on foreign traffic):
@@ -1105,7 +1109,7 @@ smoke, then the extended runs with their same-image hosted baseline
    (`eval/runs/9jddz-smoke.log`, `eval/runs/slm-proof-9jddz/`,
    `eval/runs/9jddz-workflow.json`; eval-methodology, "Smokes on image
    `30c832b`"). **This run is not citable; the CPU baseline on the new
-   image is the next CPU smoke.** Check the Anthropic balance before every
+   image is the next CPU smoke (`wnrjr`, below).** Check the Anthropic balance before every
    run: an exhausted balance costs a retry on the CPU endpoint and, on
    images up to `30c832b`, the proof.
 
@@ -1128,6 +1132,22 @@ smoke, then the extended runs with their same-image hosted baseline
    Role (OKE step 5) — every 40-ticker run depends on it until the eval
    pod's output parameter is shrunk, which is deferred to after the
    comparison because it changes the image.
+
+   **CPU smoke and CPU extended on image `1f51dad` (2026-10-03/04).**
+   `grounding-eval-slm-cpu-wnrjr`: 10/10 tickers, 1/58 = 1.72%
+   unsupported (Wilson 95% CI 0.3–9.1%), numeric 0/33, TRAFFIC PROOF:
+   EXACT (94,520 + 24,756 tokens), 0 retries, run-time check passed.
+   `grounding-eval-extended-slm-cpu-8vpq6`: Succeeded, 40/40 tickers on
+   the first attempt, 0 retries, TRAFFIC PROOF: EXACT (270 calls, 342,244
+   + 96,811 tokens), 9/248 = 3.63% unsupported (CI 1.9–6.8%), numeric
+   3/161 = 1.86% (CI 0.6–5.3%), no Trunc/Loop/Parse/Fmt/Err, gate passed —
+   a dated, citable run. Its aggregate step was the first live use of the
+   controller's ConfigMap template offload on OKE (the Role of OKE step 5).
+   Files: `eval/runs/cpu-extended.log`, `eval/runs/top-cpu-ext.txt`,
+   `eval/runs/slm-proof-8vpq6/`, `eval/runs/slm-proof-wnrjr/`, findings in
+   `eval/runs/raw/`. Comparison with hosted `9jzmj`:
+   eval-methodology, "CPU SLM extended run `8vpq6`"
+   (`eval/runs/9jzmj-vs-8vpq6-comparison.txt`).
 
    **From the next image: retries are part of the report.** `make
    eval-run` prints, under the aggregate's output, an attempts block from

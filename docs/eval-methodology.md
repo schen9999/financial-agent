@@ -1457,7 +1457,8 @@ image `30c832b` did not log a failed attempt's calls, so what that attempt
 sent was never recorded. The verdict stays **FAIL** — it is not rewritten
 as a pass, and under the proof rule this run is **not citable** as an SLM
 result. Its figures are kept here as a dated record, always with that
-status; the CPU baseline is the next CPU smoke, on the image that logs
+status; the CPU baseline is the next CPU smoke (`wnrjr`, on `1f51dad`:
+traffic proof EXACT — "CPU SLM extended run `8vpq6`" below), on the image that logs
 failed attempts.
 Re-running the proof with the attempt-aware verifier gives the same
 verdict with the reason spelled out:
@@ -1762,6 +1763,152 @@ python scripts/results_from_pod_log.py --log eval/runs/raw/9jzmj.log \
 python scripts/eval_aggregate.py --input eval/runs/9jzmj-results-rebuilt.json
 ```
 
+### CPU SLM extended run `8vpq6` against hosted `9jzmj` (2026-10-04): the same-image comparison
+
+`grounding-eval-extended-slm-cpu-8vpq6`: the 40-ticker set on the
+`slm-full-cpu` arm (Qwen3.6-35B-A3B Q4_K_M on llama.cpp b11347, CPU
+endpoint on the provided OKE cluster), judge v2, image `1f51dad`. Workflow
+Succeeded; 40 of 40 tickers on the first attempt, 0 Argo retries;
+**TRAFFIC PROOF: EXACT** over every attempt (270 calls, 342,244 prompt +
+96,811 completion tokens on the harness and on the server); no truncation,
+loop, parse, format or error flag on any call; gate passed. It is a dated,
+citable SLM run. Its aggregate step was the first live use of the template
+offload on OKE (template 301,083 bytes, 2.30× the inline limit; next
+section). The CPU smoke on the same image that fed the run-time gate is
+`wnrjr`: 1/58 = 1.72% (Wilson 95% CI 0.3–9.1%), numeric 0/33, traffic proof
+EXACT (94,520 + 24,756 tokens), 0 retries.
+
+**Headline: no grounding difference detected at this sample size; numeric
+density is the separated result.** Rates are judge-flagged (v2; the
+calibration of record applies and no reweighted estimate exists for either
+run). Numbers of record are unchanged: `j4cnp` stays the grounding number
+of record, and these are dated runs on the comparison image.
+
+| | Hosted `9jzmj` | CPU SLM `8vpq6` | Test |
+|---|---|---|---|
+| Unsupported, all claims | 7/411 = 1.70% (CI 0.8–3.5%) | 9/248 = 3.63% (CI 1.9–6.8%) | Fisher exact p = 0.126 |
+| Unsupported, numeric claims (co-primary) | 2/277 = 0.72% (CI 0.2–2.6%) | 3/161 = 1.86% (CI 0.6–5.3%) | Fisher exact p = 0.362 |
+| — sensitivity: without claims numeric only through "52-week" | 2/271 = 0.74% (CI 0.2–2.7%) | 2/158 = 1.27% (CI 0.3–4.5%) | Fisher exact p = 0.628 |
+| Numeric claims per ticker | 6.92 | 4.03 | paired over the 40 tickers: +2.90 (95% bootstrap CI +2.15 to +3.70); hosted higher on 35, equal on 3, lower on 2; exact sign test p = 1e-8 |
+| — sensitivity: without "52-week" | 6.78 | 3.95 | paired +2.83 (CI +2.08 to +3.62); 35 / 3 / 2; p = 1e-8 |
+| Claims per ticker (mean, min) | 10.3, 2 | 6.2, 2 | |
+| Qualitative claims per ticker | 3.3 | 2.1 | |
+| Briefs the judge audited on numbers only | 7 of 40 | 16 of 40 | |
+| Audited text per ticker | 340 words, 8.9 numbers | 202 words, 4.5 numbers | |
+| Unsupported by section: Financial Health | 1/190 | 2/128 | |
+| Risk Factors | 0/17 | 0/12 | |
+| Recent Developments | 0/36 | 1/17 | |
+| SEC Filing Highlights | 0/87 | 0/47 | |
+| unattributed (restates no pre-written section) | 6/81 | 6/44 | |
+| RAG faithfulness (rf-v1, **unvalidated**, own denominator) | 14/1017 = 1.38% (CI 0.8–2.3%), 70 answers | 6/1415 = 0.42% (CI 0.2–0.9%), 70 answers | Fisher exact p = 0.012 |
+| Agent LLM calls | 270 | 270 | |
+| Pipeline per ticker, mean (min–max) | 25.9 s (17.6–30.4) | 355.1 s (100.4–432.6) | 13.7× |
+| Retrieval per ticker, mean | 5.4 s | 170.0 s | |
+| Traffic proof | n/a (hosted) | EXACT | |
+| Aggregate | rebuilt offline (above) | in-cluster | |
+
+- **Grounding.** The SLM's rate is higher on every denominator and none of
+  the differences is detected: p = 0.126 over all claims, 0.362 over
+  numeric claims, 0.628 with the "52-week" phrases removed. This is "no
+  difference detected at this sample size", not "equivalent": the
+  intervals are wide (the SLM's upper bound is 6.8% over all claims).
+- **Density.** The hosted arm states more figures on 35 of the 40 tickers:
+  2.90 more numeric claims per ticker (CI +2.15 to +3.70). The SLM's
+  audited text is about 40% shorter with half the numbers, as in the
+  smokes ("Dated finding: claim density"). The SLM's rate is therefore
+  over a little more than half as many checkable figures.
+- **RAG faithfulness** is reported side by side with its denominators and
+  the unvalidated label, and is not part of the grounding rate. The SLM's
+  RAG answers are longer — 1,415 judged claims against 1,017 over the same
+  70 answers — so the lower rate is not a validated quality claim: the
+  judge has no human-label calibration and the two rates are over
+  different amounts of text.
+
+**Latency per call site** (seconds per call, mean and max; the harness's
+ledger):
+
+| Site | Hosted mean | Hosted max | CPU SLM mean | CPU SLM max |
+|---|---|---|---|---|
+| `rag:highlights` (35 calls each) | 4.10 | 5.57 | 186.66 | 251.03 |
+| `rag:risks` (35) | 4.47 | 9.17 | 159.76 | 271.11 |
+| `section:financial_health` (40) | 2.24 | 3.06 | 46.23 | 82.17 |
+| `section:recent_developments` (40) | 2.21 | 2.77 | 50.39 | 90.18 |
+| `section:risk_factors` (40) | 2.36 | 3.80 | 62.68 | 106.10 |
+| `section:sec_filing_highlights` (40) | 1.96 | 2.96 | 62.79 | 93.22 |
+| `synthesis` (40) | 17.86 | 20.47 | 114.45 | 155.76 |
+
+**CPU during `8vpq6`** (`kubectl top` every 15 s, 705 samples,
+`eval/runs/top-cpu-ext.txt`): the llama.cpp pod ran at a median of 7,806m
+and peaked at 8,000m — its 8-CPU limit — with 27,449 Mi of its 30Gi. The
+harness beside it is idle: the 40 eval pods have a median of 1m (10 of 975
+readings are startup spikes above 100m, the rest at most 47m), the worker
+peaks at 48m and the api at 172m. The 13.7× per-ticker time is the
+endpoint's.
+
+**The three numeric unsupported claims of `8vpq6`** — only one is a wrong
+number:
+
+- **CHGG — a wrong number (truncation).** Claim: "net income of -$52.9
+  million". The context has `net_income: -52997000.0`, which is -$53.0
+  million; the SLM wrote -52.997M as -52.9M. The figure was produced in the
+  SLM's Financial Health section and carried into the summary. On the same
+  data the hosted run wrote "$53 million" (SUPPORTED).
+- **BEAM — a context source conflict, judged against the filing.** Claim:
+  "reporting a net loss of $86.52 million". The figure is in the context
+  and quoted correctly (yfinance `net_income: -86520000.0`). The RAG answer
+  from the filing, also in the context, says "net losses of $80.0 million
+  (2025)". The judge labelled the claim UNSUPPORTED because the two
+  sources disagree and it took the filing as authoritative.
+- **META — judge error.** Claim: "strong market sentiment near 52-week
+  highs". The price, 728.08, is at 80% of the 52-week range
+  (520.26–779.82), 6.6% below the high, and nearer the high than the
+  midpoint; the judge wrote that it was closer to the midpoint. The same
+  claim on the same data ("shares near 52-week highs") is SUPPORTED in
+  `9jzmj`, and MSFT at 82% of its range was SUPPORTED as "near the upper
+  end" in `7c66k`. The claim is not a figure at all; it counts as numeric
+  only because "52-week" contains digits.
+
+Neither of the hosted arm's two numeric unsupported claims is a wrong
+number either: AFRM's is a peer comparison absent from the context, NVO's a
+qualitative pipeline statement.
+
+**The "52-week" caveat.** A numeric claim is one whose quoted text contains
+a digit (`eval.label.numeric_claim_counts`), so positional phrases such as
+"near 52-week highs" count: 6 of the hosted arm's 277 numeric claims and 3
+of the SLM's 161. The sensitivity rows above drop them
+(`eval/claim_density.py`, strict count); nothing changes direction — the
+rate difference shrinks (2/271 vs 2/158) and the density result stands.
+Fixing the definition itself is a post-comparison change: it lives in code
+the harness runs inside the pinned image, and it is not changed now.
+
+**Two more known limitations, recorded and not changed during the
+comparison (post-demo):**
+
+3. *The context can contain conflicting figures from different sources,
+   and nothing reconciles or flags them.* BEAM's net income is -$86.52
+   million in the yfinance stock block and -$80.0 million in the filing's
+   RAG answer (different sources, possibly different periods). The brief
+   can quote either, and the judge may hold either against it.
+4. *The SLM truncates where it should round on at least one derived
+   figure.* CHGG's -52.997M became -52.9M in the SLM's Financial Health
+   section. One observed instance; the numeric check, not the judge, is
+   the tool for measuring how often.
+
+```bash
+python eval/multi_arm_stats.py \
+  --run hosted-9jzmj eval/runs/9jzmj-claims.jsonl eval/runs/raw/9jzmj-findings \
+  --run slm-cpu-8vpq6 eval/runs/8vpq6-claims.jsonl eval/runs/raw/8vpq6-findings \
+  --rows hosted-9jzmj eval/runs/9jzmj-workflow.json \
+  --rows slm-cpu-8vpq6 eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6-workflow.json
+python scripts/top_summary.py eval/runs/top-cpu-ext.txt
+#   both saved as eval/runs/9jzmj-vs-8vpq6-comparison.txt
+python scripts/slm_traffic_proof.py verify \
+  --before eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6-before.json \
+  --after eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6-after.json \
+  --log eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6.log \
+  --workflow eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6-workflow.json   # EXACT
+```
+
 ### Dated finding: the aggregate step's template outgrew Argo's inline limit (2026-10-04)
 
 **Mechanism (Argo v3.7.18, read from its source).** The controller hands
@@ -1788,6 +1935,11 @@ writes it; the rest of the template is about 1 KB):
 | SLM CPU (`9jddz`) | about 7,538 | 0.58× | 18 tickers | about 303 KB, 2.3× |
 | Hosted before the LLM ledger (`9j2dj`, 2026-09-05) | about 593 | — | not reached | about 24 KB |
 
+Measured on the two 40-ticker runs themselves
+(`python scripts/aggregate_template_size.py <workflow.json> …`): `9jzmj`
+198,065 bytes (1.51×; the aggregate errored), `8vpq6` 301,083 bytes (2.30×;
+the aggregate succeeded, through the offload).
+
 **Cause: the per-ticker LLM ledger added 2026-10-02** (and, on SLM arms,
 the endpoint provenance repeated in every row) made each row about eight
 times larger. That is why the September 40-ticker runs and every 10-ticker
@@ -1812,8 +1964,9 @@ v3.7.18) with `scripts/template_offload_probe.py`,
 - a 100 KB template stays inline (no ConfigMap);
 - deleting the workflow garbage-collects the ConfigMap within seconds.
 
-The offload path has not run on OKE yet; the first extended run after the
-Role is applied is its first use there.
+First live use on OKE: `8vpq6` (2026-10-04), after the Role was applied
+there. Its aggregate step ran and succeeded with a 301,083-byte template,
+which only the ConfigMap offload can deliver.
 
 **Known post-comparison change (deferred, recorded).** The eval pod's
 output parameter should carry only what the aggregate reads: the aggregate
