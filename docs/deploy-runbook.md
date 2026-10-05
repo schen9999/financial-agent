@@ -839,12 +839,15 @@ depends on:
    attempts block ran on OKE for the first time in this run. A smoke
    validates the platform; arms are compared on the extended runs, numeric
    co-primary first.
-9. **[PARTLY EXECUTED 2026-10-03 for `x2cx8`: in the repo are the
-   `make eval-run` output (`eval/runs/hosted-smoke.log`), the top capture
-   (`eval/runs/top-hosted-smoke.txt`) and the workflow object
-   (`eval/runs/x2cx8-workflow.json`); the full pod log and the findings
-   extraction below are NOT YET EXECUTED and the TTL removes the pods on
-   2026-10-10]** Findings + top capture — within 7 days (the
+9. **[EXECUTED 2026-10-03 for `x2cx8`: in the repo are the `make
+   eval-run` output (`eval/runs/hosted-smoke.log`), the top capture
+   (`eval/runs/top-hosted-smoke.txt`), the workflow object
+   (`eval/runs/x2cx8-workflow.json`), and — commit `8147b67` — the
+   findings extraction (`eval/runs/raw/x2cx8-findings/`), the per-claim
+   rows (`eval/runs/x2cx8-claims.jsonl`) and their contexts
+   (`eval/runs/x2cx8-contexts/`); the full pod log was captured to
+   `eval/runs/raw/x2cx8.log`, kept local like every pod log (gitignored:
+   its payload duplicates the findings)]** Findings + top capture — within 7 days (the
    ttlStrategy deletes the workflow and its pods, and their logs, after
    that):
    ```bash
