@@ -1134,8 +1134,10 @@ income (86).
 
 This section is the method `slm-full` runs are reported under. Run so far:
 one 10-ticker CPU smoke (`nb6r6`, 2026-10-03, "Smokes on image `2dd1aa3`"
-below). No extended run exists, and no eval has run against the GPU
-endpoint. Model: Qwen3.6-35B-A3B (MoE, 35B total / 3B active,
+below). Since then, on image `1f51dad`: CPU smoke `wnrjr`, CPU extended
+`8vpq6` (2026-10-04), GPU smoke `k6zxd` and GPU extended `p9jr2`
+(2026-10-05), all with traffic proof EXACT — "CPU SLM extended run
+`8vpq6`" and "GPU SLM extended run `p9jr2`" below. Model: Qwen3.6-35B-A3B (MoE, 35B total / 3B active,
 vision-language; served text-only), one artifact for both endpoints:
 `ggml-org/Qwen3.6-35B-A3B-GGUF` @`baec3eb` `Qwen3.6-35B-A3B-Q4_K_M.gguf`
 (20,419,565,568 bytes, sha256 `671e47e0…40c7`), on llama.cpp `llama-server`
@@ -1888,7 +1890,9 @@ comparison (post-demo):**
    and nothing reconciles or flags them.* BEAM's net income is -$86.52
    million in the yfinance stock block and -$80.0 million in the filing's
    RAG answer (different sources, possibly different periods). The brief
-   can quote either, and the judge may hold either against it.
+   can quote either, and the judge may hold either against it. Recurring:
+   OMER in `p9jr2` is the second instance ("GPU SLM extended run `p9jr2`",
+   limitation 3 update).
 4. *The SLM truncates where it should round on at least one derived
    figure.* CHGG's -52.997M became -52.9M in the SLM's Financial Health
    section. One observed instance; the numeric check, not the judge, is
@@ -1907,6 +1911,276 @@ python scripts/slm_traffic_proof.py verify \
   --after eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6-after.json \
   --log eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6.log \
   --workflow eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6-workflow.json   # EXACT
+```
+
+### GPU SLM extended run `p9jr2` (2026-10-05): the three-way comparison with hosted `9jzmj` and CPU `8vpq6`
+
+`grounding-eval-extended-slm-gpu-p9jr2`: the 40-ticker set on the
+`slm-full-gpu` arm — the same GGUF on the same llama.cpp release as
+`8vpq6`, served on node 2's A10 with all layers on the GPU (alias
+`qwen3.6-35b-a3b-q4km`, no `-hybrid` suffix, so not a hybrid run), judge
+v2, image `1f51dad`. The harness on OKE reaches the endpoint over node 2's
+public address, port 30880 admitted from the OKE egress IP only; the
+harness's timers include that path. Workflow Succeeded 03:13:00–03:48:12
+UTC; 40 of 40 tickers on the first attempt, 0 Argo retries; **TRAFFIC
+PROOF: EXACT** (270 calls, 350,290 prompt + 98,232 completion tokens on the
+harness and on the server); no truncation, loop, parse, format, retry or
+error flag on any call; stock block empty on 0 of 40; gate passed. A dated,
+citable SLM run. The GPU smoke on the same image that fed the run-time gate
+is `k6zxd` (below).
+
+**Headline: no grounding difference detected on any pair at this sample
+size; numeric density separates the GPU from hosted, and does not separate
+the GPU from the CPU.** The CPU and GPU arms run the same model, engine
+and request settings on different hardware, so they should not differ:
+that pair is the consistency check, and it holds. Rates are judge-flagged
+(v2; the calibration of record applies and no reweighted estimate exists
+for these runs). The p-values are not adjusted for the three pairwise
+comparisons. Numbers of record are unchanged: `j4cnp` stays the grounding
+number of record; these are dated runs on the comparison image.
+
+| | Hosted `9jzmj` | CPU SLM `8vpq6` | GPU SLM `p9jr2` | GPU vs hosted | GPU vs CPU |
+|---|---|---|---|---|---|
+| Unsupported, all claims | 7/411 = 1.70% (CI 0.8–3.5%) | 9/248 = 3.63% (CI 1.9–6.8%) | 6/245 = 2.45% (CI 1.1–5.2%) | Fisher p = 0.567 | Fisher p = 0.602 |
+| Unsupported, numeric claims (co-primary) | 2/277 = 0.72% (CI 0.2–2.6%) | 3/161 = 1.86% (CI 0.6–5.3%) | 3/155 = 1.94% (CI 0.7–5.5%) | p = 0.355 | p = 1.000 |
+| — sensitivity: without claims numeric only through "52-week" | 2/271 = 0.74% (CI 0.2–2.7%) | 2/158 = 1.27% (CI 0.3–4.5%) | 3/148 = 2.03% (CI 0.7–5.8%) | p = 0.351 | p = 0.676 |
+| Model errors in numeric claims (wrong value + wrong label; below) | 0/277 = 0.00% (CI 0.0–1.4%) | 1/161 = 0.62% (CI 0.1–3.4%) | 2/155 = 1.29% (CI 0.4–4.6%) | p = 0.128 | p = 0.617 |
+| Numeric claims per ticker | 6.92 | 4.03 | 3.88 | paired +3.05 for hosted (95% bootstrap CI +2.33 to +3.83); hosted higher on 34, equal 5, lower 1; sign test p = 2.1e-9 | paired +0.15 for CPU (CI −0.35 to +0.68); 17 / 6 / 17; p = 1.0 |
+| — sensitivity: without "52-week" | 6.78 | 3.95 | 3.70 | +3.08 (CI +2.33 to +3.88); 35 / 4 / 1; p = 1.1e-9 | +0.25 (CI −0.28 to +0.78); 19 / 5 / 16; p = 0.736 |
+| Claims per ticker (mean, min) | 10.3, 2 | 6.2, 2 | 6.1, 2 | | |
+| Qualitative claims per ticker | 3.3 | 2.1 | 2.2 | | |
+| Briefs the judge audited on numbers only | 7 of 40 | 16 of 40 | 15 of 40 | | |
+| Audited text per ticker | 340 words, 8.9 numbers | 202 words, 4.5 numbers | 203 words, 4.4 numbers | | |
+| Unsupported by section: Financial Health | 1/190 | 2/128 | 3/119 | | |
+| Risk Factors | 0/17 | 0/12 | 0/10 | | |
+| Recent Developments | 0/36 | 1/17 | 1/29 | | |
+| SEC Filing Highlights | 0/87 | 0/47 | 0/51 | | |
+| unattributed | 6/81 | 6/44 | 2/36 | | |
+| RAG faithfulness (rf-v1, **unvalidated**, own denominator) | 14/1017 = 1.38% (CI 0.8–2.3%) | 6/1415 = 0.42% (CI 0.2–0.9%) | 6/1465 = 0.41% (CI 0.2–0.9%) | p = 0.011 | p = 1.000 |
+| Agent LLM calls | 270 | 270 | 270 | | |
+| Pipeline per ticker, mean (min–max) | 25.9 s (17.6–30.4) | 355.1 s (100.4–432.6) | 31.1 s (12.5–47.6) | GPU 1.2× slower | CPU 11.4× slower |
+| Retrieval per ticker, mean | 5.4 s | 170.0 s | 13.9 s | GPU 2.6× | CPU 12.2× |
+| Traffic proof | n/a (hosted) | EXACT | EXACT | | |
+
+Every arm made 270 agent calls: 35 tickers × 7 and 5 × 4. The five ADRs
+make no RAG call in any arm (known limitation 5 below).
+
+- **Grounding.** No pair separates on any denominator: all claims, numeric
+  claims, the "52-week" sensitivity, or model errors alone. That is "no
+  difference detected at this sample size", not "equivalent". The GPU's
+  upper bound over all claims is 5.2%, its numeric upper bound 5.5%.
+- **Density.** The GPU arm states 3.05 fewer numeric claims per ticker
+  than hosted (lower on 34 of 40 tickers), as the CPU arm did, so its rate
+  is over a little more than half as many checkable figures. GPU against
+  CPU: +0.15 numeric claims per ticker with an interval across zero, 17
+  tickers each way and 6 equal, and the same audited length (203 vs 202
+  words). Moving the model from CPU to GPU did not change what it writes.
+- **RAG faithfulness** is reported side by side, with its denominators and
+  the unvalidated label, and is not part of the grounding rate. The GPU
+  and CPU arms are indistinguishable (6/1465 vs 6/1415). The SLM's lower
+  rate against hosted is over longer answers and is not a validated
+  quality claim, as for `8vpq6`.
+
+**Latency per call site** (seconds per call, mean and max, from the
+harness's ledger; ratios are slower / faster, from
+`eval/multi_arm_stats.py`):
+
+| Site (calls per arm) | Hosted mean | CPU mean | GPU mean (max) | CPU / GPU | GPU / hosted |
+|---|---|---|---|---|---|
+| `rag:highlights` (35) | 4.10 | 186.66 | 13.94 (24.70) | 13.4× | 3.4× |
+| `rag:risks` (35) | 4.47 | 159.76 | 10.69 (25.07) | 14.9× | 2.4× |
+| `section:financial_health` (40) | 2.24 | 46.23 | 4.54 (6.23) | 10.2× | 2.0× |
+| `section:recent_developments` (40) | 2.21 | 50.39 | 4.77 (7.61) | 10.6× | 2.2× |
+| `section:risk_factors` (40) | 2.36 | 62.68 | 5.46 (9.91) | 11.5× | 2.3× |
+| `section:sec_filing_highlights` (40) | 1.96 | 62.79 | 5.00 (9.29) | 12.6× | 2.6× |
+| `synthesis` (40) | 17.86 | 114.45 | 11.41 (19.50) | 10.0× | hosted 1.6× slower |
+| Per ticker, pipeline | 25.86 | 355.06 | 31.15 | 11.4× | 1.2× |
+| Per ticker, retrieval | 5.41 | 169.95 | 13.91 | 12.2× | 2.6× |
+
+The GPU is 10–15× faster than the CPU endpoint at every site. Against
+hosted it is 2.0–3.4× slower per call everywhere except the synthesis, where
+hosted is 1.6× slower: hosted writes the longer brief (340 audited words
+against 203). Per ticker that nets out to 1.2×, 31.1 s against 25.9 s. All
+three runs used the workflow template's parallelism of 2.
+
+**GPU use** (`eval/runs/gpu-nvsmi-p9jr2.csv`: nvidia-smi on node 2 every
+5 s, 709 samples, 02:51:49–03:50:49 UTC; `scripts/nvsmi_summary.py`, each
+Argo run's window from its workflow object):
+
+| Window | Samples | Util mean | Median | p95 | Max | Samples above 0% | memory.used |
+|---|---|---|---|---|---|---|---|
+| Tool-use GPU route, **approximate** (02:59:15–02:59:57) | 8 | 69.5% | 94% | 94% | 94% | 6 (75%) | 20,540 MiB |
+| Smoke `k6zxd` (03:01:40–03:11:20) | 116 | 34.8% | 0% | 100% | 100% | 47 (41%) | 20,540 MiB |
+| Extended `p9jr2` (03:13:00–03:48:12) | 422 | 38.1% | 0% | 99% | 100% | 182 (43%) | 20,540 MiB |
+| Outside every window | 163 | — | — | — | — | 0 | — |
+
+The tool-use window is approximate: the check's JSON carries no
+timestamps, so the window runs from the CPU route's output file
+(written 02:59:15) to the GPU route's (02:59:57); the GPU route's own
+`wall_s` sums to 35.6 s. No GPU activity falls outside the three windows,
+which also confirms node 2's clock against the workflow times.
+`utilization.gpu` is the share of each sample period in which a kernel
+ran, and `memory.used` is the whole GPU's (constant at 20,540 MiB; the
+20,488 MiB recorded 2026-10-03 is llama-server's own process memory, a
+different measure). **During `p9jr2`, at parallelism 2, the GPU averaged
+38% and its median sample was 0%: the A10 has headroom.** That is all the
+capture shows; no throughput at higher parallelism is projected from it
+without a run. The CPU endpoint during `8vpq6` was the opposite: median
+7,806m of its 8,000m limit.
+
+**The three numeric unsupported claims of `p9jr2`**, all in the Executive
+Summary. Two are model errors (wrong label), one is a source conflict.
+Types: *wrong value* (the figure is not the context's), *wrong label* (the
+figure is in the context but attached to the wrong quantity), *source
+conflict* (quoted correctly from one source, held against another), *judge
+error* (correct against the context), *not in context* (an assertion the
+context lacks, no figure misquoted). Model errors are wrong value + wrong
+label. The adjudication is
+`eval/runs/numeric-error-types-2026-10-05.json`; `eval/error_types.py`
+checks it covers exactly the UNSUPPORTED numeric claims of each run and
+prints the counts and tests (`eval/runs/numeric-error-types-2026-10-05.txt`).
+
+- **SFIX — wrong label.** Claim: "…stabilizing the customer base near its
+  recent low of $2.61". $2.61 is `current_price`; the only low in the
+  context is `week_52_low: 2.1`. The summary calls the current price a low.
+  The GPU's own Recent Developments section has it right ("between $2.10
+  and $5.75 … near the lower end at $2.61"), and on the same data `8vpq6`
+  ("trading near its 52-week low of $2.10 at $2.61") and `9jzmj` ("from its
+  52-week high of $5.75 to $2.61") are SUPPORTED.
+- **CRBU — wrong label; the judge's stated reason is incorrect, the verdict
+  stands.** Claim: "a market capitalization near its 52-week low of
+  $1.22". The figure is right: `week_52_low: 1.215` is $1.22 at two
+  decimals, and the GPU's Financial Health section quotes $1.215. But a
+  per-share price is attached to "market capitalization" ($130.8 million in
+  the context), the same class of error as SFIX. The judge's reason ("the
+  52-week low is $1.215, not $1.22; $1.22 is the current price") rejects a
+  correct rounding; it is recorded as an incorrect judge reason, not as a
+  judge error, because the claim is wrong on the label.
+- **OMER — context source conflict, judged against the filing.** Claim: "a
+  notable net income of $116.53 million". Quoted correctly from yfinance
+  (`net_income: 116533000.0`); the filing's RAG answer in the same context
+  says "the net loss was $3.4 million" for FY2025. All three arms put the
+  $116.5 million in their Financial Health section; only the GPU carried it
+  into the audited summary. The same mechanism as BEAM in `8vpq6`.
+
+**By type, across the three runs** (`eval/error_types.py`):
+
+| Type | Hosted `9jzmj` | CPU `8vpq6` | GPU `p9jr2` |
+|---|---|---|---|
+| Wrong value | 0 | 1 (CHGG) | 0 |
+| Wrong label | 0 | 0 | 2 (SFIX, CRBU) |
+| Source conflict | 0 | 1 (BEAM) | 1 (OMER) |
+| Judge error | 0 | 1 (META) | 0 ¹ |
+| Not in context | 2 (AFRM, NVO) | 0 | 0 |
+| **Model errors / numeric claims** | **0/277** (CI 0.0–1.4%) | **1/161** (CI 0.1–3.4%) | **2/155** (CI 0.4–4.6%) |
+
+¹ CRBU's verdict stands; its stated reason is incorrect (above).
+
+Model errors, exact two-sided Fisher, unadjusted: hosted vs CPU p = 0.368,
+hosted vs GPU p = 0.128, CPU vs GPU p = 0.617 — no pair separates. Hosted's
+two are not model errors by this definition: AFRM compares its P/E to
+"historical averages for fintech peers" the context does not hold, and
+NVO's is a qualitative pipeline statement, numeric only through "GLP-1".
+
+**Overlap with `8vpq6`'s three (CHGG, BEAM, META): no ticker overlaps, and
+two classes recur.** The source conflict recurs (BEAM, then OMER), and so
+does a price-range claim the judge mishandles (META's verdict, CRBU's
+reason). On the tickers themselves: CHGG's truncation did not repeat — the
+GPU wrote "$52.99 million" in Financial Health and "a net loss of $53
+million" in the summary (SUPPORTED). BEAM's conflict is still in the GPU
+brief, -$86.52 million in Financial Health and "$86.5 million" in Recent
+Developments, but neither section is audited, so it was never judged. META
+has no 52-week claim in the GPU's audited text.
+
+**Smoke `k6zxd` (2026-10-05, dated, never an arm comparison).** 10/10
+tickers, 3/63 = 4.76% unsupported (Wilson 95% CI 1.6–13.1%), gate passed
+(≤ 5%), numeric 0/32 (3.2 per ticker), traffic proof EXACT (70 calls,
+95,185 + 25,317 tokens), 0 retries, mean pipeline 30.82 s per ticker, RAG
+faithfulness 1/446 over 20 answers (rf-v1, unvalidated). All three
+unsupported claims are on AAPL and qualitative: hedged Outlook watch-items
+("strong brand loyalty", "sustained margin expansion in services",
+"successful diversification of hardware revenue streams"), known limitation
+1. The judge listed 11 qualitative claims for AAPL here, against 5 in
+`hm527` and 2 in `wnrjr`: smoke-level run-to-run variance from the judge's
+listing, the `7c66k` MSFT pattern ("Hosted smokes on the 10-ticker set"),
+not a property of the GPU arm. The smoke's run-time projection for the
+extended run was mean 37 min, worst 48 min; `p9jr2` took 35 min 12 s.
+
+**Tool-use check** (`eval/tool_use_check.py`, 2026-10-05, image `1f51dad`,
+one route after another from the api pod; ten fixed questions per route,
+scored from the message trace with no judge; `eval/runs/tool-use-2026-10-05/`,
+three JSONs and the saved tmux pane):
+
+| Route | Parse rate | Tool calls (valid / invalid) | Correct tool | Expected tool first | Completed | Errors | Endpoints in the ledger | Wall time, 10 questions |
+|---|---|---|---|---|---|---|---|---|
+| hosted (Sonnet 4.6) | 1.0 | 12 / 0 | 10/10 | 8/10 | 10/10 | 0 | `anthropic` ² | 104.4 s |
+| cpu | 1.0 | 10 / 0 | 10/10 | 10/10 | 10/10 | 0 | `slm-cpu` | 292.8 s |
+| gpu | 1.0 | 10 / 0 | 10/10 | 10/10 | 10/10 | 0 | `slm-gpu` | 35.6 s |
+
+On WMT and V the hosted agent called `get_sec_filings` before
+`query_sec_filing`; both SLM routes called `query_sec_filing` directly.
+**n = 10 per route: this does not show that Qwen picks tools better than
+Sonnet.** All three routes parse, pick the right tool and finish on every
+question. The check is not under a traffic proof; what served each route
+is what its JSON records (the SLM routes' `provenance`: endpoint, URL,
+alias `qwen3.6-35b-a3b-q4km`, artifact).
+
+² See known limitation 6: the ledger recorded only the hosted route's two
+RAG answer calls.
+
+**Retrieval on the CPU tool-use route.** The pane's `[rag] retrieval
+reranking=OFF` lines (stdout only) show the two `query_sec_filing`
+retrievals at 35.818 s (WMT) and 40.900 s (V) on the CPU route, against
+3.387 s and 2.679 s on hosted and 2.082 s and 4.119 s on GPU. The
+retrieval step runs in the api pod; **hypothesis, not tested:** contention
+between the api pod and the CPU llama.cpp pod. Recorded as an outlier with
+that hypothesis (known limitation 7).
+
+**Known limitations added 2026-10-05, recorded and not changed during the
+comparison (post-demo), continuing 1–4 above:**
+
+3. *(update)* The yfinance-vs-filing conflict is **recurring, not a
+   one-off**: net income twice in two SLM runs — BEAM (-$86.52 million
+   yfinance vs -$80.0 million filing) in `8vpq6` and OMER ($116.53 million
+   yfinance net income vs a $3.4 million net loss in the filing) in
+   `p9jr2`. Each arm's Financial Health section quotes the yfinance
+   figure; whether the judge sees the conflict depends on whether the
+   audited summary repeats it.
+5. *Foreign filers get no SEC context on any arm.* BABA, NVO, SAP, TM and
+   TSM file 20-F, so they make no RAG call — 35 of 40 tickers make the two
+   RAG calls, in `9jzmj`, `8vpq6` and `p9jr2` alike — and their briefs run
+   on stock and news data only (both RAG fields "(not available)" in the
+   contexts). The deliberate coverage gap, recorded since the September runs (`9j2dj`, `j4cnp`).
+6. *The LLM ledger does not record the hosted ReAct agent's calls.* On the
+   hosted tool-use route `llm_calls` is 0 on 8 of 10 questions; the only
+   ledger records are the RAG answer calls behind WMT's and V's
+   `query_sec_filing`. The hosted route is therefore attributed by its
+   setting (`SLM_FULL=false`), not by the ledger; the SLM routes' calls are
+   in the ledger (2 or 3 per question).
+7. *Retrieval outliers on the CPU tool-use route* (35.8 s and 40.9 s
+   against 2–4 s on the other routes), cause not determined; contention
+   with the CPU llama.cpp pod is the working hypothesis.
+
+```bash
+python eval/multi_arm_stats.py \
+  --run hosted-9jzmj eval/runs/9jzmj-claims.jsonl eval/runs/raw/9jzmj-findings \
+  --run slm-cpu-8vpq6 eval/runs/8vpq6-claims.jsonl eval/runs/raw/8vpq6-findings \
+  --run slm-gpu-p9jr2 eval/runs/p9jr2-claims.jsonl eval/runs/raw/p9jr2-findings \
+  --rows hosted-9jzmj eval/runs/9jzmj-workflow.json \
+  --rows slm-cpu-8vpq6 eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6-workflow.json \
+  --rows slm-gpu-p9jr2 eval/runs/slm-proof-p9jr2/grounding-eval-extended-slm-gpu-p9jr2-workflow.json
+python scripts/nvsmi_summary.py eval/runs/gpu-nvsmi-p9jr2.csv \
+  --window "tool-use gpu (approx)" 2026-10-05T02:59:15Z 2026-10-05T02:59:57Z \
+  --workflow "smoke k6zxd" eval/runs/slm-proof-k6zxd/grounding-eval-slm-gpu-k6zxd-workflow.json \
+  --workflow "extended p9jr2" eval/runs/slm-proof-p9jr2/grounding-eval-extended-slm-gpu-p9jr2-workflow.json
+#   both saved as eval/runs/9jzmj-8vpq6-p9jr2-comparison.txt
+python eval/error_types.py eval/runs/numeric-error-types-2026-10-05.json
+#   saved as eval/runs/numeric-error-types-2026-10-05.txt
+python scripts/slm_traffic_proof.py verify \
+  --before eval/runs/slm-proof-p9jr2/grounding-eval-extended-slm-gpu-p9jr2-before.json \
+  --after eval/runs/slm-proof-p9jr2/grounding-eval-extended-slm-gpu-p9jr2-after.json \
+  --log eval/runs/slm-proof-p9jr2/grounding-eval-extended-slm-gpu-p9jr2.log \
+  --workflow eval/runs/slm-proof-p9jr2/grounding-eval-extended-slm-gpu-p9jr2-workflow.json   # EXACT
 ```
 
 ### Dated finding: the aggregate step's template outgrew Argo's inline limit (2026-10-04)

@@ -79,8 +79,8 @@ Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (6403 lines, 512 tests collected: 511 passed + 1 skipped,
-   the credit-gated judge test, as of 2026-10-04) must pass on every commit. Canonical
+3. The pytest suite (6522 lines, 519 tests collected: 518 passed + 1 skipped,
+   the credit-gated judge test, as of 2026-10-05) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
 4. Celery stays request-time async; Argo owns eval orchestration. Do not merge them.
@@ -298,7 +298,8 @@ Phase 3 — demo polish:
   llama-server 20,488 of 23,028 MiB, --n-cpu-moe 0; llama.cpp logs no
   offload line, nvidia-smi process memory is the evidence) and enforces
   its key; it answered the 20 requests of the RAG natural-length
-  pre-check (not an eval, no grounding claim); NO eval has run against it. No doc may say more of either
+  pre-check (not an eval, no grounding claim), then the GPU smoke k6zxd and
+  the GPU extended p9jr2 (2026-10-05, proof EXACT; bullet below). No doc may say more of either
   endpoint, or quote any other slm-full number, until its runbook step is
   EXECUTED and the run's traffic proof passed (EXACT or LOWER-BOUND).
   x2cx8's printed LLM-call table double-counts the hosted RAG sites (a
@@ -358,7 +359,42 @@ Phase 3 — demo polish:
   phrases count (6/277 hosted, 3/161 SLM): quote the sensitivity row with
   it (2/271 vs 2/158, p = 0.628; paired +2.83). Fixing that definition is
   a post-comparison change (it is image code); do not change it now.
-  Numbers of record are unchanged. No GPU-endpoint eval has run.
+  Numbers of record are unchanged. GPU endpoint: next bullet.
+- GPU SLM extended run on the comparison image: `p9jr2` (2026-10-05, 40
+  tickers, slm-full-gpu, all layers on node 2's A10 — alias without
+  -hybrid, judge v2, image 1f51dad) — a dated, CITABLE run: traffic
+  proof EXACT (270 calls, 350,290 + 98,232 tokens), 40/40 on the first
+  attempt, no Trunc/Loop/Parse/Fmt/Retry/Err. 6/245 = 2.45% (CI
+  1.1–5.2%), numeric 3/155 = 1.94% (CI 0.7–5.5%). HEADLINE: no grounding
+  difference detected on any pair at this sample size (GPU vs hosted 9jzmj
+  p = 0.567 all, 0.355 numeric; GPU vs CPU 8vpq6 0.602, 1.000; p-values
+  unadjusted across the three pairs); numeric density separates GPU from
+  hosted (paired +3.05 for hosted, CI +2.33 to +3.83, sign p = 2e-9) and
+  NOT from CPU (+0.15, CI -0.35 to +0.68, 17/6/17, p = 1.0) — the
+  same-model consistency check holds. Same quoting rules as 8vpq6: never
+  "equivalent"; always with density (3.9 figures/ticker vs 6.9) and the
+  52-week sensitivity row (3/148 vs 2/271, p = 0.351). Numeric unsupported
+  claims are reported BY TYPE, never as one count (eval/error_types.py on
+  eval/runs/numeric-error-types-2026-10-05.json): wrong value hosted 0 /
+  CPU 1 (CHGG) / GPU 0; wrong label 0 / 0 / 2 (SFIX current price called
+  the recent low; CRBU per-share low attached to "market
+  capitalization"); source conflict 0 / 1 (BEAM) / 1 (OMER); judge error
+  0 / 1 (META) / 0, plus CRBU's stated judge reason is incorrect (it
+  rejected a correct rounding) while the verdict stands; not in context
+  2 (AFRM, NVO) / 0 / 0. Model errors (value + label) 0/277, 1/161,
+  2/155, no pair separates (Fisher unadjusted, p >= 0.128). Latency: CPU
+  is 10–15x slower than GPU at every call site, 11.4x per ticker; GPU is
+  2.0–3.4x slower than hosted per call except synthesis (hosted 1.6x
+  slower, longer brief), 1.2x per ticker (31.1 s vs 25.9 s). GPU use
+  during p9jr2 (nvidia-smi every 5 s, scripts/nvsmi_summary.py): mean
+  38%, median 0% at parallelism 2 — headroom on the A10; never project
+  throughput from it without a run. Smoke k6zxd (3/63, all AAPL
+  qualitative watch-items, numeric 0/32) is smoke variance from judge
+  listing, never an arm comparison. Tool-use check 2026-10-05: every route
+  parse 1.0, correct tool 10/10, completed 10/10, errors 0; expected tool
+  first hosted 8/10 (WMT, V fetched the filing list first), CPU and GPU
+  10/10 — n=10, never "Qwen picks tools better"; not under a traffic
+  proof, cite only its JSONs and the saved pane.
 - Argo template offload (found 2026-10-04): a step whose resolved template
   exceeds 131,072 bytes (Argo v3.7.18 MaxEnvVarLen) is offloaded by the
   CONTROLLER to a ConfigMap; the aggregate crosses that from 27 hosted /
@@ -390,7 +426,16 @@ Phase 3 — demo polish:
   and nothing in the pipeline reconciles or flags them; (4) the SLM
   truncates where it should round on at least one derived figure (CHGG,
   -52.997M written as -52.9M). Same rule: recorded, post-demo, unchanged
-  during the comparison.
+  during the comparison. Added 2026-10-05: (3) is RECURRING, not a
+  one-off — OMER in p9jr2 (yfinance net income 116.53M vs the filing's
+  3.4M net loss) is the second net-income conflict; (5) the foreign
+  filers BABA, NVO, SAP, TM, TSM (20-F) make no RAG call and get no SEC
+  context on any arm; (6) the LLM ledger does not record the hosted ReAct
+  agent's calls (llm_calls 0 on 8 of 10 tool-use questions), so the
+  hosted tool-use route is attributed by its setting; (7) on the CPU
+  tool-use route WMT and V retrieval took 35.8 s and 40.9 s vs 2–4 s
+  elsewhere — cause not determined, contention between the api pod and
+  the CPU llama.cpp pod is a hypothesis only.
 - Cross-encoder reranking and the multi-agent supervisor shipped default-off
   because evals showed no grounding gain at higher cost/latency. State it that way.
 - Any new number in docs must come from a committed, re-runnable harness.

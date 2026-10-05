@@ -947,8 +947,9 @@ smoke, then the extended runs with their same-image hosted baseline
    MiB of 23,028 MiB (driver 570.124.06), args `--n-gpu-layers all
    --n-cpu-moe 0`, alias `qwen3.6-35b-a3b-q4km`; the server rejects a bad
    key (`unauthorized: Invalid API Key` in its log). It answered the 20
-   requests of step 6's RAG natural-length pre-check; no eval has run
-   against it]** GPU endpoint — node 2 only (`ssh oci2`):
+   requests of step 6's RAG natural-length pre-check, then the GPU smoke
+   `k6zxd` and GPU extended `p9jr2` of step 6 (2026-10-05, traffic proof
+   EXACT on both)]** GPU endpoint — node 2 only (`ssh oci2`):
    ```bash
    cd ~/financial-agent && git fetch && git checkout <branch> && git pull
    export KUBECONFIG=$HOME/.kube/config
@@ -984,7 +985,15 @@ smoke, then the extended runs with their same-image hosted baseline
    curl -s -o /dev/null -w '%{http_code}\n' localhost:30880/v1/models   # 401: the key is enforced
    curl -s localhost:30880/health                                          # {"status":"ok"} (public by design)
    ```
-4. **[NOT YET EXECUTED]** Exposure — only after step 3 shows 401 without
+4. **[EXECUTED — ufw and security-list rules in place; evidence captured
+   2026-10-05 22:32 UTC from the operator, whose egress is 129.80.187.92:
+   `GET http://<node 2>:30880/v1/models` without a key → HTTP 401
+   `Invalid API Key`, with `SLM_GPU_API_KEY` → HTTP 200 serving the plain
+   alias `qwen3.6-35b-a3b-q4km` (no `-hybrid` suffix), n_ctx 32768
+   (`eval/runs/gpu-exposure-check-2026-10-05.txt`; the key went into a
+   0600 header file, never printed, then shredded). The OKE harness
+   reached the endpoint for both GPU runs of step 6, traffic proof EXACT
+   on `k6zxd` and `p9jr2`]** Exposure — only after step 3 shows 401 without
    the key, and only port 30880. The VCN security list is the boundary
    (k3s NodePorts route around ufw — see the single-VM network baseline);
    ufw is defense in depth:
@@ -999,14 +1008,26 @@ smoke, then the extended runs with their same-image hosted baseline
    kubectl -n financial-agent exec deploy/api -- env SLM_FULL=true SLM_ENDPOINT=gpu python -c \
      "import json; from agent.tools.slm import server_facts; print(json.dumps(server_facts(), indent=1))"
    ```
-5. **[NOT YET EXECUTED]** Tool-use check, one route at a time (no LLM judge;
-   ~10 hosted Sonnet calls for the hosted route):
+5. **[EXECUTED 2026-10-05 on image `1f51dad`, all three routes (JSONs
+   written 02:54:17, 02:59:15, 02:59:57 UTC):
+   parse rate 1.0, correct tool 10/10, completed 10/10, errors 0 on each
+   (`eval/runs/tool-use-2026-10-05/`: the three JSONs and the saved tmux
+   pane `tool_use_pane.txt`; eval-methodology, "Tool-use check"). Not
+   under a traffic proof]** Tool-use check, one route at a time (no LLM
+   judge; ~10 hosted Sonnet calls for the hosted route). As run — the
+   copy-out is `cat` through `kubectl exec`, not the `kubectl cp` this
+   step listed before:
    ```bash
+   cd ~/financial-agent
    for r in hosted cpu gpu; do
      kubectl -n financial-agent exec deploy/api -- python eval/tool_use_check.py --route $r --json-out /tmp/tool_use_$r.json
-     kubectl -n financial-agent cp $(kubectl -n financial-agent get pod -l app.kubernetes.io/name=api -o name | head -1 | sed 's|pod/||'):/tmp/tool_use_$r.json ~/tool_use_$r.json
+     kubectl -n financial-agent exec deploy/api -- cat /tmp/tool_use_$r.json > ~/tool_use_$r.json
    done
    ```
+   Keep the terminal output too: the `[rag] retrieval … <s>` lines are
+   only on stdout (save the pane, e.g. `tmux capture-pane -pS - >
+   ~/tool_use_pane.txt`). Nothing else may use the GPU endpoint while
+   its route runs, and run it before the GPU smoke, not during one.
 6. **[CPU smoke EXECUTED 2026-10-03 on image `2dd1aa3` —
    `grounding-eval-slm-cpu-nb6r6` Succeeded 11/11, TRAFFIC PROOF: EXACT
    (70 calls, 92,282 prompt + 22,466 completion tokens on both sides),
@@ -1015,7 +1036,9 @@ smoke, then the extended runs with their same-image hosted baseline
    2026-10-03/04: CPU smoke `wnrjr` (traffic proof EXACT), hosted extended
    `9jzmj` (workflow Error at aggregate; rebuilt offline — below) and CPU
    extended `8vpq6` (Succeeded, traffic proof EXACT, 40/40 on the first
-   attempt). The GPU smoke and GPU extended are NOT YET EXECUTED]**
+   attempt). On the same image, EXECUTED 2026-10-05: GPU smoke `k6zxd` and
+   GPU extended `p9jr2` (both Succeeded, traffic proof EXACT, 0 retries —
+   below)]**
    Runs, in order, each through the traffic proof
    (operator; nothing else may use that endpoint during a run — the proof
    FAILs on foreign traffic):
@@ -1148,6 +1171,29 @@ smoke, then the extended runs with their same-image hosted baseline
    `eval/runs/raw/`. Comparison with hosted `9jzmj`:
    eval-methodology, "CPU SLM extended run `8vpq6`"
    (`eval/runs/9jzmj-vs-8vpq6-comparison.txt`).
+
+   **GPU smoke and GPU extended on image `1f51dad` (2026-10-05).**
+   `grounding-eval-slm-gpu-k6zxd`: 10/10 tickers, 3/63 = 4.76% unsupported
+   (Wilson 95% CI 1.6–13.1%, all three on AAPL, qualitative), numeric
+   0/32, gate passed, TRAFFIC PROOF: EXACT (70 calls, 95,185 + 25,317
+   tokens), 0 retries, mean pipeline 30.82 s per ticker; RUN-TIME CHECK:
+   PASS (projected 40 tickers in 20 waves of 2: mean 37 min, worst 48 min).
+   `grounding-eval-extended-slm-gpu-p9jr2`: Succeeded 03:13:00–03:48:12
+   UTC, 40/40 tickers on the first attempt, 0 retries, TRAFFIC PROOF: EXACT
+   (270 calls, 350,290 + 98,232 tokens), 6/245 = 2.45% unsupported (CI
+   1.1–5.2%), numeric 3/155 = 1.94% (CI 0.7–5.5%), no
+   Trunc/Loop/Parse/Fmt/Retry/Err on any call, stock block empty 0/40,
+   gate passed — a dated, citable run, served all-GPU (alias without
+   `-hybrid`). An nvidia-smi sampler ran on node 2 every 5 s from 02:51:49
+   to 03:50:49 UTC across the tool-use check and both runs
+   (`eval/runs/gpu-nvsmi-p9jr2.csv`, sliced per run by
+   `scripts/nvsmi_summary.py`); there is no `kubectl top` capture for the
+   GPU runs (the endpoint is not on OKE). Files: `eval/runs/gpu-smoke.log`,
+   `eval/runs/gpu-extended.log`, `eval/runs/slm-proof-k6zxd/`,
+   `eval/runs/slm-proof-p9jr2/`, the two `*-attempts.json`, findings in
+   `eval/runs/raw/`. Three-way comparison with hosted `9jzmj` and CPU
+   `8vpq6`: eval-methodology, "GPU SLM extended run `p9jr2`"
+   (`eval/runs/9jzmj-8vpq6-p9jr2-comparison.txt`).
 
    **From the next image: retries are part of the report.** `make
    eval-run` prints, under the aggregate's output, an attempts block from
