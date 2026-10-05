@@ -1196,7 +1196,8 @@ dangling `## Tax-Related Risks` heading), `kcf7s` (`## Tax`) and `dvvxk`
 (`**Intellectual Property**:`). Runs before the ledger recorded no finish
 reason, so a cut that happened to land on a sentence end cannot be counted;
 "at least one of ~70 answers per run" is all the committed findings show.
-`j4cnp` stays the number of record, measured under the 512 cap. (Committed
+`j4cnp` was the number of record until 2026-10-05, measured under the 512
+cap; the same-image three-way below replaced it. (Committed
 RAG answers reach 693 tokens by chars/4 under that cap, so chars/4
 overstates Claude's token count.) The value is sized from a measurement
 ("RAG natural-length pre-check" below: the smoke's 20 SLM answers ran to a
@@ -1499,7 +1500,8 @@ SLM-vs-hosted comparison. From `eval/claim_density.py`:
 Outlook without headings and the disclaimer. The numeric rate is a
 judge-flagged rate over a subset of the claims: the v2 calibration was
 measured over all claims and has not been repeated for this subset, and
-`j4cnp`'s number of record stays 12/392 over all claims.)
+`j4cnp`'s rate, the number of record until 2026-10-05, is 12/392 over all
+claims.)
 
 Two separate effects:
 
@@ -1783,8 +1785,9 @@ EXACT (94,520 + 24,756 tokens), 0 retries.
 **Headline: no grounding difference detected at this sample size; numeric
 density is the separated result.** Rates are judge-flagged (v2; the
 calibration of record applies and no reweighted estimate exists for either
-run). Numbers of record are unchanged: `j4cnp` stays the grounding number
-of record, and these are dated runs on the comparison image.
+run). When written (2026-10-04) `j4cnp` stayed the grounding number of
+record; since 2026-10-05 this run and `9jzmj`, with GPU `p9jr2`, are the
+grounding numbers of record (the same-image three-way, below).
 
 | | Hosted `9jzmj` | CPU SLM `8vpq6` | Test |
 |---|---|---|---|
@@ -1936,8 +1939,9 @@ and request settings on different hardware, so they should not differ:
 that pair is the consistency check, and it holds. Rates are judge-flagged
 (v2; the calibration of record applies and no reweighted estimate exists
 for these runs). The p-values are not adjusted for the three pairwise
-comparisons. Numbers of record are unchanged: `j4cnp` stays the grounding
-number of record; these are dated runs on the comparison image.
+comparisons. **Since 2026-10-05 this three-way is the grounding number of
+record** ([numbers-of-record.md](numbers-of-record.md)); `j4cnp` is a dated
+record with its 512-cap caveat, and no before/after is drawn between them.
 
 | | Hosted `9jzmj` | CPU SLM `8vpq6` | GPU SLM `p9jr2` | GPU vs hosted | GPU vs CPU |
 |---|---|---|---|---|---|

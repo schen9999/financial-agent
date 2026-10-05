@@ -178,10 +178,22 @@ Phase 3 — demo polish:
   benchmarking, fresh eval run for current numbers.
 
 ## Documentation honesty rules (apply to ALL written output: docs, READMEs, comments)
-- Grounding number of record: hosted baseline `j4cnp` (2026-09-05/06),
-  12/392 = 3.06% unsupported (Wilson 95% CI 1.8–5.3%), judge v2, fixed
-  retrieval, 40 tickers — always with the run ID, CI, and the v2
-  calibration note. "49% pre-fix -> 0/84" is RETIRED as current: it was
+- Grounding numbers of record (since 2026-10-05): the same-image
+  three-way on image 1f51dad, 40 tickers, judge v2, judge-flagged rates —
+  hosted `9jzmj` 7/411 = 1.70% (CI 0.8–3.5%), CPU SLM `8vpq6` 9/248 =
+  3.63% (CI 1.9–6.8%), GPU SLM `p9jr2` 6/245 = 2.45% (CI 1.1–5.2%); no
+  pair separates. Always with run IDs, CIs, the numeric co-primary, the
+  calibration caveat (v2 calibration of record measured on September
+  claims, not reweighted to these runs: no true-rate estimate exists for
+  them) and 9jzmj's status (aggregate rebuilt offline). Hosted is the
+  production path. Never a before/after with j4cnp ("fell from 3.06% to
+  1.70%"): different pipeline (512 vs 2048 RAG cap), and the 10-ticker
+  hosted smokes span 1.11–7.92% on judge listing alone. Table and
+  framing rules: docs/numbers-of-record.md. `j4cnp` (2026-09-05/06),
+  12/392 = 3.06% (CI 1.8–5.3%), judge v2, reweighted 5.7%, is the FORMER
+  number of record (2026-09-06 to 2026-10-05): a dated record with its
+  512-cap caveat, and still the hosted arm of the lsnnc fine-tune A/B
+  (constraint 5). "49% pre-fix -> 0/84" is RETIRED as current: it was
   measured 2026-08-24 under judge v1 on the pre-Sep-4 retrieval pipeline,
   so it is a dated record only, quoted with both tags (judge v1,
   pre-retrieval-fix). Never a bare 0%.
@@ -333,8 +345,9 @@ Phase 3 — demo polish:
   9jzmj's own workflow object (eval/runs/9jzmj-workflow.json,
   scripts/workflow_nodes.py results) prints the same report, plus est. run
   cost $4.0998 — "not reconstructable" applies to the pod logs only. A
-  dated run: j4cnp stays the number of record, and
-  9jzmj is not the j4cnp pipeline exactly (2048 RAG cap).
+  dated run and, since 2026-10-05, the hosted arm of the grounding
+  numbers of record (the three-way); 9jzmj is not the j4cnp pipeline
+  exactly (2048 RAG cap).
 - CPU SLM extended run on the comparison image: `8vpq6` (2026-10-04, 40
   tickers, slm-full-cpu, judge v2, image 1f51dad) — a dated, CITABLE run:
   traffic proof EXACT (270 calls, 342,244 + 96,811 tokens), 40/40 on the
@@ -359,10 +372,12 @@ Phase 3 — demo polish:
   phrases count (6/277 hosted, 3/161 SLM): quote the sensitivity row with
   it (2/271 vs 2/158, p = 0.628; paired +2.83). Fixing that definition is
   a post-comparison change (it is image code); do not change it now.
-  Numbers of record are unchanged. GPU endpoint: next bullet.
+  Part of the grounding numbers of record since 2026-10-05 (the
+  three-way). GPU endpoint: next bullet.
 - GPU SLM extended run on the comparison image: `p9jr2` (2026-10-05, 40
   tickers, slm-full-gpu, all layers on node 2's A10 — alias without
-  -hybrid, judge v2, image 1f51dad) — a dated, CITABLE run: traffic
+  -hybrid, judge v2, image 1f51dad) — a dated, CITABLE run, part of the
+  grounding numbers of record since 2026-10-05 (the three-way): traffic
   proof EXACT (270 calls, 350,290 + 98,232 tokens), 40/40 on the first
   attempt, no Trunc/Loop/Parse/Fmt/Retry/Err. 6/245 = 2.45% (CI
   1.1–5.2%), numeric 3/155 = 1.94% (CI 0.7–5.5%). HEADLINE: no grounding
