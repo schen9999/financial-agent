@@ -10,7 +10,7 @@ the dates, and use it as evidence rather than as current instructions).
 | Question | Where to look | Type |
 |---|---|---|
 | What is this, and what does it do? | [README](../README.md): "Summary" and "What It Does" | reference |
-| How is it deployed on OCI? | [README](../README.md): "Deployed on OCI"; the current procedure in [operations.md](operations.md); OKE steps in [deploy-runbook.md](deploy-runbook.md), "OKE (OCI)" | reference |
+| How is it deployed on OCI? | [architecture.md](architecture.md), "Deployed topology (October 2026)"; [README](../README.md): "Deployed on OCI"; the current procedure in [operations.md](operations.md); OKE steps in [deploy-runbook.md](deploy-runbook.md), "OKE (OCI)" | reference |
 | How do I configure it? | [configuration.md](configuration.md): every environment variable, its default, and where it is set | reference |
 | What does the API look like? | [api.md](api.md): all routes with request/response shapes and examples | reference |
 | Something broke. What do I check? | [operations.md](operations.md), "Troubleshooting" (incidents that actually happened) | reference |
@@ -19,6 +19,7 @@ the dates, and use it as evidence rather than as current instructions).
 | What is the architecture? | [architecture.md](architecture.md); diagrams in the [README](../README.md) "Architecture" section | reference |
 | What are the results, and which numbers can I quote? | [numbers-of-record.md](numbers-of-record.md): [current](numbers-of-record.md#current), [dated run records](numbers-of-record.md#dated-run-records), [retired](numbers-of-record.md#retired); summary table in the [README](../README.md) "Key results" | reference |
 | How is grounding measured, and how reliable is the judge? | [eval-methodology.md](eval-methodology.md): "What is measured", "Rigor rules", the judge-validation sections; a guided version in [system-tour.md](system-tour.md), section 5 | dated log |
+| Can a self-served open-weight model write the whole brief, and at what cost? | [eval-methodology.md](eval-methodology.md): "GPU SLM extended run `p9jr2`" (the same-image three-way, cost per brief, numeric check); summary in the [README](../README.md) | dated log |
 | Which model should write the sections: hosted, or open-weight on the A10? | [model-recommendation.md](model-recommendation.md): recommendation, four-arm results, and the A10 cost per brief (2026-09-28) | dated log |
 | Why does the fine-tuned model ship disabled? | [eval-methodology.md](eval-methodology.md): the 40-ticker A/B (2026-09-05/06) and the four-arm comparison (2026-09-23) | dated log |
 | How do I run the tests? | [README](../README.md): "Testing"; [verification.md](verification.md) for the manifest-equivalence proof | reference |
@@ -36,7 +37,7 @@ the dates, and use it as evidence rather than as current instructions).
 | Document | What it is | Type |
 |---|---|---|
 | [README.md](../README.md) | Overview, OCI deployment, key results, how to run and test | reference |
-| [architecture.md](architecture.md) | Topology diagram and deploy targets | reference |
+| [architecture.md](architecture.md) | Topology diagram, the deployed topology (October 2026) and deploy targets | reference |
 | [operations.md](operations.md) | Current procedure for an OCI A10 node, teardown for every target, troubleshooting | reference |
 | [configuration.md](configuration.md) | Every environment variable: default, purpose, where it is set | reference |
 | [api.md](api.md) | All API routes with request/response shapes and examples | reference |

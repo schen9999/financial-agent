@@ -51,6 +51,8 @@ Headline figures (numbers-of-record, "Current"):
 
 ## 2. The single-node k3s topology on OCI
 
+*Dated: this section describes the September k3s topology. Where the system runs for the November demo — the provided OKE cluster plus node 2's A10 endpoint, with `vm-a10-inst-1` as frozen standby — is in [architecture.md, "Deployed topology (October 2026)"](architecture.md#deployed-topology-october-2026).*
+
 The full designed topology runs on single-node k3s on OCI A10 VMs,
 reachable only by ssh. It first ran on a VM.GPU.A10.2 (two A10 24 GB
 cards, 2026-09-02/03, since retired) and was rebuilt from the runbook on

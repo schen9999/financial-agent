@@ -16,18 +16,21 @@ An AI agent that researches stocks and answers follow-up questions using live fi
 
 ## Highlights
 
-- **Grounding.** About 3% of the hosted pipeline's audited claims are flagged unsupported; the judge misses some, so the estimated true rate is higher. An LLM judge checks each brief's Executive Summary and Outlook against the retrieved sources. Hosted pipeline, 40 tickers: 12/392 = 3.06% unsupported (Wilson 95% CI 1.8–5.3%), run `j4cnp` (2026-09-05/06), judge v2. That is the judge-flagged rate. The judge's calibration of record is precision 60% (9/15, CI 35.7–80.2%) and population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), so the reweighted true-rate estimate is 5.7% (CI 3.5–9.9%). [Numbers of record](docs/numbers-of-record.md#current)
+- **Grounding, hosted vs self-served, same pipeline.** Hosted Claude and a self-served open-weight model (Qwen3.6-35B-A3B on llama.cpp, once on CPU and once on an A10) ran through the same eval on the same image, and no grounding difference was detected between any pair. An LLM judge (judge v2) checks each brief's Executive Summary and Outlook against the retrieved sources. 40 tickers, judge-flagged unsupported rates: hosted `9jzmj` 7/411 = 1.70% (Wilson 95% CI 0.8–3.5%), CPU `8vpq6` 9/248 = 3.63% (CI 1.9–6.8%), GPU `p9jr2` 6/245 = 2.45% (CI 1.1–5.2%); Fisher p ≥ 0.126 for every pair, unadjusted. The judge misses some unsupported claims (calibration of record: precision 60%, population-weighted recall 32.5% on the September baseline), and no true-rate estimate is computed for these runs. [Numbers of record](docs/numbers-of-record.md#current)
+- **What the open-weight model trades.** It states fewer figures than hosted (about 3.9–4.0 numeric claims per ticker against 6.9; paired sign test p ≤ 1e-8), and the CPU and GPU runs of the same model do not differ from each other (the consistency check). Model cost per brief on the same pipeline (dated, model cost only): CPU $0.0110 at 13.7× hosted's per-ticker time, so batch work rather than interactive use; A10 $0.0293, a ceiling, since the GPU averaged 38% utilization; hosted $0.0370 (n = 3). [Method, results and cost](docs/eval-methodology.md#gpu-slm-extended-run-p9jr2-2026-10-05-the-three-way-comparison-with-hosted-9jzmj-and-cpu-8vpq6)
 - **Fine-tune vs hosted.** The fine-tuned model writes noticeably more unsupported claims than the hosted models, so it ships disabled. The QLoRA fine-tune, served in-cluster by vLLM, had 30/368 = 8.15% unsupported (CI 5.8–11.4%) against the hosted 12/392 = 3.06% (CI 1.8–5.3%) in the 40-ticker A/B (`lsnnc` vs `j4cnp`, judge v2), Fisher p = 0.0023. The reweighted estimates are 8.3% (CI 5.5–12.5%) vs 5.7% (CI 3.5–9.9%). It fails the 5% gate, so it ships disabled. [Dated run records](docs/numbers-of-record.md#dated-run-records), [model recommendation](docs/model-recommendation.md)
-- **Deterministic numeric check.** A no-LLM check catches wrong stock figures, including in the sections the judge never reads; hosted models rarely get them wrong, and almost all of their errors come from two pipeline data bugs. It compares every stock-data figure a brief states (market cap, revenue, net income, profit margin, price, 52-week range) with the stock data the pipeline supplied. Of 359 live flags, 342 were true errors, 2 false positives and 15 other defects: precision 99.4% (Wilson 97.9–99.8%, other defects excluded), labeled by the author and not blind. Wrong stock figures per checked number (true errors only, all sections): hosted 19/1796 = 1.1% (cluster bootstrap 95% CI 0.4–1.8%) vs local-model 296/1980 = 14.9% (CI 12.7–17.3%). 18 of the 19 hosted errors trace to two upstream data defects, recorded and not yet fixed. [Method and tables](docs/eval-methodology.md#numeric-check-adjudicated-flags-and-the-w4a16-replication-2026-10-01-dated)
+- **Deterministic numeric check.** A no-LLM check catches wrong stock figures, including in the sections the judge never reads; hosted models rarely get them wrong, and almost all of their errors come from two pipeline data bugs. It compares every stock-data figure a brief states (market cap, revenue, net income, profit margin, price, 52-week range) with the stock data the pipeline supplied. Of 359 live flags, 342 were true errors, 2 false positives and 15 other defects: precision 99.4% (Wilson 97.9–99.8%, other defects excluded), labeled by the author and not blind. Wrong stock figures per checked number (true errors only, all sections): hosted 19/1796 = 1.1% (cluster bootstrap 95% CI 0.4–1.8%) vs local-model 296/1980 = 14.9% (CI 12.7–17.3%). 18 of the 19 hosted errors trace to two upstream data defects, recorded and not yet fixed. Why both layers exist: in the 2026-10-05 three-way the judge marked Toyota's "$52.0 billion" revenue SUPPORTED, from a source of ¥51.96 trillion mislabelled as USD, and the numeric check flagged it; the check in turn cannot see a figure under the wrong label or a sub-2% truncation, which the judge caught. [Method and tables](docs/eval-methodology.md#numeric-check-adjudicated-flags-and-the-w4a16-replication-2026-10-01-dated)
 - **4-bit (W4A16) on the A10.** 4-bit weights serve about 1.5x faster on the A10, with no demonstrated loss in grounding or numeric accuracy. Quantizing the fine-tune raised output throughput from 708.3 to 1075.7 tok/s at concurrency 8. The judge found no detectable difference on its audited sections: 23/344 = 6.69% (CI 4.5–9.8%) vs 25/385 = 6.49% (CI 4.4–9.4%), p = 1.00, judge v2, which is not proof of equivalence. A pre-registered section-level replication did not demonstrate a regression in wrong stock figures: +5.3 pts (CI −1.1 to +11.6). [Quantization benchmark](docs/eval-methodology.md#quantization-benchmark-2026-09-29-a-dated-measurement), [replication](docs/eval-methodology.md#numeric-check-adjudicated-flags-and-the-w4a16-replication-2026-10-01-dated)
 - **CPU serving on the Xeon.** On this Xeon, switching serving engines mattered more than quantizing. The engine and the precision were measured separately, at concurrency 8. Engine: vLLM BF16 to llama.cpp F16 raised output from 22.9 to 52.3 tok/s. Precision, on llama.cpp: F16 / Q8_0 / Q4_K_M gave 52.3 / 51.7 / 64.5 tok/s. GGUF quantization quality was not evaluated. [CPU engine and precision](docs/eval-methodology.md#cpu-engine-and-precision-llamacpp-gguf)
 
 ## Next steps
 
-- Fix the two upstream data defects (foreign-filer currency, profit margin as a raw fraction), then rerun the hosted eval before quoting new rates.
+- Fix the two upstream data defects (foreign-filer currency, profit margin as a raw fraction), then rerun every arm on the new image before quoting new rates.
+- After the demo, the deferred image changes: shrink the eval pod's output parameter (the aggregate's template now needs Argo's ConfigMap offload), count "52-week" phrases as labels rather than figures, and the recorded pipeline limitations (watch-items the judge cannot ground, refused filing-highlights answers for five tickers, unreconciled conflicting figures between yfinance and the filing, truncated derived figures). Each changes the pipeline, so each means new baselines on every arm.
+- Measure the A10 endpoint at higher parallelism before quoting a GPU cost floor: it averaged 38% utilization at parallelism 2.
 - Apply the OKE Terraform when a compartment is available, and verify the vLLM `oke-gpu` overlay on the A10 pool.
 - Switch the numeric check from warn to block once the data defects are fixed.
-- Evaluate GGUF quantization quality on CPU (only W4A16 went through the grounding eval).
+- Compare GGUF quantizations on grounding (one Q4_K_M build of Qwen3.6-35B-A3B and the fine-tune's W4A16 went through the grounding eval; no precision comparison of GGUF builds did).
 - Benchmark other CPU targets (AMD EPYC, AMX-capable Xeon) and add OCI Generative AI as a hosted arm on the same harness.
 - Test whether a multi-agent supervisor improves a small open-weight model on CPU.
 
@@ -37,45 +40,54 @@ The fuller list, with the reasoning behind it: [Known limitations and next steps
 
 ## Deployed on OCI
 
-- **Where:** two VM.GPU.A10.1 instances (1x A10 24 GB, Ubuntu 22.04):
-  `vm-a10-inst-1` (the demo target) and `vm-a10-inst-2` (fallback), each a
-  separate single-node k3s cluster, rebuilt from the runbook on 2026-09-23.
-  They are reached only through ssh tunnels; the VCN security list admits
-  port 22 only.
-- **What runs there:** the six services; vLLM v0.10.2 serving the merged
-  fine-tune (`financial-lora`) on the node's A10, behind the default-off
-  `USE_LOCAL_MODEL` flag; and Argo Workflows running the gated grounding-eval
-  DAG (the nightly CronWorkflow is suspended on k3s; runs are submitted with
-  `make vm-eval`).
-- **One manifest set:** a kustomize base with `kind`, `k3s`, and `oke`
-  overlays; `scripts/render_diff.py` proves overlay changes never alter the
-  kind render ([docs/verification.md](docs/verification.md)).
-- **OKE:** the OCI access for this build was two A10 VMs, so single-node
-  k3s on those VMs is the running target. The OKE Terraform (an OKE basic
-  cluster, both node pools including the A10 GPU pool, OCIR, an Object
-  Storage bucket, and a Block Volume storage class) is written, passes
-  `terraform validate`, and is ready to apply, after filling
-  `terraform.tfvars`, once a compartment with OKE is available. It has
-  **never been applied**.
-- **How to deploy it:** [docs/operations.md](docs/operations.md) (current
-  procedure, teardown, troubleshooting); [docs/deploy-runbook.md](docs/deploy-runbook.md)
-  is the dated history and the OKE steps. Configuration:
-  [docs/configuration.md](docs/configuration.md); cost: [docs/cost.md](docs/cost.md).
+- **Where:** a provided OKE cluster (v1.34.1, four VM.Standard.E5.Flex
+  nodes at 16 vCPU, no GPUs) runs the app plane, the Argo eval harness and
+  the CPU model endpoint; `vm-a10-inst-2`, a VM.GPU.A10.1 (1× A10 24 GB)
+  on single-node k3s, serves the GPU model endpoint; `vm-a10-inst-1`, the
+  first demo's k3s box with the fine-tuned model on vLLM, is frozen as a
+  standby. Full statement and diagram:
+  [docs/architecture.md, "Deployed topology"](docs/architecture.md#deployed-topology-october-2026).
+- **What runs there:** the six services and Argo Workflows running the
+  gated grounding-eval DAG on OKE, from one image pinned by git sha (the
+  nightly CronWorkflow is suspended; runs are submitted from the operator
+  host). Two llama.cpp endpoints serve the same Qwen3.6-35B-A3B Q4_K_M
+  file: one on CPU inside the OKE cluster, one on node 2's A10, keyed and
+  reachable only from the cluster's egress IP.
+- **Access:** nothing is public. Every OKE Service is ClusterIP, reached
+  by port-forward behind an ssh tunnel through a bastion; the A10 nodes
+  admit ssh, plus node 2's model port from the cluster's egress IP only.
+- **One manifest set:** a kustomize base with `kind`, `k3s`, `oke` and
+  `oke-provided` overlays; `scripts/render_diff.py` proves overlay changes
+  never alter the kind render ([docs/verification.md](docs/verification.md)).
+- **OKE Terraform:** an OKE basic cluster with both node pools, including
+  the A10 GPU pool, OCIR, an Object Storage bucket and a Block Volume
+  storage class, written and passing `terraform validate`. It has **never
+  been applied**: it waits on a compartment with OKE. The cluster above
+  was provided, not created by it.
+- **How to deploy it:** [docs/deploy-runbook.md](docs/deploy-runbook.md),
+  "OKE (provided cluster)" and the self-served SLM steps;
+  [docs/operations.md](docs/operations.md) for an A10 node, teardown and
+  troubleshooting. Configuration: [docs/configuration.md](docs/configuration.md);
+  cost: [docs/cost.md](docs/cost.md).
 
 ## Key results
 
 Every row links to [docs/numbers-of-record.md](docs/numbers-of-record.md),
 which carries the full records and the rules for quoting them. Judge-v2
-rates are judge-flagged rates. Calibration of record: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED); the baseline's
-reweighted true-rate estimate 5.7% (CI 3.5–9.9%).
+rates are judge-flagged rates. Calibration of record: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED). A reweighted true-rate
+estimate exists only for the former number of record `j4cnp` (5.7%, CI
+3.5–9.9%), not for the three-way.
 
 | Result | Value (Wilson 95% CI) | Run ID / source | Judge | Status |
 |---|---|---|---|---|
-| Grounding, hosted pipeline (40 tickers) | 12/392 = 3.06% unsupported (1.8–5.3%) | `j4cnp`, 2026-09-05/06 | v2 | [number of record](docs/numbers-of-record.md#current) |
+| Grounding, same pipeline: hosted vs self-served Qwen3.6-35B-A3B on CPU and on the A10 (40 tickers) | hosted 7/411 = 1.70% (0.8–3.5%); CPU 9/248 = 3.63% (1.9–6.8%); GPU 6/245 = 2.45% (1.1–5.2%); no pair separates (Fisher p ≥ 0.126, unadjusted); numeric claims per ticker 6.9 / 4.0 / 3.9 | `9jzmj` (aggregate rebuilt offline), `8vpq6` 2026-10-04; `p9jr2` 2026-10-05; image `1f51dad` | v2 | [number of record](docs/numbers-of-record.md#current) |
+| Former grounding number of record (40 tickers, 512-token RAG cap) | 12/392 = 3.06% unsupported (1.8–5.3%) | `j4cnp`, 2026-09-05/06 | v2 | [dated record](docs/numbers-of-record.md#dated-run-records) |
 | Fine-tune vs hosted (40-ticker A/B) | 30/368 = 8.15% (5.8–11.4%) vs 12/392 = 3.06% (1.8–5.3%), Fisher p = 0.0023 — fails the 5% gate, ships disabled | `lsnnc` vs `j4cnp`, 2026-09-05/06 | v2 | [dated record](docs/numbers-of-record.md#dated-run-records) |
 | Four-arm comparison (40 tickers) | hosted 4/383 = 1.04% (0.4–2.7%), same-image rerun 7/389 = 1.80% (0.9–3.7%); fine-tune 25/385 = 6.49% (4.4–9.4%); untuned Qwen2.5-1.5B 31/400 = 7.75% (5.5–10.8%); untuned Qwen2.5-7B 18/393 = 4.58% (2.9–7.1%) | `kcf7s`, `v924f`, `4nfsm`, `cnkp2`, 2026-09-23; `dvvxk` 2026-09-24 | v2 | [dated comparison set, not numbers of record](docs/numbers-of-record.md#dated-run-records) |
 | Judge calibration of record (blind labels) | kappa 0.580; UNSUPPORTED precision 9/15 = 60.0% (35.7–80.2%), population-weighted recall 32.5% on `j4cnp` (16.0–52.4%) | `holdout_sample.csv` (2026-09-06) + blind relabel `relabel_S.csv` (2026-09-24) | v2 | [current](docs/numbers-of-record.md#current) |
 | Cost per brief | $0.0366 (3-ticker mean; no interval computed) | `cost_record_post_fix.json`, 2026-09-06 | n/a (not a judged rate) | [cost of record](docs/numbers-of-record.md#current) |
+| Model cost per brief, same pipeline | hosted $0.0370 (n = 3); CPU $0.0110 (pod request, 4 OCPU + 30 GiB); A10 $0.0293, a ceiling (GPU at 38% utilization); model cost only | image `1f51dad` pipeline, 2026-10-05; OCI list prices read 2026-10-05 | n/a (not a judged rate) | [dated measurements](docs/numbers-of-record.md#dated-run-records) |
+| Numeric check on the three-way, adjudicated | true errors per checked number: hosted 8/569, CPU 1/389, GPU 2/423, every one from the two upstream data defects; no paired difference excludes zero | 2026-10-05 | n/a (not a judged rate) | [dated record](docs/eval-methodology.md#gpu-slm-extended-run-p9jr2-2026-10-05-the-three-way-comparison-with-hosted-9jzmj-and-cpu-8vpq6) |
 | Numeric check, adjudicated (live flags) | precision 342/344 = 99.4% (97.9–99.8%), other defects excluded; wrong stock figures per checked number, true errors only: hosted 19/1796 = 1.1% vs local-model 296/1980 = 14.9% (cluster bootstrap 95% CIs 0.4–1.8% and 12.7–17.3%) | `j4cnp`, `kcf7s`, `dvvxk`, `2nh8v`, `lsnnc`, `v924f`, `r5nzh`, `4nfsm`, `cnkp2`; adjudicated 2026-10-01 | n/a (not a judged rate) | [dated measurement, not a number of record](docs/numbers-of-record.md#dated-run-records) |
 | W4A16 vs BF16 fine-tune | A10 output 1075.7 vs 708.3 tok/s at concurrency 8; judge 23/344 = 6.69% (4.5–9.8%) vs 25/385 = 6.49% (4.4–9.4%), Fisher p = 1.00; pre-registered replication on identical inputs (wrong stock figures, Financial Health + Risk Factors): +5.3 pts (paired bootstrap CI −1.1 to +11.6), the regression does not replicate | serving 2026-09-29; `r5nzh` (2026-09-29) vs `v924f` (2026-09-23); `replay-replication-2026-09-30` | v2 (judge result only) | [dated measurement (throughput); dated comparison, not a number of record (judge, replication)](docs/numbers-of-record.md#dated-run-records) |
 | CPU engine and precision (Xeon, concurrency 8) | engine: vLLM BF16 22.9 vs llama.cpp F16 52.3 tok/s; precision on llama.cpp: F16 / Q8_0 / Q4_K_M 52.3 / 51.7 / 64.5 tok/s | `vm-a10-inst-2`, 2026-09-29 (`eval/runs/bench/cpu-gguf-2026-09-29/`) | n/a (not a judged rate) | [dated measurement, not a number of record](docs/numbers-of-record.md#dated-run-records) |
@@ -96,13 +108,78 @@ The answer required building both the agent and the measurement layer to audit i
 
 I built an evaluation framework that audits the quantitative and forward-looking claims in each brief's Executive Summary and Outlook against the retrieved source context (the four pre-written sections are judge input, not audited directly). A Sonnet judge (temperature 0) labels each claim `SUPPORTED`, `UNSUPPORTED`, or `INFERENCE`.
 
-**Current: 12/392 = 3.06% unsupported (Wilson 95% CI 1.8–5.3%), judge-flagged.** The grounding number of record is the 40-ticker hosted baseline `j4cnp` (2026-09-05/06), judge v2 on the fixed retrieval pipeline. The judge misses unsupported claims, so its flagged rate undercounts: reweighted with the calibration of record, the estimated true rate is **5.7% (CI 3.5–9.9%)**. Calibration of record: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED). See [docs/numbers-of-record.md](docs/numbers-of-record.md).
+**Current: the same-image three-way, judge-flagged (judge v2, 40 tickers, image `1f51dad`).** Hosted `9jzmj` 7/411 = 1.70% (Wilson 95% CI 0.8–3.5%), self-served Qwen3.6-35B-A3B on CPU `8vpq6` 9/248 = 3.63% (CI 1.9–6.8%) and on the A10 `p9jr2` 6/245 = 2.45% (CI 1.1–5.2%). No pair separates (Fisher p ≥ 0.126, unadjusted). The judge misses unsupported claims, so the flagged rates undercount; the calibration of record (precision 60%, CI 35.7–80.2%; population-weighted recall 32.5% on the September baseline, CI 16.0–52.4%) was measured on September claims and is not reweighted to these runs. Details in the next section and [docs/numbers-of-record.md](docs/numbers-of-record.md).
+
+*Former number of record (2026-09-06 to 2026-10-05):* hosted `j4cnp` 12/392 = 3.06% (CI 1.8–5.3%), judge v2, reweighted true-rate estimate 5.7% (CI 3.5–9.9%). It ran under a 512-token RAG answer cap, so it is a different pipeline from the three-way; it is not a before/after with it. It stays the hosted arm of the fine-tune A/B below.
 
 **The fine-tune A/B: 8.15% vs 3.06%, Fisher p = 0.0023 (judge v2).** On the same image and index, with the QLoRA fine-tune writing two of the four sections, the local-model arm `lsnnc` measured 30/368 = 8.15% unsupported (CI 5.8–11.4%) against `j4cnp`'s 3.06%. It fails the 5% gate, the excess sits in the two sections the fine-tune writes, and it ships disabled ([details below](#qlora-fine-tuning-experiment)).
 
 *Judge-version note:* every unsupported rate in this README names its judge prompt version. **v1** rates are lower bounds (2026-09-04 human validation: v1 recall on UNSUPPORTED 1/9). **v2** rates are judge-flagged rates and carry the calibration of record (2026-09-24; kappa and precision from blind held-out labels, n=50, 2026-09-06): kappa 0.580, precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED). Reweighted true-rate estimates sit beside the rates where computed; A/B directions are unaffected when both arms share the judge ([docs/eval-methodology.md](docs/eval-methodology.md)).
 
 *Dated history (judge v1, pre-retrieval-fix; not current):* before the synthesis prompt's grounding rules, the first measurement found 49% of claims unsupported (pre-harness, no recorded denominator). After them, the 2026-08-24 10-ticker re-measure found 0/84. Both predate judge v2 and the 2026-09-04 retrieval fix, and v1 rates are lower bounds.
+
+### Self-served open-weight model vs hosted (October 2026)
+
+**Question:** can a self-served open-weight model write the whole brief —
+sections, synthesis and RAG answers — as well as hosted Claude, and what
+does it cost? **Answer, on this sample:** no grounding difference was
+detected, it states fewer figures, and on CPU it is the cheapest per brief
+but 13.7× slower per ticker.
+
+**Setup.** Qwen3.6-35B-A3B (a mixture-of-experts model, 35B parameters,
+3B active), one Q4_K_M GGUF file served by llama.cpp b11347 from two
+endpoints: CPU inside the OKE cluster (8 CPU / 30 GiB) and node 2's A10
+(all layers on the GPU). With `SLM_FULL` every agent call goes to the
+endpoint; the judge stays hosted. Why llama.cpp rather than vLLM: Qwen
+publishes this model in BF16 and FP8 only, and the community 4-bit builds
+leave at most about 1 GiB of an A10's 24 GB after the weights — no usable
+context for the KV cache — while node 2's driver (CUDA 12.8) has no
+matching vLLM image for the minimum version that supports the
+architecture. That was computed from the published artifacts, not booted
+([dated finding](docs/eval-methodology.md#dated-finding-computed-not-booted-no-4-bit-qwen36-35b-a3b-fits-one-a10-under-vllm-2026-10-02)).
+
+**Method.** All three arms ran on the same image, the same 40 tickers and
+the same judge (v2). Both SLM runs passed a traffic proof: the tokens the
+harness logged equal the endpoint's own counters exactly, so every call
+reached the self-served model and nothing else used it during the run.
+No run needed a retry. Tests are exact two-sided Fisher (rates) and paired
+per-ticker sign tests (density), not adjusted across the three pairs.
+
+| | Hosted `9jzmj` | CPU `8vpq6` | A10 `p9jr2` |
+|---|---|---|---|
+| Unsupported, all claims (judge-flagged) | 7/411 = 1.70% | 9/248 = 3.63% | 6/245 = 2.45% |
+| Unsupported, numeric claims | 2/277 = 0.72% | 3/161 = 1.86% | 3/155 = 1.94% |
+| Model errors among numeric claims (adjudicated by type) | 2/277 | 1/161 | 2/155 |
+| Numeric claims per ticker | 6.9 | 4.0 | 3.9 |
+| Pipeline time per ticker | 25.9 s | 355.1 s | 31.1 s |
+| Model cost per brief (dated, model cost only) | $0.0370 (n = 3) | $0.0110 | $0.0293 (a ceiling) |
+
+- **Grounding:** no pair separates on any denominator (p ≥ 0.126 all
+  claims, ≥ 0.35 numeric claims). That is "not detected at this sample
+  size", not "equivalent": the SLM arms' upper bounds reach 5–7%.
+- **Density:** both SLM arms state about 3 fewer figures per ticker than
+  hosted (paired p ≤ 1e-8), so their rates are over fewer checkable
+  figures. CPU and GPU do not differ (+0.15 per ticker, CI −0.35 to
+  +0.68): the same model writes the same kind of brief on either hardware.
+- **Error types** (every judge-flagged numeric claim adjudicated): the
+  CPU arm misquoted one value (CHGG, truncated), the A10 arm put two
+  correct figures under the wrong label (SFIX, CRBU), and hosted asserted
+  two things the context did not hold (AFRM, NVO). Source conflicts
+  between yfinance and the filing recur (BEAM, OMER).
+- **Numeric check** (no LLM): every true error in all three arms comes
+  from the two upstream data defects; it also caught the Toyota figure the
+  judge accepted.
+- **Speed and cost:** the A10 is 10–15× faster than CPU at every call site
+  and 1.2× hosted's per-ticker time. The CPU endpoint was saturated; the
+  A10 averaged 38% utilization at parallelism 2, so its cost per brief is a
+  ceiling. Costs exclude the harness, storage and the judge.
+- **Tool use** (the ReAct `/ask` agent, ten questions per route, no
+  judge): all three routes called the right tool and completed every
+  question. Ten questions cannot rank them.
+
+Full tables, per-section results, the known limitations and every command:
+[eval-methodology.md](docs/eval-methodology.md#gpu-slm-extended-run-p9jr2-2026-10-05-the-three-way-comparison-with-hosted-9jzmj-and-cpu-8vpq6);
+the deployment: [architecture.md](docs/architecture.md#deployed-topology-october-2026).
 
 ### Reranking A/B Experiment
 
@@ -277,6 +354,8 @@ is not worth its cost.
 
 ### Deployment topology (Kubernetes)
 
+Where it runs on OCI today (the provided OKE cluster, node 2's A10 endpoint,
+the standby VM) is in [docs/architecture.md, "Deployed topology"](docs/architecture.md#deployed-topology-october-2026).
 The full designed topology runs on a single-node kind cluster locally and on
 single-node k3s on the OCI A10 VMs (see [k8s/README.md](k8s/README.md),
 [docs/deploy-runbook.md](docs/deploy-runbook.md), and the audit in
@@ -543,7 +622,8 @@ make cluster-down    # tear down
 
 | Measurement | Result |
 |---|---|
-| Grounding, number of record (40 tickers, judge v2, fixed retrieval) | **12/392 = 3.06% unsupported (Wilson 95% CI 1.8–5.3%)**, hosted baseline `j4cnp` (2026-09-05/06); judge-flagged rate, reweighted true-rate estimate 5.7% (CI 3.5–9.9%) |
+| Grounding, numbers of record (40 tickers, judge v2, same image `1f51dad`) | judge-flagged unsupported: hosted `9jzmj` 7/411 = 1.70% (CI 0.8–3.5%), self-served CPU `8vpq6` 9/248 = 3.63% (CI 1.9–6.8%), self-served A10 `p9jr2` 6/245 = 2.45% (CI 1.1–5.2%); no pair separates |
+| Grounding, former number of record (2026-09-05/06, 512-token RAG cap) | 12/392 = 3.06% unsupported (Wilson 95% CI 1.8–5.3%), hosted baseline `j4cnp`; reweighted true-rate estimate 5.7% (CI 3.5–9.9%); not a before/after with the three-way |
 | Grounding, dated (2026-08-24, 10 tickers, judge v1, pre-retrieval-fix) | 49% pre-fix → 0/84 unsupported (CI 0.0–4.4%) — a lower bound on an exhibit-indexing pipeline; retired as current |
 | Cost/brief, hosted (exact API tokens + RAG estimate) | **$0.0366** (2026-09-06, post-retrieval-fix; re-runnable: `make cost-report`) |
 | Grounding (supported share), hosted vs local-hybrid (9-ticker balanced A/B, Aug 2026, judge v1, pre-retrieval-fix, local run — no workflow run ID) | 86.2% (56/65, CI 75.7–92.5%) vs 77.8% (56/72, CI 66.9–85.8%) — expected regression, local stays default-off |
