@@ -1,7 +1,9 @@
 # Architecture
 
 Six services plus an eval plane, deployed as one topology on Kubernetes
-(kind locally; OKE is the Phase 2 target of the OCI migration). Per the
+(kind locally; on OCI, a provided OKE cluster plus an A10 node — see
+"Deployed topology (October 2026)" below; the Terraform OKE cluster is
+still the Phase 2 target of the OCI migration). Per the
 Phase 0 audit, K8s is the **first environment where the full designed
 topology runs** — the retired ECS deployment (infra/) was a single FastAPI
 container + RDS, with no Celery, Redis, Streamlit, or MCP in production.
@@ -73,12 +75,120 @@ flowchart LR
   the 5% gate on the two sections it owns** (same harness, same day;
   dated A/B in eval-methodology.md). `USE_LOCAL_MODEL` ships off as a
   measured negative result. OKE serving remains Phase 2.
+- **The SLM seam** (`agent/tools/slm.py`): with `SLM_FULL=true` every
+  agent LLM call — the four sections, the synthesis and the RAG answers —
+  goes to one OpenAI-compatible llama.cpp endpoint (`SLM_ENDPOINT=cpu` or
+  `gpu`), with no hosted fallback; the judge stays hosted. The eval's
+  `slm-full-cpu` and `slm-full-gpu` arms set it per run; the app ships
+  with it off. Measured against hosted on the same image: eval-methodology,
+  "GPU SLM extended run `p9jr2`".
 - **Default-off features**: cross-encoder reranking and the multi-agent
   supervisor ship default-off because evals showed no grounding gain at
   higher cost/latency (docs/PHASE0_AUDIT.md).
 - **Eval pods bypass the cache** (`BYPASS_CACHE=true`) and gate the
   workflow on the unsupported-claim rate — see
   [eval-methodology.md](eval-methodology.md).
+
+## Deployed topology (October 2026)
+
+This is where the system runs for the November demo. It is the single
+statement of the deployed topology; the README and CLAUDE.md point here.
+
+```mermaid
+flowchart LR
+    subgraph laptop ["Laptop (WSL)"]
+        ssh["ssh -L tunnels"]
+    end
+    bastion["oke-bastion"] --> operator["oke-operator<br/>(kubectl, helm)"]
+    ssh --> bastion
+
+    subgraph oke ["OKE, provided cluster: v1.34.1, 4x VM.Standard.E5.Flex (16 vCPU), cri-o"]
+        subgraph ns ["namespace financial-agent (every Service ClusterIP)"]
+            app["api · worker · streamlit · mcp<br/>image ghcr.io/…:1f51dad (pinned by git sha)"]
+            redis[("redis<br/>no volume")]
+            pg[("postgres<br/>50Gi oci-bv PVC")]
+            argo["Argo v3.7.18: grounding-eval<br/>WorkflowTemplate, eval pods (parallelism 2),<br/>aggregate + gate; CronWorkflow suspended"]
+            cpu["llama.cpp CPU endpoint (slm-cpu)<br/>Qwen3.6-35B-A3B Q4_K_M, 8 CPU / 30Gi,<br/>GGUF on a 50Gi oci-bv PVC"]
+        end
+    end
+    operator --> oke
+
+    subgraph node2 ["vm-a10-inst-2 (node 2): VM.GPU.A10.1, single-node k3s"]
+        gpu["llama.cpp GPU endpoint (slm-gpu)<br/>same GGUF, all layers on the A10,<br/>keyed, NodePort 30880"]
+        build["image build + push (make oke-images)"]
+    end
+    node1["vm-a10-inst-1: frozen first-demo box<br/>(k3s + fine-tuned vLLM), standby only"]
+
+    ext["Anthropic API (judge always; hosted arm)<br/>NewsAPI · SEC EDGAR · yfinance · Pinecone"]
+    argo -->|"slm-full-cpu"| cpu
+    argo -->|"slm-full-gpu, from egress 129.80.187.92 only"| gpu
+    argo --> ext
+    app --> ext
+    build -->|"GHCR"| app
+```
+
+**The provided OKE cluster** (provisioned for the project, not by
+`terraform/oci`; overlays `k8s/overlays/oke-provided`,
+`argo/overlays/oke-provided`, `k8s/llamacpp/overlays/oke-cpu`):
+
+- OKE v1.34.1, four VM.Standard.E5.Flex amd64 nodes at 16 vCPU (8 OCPU)
+  each, two with ~28 GiB and two with ~58 GiB allocatable; no GPUs; cri-o,
+  so every image comes from a registry; default StorageClass `oci-bv`.
+- The app plane: api, worker, streamlit and mcp from one image on GHCR,
+  pinned by git sha (`1f51dad` for every run on record), Redis without a
+  volume, Postgres on a 50Gi `oci-bv` PVC.
+- Argo Workflows v3.7.18 with the grounding-eval WorkflowTemplate: one eval
+  pod per ticker at parallelism 2, then the aggregate and its gate. The
+  nightly CronWorkflow is suspended; runs are submitted from the operator
+  (`make eval-run`, `make slm-eval-run` with the traffic proof). The
+  controller may create ConfigMaps in the namespace for oversized templates
+  (eval-methodology, "template offload").
+- The CPU SLM endpoint: llama.cpp b11347 serving Qwen3.6-35B-A3B Q4_K_M,
+  8 CPU / 30Gi requested and limited, so it lands on a ~58 GiB node; the
+  GGUF sits on a 50Gi `oci-bv` PVC. Keyed; reached only in-cluster.
+- Access: every Service is ClusterIP — no LoadBalancer, no NodePort. The
+  operator host (kubectl, helm) is reached by ssh through `oke-bastion`;
+  anything a person looks at is a `kubectl port-forward` behind `ssh -L`.
+
+**vm-a10-inst-2 (node 2)**: VM.GPU.A10.1 (1× A10 24 GB, Ubuntu 22.04),
+single-node k3s.
+
+- The GPU SLM endpoint: llama.cpp b11347 (CUDA build) serving the same
+  GGUF with all layers on the A10 (alias `qwen3.6-35b-a3b-q4km`, never
+  hybrid), keyed, on NodePort 30880. The VCN security list admits 30880
+  from the OKE cluster's egress IP (129.80.187.92/32) only; ufw repeats
+  the rule. Without the key it answers 401.
+- The financial-lora vLLM deployment is scaled to 0 with no Service while
+  the GPU endpoint holds the A10 (`make vm-llamacpp`); `make vm-vllm`
+  swaps it back.
+- Node 2 also builds and pushes the app image (`make oke-images`). Its
+  September k3s app plane (NodePorts 30080/30501, no auth) was still
+  deployed as of 2026-10-03 and is not part of the demo path; port 22 is the only other
+  port the security list admits.
+
+**vm-a10-inst-1**: the frozen box from the first demo — single-node k3s
+with the fine-tuned model on vLLM. Standby and fallback only for the demo.
+
+**kind** (laptop): the local equivalence baseline every overlay change is
+proven against (`scripts/render_diff.py`, [verification.md](verification.md)).
+
+**External services**: the Anthropic API (the grounding judge on every
+arm; the hosted arm's sections, synthesis and RAG answers), NewsAPI, SEC
+EDGAR, yfinance (it has answered 429 from the OKE egress IP; every run's
+aggregate counts empty stock blocks), Pinecone (the SEC filing index), GHCR.
+
+**What does not exist**: the Terraform OKE cluster in `terraform/oci/`
+(never applied), OCIR, the Object Storage bucket, and any vLLM serving on
+OKE. The OKE Phase 2 plan (the Goal section of CLAUDE.md) is unchanged and
+still waits on a compartment.
+
+**Where the measured arms ran** (all on image `1f51dad`):
+
+| Arm | Model served from | Harness |
+|---|---|---|
+| hosted (`9jzmj`) | Anthropic API | OKE eval pods |
+| slm-full-cpu (`8vpq6`) | llama.cpp CPU endpoint, OKE | OKE eval pods |
+| slm-full-gpu (`p9jr2`) | llama.cpp GPU endpoint, node 2 | OKE eval pods, over 30880 |
 
 ## Deploy targets
 
