@@ -1,0 +1,113 @@
+STOCK DATA:
+{
+  "ticker": "EVGO",
+  "company_name": "EVgo, Inc.",
+  "current_price": 1.38,
+  "currency": "USD",
+  "market_cap": 434031680.0,
+  "forward_pe": -3.1363637,
+  "week_52_high": 5.15,
+  "week_52_low": 1.23,
+  "revenue": 402948000.0,
+  "net_income": -54125000.0,
+  "profit_margin": -0.13502,
+  "dividend_yield": 0.0,
+  "sector": "Consumer Cyclical",
+  "industry": "Specialty Retail"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-03-09",
+    "summary": "Item 1A. Risk Factors . In the course of conducting our business operations, we are exposed to a variety of risks, any of which have affected or could materially and adversely affect our business, financial condition and results of operations. Before you make a decision to buy our securities, in addition to the risks and uncertainties discussed above under \u201cCautionary Statement Regarding Forward-Looking Statements,\u201d you should carefully consider the specific risks set forth herein. If any of these risks actually occur, our business, financial condition, liquidity and results of operations may be harmed. As a result, the market price of our securities could decline, possibly significantly or permanently, and you could lose all or part of your investment. Additionally, the risks and uncertai"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-06",
+    "summary": "Item 1A. Risk Factors In the course of conducting our business operations, we are exposed to a variety of risks, any of which have affected or could materially adversely affect our business, financial condition, and results of operations. The market price of our securities could decline, possibly significantly or permanently, if one or more of these risks and uncertainties occur. Before you make a decision to buy our securities, in addition to the risks and uncertainties discussed above under \u201cCautionary Statement Regarding Forward-Looking Statements,\u201d you should carefully consider the specific risk factors set forth in the \u201cRisk Factors\u201d section in the Annual Report. There have been no material changes to the risk factors disclosed in Part I, Item 1A of the Annual Report. See the \u201cItem 5 "
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] Based on the provided risk factors from the SEC EDGAR filings for EVGO, the key takeaways regarding the company's current status and future outlook include:
+
+**Financial Position and Profitability**
+*   **Early-Stage Status and Losses:** EVGO is an early-stage growth company with a history of operating losses and negative operating cash flows. The company expects to incur significant expenses and continue incurring losses in the near- and medium-term.
+*   **Liquidity:** As of December 31, 2025, the company held $210.7 million in cash, cash equivalents, and restricted cash, along with $161.2 million in working capital. While management believes these funds, combined with the DOE Loan and Credit Agreement, are sufficient for current needs, there is no assurance of achieving profitability.
+*   **Financing Needs:** The company may need to raise additional capital through loans or securities offerings. There is no guarantee that such financing will be available when needed or on favorable terms.
+
+**Dependence on EV Market Adoption**
+*   **Correlation with EV Demand:** The company’s growth is highly dependent on the continued adoption of electric vehicles (EVs) by consumers, fleet operators, and governments, as well as Original Equipment Manufacturers’ (OEMs) ability to supply these vehicles.
+*   **Market Volatility:** The EV market is rapidly evolving with changing technologies, consumer preferences, and regulations. If EV adoption slows or decreases, or if public DC fast charging fails to attract projected market share, the company’s business and financial results could be harmed.
+*   **Macroeconomic and Cyclical Risks:** Automotive sales are cyclical, and macroeconomic factors may impact demand, particularly because EVs are often more expensive than traditional gasoline-powered vehicles. Significant declines in demand from commercial purchasers, who make large purchases, could disproportionately affect the company.
+
+**Operational and Strategic Risks**
+*   **Government and Regulatory Uncertainty:** The company faces risks related to changes in federal and state administrations, fuel economy standards, and the potential expiration or adverse changes to tax incentives, rebates, and government mandates supporting EVs and charging infrastructure.
+*   **Supply Chain and Vendor Concentration:** EVGO relies on a limited number of vendors for charging equipment and support services. A loss of these partners or disruptions in the supply chain could materially adversely affect operations. Similarly, the company depends on a limited number of customers and OEM partners; losing a significant partner could harm the business.
+*   **Construction and Expansion Risks:** The business is subject to risks associated with construction, cost overruns, and delays in completing installations, which may increase as the scope of services expands.
+
+**DOE Loan Specifics**
+*   **Critical Dependency:** The growth of the business is substantially dependent on the ability to fully draw on the DOE Loan, which has numerous conditions precedent. Failure to satisfy these conditions could materially affect the business.
+*   **Covenants and Restrictions:** Failure to comply with loan covenants could result in default. The loan is secured by a substantial portion of consolidated assets, limiting the ability to incur additional secured debt. Additionally, restrictions on the Swift Borrower’s ability to distribute cash could adversely affect business plans.
+
+**Competitive and Technological Landscape**
+*   **Competition:** The company faces current and future competition from other companies as the EV charging market develops.
+*   **Alternative Technologies:** Demand for EVs and charging services could be negatively impacted by the success of alternative fuels (such as hydrogen fuel cells), plug-in hybrids, extended-range EVs, or other charging methods like battery swaps.
+*   **Autonomous Vehicles:** Legislative or regulatory restrictions on the autonomous vehicle industry, or curtailed investment in it, could limit demand for EV charging from autonomous operators.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] The primary risk factors disclosed for EVgo are categorized into several key areas:
+
+**Risks Related to Business Operations**
+*   **Financial Status:** The company is an early-stage growth company with a history of operating losses and negative operating cash flows, expecting to incur significant expenses and continuing losses in the near- and medium-term.
+*   **EV Market Dependence:** Growth is highly dependent on the continued adoption of electric vehicles (EVs) by consumers, fleets, and governments, as well as OEMs’ ability to supply these vehicles.
+*   **Growth Management:** The company has experienced rapid growth, and failure to manage this effectively could adversely affect operations.
+*   **Regulatory Uncertainty:** Federal and state administrations may create uncertainty for the EV sector.
+*   **Forecast Accuracy:** Estimates of market opportunity and growth forecasts may be inaccurate.
+*   **Competition:** The company faces current and future competition from other companies as the EV charging market develops.
+*   **Vendor and Customer Concentration:** The business relies on a limited number of vendors for charging equipment and a limited number of customers and OEM partners.
+*   **Construction and Supply Chain:** Risks include construction cost overruns, delays, and supply chain disruptions.
+*   **Financing Needs:** The company may need to raise additional funds, which might not be available when needed or on favorable terms.
+
+**Risks Related to the DOE Loan**
+*   **Draw Conditions:** Business growth is substantially dependent on the ability to fully draw on the DOE Loan, which has numerous conditions precedent.
+*   **Covenants and Default:** Failure to comply with loan covenants could result in a default, affecting business viability.
+*   **Asset Security:** The loan is secured by a substantial portion of consolidated assets, limiting the ability to incur additional secured indebtedness.
+*   **Operational Restrictions:** Restrictions on the Swift Borrower limit operational flexibility and the ability to distribute cash to the parent company.
+
+**Risks Related to the EV Market**
+*   **Alternative Fuels and Standards:** Changes to fuel economy standards or the success of alternative fuels (e.g., hydrogen) may negatively impact demand.
+*   **Fleet Electrification:** Rideshare and commercial fleets may not electrify as quickly as expected or may not rely on public fast charging.
+*   **Heavy-Duty Vehicles:** Future demand for battery EVs in the medium- and heavy-duty segments may develop slower than anticipated.
+*   **Regulatory Credits:** Revenue from the sale of regulatory credits is subject to factors beyond the company’s control.
+*   **Incentives:** The reduction, modification, or elimination of government rebates, tax credits, and incentives could adversely affect the business.
+
+**Risks Related to Technology, Intellectual Property, and Infrastructure**
+*   **IP Protection:** Inability to maintain, protect, and enforce technology and intellectual property could harm the business.
+*   **Industry Standards:** The lack of current industry standards and the transition to the NACS charging standard may lead to uncertainty, additional competition, and unexpected costs.
+
+**Risks Related to Finance, Tax, and Accounting**
+*   **Internal Controls:** Material weaknesses in internal control over financial reporting have been identified, which could harm investor confidence.
+*   **Tax Laws:** Changes to U.S. tax laws or exposure to additional income tax liabilities could adversely affect the business.
+*   **Inflation and Costs:** Inflationary pressures and changes in trade policy may increase the cost of equipment, goods, services, and personnel.
+
+**Risks Related to the “Up-C” Structure and Tax Receivable Agreement**
+*   **Control:** EVgo Holdings owns the majority of voting stock and appoints the majority of board members, potentially creating conflicts of interest.
+*   **Dependence on Distributions:** The company depends on distributions from subsidiaries to pay taxes and cover expenses.
+*   **Tax Receivable Agreement Payments:** The company is required to make significant payments under the Tax Receivable Agreement for certain tax benefits.
+
+**Risks Related to Securities**
+*   **Controlled Company Status:** The company qualifies for exemptions from certain corporate governance requirements due to being a "controlled company."
+*   **Legal and Takeover Barriers:** Charter provisions may discourage lawsuits against directors and officers and inhibit takeovers, potentially entrenching management.

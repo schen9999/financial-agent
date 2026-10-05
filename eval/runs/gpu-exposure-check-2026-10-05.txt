@@ -1,0 +1,7 @@
+=== 2026-10-05T22:32:23Z from 129.80.187.92 ===
+--- GET http://132.145.161.150:30880/v1/models, no key
+{"error":{"message":"Invalid API Key","type":"authentication_error","code":401}}
+HTTP 401
+--- GET http://132.145.161.150:30880/v1/models, with the key (SLM_GPU_API_KEY from Secret slm-endpoints)
+{"models":[{"name":"qwen3.6-35b-a3b-q4km","model":"qwen3.6-35b-a3b-q4km","modified_at":"","size":"","digest":"","type":"model","description":"","tags":[""],"capabilities":["completion"],"parameters":"","details":{"parent_model":"","format":"gguf","family":"","families":[""],"parameter_size":"","quantization_level":""}}],"object":"list","data":[{"id":"qwen3.6-35b-a3b-q4km","aliases":["qwen3.6-35b-a3b-q4km"],"tags":[],"object":"model","created":1791239543,"owned_by":"llamacpp","meta":{"vocab_type":2,"n_vocab":248320,"n_ctx":32768,"n_ctx_train":262144,"n_embd":2048,"n_params":34660610688,"size":20408576512,"ftype":"Q4_K - Medium"}}]}
+HTTP 200

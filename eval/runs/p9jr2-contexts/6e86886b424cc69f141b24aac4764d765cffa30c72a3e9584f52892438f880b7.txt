@@ -1,0 +1,80 @@
+STOCK DATA:
+{
+  "ticker": "WMT",
+  "company_name": "Walmart Inc.",
+  "current_price": 104.26,
+  "currency": "USD",
+  "market_cap": 829709352960.0,
+  "pe_ratio": 37.775364,
+  "forward_pe": 32.324173,
+  "week_52_high": 135.16,
+  "week_52_low": 98.88,
+  "revenue": 735839977472.0,
+  "net_income": 22076000256.0,
+  "profit_margin": 0.03,
+  "dividend_yield": 0.95,
+  "sector": "Consumer Defensive",
+  "industry": "Discount Stores"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": "India launches trade portal to help exporters reach US buyers",
+    "source": "Bloomberg",
+    "published_at": "2026-09-10T07:27:01Z",
+    "description": "India launches an online platform to connect exporters with US buyers as New Delhi steps up efforts to boost bilateral trade to $500 billion by 2030."
+  },
+  {
+    "title": "Paytm expands into agentic AI with new enterprise service Pi",
+    "source": "Bloomberg",
+    "published_at": "2026-09-09T01:35:00Z",
+    "description": "Paytm is entering enterprise AI with Paytm Intelligence, offering AI agents for sales, customer service and operations to financial institutions in India and UAE."
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-03-13",
+    "summary": "Item 1A. Risk Factors \" under the sub-caption \"Legal, Tax, Regulatory, Compliance, Reputational and Other Risks.\" Our Shared Value Priorities As part of our purpose to help people save money and live better, we seek to operate our business in a way that creates shared value. We believe we maximize long-term value and competitive advantage by delivering for stakeholders, customers, associates, shareholders, suppliers, partners and communities. Addressing their needs strengthens our business by building trust, creating opportunity, managing cost and risk, developing future capabilities and reinforcing the systems on which we rely. We prioritize stakeholder issues with the greatest potential to create long-term shared value \u2013 those most relevant to our business, important to stakeholder trust"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-28",
+    "summary": "Item 1A. Risk Factors \" and \" Item 5. Other Information .\" The Company engaged in the process established by the U.S. Customs and Border Protection (\"CBP\") for refunds of tariffs that the Company paid as the importer of record under the International Emergency Economic Powers Act. During the quarter ended July 31, 2026, the Company received approximately $2.9 billion in tariff refunds pursuant to the CBP process, which were recorded as a reduction to cost of sales and represent substantially all of the refunds requested by the Company. A significant portion of these refunds was invested into customer-focused initiatives during the current quarter, primarily through price investment and other cost mitigation strategies, with continued prioritization of price investment expected through fisc"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] Based on the provided context from Walmart’s Annual Report on Form 10-K, the key takeaways regarding corporate governance, executive leadership, and human capital management are as follows:
+
+**Executive Leadership Changes**
+Several executive officers have assumed new roles effective February 2026, reflecting a significant leadership transition:
+*   **John Furner** becomes President and Chief Executive Officer.
+*   **David Guggina** becomes Executive Vice President, President and Chief Executive Officer, Walmart U.S.
+*   **Christopher Nicholas** becomes Executive Vice President, President and Chief Executive Officer, Walmart International.
+*   **Seth Dallaire** becomes Executive Vice President and Chief Growth Officer.
+*   **Daniel Danker** becomes Executive Vice President, AI Acceleration, Product and Design (effective August 2025).
+*   **Dwayne Milum** becomes Senior Vice President and Controller (effective February 2026).
+
+**Shared Value Priorities**
+Walmart focuses on creating long-term shared value through four main pillars:
+1.  **Opportunity:** Expanding economic opportunities for associates, suppliers, and communities to attract talent and strengthen resilience.
+2.  **Sustainability:** Enhancing operational resilience, reducing greenhouse gas emissions, regenerating natural resources, and reducing waste.
+3.  **Community:** Contributing to community vitality through quality jobs, local supplier investment, and crisis assistance.
+4.  **Ethics and Integrity:** Promoting compliance, strong governance, responsible data use, and human rights respect.
+
+**Human Capital Management**
+Walmart employs approximately 2.1 million associates globally, with roughly 1.6 million in the U.S. and 0.5 million internationally. Key aspects of their workforce strategy include:
+*   **Workforce Strategy:** Aligning organizational structure and technology with business needs, specifically focusing on developing a digitally skilled, AI-enabled workforce. The company aims to reshape roles to emphasize human strengths like creativity while using AI to automate repetitive tasks.
+*   **Associate Growth:** Approximately 75% of U.S. salaried management associates began in hourly positions, highlighting internal career mobility. Development is supported through programs like Walmart Academy and Live Better U, which offers educational credentials aligned with business needs.
+*   **Associate Experience:** The company prioritizes financial, physical, and mental well-being through competitive wages and benefits, including 401(k) matches, stock purchase plan matches, paid parental leave, and medical coverage. The culture is grounded in the core value of "Respect the Individual."
+
+**Corporate Governance and Reporting**
+*   Walmart files various reports with the SEC, including Forms 10-K, 10-Q, and 8-K, which are available free of charge on their corporate website (www.stock.walmart.com) and the SEC’s website (www.sec.gov).
+*   Substantive amendments or waivers to the Code of Conduct for senior financial officers are disclosed on the corporate website for 12 months following the event.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] The primary risk factors disclosed are those that could materially and adversely affect the business, results of operations, financial position, and liquidity. Specifically, the text highlights **Strategic Risks**, noting that the failure to successfully execute the omnichannel strategy and the costs associated with investments in eCommerce and technology may have a material adverse effect. The document also states that these disclosures do not identify all risks and that business operations could be affected by additional factors applicable to companies operating in the U.S. and globally.
