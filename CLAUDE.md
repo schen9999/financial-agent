@@ -13,12 +13,16 @@ in-cluster on k3s 2026-09-03. Eval A/Bs against it FAILED the gate: 10-ticker
 production path. OKE serving still pending; the dev CPU cannot run vLLM, no
 AVX-512).
 
-Current demo target: single-node k3s on vm-a10-inst-1 (fallback vm-a10-inst-2);
-see Targets. kind stays the local equivalence baseline, with probes and
-resource bounds.
+Current demo target (first week of November 2026, follow-up to the first
+demo; plan in docs/demo.md): the provided OKE cluster as harness and app
+plane, plus node 2's (vm-a10-inst-2) keyed GPU llama.cpp endpoint;
+vm-a10-inst-1 is the frozen first-demo box (k3s + fine-tuned vLLM),
+standby/fallback only. Single topology statement: docs/architecture.md,
+"Deployed topology (October 2026)". kind stays the local equivalence
+baseline, with probes and resource bounds.
 
 ## Goal
-Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
+Migrate to OCI, with a live demo of the result (first week of November 2026):
 - OKE basic cluster, created via Terraform (cluster creation is part of the deliverable)
 - App node pool: 2x VM.Standard.E4.Flex, 4 OCPUs / 32 GB each (1 OCPU = 2 vCPUs;
   size K8s requests/limits in vCPU terms: 16 vCPU / 64 GB total across the pool)
@@ -34,17 +38,20 @@ Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
 ## Targets
 - kind (local, working): single-node dev cluster; the equivalence baseline
   every overlay change is proven against.
-- Single VM (demo target): vm-a10-inst-1, fallback vm-a10-inst-2 — two
+- Single VM (the first demo's target; since 2026-10-05 vm-a10-inst-1 is
+  frozen standby and vm-a10-inst-2, node 2, serves the GPU llama.cpp
+  endpoint of the demo): vm-a10-inst-1 and vm-a10-inst-2 — two
   VM.GPU.A10.1 nodes (1x A10 24 GB, Ubuntu 22.04, NVIDIA driver 570
   preinstalled), rebuilt from the runbook 2026-09-23 (bootstrap, vm-images,
   vm-up green on both; runbook "Rebuild on fresh nodes, 2026-09-23").
-  Constraints: ssh access only (VCN seclist admits 22 only; everything
-  reached via ssh -L tunnels, nothing bound publicly); no OKE compartment,
+  Constraints: ssh access only (VCN seclist admits 22, plus node 2's
+  30880 from the OKE egress IP 129.80.187.92/32 only; everything else
+  reached via ssh -L tunnels, nothing else bound publicly); no OKE compartment,
   OCIR, or Object Storage bucket exists yet. Runs single-node k3s with the
   k3s overlays. The Sep 2 VM.GPU.A10.2 (Phase 1.75 validation box, where
   vLLM pinned to one GPU validated the A10.1-shaped oke-gpu serving config
   on 2026-09-03) is gone.
-- OKE, provided cluster (authored 2026-10-02; app plane, Argo,
+- OKE, provided cluster — the demo's harness and app plane (authored 2026-10-02; app plane, Argo,
   metrics-server chart 3.14.0 and the hosted smoke x2cx8 EXECUTED
   2026-10-03 — per-step status in the runbook): a cluster
   provisioned for us, NOT by terraform/oci — never run Terraform against
