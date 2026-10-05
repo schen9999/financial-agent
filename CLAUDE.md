@@ -224,7 +224,15 @@ Phase 3 — demo polish:
   run's judge-label counts), with its CI. Never quote recall computed on a
   judge-label-stratified sample as drawn.
 - Cost of record: $0.0366/brief (2026-09-06, post-retrieval-fix) from the
-  committed harness. $0.0316 is a dated pre-retrieval-fix record — never quote
+  committed harness. Same-pipeline cost per brief on image 1f51dad (2026-10-05,
+  dated, model cost only — harness pods, storage and judge excluded on
+  every arm): hosted $0.0370 (n = 3, run locally on the 1f51dad pipeline
+  code; the demo cost table uses it with that label), GPU SLM p9jr2
+  $0.0293 (a CEILING: whole A10 VM at $2.00/h, A10 at 38% utilization),
+  CPU SLM 8vpq6 $0.0110 (pod request 4 OCPU + 30 GiB; whole node $0.0223,
+  approximate). CPU is cheapest at 13.7x hosted's latency: batch, not
+  interactive. Prices from the OCI price API (cost.md); never project a
+  GPU floor without a run. $0.0316 is a dated pre-retrieval-fix record — never quote
   it as current. $0.0269 is retired. "54% cost reduction" is retired.
 - The Redis cache is exact-key per ticker. Never "semantic cache."
 - Never claim Celery/Redis ran in production on ECS. ECS reality was a single

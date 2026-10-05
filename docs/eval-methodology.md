@@ -2032,6 +2032,50 @@ capture shows; no throughput at higher parallelism is projected from it
 without a run. The CPU endpoint during `8vpq6` was the opposite: median
 7,806m of its 8,000m limit.
 
+**Cost per brief, the three arms on the same pipeline (2026-10-05).**
+Dated measurements, not the cost of record, which stays $0.0366
+(2026-09-06). Every figure is model cost only: harness pods, storage and
+the judge (eval-only) are excluded on all three arms.
+
+| Arm | Cost per brief | How it was measured | Time per brief |
+|---|---|---|---|
+| Hosted (Anthropic API) | **$0.0370** | `scripts/cost_report.py`, n = 3 (AAPL, NVDA, JPM): $0.0285 exact + $0.0085 RAG-internal estimate. Run locally on the `1f51dad` pipeline code (nothing under `agent/` or the requirements has changed since), not inside the image | 25.9 s pipeline (`9jzmj`) |
+| GPU SLM `p9jr2` | **$0.0293, a ceiling** | the whole VM.GPU.A10.1 at $2.00/h × the run's wall time: 2,112 s for 40 briefs = 52.8 s each, 68.2 briefs an hour at parallelism 2 | 31.1 s pipeline |
+| CPU SLM `8vpq6` | **$0.0110** | the llama.cpp pod's request, 4 OCPU + 30 GiB (32.21 GB) at $0.03/OCPU-h + $0.002/GB-h = $0.1844/h, × 8,576 s for 40 briefs = 214.4 s each, 16.8 briefs an hour | 355.1 s pipeline |
+| — sensitivity, approximate | $0.0223 | the whole node, 8 OCPU + 62.79 GiB kernel-visible (67.41 GB) = $0.3748/h | |
+
+- **The CPU arm is the cheapest per brief, at 13.7× hosted's per-ticker
+  latency** (355 s against 26 s). That suits batch work — overnight
+  briefs, the eval itself — not interactive use. Its endpoint was
+  saturated during the run (median 7,806m of its 8,000m limit), so more
+  parallelism would not lower the figure at this pod size.
+- **The GPU figure is a ceiling.** The A10 averaged 38% utilization during
+  `p9jr2`, median sample 0%, at parallelism 2, and was above 0% in 43%
+  of samples while billed for the whole run. Whether higher parallelism
+  lowers the figure, and by how much, is not measured; no floor is
+  projected without a run.
+- **Hosted is n = 3**, the cost harness's three tickers, and its
+  RAG-internal part is a tokenizer estimate. It sits within $0.0004 of the
+  2026-09-06 record ($0.0366) on the same tickers; the RAG input tokens are
+  identical (4,868 / 5,927 / 5,003).
+- The SLM figures bill a resource for the run's measured wall time; the
+  hosted figure prices tokens. They answer the same question (what one
+  brief costs to produce) by different methods. Prices: OCI price-list
+  API read 2026-10-05 ([cost.md](cost.md)).
+
+```bash
+python scripts/cost_report.py --json-out eval/runs/cost-record-1f51dad-2026-10-05.json
+python scripts/cost_per_brief_slm.py \
+  eval/runs/slm-proof-p9jr2/grounding-eval-extended-slm-gpu-p9jr2-workflow.json \
+  --label gpu-p9jr2 --hourly-usd 2.00
+python scripts/cost_per_brief_slm.py \
+  eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6-workflow.json \
+  --label cpu-8vpq6-pod --e5 4 30 --ocpu-usd 0.03 --gb-usd 0.002
+python scripts/cost_per_brief_slm.py \
+  eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6-workflow.json \
+  --label cpu-8vpq6-node-approx --e5 8 62.785 --ocpu-usd 0.03 --gb-usd 0.002
+```
+
 **The three numeric unsupported claims of `p9jr2`**, all in the Executive
 Summary. Two are model errors (wrong label), one is a source conflict.
 Types: *wrong value* (the figure is not the context's), *wrong label* (the
