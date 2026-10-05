@@ -1944,7 +1944,7 @@ number of record; these are dated runs on the comparison image.
 | Unsupported, all claims | 7/411 = 1.70% (CI 0.8–3.5%) | 9/248 = 3.63% (CI 1.9–6.8%) | 6/245 = 2.45% (CI 1.1–5.2%) | Fisher p = 0.567 | Fisher p = 0.602 |
 | Unsupported, numeric claims (co-primary) | 2/277 = 0.72% (CI 0.2–2.6%) | 3/161 = 1.86% (CI 0.6–5.3%) | 3/155 = 1.94% (CI 0.7–5.5%) | p = 0.355 | p = 1.000 |
 | — sensitivity: without claims numeric only through "52-week" | 2/271 = 0.74% (CI 0.2–2.7%) | 2/158 = 1.27% (CI 0.3–4.5%) | 3/148 = 2.03% (CI 0.7–5.8%) | p = 0.351 | p = 0.676 |
-| Model errors in numeric claims (wrong value + wrong label; below) | 0/277 = 0.00% (CI 0.0–1.4%) | 1/161 = 0.62% (CI 0.1–3.4%) | 2/155 = 1.29% (CI 0.4–4.6%) | p = 0.128 | p = 0.617 |
+| Model errors in numeric claims (wrong value + wrong label + not in context; below) | 2/277 = 0.72% (CI 0.2–2.6%) | 1/161 = 0.62% (CI 0.1–3.4%) | 2/155 = 1.29% (CI 0.4–4.6%) | p = 0.621 | p = 0.617 |
 | Numeric claims per ticker | 6.92 | 4.03 | 3.88 | paired +3.05 for hosted (95% bootstrap CI +2.33 to +3.83); hosted higher on 34, equal 5, lower 1; sign test p = 2.1e-9 | paired +0.15 for CPU (CI −0.35 to +0.68); 17 / 6 / 17; p = 1.0 |
 | — sensitivity: without "52-week" | 6.78 | 3.95 | 3.70 | +3.08 (CI +2.33 to +3.88); 35 / 4 / 1; p = 1.1e-9 | +0.25 (CI −0.28 to +0.78); 19 / 5 / 16; p = 0.736 |
 | Claims per ticker (mean, min) | 10.3, 2 | 6.2, 2 | 6.1, 2 | | |
@@ -2035,7 +2035,10 @@ figure is in the context but attached to the wrong quantity), *source
 conflict* (quoted correctly from one source, held against another), *judge
 error* (correct against the context), *not in context* (an assertion the
 context lacks, no figure misquoted). Model errors are wrong value + wrong
-label. The adjudication is
+label + not in context — everything except source conflicts and judge
+errors: an unsupported claim with no basis in the context is what the
+grounding eval exists to catch, and leaving it out would favor the hosted
+arm, whose two are of that type. The adjudication is
 `eval/runs/numeric-error-types-2026-10-05.json`; `eval/error_types.py`
 checks it covers exactly the UNSUPPORTED numeric claims of each run and
 prints the counts and tests (`eval/runs/numeric-error-types-2026-10-05.txt`).
@@ -2072,15 +2075,18 @@ prints the counts and tests (`eval/runs/numeric-error-types-2026-10-05.txt`).
 | Source conflict | 0 | 1 (BEAM) | 1 (OMER) |
 | Judge error | 0 | 1 (META) | 0 ¹ |
 | Not in context | 2 (AFRM, NVO) | 0 | 0 |
-| **Model errors / numeric claims** | **0/277** (CI 0.0–1.4%) | **1/161** (CI 0.1–3.4%) | **2/155** (CI 0.4–4.6%) |
+| **Model errors / numeric claims** | **2/277** (CI 0.2–2.6%) | **1/161** (CI 0.1–3.4%) | **2/155** (CI 0.4–4.6%) |
 
 ¹ CRBU's verdict stands; its stated reason is incorrect (above).
 
-Model errors, exact two-sided Fisher, unadjusted: hosted vs CPU p = 0.368,
-hosted vs GPU p = 0.128, CPU vs GPU p = 0.617 — no pair separates. Hosted's
-two are not model errors by this definition: AFRM compares its P/E to
-"historical averages for fintech peers" the context does not hold, and
-NVO's is a qualitative pipeline statement, numeric only through "GLP-1".
+Model errors, exact two-sided Fisher, unadjusted: hosted vs CPU p = 1.000,
+hosted vs GPU p = 0.621, CPU vs GPU p = 0.617 — no pair separates. Hosted's
+two are *not in context*: AFRM compares its P/E to "historical averages for
+fintech peers" the context does not hold, and NVO's is a qualitative
+pipeline statement, numeric only through "GLP-1". The arms differ in the
+kind of error (hosted asserts what the context lacks; the GPU attaches
+right figures to wrong quantities; the CPU misquotes one value), not
+detectably in the count.
 
 **Overlap with `8vpq6`'s three (CHGG, BEAM, META): no ticker overlaps, and
 two classes recur.** The source conflict recurs (BEAM, then OMER), and so

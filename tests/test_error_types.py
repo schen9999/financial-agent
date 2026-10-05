@@ -38,5 +38,6 @@ def test_committed_adjudication_is_complete_and_reproduces_the_counts():
     assert t["slm-gpu-p9jr2"]["wrong label"] == ["SFIX", "CRBU"]
     assert t["slm-cpu-8vpq6"]["wrong value"] == ["CHGG"]
     me = {r: sum(len(t[r][k]) for k in et.MODEL_ERRORS) for r in runs}
-    assert me == {"hosted-9jzmj": 0, "slm-cpu-8vpq6": 1, "slm-gpu-p9jr2": 2}
-    assert round(fisher_exact(0, 277, 2, 153), 4) == 0.1282
+    assert me == {"hosted-9jzmj": 2, "slm-cpu-8vpq6": 1, "slm-gpu-p9jr2": 2}
+    assert t["hosted-9jzmj"]["not in context"] == ["AFRM", "NVO"]
+    assert round(fisher_exact(2, 275, 2, 153), 4) == 0.6205

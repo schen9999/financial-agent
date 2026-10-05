@@ -9,7 +9,8 @@ re-runnable and keeps the file honest: every UNSUPPORTED numeric claim
 run's claims file must be classified exactly once, and nothing else may be.
 
 Prints counts by type per run, then model errors (wrong value + wrong
-label) over each run's numeric claims with Wilson CIs and an exact
+label + not in context: everything except source conflicts and judge
+errors) over each run's numeric claims with Wilson CIs and an exact
 two-sided Fisher test for every pair — unadjusted for multiple
 comparisons — and the claims whose judge reason is recorded as incorrect.
 
@@ -29,7 +30,7 @@ sys.path.insert(0, str(_REPO))
 
 from eval.stats import fisher_exact, format_rate_ci  # noqa: E402
 
-MODEL_ERRORS = ("wrong value", "wrong label")
+MODEL_ERRORS = ("wrong value", "wrong label", "not in context")
 
 
 def numeric(claim) -> bool:

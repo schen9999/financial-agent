@@ -3,13 +3,13 @@ Judge-UNSUPPORTED numeric claims by adjudicated type (tickers):
   slm-cpu-8vpq6  3/161: wrong value 1 (CHGG); wrong label 0; source conflict 1 (BEAM); judge error 1 (META); not in context 0
   slm-gpu-p9jr2  3/155: wrong value 0; wrong label 2 (SFIX, CRBU); source conflict 1 (OMER); judge error 0; not in context 0
 
-Model errors (wrong value + wrong label) over numeric claims:
-  hosted-9jzmj   0/277 = 0.00% (95% CI 0.0–1.4%)
+Model errors (wrong value + wrong label + not in context) over numeric claims:
+  hosted-9jzmj   2/277 = 0.72% (95% CI 0.2–2.6%)
   slm-cpu-8vpq6  1/161 = 0.62% (95% CI 0.1–3.4%)
   slm-gpu-p9jr2  2/155 = 1.29% (95% CI 0.4–4.6%)
 Pairwise, exact two-sided Fisher, unadjusted:
-  hosted-9jzmj  vs slm-cpu-8vpq6  0/277 vs 1/161   p = 0.3676
-  hosted-9jzmj  vs slm-gpu-p9jr2  0/277 vs 2/155   p = 0.1282
+  hosted-9jzmj  vs slm-cpu-8vpq6  2/277 vs 1/161   p = 1.0000
+  hosted-9jzmj  vs slm-gpu-p9jr2  2/277 vs 2/155   p = 0.6205
   slm-cpu-8vpq6 vs slm-gpu-p9jr2  1/161 vs 2/155   p = 0.6168
 
 Verdict stands, judge's stated reason incorrect:

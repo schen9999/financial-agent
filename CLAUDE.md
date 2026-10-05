@@ -381,8 +381,9 @@ Phase 3 — demo polish:
   capitalization"); source conflict 0 / 1 (BEAM) / 1 (OMER); judge error
   0 / 1 (META) / 0, plus CRBU's stated judge reason is incorrect (it
   rejected a correct rounding) while the verdict stands; not in context
-  2 (AFRM, NVO) / 0 / 0. Model errors (value + label) 0/277, 1/161,
-  2/155, no pair separates (Fisher unadjusted, p >= 0.128). Latency: CPU
+  2 (AFRM, NVO) / 0 / 0. Model errors (value + label + not in context —
+  everything but source conflicts and judge errors) 2/277, 1/161, 2/155,
+  no pair separates (Fisher unadjusted, p >= 0.617). Latency: CPU
   is 10–15x slower than GPU at every call site, 11.4x per ticker; GPU is
   2.0–3.4x slower than hosted per call except synthesis (hosted 1.6x
   slower, longer brief), 1.2x per ticker (31.1 s vs 25.9 s). GPU use

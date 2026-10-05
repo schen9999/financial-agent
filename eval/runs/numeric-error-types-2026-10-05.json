@@ -1,11 +1,11 @@
 {
-  "about": "Adjudicated type of every judge-UNSUPPORTED numeric claim (claim text contains a digit) in the three same-image 40-ticker runs, 2026-10-05. Read by eval/error_types.py, which checks the list is complete against the claims files. Model errors = wrong value + wrong label. Evidence: docs/eval-methodology.md, 'GPU SLM extended run p9jr2'.",
+  "about": "Adjudicated type of every judge-UNSUPPORTED numeric claim (claim text contains a digit) in the three same-image 40-ticker runs, 2026-10-05. Read by eval/error_types.py, which checks the list is complete against the claims files. Model errors = wrong value + wrong label + not in context. Evidence: docs/eval-methodology.md, 'GPU SLM extended run p9jr2'.",
   "types": {
     "wrong value": "the figure is not the context's value (model error)",
     "wrong label": "the figure is in the context but attached to the wrong quantity (model error)",
     "source conflict": "the figure is quoted correctly from one context source; another context source disagrees and the judge held the claim against it",
     "judge error": "the claim is correct against the context; the verdict is wrong",
-    "not in context": "the claim asserts something the context does not contain, with no figure misquoted"
+    "not in context": "the claim asserts something the context does not contain, with no figure misquoted (model error)"
   },
   "runs": {
     "hosted-9jzmj": "eval/runs/9jzmj-claims.jsonl",
