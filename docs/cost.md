@@ -28,9 +28,13 @@ What this means for the two nodes, with no assumptions added:
 
 - Each node is a **VM.GPU.A10.1**, which has one A10 GPU (`nvidia-smi` on
   both nodes lists one NVIDIA A10). The list price is **USD 2.00 per GPU
-  per hour** (part B95909, from the source above). The source does not
-  state whether that rate also covers the shape's 15 OCPUs and memory; the
-  tenancy's cost analysis shows how the instances are actually billed.
+  per hour** (part B95909, from the source above), and that rate covers
+  the whole VM: the OCI price list prices a GPU server as the GPU price ×
+  the number of GPUs, with no separate OCPU or memory SKU for GPU shapes
+  (confirmed against the price list 2026-10-05). A VM.GPU.A10.1 —
+  1 A10, 15 OCPUs, 240 GB — is therefore USD 2.00 per hour, boot volume
+  excluded. The tenancy's cost analysis remains the authority on what is
+  actually charged.
 - Each node has a **1 TiB boot volume** (`lsblk` on both nodes), billed at
   the Block Volume rates above. The boot-volume total depends on the
   volume's performance setting (performance units per GB), which is not
