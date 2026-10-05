@@ -1,0 +1,59 @@
+{
+ "source": "https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?currencyCode=USD",
+ "retrieved": "2026-10-05T23:14:25Z",
+ "lastUpdated": "2026-10-01T14:18:05.193Z",
+ "filter": "partNumber in B95909 (Compute - GPU - A10), B97384 (Compute - Standard - E5 - OCPU), B97385 (Compute - Standard - E5 - Memory); items copied unmodified from the response",
+ "items": [
+  {
+   "partNumber": "B95909",
+   "displayName": "Compute  - GPU - A10",
+   "metricName": "GPU Per Hour",
+   "serviceCategory": "Compute - GPU",
+   "currencyCodeLocalizations": [
+    {
+     "currencyCode": "USD",
+     "prices": [
+      {
+       "model": "PAY_AS_YOU_GO",
+       "value": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "partNumber": "B97384",
+   "displayName": "Compute - Standard - E5 - OCPU",
+   "metricName": "OCPU Per Hour",
+   "serviceCategory": "Compute - Virtual Machine",
+   "currencyCodeLocalizations": [
+    {
+     "currencyCode": "USD",
+     "prices": [
+      {
+       "model": "PAY_AS_YOU_GO",
+       "value": 0.03
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "partNumber": "B97385",
+   "displayName": "Compute - Standard - E5 - Memory",
+   "metricName": "Gigabytes Per Hour",
+   "serviceCategory": "Compute - Virtual Machine",
+   "currencyCodeLocalizations": [
+    {
+     "currencyCode": "USD",
+     "prices": [
+      {
+       "model": "PAY_AS_YOU_GO",
+       "value": 0.002
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

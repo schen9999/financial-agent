@@ -44,6 +44,34 @@ What this means for the two nodes, with no assumptions added:
   stopped or terminated by the tenancy owner in the OCI console
   ([operations.md](operations.md), "Teardown").
 
+## OCI: the provided OKE cluster's E5 nodes, and the A10 re-read
+
+Source: the same public price-list API, read 2026-10-05T23:14:25Z; the
+response's `lastUpdated` is 2026-10-01T14:18:05Z. The three entries used
+here are saved unmodified in
+[`eval/runs/oci-price-list-2026-10-05.json`](../eval/runs/oci-price-list-2026-10-05.json).
+
+| Part | Product (`displayName`) | Metric (`metricName`) | Pay-as-you-go (USD) |
+|---|---|---|---|
+| B97384 | Compute - Standard - E5 - OCPU | OCPU Per Hour | 0.03 |
+| B97385 | Compute - Standard - E5 - Memory | Gigabytes Per Hour | 0.002 |
+| B95909 | Compute - GPU - A10 | GPU Per Hour | 2.00 (unchanged from 2026-09-24) |
+
+- The provided cluster's nodes are VM.Standard.E5.Flex at 16 vCPU = 8
+  OCPU; the CPU llama.cpp endpoint ran on a node with 62.79 GiB of
+  kernel-visible memory (`kubectl` capacity, 2026-10-05,
+  [`eval/runs/oke-node-capacity-2026-10-05.txt`](../eval/runs/oke-node-capacity-2026-10-05.txt)),
+  below the shape's configured memory, which the cluster does not show.
+- Memory is billed per "Gigabytes Per Hour". Kubernetes requests are in
+  GiB, so per-brief figures convert GiB to GB (× 1.0737). If OCI's GB is
+  binary in practice (62.79 GiB visible fits a 64 GiB shape), that
+  conversion overstates the memory term by 7.4%.
+- These are list prices for the cluster's compute. The cluster was
+  provided to the project, not created by it, so no node-hour total is
+  given here; per-brief serving cost is in
+  [numbers-of-record.md](numbers-of-record.md) (dated records, "Cost per
+  brief on image `1f51dad`").
+
 The OKE Terraform in [`terraform/oci/`](../terraform/oci/) has never been
 applied, so it costs nothing today.
 
