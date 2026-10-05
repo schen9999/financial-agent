@@ -180,13 +180,45 @@ def print_rows_sections(rows: dict) -> None:
               f"({len(rs)} tickers)")
         print(f"  {'':<14} retrieval {_spread([r['retrieval_s'] for r in rs])}")
     for a, b in combinations(rows, 2):
-        pa = {r["ticker"]: r["pipeline_s"] for r in rows[a]}
-        pb = {r["ticker"]: r["pipeline_s"] for r in rows[b]}
-        common = sorted(set(pa) & set(pb))
-        if common:
-            ma, mb = (sum(p[t] for t in common) / len(common) for p in (pa, pb))
-            print(f"  {b} / {a} mean pipeline time over {len(common)} common tickers: "
-                  f"{mb / ma:.1f}x ({mb:.1f} s vs {ma:.1f} s)")
+        r = common_ratio(a, rows[a], b, rows[b], "pipeline_s")
+        if r:
+            slow, fast, n, x, ms, mf = r
+            print(f"  {slow} / {fast} mean pipeline time over {n} common tickers: "
+                  f"{x:.1f}x ({ms:.1f} s vs {mf:.1f} s)")
+    print("\nSpeed ratios, slower / faster (per call site: mean s per call; per ticker: "
+          "mean s over common tickers):")
+    for a, b in combinations(rows, 2):
+        print(f"  {a} vs {b}")
+        for site in sorted(set(lat[a]) & set(lat[b])):
+            slow, fast, x, ms, mf = slower_faster(a, lat[a][site][1], b, lat[b][site][1])
+            print(f"    {site:<30} {slow} / {fast} {x:>6.1f}x ({ms:.2f} s vs {mf:.2f} s)")
+        for field in ("pipeline_s", "retrieval_s"):
+            r = common_ratio(a, rows[a], b, rows[b], field)
+            if r:
+                slow, fast, n, x, ms, mf = r
+                print(f"    {'per ticker ' + field[:-2]:<30} {slow} / {fast} {x:>6.1f}x "
+                      f"({ms:.2f} s vs {mf:.2f} s, {n} tickers)")
+
+
+def slower_faster(a: str, ma: float, b: str, mb: float) -> tuple:
+    """(slower label, faster label, slower/faster, slower mean, faster mean);
+    ties go to b, so a two-run report keeps its b / a order."""
+    if mb >= ma:
+        return b, a, (mb / ma if ma else float("inf")), mb, ma
+    return a, b, ma / mb, ma, mb
+
+
+def common_ratio(a: str, rows_a: list[dict], b: str, rows_b: list[dict], field: str):
+    """(slower, faster, common tickers, ratio, slower mean, faster mean) of a
+    per-ticker field over the tickers both runs have; None if none."""
+    pa = {r["ticker"]: r[field] for r in rows_a}
+    pb = {r["ticker"]: r[field] for r in rows_b}
+    common = sorted(set(pa) & set(pb))
+    if not common:
+        return None
+    ma, mb = (sum(p[t] for t in common) / len(common) for p in (pa, pb))
+    slow, fast, x, ms, mf = slower_faster(a, ma, b, mb)
+    return slow, fast, len(common), x, ms, mf
 
 
 def fmt_p(p: float) -> str:

@@ -157,3 +157,28 @@ def test_rows_sections_from_the_committed_extended_runs():
     assert mas.site_latency(hosted)["rag:risks"][0] == 35
     # the aggregate's input JSON is accepted as well as a workflow object
     assert len(mas.load_rows(runs_dir / "9jzmj-results-rebuilt.json")) == 40
+
+
+def test_speed_ratios_read_slower_over_faster_in_either_argument_order():
+    assert mas.slower_faster("gpu", 2.0, "cpu", 20.0) == ("cpu", "gpu", 10.0, 20.0, 2.0)
+    assert mas.slower_faster("cpu", 20.0, "gpu", 2.0) == ("cpu", "gpu", 10.0, 20.0, 2.0)
+    rows_a = [{"ticker": "A", "pipeline_s": 30.0}, {"ticker": "B", "pipeline_s": 10.0},
+              {"ticker": "X", "pipeline_s": 999.0}]
+    rows_b = [{"ticker": "A", "pipeline_s": 3.0}, {"ticker": "B", "pipeline_s": 1.0}]
+    assert mas.common_ratio("cpu", rows_a, "gpu", rows_b, "pipeline_s") == \
+        ("cpu", "gpu", 2, 10.0, 20.0, 2.0)
+    assert mas.common_ratio("cpu", rows_a, "gpu", [{"ticker": "Z", "pipeline_s": 1.0}],
+                            "pipeline_s") is None
+
+
+def test_gpu_extended_rows_from_the_committed_workflow_object():
+    """GPU SLM p9jr2 (same image, 2026-10-05): the workflow object carries the
+    aggregate's per-site ledger and RAG faithfulness."""
+    import pathlib
+    runs_dir = pathlib.Path(__file__).resolve().parents[1] / "eval" / "runs"
+    gpu = mas.load_rows(runs_dir / "slm-proof-p9jr2" /
+                        "grounding-eval-extended-slm-gpu-p9jr2-workflow.json")
+    assert len(gpu) == 40
+    assert mas.ragf_totals(gpu) == (6, 1465, 70)
+    calls, mean, mx = mas.site_latency(gpu)["synthesis"]
+    assert calls == 40 and round(mean, 2) == 11.41 and round(mx, 2) == 19.50
