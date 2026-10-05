@@ -1898,8 +1898,9 @@ comparison (post-demo):**
    limitation 3 update).
 4. *The SLM truncates where it should round on at least one derived
    figure.* CHGG's -52.997M became -52.9M in the SLM's Financial Health
-   section. One observed instance; the numeric check, not the judge, is
-   the tool for measuring how often.
+   section. One observed instance. The numeric check cannot measure how
+   often at its 2% tolerance: -52.9M against -52.997M is 0.18% off and
+   passes (2026-10-05, "Numeric check on the three-way" below).
 
 ```bash
 python eval/multi_arm_stats.py \
@@ -2145,6 +2146,71 @@ million" in the summary (SUPPORTED). BEAM's conflict is still in the GPU
 brief, -$86.52 million in Financial Health and "$86.5 million" in Recent
 Developments, but neither section is audited, so it was never judged. META
 has no 52-week claim in the GPU's audited text.
+
+**Numeric check on the three-way, adjudicated (dated record, 2026-10-05;
+not a number of record).** The deterministic check (`agent/numeric_check.py`,
+stock-field figures only, relative tolerance 2%) was run offline over the
+three runs' findings (`scripts/numeric_backtest.py --runs 9jzmj 8vpq6
+p9jr2`): 12 distinct flags, every section of every brief, not only the
+audited ones. All 12 were labelled by one human adjudicator, not blind to
+the arm, under the rules written 2026-09-30 (`eval/numeric_check/README.md`),
+with no doubt notes (`eval/numeric_check/adjudication-2026-10-05-9jzmj-8vpq6-p9jr2.csv`).
+
+| Run | Flags | TRUE_ERROR | FALSE_POSITIVE | TRUE_ERROR per checked number (cluster bootstrap 95% CI) | Excluding the upstream data findings |
+|---|---|---|---|---|---|
+| Hosted `9jzmj` | 8 | 8 | 0 | 8/569 = 1.41% (0.0–3.9%) | 0/569 |
+| CPU SLM `8vpq6` | 1 | 1 | 0 | 1/389 = 0.26% (0.0–0.8%) | 0/389 |
+| GPU SLM `p9jr2` | 3 | 2 | 1 | 2/423 = 0.47% (0.0–1.2%) | 0/423 |
+
+Paired ticker-bootstrap differences in the TRUE_ERROR rate: CPU − hosted
+−1.15% (CI −3.44% to 0.00%), GPU − hosted −0.93% (−3.34% to +0.53%), GPU −
+CPU +0.22% (−0.06% to +0.74%). No interval excludes zero.
+
+- **Every TRUE_ERROR is attributed to the two upstream data findings**
+  by the committed rules (`eval/numeric_check/upstream-findings.md`;
+  `upstream_cause` in `scripts/numeric_adjudicated.py`): 6 currency — the
+  hosted TM brief states revenue and net income as "$52.0 billion" and
+  "$4.5 billion", in three sections, from yen values labelled USD
+  (¥51.96 trillion and ¥4.48 trillion, so the brief also rescaled them by
+  1,000) — and 5 profit-margin fraction ("3.25%" for OMER in all three
+  arms, "-2.49%" for LCID in the GPU arm, where the source fraction means
+  324.9% and −249.2%). With those excluded, all three arms are at 0: the
+  check finds no stock-field error that the upstream data does not
+  explain, in any arm.
+- The FALSE_POSITIVE is OMER's "net loss of $3.4 million" in the GPU's SEC
+  Filing Highlights: the filing's figure, which the check bound to the
+  yfinance `net_income` — the same source conflict as the judge's OMER
+  claim (above), seen from the other side.
+- **Where the adjudication and the judge disagree:** TM in `9jzmj`. The
+  audited Executive Summary's "$52.0 billion in annual revenue" and "$4.5
+  billion in net income" are SUPPORTED by the judge and TRUE_ERROR here.
+  The judge's reason accepts the scale error outright: "Source data shows
+  revenue of 51,957,024,686,080.0 JPY, which the Financial Health
+  pre-written section rounds to '$52.0 billion'". Two judge misses on
+  audited figures, consistent with judge v2's population-weighted recall
+  (32.5%); they are not in the judge-flagged rates above. No other flag
+  overlaps a judged claim: the other ten sit in sections the judge does
+  not audit.
+
+**What the check cannot see.** Two of the numeric problems the judge's
+audit found are invisible to it: (1) **truncation under the 2% tolerance**
+— CPU's CHGG "-$52.9 million" for -52.997M is 0.18% off and passes (so
+the numeric check cannot measure known limitation 4 at its current
+tolerance); (2) **wrong labels** — GPU's SFIX "recent low of $2.61" (the
+current price) and CRBU "market capitalization near its 52-week low of
+$1.22" (a per-share figure) quote correct values, and the check binds
+figures to fields, not to what the sentence calls them. It also checks
+stock-field figures only: news and filing figures (BEAM's and OMER's
+filing-side numbers) are out of its scope.
+
+```bash
+python scripts/numeric_backtest.py --runs 9jzmj 8vpq6 p9jr2 --date 2026-10-05
+python eval/numeric_check/label_cli.py --csv eval/numeric_check/adjudication-2026-10-05-9jzmj-8vpq6-p9jr2.csv
+python scripts/numeric_adjudicated.py --date 2026-10-05 \
+  --adjudication eval/numeric_check/adjudication-2026-10-05-9jzmj-8vpq6-p9jr2.csv \
+  --runs 9jzmj 8vpq6 p9jr2
+#   eval/runs/numeric-adjudicated-2026-10-05-9jzmj-8vpq6-p9jr2.{json,md}
+```
 
 **Smoke `k6zxd` (2026-10-05, dated, never an arm comparison).** 10/10
 tickers, 3/63 = 4.76% unsupported (Wilson 95% CI 1.6–13.1%), gate passed

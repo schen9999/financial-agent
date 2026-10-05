@@ -79,7 +79,7 @@ Migrate to OCI, with a live demo of the result (target: October 2026, date TBD):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (6579 lines, 522 tests collected: 521 passed + 1 skipped,
+3. The pytest suite (6601 lines, 523 tests collected: 522 passed + 1 skipped,
    the credit-gated judge test, as of 2026-10-05) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
@@ -459,7 +459,15 @@ Phase 3 — demo polish:
   hosted tool-use route is attributed by its setting; (7) on the CPU
   tool-use route WMT and V retrieval took 35.8 s and 40.9 s vs 2–4 s
   elsewhere — cause not determined, contention between the api pod and
-  the CPU llama.cpp pod is a hypothesis only.
+  the CPU llama.cpp pod is a hypothesis only. Numeric check on the
+  three-way (adjudicated 2026-10-05 by one human, not blind; dated, not a
+  number of record): 12 flags, TRUE_ERROR 8/569 hosted, 1/389 CPU, 2/423
+  GPU, every one attributed to the upstream data findings (currency,
+  margin fraction), 0 otherwise in every arm, no paired difference
+  excludes zero; the judge SUPPORTED the hosted TM yen-as-dollars figures
+  (two judge misses). The check cannot see truncation under its 2%
+  tolerance (CHGG) or wrong labels (SFIX, CRBU): never cite it as covering
+  either.
 - Cross-encoder reranking and the multi-agent supervisor shipped default-off
   because evals showed no grounding gain at higher cost/latency. State it that way.
 - Any new number in docs must come from a committed, re-runnable harness.
