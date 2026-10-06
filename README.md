@@ -64,6 +64,9 @@ The fuller list, with the reasoning behind it: [Known limitations and next steps
   storage class, written and passing `terraform validate`. It has **never
   been applied**: it waits on a compartment with OKE. The cluster above
   was provided, not created by it.
+- **GPU inference:** what has been served on the A10, the fine-tune's
+  BF16 vs W4A16 serving speed, and Qwen3.6 on CPU vs on the A10:
+  [docs/gpu-inference.md](docs/gpu-inference.md).
 - **How to deploy it:** [docs/deploy-runbook.md](docs/deploy-runbook.md),
   "OKE (provided cluster)" and the self-served SLM steps;
   [docs/operations.md](docs/operations.md) for an A10 node, teardown and
