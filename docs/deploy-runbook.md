@@ -1573,6 +1573,16 @@ then, stop and keep the current numbers of record.
      stopped there (`~/rerun-chain.log`). `kubectl top` during it:
      `eval/runs/top-cpu-ext-f304375.txt`.
 
+   **CPU extended re-run — rules recorded 2026-10-06, before it starts:**
+   - It replaces `5bdz5` only because `5bdz5`'s traffic proof FAILed.
+     Its grounding rate is the CPU arm's result whatever the gate says.
+   - If its traffic proof is not EXACT, the CPU arm's after side is not
+     citable, the before/after covers hosted and GPU only, and there is no
+     third attempt.
+   - Same protocol: `make run-time-check` against the CPU smoke
+     (`grounding-eval-slm-cpu-xnwjm`), then `make slm-eval-run
+     ENDPOINT=cpu`, `kubectl top` every 15 s throughout.
+
 3. **[STOPPED — CPU extended failed its gate and its traffic proof]** Runs, in order: hosted smoke, CPU smoke, GPU
    smoke, hosted extended, CPU extended, GPU extended — each SLM run
    through `make slm-eval-run` (traffic proof), the extended SLM runs
