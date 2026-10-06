@@ -1597,6 +1597,23 @@ then, stop and keep the current numbers of record.
      (`grounding-eval-slm-cpu-xnwjm`), then `make slm-eval-run
      ENDPOINT=cpu`, `kubectl top` every 15 s throughout.
 
+   **CPU extended re-run result (2026-10-06):**
+   `grounding-eval-extended-slm-cpu-4kkgm`, 17:52–20:19Z. Run-time check
+   PASS (projected worst 2h51m). Every eval pod on its first attempt, 0
+   retries, no failed attempts; stock block empty 0/40. **GATE FAILED**
+   (15/282 = 5.32%, CI 3.2–8.6%; numeric 2/166) and **TRAFFIC PROOF:
+   FAIL** — the server counted 4 prompt tokens FEWER than the harness
+   logged (353,897 against 353,901; completion 99,078 on both; 270 calls,
+   0 errored). `5bdz5` was off by +1 in the other direction. Cause not
+   investigated; the endpoint's log for the window is captured for it.
+   Under the rules above: **not citable**; the CPU arm's after side is not
+   citable, the before/after covers hosted and GPU only, and there is no
+   third attempt. Captured: `eval/runs/slm-proof-4kkgm/` (counter
+   snapshots, workflow object, pod log, `llamacpp-server-window.log`),
+   `eval/runs/raw/4kkgm-findings/`, `eval/runs/4kkgm-claims.jsonl` and
+   `-contexts/`, the attempts record, `eval/runs/cpu-rerun-f304375.log`
+   (make output) and `eval/runs/top-cpu-rerun-f304375.txt`.
+
 3. **[STOPPED — CPU extended failed its gate and its traffic proof]** Runs, in order: hosted smoke, CPU smoke, GPU
    smoke, hosted extended, CPU extended, GPU extended — each SLM run
    through `make slm-eval-run` (traffic proof), the extended SLM runs

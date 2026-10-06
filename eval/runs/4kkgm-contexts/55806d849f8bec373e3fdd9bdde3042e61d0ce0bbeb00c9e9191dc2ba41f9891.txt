@@ -1,0 +1,71 @@
+STOCK DATA:
+{
+  "ticker": "VERV",
+  "company_name": "N/A",
+  "currency": "USD"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2025-02-27",
+    "summary": "Item 1A. Risk Factors. Our future operating results could differ materially from the results described in this Annual Report on Form 10-K due to the risks and uncertainties described below. You should consider carefully the following information about risks below in evaluating our business. If any of the following risks actually occur, our business, financial conditions, results of operations and future growth prospects would likely be materially and adversely affected. In these circumstances, the market price of our common stock would likely decline. In addition, we cannot assure investors that our assumptions and expectations will prove to be correct. Important factors could cause our actual results to differ materially from those indicated or implied by forward-looking statements. See p"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2025-05-14",
+    "summary": "Item 1A. Risk Factors 26 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 91 Item 5. Other Information 91 Item 6. Exhibits 92 Signatures 93 Part I \u2500 Financi al Information Item 1. Financi al Statements Verve Therapeutics, Inc. Condensed consolidat ed balance sheets (in thousands, except share and per share amounts) (unaudited) March 31, 2025 December 31, 2024 Assets Current assets: Cash and cash equivalents $ 96,554 $ 172,560 Marketable securities 400,523 351,721 Collaboration receivable 1,399 3,255 Prepaid expenses and other current assets 13,174 15,215 Total current assets 511,650 542,751 Property and equipment, net 18,457 18,644 Restricted cash 4,774 4,774 Operating lease right-of-use assets 76,217 78,082 Other long term assets 3,065 3,141 Total assets $ 614,163 $ 647"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] Based on the provided text from the Annual Report on Form 10-K for VERV, the key takeaways regarding the company's financial position, risks, and future outlook are as follows:
+
+**Financial Performance and Losses**
+*   **Significant Operating Losses:** The company has incurred substantial net losses since inception, with losses of $198.7 million for 2024, $200.1 million for 2023, and $157.4 million for 2022.
+*   **Accumulated Deficit:** As of December 31, 2024, the company had an accumulated deficit of $743.0 million.
+*   **No Revenue:** The company has no approved products and has not generated any revenue from product sales. It expects to incur significant operating expenses and net losses for the foreseeable future.
+
+**Funding and Capital Resources**
+*   **Current Liquidity:** As of December 31, 2024, the company held $524.3 million in cash, cash equivalents, and marketable securities. Additionally, in February 2025, the company received a $20.0 million milestone payment from Eli Lilly and Company (Lilly) under the Lp(a) program.
+*   **Funding Horizon:** Management estimates that existing resources will fund operating expenses and capital expenditures into mid-2027. However, this estimate relies on assumptions that may prove incorrect, and the company could deplete resources sooner than expected.
+*   **Need for Additional Capital:** The company currently has no credit facility or committed sources of capital. It anticipates needing substantial additional funding to support ongoing and planned activities. Failure to raise capital on acceptable terms could force the company to delay, limit, reduce, or terminate research and development programs.
+
+**Operational Expenses and Growth Drivers**
+*   **Increasing Costs:** Expenses are expected to increase substantially due to ongoing and planned clinical trials, including the Heart-2 Phase 1b trial for VERVE-102, the Pulse-1 Phase 1b trial for VERVE-201, and a planned Phase 2 clinical trial for the PCSK9 program.
+*   **Key Expense Categories:** Major cost drivers include:
+    *   Clinical trials and preclinical development for product candidates like VERVE-101.
+    *   Milestone payments to collaborators, including Lilly, Acuitas Therapeutics, The Broad Institute, Harvard, and Novartis.
+    *   Intellectual property maintenance, enforcement, and defense.
+    *   Hiring personnel for research, development, clinical, and commercial functions.
+    *   Establishing commercial-scale manufacturing capabilities.
+    *   Costs associated with operating as a public company.
+
+**Risks and Uncertainties**
+*   **Regulatory and Development Risks:** The process of identifying product candidates and conducting clinical trials is time-consuming, expensive, and uncertain. There is no guarantee that the company will obtain marketing approval or achieve commercial success.
+*   **External Factors:** Expenses may increase due to regulatory requirements (such as additional trials mandated by the FDA or EMA), delays in clinical trials, or third-party intellectual property challenges.
+*   **Market and Economic Risks:** Disruptions in global financial markets could reduce the company's ability to access capital, potentially negatively affecting liquidity.
+
+**Collaborations**
+*   The company relies on collaboration agreements for funding and development, most notably the Research and Collaboration Agreement with Eli Lilly and Company, which became effective in July 2023. The success of these collaborations and the achievement of milestones are critical factors influencing the company's financial requirements.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] The primary risk factors disclosed include:
+
+*   **Financial Position and Need for Capital:** The company has incurred significant losses since inception, with net losses of $198.7 million, $200.1 million, and $157.4 million for the years ended December 31, 2024, 2023, and 2022, respectively. As of December 31, 2024, the accumulated deficit was $743.0 million. The company has no approved products, has generated no revenue from product sales, and expects to incur losses for the foreseeable future.
+*   **Operational and Development Risks:** The company has not yet completed a clinical trial of any product candidate and initiated clinical development of its first product candidate in 2022. There is no assurance that the company will successfully complete preclinical testing, obtain regulatory approvals, or achieve market acceptance. The process is time-consuming, expensive, and uncertain, and the company may never generate revenue sufficient to achieve profitability.
+*   **Funding Requirements:** The company expects to incur substantial additional expenses for research and development, commercialization, and operating as a public company. It currently has no credit facility or committed sources of capital. If unable to raise capital on acceptable terms, the company may be forced to delay, reduce, or eliminate product development programs or commercialization efforts.
+*   **Market and Commercialization Risks:** Revenue depends on market size, pricing, reimbursement, and commercial rights. If the addressable patient population is smaller than estimated, indications are narrower than expected, or competition narrows the treatment population, the company may not generate significant revenue.
+*   **Specific Factors Influencing Capital Needs:** Future capital requirements depend on the progress and costs of ongoing and planned clinical trials (including Heart-2 for VERVE-102, Pulse-1 for VERVE-201, and the PCSK9 program), the scope of discovery and preclinical activities, manufacturing costs, intellectual property costs, regulatory review outcomes, and the success of collaboration agreements, such as the agreement with Eli Lilly and Company.
+*   **Liquidity and Economic Risks:** As of December 31, 2024, the company had $524.3 million in cash, cash equivalents, and marketable securities, and received a $20.0 million milestone payment from Lilly in February 2025. The company believes these resources will fund operations into mid-2027, but this estimate is based on assumptions that may prove incorrect. Disruptions in global financial markets could reduce the ability to access capital, potentially forcing the company to seek additional funding sooner than planned or on unfavorable terms.

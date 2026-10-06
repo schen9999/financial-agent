@@ -1,0 +1,79 @@
+STOCK DATA:
+{
+  "ticker": "BLNK",
+  "company_name": "Blink Charging Co.",
+  "current_price": 0.5151,
+  "currency": "USD",
+  "market_cap": 74657936.0,
+  "forward_pe": -2.22987,
+  "week_52_high": 2.65,
+  "week_52_low": 0.45,
+  "financial_currency": "USD",
+  "revenue": 96550000.0,
+  "net_income": -50667000.0,
+  "profit_margin_pct": -52.48,
+  "dividend_yield": 0.0,
+  "sector": "Industrials",
+  "industry": "Engineering & Construction"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-03-31",
+    "summary": "Item 1A \u2013 Risk Factors\u201d below. In this Annual Report, unless otherwise indicated or the context otherwise requires, the \u201cCompany,\u201d \u201cBlink,\u201d \u201cBlink Charging,\u201d \u201cwe,\u201d \u201cus\u201d or \u201cour\u201d refer to Blink Charging Co., a Nevada corporation, and its consolidated subsidiaries. The mark \u201cBlink\u201d is our registered trademark in the United States and, regarding the name of Ecotality, Inc. (whose assets we acquired in October 2013), in Australia, China, Hong Kong, Indonesia, Japan, South Korea, Malaysia, Mexico, New Zealand, Philippines, South Africa, Singapore, Switzerland, Taiwan, and is a trademark registered in the European Union under the Madrid Protocol. We have registered other trademarks and use certain trademarks, trade names, and logos that have not been registered. We claim common law rights to the"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-07",
+    "summary": "Item 1A - Risk Factors. Any one or more of these uncertainties, risks and other influences, could materially affect our results of operations and whether forward-looking statements made by us ultimately prove to be accurate. Our actual results, performance and achievements could differ materially from those expressed or implied in these forward-looking statements. Except as required by federal securities laws, we undertake no obligation to publicly update or revise any forward-looking statements, whether from new information, future events or otherwise. U.S. dollars are reported in thousands, except for share and per share amounts. Overview We are a leading owner, operator, and provider of EV charging equipment and networked EV charging services in the rapidly growing U.S. and internationa"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] Based on the provided context from Blink Charging Co.’s filings, here are the key takeaways regarding the company’s operations, strategic initiatives, and market position:
+
+**Strategic Restructuring and Financial Health**
+*   **BlinkForward Initiative:** In May 2025, Blink announced a strategic restructuring plan aimed at accelerating profitability and enhancing operational efficiency. Key components included transforming the company into a more agile and lean organization.
+*   **Workforce and Cost Reductions:** The company significantly reduced its global workforce from 513 to approximately 320 employees. It also reduced operating, general, and administrative expenses.
+*   **Manufacturing Shift:** Blink transitioned to contract manufacturing for its EV hardware to reduce overhead and focus on intellectual property and customer experience. This transition was completed in January 2026, and the company no longer maintains in-house manufacturing facilities.
+*   **Capital Raise:** In December 2025, Blink completed a $20 million funding round via the public markets.
+
+**Acquisitions and Leadership**
+*   **Zemetric Acquisition:** In July 2025, Blink acquired Zemetric Inc. and its subsidiaries. This acquisition addressed gaps in software-driven fleet management and energy management services, as well as providing a lower-cost Level 2 charger hardware lineup.
+*   **Leadership Change:** Following the acquisition, Harmeet Singh, Zemetric’s CEO, became Blink’s new Chief Technology Officer.
+
+**Product Portfolio and Technology**
+*   **New Hardware:** Through the Zemetric acquisition, Blink introduced the "Shasta," a next-generation, intelligent Level 2 charger with ISO 15118 readiness for "Plug & Charge" functionality.
+*   **Charger Inventory:** As of December 31, 2025, there were approximately 66,350 chargers connected to the Blink Network. This included approximately 58,850 Level 2 commercial chargers and 1,920 DC Fast Charging (DCFC) commercial chargers. Approximately 8,250 of these were owned by Blink.
+*   **Product Lines:** Blink offers Level 2 AC chargers (Series 7, 8, 10, EQ, and Shasta) and DCFC equipment ranging from 30kW to 600kW, supporting NACS, CCS1, and CHAdeMo connectors.
+
+**Business Models**
+Blink operates under three primary business models differentiated by ownership and cost responsibility:
+1.  **Blink-owned turnkey:** Blink incurs equipment and installation costs, owns the station, and retains substantially all revenue after fees. Agreements typically last nine years (up to 27 with extensions).
+2.  **Blink-owned hybrid:** Blink incurs equipment costs, while the Property Partner incurs installation costs. Revenue is shared more generously with the partner. Agreements typically last seven years (up to 21 with extensions).
+3.  **Host-owned:** The Property Partner purchases, owns, and operates the station. Blink provides connectivity, payment processing, and optional maintenance, retaining fees while the partner keeps the charging revenue.
+
+**Market Overview and Industry Trends (2025)**
+*   **EV Adoption:** Approximately 25% of new vehicles sold globally in 2025 were electric.
+*   **Infrastructure Growth:** The U.S. added 18,041 new DC fast charging ports in 2025 (a 30% year-over-year increase), bringing the total to 70,007 public DC fast charging ports by year-end.
+*   **Utilization and Economics:** Average nationwide utilization remained stable at 16.4% in Q4 2025. Industry estimates suggest that 20% utilization is required for economic viability, while 25–30% represents attractive economics.
+*   **Technology and Pricing:** Deployment shifted toward higher-power equipment, with 51% of new non-Tesla deployments in Q4 2025 being 250 kW or higher. Average charging prices remained stable, ranging between $0.45 and $0.53 per kilowatt-hour. Network reliability improved, with most U.S. states recording average reliability levels in the low 90% range.
+
+**Other Operations**
+*   **Car-Sharing:** Blink owns and operates car-sharing programs through its subsidiary, Envoy Mobility, offering subscription and on-demand electric vehicle sharing.
+*   **Partnerships:** The company has established strategic partnerships across various sectors, including retail, municipal, healthcare, hospitality, and transportation hubs.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] Based on the provided context, the specific primary risk factors are not disclosed. The text references "Item 1A – Risk Factors” below" but does not list or describe the actual risk factors within the available excerpts.
