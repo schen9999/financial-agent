@@ -90,8 +90,74 @@ the demo fills the wait. If time is short, cut step 5 and shorten step 3.
 
 ## The live run
 
-*Written in the live-run plan (item (e)): the pre-flight checks, the
-commands, what success looks like, and what to do if it fails.*
+One GPU smoke: ten tickers, the self-served model on node 2's A10, judged
+by Claude, gated, with the traffic proof. Every command is in
+[deploy-runbook.md, "Demo live run"](deploy-runbook.md#demo-live-run-november-2026-gpu-smoke-from-the-oke-harness).
+
+**Preflight, the day before and 30 minutes before** (stop at the first
+failure and take its branch):
+
+1. Anthropic balance covers the run (the smoke's estimate: about $0.95).
+2. OKE: four nodes Ready; the app, database, cache and CPU-endpoint pods
+   Running; Argo's controller and server Running.
+3. The nightly CronWorkflow is still suspended.
+4. The deployed image is the pinned `1f51dad`.
+5. Node 2: the endpoint's `/health` is ok, it answers 401 without the key,
+   and llama-server holds about 20.5 GB of the A10.
+6. From OKE: 401 without the key, 200 with it and the plain model alias;
+   the harness reads the endpoint's facts.
+7. One Yahoo price request from the cluster succeeds.
+8. Screen sharing: no command to be shown prints a key (the exposure
+   script, `server_facts` and the run's output do not; secret dumps,
+   `env` in a pod, `.env` are never run on the shared screen); the
+   terminals to be shared are pre-opened with their scrollback cleared.
+9. Port-forwards and tunnels up: the Argo UI and Streamlit open on the
+   laptop.
+
+The day before, the preflight ends with a full rehearsal run, which also
+measures the day's timings.
+
+**Launch** (operator), at step 2 of the running order:
+
+```bash
+make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-slm-gpu-smoke.yaml
+```
+
+About 10 minutes. Nothing else may call the GPU endpoint until it
+finishes: other traffic fails the proof, by design.
+
+**On screen while it runs:** the operator pane with the run's progress;
+the Argo UI graph (ten eval pods, two at a time, then the aggregate); a
+node 2 pane with `watch -n 2 nvidia-smi`, the A10 moving with the calls.
+At step 7: the aggregate table, the gate line, `stock block empty: 0/10`,
+the call table with no truncation, loop, parse, format or error flags,
+the attempts block (0 retries) and `TRAFFIC PROOF: EXACT`.
+
+**If something fails** — each case ends at the fallback below; say what
+failed, and debug no further than the first check:
+
+| What happens | First check | Then |
+|---|---|---|
+| Node 2 is down | `ssh` to node 2; `/health` on the node | fallback (a VM restart is a console job, and the model load is too long to wait out) |
+| The endpoint answers 401 to the harness | the key in OKE's Secret vs node 2's | fallback (re-keying is not a live step) |
+| No HTTP answer (000) from OKE | `/health` on node 2 itself | answers there: the network rule — fallback; does not: pod restarting — wait a minute or two, else fallback |
+| Yahoo 429 (`stock block empty` above 0) | the preflight's price request | show the count, quote nothing from the run, no retry — fallback for the numbers |
+| The smoke fails its gate | which ticker holds the unsupported claims | smoke variance from judge listing (`7c66k` failed on MSFT alone); arms are compared on 40-ticker runs — go to `p9jr2`; no re-run for a pass |
+| The Anthropic balance runs out | the attempts block | fallback |
+| TRAFFIC PROOF: FAIL or LOWER-BOUND | what the proof reports | the proof doing its job; the run is not citable — fallback |
+
+**vLLM stays at 0 on node 2 until after the demo**, with llama.cpp
+running there: vLLM answers on the same port without a key, ufw does not
+guard k3s NodePorts, and the network rule for that port stays open to
+the cluster until the demo. If vLLM is ever needed before then, the
+runbook's contingency closes the rule first and restores it before the
+rehearsal.
+
+**After the demo**, in this order, because vLLM answers on the same port
+without a key and ufw does not guard k3s NodePorts: capture the live run;
+close the port-forwards; close ufw 30880 on node 2; ask the tenancy owner
+to remove the security-list rule for 30880 and confirm the port no longer
+answers from OKE; only then restore vLLM if wanted.
 
 ## Fallback if the live run fails
 

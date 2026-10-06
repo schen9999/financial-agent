@@ -1224,6 +1224,227 @@ smoke, then the extended runs with their same-image hosted baseline
    `make vm-llamacpp-down && make vm-vllm` — but first remove the ufw rule
    and the security-list rule: the vLLM endpoint has no key.
 
+## Demo live run (November 2026): GPU smoke from the OKE harness
+
+**[NOT YET EXECUTED]** The live part of the demo (docs/demo.md, "The live
+run"): one GPU smoke, `argo/eval-run-slm-gpu-smoke.yaml`, from the OKE
+harness against node 2's llama.cpp endpoint, with the traffic proof. It is
+a new dated run on image `1f51dad`; capture it like `k6zxd`. Nothing here
+changes a manifest.
+
+**Network facts this section depends on.** The VCN security list is the
+boundary for node 2's NodePorts: k3s NodePorts route around ufw, which is
+defense in depth only (SLM step 4). The security-list rule admitting TCP
+30880 from 129.80.187.92/32 stays in place until after the demo. The
+financial-lora vLLM, when `make vm-vllm` restores it, also answers on
+30880 **without a key**.
+
+**vLLM stays scaled to 0 on node 2 until after the demo; llama.cpp keeps
+running there.** Because k3s NodePorts bypass ufw, the security-list
+rule stays open to the OKE egress IP until the demo, and vLLM on 30880
+is unkeyed, serving vLLM on node 2 while the rule stands would expose an
+unkeyed model to that IP. The default path never swaps; the one way vLLM
+comes back before the demo is the contingency below, which closes the
+rule first.
+
+### Preflight — the day before, and again 30 minutes before
+
+Run every check from the shell named; stop at the first failure and take
+its branch below. Nothing in the preflight sends tokens to the GPU
+endpoint, and all of it finishes before the run's first traffic-proof
+snapshot.
+
+1. **Anthropic balance** (console, billing page): the judge is Sonnet on
+   every arm; the smoke's harness estimate was $0.9463 (`k6zxd`). Keep
+   enough for the rehearsal, the demo run and a re-run. A low balance
+   fails the run loudly (`eval/runtime_guards.py`), mid-run.
+2. **OKE nodes and pods Ready** (operator):
+   ```bash
+   kubectl get nodes                                   # 4 Ready
+   kubectl -n financial-agent get pods                 # api, worker, streamlit, mcp, redis, postgres, llamacpp Running
+   kubectl -n argo get pods                            # workflow-controller, argo-server Running
+   ```
+3. **CronWorkflow still suspended** (operator):
+   ```bash
+   kubectl -n financial-agent get cronworkflow grounding-eval-nightly -o jsonpath='{.spec.suspend}{"\n"}'   # true
+   ```
+4. **Image pin** (operator, repo at the pushed `slm-harness`):
+   ```bash
+   python3 scripts/pin_oke_image.py --overlay oke-provided --check     # pinned app image tag: 1f51dad…
+   kubectl -n financial-agent get deploy api -o jsonpath='{.spec.template.spec.containers[0].image}{"\n"}'   # same tag
+   ```
+5. **Node 2 endpoint and GPU** (node 2, `ssh oci2`):
+   ```bash
+   curl -s localhost:30880/health                                     # {"status":"ok"}
+   curl -s -o /dev/null -w '%{http_code}\n' localhost:30880/v1/models # 401: key enforced
+   nvidia-smi --query-compute-apps=pid,process_name,used_memory --format=csv   # llama-server ~20,488 MiB
+   ```
+   And vLLM is at 0 (`kubectl -n financial-agent get deploy vllm` shows
+   `0/0`). If vLLM is serving on 30880, that is the unkeyed exposure this
+   section rules out: run `make vm-llamacpp` at once (it scales vLLM to 0
+   and takes the port back), then tell the tenancy owner.
+6. **30880 from OKE** (operator, whose egress is the cluster's,
+   129.80.187.92): `scripts/gpu_exposure_check.sh` (how to run it is in
+   its header) prints HTTP 401 without the key and HTTP 200 with it,
+   serving the plain alias `qwen3.6-35b-a3b-q4km`, as in
+   `eval/runs/gpu-exposure-check-2026-10-05.txt`. Then the harness's own
+   path:
+   ```bash
+   kubectl -n financial-agent exec deploy/api -- env SLM_FULL=true SLM_ENDPOINT=gpu python -c \
+     "import json; from agent.tools.slm import server_facts; print(json.dumps(server_facts(), indent=1))"
+   ```
+7. **Yahoo from the cluster** (operator; one request — yfinance has
+   answered 429 from this egress IP):
+   ```bash
+   kubectl -n financial-agent exec deploy/api -- python -c \
+     "import yfinance as yf; print(yf.Ticker('AAPL').fast_info['lastPrice'])"   # a price, not an error
+   ```
+8. **Screen sharing: nothing shown prints a key.** What the demo shows is
+   safe: `scripts/gpu_exposure_check.sh` reads the key into a 0600 header
+   file and prints only the endpoint's responses; `server_facts()` returns
+   no key; `make slm-eval-run` writes its snapshots to files and its
+   recipe is silent; llama-server takes its key from an environment
+   variable, not an argument, so `ps` does not show it. On a shared screen
+   never run `kubectl get secret … -o yaml|json`, `kubectl exec … env`,
+   `printenv`/`env` in a pod or on node 2, `cat /proc/<pid>/environ`, or
+   `cat .env` on the laptop; `kubectl describe secret` shows sizes only.
+   The run's output shows node 2's public IP and the operator's private
+   addresses — not credentials (30880 admits only the OKE egress IP).
+   Pre-open the terminals to be shared (operator, node 2, laptop), clear
+   their scrollback (`clear && printf '\e[3J'`, or tmux `clear-history`),
+   and run the preflight in other terminals.
+9. **Port-forwards and tunnels up** (operator, then laptop):
+   ```bash
+   # operator
+   nohup kubectl -n argo port-forward svc/argo-server 2746:2746 >/tmp/pf-argo.log 2>&1 &
+   nohup kubectl -n financial-agent port-forward svc/streamlit 8501:8501 >/tmp/pf-streamlit.log 2>&1 &
+   # laptop (WSL)
+   ssh -N -L 32746:localhost:2746 -L 32501:localhost:8501 oke-operator
+   # Argo UI: https://localhost:32746 (check that it loads and lists the
+   # workflows; argo-server's auth mode decides whether it asks for a token)
+   # Streamlit: http://localhost:32501
+   ```
+
+**The day before only: a full rehearsal.** Run the launch below once,
+end to end, and capture it. It measures the timings this section leaves
+open (the swap's model load, the smoke's wall time on the day) and
+proves the path. A rehearsal is a dated smoke like any other; it is not
+an arm comparison.
+
+### Launch (operator)
+
+```bash
+cd ~/financial-agent
+make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-slm-gpu-smoke.yaml
+```
+
+The target snapshots the endpoint's counters from the api pod, submits
+and follows the workflow (`[hh:mm:ss] phase=Running progress=n/11`),
+captures every pod's log into `~/slm-proof/<wf>.log`, snapshots again and
+prints the aggregate, the attempts block and `TRAFFIC PROOF: EXACT |
+LOWER-BOUND | FAIL`. `k6zxd` took 9 min 40 s. Nothing else may call the
+GPU endpoint until it finishes: other traffic fails the proof.
+
+On screen while it runs: the operator pane with the target's progress;
+the Argo UI graph (ten eval pods, two at a time, then the aggregate); a
+node 2 pane with `watch -n 2 nvidia-smi` (the A10's utilization moving
+with the calls, ~20.5 GB held). At the end: the aggregate table, the gate
+line, `stock block empty`, the LLM-call table (Trunc, Loop, Parse, Fmt,
+Err all 0), the attempts block (0 retries) and `TRAFFIC PROOF: EXACT`.
+
+### Failure branches
+
+Every branch ends at the recorded runs: `eval/runs/gpu-smoke.log`
+(`k6zxd`, the smoke) and `eval/runs/gpu-extended.log` (`p9jr2`, the A10
+run of record), open on the laptop before the demo starts. Say what
+failed; do not debug live beyond the first check named.
+
+- **Node 2 down** (`ssh oci2` fails, or `/health` does not answer on the
+  node): a stopped VM is restarted by the tenancy owner in the console,
+  and the model's load time is not one to wait out live. Fallback.
+- **The endpoint answers 401 to the harness** (`server_facts` or the run's
+  first calls): the key in OKE's `slm-endpoints` Secret no longer matches
+  node 2's `llamacpp-api-key`. Re-keying is SLM step 1, not a live step.
+  Fallback.
+- **000 — no HTTP answer from the operator.** One check, on node 2:
+  `curl -s localhost:30880/health`. If it answers there, the path from OKE
+  is blocked (security-list rule) — the tenancy owner's console. If it
+  does not, the pod is down or restarting: `kubectl -n financial-agent get
+  pods -l app.kubernetes.io/name=llamacpp`; if it is not Running within a
+  minute or two, fallback.
+- **Yahoo 429** (preflight 7 errors, or the aggregate's `stock block
+  empty` is above 0/10): the run still completes, but those briefs had no
+  stock data, so their figures say nothing about the model. Show the
+  count, do not quote the run's rate, do not retry (the 429 is on the
+  egress IP). Fallback for the numbers.
+- **The smoke fails its gate** (above 5% unsupported, or under 30 claims):
+  a smoke's rate moves with how many qualitative claims the judge lists for
+  one ticker — `7c66k` failed at 7.92% on MSFT alone, `k6zxd` passed at
+  4.76% with all three on AAPL. Show which ticker holds the unsupported
+  claims and that the numeric column is 0; arms are compared on the
+  40-ticker runs, so go to `p9jr2`. Do not re-run to get a pass.
+- **The balance runs out mid-run** (the run fails on the credit-balance
+  error; retries appear in the attempts block): fallback; the proof may
+  not be citable.
+- **TRAFFIC PROOF: FAIL or LOWER-BOUND**: say what the proof caught
+  (traffic the harness did not log, or a failed attempt) — that is the
+  proof working. The run is not citable. Fallback.
+
+### Contingency only: vLLM needed on node 2 before the demo
+
+Not part of the default path. If vLLM must serve on node 2 before the
+demo, in this order, all of it finished before the rehearsal:
+
+1. **Close 30880 first.** Ask the tenancy owner to remove the
+   security-list rule (TCP 30880 from 129.80.187.92/32); on node 2,
+   `sudo ufw delete allow from 129.80.187.92 to any port 30880 proto tcp`;
+   from the operator, `curl -s -m 10 -o /dev/null -w '%{http_code}\n'
+   http://<node 2>:30880/health` prints `000`.
+2. **Then vLLM** (node 2): `make vm-llamacpp-down && make vm-vllm`
+   (rollout waits up to 15 minutes, then polls the model for up to 2).
+3. **Swap back to llama.cpp** (node 2):
+   ```bash
+   cd ~/financial-agent && git pull
+   export KUBECONFIG=$HOME/.kube/config
+   make vm-llamacpp            # scales vLLM to 0, deletes its Service, takes 30880; the GGUF is already on disk
+   curl -s localhost:30880/health && curl -s -o /dev/null -w '%{http_code}\n' localhost:30880/v1/models   # ok, 401
+   ```
+4. **Re-open 30880 for the OKE egress IP only:** `sudo ufw allow from
+   129.80.187.92 to any port 30880 proto tcp` on node 2, and ask the
+   tenancy owner to re-add the security-list rule (129.80.187.92/32,
+   never a range). Then preflight 5 and 6.
+
+Time: the Kubernetes steps take a minute or two each. Loading the 20.4 GB
+GGUF into the A10 is not recorded — `make vm-llamacpp` waits up to an
+hour (`rollout status --timeout=3600s`), then polls the model for up to
+5 minutes; measure it if this path is used and write it here. The two
+security-list changes depend on the tenancy owner. If `make vm-llamacpp`
+fails on GPU memory, something else holds the A10: check `nvidia-smi`
+first; do not lower layers or switch to a hybrid layout for the demo (a
+hybrid run is labelled hybrid, not GPU).
+
+### Teardown, after the demo
+
+In this order — vLLM answers on 30880 without a key, and ufw does not
+guard k3s NodePorts:
+
+1. **Capture the live run** (and the rehearsal) within the 7-day TTL:
+   OKE step 9's capture list, from `~/slm-proof/`.
+2. **Port-forwards and tunnels down** (operator):
+   `pkill -f 'kubectl -n argo port-forward'; pkill -f 'kubectl -n
+   financial-agent port-forward'`; close the laptop's `ssh -N`.
+3. **Close ufw 30880** (node 2):
+   `sudo ufw delete allow from 129.80.187.92 to any port 30880 proto tcp`.
+4. **Ask the tenancy owner to remove the security-list rule** TCP 30880
+   from 129.80.187.92/32. Then confirm from the operator:
+   `curl -s -m 10 -o /dev/null -w '%{http_code}\n' http://<node 2>:30880/health`
+   prints `000`.
+5. **Only then, if wanted, restore vLLM** (node 2):
+   `make vm-llamacpp-down && make vm-vllm`.
+
+The CronWorkflow stays suspended throughout. The CPU endpoint on OKE is
+not part of the live run and is left as it is.
+
 ## OKE (OCI) — Phase 2
 
 All OCI infrastructure is authored in `terraform/oci/` (fmt + validate

@@ -40,7 +40,10 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
   every overlay change is proven against.
 - Single VM (the first demo's target; since 2026-10-05 vm-a10-inst-1 is
   frozen standby and vm-a10-inst-2, node 2, serves the GPU llama.cpp
-  endpoint of the demo): vm-a10-inst-1 and vm-a10-inst-2 — two
+  endpoint of the demo; on node 2 vLLM STAYS SCALED TO 0 until after the
+  demo — it answers 30880 unkeyed, k3s NodePorts bypass ufw, and the
+  30880 security-list rule stays open to the OKE egress IP until then;
+  runbook "Demo live run"): vm-a10-inst-1 and vm-a10-inst-2 — two
   VM.GPU.A10.1 nodes (1x A10 24 GB, Ubuntu 22.04, NVIDIA driver 570
   preinstalled), rebuilt from the runbook 2026-09-23 (bootstrap, vm-images,
   vm-up green on both; runbook "Rebuild on fresh nodes, 2026-09-23").
