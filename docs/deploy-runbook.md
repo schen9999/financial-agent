@@ -1573,6 +1573,20 @@ then, stop and keep the current numbers of record.
      stopped there (`~/rerun-chain.log`). `kubectl top` during it:
      `eval/runs/top-cpu-ext-f304375.txt`.
 
+   **LangSmith tracing (2026-10-06).** The LangSmith monthly unique-trace
+   quota was exhausted on 2026-10-06: trace uploads from the local re-judge
+   (`eval/rejudge_runs.py`) were rejected with HTTP 429 ("Monthly unique
+   traces usage limit exceeded"). Uploads are best-effort and the judge
+   calls themselves were unaffected. Tracing is now off for local eval
+   scripts (`LANGCHAIN_TRACING_V2=false` in the laptop's `.env`, which is
+   not committed). On the OKE cluster it is still on: `app-secrets`, made
+   from that `.env` before the change, carries `LANGCHAIN_TRACING_V2=true`
+   and a `LANGCHAIN_API_KEY`; the app pods and the eval pods (`envFrom:
+   app-secrets`) read it, and the api pod's `tracing_enabled()` returns
+   True. Left unchanged while the CPU re-run `4kkgm` runs; to turn it off
+   there, re-create `app-secrets` from the updated `.env` (OKE step 3) and
+   restart the app Deployments.
+
    **CPU extended re-run — rules recorded 2026-10-06, before it starts:**
    - It replaces `5bdz5` only because `5bdz5`'s traffic proof FAILed.
      Its grounding rate is the CPU arm's result whatever the gate says.
