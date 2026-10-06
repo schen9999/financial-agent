@@ -104,16 +104,14 @@ def unify(judgings: list[list[dict]]) -> list[dict]:
 
 def majority(verdicts: list[str]) -> str:
     """UNSUPPORTED when at least two judgings said so; else the most common
-    listed verdict, SUPPORTED on ties (NOT_LISTED never wins)."""
+    of the other listed verdicts, SUPPORTED on ties; NOT_LISTED when one
+    judging flagged it and no other listed it (not flagged either way)."""
     if sum(v == "UNSUPPORTED" for v in verdicts) >= 2:
         return "UNSUPPORTED"
-    listed = Counter(v for v in verdicts if v != "NOT_LISTED")
+    listed = Counter(v for v in verdicts if v in ("SUPPORTED", "INFERENCE"))
     if not listed:
         return "NOT_LISTED"
-    top = max(listed.values())
-    for v in ("SUPPORTED", "INFERENCE", "UNSUPPORTED"):
-        if listed.get(v) == top:
-            return v
+    return max(("SUPPORTED", "INFERENCE"), key=lambda v: listed[v])
 
 
 def stratum(c: dict) -> str:

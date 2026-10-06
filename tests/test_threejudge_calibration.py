@@ -25,6 +25,9 @@ def test_claims_match_across_judgings():
     assert btc.majority(["UNSUPPORTED", "NOT_LISTED", "UNSUPPORTED"]) == "UNSUPPORTED"
     assert btc.majority(["UNSUPPORTED", "SUPPORTED", "NOT_LISTED"]) == "SUPPORTED"
     assert btc.majority(["INFERENCE", "INFERENCE", "UNSUPPORTED"]) == "INFERENCE"
+    # one flag and nothing else listed is not a majority flag
+    assert btc.majority(["UNSUPPORTED", "NOT_LISTED", "NOT_LISTED"]) == "NOT_LISTED"
+    assert btc.majority(["SUPPORTED", "INFERENCE", "NOT_LISTED"]) == "SUPPORTED"
 
 
 def test_population_with_identical_second_and_third_judgings():
@@ -54,6 +57,9 @@ def test_writes_a_blind_sample_and_a_weighted_key(tmp_path, monkeypatch):
     assert not any("LABEL:" in r["context"] or "NOT_LISTED" in r["context"] for r in sample)
     assert [r["id"] for r in sample] == [r["id"] for r in key]
     assert len(key) == sum(method["sample"].values()) <= btc.TOTAL
+    for r in key:
+        flagged = sum(r[j] == "UNSUPPORTED" for j in ("j1", "j2", "j3")) >= 2
+        assert (r["majority"] == "UNSUPPORTED") == flagged
     for k in "UIWS":
         w = sum(float(r["weight"]) for r in key if r["stratum"] == k)
         assert w == pytest.approx(method["population"][k])
