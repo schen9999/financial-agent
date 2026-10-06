@@ -683,7 +683,19 @@ def judge_on_same_figure(rows: list[dict], runs_dir: Path) -> list[dict]:
     return out
 
 
-def run_three_way(adj_path: Path, runs: list[str], date: str, draws: int = nb.BOOT_DRAWS) -> dict:
+def _currency_label_te(b: dict) -> tuple[int, int]:
+    """(currency_label TRUE_ERRORs, distinct checked numbers) for one brief."""
+    return (sum(1 for f, r in b["adj"]
+                if f["kind"] == "currency_label" and r["verdict"].strip() == TE),
+            b["counts"][1])
+
+
+def run_three_way(adj_path: Path, runs: list[str], date: str, draws: int = nb.BOOT_DRAWS,
+                  financial_currency: Path | None = None) -> dict:
+    """With `financial_currency` (preflight output), each run's stock dicts
+    that lack a reporting currency get it first, as numeric_backtest.py
+    --financial-currency does, so an adjudication file written from that
+    backtest matches its flags."""
     with open(adj_path, newline="", encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
     if any(not r["verdict"].strip() for r in rows):
@@ -694,8 +706,18 @@ def run_three_way(adj_path: Path, runs: list[str], date: str, draws: int = nb.BO
     briefs = [b for b in (nb.load_brief(p, nb.RAW)
                           for p in sorted(nb.RAW.glob("*-findings/**/*.md"))) if b]
     briefs = [b for b in briefs if b["run"] in runs]
+    injected = (nb.inject_financial_currency(briefs, nb.load_financial_currency(financial_currency))
+                if financial_currency else {})
     nb.backtest(briefs)
     attach_verdicts(briefs, rows)  # every flag has exactly one verdict
+    by_cl = {run: nb._sum_by_ticker([b for b in briefs if b["run"] == run], _currency_label_te)
+             for run in runs}
+    currency_label = {
+        "run": {run: _rate_cb([b for b in briefs if b["run"] == run], _currency_label_te, draws)
+                for run in runs},
+        "differences": {f"{b} - {a}": nb.bootstrap_difference(by_cl[b], by_cl[a], draws)
+                        for i, a in enumerate(runs) for b in runs[i + 1:]},
+    }
     rates = {}
     for name, fn in COUNTS.items():
         per_run = {run: _rate_cb([b for b in briefs if b["run"] == run], fn, draws) for run in runs}
@@ -716,6 +738,9 @@ def run_three_way(adj_path: Path, runs: list[str], date: str, draws: int = nb.BO
         "true_error_rates": rates,
         "upstream": upstream_report(rows),
         "judge_on_same_figure": judge_on_same_figure(rows, REPO / "eval" / "runs"),
+        "currency_label_true_errors": currency_label,
+        "financial_currency": ({"file": str(financial_currency), "injected": injected}
+                               if financial_currency else None),
     }
 
 
@@ -748,6 +773,21 @@ def markdown_three_way(res: dict) -> str:
             ci = r.get("ci95") or [None, None]
             ci_s = f"{ci[0]:+.2%} to {ci[1]:+.2%}" if ci[0] is not None else "n/a"
             L.append(f"| {name} | {d} | {r['difference']:+.2%} | {ci_s} | {r.get('excludes_zero')} |")
+    cl = res.get("currency_label_true_errors") or {}
+    if any(r["k"] for r in (cl.get("run") or {}).values()):
+        fx = res.get("financial_currency") or {}
+        L += ["", "currency_label TRUE_ERRORs per checked number (revenue or net income of a "
+              "non-USD reporter stated in dollars; rule 9)"
+              + (f"; reporting currencies added from `{fx['file']}`: "
+                 + ", ".join(f"{t} {c}" for t, c in fx["injected"].items()) if fx else "") + ":", "",
+              "| Run | currency_label TRUE_ERROR | 95% CI |", "|---|---|---|"]
+        for run in res["runs"]:
+            r = cl["run"][run]
+            L.append(f"| {run} | {r['k']}/{r['n']} = {r['rate']:.2%} | {_ci(r)} |")
+        for d, r in cl["differences"].items():
+            ci = r.get("ci95") or [None, None]
+            ci_s = f"{ci[0]:+.2%} to {ci[1]:+.2%}" if ci[0] is not None else "n/a"
+            L.append(f"| {d} | {r['difference']:+.2%} | {ci_s} |")
     L += ["", "Upstream attribution of TRUE_ERRORs (eval/numeric_check/upstream-findings.md):", "",
           "| Group | TRUE_ERRORs | Currency | Margin fraction | Not attributed |", "|---|---|---|---|---|"]
     for g, r in res["upstream"]["by_group"].items():
@@ -767,12 +807,17 @@ def main():
     ap.add_argument("--date", default=datetime.date.today().isoformat())
     ap.add_argument("--adjudication", type=Path)
     ap.add_argument("--runs", nargs="+")
+    ap.add_argument("--financial-currency", type=Path,
+                    help="with --runs: reporting currency per ticker, added to dicts lacking it "
+                         "(as numeric_backtest.py --financial-currency)")
     args = ap.parse_args()
     if bool(args.adjudication) != bool(args.runs):
         ap.error("--adjudication and --runs go together")
     if args.runs:
-        res = run_three_way(args.adjudication, args.runs, args.date)
-        out = REPO / "eval" / "runs" / f"numeric-adjudicated-{args.date}-{'-'.join(args.runs)}.json"
+        res = run_three_way(args.adjudication, args.runs, args.date,
+                            financial_currency=args.financial_currency)
+        tag = "-".join(args.runs) + ("-fx" if args.financial_currency else "")
+        out = REPO / "eval" / "runs" / f"numeric-adjudicated-{args.date}-{tag}.json"
         out.write_text(json.dumps(res, indent=2) + "\n", encoding="utf-8", newline="\n")
         md = markdown_three_way(res)
         out.with_suffix(".md").write_text(md, encoding="utf-8", newline="\n")
