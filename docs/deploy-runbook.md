@@ -1536,13 +1536,20 @@ then, stop and keep the current numbers of record.
    "market saturation"; MSFT "trajectory of services margins …". The judge
    listed 5 qualitative claims for NVDA here against 0 in `k6zxd`. "services
    margins" echoes the synthesis prompt's own example ("watch
-   services-margin trend"), as did `p9jr2`'s AFRM claim. Per the run plan
-   the extended chain was not started. nvidia-smi on node 2 every 5 s,
+   services-margin trend"), as did `p9jr2`'s AFRM claim (known limitation
+   8, eval-methodology). Recorded as smoke-level judge variance on
+   qualitative watch-items (limitation 1), not a platform failure — the
+   precedent is hosted smoke `7c66k` (gate failed on MSFT watch-items),
+   after which the extended run `9jzmj` went ahead. The run plan stopped
+   the chain at the gate; the adjudicator then started it (2026-10-06
+   04:49:54Z, tmux `rerun` on the operator,
+   `~/rerun-chain.sh grounding-eval-slm-gpu-m7qvv
+   grounding-eval-slm-cpu-xnwjm`), with the same stop rules. nvidia-smi on node 2 every 5 s,
    04:34:46 onward: `eval/runs/gpu-nvsmi-m7qvv.csv`. Files:
    `eval/runs/gpu-smoke-f304375.log`, `eval/runs/slm-proof-m7qvv/`,
    findings and claims.
 
-3. **[STOPPED at the GPU smoke's gate]** Runs, in order: hosted smoke, CPU smoke, GPU
+3. **[IN PROGRESS — extended chain started 2026-10-06T04:49:54Z]** Runs, in order: hosted smoke, CPU smoke, GPU
    smoke, hosted extended, CPU extended, GPU extended — each SLM run
    through `make slm-eval-run` (traffic proof), the extended SLM runs
    behind `make run-time-check`; `kubectl top` during the CPU runs, the

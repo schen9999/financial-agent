@@ -470,7 +470,14 @@ Phase 3 — demo polish:
   hosted tool-use route is attributed by its setting; (7) on the CPU
   tool-use route WMT and V retrieval took 35.8 s and 40.9 s vs 2–4 s
   elsewhere — cause not determined, contention between the api pod and
-  the CPU llama.cpp pod is a hypothesis only. Numeric check on the
+  the CPU llama.cpp pod is a hypothesis only. (8) added 2026-10-06: the
+  synthesis prompt's Outlook example ("watch services-margin trend") leaks
+  into briefs as ungrounded "services margins" watch-items (NVDA and MSFT
+  in m7qvv, AFRM in p9jr2); not changed in the stock-data-fix image, the
+  fix is post-demo. GPU smoke m7qvv (4/60, gate failed, all watch-items,
+  numeric 0/30, proof EXACT) is smoke-level judge variance on qualitative
+  watch-items (limitation 1), precedent 7c66k -> 9jzmj; the extended chain
+  went ahead on the adjudicator's go. Numeric check on the
   three-way (adjudicated 2026-10-05 by one human, not blind; dated, not a
   number of record): 12 flags, TRUE_ERROR 8/569 hosted, 1/389 CPU, 2/423
   GPU, every one attributed to the upstream data findings (currency,

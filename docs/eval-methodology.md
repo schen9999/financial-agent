@@ -2282,6 +2282,17 @@ comparison (post-demo), continuing 1–4 above:**
 7. *Retrieval outliers on the CPU tool-use route* (35.8 s and 40.9 s
    against 2–4 s on the other routes), cause not determined; contention
    with the CPU llama.cpp pod is the working hypothesis.
+8. *The synthesis prompt's example leaks into briefs* (added 2026-10-06).
+   The Outlook rule gives the example "watch services-margin trend and
+   China exposure", and briefs repeat it for companies whose context has
+   no services-margin figure: NVDA and MSFT in GPU smoke `m7qvv` ("trend
+   of services margins", "trajectory of services margins …") and AFRM in
+   `p9jr2` ("Investors should closely monitor the trajectory of services
+   margins"), each judged UNSUPPORTED because the term appears nowhere in
+   the source data or pre-written sections. A form of limitation 1 with a
+   known source. Not changed in the stock-data-fix image (it changes the
+   synthesis prompt, so every arm would need new baselines); the fix — an
+   example that names no metric, or none — is post-demo.
 
 ```bash
 python eval/multi_arm_stats.py \
