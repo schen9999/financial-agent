@@ -67,6 +67,9 @@ The fuller list, with the reasoning behind it: [Known limitations and next steps
 - **GPU inference:** what has been served on the A10, the fine-tune's
   BF16 vs W4A16 serving speed, and Qwen3.6 on CPU vs on the A10:
   [docs/gpu-inference.md](docs/gpu-inference.md).
+- **Reliability:** how a request flows, what each component does when
+  it fails (with what is and is not tested), and how the eval plane keeps
+  runs trustworthy: [docs/reliability.md](docs/reliability.md).
 - **How to deploy it:** [docs/deploy-runbook.md](docs/deploy-runbook.md),
   "OKE (provided cluster)" and the self-served SLM steps;
   [docs/operations.md](docs/operations.md) for an A10 node, teardown and
