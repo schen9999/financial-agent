@@ -21,3 +21,11 @@ def test_counting_reproduces_the_recorded_runs(tmp_path, monkeypatch):
 def test_loads_the_env_file_for_the_judge_key():
     src = (rj.ROOT / "eval" / "rejudge_runs.py").read_text(encoding="utf-8")
     assert 'load_dotenv(ROOT / ".env")' in src
+
+
+def test_summary_merge_keeps_earlier_runs(tmp_path):
+    import json
+    p = tmp_path / "summary.json"
+    p.write_text(json.dumps({"9jzmj": {"unsupported": 10}}))
+    merged = rj.merge_summary(p, {"4kkgm": {"unsupported": 7}})
+    assert merged == {"9jzmj": {"unsupported": 10}, "4kkgm": {"unsupported": 7}}

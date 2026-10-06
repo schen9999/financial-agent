@@ -29,6 +29,13 @@ Writes eval/runs/rejudge-<date>/<run>/<ticker>_<arm>.findings.txt per brief
 the table. Spends Anthropic credits: one Sonnet judge call per brief.
 
   python eval/rejudge_runs.py --date 2026-10-06 --runs 9jzmj 8vpq6 p9jr2 4hsn2 nstp9 5bdz5
+
+Several re-judges of the same runs (the three-judgings protocol, adopted
+2026-10-06: the original judging plus two re-judges per run) go to
+separate folders: without --tag, eval/runs/rejudge-<date>/ (re-judge 1);
+with --tag r2, eval/runs/rejudge-<date>-r2/ (re-judge 2). A folder's
+summary.json keeps the runs of earlier invocations, so a run can be
+added to a pass later.
 """
 import argparse
 import json
@@ -133,6 +140,13 @@ def run_all(runs: list[str], out_dir: Path, workers: int = 4) -> dict:
     return summary
 
 
+def merge_summary(path: Path, new: dict) -> dict:
+    """Earlier invocations' runs kept, this invocation's runs updated."""
+    old = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    old.update(new)
+    return old
+
+
 def table(summary: dict, pairs: list[tuple[str, str]]) -> str:
     L = ["| Run | Unsupported / judged | Qualitative unsupported / qualitative claims | Outlook unsupported |",
          "|---|---|---|---|"]
@@ -158,9 +172,11 @@ def main(argv=None) -> int:
     ap.add_argument("--runs", nargs="+", required=True)
     ap.add_argument("--pairs", nargs="*", default=[], metavar="OLD:NEW")
     ap.add_argument("--workers", type=int, default=4)
+    ap.add_argument("--tag", help="pass label, e.g. r2: writes eval/runs/rejudge-<date>-<tag>/")
     args = ap.parse_args(argv)
-    out_dir = ROOT / "eval" / "runs" / f"rejudge-{args.date}"
-    summary = run_all(args.runs, out_dir, args.workers)
+    out_dir = ROOT / "eval" / "runs" / (f"rejudge-{args.date}-{args.tag}" if args.tag
+                                         else f"rejudge-{args.date}")
+    summary = merge_summary(out_dir / "summary.json", run_all(args.runs, out_dir, args.workers))
     pairs = [tuple(p.split(":")) for p in args.pairs]
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n",
                                           encoding="utf-8", newline="\n")
