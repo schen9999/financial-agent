@@ -43,10 +43,19 @@ writes the main adjudication.csv — a path naming it is redirected — since
 the writer rewrites a file from the rows it is given and renumbers ids. The CRBU assertion still runs on
 lsnnc; the fine-tune comparisons and the replays are skipped.
 
+--financial-currency FILE (with --runs only) adds each ticker's reporting
+currency to stock dicts that lack one, so runs from before the stock-data
+fix are checked with the currency_label rule too — the same check on both
+sides of the fix. FILE is scripts/financial_currency_preflight.py output
+({"tickers": {T: {"financialCurrency": ...}}}) or a plain {T: code} map.
+Outputs and the CSV get a "-fx" tag; without the option nothing changes.
+
 Usage:
   python scripts/numeric_backtest.py [--date 2026-09-29] [--seed 42]
   python scripts/numeric_backtest.py --precision
   python scripts/numeric_backtest.py --runs 9jzmj 8vpq6 p9jr2 --date 2026-10-05
+  python scripts/numeric_backtest.py --runs 9jzmj 8vpq6 p9jr2 --date <date> \\
+      --financial-currency eval/runs/financial-currency-<date>.json
 """
 import argparse
 import csv
@@ -1093,7 +1102,11 @@ def main():
                     help="report adjudicated precision from --adjudication")
     ap.add_argument("--runs", nargs="+",
                     help="only these runs; writes its own adjudication CSV")
+    ap.add_argument("--financial-currency", type=Path,
+                    help="with --runs: reporting currency per ticker, added to dicts lacking it")
     args = ap.parse_args()
+    if args.financial_currency and not args.runs:
+        ap.error("--financial-currency goes with --runs")
 
     if args.precision:
         with open(args.adjudication, newline="", encoding="utf-8") as f:
@@ -1177,12 +1190,45 @@ def main():
           f"({kept} verdicts kept)")
 
 
+def _shown(p: Path) -> str:
+    """Repo-relative when inside the repo, else the path as given."""
+    return _rel(p) if Path(p).resolve().is_relative_to(REPO) else str(p)
+
+
+def load_financial_currency(path: Path) -> dict:
+    """{ticker: reporting currency} from preflight output or a plain map."""
+    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    if "tickers" in data:
+        return {t: v["financialCurrency"] for t, v in data["tickers"].items()
+                if v.get("financialCurrency")}
+    return {t: c for t, c in data.items() if c}
+
+
+def inject_financial_currency(briefs: list[dict], fx: dict) -> dict:
+    """Add financial_currency to each brief's stock dict that lacks it;
+    returns {ticker: code} for the non-USD ones injected."""
+    out = {}
+    for b in briefs:
+        code = fx.get(b["ticker"])
+        if code and "financial_currency" not in b["stock"]:
+            b["stock"]["financial_currency"] = code
+            if code.upper() != "USD":
+                out[b["ticker"]] = code
+    return dict(sorted(out.items()))
+
+
 def main_runs(args, briefs: list[dict], skipped: list[str], n_files: int) -> None:
     """--runs: the backtest over the named runs only, into its own CSV."""
     missing = sorted(set(args.runs) - {b["run"] for b in briefs})
     if missing:
         sys.exit(f"no findings for run(s): {', '.join(missing)}")
     tag = "-".join(args.runs)
+    fx_file = getattr(args, "financial_currency", None)
+    injected = {}
+    if fx_file:
+        tag += "-fx"
+        injected = inject_financial_currency(
+            [b for b in briefs if b["run"] in args.runs], load_financial_currency(fx_file))
     adj = Path(args.adjudication)
     if adj.resolve() == ADJ_PATH.resolve():
         adj = ADJ_PATH.with_name(f"adjudication-{args.date}-{tag}.csv")
@@ -1197,12 +1243,13 @@ def main_runs(args, briefs: list[dict], skipped: list[str], n_files: int) -> Non
         "date": args.date, "harness": "scripts/numeric_backtest.py --runs",
         "check": "agent/numeric_check.py", "rel_tol": nc.DEFAULT_REL_TOL,
         "runs": args.runs,
+        "financial_currency": ({"file": str(fx_file), "injected": injected} if fx_file else None),
         "note": ("Flags are unadjudicated; a flag is an error only once a "
                  "human verdict says so. Stock-field numbers only. Not a "
                  "number of record."),
         "files": n_files, "briefs": len(selected), "skipped": skipped,
         "summary": summary, "crbu_assertion": crbu, "injection": recall,
-        "adjudication": {"path": _rel(adj), "verdicts": list(VERDICTS),
+        "adjudication": {"path": _shown(adj), "verdicts": list(VERDICTS),
                          "rows": len(rows), "verdicts_kept": kept},
     }
     out = Path(args.out) if args.out else \
@@ -1215,8 +1262,7 @@ def main_runs(args, briefs: list[dict], skipped: list[str], n_files: int) -> Non
         f"see {out.name}.\n\n" + table, encoding="utf-8", newline="\n")
     print(table)
     print(f"CRBU assertion: {crbu}")
-    shown = out if not out.resolve().is_relative_to(REPO) else _rel(out)
-    print(f"wrote {shown} (+ .md) and {len(rows)} adjudication rows to {_rel(adj)} "
+    print(f"wrote {_shown(out)} (+ .md) and {len(rows)} adjudication rows to {_shown(adj)} "
           f"({kept} verdicts kept)")
 
 

@@ -14,9 +14,14 @@ class StockData(BaseModel):
     forward_pe: Optional[float] = None
     week_52_high: Optional[float] = None
     week_52_low: Optional[float] = None
+    # revenue and net_income are in the filer's financial (reporting)
+    # currency, which for a foreign filer differs from `currency`, the
+    # listing's trading currency that price and market cap are quoted in.
+    financial_currency: Optional[str] = None
     revenue: Optional[float] = None
     net_income: Optional[float] = None
-    profit_margin: Optional[float] = None
+    # A percentage (8.63 = 8.63%); yfinance's profitMargins is a fraction.
+    profit_margin_pct: Optional[float] = None
     dividend_yield: Optional[float] = None
     sector: Optional[str] = None
     industry: Optional[str] = None
@@ -42,6 +47,7 @@ def get_stock_data(ticker: str) -> dict:
     try:
         stock = yf.Ticker(ticker)
         info = stock.info
+        margin = info.get("profitMargins")
 
         data = StockData(
             ticker=ticker.upper(),
@@ -53,9 +59,10 @@ def get_stock_data(ticker: str) -> dict:
             forward_pe=info.get("forwardPE"),
             week_52_high=info.get("fiftyTwoWeekHigh"),
             week_52_low=info.get("fiftyTwoWeekLow"),
+            financial_currency=info.get("financialCurrency"),
             revenue=info.get("totalRevenue"),
             net_income=info.get("netIncomeToCommon"),
-            profit_margin=info.get("profitMargins"),
+            profit_margin_pct=None if margin is None else round(margin * 100, 2),
             dividend_yield=info.get("dividendYield"),
             sector=info.get("sector"),
             industry=info.get("industry"),

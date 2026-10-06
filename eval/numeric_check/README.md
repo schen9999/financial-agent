@@ -65,3 +65,25 @@ keeps them alongside the verdicts.
 8. Unsure: choose the best verdict and add a note starting "doubt:". If
    doubt notes exceed about 5% of rows labeled so far, stop and revise these
    rules in a dated amendment before continuing; do not relabel silently.
+
+## Amendment, 2026-10-06: currency_label (written before any such row is labelled)
+
+From the stock-data fix plus currency-labelling prompt rule (2026-10), the
+check has a third finding kind, `currency_label`: for a stock dict whose
+`financial_currency` is not USD — every run after the fix, and runs before
+it checked retroactively with `numeric_backtest.py --financial-currency` —
+a revenue or net income figure stated in another currency (in practice:
+in dollars). It is not compared numerically.
+
+9. currency_label: TRUE_ERROR when the stated figure is the
+   reporting-currency amount, or a power-of-ten rescale of it, written in
+   the other currency (the wrong unit, whatever the number). The pipeline
+   supplies no exchange rate, so a dollar figure for a non-USD amount is
+   unsupported by the data: TRUE_ERROR as well, unless the brief itself
+   says it converted and names the rate it used — then FALSE_POSITIVE if
+   the conversion is arithmetically right at that rate, with the rate in
+   the note. A flag that binds a figure that is not the company's revenue
+   or net income (misbinding, rule 2) is FALSE_POSITIVE.
+
+Rules 5 and 6 still apply to `mismatch` rows of dicts from before the fix
+(no `financial_currency`; `profit_margin` a fraction).

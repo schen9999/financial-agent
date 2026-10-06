@@ -47,9 +47,23 @@ _RAG_FAILURE_PREFIXES = ("RAG query failed", "Could not retrieve")
 def _trim_stock(data: dict) -> dict:
     keep = {"ticker", "company_name", "current_price", "currency", "market_cap",
             "pe_ratio", "forward_pe", "week_52_high", "week_52_low",
-            "revenue", "net_income", "profit_margin", "dividend_yield",
-            "sector", "industry"}
+            "financial_currency", "revenue", "net_income", "profit_margin",
+            "profit_margin_pct", "dividend_yield", "sector", "industry"}
     return {k: v for k, v in data.items() if k in keep and v is not None}
+
+
+def _currency_rule(stock: dict) -> str:
+    """The currency-labelling rule for a filer that reports in another
+    currency than its listing's; "" otherwise (and for stock dicts without
+    financial_currency), so a USD reporter's prompt is unchanged."""
+    fin = (stock.get("financial_currency") or "").upper()
+    listing = (stock.get("currency") or "USD").upper()
+    if not fin or fin == listing:
+        return ""
+    return (f"\nCurrency rule: revenue and net_income are in {fin} (financial_currency), "
+            f"not {listing}; price and market cap are in {listing}. State revenue and "
+            f"net income in {fin}, with the {fin} code or its symbol, never with a $ sign, "
+            f"and do not convert them.")
 
 
 def _trim_news(data: list) -> list:
@@ -77,7 +91,8 @@ def _trim_sec(data: dict) -> dict:
 
 
 def _data_context(stock: dict, news: list, sec: dict) -> str:
-    return f"Stock: {json.dumps(stock)}\nNews: {json.dumps(news)}\nSEC: {json.dumps(sec)}"
+    return (f"Stock: {json.dumps(stock)}{_currency_rule(stock)}\n"
+            f"News: {json.dumps(news)}\nSEC: {json.dumps(sec)}")
 
 
 # Default SEC RAG sub-questions for the two grounded sections. The multi-agent
