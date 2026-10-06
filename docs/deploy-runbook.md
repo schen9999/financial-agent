@@ -1563,7 +1563,13 @@ then, stop and keep the current numbers of record.
      4.6–10.9%; numeric 2/162) and **TRAFFIC PROOF: FAIL** — the server
      counted 1 prompt token more than the harness logged (346,636 against
      346,635; 0 completion tokens apart), with no failed calls. Cause not
-     determined. Under the proof rule the run is **not citable**. The chain
+     determined. Under the proof rule the run is **not citable**.
+     Investigated offline (`eval/runs/slm-proof-5bdz5/INVESTIGATION.md`,
+     with the endpoint's own log): 270 server tasks match the 270 harness
+     calls pair for pair and sum to the harness's tokens exactly; no
+     outside traffic; the +1 is a counter movement outside any logged
+     request. Settling it needs per-request `timings` in the ledger, a
+     post-demo change. The chain
      stopped there (`~/rerun-chain.log`). `kubectl top` during it:
      `eval/runs/top-cpu-ext-f304375.txt`.
 
