@@ -1,0 +1,35 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $865.15 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `market_cap: 865152256.0`, which equals approximately $865.15 million, matching the pre-written Financial Health section exactly.
+
+---
+
+CLAIM: "a substantial net loss of $211.82 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `net_income: -211822000.0`, which equals -$211.822 million, consistent with the stated $211.82 million net loss.
+
+---
+
+CLAIM: "currently trading near its 52-week low"
+LABEL: SUPPORTED
+REASON: The current price is $2.89 and the 52-week low is $2.61; $2.89 is 10.7% above the low and 55.9% below the 52-week high of $6.55, placing it arithmetically near the low end of its range, consistent with the pre-written Financial Health section's identical characterization.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative or directional in nature (e.g., "cautiously cautious," "extreme binary risk," "key variables to monitor," "would be strengthened," "would weaken significantly"). There are therefore no additional quantitative or forward-looking claims to audit in this section.
+
+---
+
+**SUMMARY**
+
+All three auditable quantitative claims in the Executive Summary are **SUPPORTED**. The Outlook section contains no quantitative or specifically measurable forward-looking claims requiring audit entries.

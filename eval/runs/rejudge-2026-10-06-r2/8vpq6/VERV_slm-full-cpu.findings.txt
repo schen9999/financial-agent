@@ -1,0 +1,51 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections, then evaluate each against the source data.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$524.3 million in cash and marketable securities as of year-end 2024"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both explicitly state "the company had $524.3 million in cash, cash equivalents, and marketable securities as of December 31, 2024," and the SEC Filing Highlights pre-written section repeats this figure for year-end.
+
+---
+
+CLAIM: "$20.0 million milestone payment from Eli Lilly"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "in February 2025, the company received a $20.0 million milestone payment from Eli Lilly and Company (Lilly) under the Lp(a) program," and this is confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "runway extending only through mid-2027"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights states "Management estimates that existing resources will fund operating expenses and capital expenditures into mid-2027," confirmed in both RAG Risk Factors and the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "ongoing clinical trials for VERVE-102 and VERVE-201"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly names "the Heart-2 Phase 1b trial of VERVE-102" and "the Pulse-1 Phase 1b trial of VERVE-201" as ongoing clinical trials, and the SEC Filing Highlights pre-written section references both programs.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "mid-2027 runway"
+LABEL: SUPPORTED
+REASON: Directly stated in the RAG SEC Highlights and RAG Risk Factors: "Management estimates that existing resources will fund operating expenses and capital expenditures into mid-2027."
+
+---
+
+CLAIM: "clinical data readouts for VERVE-102 and VERVE-201"
+LABEL: SUPPORTED
+REASON: Both VERVE-102 and VERVE-201 are named as active clinical programs in the RAG SEC Highlights and SEC Filing Highlights pre-written section; monitoring their data readouts is a direct inference from their ongoing trial status.
+
+---
+
+**SUMMARY NOTE**
+
+The Executive Summary and Outlook sections contain a relatively small number of specific quantitative or forward-looking claims. All identifiable claims are either explicitly present in the source data or directly supported by named figures therein. No figures appear that are absent from the source, miscalculated, period-mismatched, or sourced only from table-of-contents or boilerplate text. There are no price targets, ratios, percentages, or other derived metrics in these sections that require arithmetic verification beyond what is addressed above.

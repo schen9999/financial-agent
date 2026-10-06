@@ -1,0 +1,48 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$1.35 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $1,348,119,040, which rounds to $1.35 billion; the pre-written Financial Health section also states "$1.35 billion in revenue."
+
+---
+
+CLAIM: "trading near its 52-week low of $2.10"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists `week_52_low: 2.1` ($2.10), and the current price of $2.68 is indeed near that low; the pre-written sections also state this figure.
+
+---
+
+CLAIM: "market capitalization of approximately $358 million"
+LABEL: SUPPORTED
+REASON: Source data shows `market_cap: 358,057,888`, which rounds to approximately $358 million.
+
+---
+
+CLAIM: "negative forward P/E ratio of -53.60"
+LABEL: SUPPORTED
+REASON: Source data explicitly states `forward_pe: -53.600002`, matching the claimed figure of -53.60.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional (e.g., "cautiously negative," "any failure to stabilize," "would further weaken"). There are therefore no additional claims to audit under the defined criteria.
+
+---
+
+**SUMMARY TABLE**
+
+| Claim | Label |
+|---|---|
+| $1.35 billion in revenue | SUPPORTED |
+| 52-week low of $2.10 | SUPPORTED |
+| Market cap ~$358 million | SUPPORTED |
+| Forward P/E of -53.60 | SUPPORTED |
+
+All four auditable quantitative claims in the Executive Summary are fully supported by the raw source data. The Outlook section contains no auditable quantitative or forward-looking numerical claims.

@@ -1,0 +1,85 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "generating $6.0 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $6,043,752,960, which rounds to $6.0 billion; the pre-written Financial Health section also states "$6.0 billion in revenue."
+
+---
+
+CLAIM: "a $49.7 billion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $49,659,387,904, which rounds to $49.7 billion; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "a net loss of $988 million"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$987,766,016, which rounds to -$988 million; confirmed in the pre-written Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "a negative profit margin of -16.34%"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct of -16.34; also confirmed in the pre-written sections.
+
+---
+
+CLAIM: "52-week high of $402.16"
+LABEL: SUPPORTED
+REASON: Source data explicitly states week_52_high: 402.16.
+
+---
+
+CLAIM: "it sits well below its 52-week high of $402.16"
+LABEL: SUPPORTED
+REASON: Current price is $188.22 vs. 52-week high of $402.16; $188.22 < $402.16, so the stock is arithmetically well below its 52-week high (approximately 53% below).
+
+---
+
+CLAIM: "a forward P/E of 66.3x"
+LABEL: SUPPORTED
+REASON: Source data states forward_pe: 66.34777, which rounds to 66.3x; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "Bitcoin has fallen below $80,000"
+LABEL: SUPPORTED
+REASON: The Bloomberg news article states "Bitcoin dropped as much as 3.5% after stronger-than-expected US jobs data… abruptly reversing the cryptocurrency's latest push above $80,000," confirming Bitcoin fell below $80,000.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "a negative profit margin that leaves the company with limited financial cushion"
+LABEL: SUPPORTED
+REASON: The -16.34% profit margin is explicitly in the source data, and the pre-written Recent Developments section uses nearly identical language ("current negative profit margin (-16.34%) leaves limited cushion for revenue volatility").
+
+---
+
+CLAIM: "The elevated forward valuation compounds this concern"
+LABEL: INFERENCE
+REASON: The forward P/E of 66.3x is present in the source data; characterizing it as "elevated" is a direct qualitative inference from that figure (the pre-written Financial Health section also describes it as "elevated valuation expectations").
+
+---
+
+CLAIM: "progress — or setbacks — on the regulatory capital requirements flagged in the most recent 10-Q filing"
+LABEL: SUPPORTED
+REASON: The 10-Q filing (dated 2026-07-30, the most recent filing in the source data) explicitly discusses regulatory capital requirements for CB Inc. and Coinbase Custody Trust Company, LLC; the pre-written Recent Developments section also references this.
+
+---
+
+CLAIM: "any meaningful shift in Coinbase's revenue mix away from its concentrated dependence on Bitcoin and Ethereum transaction fees toward more diversified subscription and services revenue"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly identifies revenue concentration in "transaction revenue from Bitcoin and Ethereum trading" and "subscription and services revenue from payment stablecoins" as a named risk; this claim is a direct restatement of that disclosed concentration.
+
+---
+
+*No other specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Executive Summary or Outlook sections beyond those audited above.*

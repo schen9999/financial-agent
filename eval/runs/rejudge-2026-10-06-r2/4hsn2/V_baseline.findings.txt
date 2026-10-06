@@ -1,0 +1,43 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $44.5 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $44,487,999,488, which rounds to $44.5 billion; the pre-written Financial Health section also states "$44.5 billion in revenue."
+
+---
+
+CLAIM: "$22.4 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net income of $22,397,999,104, which rounds to $22.4 billion; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "50.8% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 50.78, which rounds to 50.8%; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "a forward P/E of 24.6x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 24.640268, which rounds to 24.6x; confirmed in the pre-written Financial Health section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "The $31.7 billion remaining in buyback authorization"
+LABEL: SUPPORTED
+REASON: The pre-written Recent Developments section states "$31.7 billion remaining in its repurchase authorization as of June 2026," derived from the 10-Q filing data showing $31,682 million remaining after May 2026 purchases, which rounds to $31.7 billion.
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Executive Summary or Outlook sections beyond those audited above. All named jurisdictions (U.S., EU, UK, Australia, India, Asia-Pacific, Brazil, Canada) and regulatory items (Credit Card Competition Act, debit interchange litigation, cross-border interchange caps) are qualitatively referenced and present in the source data/pre-written sections; they carry no standalone quantitative claims requiring arithmetic verification.*

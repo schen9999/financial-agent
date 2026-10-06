@@ -1,0 +1,93 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the Executive Summary and Outlook sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "market capitalization of $2.71 trillion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 2,711,679,139,840.0 USD ≈ $2.71 trillion, matching the pre-written Financial Health section exactly.
+
+---
+
+CLAIM: "annual revenue of $775.7 billion"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 775,680,032,768.0 USD ≈ $775.7 billion, consistent with the pre-written section.
+
+---
+
+CLAIM: "17.44% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 17.44.
+
+---
+
+CLAIM: "net income of $135.3 billion"
+LABEL: SUPPORTED
+REASON: Source data shows net_income = 135,281,000,448.0 USD ≈ $135.3 billion.
+
+---
+
+CLAIM: "current price of $251.40"
+LABEL: SUPPORTED
+REASON: Source data shows current_price = 251.4 USD.
+
+---
+
+CLAIM: "sits in the middle of its 52-week range"
+LABEL: UNSUPPORTED
+REASON: The 52-week range is $196.00–$287.20, giving a midpoint of $241.60; the current price of $251.40 is above the midpoint (by ~$9.80), placing it in the upper half of the range, not the middle — the positional claim fails the arithmetic check.
+
+---
+
+CLAIM: "an estimated $68 billion in competing data center projects across the US"
+LABEL: SUPPORTED
+REASON: The Bloomberg news article titled "New data centres worth $68 billion disrupted in US" explicitly states this figure.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "the forward P/E sits above the trailing P/E"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio (trailing) = 20.24 and forward_pe = 24.00; 24.00 > 20.24, so the directional claim is arithmetically verified.
+
+---
+
+CLAIM: "regulatory moratoriums constraining competitor data center expansion"
+LABEL: SUPPORTED
+REASON: The Bloomberg article explicitly states communities are "pushing through moratoriums on new construction" for data centers.
+
+---
+
+CLAIM: (implied) forward P/E of ~24 / trailing P/E of ~20 as the basis for "market is pricing in continued growth"
+LABEL: SUPPORTED
+REASON: Both figures are present in source data (forward_pe = 23.998373 ≈ 24.00; pe_ratio = 20.241545 ≈ 20.24), and the directional inference that forward > trailing implies priced-in growth is a direct logical derivation from those two figures.
+
+---
+
+CLAIM: "international operations remain exposed to tariff, currency, and geopolitical disruption"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly lists tariffs, trade protection measures, currency exchange limitations, and geopolitical events as disclosed international operation risks.
+
+---
+
+CLAIM: "intensifying AI-driven competition from well-resourced rivals could pressure both AWS margins and e-commerce economics"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly states competition is "intensifying through new business models, well-funded entrants… and technological advances including artificial intelligence and machine learning."
+
+---
+
+**Summary of findings:**
+
+| Label | Count |
+|---|---|
+| SUPPORTED | 11 |
+| UNSUPPORTED | 1 |
+| INFERENCE | 0 |
+
+The sole unsupported claim is the characterization of $251.40 as sitting "in the middle of" the 52-week range. Arithmetically, the midpoint of $196.00–$287.20 is $241.60, placing the current price in the upper half of the range, not the middle.

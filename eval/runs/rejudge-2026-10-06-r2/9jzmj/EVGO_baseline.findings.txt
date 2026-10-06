@@ -1,0 +1,64 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $403 million in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $402,948,000, which rounds to $403 million; the pre-written Financial Health section also states "$403 million in revenue."
+
+---
+
+CLAIM: "market capitalization of $434 million"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $434,031,680, which rounds to $434 million.
+
+---
+
+CLAIM: "net loss of $54 million"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$54,125,000, which rounds to -$54 million.
+
+---
+
+CLAIM: "depressed price of $1.38"
+LABEL: SUPPORTED
+REASON: Source data explicitly states current_price = 1.38 USD.
+
+---
+
+CLAIM: "52-week high of $5.15"
+LABEL: SUPPORTED
+REASON: Source data explicitly states week_52_high = 5.15.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "a stock price that has lost the majority of its value from its 52-week high"
+LABEL: SUPPORTED
+REASON: Current price is $1.38 vs. 52-week high of $5.15; the decline is ($5.15 − $1.38) / $5.15 = 73.2%, which is indeed a majority (>50%) of its value lost — arithmetic confirms this holds.
+
+---
+
+*(All remaining claims in the Outlook are qualitative or directional — e.g., "cautious," "narrow set of conditions," "secular growth in EV adoption," "persistent operating losses," "negative operating cash flows," "single government loan facility," "dilutive capital raises," "sequential margin improvement," "supply chain disruption," "EV adoption trends soften" — and contain no additional specific quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers beyond those already evaluated above. No further entries are required.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $403 million in revenue | SUPPORTED |
+| 2 | Market capitalization of $434 million | SUPPORTED |
+| 3 | Net loss of $54 million | SUPPORTED |
+| 4 | Stock price of $1.38 | SUPPORTED |
+| 5 | 52-week high of $5.15 | SUPPORTED |
+| 6 | Stock has lost the majority of its value from its 52-week high | SUPPORTED |
+
+All six quantitative or positional claims in the Executive Summary and Outlook are supported by the source data. No unsupported or inference-only claims were identified.

@@ -1,0 +1,73 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "accumulated deficit of $1.6 billion"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both explicitly state "As of December 31, 2025, the accumulated deficit stood at $1.6 billion," and the pre-written SEC Filing Highlights section repeats this figure.
+
+---
+
+CLAIM: "no commercialized products"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states BEAM "has not yet completed any pivotal clinical trials, obtained marketing approvals, or commercialized any medicines," and the pre-written SEC Filing Highlights confirms "no commercialized products or completed pivotal trials."
+
+---
+
+CLAIM: "proximity to the 52-week low of $20.23"
+LABEL: SUPPORTED
+REASON: The stock data confirms the 52-week low is $20.23, and the current price of $25.67 is arithmetically closer to the low ($5.44 gap) than to the 52-week high of $38.26 ($12.59 gap), confirming the positional claim.
+
+---
+
+CLAIM: "$1.2 billion cash runway"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "As of December 31, 2025, the company held $1.2 billion in cash, cash equivalents, and marketable securities," and the pre-written SEC Filing Highlights repeats this figure.
+
+---
+
+CLAIM: "lack of committed funding sources beyond existing facilities"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "Aside from a credit facility with Sixth Street Lending Partners, the company has no committed external source of additional capital," and the pre-written SEC Filing Highlights confirms this.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "no approved products"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both confirm BEAM has not "obtained marketing approvals" and has "no commercial history" and "lacks marketing approvals."
+
+---
+
+CLAIM: "no…pivotal trial data"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states the company has "not yet completed any pivotal clinical trials," confirmed also in the pre-written SEC Filing Highlights.
+
+---
+
+CLAIM: "substantial cash reserve that provides a near-term buffer against immediate insolvency"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights states management believes the $1.2 billion in cash is "sufficient to fund operating expenses and capital expenditures for at least the next 12 months," supporting the characterization of a near-term buffer.
+
+---
+
+CLAIM: "absence of committed external capital sources"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states the company has "no committed external source of additional capital" beyond the Sixth Street credit facility, and the pre-written SEC Filing Highlights repeats this.
+
+---
+
+CLAIM: "history of strategic restructuring"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both reference the "portfolio reprioritization and strategic restructuring announced in October 2023," confirming a history of restructuring.
+
+---
+
+**No additional quantitative figures, price targets, specific ratios, percentages, named product milestones, or forward-looking numbers appear in the Executive Summary or Outlook sections beyond those evaluated above.** All forward-looking statements in the Outlook (e.g., "positive data readouts," "trial delays," "dilutive capital raises") are qualitative directional characterizations without specific numerical claims and therefore fall outside the scope of quantitative claim verification.

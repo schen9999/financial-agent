@@ -1,0 +1,44 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of $862.2 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `market_cap: 862158656.0`, which rounds to $862.2 million, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "no currently approved therapeutics"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "there are no FDA-approved therapeutics currently based on pluripotent stem cells or utilizing the company's fusogen technology."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "Geopolitical and macroeconomic uncertainties flagged in the company's own filings"
+LABEL: SUPPORTED
+REASON: Both the 10-K and 10-Q filing summaries explicitly reference "worsening of the global geo-political, business, and economic environment" as a risk factor.
+
+---
+
+**Quantitative/Metric Completeness Check — figures present in source but not claimed in the audited sections:**
+
+The Outlook and Executive Summary contain no additional specific quantitative figures (e.g., no price targets, no specific percentage thresholds, no specific ratios, no specific net loss figures, no 52-week high/low references, no forward P/E figures, no dividend yield figures, no specific trial enrollment numbers, no specific funding amounts). All forward-looking statements are qualitative and directional only.
+
+---
+
+**Summary of findings:**
+
+Only two quantitative or factual claims of the type subject to audit appear in the Executive Summary and Outlook:
+
+1. The $862.2 million market cap — **SUPPORTED**.
+2. No currently approved therapeutics — **SUPPORTED**.
+
+All other statements in both sections are qualitative, directional, or narrative in nature (e.g., "cautious outlook," "existential headwinds," "watch four key variables") and contain no specific quantitative figures, price targets, ratios, percentages, named product milestones, or forward-looking numbers that require verification under the audit criteria.

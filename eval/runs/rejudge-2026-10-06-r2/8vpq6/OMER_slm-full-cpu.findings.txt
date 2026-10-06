@@ -1,0 +1,55 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$171.8 million in cash reserves"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states "As of December 31, 2025, the company held $171.8 million in cash, cash equivalents, and short-term investments," and the pre-written SEC Filing Highlights section repeats this figure.
+
+---
+
+CLAIM: "newly FDA-approved product, YARTEMLEA"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights states YARTEMLEA "received FDA approval for commercial sale in the United States in December 2025," confirming it is newly FDA-approved.
+
+---
+
+CLAIM: "valuation profile that appears undervalued relative to its current earnings metrics"
+LABEL: INFERENCE
+REASON: The pre-written Financial Health section states the P/E of 11.28 and forward P/E of 15.13 suggest "potential upside relative to current earnings" and describes the stock as "a potentially undervalued opportunity," making this a direct restatement of that qualitative inference from the source data.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "successful launch of YARTEMLEA"
+LABEL: UNSUPPORTED
+REASON: No source data confirms a successful launch; the filings and RAG sections only confirm FDA approval in December 2025 and describe commercialization as ongoing and uncertain, with significant risks to success explicitly noted.
+
+---
+
+CLAIM: "elimination of near-term debt obligations"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights confirms "The $17.1 million in 5.25% convertible senior notes due in February 2026 (the '2026 Notes') had matured and been repaid in full," supporting the claim that the nearest-term debt obligation was eliminated.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those addressed above.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $171.8 million in cash reserves | SUPPORTED |
+| 2 | Newly FDA-approved product, YARTEMLEA | SUPPORTED |
+| 3 | Undervalued relative to current earnings metrics | INFERENCE |
+| 4 | Successful launch of YARTEMLEA | UNSUPPORTED |
+| 5 | Elimination of near-term debt obligations | SUPPORTED |

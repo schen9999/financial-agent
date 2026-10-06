@@ -1,0 +1,135 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the Executive Summary and Outlook sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "only two commercially available vehicles"
+LABEL: SUPPORTED
+REASON: The SEC Highlights state "Only two commercially available vehicles have been released," and the Risk Factors section confirms "limited operating history with only two commercially available vehicles released."
+
+---
+
+CLAIM: "accumulated deficit of $15.6 billion"
+LABEL: SUPPORTED
+REASON: Both the RAG SEC Highlights and RAG Risk Factors explicitly state "Accumulated deficit reached $15.6 billion as of December 31, 2025."
+
+---
+
+CLAIM: "The stock has declined 84% from its 52-week high of $25.23 to $4.13"
+LABEL: SUPPORTED
+REASON: The 52-week high of $25.23 and current price of $4.13 are both present in the source data; the decline is (25.23 − 4.13) / 25.23 = 83.6%, which rounds to 84% — within 0.15 percentage points of the stated figure.
+
+---
+
+CLAIM: "52-week high of $25.23"
+LABEL: SUPPORTED
+REASON: The stock data explicitly lists "week_52_high": 25.23.
+
+---
+
+CLAIM: "net loss of $4.60 billion"
+LABEL: SUPPORTED
+REASON: The stock data lists net_income of −$4,604,930,048, which rounds to −$4.60 billion; the Financial Health pre-written section also states "net loss of $4.60 billion."
+
+---
+
+CLAIM: "$1.55 billion in revenue"
+LABEL: SUPPORTED
+REASON: The stock data lists revenue of $1,547,122,048, which rounds to $1.55 billion; the Financial Health section also states "$1.55 billion in revenue."
+
+---
+
+CLAIM: "negative profit margin of -249%"
+LABEL: SUPPORTED
+REASON: The stock data lists profit_margin of −2.49214, i.e., −249.214%; the stated −249% is within 0.15 percentage points of the computed value.
+
+---
+
+CLAIM: "launches of the Gravity and Midsize platforms"
+LABEL: SUPPORTED
+REASON: Both the SEC Highlights and Risk Factors sections explicitly name the Midsize platform and Lucid Gravity as upcoming vehicle variants under development.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "accumulated deficit of $15.6 billion"
+LABEL: SUPPORTED
+REASON: Repeated from the source data; explicitly stated in both RAG sections as "$15.6 billion as of December 31, 2025."
+
+---
+
+CLAIM: "management's own expectation of continued substantial losses"
+LABEL: SUPPORTED
+REASON: The SEC Highlights state "Substantial losses are expected to continue in the foreseeable future," and the SEC Filing Highlights pre-written section repeats "management expects substantial losses to continue in the foreseeable future."
+
+---
+
+CLAIM: "single-source supplier dependencies"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "Heavy dependence on single-source suppliers for critical components."
+
+---
+
+CLAIM: "a two-vehicle portfolio"
+LABEL: SUPPORTED
+REASON: Consistent with the source data confirming only two commercially available vehicles.
+
+---
+
+CLAIM: "continued backing of PIF and Ayar"
+LABEL: SUPPORTED
+REASON: Both the RAG SEC Highlights and Risk Factors sections explicitly name "PIF and Ayar" as holding significant ownership influence over the company.
+
+---
+
+CLAIM: "that same ownership concentration limits minority stockholder protections"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors state "Controlled company status limiting stockholder protections" and "Significant equity ownership by PIF and Ayar with substantial influence"; the SEC Highlights state "Stockholders lack protections afforded to those in non-controlled companies."
+
+---
+
+CLAIM: "on-time execution and consumer reception of the Gravity and Midsize platform launches"
+LABEL: SUPPORTED
+REASON: Both the Gravity and Midsize platform are named as upcoming products in the SEC Highlights and Risk Factors sections; delays in their launch are explicitly cited as a risk.
+
+---
+
+CLAIM: "production volume trends as a leading indicator of whether Lucid can begin to leverage its supplier commitments rather than absorb penalties from underutilization"
+LABEL: SUPPORTED
+REASON: The SEC Highlights and pre-written SEC Filing Highlights section explicitly state "Inability to fully utilize supplier commitments due to lower production volumes" as a key risk.
+
+---
+
+CLAIM: "the cautious view would begin to soften if the company demonstrates consistent quarter-over-quarter production growth, successfully launches new platforms without material delays, and shows a credible trajectory toward reducing its loss per vehicle — none of which are yet established"
+LABEL: INFERENCE
+REASON: This is a forward-looking conditional derived directly from the documented risks (manufacturing scale, platform launch delays, ongoing losses) present in the source data, with no specific figures attached; it is a logical directional restatement of those risks rather than a claim requiring independent factual verification.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Only two commercially available vehicles | SUPPORTED |
+| 2 | Accumulated deficit of $15.6 billion (Exec Summary) | SUPPORTED |
+| 3 | Stock declined 84% from 52-week high | SUPPORTED |
+| 4 | 52-week high of $25.23 | SUPPORTED |
+| 5 | Net loss of $4.60 billion | SUPPORTED |
+| 6 | $1.55 billion in revenue | SUPPORTED |
+| 7 | Negative profit margin of -249% | SUPPORTED |
+| 8 | Gravity and Midsize platform launches | SUPPORTED |
+| 9 | Accumulated deficit of $15.6 billion (Outlook) | SUPPORTED |
+| 10 | Management expects continued substantial losses | SUPPORTED |
+| 11 | Single-source supplier dependencies | SUPPORTED |
+| 12 | Two-vehicle portfolio | SUPPORTED |
+| 13 | Continued backing of PIF and Ayar | SUPPORTED |
+| 14 | Ownership concentration limits minority stockholder protections | SUPPORTED |
+| 15 | Gravity and Midsize launch execution as watch variable | SUPPORTED |
+| 16 | Supplier commitment underutilization risk | SUPPORTED |
+| 17 | Cautious view softening conditions (forward-looking conditional) | INFERENCE |

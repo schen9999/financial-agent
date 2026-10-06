@@ -1,0 +1,117 @@
+I will now systematically audit every quantitative, positional, and forward-looking claim in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "market capitalization of approximately $2.53 billion"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap = 2,530,547,712.0, which rounds to approximately $2.53 billion; also confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "negative profit margin of -55.45%"
+LABEL: SUPPORTED
+REASON: Source data lists profit_margin = -0.55449003, which equals -55.449%, rounding to -55.45%; confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "accumulated deficit of $1.6 billion"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both explicitly state "accumulated deficit stood at $1.6 billion" as of December 31, 2025.
+
+---
+
+CLAIM: "trading near its 52-week low of $20.23"
+LABEL: SUPPORTED
+REASON: Source data confirms week_52_low = 20.23 and current_price = 24.50; arithmetic check: $24.50 is 21.1% above the 52-week low of $20.23, which is reasonably characterized as "near" the low, and the 52-week low figure of $20.23 is explicitly present in the source data and the Recent Developments pre-written section.
+
+---
+
+CLAIM: "cash position of $1.2 billion"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states "the company held $1.2 billion in cash, cash equivalents, and marketable securities" as of December 31, 2025; confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "provides a runway of at least 12 months to fund ongoing operations"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states the cash position "is believed to be sufficient to fund operations and capital expenditures for at least the next 12 months"; confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "failure to do so could force the termination of key pipeline programs"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states failure to raise capital "may be forced to delay, reduce, or eliminate research programs" and "could also lead to the termination of license and collaboration agreements"; confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "substantial cash reserve of $1.2 billion"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states the company held $1.2 billion in cash, cash equivalents, and marketable securities as of December 31, 2025.
+
+---
+
+CLAIM: "mitigates immediate existential risk and provides a buffer to advance its pipeline without immediate dilution"
+LABEL: INFERENCE
+REASON: This is a directional interpretive conclusion drawn directly from the stated 12-month runway and the absence of committed external capital sources — both facts present in the source data — combined by an obvious logical step; no additional external facts are required.
+
+---
+
+CLAIM: "absence of commercial products"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and Risk Factors both explicitly state the company "has not yet completed any pivotal clinical trials, obtained marketing approvals, or manufactured a commercial-scale medicine."
+
+---
+
+CLAIM: "lack of pivotal trial completions"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states the company has "not yet completed any pivotal clinical trials"; confirmed in the Risk Factors pre-written section.
+
+---
+
+CLAIM: "inevitability of continued operating losses"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states "The company expects to incur losses for the foreseeable future and may never achieve or maintain profitability"; confirmed in the SEC Filing Highlights and Risk Factors pre-written sections.
+
+---
+
+CLAIM: "monitor the trajectory of cash burn relative to the 12-month runway"
+LABEL: SUPPORTED
+REASON: The 12-month runway figure is explicitly stated in the RAG SEC Highlights; the forward-looking watch-item is a direct restatement of the disclosed funding risk, requiring no facts absent from the source.
+
+---
+
+CLAIM: "any updates regarding the Sixth Street credit facility or new capital raises"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly names "a credit facility with Sixth Street Lending Partners" as the only committed external capital source; confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "A shift toward a more constructive view would require tangible evidence of clinical efficacy or regulatory momentum that validates the long-term value of the gene-editing platform"
+LABEL: INFERENCE
+REASON: This forward-looking condition is a direct logical derivation from the disclosed facts that the company has no pivotal trial completions and no marketing approvals, making clinical/regulatory progress the obvious prerequisite for a positive re-rating; no external facts are needed.
+
+---
+
+CLAIM: "any indication of funding gaps or program terminations would likely weaken the investment thesis"
+LABEL: INFERENCE
+REASON: This is a direct logical derivation from the explicitly disclosed risk that failure to secure capital could force delays or terminations of pipeline programs, requiring no facts absent from the source data.
+
+---
+
+### Summary
+
+| Label | Count |
+|---|---|
+| SUPPORTED | 12 |
+| INFERENCE | 3 |
+| UNSUPPORTED | 0 |
+
+All quantitative figures in the Executive Summary and Outlook are either directly present in the source data or derivable from it. No claims were found to be unsupported.

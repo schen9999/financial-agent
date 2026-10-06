@@ -1,0 +1,128 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of $127.6 million"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap = 127,576,944.0 USD, which rounds to $127.6 million; also confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "accumulated losses of $596.5 million"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and Risk Factors sections both explicitly state "accumulated deficit reached $596.5 million as of December 31, 2025."
+
+---
+
+CLAIM: "no product revenue to date"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states "No revenue has been generated from product sales to date," confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "The stock trades near the bottom of its 52-week range at $1.19"
+LABEL: SUPPORTED
+REASON: Source data confirms current_price = $1.19, week_52_low = $1.17, week_52_high = $3.535; $1.19 is $0.02 above the 52-week low, placing it at the very bottom of the range — arithmetic confirms the positional claim holds.
+
+---
+
+CLAIM: "close to its 52-week low of $1.17"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists week_52_low = $1.17, and $1.19 is $0.02 above that figure, confirming "close to" is arithmetically accurate.
+
+---
+
+CLAIM: "secure the additional capital required to sustain operations beyond the next 12 months"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and Risk Factors both state current cash is expected to fund operations for "at least the next 12 months," and that substantial additional financing is required beyond that period.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "cash runway limited to approximately 12 months"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states management expects current funds "to be sufficient to support current operating plans for at least the next 12 months from the filing date," confirmed in Risk Factors pre-written section as "~12 months."
+
+---
+
+CLAIM: "deeply negative net income trajectory"
+LABEL: SUPPORTED
+REASON: Source data shows net_income = -$103,403,000 (stock data) and RAG confirms net losses of $148.1 million in 2025 and $149.1 million in 2024, establishing a deeply negative and sustained trajectory.
+
+---
+
+CLAIM: "stock price near its 52-week low"
+LABEL: SUPPORTED
+REASON: Current price $1.19 vs. 52-week low $1.17 — the stock is $0.02 above its 52-week low, confirming the positional claim arithmetically.
+
+---
+
+CLAIM: "the $142.8 million on hand"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and Risk Factors both explicitly state "cash, cash equivalents, and marketable securities of $142.8 million as of December 31, 2025."
+
+---
+
+CLAIM: "vispa-cel's pivotal trial data" (as a named product milestone)
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and SEC Filing Highlights pre-written section both explicitly name vispa-cel and its planned pivotal clinical trial as a key development milestone.
+
+---
+
+CLAIM: "The advancement of CB-011 represents a secondary catalyst"
+LABEL: SUPPORTED
+REASON: CB-011 is explicitly named in the RAG SEC Highlights ("advance CB-011") and the SEC Filing Highlights pre-written section as a pipeline asset requiring additional financing to advance.
+
+---
+
+CLAIM: "any regulatory signals from the FDA regarding the cell therapy competitive landscape" (as a watch variable)
+LABEL: UNSUPPORTED
+REASON: No mention of the FDA, FDA signals, or the cell therapy competitive landscape as a specific watch variable appears anywhere in the source data, RAG sections, or pre-written sections; this is an introduced forward-looking qualifier with no grounding in the provided context.
+
+---
+
+CLAIM: "the timing and terms of any new financing or partnership agreement" (as a watch variable)
+LABEL: SUPPORTED
+REASON: The need for additional financing and the risk of dilution from future capital raises are explicitly discussed in the RAG Risk Factors and SEC Filing Highlights pre-written sections, grounding this as a directly derived watch variable.
+
+---
+
+CLAIM: "the pace of cash consumption relative to the $142.8 million on hand" (as a watch variable)
+LABEL: SUPPORTED
+REASON: The $142.8 million cash figure is explicitly present in the source data (RAG), and monitoring cash consumption relative to a stated cash balance is a direct restatement of the 12-month runway risk disclosed in the filings.
+
+---
+
+CLAIM: "the clinical efficacy and safety data from the vispa-cel pivotal trial" (as a watch variable)
+LABEL: SUPPORTED
+REASON: The pivotal clinical trial for vispa-cel is explicitly named in the RAG SEC Highlights and Risk Factors as the primary development milestone requiring additional financing, grounding this watch variable directly in the source data.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap $127.6 million | SUPPORTED |
+| 2 | Accumulated losses $596.5 million | SUPPORTED |
+| 3 | No product revenue to date | SUPPORTED |
+| 4 | Stock trades near bottom of 52-week range at $1.19 | SUPPORTED |
+| 5 | 52-week low of $1.17 | SUPPORTED |
+| 6 | Operations beyond next 12 months require additional capital | SUPPORTED |
+| 7 | Cash runway ~12 months | SUPPORTED |
+| 8 | Deeply negative net income trajectory | SUPPORTED |
+| 9 | Stock price near 52-week low | SUPPORTED |
+| 10 | $142.8 million on hand | SUPPORTED |
+| 11 | vispa-cel pivotal trial (named milestone) | SUPPORTED |
+| 12 | CB-011 as secondary catalyst | SUPPORTED |
+| 13 | FDA regulatory signals watch variable | **UNSUPPORTED** |
+| 14 | Timing/terms of financing or partnership watch variable | SUPPORTED |
+| 15 | Pace of cash consumption vs. $142.8 million watch variable | SUPPORTED |
+| 16 | vispa-cel clinical efficacy and safety data watch variable | SUPPORTED |

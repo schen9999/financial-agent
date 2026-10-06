@@ -1,0 +1,103 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$103.6 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $103,619,002,368, which rounds to $103.6 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$1.50 trillion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $1,495,812,145,152, which rounds to $1.50 trillion; also stated in the Financial Health section.
+
+---
+
+CLAIM: "3.67% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists profit_margin_pct as 3.67.
+
+---
+
+CLAIM: "trailing P/E of 350.68"
+LABEL: SUPPORTED
+REASON: Source data lists pe_ratio as 350.67593, which rounds to 350.68.
+
+---
+
+CLAIM: "forward P/E of 176.59"
+LABEL: SUPPORTED
+REASON: Source data lists forward_pe as 176.58551, which rounds to 176.59.
+
+---
+
+CLAIM: "pulled back 24% from its 52-week high"
+LABEL: SUPPORTED
+REASON: Decline = (498.83 − 378.73) / 498.83 = 120.10 / 498.83 = 24.07%, which rounds to 24%; this matches the claim and is also stated in the Recent Developments pre-written section.
+
+---
+
+CLAIM: "autonomous driving systems and the Cybercab" (as named product milestones)
+LABEL: SUPPORTED
+REASON: Both autonomous driving systems and the Cybercab are explicitly named in the SEC Filing Highlights and Risk Factors pre-written sections, as well as the RAG SEC Highlights.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "single-source supplier dependencies" (as a named risk)
+LABEL: SUPPORTED
+REASON: Explicitly named in the Risk Factors pre-written section and RAG SEC Highlights ("Single-source supplier dependencies creating bottleneck risks").
+
+---
+
+CLAIM: "exposure to tariff-driven cost inflation" (as a named risk)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors pre-written section explicitly reference "2025 tariff increases affecting supply chain costs" and "U.S. trade policy changes in 2025, including heightened import tariffs."
+
+---
+
+CLAIM: "thin profit margins" (as a characterization)
+LABEL: SUPPORTED
+REASON: The 3.67% net profit margin is present in the source data and is described as "thin" in the Financial Health pre-written section.
+
+---
+
+CLAIM: "stretched valuation" (as a characterization)
+LABEL: SUPPORTED
+REASON: The Financial Health pre-written section explicitly states "The stock's valuation appears stretched" with trailing P/E of 350.68 and forward P/E of 176.59.
+
+---
+
+CLAIM: "critical battery material supply and internal cell production timelines" (as a watch-item)
+LABEL: SUPPORTED
+REASON: Battery cell manufacturing timelines and critical materials (lithium, nickel) are explicitly discussed in the SEC Filing Highlights and Risk Factors pre-written sections.
+
+---
+
+CLAIM: "demand trends across diverse global markets given Tesla's acknowledged forecasting limitations"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights pre-written section explicitly states "Tesla acknowledges limited historical accuracy in demand forecasting across diverse global markets."
+
+---
+
+CLAIM: "a credible commercial launch of the Cybercab or a meaningful regulatory breakthrough in autonomous vehicle deployment would materially strengthen the bull case"
+LABEL: INFERENCE
+REASON: The Cybercab and autonomous driving are named in the source material as key execution variables; the directional claim that their successful launch would strengthen the bull case is a logical inference from those facts, requiring no additional external data.
+
+---
+
+CLAIM: "A shift toward a more constructive view would require visible improvement in net profit margins, on-time delivery of key new products with demonstrated consumer adoption, and evidence that supply chain risks are being actively de-risked"
+LABEL: INFERENCE
+REASON: This forward-looking threshold is derived directly from the named risks and metrics present in the source data (profit margin at 3.67%, product launch risks, supply chain vulnerabilities), with no specific numeric target introduced that would require external data.
+
+---
+
+**SUMMARY NOTE:** No quantitative figures in the Executive Summary or Outlook sections were found to be UNSUPPORTED. All specific numbers (revenue, market cap, P/E ratios, profit margin, 24% pullback) are either directly present in the source data or arithmetically verified from it. Named product milestones (Cybercab, autonomous driving) and risk characterizations (single-source suppliers, tariffs, battery materials, demand forecasting) are all grounded in the pre-written sections and RAG data. Two forward-looking directional claims are labeled INFERENCE as they are logical extensions of present facts without introducing absent data.

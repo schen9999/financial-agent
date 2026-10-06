@@ -1,0 +1,49 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "robust profit margin of 49.92% on TWD 4.44 trillion in revenue"
+LABEL: SUPPORTED
+REASON: Both figures appear explicitly in the source data (profit_margin_pct: 49.92; revenue: 4,440,492,343,296 TWD ≈ TWD 4.44 trillion) and are restated identically in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "a price near its 52-week high"
+LABEL: SUPPORTED
+REASON: Current price is $485.80 and the 52-week high is $487.44; $485.80 / $487.44 = 99.66%, confirming the stock is within 0.34% of its 52-week high, which arithmetically supports "near its 52-week high."
+
+---
+
+CLAIM: "a forward P/E of 22.2"
+LABEL: SUPPORTED
+REASON: Source data lists forward_pe: 22.157253, which rounds to 22.2, consistent with the value stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "suggests anticipated earnings growth"
+LABEL: INFERENCE
+REASON: The forward P/E of 22.2 is materially below the trailing P/E of 35.3 (both present in source data), making the inference that earnings are expected to grow a direct and standard derivation from those two figures.
+
+---
+
+**OUTLOOK**
+
+*(The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All claims are qualitative or directional in nature — e.g., "cautiously constructive," "unparalleled technological leadership," "advanced node ramp-ups," "sustained margin resilience," "sharp deceleration," "intensifying competitive pressures." None of these require a quantitative audit entry under the defined scope.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Profit margin of 49.92% | SUPPORTED |
+| 2 | TWD 4.44 trillion in revenue | SUPPORTED |
+| 3 | Price near its 52-week high | SUPPORTED |
+| 4 | Forward P/E of 22.2 | SUPPORTED |
+| 5 | Forward P/E suggests anticipated earnings growth | INFERENCE |
+
+No claims in the audited sections were found to be **UNSUPPORTED**. The Outlook section is free of specific quantitative claims requiring verification.

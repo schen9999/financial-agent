@@ -1,0 +1,67 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$5.65 trillion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 5,649,190,617,088.0, which rounds to $5.65 trillion; the pre-written Financial Health section also states "$5.65 trillion market capitalization."
+
+---
+
+CLAIM: "63.7% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data shows profit_margin = 0.63663, which rounds to 63.7%; the pre-written sections also state "63.7% net profit margin."
+
+---
+
+CLAIM: "$303 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 302,970,011,648.0, which rounds to $303 billion; the pre-written Financial Health section states "$303 billion in annual revenue."
+
+---
+
+CLAIM: "current P/E of 29.6x"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 29.576487, which rounds to 29.6x; the pre-written sections also state "29.6x."
+
+---
+
+CLAIM: "forward P/E of 14.9x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 14.905945, which rounds to 14.9x; the pre-written sections also state "14.9x."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "over 80% of its approximately 42,000-person workforce in innovation roles"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states "approximately 42,000 people" employed and "Over 80% of the workforce holds technical roles"; the pre-written SEC Filing Highlights section states "over 80% in R&D roles" and "approximately 42,000 employees."
+
+---
+
+CLAIM: "a notably low turnover rate"
+LABEL: INFERENCE
+REASON: The source data states the turnover rate was 3.7% in fiscal year 2026; the brief characterizes this as "notably low" without citing the specific figure, which is a qualitative directional restatement of the 3.7% figure present in the source — derivable as a characterization but not a quantitative claim requiring arithmetic verification.
+
+---
+
+CLAIM: "the gap between the current and forward P/E ratios" (implying the 29.6x vs. 14.9x gap)
+LABEL: SUPPORTED
+REASON: Both figures (current P/E 29.576x ≈ 29.6x and forward P/E 14.905x ≈ 14.9x) are present in the source data, and the gap between them is directly computable from those two figures.
+
+---
+
+CLAIM: "the constructive view would strengthen if NVIDIA demonstrates consistent earnings execution that closes the gap implied by the forward P/E"
+LABEL: SUPPORTED
+REASON: This is a forward-looking directional statement grounded in the forward P/E of 14.9x (present in source data) and the current P/E of 29.6x (present in source data); no additional absent facts are required.
+
+---
+
+*No other specific quantitative figures, price targets, thresholds, named product milestones, or forward-looking numbers appear in the Executive Summary or Outlook sections beyond those audited above. All qualitative risk characterizations (export controls, competitive responses, supply chain disruptions, customer concentration) are directional restatements of risk factors explicitly present in the pre-written Risk Factors and SEC Filing Highlights sections and do not constitute quantitative claims requiring arithmetic verification.*

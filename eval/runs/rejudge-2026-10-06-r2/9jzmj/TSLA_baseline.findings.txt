@@ -1,0 +1,91 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$103.6 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $103,619,002,368, which rounds to $103.6 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$1.46 trillion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $1,463,662,804,992, which rounds to $1.46 trillion; also confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "net profit margin of just 3.7%"
+LABEL: SUPPORTED
+REASON: Source data shows profit_margin of 0.03671, which rounds to 3.7%; also stated as 3.7% in the Financial Health pre-written section.
+
+---
+
+CLAIM: "current P/E of 346.3x"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio of 346.34576, which rounds to 346.3x; also stated as 346.3x in the Financial Health pre-written section.
+
+---
+
+CLAIM: "forward P/E of 171.7x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe of 171.64972, which rounds to 171.7x; also stated as 171.7x in the Financial Health pre-written section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "tariff pressures on critical battery materials"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights and Risk Factors pre-written sections explicitly reference 2025 tariff headwinds impacting supply chain costs and battery materials.
+
+---
+
+CLAIM: "supply chain fragility across hundreds of global suppliers"
+LABEL: SUPPORTED
+REASON: Source data (RAG SEC Highlights, RAG Risk Factors, and Risk Factors pre-written section) explicitly states Tesla relies on "hundreds of global suppliers" for critical components.
+
+---
+
+CLAIM: "thin current profit margins"
+LABEL: SUPPORTED
+REASON: Source data shows a profit_margin of 0.03671 (3.7%), which is characterized as thin in the Financial Health pre-written section.
+
+---
+
+CLAIM: "Cybercab" (as a named product milestone)
+LABEL: SUPPORTED
+REASON: The Cybercab is explicitly named in the RAG SEC Highlights, RAG Risk Factors, and SEC Filing Highlights pre-written section as a product under development.
+
+---
+
+CLAIM: "Robotaxi" (as a named product milestone)
+LABEL: SUPPORTED
+REASON: The Robotaxi is explicitly named in the RAG SEC Highlights, RAG Risk Factors, and SEC Filing Highlights pre-written section as a product under development.
+
+---
+
+CLAIM: "full self-driving capabilities" (as a named product milestone)
+LABEL: INFERENCE
+REASON: The source data references "autonomous driving solutions" and "driver assistance systems" broadly; "full self-driving" is a reasonable restatement of autonomous driving capabilities described in the SEC filings, derivable directly from those references without any absent fact.
+
+---
+
+CLAIM: "watch the pace and regulatory progress of autonomous driving commercialization, particularly the Cybercab and Robotaxi programs"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights pre-written section explicitly identifies autonomous driving, Cybercab, and Robotaxi as key execution risks with uncertain consumer adoption and regulatory timelines.
+
+---
+
+CLAIM: "track global demand signals across key markets for early warning of production-demand mismatches"
+LABEL: SUPPORTED
+REASON: The Risk Factors and SEC Filing Highlights pre-written sections explicitly identify demand forecasting challenges across diverse global markets and production-demand mismatches as material risks.
+
+---
+
+**No additional quantitative figures, price targets, specific thresholds, ratios, or named numeric forward-looking claims appear in the Outlook section beyond those evaluated above.** The remaining language in the Outlook is qualitative directional commentary (e.g., "cautious," "constructive," "outright negative") with no specific numeric claims requiring verification.

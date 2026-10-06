@@ -1,0 +1,56 @@
+I will now systematically audit every quantitative, positional, and forward-looking claim in the **Executive Summary** and **Outlook** sections against the raw source data and pre-written sections.
+
+---
+
+### EXECUTIVE SUMMARY
+
+---
+
+**CLAIM:** "substantial market capitalization exceeding $2.45 trillion"
+**LABEL:** SUPPORTED
+**REASON:** Source data shows `market_cap: 2452061159424.0`, which equals approximately $2.452 trillion, confirming it exceeds $2.45 trillion.
+
+---
+
+**CLAIM:** "net margins nearing 50%"
+**LABEL:** SUPPORTED
+**REASON:** Source data shows `profit_margin: 0.49923`, i.e., ~49.92%, which is accurately described as "nearing 50%."
+
+---
+
+**CLAIM:** "trading near its 52-week high"
+**LABEL:** SUPPORTED
+**REASON:** Current price is $472.78 and the 52-week high is $479.00; $472.78 / $479.00 = 98.7%, confirming the stock is near its 52-week high.
+
+---
+
+**CLAIM:** "trailing P/E of 34.36"
+**LABEL:** SUPPORTED
+**REASON:** Source data shows `pe_ratio: 34.359013`, which rounds to 34.36.
+
+---
+
+---
+
+### OUTLOOK
+
+---
+
+**CLAIM:** (no explicit quantitative figures, price targets, ratios, thresholds, or named product milestones appear in the Outlook section)
+
+The Outlook section contains only qualitative and directional statements (e.g., "cautiously constructive," "strong pricing power," "high profit margins," "intense capital expenditure requirements," "key clients," "capacity expansions," "geopolitical tensions," "US-China trade relations"). None of these introduce new specific quantitative figures, named thresholds, ratios, percentages, or forward-looking numbers beyond what was already audited in the Executive Summary.
+
+All qualitative claims in the Outlook are directional restatements of risk factors and financial health observations present in the pre-written sections (geopolitical/regulatory exposure, customer concentration, capex requirements, profit margins, moat in advanced manufacturing), and no new verifiable quantitative claims are introduced.
+
+---
+
+### SUMMARY TABLE
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap exceeding $2.45 trillion | SUPPORTED |
+| 2 | Net margins nearing 50% | SUPPORTED |
+| 3 | Trading near its 52-week high | SUPPORTED |
+| 4 | Trailing P/E of 34.36 | SUPPORTED |
+
+**No unsupported or inference-labeled claims were identified.** All four auditable quantitative claims in the Executive Summary are directly and verifiably grounded in the raw source data. The Outlook section introduces no new quantitative claims requiring audit.

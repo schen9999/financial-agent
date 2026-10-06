@@ -1,0 +1,85 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "YARTEMLEA, its sole FDA-approved product (December 2025)"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "YARTEMLEA is the company's only commercialized product, approved by the FDA in December 2025," and the Risk Factors section confirms "FDA-approved in December 2025."
+
+---
+
+CLAIM: "trades at $18.61"
+LABEL: SUPPORTED
+REASON: Stock data explicitly lists current_price as 18.61 USD.
+
+---
+
+CLAIM: "market capitalization of $1.35 billion"
+LABEL: SUPPORTED
+REASON: Stock data lists market_cap as 1,347,146,624, which rounds to $1.35 billion.
+
+---
+
+CLAIM: "revenue of just $38.4 million"
+LABEL: SUPPORTED
+REASON: Stock data lists revenue as 38,422,000, which rounds to $38.4 million.
+
+---
+
+CLAIM: "approximately 18 months of cash runway"
+LABEL: INFERENCE
+REASON: The SEC Highlights report $171.8 million in cash and $116.1 million annual operating cash burn; dividing $171.8M ÷ $116.1M ≈ 1.48 years ≈ 17.8 months, which rounds to approximately 18 months — a direct arithmetic derivation from two present figures.
+
+---
+
+CLAIM: "$171.8 million in cash and short-term investments"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly state "the company held $171.8 million in cash, cash equivalents, and short-term investments as of December 31, 2025."
+
+---
+
+CLAIM: "52-week trading range of $4.06–$21.24"
+LABEL: SUPPORTED
+REASON: Stock data lists week_52_low as 4.06 and week_52_high as 21.24.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "annual operating cash burn of $116.1 million"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly state "Cash used in operations for 2025 was $116.1 million."
+
+---
+
+CLAIM: "approximately 18-month runway"
+LABEL: INFERENCE
+REASON: Same derivation as above: $171.8M ÷ $116.1M ≈ 17.8 months, directly computable from two figures present in the source data.
+
+---
+
+CLAIM: "the Novo Nordisk partnership for zaltenibart, where positive milestone achievements could meaningfully supplement the balance sheet without immediate dilution"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both confirm a strategic partnership with Novo Nordisk involving zaltenibart with milestone and royalty payments contingent on successful development; the characterization of milestones as non-dilutive supplementation is a reasonable restatement of milestone payments (not equity issuance), consistent with the source description.
+
+---
+
+CLAIM: "reimbursement uncertainty from both government and private payers"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors explicitly state "Delays in obtaining adequate coverage or reimbursement from government and private payers could impair revenue generation and profitability."
+
+---
+
+CLAIM: "the company's limited commercial infrastructure introduces meaningful execution risk"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "The company has limited experience in marketing, selling, and distributing the product," and Risk Factors confirm "limited sales experience" as a commercialization challenge.
+
+---
+
+No additional quantitative figures, price targets, specific thresholds, ratios, or named product milestones with attached numbers appear in the Outlook section beyond those already evaluated above. All claims have been assessed.

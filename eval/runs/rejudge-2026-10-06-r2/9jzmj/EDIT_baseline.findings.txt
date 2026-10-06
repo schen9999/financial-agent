@@ -1,0 +1,91 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "accumulated $1.6 billion in operating losses since inception"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "accumulated operating losses totaling $1.6 billion as of December 31, 2025," and the SEC Filing Highlights pre-written section confirms the same figure.
+
+---
+
+CLAIM: "currently trading at $2.62 per share"
+LABEL: SUPPORTED
+REASON: The stock data field "current_price" is explicitly $2.62.
+
+---
+
+CLAIM: "market capitalization of $402.4 million"
+LABEL: SUPPORTED
+REASON: The stock data field "market_cap" is $402,379,680, which rounds to $402.4 million.
+
+---
+
+CLAIM: "52-week range of $1.66–$4.54"
+LABEL: SUPPORTED
+REASON: The stock data explicitly lists "week_52_high": 4.537 (rounds to $4.54) and "week_52_low": 1.66, matching both figures.
+
+---
+
+CLAIM: "sits near the lower end of its 52-week range of $1.66–$4.54"
+LABEL: SUPPORTED
+REASON: Arithmetic check: the range spans $1.66 to $4.54 (width = $2.88); the midpoint is $3.10; $2.62 is below the midpoint and closer to the low ($0.96 above the low vs. $1.92 below the high), confirming it sits in the lower half of the range.
+
+---
+
+CLAIM: "cash runway extends only through Q3 2027"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "Existing cash and cash equivalents as of December 31, 2025 are expected to fund operations into Q3 2027," confirmed also in the SEC Filing Highlights and Risk Factors pre-written sections.
+
+---
+
+CLAIM: "EDIT-401" (named product milestone/candidate)
+LABEL: SUPPORTED
+REASON: EDIT-401 is explicitly named in the RAG SEC Highlights ("EDIT-401 is a key product candidate under development") and in the SEC Filing Highlights pre-written section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "cash runway that expires in Q3 2027"
+LABEL: SUPPORTED
+REASON: Directly stated in the RAG SEC Highlights and Risk Factors: "Existing cash and cash equivalents as of December 31, 2025 are expected to fund operations into Q3 2027."
+
+---
+
+CLAIM: "a pattern of deep annual losses"
+LABEL: SUPPORTED
+REASON: The RAG data explicitly lists net losses of $160.1 million (2025), $237.1 million (2024), and $153.2 million (2023), confirming a multi-year pattern of substantial annual losses.
+
+---
+
+CLAIM: "pipeline that remains largely in preclinical or early clinical stages"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "The company is currently in preclinical testing stages for its most advanced research programs," and the Risk Factors confirm "Most advanced programs remain in preclinical testing stages."
+
+---
+
+CLAIM: "clinical data readouts from EDIT-401" (as a key variable/milestone)
+LABEL: SUPPORTED
+REASON: EDIT-401 is explicitly named as a key product candidate in the RAG SEC Highlights and SEC Filing Highlights pre-written section; framing it as a clinical data readout watch-item is consistent with the source, which describes it as a pipeline candidate under development.
+
+---
+
+CLAIM: "BMS and Vertex collaborations, where milestone or contingent payments could provide meaningful non-dilutive funding relief"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly name "contingent payments from BMS collaboration and Vertex license agreement" as "the only significant committed potential external sources," and the SEC Filing Highlights pre-written section references both by name.
+
+---
+
+CLAIM: "a strategically structured partnership that extends the cash runway well beyond Q3 2027"
+LABEL: INFERENCE
+REASON: Q3 2027 is the stated runway endpoint from the source data; "well beyond Q3 2027" is a directional restatement that a sufficiently large partnership payment would extend the runway past that date — a logical derivation from the stated runway figure, requiring no additional facts beyond what is present.
+
+---
+
+*No other specific quantitative figures, price targets, thresholds, ratios, or named metrics appear in the Executive Summary or Outlook sections beyond those evaluated above.*

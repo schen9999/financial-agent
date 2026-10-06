@@ -1,0 +1,57 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "€38.19 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: The source data lists revenue of 38,192,001,024.0 EUR, which rounds to €38.19 billion, and the Financial Health pre-written section states the same figure explicitly.
+
+---
+
+CLAIM: "€7.80 billion in net income"
+LABEL: SUPPORTED
+REASON: The source data lists net income of 7,795,999,744.0 EUR, which rounds to €7.80 billion, consistent with the pre-written sections.
+
+---
+
+CLAIM: "a forward P/E of 21.44"
+LABEL: SUPPORTED
+REASON: The source data explicitly lists forward_pe as 21.444485, which rounds to 21.44.
+
+---
+
+CLAIM: "a successful transition to cloud-based solutions"
+LABEL: UNSUPPORTED
+REASON: No news articles, SEC filings, or source data are present that confirm or quantify a "successful" cloud transition; this characterization is not grounded in any provided source figure or fact.
+
+---
+
+CLAIM: "ongoing migration to the SAP Business Technology Platform"
+LABEL: SUPPORTED
+REASON: The SAP Business Technology Platform (BTP) is explicitly named in the Risk Factors pre-written section as a key migration target, establishing its presence in the source material.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: (No specific quantitative figures, price targets, thresholds, ratios, metrics, or percentages appear in the Outlook section.)
+
+*The Outlook section contains only qualitative and directional statements referencing named entities (Business Technology Platform, Europe, North America) and directional concepts (higher-margin recurring revenue, margin expansion, contract churn). These named entities and directional themes are all traceable to the pre-written Risk Factors and Recent Developments sections. There are no standalone quantitative claims to audit in the Outlook.*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | €38.19 billion in annual revenue | SUPPORTED |
+| 2 | €7.80 billion in net income | SUPPORTED |
+| 3 | Forward P/E of 21.44 | SUPPORTED |
+| 4 | "successful transition to cloud-based solutions" | UNSUPPORTED |
+| 5 | Migration to SAP Business Technology Platform (named milestone) | SUPPORTED |

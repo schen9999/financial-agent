@@ -1,0 +1,57 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$674.4 billion market capitalization"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap = 674,394,669,056.0, which rounds to $674.4 billion, and the same figure appears in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$361.1 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue = 361,060,007,936.0, which rounds to $361.1 billion, consistent with the Financial Health pre-written section.
+
+---
+
+CLAIM: "9.07% net profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data lists profit_margin = 0.09072, which rounds to 9.07%, matching the Financial Health pre-written section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "strong upstream earnings growth"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights confirm upstream earnings rose from $5.402 billion (Q2 2025) to $7.927 billion (Q2 2026), constituting strong growth.
+
+---
+
+CLAIM: "volume growth in key assets like Guyana and the Permian Basin"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state advantaged volume growth was "driven mainly by growth in Guyana and the Permian basin."
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond the qualitative directional statements and the named assets already evaluated above.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $674.4 billion market cap | SUPPORTED |
+| 2 | $361.1 billion annual revenue | SUPPORTED |
+| 3 | 9.07% net profit margin | SUPPORTED |
+| 4 | Strong upstream earnings growth | SUPPORTED |
+| 5 | Volume growth in Guyana and Permian Basin | SUPPORTED |
+
+All five auditable quantitative or factual claims in the Executive Summary and Outlook are **SUPPORTED** by the source data. No figures were found to be unsupported or requiring inference labeling. Notably, the brief avoids introducing any figures (e.g., P/E ratios, dividend yield, 52-week range, specific earnings dollar amounts, shareholder return totals) that appear in the source data but were not carried into these two sections — a conservative and accurate editorial choice.

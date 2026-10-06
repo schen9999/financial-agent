@@ -1,0 +1,35 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$883.5 billion market capitalization"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap as 883,527,974,912.0, which rounds to $883.5 billion, matching the pre-written Financial Health section exactly.
+
+---
+
+CLAIM: "$63.6 billion net income"
+LABEL: SUPPORTED
+REASON: The raw source data lists net_income as 63,634,001,920.0, which rounds to $63.6 billion, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "P/E ratio of 14.25"
+LABEL: SUPPORTED
+REASON: The raw source data lists pe_ratio as 14.246893, which rounds to 14.25 (within 0.15 percentage points of the stated figure).
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional (e.g., "cautiously constructive," "persistent regulatory and legal uncertainties," "strict Net Capital Rules," "market and credit volatility"). There are no numerical claims to audit in this section.
+
+---
+
+**SUMMARY**
+
+All three quantitative claims in the Executive Summary are **SUPPORTED** by the raw source data. The Outlook section contains no auditable quantitative or forward-looking numerical claims.

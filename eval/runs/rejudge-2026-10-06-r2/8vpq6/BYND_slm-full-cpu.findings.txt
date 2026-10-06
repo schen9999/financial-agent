@@ -1,0 +1,36 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "trading at a significantly reduced market capitalization of approximately $141.85 million"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly states `"market_cap": 141850208.0`, which equals approximately $141.85 million, and the pre-written Financial Health section confirms this figure verbatim.
+
+---
+
+CLAIM: "substantial decline from the 52-week high of $230.70"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly states `"week_52_high": 230.7`, and the current price of $8.25 is well below that level, confirming both the figure and the directional claim arithmetically ($8.25 < $230.70).
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional (e.g., "persistent declines," "intense sector competition," "strategic pivot," "workforce reductions," "liquidity and debt covenant compliance," "shareholder dilution," "manufacturing capacity," "consumer confidence," "core products"). None of these phrases introduce a specific number, named metric, or quantified threshold that requires verification against the source data.
+
+There are therefore no additional claims to label in the Outlook section.
+
+---
+
+**SUMMARY**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap ~$141.85 million | SUPPORTED |
+| 2 | 52-week high of $230.70 | SUPPORTED |
+
+No quantitative or forward-looking numerical claims appear in the Outlook section; the section is composed entirely of qualitative directional language and therefore presents no additional items requiring audit entries.

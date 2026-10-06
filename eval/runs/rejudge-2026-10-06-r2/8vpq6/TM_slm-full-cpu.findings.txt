@@ -1,0 +1,55 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$51.96 trillion in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as 51,957,024,686,080.0 (JPY), which the pre-written Financial Health section rounds to "$51.96 trillion," and the Executive Summary reproduces this figure exactly.
+
+---
+
+CLAIM: "net profit margin of 8.63%"
+LABEL: SUPPORTED
+REASON: The raw source data lists `profit_margin: 0.0863`, which equals 8.63%; the Executive Summary reproduces this exactly.
+
+---
+
+CLAIM: "market capitalization of approximately $214.9 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists `market_cap: 214,917,464,064.0`, which rounds to approximately $214.9 billion.
+
+---
+
+CLAIM: "trailing P/E ratio of 8.13"
+LABEL: SUPPORTED
+REASON: The raw source data lists `pe_ratio: 8.134917`, which rounds to 8.13; the claim reproduces this correctly.
+
+---
+
+CLAIM: "dividend yield of 3.45%"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `dividend_yield: 3.45`, matching the claim exactly.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional in nature (e.g., "cautiously constructive," "strong profitability," "attractive valuation," "margin resilience," "key growth regions"). There are therefore no quantitative or forward-looking numerical claims in the Outlook section to audit.
+
+---
+
+**SUMMARY TABLE**
+
+| Claim | Label |
+|---|---|
+| $51.96 trillion in revenue | SUPPORTED |
+| Net profit margin of 8.63% | SUPPORTED |
+| Market cap ~$214.9 billion | SUPPORTED |
+| Trailing P/E of 8.13 | SUPPORTED |
+| Dividend yield of 3.45% | SUPPORTED |
+
+All five auditable quantitative claims in the Executive Summary are fully supported by the raw source data. The Outlook section contains no auditable quantitative claims.

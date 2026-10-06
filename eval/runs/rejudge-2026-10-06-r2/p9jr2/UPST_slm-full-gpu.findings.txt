@@ -1,0 +1,55 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$1.29 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $1,285,890,048, which rounds to $1.29 billion; the pre-written Financial Health section also states "annual revenue of $1.29 billion."
+
+---
+
+CLAIM: "net income of $60.3 million"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of $60,334,000, which rounds to $60.3 million; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "trading near a 52-week low"
+LABEL: SUPPORTED
+REASON: Current price is $22.81 and the 52-week low is $22.555; $22.81 is only $0.255 above the 52-week low, arithmetically confirming the stock is trading near its 52-week low.
+
+---
+
+CLAIM: "forward P/E of 6.56"
+LABEL: SUPPORTED
+REASON: Source data lists forward_pe as 6.562216, which rounds to 6.56; also confirmed in the pre-written sections.
+
+---
+
+CLAIM: "trailing P/E of 45.62"
+LABEL: SUPPORTED
+REASON: Source data lists pe_ratio as 45.62, exactly matching the claim.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional in nature (e.g., "cautiously constructive," "sustained borrower demand," "prolonged high-interest rate environments"). There are therefore no quantitative or forward-looking numerical claims to audit in this section.
+
+---
+
+**SUMMARY TABLE**
+
+| Claim | Label |
+|---|---|
+| $1.29 billion in annual revenue | SUPPORTED |
+| Net income of $60.3 million | SUPPORTED |
+| Trading near a 52-week low | SUPPORTED |
+| Forward P/E of 6.56 | SUPPORTED |
+| Trailing P/E of 45.62 | SUPPORTED |
+
+All five auditable quantitative claims in the Executive Summary are **SUPPORTED** by the source data. The Outlook section contains no quantitative claims requiring audit.

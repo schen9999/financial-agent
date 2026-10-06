@@ -1,0 +1,55 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating annual revenue of $1.04 trillion"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as $1,044,970,995,712, which rounds to $1.04 trillion, and the pre-written Financial Health section states the same figure.
+
+---
+
+CLAIM: "market capitalization of approximately $263.3 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap as $263,327,809,536, which rounds to approximately $263.3 billion, consistent with the pre-written section.
+
+---
+
+CLAIM: "trading near its 52-week low of $91.99"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists week_52_low as $91.99, and the current price of $105.85 is 15.1% above that low, which is reasonably described as "near" it; the $91.99 figure is directly present in the source.
+
+---
+
+CLAIM: "a forward P/E of 11.52"
+LABEL: SUPPORTED
+REASON: The raw source data lists forward_pe as 11.522639, which rounds to 11.52, matching the claim exactly.
+
+---
+
+CLAIM: "the market is pricing in significant expected growth and improved profitability"
+LABEL: INFERENCE
+REASON: This is a standard interpretive inference drawn directly from the comparison of the trailing P/E of 23.95 and the forward P/E of 11.52, both present in the source data, and is explicitly stated in the pre-written Financial Health section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "the attractive valuation implied by the forward P/E of 11.52"
+LABEL: SUPPORTED
+REASON: The raw source data lists forward_pe as 11.522639, which rounds to 11.52, directly supporting this figure.
+
+---
+
+CLAIM: "the company's robust revenue base"
+LABEL: INFERENCE
+REASON: No specific threshold for "robust" is defined, but this is a direct qualitative restatement of the $1.04 trillion annual revenue figure present in the source data, making it a straightforward inference from a present fact.
+
+---
+
+**Summary of findings:** All quantitative figures in both sections (revenue of $1.04 trillion, market cap of ~$263.3 billion, 52-week low of $91.99, forward P/E of 11.52) are **SUPPORTED** by the raw source data. Two qualitative/directional claims are labeled **INFERENCE** as they are directly and transparently derivable from figures present in the source. No claims are **UNSUPPORTED**. Notably, the brief does not introduce any figures absent from the source data (e.g., no fabricated price targets, earnings estimates, or growth rates), which is consistent with the pre-written sections' acknowledgment that no SEC filings or news articles were available.

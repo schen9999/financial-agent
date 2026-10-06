@@ -1,0 +1,85 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "carrying an accumulated deficit of $743.0 million"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights, RAG Risk Factors, and SEC Filing Highlights pre-written section all explicitly state the accumulated deficit is $743.0 million as of December 31, 2024.
+
+---
+
+CLAIM: "supported by a combined liquidity position of approximately $497 million as of Q1 2025"
+LABEL: SUPPORTED
+REASON: The Financial Health and Recent Developments pre-written sections both state "approximately $497 million"; recomputed from 10-Q source data: $96,554K (cash) + $400,523K (marketable securities) = $497,077K ≈ $497 million, which confirms the figure.
+
+---
+
+CLAIM: "actively advancing Phase 1b trials for VERVE-102 and VERVE-201"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights pre-written section explicitly names "Phase 1b trials for VERVE-102 (Heart-2) and VERVE-201 (Pulse-1)," consistent with the RAG SEC Highlights.
+
+---
+
+CLAIM: "cash on hand alone declined from $172.6 million to $96.6 million in a single quarter"
+LABEL: SUPPORTED
+REASON: The 10-Q source data shows cash and cash equivalents of $172,560K at December 31, 2024 and $96,554K at March 31, 2025; the Recent Developments pre-written section states the same figures, and the single-quarter period (Q4 2024 end to Q1 2025 end) matches the balance sheet column headers.
+
+---
+
+CLAIM: "the Heart-2 and Pulse-1 programs"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section explicitly name "Heart-2 Phase 1b for VERVE-102" and "Pulse-1 Phase 1b for VERVE-201."
+
+---
+
+CLAIM: "planned Phase 2"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section both reference "a planned Phase 2 for the PCSK9 program."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "the company's estimated funding runway into mid-2027"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "the company estimates its existing capital will fund operations into mid-2027," and the SEC Filing Highlights pre-written section repeats this figure.
+
+---
+
+CLAIM: "its existing partnership with Eli Lilly"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights references "the Eli Lilly Research and Collaboration Agreement," and the SEC Filing Highlights pre-written section names Eli Lilly as a partner providing a $20.0 million milestone payment.
+
+---
+
+CLAIM: "a precedent for future milestone-driven capital"
+LABEL: INFERENCE
+REASON: The $20.0 million milestone payment from Eli Lilly is explicitly present in the source data; characterizing it as a "precedent for future milestone-driven capital" is a direct logical inference from that documented milestone payment, requiring no additional facts beyond what is in the context.
+
+---
+
+CLAIM: "data readouts from the Heart-2 (VERVE-102) and Pulse-1 (VERVE-201) Phase 1b trials"
+LABEL: SUPPORTED
+REASON: Both trial names and their association with VERVE-102 and VERVE-201 respectively are explicitly present in the RAG SEC Highlights and SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "the trajectory of quarterly cash consumption relative to the mid-2027 runway estimate"
+LABEL: SUPPORTED
+REASON: The mid-2027 runway estimate is explicitly present in the RAG SEC Highlights and pre-written sections; quarterly cash consumption is directly observable from the 10-Q balance sheet figures provided in the source data.
+
+---
+
+CLAIM: "the PCSK9 program"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly references "a planned Phase 2 for the PCSK9 program," and the SEC Filing Highlights pre-written section repeats this.
+
+---
+
+**Summary of findings:** All quantitative and forward-looking claims in the Executive Summary and Outlook are either directly supported by the source data/pre-written sections or are a single-step inference from explicitly present facts. No claims are UNSUPPORTED. The brief does not introduce any figures, periods, entities, or thresholds that are absent from the provided context.

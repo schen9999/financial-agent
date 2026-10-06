@@ -1,0 +1,97 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "founded in 2017"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "an early-stage biotech firm founded in January 2017."
+
+---
+
+CLAIM: "currently trading at $24.50"
+LABEL: SUPPORTED
+REASON: The stock data field `current_price` is 24.5, and the Financial Health section states "$24.50."
+
+---
+
+CLAIM: "market capitalization of $2.53 billion"
+LABEL: SUPPORTED
+REASON: The stock data field `market_cap` is 2,530,547,712, which rounds to $2.53 billion; confirmed in the Financial Health section.
+
+---
+
+CLAIM: "well below its 52-week high of $38.26"
+LABEL: SUPPORTED
+REASON: The stock data confirms `week_52_high` = 38.26; $24.50 is arithmetically below $38.26 (approximately 36% below), so the positional claim holds.
+
+---
+
+CLAIM: "the company holds $1.2 billion in cash expected to fund at least 12 months of operations"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "$1.2 billion in cash, cash equivalents, and marketable securities, which is expected to fund operations for at least the next 12 months."
+
+---
+
+CLAIM: "carries an accumulated deficit of $1.6 billion"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both state "accumulated deficit reached $1.6 billion as of December 31, 2025."
+
+---
+
+CLAIM: "has undergone a strategic restructuring that paused or eliminated certain pipeline programs"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "In October 2023, the company announced a portfolio reprioritization and strategic restructuring…resulting in the pausing or elimination of certain pipeline programs."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "the $1.2 billion cash position also provides a meaningful operational runway that reduces near-term financing pressure"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights confirm $1.2 billion in cash expected to fund operations for at least the next 12 months.
+
+---
+
+CLAIM: "the accumulated deficit of $1.6 billion"
+LABEL: SUPPORTED
+REASON: Confirmed in both RAG SEC Highlights and Risk Factors as of December 31, 2025.
+
+---
+
+CLAIM: "the absence of any approved products"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both state the company "has not completed any pivotal clinical trials or obtained marketing approvals for any product candidates."
+
+---
+
+CLAIM: "the post-restructuring pipeline reduction"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights confirm the October 2023 restructuring included "pausing or elimination of certain pipeline programs."
+
+---
+
+CLAIM: "the need for additional capital beyond existing facilities"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "Substantial additional funding will be needed" and that the company has "no committed source of additional capital beyond its credit facility with Sixth Street Lending Partners."
+
+---
+
+CLAIM: "the pace of cash burn relative to the stated 12-month runway"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state the $1.2 billion cash position "is expected to fund operations for at least the next 12 months," making the "stated 12-month runway" a directly sourced qualifier.
+
+---
+
+CLAIM: "the company's ability to secure additional committed funding without excessive dilution"
+LABEL: INFERENCE
+REASON: The need for additional capital and the absence of committed sources are both in the source data; the "without excessive dilution" qualifier is a standard derivation from the capital-raising risk disclosed, but "excessive dilution" as a specific threshold or qualifier does not appear in the source data — however, it is a direct logical inference from the disclosed capital risk and is not a fabricated figure or entity, making it an inferential restatement rather than an unsupported claim.
+
+---
+
+**Summary of findings:** All quantitative figures (price, market cap, 52-week high, cash balance, 12-month runway, accumulated deficit) are SUPPORTED by the source data. The one forward-looking qualitative modifier ("without excessive dilution") is labeled INFERENCE as it is derivable from disclosed capital risk but not explicitly stated. No claims are UNSUPPORTED.

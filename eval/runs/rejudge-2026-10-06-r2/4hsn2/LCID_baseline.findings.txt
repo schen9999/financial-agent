@@ -1,0 +1,79 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "only two commercially available vehicles"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "Only two commercially available vehicles have been released."
+
+---
+
+CLAIM: "trading at $4.17 per share"
+LABEL: SUPPORTED
+REASON: The stock data field `current_price` is explicitly $4.17.
+
+---
+
+CLAIM: "market capitalization of $1.64 billion"
+LABEL: SUPPORTED
+REASON: The stock data field `market_cap` is $1,643,272,704, which rounds to $1.64 billion.
+
+---
+
+CLAIM: "down sharply from its 52-week high of $23.78"
+LABEL: SUPPORTED
+REASON: The stock data field `week_52_high` is $23.778, which rounds to $23.78; current price of $4.17 is indeed below this figure, confirming the directional claim arithmetically.
+
+---
+
+CLAIM: "generating $1.55 billion in revenue"
+LABEL: SUPPORTED
+REASON: The stock data field `revenue` is $1,547,122,048, which rounds to $1.55 billion; the Financial Health section also states "$1.55 billion in revenue."
+
+---
+
+CLAIM: "net loss of $4.60 billion"
+LABEL: SUPPORTED
+REASON: The stock data field `net_income` is -$4,604,930,048, which rounds to -$4.60 billion; confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "accumulated deficit of $15.6 billion"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights, RAG Risk Factors, and the SEC Filing Highlights pre-written section all explicitly state "accumulated deficit reached $15.6 billion as of December 31, 2025."
+
+---
+
+CLAIM: "profit margin of -249.21%"
+LABEL: SUPPORTED
+REASON: The stock data field `profit_margin_pct` is explicitly -249.21; also confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "negative forward P/E ratio"
+LABEL: SUPPORTED
+REASON: The stock data field `forward_pe` is -0.83358324, which is explicitly negative.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "Planned manufacturing expansions in Arizona and Saudi Arabia"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "Expansion planned in Arizona and international locations including Saudi Arabia," and the SEC Filing Highlights pre-written section repeats "Planned manufacturing expansions in Arizona and Saudi Arabia."
+
+---
+
+CLAIM: "[monitoring] whether gross margin losses are narrowing as production volumes grow"
+LABEL: INFERENCE
+REASON: No gross margin figure is provided in the source data; this is a forward-looking monitoring criterion derived from the general context of scaling losses and unit economics improvement, not a specific quantitative figure from the source — it is a directional analytical inference rather than a specific claim requiring a source figure.
+
+---
+
+*(No other specific quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already evaluated above. The remaining Outlook content consists of qualitative directional statements and monitoring criteria without specific numerical claims.)*

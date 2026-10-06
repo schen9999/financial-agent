@@ -1,0 +1,57 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+### EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "$5.21 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data lists revenue as $5,209,110,016, which rounds to $5.21 billion; also explicitly stated in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "net income of $355.2 million"
+LABEL: SUPPORTED
+REASON: Source data lists net_income as $355,204,992, which rounds to $355.2 million; also confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "forward P/E of 38.56"
+LABEL: SUPPORTED
+REASON: Source data lists forward_pe as 38.561295, which rounds to 38.56; also stated in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "high trailing multiple of 64.57"
+LABEL: SUPPORTED
+REASON: Source data lists pe_ratio as 64.57204, which rounds to 64.57; also stated in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+### OUTLOOK
+
+---
+
+CLAIM: "gap between the trailing and forward P/E ratios"
+LABEL: SUPPORTED
+REASON: Trailing P/E is 64.57 and forward P/E is 38.56 per source data, confirming a material gap of approximately 26 points exists between the two figures.
+
+---
+
+*No additional specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond the implicit reference to the P/E gap already evaluated above.*
+
+---
+
+### SUMMARY TABLE
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $5.21 billion in annual revenue | SUPPORTED |
+| 2 | net income of $355.2 million | SUPPORTED |
+| 3 | forward P/E of 38.56 | SUPPORTED |
+| 4 | trailing multiple of 64.57 | SUPPORTED |
+| 5 | gap between trailing and forward P/E ratios | SUPPORTED |
+
+All five quantitative claims in the Executive Summary and Outlook are fully supported by the raw source data. No unsupported or inference-only claims were identified.

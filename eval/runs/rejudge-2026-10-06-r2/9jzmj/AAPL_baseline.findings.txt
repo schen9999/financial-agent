@@ -1,0 +1,73 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$466.8 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data lists revenue as $466,822,987,776, which rounds to $466.8 billion; also explicitly stated in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "$128.9 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data lists net_income as $128,929,996,800, which rounds to $128.9 billion; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$4.87 trillion market cap"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap as $4,869,931,925,504, which rounds to $4.87 trillion; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "P/E ratio of 38.31"
+LABEL: SUPPORTED
+REASON: Source data lists pe_ratio as 38.31114, which rounds to 38.31; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "smart home devices" (as a named product milestone/category)
+LABEL: SUPPORTED
+REASON: Bloomberg news article explicitly references "New 'Smart Home' Products" launching October 13, and the pre-written sections reference this milestone.
+
+---
+
+CLAIM: "iPhone Duo foldable" (as a named product milestone)
+LABEL: SUPPORTED
+REASON: Bloomberg news article references "iPhone duos" as a foldable product, and the pre-written Recent Developments section names "iPhone Duo foldable devices."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "smart home devices" (entry into smart home as a new vector)
+LABEL: SUPPORTED
+REASON: Bloomberg article explicitly reports Apple launching new Smart Home products on October 13, 2026, referenced in the pre-written sections.
+
+---
+
+CLAIM: "foldable smartphones" (entry into foldables as a new vector)
+LABEL: SUPPORTED
+REASON: Bloomberg article and pre-written Recent Developments section both reference the iPhone Duo foldable as a new product category.
+
+---
+
+CLAIM: "Asia-concentrated supply chain" (geopolitical risk qualifier)
+LABEL: SUPPORTED
+REASON: SEC Filing Highlights pre-written section explicitly states "Supply chain concentration in Asia—particularly China, Taiwan, and Vietnam" and the RAG Risk Factors confirm manufacturing concentration in China, India, Japan, South Korea, Taiwan, and Vietnam.
+
+---
+
+CLAIM: "U.S.-China trade policy" (as a named risk variable)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections explicitly reference trade restrictions, tariffs, and geopolitical tensions including China as a manufacturing concentration risk; the SEC Filing Highlights pre-written section names China specifically.
+
+---
+
+*No additional standalone quantitative figures, price targets, thresholds, ratios, percentages, or forward-looking numbers appear in the Outlook section beyond those already evaluated above. The Outlook is primarily qualitative/directional with no new numeric claims introduced beyond what was audited in the Executive Summary.*

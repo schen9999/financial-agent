@@ -1,0 +1,73 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "accumulated deficit of $596.5 million"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "accumulated deficit stood at $596.5 million as of December 31, 2025," and the pre-written SEC Filing Highlights section repeats this figure.
+
+---
+
+CLAIM: "minimal revenue of $10.0 million"
+LABEL: SUPPORTED
+REASON: The raw stock data lists revenue of $10,035,000, which rounds to $10.0 million, and the Financial Health pre-written section states "minimal revenue of $10.0 million."
+
+---
+
+CLAIM: "near the 52-week low"
+LABEL: SUPPORTED
+REASON: The current price is $1.22 and the 52-week low is $1.215; $1.22 is within $0.005 of the 52-week low, arithmetically confirming the stock is near its 52-week low.
+
+---
+
+CLAIM: "current cash reserves are projected to sustain operations for only the next 12 months"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "Management expects these funds to be sufficient to fund current operating plans for at least the next 12 months," and the pre-written SEC Filing Highlights section echoes this; the "only" qualifier is a directional restatement consistent with the source language noting the assumption "may prove incorrect."
+
+---
+
+CLAIM: "vispa-cel" (as lead candidate requiring pivotal trials)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly identify vispa-cel as the product candidate for which the company "lacks sufficient funds to conduct the planned pivotal clinical trial," and it is named as the lead candidate in multiple pre-written sections.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "12-month horizon" (as the current runway)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and pre-written SEC Filing Highlights both state management expects cash to fund operations "for at least the next 12 months," directly supporting this figure.
+
+---
+
+CLAIM: "vispa-cel" (pivotal trial initiation as a monitoring milestone)
+LABEL: SUPPORTED
+REASON: Vispa-cel's pivotal trial is explicitly referenced in the RAG SEC Highlights and Risk Factors as the key development milestone requiring additional financing.
+
+---
+
+**ADDITIONAL CHECKS — Claims absent from the Outlook that could be flagged:**
+
+No specific price targets, percentage figures, ratios, or other quantitative forward-looking numbers appear in the Outlook section beyond those already evaluated above. The directional characterization ("cautiously neutral to negative") is qualitative and not a quantitative claim subject to audit.
+
+---
+
+**SUMMARY TABLE**
+
+| Claim | Label |
+|---|---|
+| Accumulated deficit of $596.5 million | SUPPORTED |
+| Minimal revenue of $10.0 million | SUPPORTED |
+| Near the 52-week low | SUPPORTED |
+| Cash reserves sustain operations for only the next 12 months | SUPPORTED |
+| Vispa-cel as lead candidate requiring pivotal trials | SUPPORTED |
+| 12-month horizon (Outlook) | SUPPORTED |
+| Vispa-cel pivotal trial initiation as monitoring milestone (Outlook) | SUPPORTED |
+
+**All auditable quantitative and forward-looking claims in the Executive Summary and Outlook are SUPPORTED by the source data.**

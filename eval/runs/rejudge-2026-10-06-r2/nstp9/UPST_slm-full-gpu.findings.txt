@@ -1,0 +1,64 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $2.37 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 2,369,572,864.0 USD, which rounds to approximately $2.37 billion.
+
+---
+
+CLAIM: "$1.29 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 1,285,890,048.0 USD, which rounds to $1.29 billion.
+
+---
+
+CLAIM: "52-week high of $55.22"
+LABEL: SUPPORTED
+REASON: Source data explicitly states week_52_high = 55.22.
+
+---
+
+CLAIM: "current $24.35"
+LABEL: SUPPORTED
+REASON: Source data explicitly states current_price = 24.35.
+
+---
+
+CLAIM: "forward P/E ratio of 7.01"
+LABEL: SUPPORTED
+REASON: Source data states forward_pe = 7.005259, which rounds to 7.01.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "low forward P/E"
+LABEL: SUPPORTED
+REASON: The forward P/E of 7.005259 is materially lower than the trailing P/E of 45.94, making the directional characterization "low" arithmetically supported by comparison of the two present figures.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond the qualitative/directional language already captured above.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap ~$2.37 billion | SUPPORTED |
+| 2 | $1.29 billion annual revenue | SUPPORTED |
+| 3 | 52-week high of $55.22 | SUPPORTED |
+| 4 | Current price $24.35 | SUPPORTED |
+| 5 | Forward P/E of 7.01 | SUPPORTED |
+| 6 | "low forward P/E" (directional) | SUPPORTED |
+
+All quantitative claims in the Executive Summary and Outlook are grounded in the source data. No unsupported or inference-only figures were identified.

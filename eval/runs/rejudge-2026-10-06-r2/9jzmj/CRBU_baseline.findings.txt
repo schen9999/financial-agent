@@ -1,0 +1,73 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "trading at $1.22 per share"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `"current_price": 1.22`.
+
+---
+
+CLAIM: "market capitalization of $130.8 million"
+LABEL: SUPPORTED
+REASON: Source data shows `"market_cap": 130793168.0`; rounding to one decimal place gives $130.8 million.
+
+---
+
+CLAIM: "accumulated deficit of $596.5 million"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both explicitly state "An accumulated deficit of $596.5 million has been recorded as of December 31, 2025."
+
+---
+
+CLAIM: "52-week high of $3.54"
+LABEL: SUPPORTED
+REASON: Source data shows `"week_52_high": 3.535`; rounded to two decimal places this is $3.54, consistent with the pre-written Financial Health section which also states "$3.54."
+
+---
+
+CLAIM: "The stock has declined sharply from its 52-week high of $3.54"
+LABEL: SUPPORTED
+REASON: Current price is $1.22 and 52-week high is $3.535; $1.22 < $3.535 confirms a sharp decline arithmetically (a drop of approximately 65.5%).
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "cash position of $142.8 million"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "The company currently has $142.8 million in cash, cash equivalents, and marketable securities."
+
+---
+
+CLAIM: "near-term operational runway of at least 12 months"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states the $142.8 million "is expected to fund operations for at least the next 12 months."
+
+---
+
+CLAIM: "accumulated deficit of $596.5 million with no approved products"
+LABEL: SUPPORTED
+REASON: Both the RAG SEC Highlights and Risk Factors sections explicitly state the $596.5 million accumulated deficit and confirm no products have been commercialized or approved.
+
+---
+
+CLAIM: "the vispa-cel pivotal trial" (as a named product milestone / forward-looking reference)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both explicitly reference "the planned pivotal clinical trial for vispa-cel" as a named milestone requiring additional financing.
+
+---
+
+CLAIM: "CB-011" (as a named pipeline candidate)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly names "CB-011" as a candidate the company needs to "advance beyond dose expansion."
+
+---
+
+*No additional standalone quantitative figures, price targets, thresholds, ratios, percentages, or forward-looking numbers appear in the Outlook section beyond those already evaluated above. All qualitative directional statements (e.g., "cautious," "constructive," "meaningful dilution risk," "accelerating expense growth") are non-quantitative and fall outside the scope of this audit.*

@@ -1,0 +1,37 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $677.1 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap as 677,086,953,472.0, which rounds to approximately $677.1 billion, matching the pre-written Financial Health section exactly.
+
+---
+
+CLAIM: "50.8% net profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data lists profit_margin as 0.50782, which equals 50.782%, rounding to 50.8%; this figure also appears verbatim in the pre-written Financial Health section.
+
+---
+
+CLAIM: "$44.5 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as 44,487,999,488.0, which rounds to approximately $44.5 billion, consistent with the pre-written Financial Health section.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones with attached numbers, or forward-looking numbers. All statements are qualitative or directional in nature (e.g., "cautiously constructive," "significant regulatory headwinds," "major jurisdictions like the EU and the US," "closed-loop alternatives," "volume growth," "margin pressure," "structural shift in market share"). The reference to "tokenization" is a named product/innovation but carries no quantitative milestone or figure attached to it.
+
+There are no additional quantitative or forward-looking numerical claims to evaluate in the Outlook section.
+
+---
+
+**SUMMARY**
+
+All three quantitative claims in the audited sections are **SUPPORTED** by the raw source data. The Outlook section is entirely qualitative and contains no quantitative claims requiring verification.

@@ -1,0 +1,87 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "annual revenue of ¥1.04 trillion CNY"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 1,044,970,995,712 CNY ≈ ¥1.04 trillion, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "net income of ¥73.3 billion CNY"
+LABEL: SUPPORTED
+REASON: Source data shows net_income = 73,325,002,752 CNY ≈ ¥73.3 billion, matching the pre-written section.
+
+---
+
+CLAIM: "market capitalization of $275.6 billion USD"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 275,642,155,008 USD ≈ $275.6 billion.
+
+---
+
+CLAIM: "Trading at $110.80 USD"
+LABEL: SUPPORTED
+REASON: Source data shows current_price = 110.8 USD.
+
+---
+
+CLAIM: "near the lower end of its 52-week range of $91.99–$188.66"
+LABEL: SUPPORTED
+REASON: The 52-week range is confirmed in source data (low = $91.99, high = $188.66); $110.80 is closer to the low end: ($110.80 − $91.99) / ($188.66 − $91.99) = $18.81 / $96.67 ≈ 19.5% of the way up the range, which is arithmetically near the lower end.
+
+---
+
+CLAIM: "roughly 41% below its 52-week high"
+LABEL: SUPPORTED
+REASON: ($188.66 − $110.80) / $188.66 = $77.86 / $188.66 ≈ 41.3%, which rounds to 41%; this matches the pre-written Risk Factors section and is verified by arithmetic.
+
+---
+
+CLAIM: "forward P/E of 12.0x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 12.002404, which rounds to 12.0x.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "current P/E of 26.83"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 26.828087, which rounds to 26.83.
+
+---
+
+CLAIM: "forward P/E of 12.0x" (Outlook, first instance)
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 12.002404 ≈ 12.0x.
+
+---
+
+CLAIM: "modest 0.95% dividend yield"
+LABEL: SUPPORTED
+REASON: Source data shows dividend_yield = 0.95.
+
+---
+
+CLAIM: "already thin 7.04% profit margin"
+LABEL: SUPPORTED
+REASON: Source data shows profit_margin_pct = 7.04.
+
+---
+
+CLAIM: "forward P/E the market has already assigned" (final sentence, referencing the same 12.0x figure implicitly)
+LABEL: SUPPORTED
+REASON: This is a qualitative reference back to the forward_pe = 12.002404 already established in the source data; no new figure is introduced.
+
+---
+
+**SUMMARY OF FINDINGS**
+
+All quantitative claims in the Executive Summary and Outlook sections are **SUPPORTED** by the raw source data. No figures were found to be unsupported or requiring inference beyond direct rounding or straightforward arithmetic derivation from source values. Notably, the 41% drawdown figure was verified arithmetically (41.3%), the "lower end" positional claim was verified arithmetically (~19.5% of the 52-week range), and all P/E, margin, yield, revenue, income, market cap, and price figures match the source data exactly or within rounding tolerance.

@@ -1,0 +1,41 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "accumulated deficit of $596.5 million"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "accumulated deficit of $596.5 million as of December 31, 2025," and the SEC Filing Highlights pre-written section repeats this figure.
+
+---
+
+CLAIM: "market capitalization near its 52-week low of $1.22"
+LABEL: UNSUPPORTED
+REASON: The 52-week low is $1.215 per the source data, not $1.22; $1.22 is the current price, so the claim conflates two distinct figures and misidentifies the 52-week low.
+
+---
+
+CLAIM: "existing cash reserves are insufficient to fund pivotal trials for vispa-cel"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "The company currently does not have sufficient funds to conduct the planned pivotal clinical trial for vispa-cel," and this is corroborated in the SEC Filing Highlights pre-written section.
+
+---
+
+**OUTLOOK**
+
+---
+
+*(The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, or named forward-looking numbers beyond the product milestone references already captured above. The references to "vispa-cel" pivotal trial and "program curtailment" are qualitative restatements of source material, not quantitative claims requiring arithmetic verification. No additional quantitative claims are present to audit.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Accumulated deficit of $596.5 million | SUPPORTED |
+| 2 | Market capitalization near its 52-week low of $1.22 | UNSUPPORTED |
+| 3 | Cash reserves insufficient to fund pivotal trials for vispa-cel | SUPPORTED |
