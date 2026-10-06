@@ -1525,7 +1525,24 @@ then, stop and keep the current numbers of record.
    (unvalidated); est. $0.9175. Files: `eval/runs/cpu-smoke-f304375.log`,
    `eval/runs/slm-proof-xnwjm/`, findings and claims.
 
-3. **[IN PROGRESS]** Runs, in order: hosted smoke, CPU smoke, GPU
+   **GPU smoke `grounding-eval-slm-gpu-m7qvv` (2026-10-06, EXECUTED, GATE
+   FAILED):** 10/10 tickers, 0 retries, 0 failed attempts, TRAFFIC PROOF:
+   EXACT (70 calls, 94,775 + 24,830 tokens); 4/60 = 6.67% unsupported (CI
+   2.6–15.9%) against the 5% gate; numeric 0/30; stock block empty 0/10;
+   36.4 s per ticker; RUN-TIME CHECK: PASS (extended projected 38 min mean,
+   47 min worst); RAG faithfulness 3/402 (unvalidated); est. $0.9023. All
+   four unsupported claims are hedged Outlook watch-items (limitation 1):
+   NVDA "trend of services margins", "sustained demand elasticity",
+   "market saturation"; MSFT "trajectory of services margins …". The judge
+   listed 5 qualitative claims for NVDA here against 0 in `k6zxd`. "services
+   margins" echoes the synthesis prompt's own example ("watch
+   services-margin trend"), as did `p9jr2`'s AFRM claim. Per the run plan
+   the extended chain was not started. nvidia-smi on node 2 every 5 s,
+   04:34:46 onward: `eval/runs/gpu-nvsmi-m7qvv.csv`. Files:
+   `eval/runs/gpu-smoke-f304375.log`, `eval/runs/slm-proof-m7qvv/`,
+   findings and claims.
+
+3. **[STOPPED at the GPU smoke's gate]** Runs, in order: hosted smoke, CPU smoke, GPU
    smoke, hosted extended, CPU extended, GPU extended — each SLM run
    through `make slm-eval-run` (traffic proof), the extended SLM runs
    behind `make run-time-check`; `kubectl top` during the CPU runs, the
