@@ -101,8 +101,11 @@ faithful copy matches and is not flagged. The judge marked the claim
 SUPPORTED, its reason again naming the currency: "The raw source data
 lists revenue as 51,957,024,686,080.0 (JPY), which the pre-written
 Financial Health section rounds to '$51.96 trillion'". Read as dollars,
-the figure is wrong by the same defect, and both layers passed it. (The
-A10 arm's TM brief states neither figure.) The check catches this defect
+the figure is wrong by the same defect, and both layers passed it. The
+A10 arm's TM brief (`p9jr2`) made the same faithful copies — "$51.96
+trillion" revenue in Financial Health and "$4.48 trillion" net income in
+Recent Developments — in sections the judge does not audit, so only the
+check could have seen them, and it passed them too. The check catches this defect
 only when a brief's figure departs from the mislabelled field, as the
 hosted brief's did; the fix belongs in the data layer, not in either
 eval.
