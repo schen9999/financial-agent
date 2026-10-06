@@ -1,0 +1,512 @@
+Defaulted container "api" out of: api, wait-for-postgres (init)
+submitted workflow: grounding-eval-extended-slm-cpu-5bdz5
+polling up to 58200 s (activeDeadlineSeconds=57600 + 600s margin)
+  [05:57:19] phase=Running progress=0/2
+  [05:57:40] phase=Running progress=0/2
+  [05:58:02] phase=Running progress=0/2
+  [05:58:23] phase=Running progress=0/2
+  [05:58:44] phase=Running progress=0/2
+  [05:59:06] phase=Running progress=0/2
+  [05:59:27] phase=Running progress=0/2
+  [05:59:48] phase=Running progress=0/2
+  [06:00:10] phase=Running progress=0/2
+  [06:00:32] phase=Running progress=0/2
+  [06:00:53] phase=Running progress=0/2
+  [06:01:14] phase=Running progress=0/2
+  [06:01:35] phase=Running progress=0/2
+  [06:01:57] phase=Running progress=0/2
+  [06:02:18] phase=Running progress=0/2
+  [06:02:39] phase=Running progress=0/2
+  [06:03:01] phase=Running progress=0/2
+  [06:03:22] phase=Running progress=0/2
+  [06:03:43] phase=Running progress=0/2
+  [06:04:05] phase=Running progress=0/2
+  [06:04:26] phase=Running progress=0/2
+  [06:04:47] phase=Running progress=1/3
+  [06:05:09] phase=Running progress=1/3
+  [06:05:30] phase=Running progress=1/3
+  [06:05:51] phase=Running progress=2/4
+  [06:06:13] phase=Running progress=2/4
+  [06:06:34] phase=Running progress=2/4
+  [06:06:55] phase=Running progress=2/4
+  [06:07:17] phase=Running progress=2/4
+  [06:07:38] phase=Running progress=2/4
+  [06:07:59] phase=Running progress=2/4
+  [06:08:21] phase=Running progress=2/4
+  [06:08:42] phase=Running progress=2/4
+  [06:09:03] phase=Running progress=2/4
+  [06:09:25] phase=Running progress=2/4
+  [06:09:46] phase=Running progress=2/4
+  [06:10:07] phase=Running progress=2/4
+  [06:10:28] phase=Running progress=2/4
+  [06:10:50] phase=Running progress=2/4
+  [06:11:11] phase=Running progress=2/4
+  [06:11:32] phase=Running progress=2/4
+  [06:11:54] phase=Running progress=4/6
+  [06:12:15] phase=Running progress=4/6
+  [06:12:36] phase=Running progress=4/6
+  [06:12:58] phase=Running progress=4/6
+  [06:13:19] phase=Running progress=4/6
+  [06:13:40] phase=Running progress=4/6
+  [06:14:02] phase=Running progress=4/6
+  [06:14:23] phase=Running progress=4/6
+  [06:14:45] phase=Running progress=4/6
+  [06:15:06] phase=Running progress=4/6
+  [06:15:27] phase=Running progress=4/6
+  [06:15:48] phase=Running progress=4/6
+  [06:16:10] phase=Running progress=4/6
+  [06:16:31] phase=Running progress=4/6
+  [06:16:52] phase=Running progress=4/6
+  [06:17:14] phase=Running progress=4/6
+  [06:17:35] phase=Running progress=4/6
+  [06:17:56] phase=Running progress=4/6
+  [06:18:18] phase=Running progress=4/6
+  [06:18:39] phase=Running progress=4/6
+  [06:19:01] phase=Running progress=4/6
+  [06:19:22] phase=Running progress=4/6
+  [06:19:43] phase=Running progress=6/8
+  [06:20:04] phase=Running progress=6/8
+  [06:20:26] phase=Running progress=6/8
+  [06:20:47] phase=Running progress=6/8
+  [06:21:08] phase=Running progress=6/8
+  [06:21:30] phase=Running progress=6/8
+  [06:21:52] phase=Running progress=6/8
+  [06:22:13] phase=Running progress=6/8
+  [06:22:35] phase=Running progress=6/8
+  [06:22:56] phase=Running progress=6/8
+  [06:23:17] phase=Running progress=6/8
+  [06:23:39] phase=Running progress=6/8
+  [06:24:00] phase=Running progress=6/8
+  [06:24:22] phase=Running progress=6/8
+  [06:24:43] phase=Running progress=6/8
+  [06:25:04] phase=Running progress=6/8
+  [06:25:26] phase=Running progress=6/8
+  [06:25:47] phase=Running progress=6/8
+  [06:26:09] phase=Running progress=6/8
+  [06:26:30] phase=Running progress=6/8
+  [06:26:51] phase=Running progress=8/10
+  [06:27:13] phase=Running progress=8/10
+  [06:27:34] phase=Running progress=8/10
+  [06:27:55] phase=Running progress=8/10
+  [06:28:17] phase=Running progress=8/10
+  [06:28:38] phase=Running progress=8/10
+  [06:29:00] phase=Running progress=8/10
+  [06:29:21] phase=Running progress=8/10
+  [06:29:42] phase=Running progress=8/10
+  [06:30:03] phase=Running progress=8/10
+  [06:30:25] phase=Running progress=8/10
+  [06:30:46] phase=Running progress=8/10
+  [06:31:08] phase=Running progress=8/10
+  [06:31:29] phase=Running progress=8/10
+  [06:31:50] phase=Running progress=8/10
+  [06:32:12] phase=Running progress=8/10
+  [06:32:33] phase=Running progress=8/10
+  [06:32:54] phase=Running progress=8/10
+  [06:33:16] phase=Running progress=8/10
+  [06:33:37] phase=Running progress=8/10
+  [06:33:59] phase=Running progress=8/10
+  [06:34:20] phase=Running progress=8/10
+  [06:34:41] phase=Running progress=9/11
+  [06:35:03] phase=Running progress=10/12
+  [06:35:24] phase=Running progress=10/12
+  [06:35:46] phase=Running progress=10/12
+  [06:36:07] phase=Running progress=10/12
+  [06:36:28] phase=Running progress=10/12
+  [06:36:50] phase=Running progress=10/12
+  [06:37:11] phase=Running progress=10/12
+  [06:37:32] phase=Running progress=10/12
+  [06:37:54] phase=Running progress=10/12
+  [06:38:15] phase=Running progress=10/12
+  [06:38:36] phase=Running progress=10/12
+  [06:38:58] phase=Running progress=10/12
+  [06:39:19] phase=Running progress=10/12
+  [06:39:41] phase=Running progress=10/12
+  [06:40:02] phase=Running progress=10/12
+  [06:40:23] phase=Running progress=10/12
+  [06:40:45] phase=Running progress=10/12
+  [06:41:06] phase=Running progress=10/12
+  [06:41:28] phase=Running progress=10/12
+  [06:41:49] phase=Running progress=10/12
+  [06:42:10] phase=Running progress=10/12
+  [06:42:32] phase=Running progress=10/12
+  [06:42:53] phase=Running progress=12/14
+  [06:43:15] phase=Running progress=12/14
+  [06:43:36] phase=Running progress=12/14
+  [06:43:57] phase=Running progress=12/14
+  [06:44:19] phase=Running progress=12/14
+  [06:44:40] phase=Running progress=12/14
+  [06:45:01] phase=Running progress=12/14
+  [06:45:23] phase=Running progress=12/14
+  [06:45:44] phase=Running progress=12/14
+  [06:46:05] phase=Running progress=12/14
+  [06:46:27] phase=Running progress=12/14
+  [06:46:48] phase=Running progress=12/14
+  [06:47:09] phase=Running progress=12/14
+  [06:47:31] phase=Running progress=12/14
+  [06:47:52] phase=Running progress=12/14
+  [06:48:14] phase=Running progress=12/14
+  [06:48:35] phase=Running progress=12/14
+  [06:48:56] phase=Running progress=12/14
+  [06:49:18] phase=Running progress=12/14
+  [06:49:39] phase=Running progress=12/14
+  [06:50:00] phase=Running progress=12/14
+  [06:50:22] phase=Running progress=12/14
+  [06:50:43] phase=Running progress=12/14
+  [06:51:04] phase=Running progress=14/16
+  [06:51:26] phase=Running progress=14/16
+  [06:51:47] phase=Running progress=14/16
+  [06:52:09] phase=Running progress=14/16
+  [06:52:30] phase=Running progress=14/16
+  [06:52:52] phase=Running progress=14/16
+  [06:53:13] phase=Running progress=14/16
+  [06:53:34] phase=Running progress=14/16
+  [06:53:56] phase=Running progress=14/16
+  [06:54:17] phase=Running progress=14/16
+  [06:54:38] phase=Running progress=14/16
+  [06:55:00] phase=Running progress=14/16
+  [06:55:21] phase=Running progress=14/16
+  [06:55:43] phase=Running progress=14/16
+  [06:56:04] phase=Running progress=14/16
+  [06:56:25] phase=Running progress=14/16
+  [06:56:47] phase=Running progress=14/16
+  [06:57:09] phase=Running progress=14/16
+  [06:57:30] phase=Running progress=14/16
+  [06:57:51] phase=Running progress=14/16
+  [06:58:13] phase=Running progress=14/16
+  [06:58:34] phase=Running progress=14/16
+  [06:58:55] phase=Running progress=14/16
+  [06:59:17] phase=Running progress=16/18
+  [06:59:38] phase=Running progress=16/18
+  [06:59:59] phase=Running progress=16/18
+  [07:00:21] phase=Running progress=16/18
+  [07:00:42] phase=Running progress=16/18
+  [07:01:04] phase=Running progress=16/18
+  [07:01:25] phase=Running progress=16/18
+  [07:01:46] phase=Running progress=16/18
+  [07:02:08] phase=Running progress=16/18
+  [07:02:29] phase=Running progress=16/18
+  [07:02:50] phase=Running progress=16/18
+  [07:03:12] phase=Running progress=16/18
+  [07:03:33] phase=Running progress=16/18
+  [07:03:54] phase=Running progress=16/18
+  [07:04:16] phase=Running progress=16/18
+  [07:04:37] phase=Running progress=16/18
+  [07:04:58] phase=Running progress=16/18
+  [07:05:20] phase=Running progress=16/18
+  [07:05:41] phase=Running progress=16/18
+  [07:06:03] phase=Running progress=16/18
+  [07:06:24] phase=Running progress=16/18
+  [07:06:45] phase=Running progress=16/18
+  [07:07:07] phase=Running progress=18/20
+  [07:07:28] phase=Running progress=18/20
+  [07:07:49] phase=Running progress=18/20
+  [07:08:11] phase=Running progress=18/20
+  [07:08:32] phase=Running progress=18/20
+  [07:08:53] phase=Running progress=18/20
+  [07:09:15] phase=Running progress=18/20
+  [07:09:36] phase=Running progress=18/20
+  [07:09:57] phase=Running progress=18/20
+  [07:10:19] phase=Running progress=18/20
+  [07:10:40] phase=Running progress=18/20
+  [07:11:01] phase=Running progress=18/20
+  [07:11:23] phase=Running progress=18/20
+  [07:11:44] phase=Running progress=18/20
+  [07:12:06] phase=Running progress=18/20
+  [07:12:27] phase=Running progress=18/20
+  [07:12:48] phase=Running progress=18/20
+  [07:13:10] phase=Running progress=18/20
+  [07:13:31] phase=Running progress=19/21
+  [07:13:52] phase=Running progress=19/21
+  [07:14:14] phase=Running progress=20/22
+  [07:14:35] phase=Running progress=20/22
+  [07:14:56] phase=Running progress=20/22
+  [07:15:18] phase=Running progress=20/22
+  [07:15:39] phase=Running progress=20/22
+  [07:16:01] phase=Running progress=20/22
+  [07:16:22] phase=Running progress=20/22
+  [07:16:44] phase=Running progress=20/22
+  [07:17:05] phase=Running progress=20/22
+  [07:17:26] phase=Running progress=20/22
+  [07:17:48] phase=Running progress=20/22
+  [07:18:09] phase=Running progress=20/22
+  [07:18:31] phase=Running progress=20/22
+  [07:18:52] phase=Running progress=20/22
+  [07:19:13] phase=Running progress=20/22
+  [07:19:35] phase=Running progress=20/22
+  [07:19:56] phase=Running progress=20/22
+  [07:20:17] phase=Running progress=20/22
+  [07:20:39] phase=Running progress=20/22
+  [07:21:00] phase=Running progress=20/22
+  [07:21:22] phase=Running progress=20/22
+  [07:21:43] phase=Running progress=20/22
+  [07:22:04] phase=Running progress=21/23
+  [07:22:25] phase=Running progress=22/24
+  [07:22:47] phase=Running progress=22/24
+  [07:23:08] phase=Running progress=22/24
+  [07:23:30] phase=Running progress=22/24
+  [07:23:51] phase=Running progress=22/24
+  [07:24:12] phase=Running progress=22/24
+  [07:24:34] phase=Running progress=22/24
+  [07:24:55] phase=Running progress=22/24
+  [07:25:16] phase=Running progress=22/24
+  [07:25:38] phase=Running progress=22/24
+  [07:25:59] phase=Running progress=22/24
+  [07:26:20] phase=Running progress=22/24
+  [07:26:42] phase=Running progress=22/24
+  [07:27:03] phase=Running progress=22/24
+  [07:27:25] phase=Running progress=22/24
+  [07:27:46] phase=Running progress=22/24
+  [07:28:07] phase=Running progress=22/24
+  [07:28:29] phase=Running progress=22/24
+  [07:28:50] phase=Running progress=22/24
+  [07:29:11] phase=Running progress=22/24
+  [07:29:33] phase=Running progress=23/25
+  [07:29:54] phase=Running progress=24/26
+  [07:30:16] phase=Running progress=24/26
+  [07:30:37] phase=Running progress=24/26
+  [07:30:58] phase=Running progress=24/26
+  [07:31:20] phase=Running progress=24/26
+  [07:31:41] phase=Running progress=24/26
+  [07:32:03] phase=Running progress=24/26
+  [07:32:24] phase=Running progress=24/26
+  [07:32:45] phase=Running progress=24/26
+  [07:33:07] phase=Running progress=24/26
+  [07:33:28] phase=Running progress=24/26
+  [07:33:49] phase=Running progress=24/26
+  [07:34:11] phase=Running progress=24/26
+  [07:34:32] phase=Running progress=24/26
+  [07:34:54] phase=Running progress=24/26
+  [07:35:15] phase=Running progress=24/26
+  [07:35:36] phase=Running progress=24/26
+  [07:35:58] phase=Running progress=24/26
+  [07:36:19] phase=Running progress=24/26
+  [07:36:40] phase=Running progress=24/26
+  [07:37:02] phase=Running progress=24/26
+  [07:37:23] phase=Running progress=25/27
+  [07:37:44] phase=Running progress=26/28
+  [07:38:06] phase=Running progress=26/28
+  [07:38:27] phase=Running progress=26/28
+  [07:38:48] phase=Running progress=26/28
+  [07:39:10] phase=Running progress=26/28
+  [07:39:31] phase=Running progress=26/28
+  [07:39:53] phase=Running progress=26/28
+  [07:40:14] phase=Running progress=26/28
+  [07:40:35] phase=Running progress=26/28
+  [07:40:57] phase=Running progress=26/28
+  [07:41:18] phase=Running progress=26/28
+  [07:41:40] phase=Running progress=26/28
+  [07:42:01] phase=Running progress=26/28
+  [07:42:22] phase=Running progress=26/28
+  [07:42:44] phase=Running progress=26/28
+  [07:43:05] phase=Running progress=26/28
+  [07:43:26] phase=Running progress=26/28
+  [07:43:48] phase=Running progress=26/28
+  [07:44:09] phase=Running progress=26/28
+  [07:44:31] phase=Running progress=26/28
+  [07:44:52] phase=Running progress=26/28
+  [07:45:13] phase=Running progress=26/28
+  [07:45:35] phase=Running progress=26/28
+  [07:45:56] phase=Running progress=26/28
+  [07:46:18] phase=Running progress=26/28
+  [07:46:39] phase=Running progress=27/29
+  [07:47:00] phase=Running progress=28/30
+  [07:47:22] phase=Running progress=28/30
+  [07:47:43] phase=Running progress=28/30
+  [07:48:05] phase=Running progress=28/30
+  [07:48:26] phase=Running progress=28/30
+  [07:48:47] phase=Running progress=28/30
+  [07:49:09] phase=Running progress=28/30
+  [07:49:30] phase=Running progress=28/30
+  [07:49:52] phase=Running progress=28/30
+  [07:50:13] phase=Running progress=28/30
+  [07:50:34] phase=Running progress=28/30
+  [07:50:56] phase=Running progress=28/30
+  [07:51:17] phase=Running progress=28/30
+  [07:51:38] phase=Running progress=28/30
+  [07:52:00] phase=Running progress=28/30
+  [07:52:21] phase=Running progress=28/30
+  [07:52:43] phase=Running progress=28/30
+  [07:53:04] phase=Running progress=28/30
+  [07:53:26] phase=Running progress=28/30
+  [07:53:47] phase=Running progress=28/30
+  [07:54:08] phase=Running progress=28/30
+  [07:54:30] phase=Running progress=30/32
+  [07:54:51] phase=Running progress=30/32
+  [07:55:12] phase=Running progress=30/32
+  [07:55:34] phase=Running progress=30/32
+  [07:55:55] phase=Running progress=30/32
+  [07:56:17] phase=Running progress=30/32
+  [07:56:38] phase=Running progress=30/32
+  [07:56:59] phase=Running progress=30/32
+  [07:57:21] phase=Running progress=30/32
+  [07:57:42] phase=Running progress=30/32
+  [07:58:03] phase=Running progress=30/32
+  [07:58:25] phase=Running progress=30/32
+  [07:58:46] phase=Running progress=30/32
+  [07:59:07] phase=Running progress=30/32
+  [07:59:29] phase=Running progress=30/32
+  [07:59:50] phase=Running progress=30/32
+  [08:00:12] phase=Running progress=30/32
+  [08:00:33] phase=Running progress=30/32
+  [08:00:54] phase=Running progress=30/32
+  [08:01:16] phase=Running progress=30/32
+  [08:01:37] phase=Running progress=30/32
+  [08:01:58] phase=Running progress=30/32
+  [08:02:20] phase=Running progress=31/33
+  [08:02:41] phase=Running progress=32/34
+  [08:03:03] phase=Running progress=32/34
+  [08:03:24] phase=Running progress=32/34
+  [08:03:45] phase=Running progress=32/34
+  [08:04:07] phase=Running progress=32/34
+  [08:04:28] phase=Running progress=32/34
+  [08:04:49] phase=Running progress=32/34
+  [08:05:11] phase=Running progress=32/34
+  [08:05:32] phase=Running progress=32/34
+  [08:05:53] phase=Running progress=32/34
+  [08:06:15] phase=Running progress=32/34
+  [08:06:36] phase=Running progress=32/34
+  [08:06:58] phase=Running progress=32/34
+  [08:07:19] phase=Running progress=32/34
+  [08:07:40] phase=Running progress=32/34
+  [08:08:02] phase=Running progress=32/34
+  [08:08:23] phase=Running progress=32/34
+  [08:08:45] phase=Running progress=32/34
+  [08:09:06] phase=Running progress=32/34
+  [08:09:27] phase=Running progress=32/34
+  [08:09:49] phase=Running progress=32/34
+  [08:10:10] phase=Running progress=34/36
+  [08:10:32] phase=Running progress=34/36
+  [08:10:53] phase=Running progress=34/36
+  [08:11:14] phase=Running progress=34/36
+  [08:11:36] phase=Running progress=34/36
+  [08:11:57] phase=Running progress=34/36
+  [08:12:19] phase=Running progress=34/36
+  [08:12:40] phase=Running progress=34/36
+  [08:13:01] phase=Running progress=34/36
+  [08:13:23] phase=Running progress=34/36
+  [08:13:44] phase=Running progress=34/36
+  [08:14:05] phase=Running progress=34/36
+  [08:14:28] phase=Running progress=34/36
+  [08:14:49] phase=Running progress=35/37
+  [08:15:10] phase=Running progress=35/37
+  [08:15:32] phase=Running progress=35/37
+  [08:15:53] phase=Running progress=35/37
+  [08:16:14] phase=Running progress=35/37
+  [08:16:36] phase=Running progress=35/37
+  [08:16:57] phase=Running progress=35/37
+  [08:17:19] phase=Running progress=35/37
+  [08:17:40] phase=Running progress=37/39
+  [08:18:02] phase=Running progress=37/39
+  [08:18:23] phase=Running progress=37/39
+  [08:18:44] phase=Running progress=37/39
+  [08:19:07] phase=Running progress=37/39
+  [08:19:28] phase=Running progress=37/39
+  [08:19:49] phase=Running progress=37/39
+  [08:20:11] phase=Running progress=37/39
+  [08:20:32] phase=Running progress=37/39
+  [08:20:54] phase=Running progress=39/40
+  [08:21:15] phase=Running progress=39/40
+  [08:21:37] phase=Running progress=39/40
+  [08:21:58] phase=Running progress=39/40
+  [08:22:19] phase=Running progress=39/40
+  [08:22:41] phase=Running progress=39/40
+  [08:23:02] phase=Running progress=40/41
+  [08:23:23] phase=Failed progress=40/41
+
+=== aggregate step output ===
+  slm sampling      : {"planner": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 1024, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.0, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}, "rag": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 2048, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.1, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}, "react": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 1024, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.0, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}, "section": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 768, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.1, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}, "synthesis": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 4096, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.2, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}}
+  Ticker    Sup  Uns  Inf  Tot  Retr(s)  Pipe(s)
+  --------------------------------------------
+  AAPL        5    0    0    5   160.46   363.50
+  AFRM        2    0    0    2   201.32   405.99
+  AMZN        4    0    0    4   123.89   293.59
+  BABA        5    1    1    7     1.28   160.86
+  BEAM        7    0    0    7   194.67   395.62
+  BLNK       10    0    0   10   256.76   403.65
+  BYND        3    0    0    3   173.54   373.99
+  CALM        7    0    0    7   218.34   417.43
+  CHGG        6    0    0    6   191.33   393.99
+  COIN        8    1    0    9   175.82   350.03
+  CRBU        6    0    2    8   195.62   398.15
+  EDIT        6    1    0    7   184.11   394.29
+  EVGO        3    0    0    3   250.45   449.12
+  GOOGL       3    0    0    3   158.46   351.91
+  JPM         5    0    0    5   157.40   344.43
+  LCID        9    0    0    9   192.83   399.58
+  META        4    0    0    4   194.48   393.25
+  MSFT        3    0    0    3   242.34   395.98
+  NTLA       10    0    1   11   166.85   367.24
+  NVDA        5    0    0    5   216.60   402.66
+  NVO         6    0    0    6     1.22   143.42
+  OCGN       10    0    1   11   184.46   398.31
+  OMER        8    0    0    8   207.30   460.13
+  PTON        5    0    0    5   207.59   384.49
+  RDFN        3    0    0    3   243.48   393.92
+  RIVN        3    0    0    3   220.46   404.64
+  ROKU        7    2    2   11   149.30   334.90
+  SANA        5    0    0    5   173.23   385.22
+  SAP         7    2    1   10     1.32   102.18
+  SFIX        4    0    0    4   214.34   400.33
+  SNAP        4    0    0    4   194.38   384.71
+  TM          8    4    0   12     1.48   174.28
+  TSLA       10    5    0   15   173.91   369.46
+  TSM         6    0    0    6     1.10   241.76
+  UNH        12    0    3   15   170.23   391.15
+  UPST        5    0    0    5   226.94   416.13
+  V           4    2    0    6   206.35   405.40
+  VERV        7    0    0    7   190.29   403.41
+  WMT         2    0    0    2   219.44   397.61
+  XOM         8    1    0    9   260.24   417.98
+  --------------------------------------------
+  TOTAL     235   19   11  265   172.59   361.62
+
+  tickers completed : 40
+  tickers skipped   : 0
+  stock block empty : 0/40
+  unsupported rate  : 7.17%   (gate: <= 5.0%)
+  95% CI (Wilson)   : 7.17% (95% CI 4.6–10.9%)
+  total claims      : 265   (gate: >= 30)
+  claims per ticker : mean 6.6, min 2 (AFRM, WMT)   — read the rate with this: fewer checkable claims lowers it for free
+  numeric claims    : 162 = mean 4.0/ticker, min 1 (RDFN)   — co-primary: claims that quote a figure (the judge's listing of qualitative phrases varies run to run)
+  numeric unsupported: 2/162 = 1.23% (95% CI 0.3–4.4%)
+  Argo retries      : 0
+
+  LLM calls (agent) : 270 over 40 completed ticker(s) = 6.8/ticker; endpoints slm-cpu
+  Site                         Calls   Prompt   Compl   Lat(s)  Max(s) Trunc Loop Parse Fmt Retry Err
+  rag:highlights                  35    94507   24447   192.07  258.90     0    0     0   0     0   0
+  rag:risks                       35    91277   16503   159.42  249.25     0    0     0   0     0   0
+  section:financial_health        40    25275    5358    51.76   79.96     0    0     0   0     0   0
+  section:recent_developments     40    25035    5481    54.26   98.96     0    0     0   0     0   0
+  section:risk_factors            40    20824    6633    62.30   94.99     0    0     0   0     0   0
+  section:sec_filing_highlights    40    29088    5155    65.93   93.42     0    0     0   0     0   0
+  synthesis                       40    60629   34465   117.60  169.53     0    0     0   0     0   0
+  SLM_TRAFFIC {"calls": 270, "calls_without_usage": 0, "completion_tokens": 98042, "endpoint": "slm-cpu", "errored_calls": 0, "prompt_tokens": 346635}
+  RAG faithfulness  : 11/1456 RAG-answer claims unsupported by their own chunks, 0.76% (95% CI 0.4–1.3%) over 70 answers — judge rf-v1, UNVALIDATED, separate from the grounding rate above
+  est. run cost     : $3.3052   (chars/4 tokens priced from scripts/model_prices.json; excludes retries — cost of record stays scripts/cost_report.py)
+
+  GATE FAILED: unsupported rate 7.17% exceeds 5.0%
+==============================================================================
+===EVAL_FINDINGS_TGZ_BEGIN pod=grounding-eval-extended-slm-cpu-5bdz5-aggregate-3313839719===
+H4sIAAAAAAAAA+3OMQ6CQBAFUI6yN9BdXfc4hkQxJAYSQM/vhk4LrbB6r/mTP1PM9dnez10/XPrhNu+aTeyrUsqa1Weuc8zpFGMq5Vj7mA4lNyFv8867x7y0UwjNNI7Lt7tfewAAAAAAAAAAAPijF9dumnkAKAAA
+===EVAL_FINDINGS_TGZ_END===
+time="2026-10-06T08:22:59.247Z" level=info msg="sub-process exited" argo=true error="<nil>"
+Error: exit status 1
+
+=== attempts: retries and failed attempts, from the workflow object and every pod's log (NOT in the aggregate above) ===
+workflow_nodes: 83 node(s) (read from status.compressedNodes)
+attempts of grounding-eval-extended-slm-cpu-5bdz5 (Failed): 40 eval pod(s) for 40 ticker(s)
+  Argo retries      : 0
+  failed attempts   : 0 - every eval pod succeeded on its first attempt
+  attempts record written: /home/ubuntu/grounding-eval-extended-slm-cpu-5bdz5-attempts.json
+make[1]: *** [Makefile:107: eval-run] Error 1
+workflow_nodes: 83 node(s) (read from status.compressedNodes)
+Defaulted container "api" out of: api, wait-for-postgres (init)
+=== traffic proof for grounding-eval-extended-slm-cpu-5bdz5 (files in /home/ubuntu/slm-proof) ===
+  harness, final attempts : 270 calls, 346635 prompt + 98042 completion tokens (0 errored)
+  harness, failed attempts: 0 attempt(s), 0 calls, 0 prompt + 0 completion tokens (0 errored)
+  harness, all attempts   : 346635 prompt + 98042 completion tokens
+  server                  : 346636 prompt + 98042 completion tokens over the window (b11347-5fc4f3c8c, /models/Qwen3.6-35B-A3B-Q4_K_M.gguf)
+  FAIL: server saw 1 prompt + 0 completion tokens MORE than the run sent over all attempts, with no failed calls - other traffic hit the endpoint during the run
+TRAFFIC PROOF: FAIL
+eval-run exit 2, traffic proof exit 1
+make: *** [Makefile:336: slm-eval-run] Error 1

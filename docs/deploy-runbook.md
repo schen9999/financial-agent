@@ -1549,7 +1549,25 @@ then, stop and keep the current numbers of record.
    `eval/runs/gpu-smoke-f304375.log`, `eval/runs/slm-proof-m7qvv/`,
    findings and claims.
 
-3. **[IN PROGRESS — extended chain started 2026-10-06T04:49:54Z]** Runs, in order: hosted smoke, CPU smoke, GPU
+   **Extended chain (2026-10-06, EXECUTED; stopped at the CPU run):**
+   - Hosted `grounding-eval-extended-4hsn2`: Succeeded, 0 retries;
+     15/399 = 3.76% unsupported (CI 2.3–6.1%), numeric 3/270; stock
+     block empty 0/40; gate passed; 26.7 s per ticker; est. $4.1162.
+   - GPU `grounding-eval-extended-slm-gpu-nstp9`: Succeeded, 0 retries,
+     TRAFFIC PROOF: EXACT; 10/267 = 3.75% (CI 2.0–6.8%), numeric 4/166;
+     stock block empty 0/40; gate passed; 34.6 s per ticker; est.
+     $3.3433. nvidia-smi on node 2 every 5 s, 04:49:42–08:24:
+     `eval/runs/gpu-nvsmi-ext-f304375.csv`.
+   - CPU `grounding-eval-extended-slm-cpu-5bdz5`: every eval pod on its
+     first attempt, 0 retries, but **GATE FAILED** (19/265 = 7.17%, CI
+     4.6–10.9%; numeric 2/162) and **TRAFFIC PROOF: FAIL** — the server
+     counted 1 prompt token more than the harness logged (346,636 against
+     346,635; 0 completion tokens apart), with no failed calls. Cause not
+     determined. Under the proof rule the run is **not citable**. The chain
+     stopped there (`~/rerun-chain.log`). `kubectl top` during it:
+     `eval/runs/top-cpu-ext-f304375.txt`.
+
+3. **[STOPPED — CPU extended failed its gate and its traffic proof]** Runs, in order: hosted smoke, CPU smoke, GPU
    smoke, hosted extended, CPU extended, GPU extended — each SLM run
    through `make slm-eval-run` (traffic proof), the extended SLM runs
    behind `make run-time-check`; `kubectl top` during the CPU runs, the

@@ -1,0 +1,1 @@
+{"build": "b11347-5fc4f3c8c", "counters": {"n_decode_total": 144177.0, "prompt_tokens_cached_total": 24765.0, "prompt_tokens_total": 943899.0, "tokens_predicted_total": 260566.0}, "endpoint": "slm-gpu", "model_path": "/models/Qwen3.6-35B-A3B-Q4_K_M.gguf", "url": "http://132.145.161.150:30880"}

@@ -1,0 +1,86 @@
+STOCK DATA:
+{
+  "ticker": "EDIT",
+  "company_name": "Editas Medicine, Inc.",
+  "current_price": 2.79,
+  "currency": "USD",
+  "market_cap": 428488288.0,
+  "forward_pe": -3.7045395,
+  "week_52_high": 4.537,
+  "week_52_low": 1.66,
+  "financial_currency": "USD",
+  "revenue": 47005000.0,
+  "net_income": -73949000.0,
+  "profit_margin_pct": -157.32,
+  "dividend_yield": 0.0,
+  "sector": "Healthcare",
+  "industry": "Biotechnology"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-03-09",
+    "summary": "Item 1A. Risk Factors Our business is subject to numerous risks. The following important factors, among others, could cause our actual results to differ materially from those expressed in forward-looking statements made by us or on our behalf in this Annual Report on Form 10-K and other filings with the U.S. Securities and Exchange Commission (the \u201cSEC\u201d), press releases, communications with investors, and oral statements. Actual future results may differ materially from those anticipated in our forward-looking statements. We undertake no obligation to update any forward-looking statements, whether as a result of new information, future events, or otherwise. Risks Related to Our Financial Position and Need for Additional Capital We have incurred significant losses since inception. We expect"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-05",
+    "summary": "Item 1A. Risk Factors,\u201d as updated by our subsequent filings with the SEC. We may not actually achieve the plans, intentions or expectations disclosed in our forward-looking statements, and you should not place undue reliance on our forward-looking statements. Actual results or events could differ materially from the plans, intentions and expectations disclosed in the forward-looking statements we make. Our forward-looking statements do not reflect the potential impact of any future acquisitions, mergers, dispositions, joint ventures or investments that we may make. You should read this Quarterly Report on Form 10-Q and the documents that we have filed as exhibits to this Quarterly Report on Form 10-Q completely and with the understanding that our actual future results may be materially di"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from EDIT's SEC Filings
+
+## Financial Position and Losses
+- The company has accumulated significant operating losses totaling $1.6 billion as of December 31, 2025
+- Net losses were $160.1 million (2025), $237.1 million (2024), and $153.2 million (2023)
+- Losses are expected to continue for the foreseeable future, with no guarantee of achieving profitability
+
+## Funding and Capital Requirements
+- Current cash and equivalents are projected to fund operations through Q3 2027
+- The company requires substantial additional capital to continue operations and advance its research programs
+- Primary external funding sources are limited to contingent payments from BMS collaboration and retained portions of payments from the Vertex license agreement
+- Future funding may come through equity offerings, debt financing, collaborations, and licensing arrangements
+
+## Development Stage and Timeline
+- The company is currently in preclinical testing stages for its most advanced research programs, including EDIT-401
+- Years of development remain before any product candidates are ready for commercialization
+- Significant expenses are expected to increase as the company progresses preclinical studies and clinical trials
+
+## Key Risk Factors
+- Inability to raise capital when needed could force delays or elimination of research and development programs
+- Economic downturns or unfavorable political developments could impact the ability to secure funding and maintain operations
+- Regulatory requirements could increase expenses beyond current expectations
+- Even with approved products, profitability is not guaranteed
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses several significant risk factors, with the main categories being:
+
+## Financial Position and Capital Needs
+- **Substantial accumulated losses**: The company has incurred net losses of $160.1 million, $237.1 million, and $153.2 million for 2025, 2024, and 2023 respectively, with an accumulated deficit of $1.6 billion as of December 31, 2025.
+- **Ongoing losses expected**: The company anticipates continued significant losses for the foreseeable future and may never achieve profitability.
+- **Funding requirements**: Substantial additional capital will be needed to support preclinical studies, clinical trials, research programs, intellectual property maintenance, and potential commercialization efforts.
+- **Limited funding sources**: The company's existing cash is expected to fund operations only into the third quarter of 2027, with limited committed external funding sources beyond contingent payments from collaboration agreements.
+
+## Development and Commercialization Challenges
+- **Early-stage development**: The company is currently only in preclinical testing stages for its most advanced research programs.
+- **Time and expense**: Identifying product candidates and conducting testing is described as time-consuming, expensive, and uncertain, taking years to complete.
+- **No guarantee of success**: There is no assurance the company will generate necessary data for marketing approval or achieve product sales.
+
+## Economic and Market Risks
+- **Economic sensitivity**: Unfavorable economic conditions, political developments, or financial crises could adversely affect the company's ability to raise capital and business operations.

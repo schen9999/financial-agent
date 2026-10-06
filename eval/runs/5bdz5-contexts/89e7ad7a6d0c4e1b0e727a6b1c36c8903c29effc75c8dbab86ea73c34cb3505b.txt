@@ -1,0 +1,78 @@
+STOCK DATA:
+{
+  "ticker": "CALM",
+  "company_name": "Cal-Maine Foods, Inc.",
+  "current_price": 64.99,
+  "currency": "USD",
+  "market_cap": 3035722496.0,
+  "pe_ratio": 52.837395,
+  "forward_pe": 64.02956,
+  "week_52_high": 95.57,
+  "week_52_low": 63.5,
+  "financial_currency": "USD",
+  "revenue": 2528636928.0,
+  "net_income": 58727000.0,
+  "profit_margin_pct": 2.32,
+  "dividend_yield": 3.77,
+  "sector": "Consumer Defensive",
+  "industry": "Farm Products"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-07-22",
+    "summary": "Item 1A. Risk Factors and elsewhere in this report as well as those included in other reports we file from time to time with the Securities and Exchange Commission (the \u201cSEC\u201d) (including our Quarterly Reports on Form 10-Q and Current Reports on Form 8-K), (ii) changes in wholesale shell egg market prices, (iii) changes in the demand for shell eggs and our prepared foods offerings, (iv) increases in feed costs for our shell egg operations as well as increases in input costs for prepared foods, (v) our ability to predict and meet demand for cage -free and other specialty eggs, (vi) the risks and hazards inherent in shell egg, egg products and prepared foods operations (including, as applicable, disease, pests, weather conditions, and potential for product recall), including but not limited t"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-09-30",
+    "summary": "Item 1A Risk Factors of our 202 6 Annual Report, as well as those included in other reports we file from time to time with the Securities and Exchange Commission (the \u201cSEC\u201d) (including our Quarterly Reports on Form 10-Q and Current Reports on Form 8-K). The actual timing, number and value of shares repurchased under our share repurchase program will be determined by management in its discretion and will depend on a number of factors, including but not limited to, the market price of our Common Stock and general market and economic conditions. The share repurchase program may be suspended, modified or discontinued at any time without prior notice. Readers are cautioned not to place undue reliance on forward -looking statements because, while we believe the assumptions on which the forward -"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] Based on the provided SEC filings for Cal-Maine Foods (ticker: CALM), here are the key takeaways regarding the company’s business operations, risks, and strategic initiatives:
+
+**Business Overview and Market Position**
+Cal-Maine Foods is the largest egg company in the United States and a leading player in the egg-based food industry. Founded in 1957 and headquartered in Ridgeland, Mississippi, the company serves both retail and foodservice customers nationwide. Its portfolio includes conventional and specialty shell eggs (such as cage-free, organic, and pasture-raised) as well as prepared foods like pre-cooked egg patties, omelets, pancakes, and waffles. Key brands include Eggland’s Best®, Land O’Lakes®, Farmhouse Eggs®, and Van’s®.
+
+**Strategic Growth and Acquisitions**
+The company is pursuing a strategy of vertical integration, diversification, and expansion through significant acquisitions and organic investments over the last two fiscal years:
+*   **Prepared Foods Expansion:** The acquisition of Echo Lake Foods (completed June 2, 2025, for ~$289.5 million) expanded the company’s prepared foods product line. Current projects at Echo Lake facilities aim to add 17 million pounds of annual scrambled egg production and 12 million pounds of pancake production by mid-to-late fiscal 2027.
+*   **Joint Ventures and Subsidiaries:** In fiscal 2025, the company established a joint venture, Crepini Foods LLC, with a 51% interest, adding 18 million pounds of production capacity over the next 12–18 months. The company also made MeadowCreek Foods, LLC a wholly-owned subsidiary, focusing on hard-cooked eggs.
+*   **Shell Egg and Asset Acquisitions:** Significant acquisitions include Creighton Brothers LLC (March 2026, ~$129.3 million), ISE America, Inc. (Q1 2025), Clean Egg, LLC (October 2025, ~$23.7 million), and Van’s Foods assets (May 2026, ~$24.8 million). These deals expanded geographic presence, particularly in the Northeast and Mid-Atlantic, and added liquid egg capacity and feed production capabilities.
+
+**Operational Initiatives**
+Cal-Maine aims to increase normalized earnings power and diversify revenue streams by increasing the proportion of specialty shell eggs and expanding prepared foods. The company is investing in biosecurity, productivity, and vertical integration to reinforce cost leadership. Total planned investments in prepared foods are expected to increase production capacity by more than 30% from mid-2027 through 2028.
+
+**Risk Factors**
+The company faces several risks that could impact its financial performance, including:
+*   **Market Volatility:** Changes in wholesale shell egg prices, feed costs, and demand for prepared foods.
+*   **Operational Hazards:** Risks related to disease (specifically HPAI, which impacted flocks in fiscal 2024 and March 2026), pests, weather, and product recalls.
+*   **Integration Challenges:** Risks associated with integrating recent acquisitions, such as Echo Lake Foods, and realizing expected synergies.
+*   **External Factors:** Government regulations, inflation, interest rates, trade policies, and global geopolitical instability.
+*   **Share Repurchases:** The share repurchase program may be suspended, modified, or discontinued at any time without notice.
+
+**Forward-Looking Statements**
+The filings contain forward-looking statements regarding growth initiatives, capacity expansions, and acquisition benefits. These statements are based on current assumptions and are subject to uncertainties, with no assurance that they will prove accurate. The company disclaims any obligation to update these statements publicly.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] The primary risk factors disclosed include:
+
+*   **Market and Demand Fluctuations:** Changes in wholesale shell egg market prices and changes in the demand for shell eggs and prepared foods offerings.
+*   **Cost Increases:** Increases in feed costs for shell egg operations and input costs for prepared foods.
+*   **Specialty Egg Production:** The ability to predict and meet demand for cage-free and other specialty eggs.
+*   **Operational Hazards:** Risks inherent in shell egg, egg products, and prepared foods operations, including disease, pests, weather conditions, and potential product recalls. This specifically includes the impact of the Highly Pathogenic Avian Influenza (HPAI) outbreak, which affected flocks in fiscal 2024 and March 2026.
+*   **Acquisition Risks:** Risks related to recent or future acquisitions (such as Echo Lake Foods), the ability to meet conditions for pending acquisitions, and the ability to successfully integrate and manage acquired businesses to realize expected benefits like synergies and cost savings.
+*   **Operational Efficiency:** The ability to produce, supply, and distribute shell eggs and prepared foods efficiently and reliably.
+*   **Competition:** The ability to compete effectively with existing competitors and new market entrants, retain customers, acquire new customers, and grow the product mix.
+*   **Regulatory and Pricing Reactions:** Impacts of government, customer, and consumer reactions to high egg prices, including potential new or expanded government regulations.
+*   **Economic and Trade Policies:** Risks relating to potential changes in inflation, interest rates, and trade and tariff policies.
+*   **Intellectual Property:** The loss or expiration of registered trademarks or other intellectual property.
+*   **Legal Matters:** Adverse results in pending litigation and other legal matters.
+*   **Global Instability:** Global instability resulting from geopolitical conflicts and other uncertainties.

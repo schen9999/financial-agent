@@ -1,0 +1,77 @@
+STOCK DATA:
+{
+  "ticker": "XOM",
+  "company_name": "ExxonMobil Holdings Corporation",
+  "current_price": 164.0,
+  "currency": "USD",
+  "market_cap": 674353577984.0,
+  "pe_ratio": 21.106821,
+  "forward_pe": 14.451936,
+  "week_52_high": 176.41,
+  "week_52_low": 110.39,
+  "financial_currency": "USD",
+  "revenue": 361060007936.0,
+  "net_income": 32757000192.0,
+  "profit_margin_pct": 9.07,
+  "dividend_yield": 2.51,
+  "sector": "Energy",
+  "industry": "Oil & Gas Integrated"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "message": "No 10-K found"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-03",
+    "summary": "Item 1A. Risk Factors\" of ExxonMobil\u2019s 2025 Form 10-K. Forward-looking and other statements regarding environmental and other sustainability efforts and aspirations are not an indication that these statements are material to investors or require disclosure in our filing with the SEC or any other regulatory authority. In addition, historical, current, and forward-looking environmental and other sustainability-related statements may be based on standards for measuring progress that are still developing, internal controls and processes that continue to evolve, and assumptions that are subject to change in the future, including future rule-making. Actions needed to advance ExxonMobil\u2019s 2030 greenhouse gas emission-reductions plans are incorporated into its medium term business plans, which are"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] Based on the provided SEC EDGAR filings for ExxonMobil (XOM), here are the key takeaways regarding financial performance, operational results, and strategic outlook for the periods ended June 30, 2025, and 2026:
+
+**Financial Performance and Shareholder Returns**
+*   **Shareholder Distributions:** The Corporation distributed $8.6 billion in dividends and repurchased $10.0 billion of common stock.
+*   **Upstream Earnings Growth:** Upstream earnings (U.S. GAAP) increased significantly in the second quarter of 2026 compared to 2025. Total upstream earnings rose from $5.4 billion in Q2 2025 to $7.9 billion in Q2 2026. Year-to-date earnings increased from $12.2 billion in 2025 to $13.7 billion in 2026.
+*   **Earnings Drivers:** The primary driver for earnings growth was higher crude oil realizations, which increased earnings by $4.65 billion in Q2 2026 and $4.2 billion year-to-date. This was partially offset by lower gas realizations.
+*   **Negative Impacts:** Earnings were reduced by higher depreciation expenses, unfavorable derivatives mark-to-market impacts, and specific disruptions. In Q2 2026, a $1.199 billion loss from financial reserves was identified as a specific item. Middle East disruptions negatively impacted earnings by $1.06 billion in Q2 and $1.28 billion year-to-date.
+
+**Operational Results and Production**
+*   **Oil-Equivalent Production:** Net oil-equivalent production decreased slightly in Q2 2026 to 4.514 million barrels per day, down from 4.630 million in Q2 2025. Year-to-date production was 4.554 million barrels per day in 2026, compared to 4.591 million in 2025.
+*   **Advantaged Growth:** Advantaged Volume Growth contributed positively to earnings, driven mainly by growth in Guyana and the Permian Basin. This segment increased earnings by $1.14 billion in Q2 2026 and $1.94 billion year-to-date.
+*   **Regional Production Trends:**
+    *   **United States:** Crude oil production increased to 1.653 million barrels per day in Q2 2026 from 1.494 million in Q2 2025. Natural gas production also rose to 3.840 million cubic feet per day.
+    *   **Asia:** Significant declines in production were noted, particularly in natural gas, which dropped from 3.206 million cubic feet per day in Q2 2025 to 1.274 million in Q2 2026.
+    *   **Middle East:** Volumes decreased due to disruption impacts.
+
+**Market Conditions**
+*   **Supply and Capacity:** Market conditions in Q2 2026 were heavily influenced by supply disruptions in the Middle East and global refining capacity reductions.
+*   **Pricing and Margins:** Average crude oil prices remained within the 10-year historical range (2010-2019). Natural gas prices remained elevated above the 10-year average. Global industry refining margins were sharply above the 10-year historical range due to unprecedented capacity reductions. Chemical margins improved but remained below the bottom of the 10-year range due to regional supply constraints, particularly in Asia.
+
+**Strategic Outlook and Sustainability**
+*   **Emission Reductions:** Actions to advance 2030 greenhouse gas emission-reduction plans are incorporated into annual medium-term business plans.
+*   **Net-Zero Context:** The company’s Global Outlook assumes increasing policy stringency and technology improvement to 2050 but notes that current trends are not yet on a pathway to achieve net-zero by 2050. The Outlook does not project the specific degree of future policy and technology advancement required to meet net-zero goals.
+*   **Investment Criteria:** Capital investment in lower-emission solutions is based on corporate plans but is subject to the availability of opportunities, public policy support, and a focus on returns. Individual projects advance based on factors such as stable policy, permitting, and technological advancement for cost-effective abatement.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] Based on the provided context, the specific primary risk factors are not detailed in the text. The document only references that these factors are contained in "Item 1A. Risk Factors" of ExxonMobil’s 2025 Form 10-K.
+
+The text does, however, highlight several operational and market conditions that influence the business, which may relate to risk exposure:
+
+*   **Market Conditions:** Market conditions were heavily influenced by supply disruptions in the Middle East and global refining capacity reductions during the second quarter of 2026.
+*   **Price Volatility:** Average crude oil prices remained within the 10-year historical range, while natural gas prices remained elevated above the 10-year average due to ongoing supply disruptions.
+*   **Policy and Technology Assumptions:** Environmental and sustainability statements are based on standards that are still developing, internal controls that continue to evolve, and assumptions subject to change, including future rule-making.
+*   **Investment Dependencies:** Actual investment levels in lower-emission solutions are subject to the availability of the opportunity set and public policy support. Individual projects may advance based on factors such as stable and supportive policy, permitting, and technological advancement for cost-effective abatement.

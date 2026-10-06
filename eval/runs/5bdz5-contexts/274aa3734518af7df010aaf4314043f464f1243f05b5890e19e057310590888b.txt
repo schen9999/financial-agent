@@ -1,0 +1,73 @@
+STOCK DATA:
+{
+  "ticker": "AAPL",
+  "company_name": "Apple Inc.",
+  "current_price": 332.89,
+  "currency": "USD",
+  "market_cap": 4858257080320.0,
+  "pe_ratio": 38.17546,
+  "forward_pe": 34.7381,
+  "week_52_high": 345.34,
+  "week_52_low": 243.42,
+  "financial_currency": "USD",
+  "revenue": 466822987776.0,
+  "net_income": 128929996800.0,
+  "profit_margin_pct": 27.62,
+  "dividend_yield": 0.32,
+  "sector": "Technology",
+  "industry": "Consumer Electronics"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2025-10-31",
+    "summary": "Item 1A. Risk Factors The following summarizes factors that could have a material adverse effect on the Company\u2019s business, reputation, results of operations, financial condition and stock price. The Company may not be able to accurately predict, control or mitigate these risks. Statements in this section are based on the Company\u2019s beliefs and opinions regarding matters that could materially adversely affect the Company in the future and are not representations as to whether such matters have or have not occurred previously. The risks and uncertainties described below are not exhaustive and should not be considered a complete statement of all potential risks or uncertainties that the Company faces or may face in the future. This section should be read in conjunction with Part II, Item 7, \u201c"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-07-31",
+    "summary": "Item 1A. Risk Factors 21 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 24 Item 3. Defaults Upon Senior Securities 24 Item 4. Mine Safety Disclosures 24 Item 5. Other Information 25 Item 6. Exhibits 25 PART I \u2014 FINANCIAL INFORMATION Item 1. Financial Statements Apple Inc. CONDENSED CONSOLIDATED STATEMENTS OF OPERATIONS (Unaudited) (In millions, except number of shares, which are reflected in thousands, and per-share amounts) Three Months Ended Nine Months Ended June 27, 2026 June 28, 2025 June 27, 2026 June 28, 2025 Net sales: Products $ 78,678 $ 66,613 $ 272,629 $ 233,287 Services 30,739 27,423 91,728 80,408 Total net sales 109,417 94,036 364,357 313,695 Cost of sales: Products 47,153 43,620 163,810 147,097 Services 7,494 6,698 21,765 19,738 Total cost of sales 54,647"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] Based on the provided text from Apple Inc.'s 2025 Form 10-K, the key risk factors and business challenges include:
+
+**Public Health and Operational Disruptions**
+Major public health issues, such as pandemics, can materially adversely affect the company by impacting the global economy, consumer demand, and supply chains. Protective measures like travel restrictions and freight limitations can disrupt operations, leading to interruptions in product supply, delays in new product development, and significant recovery costs. The company relies on single or limited sources for many critical components, which exacerbates the negative impact of such interruptions. While insurance coverage exists, it may be insufficient to cover all potential losses.
+
+**Intense Global Competition**
+The company operates in highly competitive global markets characterized by rapid technological change, aggressive price competition, and short product life cycles. Competitors often have significant resources, broad product lines, large installed bases, and cost structures that allow them to offer products at little or no profit. Some competitors imitate the company’s products and infringe on its intellectual property. The company holds a minority market share in global smartphone, personal computer, tablet, and wearables markets, some of which have experienced little to no growth or contraction. Failure to compete effectively could materially adversely affect the company’s business, reputation, financial condition, and stock price.
+
+**Intellectual Property and Innovation Risks**
+Success depends on the timely introduction of innovative products and the effective protection of intellectual property rights. Regulatory requirements, government investigations, and litigation may force the company to withdraw or modify products in certain countries, limit its ability to enforce intellectual property rights, or require sharing innovations with competitors. Effective intellectual property protection is not consistently available in every country where the company operates. If the company cannot maintain attractive margins on innovative products or if competitors infringe on its rights, its competitive advantage could be materially adversely affected.
+
+**Macroeconomic and Geopolitical Risks**
+The company’s performance depends significantly on global and regional economic conditions, with the majority of net sales occurring outside the U.S. Adverse macroeconomic conditions, such as recession, inflation, high unemployment, and currency fluctuations, can reduce consumer confidence and spending. These conditions can also impact suppliers, manufacturers, and channel partners, leading to financial instability or insolvency. Additionally, political events, trade disputes, geopolitical tensions, and natural disasters can disrupt the global supply chain. Restrictions on international trade, such as tariffs, can increase costs, limit the availability of components, and require expensive and disruptive changes to business operations and supply chains.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] The primary risk factors disclosed include:
+
+**Macroeconomic and Industry Risks**
+*   **Economic Conditions:** Adverse global and regional economic conditions, such as slow growth, recession, high unemployment, inflation, tighter credit, higher interest rates, and currency fluctuations, can negatively impact consumer confidence, spending, and demand for products.
+*   **Supply Chain and Operations:** The company’s large, complex global supply chain, with most manufacturing and assembly located outside the U.S., makes it vulnerable to economic instability among suppliers and partners.
+*   **Political and Geopolitical Events:** Political events, trade disputes, geopolitical tensions, conflict, terrorism, natural disasters, public health issues, and industrial accidents can disrupt operations, supply chains, and sales channels.
+*   **Trade Restrictions:** Tariffs and other controls on imports or exports can increase costs, limit product availability, require supply chain restructuring, and force changes in product distribution.
+
+**Public Health Risks**
+*   **Pandemics and Health Issues:** Major public health issues, such as pandemics, can adversely affect the global economy, consumer demand, and operations through protective measures like travel restrictions and freight limitations.
+*   **Business Interruption:** Disruptions can lead to supply interruptions, delays in new product production, and significant recovery costs. Reliance on single or limited sources for critical components exacerbates these risks.
+
+**Competitive and Market Risks**
+*   **Intense Competition:** The company operates in highly competitive global markets characterized by aggressive price competition, rapid technological change, short product life cycles, and evolving industry standards.
+*   **Innovation and R&D:** Success depends on the timely introduction of innovative products and services. Significant R&D investments may not yield expected returns, and failure to develop successful new products can harm competitive advantage.
+*   **Intellectual Property:** The company faces risks from competitors imitating products, infringing on intellectual property, and the potential for regulatory requirements or litigation to force product modifications or the sharing of innovations.
+*   **Market Share and Growth:** The company holds a minority market share in key markets (smartphones, personal computers, tablets, and wearables), some of which have experienced little to no growth or contraction. Competitors with lower cost structures or the ability to sell at a loss pose significant threats.
+
+**Business Risks**
+*   **Product Transitions:** The company must successfully manage frequent introductions and transitions of products and services to remain competitive and stimulate demand in volatile markets.
