@@ -1,0 +1,85 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "a $23.88 billion market capitalization"
+LABEL: SUPPORTED
+REASON: The source data lists market_cap as $23,879,301,120, which rounds to $23.88 billion, matching the pre-written Financial Health section exactly.
+
+---
+
+CLAIM: "a robust 45.29% profit margin"
+LABEL: SUPPORTED
+REASON: The source data lists profit_margin as 0.45289, which equals 45.289%, rounding to 45.29% as stated.
+
+---
+
+CLAIM: "a 52-week low of $42.10"
+LABEL: SUPPORTED
+REASON: The source data lists week_52_low as 42.095, which rounds to $42.10 as stated; this figure also appears in the pre-written Recent Developments section.
+
+---
+
+CLAIM: "to $70.77"
+LABEL: SUPPORTED
+REASON: The source data lists current_price as 70.77, matching exactly.
+
+---
+
+CLAIM: "a trailing P/E ratio of 12.80"
+LABEL: SUPPORTED
+REASON: The source data lists pe_ratio as 12.797467, which rounds to 12.80 as stated.
+
+---
+
+CLAIM: "suggests reasonable valuation relative to current earnings"
+LABEL: INFERENCE
+REASON: This is a qualitative directional restatement directly derived from the pre-written Financial Health section's language ("the stock may be reasonably valued relative to its current earnings power"), based on the P/E of 12.80 present in the source data.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "strong current profitability"
+LABEL: SUPPORTED
+REASON: Directly supported by the source data's net income of $1.93 billion and profit margin of 45.29%, both explicitly present in the source data and pre-written sections.
+
+---
+
+CLAIM: "a valuation that appears reasonable relative to earnings power"
+LABEL: INFERENCE
+REASON: This is a qualitative directional restatement derivable from the trailing P/E of 12.80 present in the source data, consistent with the pre-written Financial Health section's characterization.
+
+---
+
+CLAIM: "intense competition"
+LABEL: SUPPORTED
+REASON: Explicitly supported by the SEC Filing Highlights and RAG sections, which describe "intensifying competition" from merchants, large financial incumbents, and low barriers to entry.
+
+---
+
+CLAIM: "reliance on a limited set of funding partners"
+LABEL: SUPPORTED
+REASON: Explicitly supported by the RAG and pre-written Risk Factors sections, which identify reliance on a small number of originating bank partners (Celtic Bank and Lead Bank) and external funding sources.
+
+---
+
+CLAIM: "the critical regulatory risk regarding the bank partner model"
+LABEL: SUPPORTED
+REASON: Explicitly supported by the RAG SEC Highlights and pre-written Risk Factors section, which state that if the originating bank partner model is deemed impermissible, the company could face penalties, fines, or operational restrictions.
+
+---
+
+CLAIM: "Investors should closely monitor the trajectory of services margins"
+LABEL: UNSUPPORTED
+REASON: The term "services margins" does not appear anywhere in the source data, SEC filing summaries, RAG sections, or pre-written sections; the source data references only an overall profit margin, not a distinct "services margins" metric.
+
+---
+
+**SUMMARY NOTE:** All quantitative figures in the Executive Summary are supported. The Outlook introduces the term "services margins," which has no basis in any source material and is therefore unsupported. All other Outlook claims are either supported or valid inferences from present source data.

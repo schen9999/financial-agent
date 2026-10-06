@@ -1,0 +1,49 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$445.9 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $445,865,984,000, which rounds to $445.9 billion; the Financial Health pre-written section also states "$445.9 billion in annual revenue."
+
+---
+
+CLAIM: "54.77% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists `"profit_margin_pct": 54.77`, and the Financial Health section repeats this figure exactly.
+
+---
+
+CLAIM: "$4.2 trillion market cap"
+LABEL: SUPPORTED
+REASON: Source data shows `"market_cap": 4,237,305,577,472`, which rounds to $4.2 trillion; the Financial Health section also states "$4.2 trillion market cap."
+
+---
+
+CLAIM: "trades 15% below its 52-week high"
+LABEL: SUPPORTED
+REASON: Current price is $346.47 and 52-week high is $408.61; the discount is (408.61 − 346.47) / 408.61 = 62.14 / 408.61 ≈ 15.21%, which rounds to 15% — within 0.15 pp of the stated figure. The Financial Health section also states "15% below its 52-week high of $408.61."
+
+---
+
+CLAIM: "52-week high" [implied $408.61 by context]
+LABEL: SUPPORTED
+REASON: Source data explicitly lists `"week_52_high": 408.61`.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "advertising business — which accounts for over 70% of revenues"
+LABEL: SUPPORTED
+REASON: Both the RAG SEC Highlights and RAG Risk Factors sections explicitly state "More than 70% of total revenues come from online advertising" / "Over 70% of revenues depend on online advertising," and the SEC Filing Highlights pre-written section repeats this figure.
+
+---
+
+No additional specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already audited above. All directional and qualitative statements (e.g., "cautiously constructive," "durable foundation," "uncertain return timelines," "compounding headwinds") are non-quantitative and therefore outside the scope of this audit.

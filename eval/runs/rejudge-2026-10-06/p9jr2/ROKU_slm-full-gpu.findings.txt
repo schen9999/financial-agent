@@ -1,0 +1,61 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $22.6 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 22,631,536,640.0 USD, which rounds to approximately $22.6 billion; also confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$5.21 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 5,209,110,016.0 USD ≈ $5.21 billion; confirmed in the Financial Health section.
+
+---
+
+CLAIM: "net income of $355.2 million"
+LABEL: SUPPORTED
+REASON: Source data shows net_income = 355,204,992.0 USD ≈ $355.2 million; confirmed in the Financial Health section.
+
+---
+
+CLAIM: "trading near its 52-week high of $159.89"
+LABEL: SUPPORTED
+REASON: Source data shows week_52_high = 159.89 and current_price = 152.39; $152.39 is within ~4.7% of the 52-week high, consistent with "near its 52-week high," and the figure $159.89 is explicitly present in the source data.
+
+---
+
+CLAIM: "a valuation gap that suggests anticipated earnings growth"
+LABEL: INFERENCE
+REASON: This is a directional restatement derived from the directly present trailing P/E of 64.85 versus forward P/E of 38.56 — a lower forward P/E implies the market anticipates earnings growth, which is the same derivation stated in the Financial Health section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "significant gap between the trailing and forward P/E ratios"
+LABEL: SUPPORTED
+REASON: Source data explicitly provides trailing P/E = 64.84681 and forward P/E = 38.561295; the difference of ~26.3 points constitutes a significant gap, confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "upcoming 10-Q filing"
+LABEL: SUPPORTED
+REASON: Source data (SEC filings) explicitly identifies a 10-Q with filing_date = 2026-08-06, referenced identically in the Recent Developments pre-written section.
+
+---
+
+CLAIM: "sustain its current net income levels"
+LABEL: SUPPORTED
+REASON: The net income figure of $355.2 million is explicitly present in the source data; the claim references this existing figure as a benchmark to sustain, which is grounded in the source.
+
+---
+
+**No additional quantitative figures, price targets, thresholds, ratios, percentages, named product milestones, or forward-looking numbers appear in the Executive Summary or Outlook sections beyond those audited above.**

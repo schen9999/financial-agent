@@ -1,0 +1,93 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+### EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "founded in 2017"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "an early-stage biotech firm founded in January 2017."
+
+---
+
+CLAIM: "$156.0 million in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data shows revenue = $156,035,008, which rounds to $156.0 million.
+
+---
+
+CLAIM: "$2.65 billion market capitalization"
+LABEL: SUPPORTED
+REASON: The raw source data shows market_cap = $2,651,394,304, which rounds to $2.65 billion.
+
+---
+
+CLAIM: "net loss of $86.5 million"
+LABEL: SUPPORTED
+REASON: The raw source data shows net_income = -$86,520,000, which rounds to -$86.5 million.
+
+---
+
+CLAIM: "accumulated deficit of $1.6 billion"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "accumulated deficit reached $1.6 billion as of December 31, 2025."
+
+---
+
+CLAIM: "declined 33% from its 52-week high of $38.26 to $25.67"
+LABEL: SUPPORTED
+REASON: Computing the decline: ($38.26 − $25.67) / $38.26 = $12.59 / $38.26 ≈ 32.9%, which rounds to 33%; both the high ($38.26) and current price ($25.67) are present in the source data.
+
+---
+
+CLAIM: "52-week high of $38.26"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists week_52_high = 38.26.
+
+---
+
+CLAIM: "$25.67" (current price)
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists current_price = 25.67.
+
+---
+
+CLAIM: "$1.2 billion cash position"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "the company maintains $1.2 billion in cash, cash equivalents, and marketable securities."
+
+---
+
+---
+
+### OUTLOOK
+
+---
+
+CLAIM: "$1.2 billion cash position provides a meaningful buffer that reduces near-term financing risk"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights confirm $1.2 billion in cash, cash equivalents, and marketable securities "expected to fund operations for at least the next 12 months."
+
+---
+
+CLAIM: "accumulated deficit of $1.6 billion"
+LABEL: SUPPORTED
+REASON: Explicitly stated in both RAG SEC Highlights and Risk Factors as of December 31, 2025.
+
+---
+
+CLAIM: "has already undergone a strategic restructuring that paused or eliminated pipeline programs"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state: "In October 2023, the company announced a portfolio reprioritization and strategic restructuring that included cost-reduction initiatives, resulting in the pausing or elimination of certain pipeline programs."
+
+---
+
+CLAIM: "beyond its existing credit facility" (as the only committed funding source)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "no committed source of additional capital beyond its credit facility with Sixth Street Lending Partners," which is consistent with the claim's framing.
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already evaluated above.*

@@ -1,0 +1,78 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$2.52 trillion USD market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 2,519,588,929,536.0 USD, which rounds to $2.52 trillion USD.
+
+---
+
+CLAIM: "net income of 2.22 trillion TWD"
+LABEL: SUPPORTED
+REASON: Source data shows net_income = 2,216,808,415,232.0 TWD, which rounds to 2.22 trillion TWD.
+
+---
+
+CLAIM: "revenue of 4.44 trillion TWD"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 4,440,492,343,296.0 TWD, which rounds to 4.44 trillion TWD.
+
+---
+
+CLAIM: "profit margin of 49.92%"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 49.92.
+
+---
+
+CLAIM: "current P/E of 35.31x"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 35.30523, which rounds to 35.31x.
+
+---
+
+CLAIM: "forward P/E of 22.16x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 22.157253, which rounds to 22.16x.
+
+---
+
+CLAIM: "the market is pricing in significant earnings growth"
+LABEL: INFERENCE
+REASON: This is a standard valuation inference directly derivable from the fact that the current P/E (35.31x) is materially higher than the forward P/E (22.16x), implying the market expects earnings to grow substantially to close that gap.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "the gap between the current and forward P/E ratios"
+LABEL: SUPPORTED
+REASON: Both figures are present in the source data (pe_ratio = 35.30523; forward_pe = 22.157253), and the gap of approximately 13.15x is arithmetically verifiable from those two figures.
+
+---
+
+*No additional specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond the P/E gap reference already audited above. All remaining Outlook content consists of qualitative directional statements, named risk categories (geopolitical, customer concentration, margin), and monitoring recommendations — none of which constitute auditable quantitative claims under the defined scope.*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $2.52 trillion USD market cap | SUPPORTED |
+| 2 | Net income 2.22 trillion TWD | SUPPORTED |
+| 3 | Revenue 4.44 trillion TWD | SUPPORTED |
+| 4 | Profit margin 49.92% | SUPPORTED |
+| 5 | Current P/E 35.31x | SUPPORTED |
+| 6 | Forward P/E 22.16x | SUPPORTED |
+| 7 | Market pricing in significant earnings growth | INFERENCE |
+| 8 | Gap between current and forward P/E | SUPPORTED |
+
+**No UNSUPPORTED claims were identified.** All quantitative figures in the Executive Summary and Outlook are either directly present in the source data or are straightforward inferences from figures that are present.

@@ -1,0 +1,67 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+### EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "currently trading at $4.13"
+LABEL: SUPPORTED
+REASON: The source data explicitly lists `"current_price": 4.13`.
+
+---
+
+CLAIM: "market capitalization of approximately $1.63 billion"
+LABEL: SUPPORTED
+REASON: Source data shows `"market_cap": 1627509888.0`, which rounds to approximately $1.63 billion.
+
+---
+
+CLAIM: "net loss of $4.60 billion"
+LABEL: SUPPORTED
+REASON: Source data shows `"net_income": -4604930048.0`, which rounds to -$4.60 billion; this figure also appears in the pre-written Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "negative profit margin of -249.21%"
+LABEL: SUPPORTED
+REASON: Source data gives `"profit_margin": -2.49214`; expressed as a percentage this is -249.214%, which rounds to -249.21%. Recomputation: -4,604,930,048 / 1,547,122,048 = -2.9764, which does **not** match -2.49214. However, the figure -2.49214 is explicitly present in the source data field `"profit_margin"` and is reproduced verbatim in the pre-written sections; the AI is citing the source data's own stated figure, not independently computing it. The claim matches the source data field exactly.
+REASON (revised): The figure -249.21% matches the source data field `"profit_margin": -2.49214` converted to percentage (-249.214%), within 0.01 pp; SUPPORTED on that basis, though note the figure cannot be independently verified from the revenue/net income figures provided (−4.60B / 1.55B ≈ −297%, suggesting a possible data inconsistency in the source itself — but the claim faithfully reproduces the source data's stated value).
+
+---
+
+CLAIM: "high-risk, speculative asset"
+LABEL: INFERENCE
+REASON: This is a qualitative characterization directly derivable from the combination of the negative profit margin, negative forward P/E, and substantial net loss all present in the source data and pre-written sections; no single quantitative figure is being asserted.
+
+---
+
+### OUTLOOK
+
+---
+
+CLAIM: "upcoming 10-K filing"
+LABEL: SUPPORTED
+REASON: The pre-written Recent Developments section explicitly states "Investors should closely monitor upcoming filings, including the 10-K due in February 2026," and the SEC filing data confirms a 10-K filing dated 2026-02-24.
+
+---
+
+**Quantitative/specific forward-looking figures and thresholds in the Outlook:**
+
+The Outlook section contains no specific numerical price targets, production volume thresholds, ratio targets, percentage milestones, named product deadlines (beyond the 10-K reference above), or other quantitative forward-looking figures. All remaining claims are qualitative directional statements (e.g., "consistent improvements in operational margins," "sustainable funding without excessive dilution," "delay in achieving production milestones," "further erosion of liquidity," "broader macroeconomic conditions"). These do not constitute specific quantitative or named-milestone claims subject to the audit criteria.
+
+---
+
+### SUMMARY TABLE
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Trading at $4.13 | SUPPORTED |
+| 2 | Market cap ~$1.63 billion | SUPPORTED |
+| 3 | Net loss of $4.60 billion | SUPPORTED |
+| 4 | Negative profit margin of -249.21% | SUPPORTED (matches source data's stated field value) |
+| 5 | High-risk, speculative asset | INFERENCE |
+| 6 | Upcoming 10-K filing | SUPPORTED |
+
+**No quantitative forward-looking figures appear in the Outlook section beyond the 10-K reference; all other Outlook language is qualitative and outside the audit scope.**

@@ -1,0 +1,123 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, and forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "YARTEMLEA, its sole FDA-approved product launched in December 2025"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states "YARTEMLEA is the company's only commercialized product, approved by the FDA in December 2025," and the Risk Factors section confirms "FDA-approved product (approved December 2025)."
+
+---
+
+CLAIM: "the stock trading at $18.90"
+LABEL: SUPPORTED
+REASON: Source data lists current_price as 18.9 (USD), which equals $18.90.
+
+---
+
+CLAIM: "a market capitalization of $1.37 billion"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap as 1,368,139,264.0, which rounds to $1.37 billion.
+
+---
+
+CLAIM: "rebounding sharply from a 52-week low of $4.06"
+LABEL: SUPPORTED
+REASON: Source data lists week_52_low as 4.06.
+
+---
+
+CLAIM: "reported financials show an unusual 324.88% profit margin"
+LABEL: SUPPORTED
+REASON: Source data lists profit_margin_pct as 324.88; the pre-written Financial Health section also states "324.88% profit margin."
+
+---
+
+CLAIM: "on $38.4 million in revenue"
+LABEL: SUPPORTED
+REASON: Source data lists revenue as 38,422,000, which rounds to $38.4 million.
+
+---
+
+CLAIM: "$171.8 million in cash against $116.1 million in annual operating cash burn"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states "the company held $171.8 million in cash, cash equivalents, and short-term investments" and "Cash used in operations for 2025 was $116.1 million."
+
+---
+
+CLAIM: "leaves the company with a limited runway to prove its commercial model before likely needing additional capital"
+LABEL: INFERENCE
+REASON: This is a directional inference directly derivable from $171.8M cash divided by $116.1M annual burn, implying roughly 1.5 years of runway, consistent with the "approximately 18 months" figure stated in the SEC Filing Highlights pre-written section.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "the recency of YARTEMLEA's FDA approval in December 2025"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and Risk Factors both confirm FDA approval of YARTEMLEA in December 2025.
+
+---
+
+CLAIM: "the Novo Nordisk distribution partnership as a meaningful commercial infrastructure advantage"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states "a deal with Novo Nordisk" and Risk Factors states "Dependence on Novo Nordisk's successful development and commercialization of zaltenibart, with milestone and royalty payments contingent on factors outside the company's control." Note: the source characterizes this as a partnership involving Novo Nordisk, though the nature described in the source (development/commercialization of zaltenibart with milestones and royalties) is not strictly a "distribution partnership" — the pre-written SEC Filing Highlights section does call it a "distribution deal with Novo Nordisk," so the claim is grounded in the pre-written sections provided to the model.
+
+---
+
+CLAIM: "the cash runway of approximately 18 months"
+LABEL: SUPPORTED
+REASON: The pre-written SEC Filing Highlights section explicitly states "providing approximately 18 months of runway," derived from $171.8M cash ÷ $116.1M annual burn ≈ 1.48 years ≈ ~18 months; arithmetic check: 171.8/116.1 = 1.48 years = ~17.7 months, consistent with "approximately 18 months."
+
+---
+
+CLAIM: "the convertible notes due 2029"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states "$70.8 million in convertible senior notes due June 15, 2029."
+
+---
+
+CLAIM: "quarterly results show accelerating YARTEMLEA revenue, narrowing cash burn, and broad reimbursement wins"
+LABEL: INFERENCE
+REASON: These are forward-looking watch-items fully derivable as logical inverses/extensions of the risk factors and financial metrics explicitly present in the source (cash burn of $116.1M, YARTEMLEA commercialization dependence, reimbursement uncertainty); no new external facts are required.
+
+---
+
+CLAIM: "a dilutive capital raise is announced"
+LABEL: INFERENCE
+REASON: The source explicitly states "Additional capital will likely be needed to fund operations and achieve profitability" (RAG SEC Highlights), making this a direct forward-looking restatement of a disclosed risk; no external fact is needed.
+
+---
+
+CLAIM: "the unusual profit margin is revealed to reflect non-recurring items rather than durable earnings power"
+LABEL: INFERENCE
+REASON: The pre-written Financial Health section explicitly flags the 324.88% profit margin as warranting "scrutiny regarding accounting methodology or one-time gains," making this a direct restatement of that disclosed concern; no external fact is required.
+
+---
+
+### Summary Table
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | YARTEMLEA sole FDA-approved product, December 2025 | SUPPORTED |
+| 2 | Stock at $18.90 | SUPPORTED |
+| 3 | Market cap $1.37 billion | SUPPORTED |
+| 4 | 52-week low of $4.06 | SUPPORTED |
+| 5 | 324.88% profit margin | SUPPORTED |
+| 6 | $38.4 million in revenue | SUPPORTED |
+| 7 | $171.8M cash / $116.1M annual cash burn | SUPPORTED |
+| 8 | Limited runway → likely need additional capital | INFERENCE |
+| 9 | FDA approval December 2025 (Outlook) | SUPPORTED |
+| 10 | Novo Nordisk distribution partnership | SUPPORTED |
+| 11 | ~18 months cash runway | SUPPORTED |
+| 12 | Convertible notes due 2029 | SUPPORTED |
+| 13 | Accelerating revenue / narrowing burn / reimbursement wins as thesis strengtheners | INFERENCE |
+| 14 | Dilutive capital raise as thesis weakener | INFERENCE |
+| 15 | Unusual profit margin reflecting non-recurring items | INFERENCE |
+
+**No claims were found to be UNSUPPORTED.** All quantitative figures checked against source data pass arithmetic and presence checks within stated tolerances.

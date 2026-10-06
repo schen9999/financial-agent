@@ -1,0 +1,45 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "€38.19 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: The source data shows revenue of 38,192,001,024.0 EUR, which rounds to €38.19 billion, exactly matching the pre-written Financial Health section and the claim.
+
+---
+
+CLAIM: "€7.80 billion in net income"
+LABEL: SUPPORTED
+REASON: The source data shows net income of 7,795,999,744.0 EUR, which rounds to €7.80 billion, consistent with the pre-written sections and the claim.
+
+---
+
+CLAIM: "a forward P/E of 21.44"
+LABEL: SUPPORTED
+REASON: The source data explicitly lists forward_pe as 21.444485, which rounds to 21.44.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, or percentages — it is composed entirely of qualitative and directional statements (e.g., "cautiously constructive," "higher-margin recurring revenue," "sensitive to economic cycles"). The named product milestone — "Business Technology Platform" / "SAP Business Technology Platform" — appears in the pre-written Risk Factors section and is therefore present in the source input.
+
+---
+
+CLAIM: "migration to the Business Technology Platform" / "customer migration to the Business Technology Platform"
+LABEL: SUPPORTED
+REASON: The SAP Business Technology Platform (BTP) is explicitly named in the pre-written Risk Factors section as a key transition risk, providing direct source grounding for this named milestone.
+
+---
+
+CLAIM: "EUR-denominated earnings against a USD-traded share price"
+LABEL: SUPPORTED
+REASON: The source data confirms financial_currency is EUR and currency (trading) is USD, and the pre-written Risk Factors section explicitly describes this EUR/USD dynamic.
+
+---
+
+**SUMMARY NOTE:** The Outlook section is predominantly qualitative. No additional quantitative claims (price targets, specific growth rates, margin figures, period-specific metrics, or numerical thresholds) are present to audit beyond those addressed above.

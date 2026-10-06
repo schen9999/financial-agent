@@ -1,0 +1,45 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$402.9 million in annual revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue of $402,948,000, which rounds to $402.9 million, and the pre-written Financial Health section states "annual revenue of $402.9 million."
+
+---
+
+CLAIM: "trading near its 52-week low of $1.35"
+LABEL: UNSUPPORTED
+REASON: The 52-week low is $1.23 per the source data, not $1.35; $1.35 is the current price, not the 52-week low — the claim conflates the two figures, making it factually incorrect.
+
+---
+
+CLAIM: "negative forward P/E ratio"
+LABEL: SUPPORTED
+REASON: The source data shows forward_pe of -3.068182, confirming the forward P/E is negative.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: (No specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section.)
+LABEL: N/A
+REASON: The Outlook section contains only qualitative and directional statements (e.g., "cautiously constructive," "persistent operating losses," "dilutive capital raises") with no specific numerical claims to audit beyond those already covered above.
+
+---
+
+**SUMMARY OF FINDINGS**
+
+| Claim | Label |
+|---|---|
+| "$402.9 million in annual revenue" | SUPPORTED |
+| "trading near its 52-week low of $1.35" | UNSUPPORTED |
+| "negative forward P/E ratio" | SUPPORTED |
+
+The sole material error is the misidentification of the current price ($1.35) as the 52-week low. The actual 52-week low is $1.23. While the stock is indeed trading *near* its 52-week low (within ~$0.12 or ~9.8% above it), the brief explicitly labels $1.35 as the 52-week low, which is factually incorrect per the source data. The pre-written "Recent Developments" section correctly stated "trading near its 52-week low of $1.23 at $1.35," but the Executive Summary collapsed these two distinct figures into one erroneous claim.

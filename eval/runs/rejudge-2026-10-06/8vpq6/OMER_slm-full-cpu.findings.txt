@@ -1,0 +1,43 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$171.8 million in cash reserves"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states "As of December 31, 2025, the company held $171.8 million in cash, cash equivalents, and short-term investments," and the SEC Filing Highlights pre-written section repeats this figure.
+
+---
+
+CLAIM: "newly FDA-approved product, YARTEMLEA"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights states YARTEMLEA "received FDA approval for commercial sale in the United States in December 2025," confirming it is newly FDA-approved.
+
+---
+
+CLAIM: "valuation profile that appears undervalued relative to its current earnings metrics"
+LABEL: INFERENCE
+REASON: This is a directional interpretive claim derivable from the P/E of 11.28 and forward P/E of 15.13 figures present in the source data and Financial Health section, which the pre-written section explicitly characterizes as suggesting "potential upside relative to current earnings."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "successful launch of YARTEMLEA"
+LABEL: UNSUPPORTED
+REASON: The source data confirms FDA approval in December 2025 but contains no evidence of a successful commercial launch (e.g., sales figures, uptake data, or launch milestones); the SEC filings only discuss commercialization risks and dependence on YARTEMLEA's future success, not a confirmed successful launch.
+
+---
+
+CLAIM: "elimination of near-term debt obligations"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights confirms "The $17.1 million in 5.25% convertible senior notes due in February 2026 (the '2026 Notes') had matured and been repaid in full," supporting the claim that the nearest-term debt obligation was eliminated.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those addressed above.)*

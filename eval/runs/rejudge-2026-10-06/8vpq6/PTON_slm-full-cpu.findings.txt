@@ -1,0 +1,57 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "currently trading at $4.92"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `"current_price": 4.92`.
+
+---
+
+CLAIM: "market capitalization of approximately $2.16 billion"
+LABEL: SUPPORTED
+REASON: Source data shows `"market_cap": 2159249408.0`, which rounds to approximately $2.16 billion.
+
+---
+
+CLAIM: "trailing revenue of $2.45 billion"
+LABEL: SUPPORTED
+REASON: Source data shows `"revenue": 2446000128.0`, which rounds to approximately $2.45 billion.
+
+---
+
+CLAIM: "net profit margin of 2.58%"
+LABEL: SUPPORTED
+REASON: Source data shows `"profit_margin": 0.025840001`, which equals 2.584%, within 0.15 percentage points of 2.58%.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "recent achievement of net income in fiscal year 2026"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights pre-written section states "Peloton reported net income in fiscal year 2026," and the RAG SEC Highlights confirm "despite reporting net income in fiscal year 2026."
+
+---
+
+CLAIM: "sustainability of the 2.58% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data shows `"profit_margin": 0.025840001` = 2.584%, within 0.15 percentage points of 2.58%; the figure is consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "strategic restructuring efforts initiated in 2024 and 2025"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "restructuring plans announced in 2022, 2024, and 2025," and the pre-written SEC Filing Highlights section references "strategic restructuring efforts in 2024 and 2025."
+
+---
+
+CLAIM: "forward P/E of 20.79"
+LABEL: SUPPORTED
+REASON: Source data shows `"forward_pe": 20.788439`, which rounds to 20.79.

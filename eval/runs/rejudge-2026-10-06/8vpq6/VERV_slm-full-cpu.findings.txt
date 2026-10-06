@@ -1,0 +1,43 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections, then evaluate each against the source data.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$524.3 million in cash and marketable securities as of year-end 2024"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both explicitly state "the company had $524.3 million in cash, cash equivalents, and marketable securities as of December 31, 2024," and the SEC Filing Highlights pre-written section repeats this figure for year-end.
+
+---
+
+CLAIM: "$20.0 million milestone payment from Eli Lilly"
+LABEL: SUPPORTED
+REASON: Both RAG sections and the SEC Filing Highlights pre-written section explicitly state "in February 2025, the company received a $20.0 million milestone payment from Eli Lilly and Company (Lilly) under the Lp(a) program."
+
+---
+
+CLAIM: "runway extending only through mid-2027"
+LABEL: SUPPORTED
+REASON: Both RAG sections and the SEC Filing Highlights pre-written section explicitly state "Management estimates that existing resources will fund operating expenses and capital expenditures into mid-2027."
+
+---
+
+CLAIM: "ongoing clinical trials for VERVE-102 and VERVE-201"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights section explicitly names "the Heart-2 Phase 1b trial of VERVE-102" and "the Pulse-1 Phase 1b trial of VERVE-201" as ongoing clinical trials, and the SEC Filing Highlights pre-written section also references both programs.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "mid-2027 runway"
+LABEL: SUPPORTED
+REASON: Explicitly stated in both RAG sections and the SEC Filing Highlights pre-written section as management's estimate for how long existing resources will fund operations.
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, metrics, percentages, or forward-looking numbers appear in the Outlook section beyond those already evaluated above. All remaining language in the Outlook is qualitative and directional (e.g., "cautiously constructive," "binary risks," "positive efficacy signals," "dilutive raise") and does not constitute specific quantitative or named-milestone claims subject to audit under the defined criteria.*

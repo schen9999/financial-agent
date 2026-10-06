@@ -1,0 +1,75 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $1.35 billion"
+LABEL: SUPPORTED
+REASON: The source data lists market_cap = $1,347,146,624, which rounds to approximately $1.35 billion, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "a notable net income of $116.53 million"
+LABEL: UNSUPPORTED
+REASON: The source data shows net_income = $116,533,000 ($116.53 million), but the SEC Filing Highlights (a direct input to the model) explicitly states the company incurred a net loss of $3.4 million for the year ended December 31, 2025; the $116.53 million figure from the stock data field conflicts with the SEC filing figure and appears to be a data field inconsistency — the claim presents it as straightforwardly positive net income without acknowledging the SEC-reported net loss of $3.4 million, and the SEC filing figure is the audited source, making the unqualified $116.53 million net income claim unsupported as stated.
+
+---
+
+CLAIM: "modest top-line revenue of $38.42 million"
+LABEL: SUPPORTED
+REASON: The source data lists revenue = $38,422,000, which equals $38.42 million, also reflected in the pre-written Financial Health section.
+
+---
+
+CLAIM: "sole approved product, YARTEMLEA"
+LABEL: SUPPORTED
+REASON: The SEC Highlights explicitly state YARTEMLEA is "the company's only commercialized product, approved by the FDA in December 2025."
+
+---
+
+CLAIM: "the Novo Nordisk partnership"
+LABEL: SUPPORTED
+REASON: The SEC Highlights and Risk Factors sections explicitly reference a "Novo Nordisk Collaboration" regarding zaltenibart.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "significant milestone and royalty payments from the Novo Nordisk partnership if zaltenibart advances successfully"
+LABEL: SUPPORTED
+REASON: The SEC Highlights state "Future payments are contingent on the successful development, regulatory approval, and commercialization of zaltenibart," confirming the existence and conditionality of milestone and royalty payments from Novo Nordisk.
+
+---
+
+CLAIM: "operating cash burn"
+LABEL: SUPPORTED
+REASON: The SEC Highlights state cash used in operations was $116.1 million for the year ended December 31, 2025, confirming ongoing operating cash burn.
+
+---
+
+CLAIM: "the need to service debt"
+LABEL: SUPPORTED
+REASON: The SEC Highlights confirm $70.8 million in outstanding principal on 2029 Notes and approximately $1.2 million in finance lease obligations, with the SEC filing noting debt service obligations.
+
+---
+
+CLAIM: "debt maturity profile"
+LABEL: SUPPORTED
+REASON: The SEC Highlights reference the 2029 Notes as outstanding debt with a defined maturity, and the already-repaid 2026 Notes, confirming a debt maturity profile exists in the source data.
+
+---
+
+CLAIM: "dilutive capital raises"
+LABEL: SUPPORTED
+REASON: The SEC Highlights explicitly state the company "may need to raise additional capital through debt, equity, or partnerships," and the Risk Factors section notes risks of "raising necessary capital," with the SEC Highlights also noting that "converting notes could dilute existing stockholders."
+
+---
+
+**SUMMARY NOTE:**
+
+The most material finding is the **net income claim of $116.53 million**. The stock data field reports this figure, but the audited SEC filing (the primary financial source used by the pre-written sections) reports a **net loss of $3.4 million** for the same fiscal year ended December 31, 2025. The pre-written SEC Filing Highlights section — a direct input to the AI — explicitly uses the $3.4 million net loss figure. The Executive Summary's unqualified presentation of $116.53 million net income directly contradicts the SEC-sourced figure and is therefore **UNSUPPORTED**.

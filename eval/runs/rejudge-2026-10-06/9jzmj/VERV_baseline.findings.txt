@@ -1,0 +1,93 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "key pipeline assets VERVE-102 and VERVE-201 currently in Phase 1b trials"
+LABEL: SUPPORTED
+REASON: The SEC Highlights section explicitly states "Ongoing clinical trials include Heart-2 Phase 1b for VERVE-102 and Pulse-1 Phase 1b for VERVE-201."
+
+---
+
+CLAIM: "a Phase 2 PCSK9 program in development"
+LABEL: SUPPORTED
+REASON: The SEC Highlights section explicitly states "A planned Phase 2 clinical trial for the PCSK9 program is in development."
+
+---
+
+CLAIM: "a combined liquidity buffer of approximately $497 million"
+LABEL: SUPPORTED
+REASON: The Financial Health pre-written section states "combined liquidity buffer of approximately $497 million"; verified by arithmetic: $96,554K cash + $400,523K marketable securities = $497,077K ≈ $497 million, within rounding tolerance.
+
+---
+
+CLAIM: "a strategic partnership with Eli Lilly that delivered a $20.0 million milestone payment in February 2025"
+LABEL: SUPPORTED
+REASON: The SEC Highlights section explicitly states "In February 2025, the company received a $20.0 million milestone payment from Eli Lilly under the Lp(a) program."
+
+---
+
+CLAIM: "cash and cash equivalents declining from $172.6 million to $96.6 million in a single quarter"
+LABEL: SUPPORTED
+REASON: The 10-Q filing data shows cash and cash equivalents of $172,560K at December 31, 2024 and $96,554K at March 31, 2025, confirming the decline of approximately $76 million in Q1 2025 (one quarter).
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "the estimated runway into mid-2027"
+LABEL: SUPPORTED
+REASON: The SEC Highlights and Risk Factors sections both explicitly state "the company estimates it can fund operations into mid-2027."
+
+---
+
+CLAIM: "the company has never completed a clinical trial"
+LABEL: SUPPORTED
+REASON: The Risk Factors section explicitly states "The company has not yet completed a clinical trial of any product candidate."
+
+---
+
+CLAIM: "the Eli Lilly partnership signals third-party validation of the gene-editing platform"
+LABEL: INFERENCE
+REASON: The existence of the Eli Lilly partnership and the $20.0 million milestone payment are both present in the source data; characterizing this as "third-party validation" is a direct qualitative inference from those documented facts, requiring no additional external facts.
+
+---
+
+CLAIM: "the accelerating cash burn rate"
+LABEL: INFERENCE
+REASON: The Q1 2025 cash decline from $172.6M to $96.6M is documented; characterizing the burn as "accelerating" implies a comparison to a prior period's burn rate, which is not provided in the source data — however, the pre-written Recent Developments section itself uses the phrase "accelerated cash burn," making this a restatement of a pre-written section characterization rather than a newly introduced unsupported claim; nonetheless, no prior-quarter burn figure exists in the source data to confirm acceleration arithmetically.
+
+---
+
+CLAIM: "path to additional capital — whether through equity raises, partnerships, or milestone payments — is uncertain"
+LABEL: SUPPORTED
+REASON: The Risk Factors section explicitly states "The company currently lacks a credit facility or committed sources of capital" and "If unable to raise capital on acceptable terms, the company may be forced to delay, reduce, or eliminate research and development programs."
+
+---
+
+CLAIM: "Phase 1b data readouts from VERVE-102 and VERVE-201 as the primary signposts"
+LABEL: SUPPORTED
+REASON: Both VERVE-102 and VERVE-201 are confirmed in Phase 1b trials per the SEC Highlights section, making reference to their data readouts grounded in the source data.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | VERVE-102 and VERVE-201 in Phase 1b trials | SUPPORTED |
+| 2 | Phase 2 PCSK9 program in development | SUPPORTED |
+| 3 | Combined liquidity buffer ~$497 million | SUPPORTED |
+| 4 | $20.0 million Eli Lilly milestone payment, February 2025 | SUPPORTED |
+| 5 | Cash declined from $172.6M to $96.6M in a single quarter | SUPPORTED |
+| 6 | Runway into mid-2027 | SUPPORTED |
+| 7 | Company has never completed a clinical trial | SUPPORTED |
+| 8 | Eli Lilly partnership as "third-party validation" | INFERENCE |
+| 9 | "Accelerating" cash burn rate | INFERENCE |
+| 10 | Path to additional capital is uncertain | SUPPORTED |
+| 11 | Phase 1b readouts from VERVE-102 and VERVE-201 as signposts | SUPPORTED |

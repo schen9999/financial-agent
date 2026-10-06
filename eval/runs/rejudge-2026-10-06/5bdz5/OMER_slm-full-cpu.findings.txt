@@ -1,0 +1,78 @@
+I will now systematically audit every quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $1.37 billion"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap = 1,368,139,264.0 USD, which rounds to approximately $1.37 billion.
+
+---
+
+CLAIM: "net income of $116.53 million"
+LABEL: SUPPORTED
+REASON: Source data lists net_income = 116,533,000.0 USD = $116.533 million, which matches $116.53 million.
+
+---
+
+CLAIM: "revenue of $38.42 million"
+LABEL: SUPPORTED
+REASON: Source data lists revenue = 38,422,000.0 USD = $38.422 million, which matches $38.42 million.
+
+---
+
+CLAIM: "significant cash position of $171.8 million"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights explicitly states: "As of December 31, 2025, the company held $171.8 million in cash, cash equivalents, and short-term investments."
+
+---
+
+CLAIM: "the recent launch of its sole commercial product, YARTEMLEA"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights confirms YARTEMLEA is "the company's only commercialized product, approved by the FDA for commercial sale in the United States in December 2025."
+
+---
+
+CLAIM: "the company's financial viability remains heavily dependent on generating sufficient revenue to offset its substantial operating cash burn"
+LABEL: SUPPORTED
+REASON: This is a directional restatement of the SEC Highlights, which states cash used in operations was $116.1 million and that the company "anticipates incurring additional losses until significant revenue is generated from YARTEMLEA."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "milestone payments are not guaranteed"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights and Risk Factors both state that future payments from Novo Nordisk "are contingent on the successful development, regulatory approval, and commercialization of zaltenibart" and that the company "may receive substantially less or no additional milestone and royalty payments."
+
+---
+
+CLAIM: "the Novo Nordisk partnership for zaltenibart"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights explicitly names "Novo Nordisk Agreement" involving zaltenibart.
+
+---
+
+*No additional specific quantitative figures, price targets, thresholds, ratios, percentages, or named product milestones appear in the Outlook section beyond those already evaluated above.*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap ~$1.37 billion | SUPPORTED |
+| 2 | Net income $116.53 million | SUPPORTED |
+| 3 | Revenue $38.42 million | SUPPORTED |
+| 4 | Cash position $171.8 million | SUPPORTED |
+| 5 | YARTEMLEA as sole commercial product / recent launch | SUPPORTED |
+| 6 | Financial viability dependent on offsetting operating cash burn | SUPPORTED |
+| 7 | Novo Nordisk / zaltenibart milestone payments not guaranteed | SUPPORTED |
+| 8 | Novo Nordisk partnership for zaltenibart | SUPPORTED |
+
+All audited claims in the Executive Summary and Outlook are **SUPPORTED** by the source data. No unsupported or inference-only claims were identified. Notably, the brief does not introduce any figures (e.g., P/E ratio, 52-week high, operating cash burn dollar amount, debt figures) from the pre-written sections into the Executive Summary or Outlook that would require additional verification — those figures remain confined to the pre-written Financial Health and SEC Filing Highlights sections, which are outside the audit scope.

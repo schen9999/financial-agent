@@ -1,0 +1,73 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "$361.1 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $361,060,007,936, which rounds to $361.1 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$32.8 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of $32,757,000,192, which rounds to $32.8 billion; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "market capitalization of $674.4 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $674,394,669,056, which rounds to $674.4 billion; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "upstream earnings surged 46% year-over-year to $7.9 billion in Q2 2026"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights confirm upstream earnings of $7.9 billion in Q2 2026 vs. $5.4 billion in Q2 2025; the SEC Filing Highlights pre-written section states "up 46% year-over-year." Verification: ($7.9B − $5.4B) / $5.4B = 46.3%, within 0.15 pp of 46%.
+
+---
+
+CLAIM: "current P/E of 21.1x"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio of 21.108107, which rounds to 21.1x; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "forward P/E of 14.5x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe of 14.50511, which rounds to 14.5x; also stated in the Financial Health pre-written section.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "Q2 2026 upstream earnings surge"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly confirm upstream earnings of $7.9 billion in Q2 2026, up from $5.4 billion in Q2 2025, confirming a surge occurred.
+
+---
+
+CLAIM: "robust shareholder return program — combining dividends and buybacks"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights confirm $8.6 billion in dividends and $10.0 billion in share repurchases were distributed during the period.
+
+---
+
+CLAIM: "2030 emissions-reduction targets"
+LABEL: SUPPORTED
+REASON: The 10-Q filing summary explicitly references "ExxonMobil's 2030 greenhouse gas emission-reductions plans" being incorporated into medium-term business plans.
+
+---
+
+CLAIM: "geopolitical developments in the Middle East, which have already demonstrated the ability to disrupt production and compress earnings"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly state "Middle East disruptions reduced earnings by $1.06 billion in Q2" and that production declined partly due to "Middle East disruptions."
+
+---
+
+*No additional standalone quantitative figures, price targets, specific thresholds, named ratios, or forward-looking numbers appear in the Outlook section beyond those already audited above. All directional and qualitative statements (e.g., "cautiously constructive," "credible volume growth runway," "ongoing tension") are non-quantitative and fall outside the scope of this audit.*

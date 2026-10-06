@@ -1,0 +1,48 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "50.78% profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly states `"profit_margin_pct": 50.78`, and the Financial Health pre-written section confirms "profit margin of 50.78%."
+
+---
+
+CLAIM: "$44.49 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: The raw source data shows `"revenue": 44487999488.0`, which rounds to $44.49 billion; the Financial Health section also states "annual revenue of $44.49 billion."
+
+---
+
+CLAIM: "$694.1 billion market capitalization"
+LABEL: SUPPORTED
+REASON: The raw source data shows `"market_cap": 694077030400.0`, which rounds to approximately $694.1 billion, consistent with the Financial Health section.
+
+---
+
+CLAIM: "$31.7 billion remaining under its authorized buyback program as of June 30, 2026"
+LABEL: SUPPORTED
+REASON: The 10-Q SEC filing summary states "May 1–31, 2026 … $31,682 [million]" remaining under the buyback program as of May 31, 2026, and the Recent Developments pre-written section states "approximately $31.7 billion remaining under its authorized buyback program as of June 30, 2026." However, the raw 10-Q data shows $31,682 million as of May 31, 2026, and the June figure is truncated ("June 1 – 30, 2026 10 $ 3…"), so the exact June 30 figure is not fully present in the source data. The pre-written Recent Developments section asserts the $31.7 billion figure as of June 30, 2026, but the underlying raw data for June is cut off and cannot be verified.
+LABEL: UNSUPPORTED
+REASON: The raw 10-Q data for June 1–30, 2026 is truncated and does not confirm the remaining buyback balance as of June 30, 2026; only the May 31, 2026 figure of $31,682 million is fully legible in the source data, making the June 30 figure unverifiable from the raw data provided.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional (e.g., "cautiously constructive," "significant headwinds," "closely monitor," "sustained volume growth"). There are no numerical claims to audit in this section.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | 50.78% profit margin | SUPPORTED |
+| 2 | $44.49 billion in annual revenue | SUPPORTED |
+| 3 | $694.1 billion market capitalization | SUPPORTED |
+| 4 | $31.7 billion remaining buyback as of June 30, 2026 | UNSUPPORTED |

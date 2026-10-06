@@ -1,0 +1,79 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "474 million daily active users as of Q4 2025"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights, RAG Risk Factors, and Pre-written SEC Filing Highlights section all explicitly state "474 million daily active users (DAUs) as of Q4 2025" (or "December 31, 2025").
+
+---
+
+CLAIM: "$6.4 billion in revenue"
+LABEL: SUPPORTED
+REASON: The source data shows revenue of $6,351,084,032, which rounds to $6.4 billion; the Pre-written Financial Health section also states "$6.4 billion in revenue."
+
+---
+
+CLAIM: "advertising, which comprises 87% of its business"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights, RAG Risk Factors, and Pre-written sections all explicitly state advertising accounted for approximately 87% of total revenue in 2025.
+
+---
+
+CLAIM: "trades near the lower end of its 52-week range at $5.58"
+LABEL: SUPPORTED
+REASON: The source data confirms current price = $5.58, 52-week low = $3.81, 52-week high = $9.13; $5.58 is closer to the low end ($3.81) than the high end ($9.13), confirmed arithmetically: midpoint = ($3.81 + $9.13)/2 = $6.47, and $5.58 < $6.47, placing it in the lower half of the range.
+
+---
+
+CLAIM: "forward P/E of 7.2x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 7.195729, which rounds to 7.2x; the Pre-written Financial Health section also states "7.2x."
+
+---
+
+CLAIM: "$311 million net loss"
+LABEL: SUPPORTED
+REASON: Source data shows net_income = -$311,243,008, which rounds to -$311 million; confirmed in Pre-written sections.
+
+---
+
+CLAIM: "-4.9% profit margin"
+LABEL: SUPPORTED
+REASON: Source data shows profit_margin = -0.04901, i.e., -4.9%; also confirmed in Pre-written sections. Recomputed: -311,243,008 / 6,351,084,032 = -4.90%, within 0.15 pp of -4.9%.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "advertising targeting capabilities have already been materially impaired by iOS privacy changes"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and RAG Risk Factors explicitly state "Apple's iOS privacy updates have materially impaired the company's ability to target and measure advertising effectiveness."
+
+---
+
+CLAIM: "further platform-level restrictions from Google or browsers could compound that damage"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and Risk Factors explicitly name "similar changes from Google, Firefox, Safari, and Chrome" as ongoing threats.
+
+---
+
+CLAIM: "gradual reduction in advertising revenue concentration — down from 91% to 87%"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights states advertising was "approximately 87% of total revenue in 2025 (down from 91% in 2024 and 96% in 2023)"; the Pre-written SEC Filing Highlights section also states "87% of revenue (down from 91% in 2024)." The 91%-to-87% directional claim is explicitly present in the source.
+
+---
+
+CLAIM: "subscription diversification takes early shape"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Pre-written SEC Filing Highlights both reference "diversification efforts through subscription models" and "pursuing diversification through subscription models," supporting this characterization. No specific subscription revenue figure is claimed, so no arithmetic check is required.
+
+---
+
+No additional standalone quantitative figures, price targets, thresholds, or named product milestones appear in the Outlook section beyond those already evaluated above. All forward-looking directional statements (e.g., "cautious," "sustained DAU re-acceleration," "credible narrowing of net losses") are qualitative and do not constitute specific quantitative claims requiring a separate entry.

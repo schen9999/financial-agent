@@ -1,0 +1,67 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "accumulated deficit of $596.5 million"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "accumulated deficit of $596.5 million as of December 31, 2025," and the SEC Filing Highlights pre-written section repeats this figure.
+
+---
+
+CLAIM: "market capitalization near its 52-week low of $1.22"
+LABEL: UNSUPPORTED
+REASON: The 52-week low is $1.215 per the source data, not $1.22; $1.22 is the current price, not the 52-week low — the claim conflates two distinct figures, making it factually incorrect as stated.
+
+---
+
+CLAIM: "existing cash reserves are insufficient to fund pivotal trials for vispa-cel"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "The company currently does not have sufficient funds to conduct the planned pivotal clinical trial for vispa-cel," and this is corroborated in the SEC Filing Highlights pre-written section.
+
+---
+
+## OUTLOOK
+
+*(No explicit quantitative figures, price targets, thresholds, ratios, metrics, or percentages appear in the Outlook section. The section contains only qualitative/directional language and named product/program references. I will evaluate the named product milestones and forward-looking program references below.)*
+
+---
+
+CLAIM: "watch for updates on the pivotal trial for vispa-cel"
+LABEL: SUPPORTED
+REASON: The source data (RAG SEC Highlights and Risk Factors) explicitly identifies vispa-cel's planned pivotal clinical trial as a key forward-looking milestone requiring additional financing, confirming this is a real named program milestone in the source.
+
+---
+
+CLAIM: "successful trial initiation and data readouts would serve as critical catalysts"
+LABEL: INFERENCE
+REASON: The source data confirms the pivotal trial for vispa-cel has not yet been initiated due to insufficient funds; the characterization of initiation and data readouts as "critical catalysts" is a direct logical inference from the source's repeated emphasis on the pivotal trial as the central unresolved milestone, requiring no additional facts beyond those present.
+
+---
+
+CLAIM: "any delays in funding or adverse safety signals would significantly weaken the outlook, potentially leading to program curtailment"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state that failure to obtain financing "could lead to delays, curtailment, or discontinuation of clinical trials," directly grounding both the curtailment risk and the funding-delay risk named in this claim.
+
+---
+
+CLAIM: "further equity raises at depressed valuations"
+LABEL: INFERENCE
+REASON: The source data notes the stock is near its 52-week low ($1.215 vs. current $1.22) and that raising capital "may cause dilution to existing stockholders"; the inference that additional raises would occur "at depressed valuations" follows directly from combining these two present facts without requiring any absent information.
+
+---
+
+### Summary Table
+
+| Claim | Label |
+|---|---|
+| Accumulated deficit of $596.5 million | SUPPORTED |
+| Market capitalization near its 52-week low of $1.22 | UNSUPPORTED |
+| Cash reserves insufficient to fund pivotal trials for vispa-cel | SUPPORTED |
+| Watch for updates on the pivotal trial for vispa-cel | SUPPORTED |
+| Successful trial initiation and data readouts as critical catalysts | INFERENCE |
+| Delays in funding/adverse safety signals could lead to program curtailment | SUPPORTED |
+| Further equity raises at depressed valuations | INFERENCE |

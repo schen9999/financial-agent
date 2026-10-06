@@ -1,0 +1,117 @@
+I will now systematically audit every quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, and forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $4.3 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $4,261,082,112, which rounds to $4.3 billion; the pre-written Financial Health section also states "$4.3 billion in revenue."
+
+---
+
+CLAIM: "a 45.3% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data shows profit_margin of 0.45289, which equals 45.289% ≈ 45.3%; confirmed by pre-written sections.
+
+---
+
+CLAIM: "trading at a $23.9 billion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $23,879,301,120, which rounds to $23.9 billion.
+
+---
+
+CLAIM: "P/E of 12.8x"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio of 12.797467, which rounds to 12.8x.
+
+---
+
+CLAIM: "forward P/E of 14.7x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe of 14.658577, which rounds to 14.7x.
+
+---
+
+CLAIM: "P/E of 12.8x and forward P/E of 14.7x sit below historical averages for fintech peers"
+LABEL: UNSUPPORTED
+REASON: No historical average P/E figures for fintech peers appear anywhere in the source data, SEC filings, or pre-written sections; the pre-written Financial Health section makes the same assertion but provides no supporting data for the peer comparison.
+
+---
+
+CLAIM: "the 52-week range of $42.10–$90.44"
+LABEL: SUPPORTED
+REASON: Source data shows week_52_low of 42.095 (≈ $42.10) and week_52_high of 90.44, matching the claim exactly.
+
+---
+
+CLAIM: "the current mid-range price"
+LABEL: SUPPORTED
+REASON: The midpoint of the 52-week range is (42.095 + 90.44) / 2 = 66.27; the current price of $70.77 is above the midpoint but within the range and reasonably described as "near mid-range," consistent with the pre-written section's characterization; arithmetic confirms the price is not near either extreme.
+
+---
+
+CLAIM: "loss or disruption of either relationship, on as little as 30–90 days' notice"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly states "can be terminated with 30-90 days' notice," and this is repeated in the pre-written Risk Factors section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "the company's demonstrated profitability — reflected in its 45.3% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data confirms profit_margin of 0.45289 ≈ 45.3%, as noted above.
+
+---
+
+CLAIM: "below-peer-average valuation multiples"
+LABEL: UNSUPPORTED
+REASON: No peer-average valuation multiples are present in the source data or any pre-written section; this is the same unsupported peer-comparison assertion as in the Executive Summary.
+
+---
+
+CLAIM: "the buy-now-pay-later sector faces intensifying competition from better-capitalized incumbents and merchant-proprietary solutions"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and pre-written SEC Filing Highlights explicitly state intensifying competition from larger financial incumbents and merchants' proprietary payment solutions with low barriers to entry.
+
+---
+
+CLAIM: "regulatory interpretation of the originating bank partner model remains unsettled"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly states "Risk that the originating bank partner model could be challenged as impermissible," and the pre-written Risk Factors section repeats this.
+
+---
+
+CLAIM: "interest rate sensitivity could pressure unit economics if the macro environment shifts"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly states "Further increases in market interest rates could adversely affect the business."
+
+---
+
+CLAIM: "the health and continuity of the Celtic Bank and Lead Bank partnerships" (as a key watch variable)
+LABEL: SUPPORTED
+REASON: Celtic Bank and Lead Bank are explicitly named in the RAG SEC Highlights, RAG Risk Factors, and pre-written sections as the specific originating bank partners on which Affirm is materially dependent.
+
+---
+
+CLAIM: "the trajectory of consumer creditworthiness and delinquency trends" (as a key watch variable)
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly references "Revenue impacted by general economic conditions and consumer creditworthiness" and "Ineffective collection efforts on delinquent loans" as material risks.
+
+---
+
+CLAIM: "the pace and direction of regulatory rulemaking affecting the BNPL sector" (as a key watch variable)
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors and SEC Highlights explicitly cite extensive regulatory oversight and uncertain interpretation as material risks; the pre-written Recent Developments section also flags regulatory developments as a key monitoring item.
+
+---
+
+CLAIM: "whether Affirm can sustain its profit margin as competitive pressure on pricing intensifies" (as a key watch variable)
+LABEL: INFERENCE
+REASON: The source data confirms the current 45.3% profit margin and the pre-written sections confirm intensifying competitive pressure; the forward-looking concern about sustaining the margin under pricing pressure is a direct logical derivation from these two present facts, requiring no additional external data.

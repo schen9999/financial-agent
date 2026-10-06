@@ -1,0 +1,114 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "currently trading at $24.50"
+LABEL: SUPPORTED
+REASON: The source data explicitly lists `"current_price": 24.5`, matching $24.50.
+
+---
+
+CLAIM: "market capitalization of approximately $2.53 billion"
+LABEL: SUPPORTED
+REASON: Source data shows `"market_cap": 2530547712.0`, which rounds to approximately $2.53 billion.
+
+---
+
+CLAIM: "net loss of $86.52 million"
+LABEL: SUPPORTED
+REASON: Source data lists `"net_income": -86520000.0`, which equals a net loss of $86.52 million; this figure also appears in the Financial Health pre-written section.
+
+---
+
+CLAIM: "negative profit margin of -55.45%"
+LABEL: SUPPORTED
+REASON: Source data gives `"profit_margin": -0.55449003`; expressed as a percentage this is -55.449%, which rounds to -55.45%, within the 0.15 pp tolerance. Also confirmed in the Financial Health section.
+
+---
+
+CLAIM: "relying heavily on future pipeline success rather than current cash flow"
+LABEL: SUPPORTED
+REASON: This is a qualitative restatement directly present in the Financial Health pre-written section ("high-risk investment stage typical of biotechnology firms heavily reliant on future pipeline success rather than current cash flow").
+
+---
+
+CLAIM: "current 12-month runway"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights section and RAG — SEC Highlights both state the $1.2 billion cash position "is believed to be sufficient to fund operations and capital expenditures for at least the next 12 months."
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "robust cash position of $1.2 billion"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights and the SEC Filing Highlights pre-written section both explicitly state "the company held $1.2 billion in cash, cash equivalents, and marketable securities."
+
+---
+
+CLAIM: "[cash position] provides a critical buffer to execute near-term research and clinical expansion without immediate dilution"
+LABEL: INFERENCE
+REASON: The source states the $1.2 billion is sufficient for at least 12 months of operations; the inference that this avoids "immediate dilution" is a direct logical derivation from that sufficiency statement, requiring no additional facts.
+
+---
+
+CLAIM: "accumulated deficit of $1.6 billion"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights, RAG — Risk Factors, and the SEC Filing Highlights section all explicitly state "accumulated deficit stood at $1.6 billion" as of December 31, 2025.
+
+---
+
+CLAIM: "inherent uncertainty of commercializing base editing therapies without a proven track record"
+LABEL: SUPPORTED
+REASON: The Risk Factors and SEC Highlights sections explicitly state the company has "not yet demonstrated the ability to successfully commercialize a product" and has "no prior successful commercialization of base editing therapies."
+
+---
+
+CLAIM: "positive clinical outcomes could validate the technology and attract strategic partnerships"
+LABEL: UNSUPPORTED
+REASON: No source data, SEC filing summary, RAG excerpt, or pre-written section mentions strategic partnerships as a specific outcome of positive clinical results; this forward-looking linkage is absent from the context.
+
+---
+
+CLAIM: "delays or adverse events would likely trigger further capital raises and potential dilution"
+LABEL: SUPPORTED
+REASON: The RAG — Risk Factors and SEC Filing Highlights sections explicitly state that failure to secure funding could force delays, and that raising capital through equity "may cause dilution to existing stockholders," making this a direct restatement of disclosed risks.
+
+---
+
+CLAIM: "thesis strengthens if the company demonstrates clear pathways to regulatory approval"
+LABEL: UNSUPPORTED
+REASON: While regulatory approval is mentioned as a general risk factor, no source section frames "clear pathways to regulatory approval" as a specific thesis-strengthening condition or threshold; this forward-looking qualifier is not grounded in the source data.
+
+---
+
+CLAIM: "weakens if funding gaps emerge before commercial viability is achieved"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights and RAG — Risk Factors sections explicitly state that failure to raise capital could force delays or termination of programs, directly supporting this as a risk scenario.
+
+---
+
+### Summary Table
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Trading at $24.50 | SUPPORTED |
+| 2 | Market cap ~$2.53 billion | SUPPORTED |
+| 3 | Net loss of $86.52 million | SUPPORTED |
+| 4 | Profit margin of -55.45% | SUPPORTED |
+| 5 | Relying on future pipeline success | SUPPORTED |
+| 6 | Current 12-month runway | SUPPORTED |
+| 7 | Cash position of $1.2 billion | SUPPORTED |
+| 8 | Cash avoids immediate dilution | INFERENCE |
+| 9 | Accumulated deficit of $1.6 billion | SUPPORTED |
+| 10 | Uncertainty of commercializing base editing | SUPPORTED |
+| 11 | Positive outcomes attract strategic partnerships | UNSUPPORTED |
+| 12 | Delays trigger capital raises and dilution | SUPPORTED |
+| 13 | Thesis strengthens with clear regulatory pathways | UNSUPPORTED |
+| 14 | Thesis weakens if funding gaps emerge | SUPPORTED |

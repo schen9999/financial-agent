@@ -1,0 +1,79 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$361.1 billion in annual revenues"
+LABEL: SUPPORTED
+REASON: Source data lists revenue as $361,060,007,936, which rounds to $361.1 billion; the pre-written Financial Health section also states "$361.1 billion."
+
+---
+
+CLAIM: "$674.4 billion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap as $674,394,669,056, which rounds to $674.4 billion; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "9.07% profit margin"
+LABEL: SUPPORTED
+REASON: Source data lists profit_margin as 0.09072, which rounds to 9.07%; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "trailing P/E of 21.11"
+LABEL: SUPPORTED
+REASON: Source data lists pe_ratio as 21.108107, which rounds to 21.11; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "forward P/E of 14.51"
+LABEL: SUPPORTED
+REASON: Source data lists forward_pe as 14.50511, which rounds to 14.51; confirmed in the pre-written Financial Health section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "persistence of elevated natural gas prices"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "Natural gas prices remained elevated above the 10-year average," directly supporting this characterization.
+
+---
+
+CLAIM: "execution of growth projects in Guyana and the Permian Basin"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly name "Guyana and Permian production" as drivers of advantaged volume growth, and the pre-written SEC Filing Highlights section references "growth in Guyana and the Permian Basin."
+
+---
+
+CLAIM: "sustained upstream earnings growth"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights document upstream earnings rising from $5.402 billion (Q2 2025) to $7.927 billion (Q2 2026), establishing an upstream earnings growth trend that is directly referenced.
+
+---
+
+CLAIM: "stable policy environments supporting lower-emission investments"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections explicitly state that lower-emission capital investments are contingent on "stable policy, permitting, and technological advancement," directly grounding this forward-looking condition.
+
+---
+
+CLAIM: "significant regulatory shifts that increase compliance costs"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly identifies regulatory and policy uncertainty — including "future rule-making" and evolving environmental standards — as a risk that could impact capital investment viability, directly grounding this weakening condition.
+
+---
+
+CLAIM: "prolonged supply disruptions that erode refining margins"
+LABEL: INFERENCE
+REASON: The RAG SEC Highlights confirm that Middle East supply disruptions negatively impacted earnings by $1.060 billion and that refining margins were sharply above the 10-year range due to capacity reductions; the directional claim that prolonged disruptions would erode refining margins is a reasonable inference from these two present facts (disruptions harm earnings; refining margins are currently elevated and thus exposed to reversal), but the specific mechanism linking prolonged disruptions to margin erosion requires a derivation step not explicitly stated in the source.
+
+---
+
+**SUMMARY NOTE:** No price targets, specific percentage thresholds, named product milestones, or additional forward-looking numerical figures appear in the Executive Summary or Outlook sections beyond those audited above. All quantitative claims in these sections are accounted for.

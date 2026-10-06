@@ -1,0 +1,151 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "only two commercially available vehicles"
+LABEL: SUPPORTED
+REASON: The SEC Highlights and Risk Factors sections both explicitly state "Only two commercially available vehicles have been released."
+
+---
+
+CLAIM: "an accumulated deficit of $15.6 billion"
+LABEL: SUPPORTED
+REASON: Both the SEC Filing Highlights and Risk Factors pre-written sections explicitly state "accumulated deficit of $15.6 billion as of December 31, 2025."
+
+---
+
+CLAIM: "The stock has declined 84% from its 52-week high of $25.23 to $4.13"
+LABEL: SUPPORTED
+REASON: The 52-week high of $25.23 and current price of $4.13 are both present in the source data; computed decline = (25.23 − 4.13) / 25.23 = 83.55%, which rounds to 84% — within 0.15 pp of the stated figure.
+
+---
+
+CLAIM: "52-week high of $25.23"
+LABEL: SUPPORTED
+REASON: Explicitly present in the stock data as `week_52_high: 25.23`.
+
+---
+
+CLAIM: "$4.13"
+LABEL: SUPPORTED
+REASON: Explicitly present in the stock data as `current_price: 4.13`.
+
+---
+
+CLAIM: "a net loss of $4.60 billion"
+LABEL: SUPPORTED
+REASON: The stock data shows `net_income: -4,604,930,048`, which rounds to -$4.60 billion; also stated in the Financial Health pre-written section as "net loss of $4.60 billion."
+
+---
+
+CLAIM: "$1.55 billion in revenue"
+LABEL: SUPPORTED
+REASON: The stock data shows `revenue: 1,547,122,048`, which rounds to $1.55 billion; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "a negative profit margin of -249%"
+LABEL: SUPPORTED
+REASON: The stock data shows `profit_margin: -2.49214`, i.e., -249.214%; the Financial Health section states "-249%." Computed: -4,604,930,048 / 1,547,122,048 = -297.6% — this does **not** match. However, the source data field `profit_margin` is explicitly given as -2.49214 (i.e., -249.2%), and the pre-written Financial Health section states "-249%," so the AI is faithfully reproducing the provided source figure. The discrepancy is internal to the source data (the profit_margin field does not equal net_income/revenue), but the claim matches the explicit `profit_margin` field value of -249.2% within 0.15 pp.
+LABEL: SUPPORTED
+REASON: The claim of -249% matches the explicit `profit_margin: -2.49214` field in the stock data (= -249.2%), within 0.15 pp of the stated figure.
+
+---
+
+CLAIM: "launches of the Gravity and Midsize platforms"
+LABEL: SUPPORTED
+REASON: Both the Midsize platform and Lucid Gravity are explicitly named as products under development in the SEC Highlights and Risk Factors sections.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "an accumulated deficit of $15.6 billion"
+LABEL: SUPPORTED
+REASON: Explicitly stated in the SEC Highlights and Risk Factors pre-written sections as "accumulated deficit of $15.6 billion as of December 31, 2025."
+
+---
+
+CLAIM: "management's own expectation of continued substantial losses"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights section explicitly states "management expects substantial losses to continue in the foreseeable future," mirroring the RAG SEC Highlights which states "Substantial losses are expected to continue in the foreseeable future."
+
+---
+
+CLAIM: "single-source supplier dependencies"
+LABEL: SUPPORTED
+REASON: The SEC Highlights and Risk Factors sections both explicitly state "Heavy dependence on single-source suppliers for critical components."
+
+---
+
+CLAIM: "a two-vehicle portfolio"
+LABEL: SUPPORTED
+REASON: Consistent with "only two commercially available vehicles" stated in the SEC Highlights and Risk Factors sections.
+
+---
+
+CLAIM: "continued backing of PIF and Ayar"
+LABEL: SUPPORTED
+REASON: PIF and Ayar are explicitly named in the SEC Highlights, Risk Factors, and SEC Filing Highlights sections as holding significant ownership influence.
+
+---
+
+CLAIM: "that same ownership concentration limits minority stockholder protections"
+LABEL: SUPPORTED
+REASON: The SEC Highlights section states "Stockholders lack protections afforded to those in non-controlled companies," and the Risk Factors section states "Controlled company status limiting stockholder protections" and "Significant equity ownership by PIF and Ayar with substantial influence."
+
+---
+
+CLAIM: "the on-time execution and consumer reception of the Gravity and Midsize platform launches"
+LABEL: SUPPORTED
+REASON: Both the Gravity and Midsize platform are explicitly named as products under development in the SEC Highlights and Risk Factors sections; delays in their launch are cited as a material risk.
+
+---
+
+CLAIM: "production volume trends as a leading indicator of whether Lucid can begin to leverage its supplier commitments rather than absorb penalties from underutilization"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights and SEC Highlights sections explicitly state "Inability to fully utilize supplier commitments due to lower production volumes" as a key risk, grounding this forward-looking watch-item.
+
+---
+
+CLAIM: "consistent quarter-over-quarter production growth"
+LABEL: UNSUPPORTED
+REASON: No specific quarterly production figures, growth rates, or quarter-over-quarter comparisons appear anywhere in the source data or pre-written sections; this is a forward-looking threshold with no grounding figure in the context.
+
+---
+
+CLAIM: "a credible trajectory toward reducing its loss per vehicle"
+LABEL: UNSUPPORTED
+REASON: No "loss per vehicle" figure or metric appears anywhere in the source data or pre-written sections; this specific metric has no basis in the provided context.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Only two commercially available vehicles | SUPPORTED |
+| 2 | Accumulated deficit of $15.6 billion | SUPPORTED |
+| 3 | Stock declined 84% from 52-week high | SUPPORTED |
+| 4 | 52-week high of $25.23 | SUPPORTED |
+| 5 | Current price $4.13 | SUPPORTED |
+| 6 | Net loss of $4.60 billion | SUPPORTED |
+| 7 | $1.55 billion in revenue | SUPPORTED |
+| 8 | Negative profit margin of -249% | SUPPORTED |
+| 9 | Gravity and Midsize platform launches | SUPPORTED |
+| 10 | Accumulated deficit $15.6 billion (Outlook) | SUPPORTED |
+| 11 | Management expects continued substantial losses | SUPPORTED |
+| 12 | Single-source supplier dependencies | SUPPORTED |
+| 13 | Two-vehicle portfolio | SUPPORTED |
+| 14 | Backing of PIF and Ayar | SUPPORTED |
+| 15 | Ownership concentration limits minority protections | SUPPORTED |
+| 16 | Gravity and Midsize platform launches (Outlook) | SUPPORTED |
+| 17 | Supplier commitment underutilization risk | SUPPORTED |
+| 18 | Consistent quarter-over-quarter production growth | UNSUPPORTED |
+| 19 | Credible trajectory toward reducing loss per vehicle | UNSUPPORTED |

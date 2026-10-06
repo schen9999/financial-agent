@@ -1,0 +1,63 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $49.7 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap as $49,659,387,904, which rounds to approximately $49.7 billion, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "net loss of $987.8 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists net_income as -$987,766,016, which rounds to -$987.8 million, matching the pre-written Financial Health section.
+
+---
+
+CLAIM: "$6.04 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as $6,043,752,960, which rounds to $6.04 billion, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "high forward P/E ratio of 66.35"
+LABEL: SUPPORTED
+REASON: The raw source data lists forward_pe as 66.34777, which rounds to 66.35, matching the pre-written Financial Health section.
+
+---
+
+CLAIM: "negative profit margin of -16.34%"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists profit_margin_pct as -16.34, and this is confirmed by the pre-written Financial Health section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "stability of trading volumes for Bitcoin and Ethereum"
+LABEL: SUPPORTED
+REASON: Bitcoin and Ethereum are explicitly named in the SEC highlights and risk factors as the primary drivers of trading volume; no specific quantitative figure is asserted here, so this qualitative directional reference is grounded in the source data.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond qualitative directional statements and the named entities already covered. All named entities — New York State Department of Financial Services, Bitcoin, Ethereum, staking, subscription services — are present in the source data. No numerical claims in the Outlook require arithmetic verification.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap ~$49.7 billion | SUPPORTED |
+| 2 | Net loss of $987.8 million | SUPPORTED |
+| 3 | $6.04 billion in annual revenue | SUPPORTED |
+| 4 | Forward P/E ratio of 66.35 | SUPPORTED |
+| 5 | Negative profit margin of -16.34% | SUPPORTED |
+
+All five quantitative claims in the Executive Summary are supported by the raw source data. The Outlook section contains no standalone quantitative figures requiring separate verification.

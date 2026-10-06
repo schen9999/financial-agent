@@ -1,0 +1,77 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections, then evaluate each.
+
+---
+
+**Scanning the Executive Summary and Outlook for auditable claims:**
+
+The two sections are notably qualitative. I will identify every claim that is specific enough to require verification — including named entities, specific filing dates, specific named metrics, and any forward-looking quantitative thresholds.
+
+---
+
+**CLAIM:** "Redfin Corporation operates as a technology-enabled residential real estate brokerage"
+LABEL: SUPPORTED
+REASON: The ticker RDFN is identified in the source data as Redfin Corporation, and the SEC filing highlights and risk factors consistently describe the company as operating in residential real estate brokerage with technology/AI integration.
+
+---
+
+**CLAIM:** "a continued history of losses"
+LABEL: SUPPORTED
+REASON: The 10-K summary explicitly states "an extension of our history of losses and a failure to become profitable" as a material adverse effect, and the Financial Health section directly references "a history of losses."
+
+---
+
+**CLAIM:** "the submission of recent 10-K and 10-Q filings"
+LABEL: SUPPORTED
+REASON: The SEC Filing data confirms a 10-K filed on 2025-02-27 and a 10-Q filed on 2025-05-06, both present in the source data.
+
+---
+
+**CLAIM:** "explicitly warn of revenue stagnation, market share fluctuations, and material adverse effects on its financial condition"
+LABEL: SUPPORTED
+REASON: Both the 10-K and 10-Q summaries in the source data explicitly list "not growing our revenue or market share," "revenue and market share fluctuating," and "material and adversely affect our business, operating results, financial condition" as disclosed risks.
+
+---
+
+**CLAIM:** "rising mortgage rates and low housing inventory"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly lists "Increased mortgage rates" and "Low home inventory levels" as factors that could negatively impact the business.
+
+---
+
+**CLAIM:** "early-stage AI integration"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both state "AI is in the early stages of business use" and describe the company's AI integration as early-stage.
+
+---
+
+**CLAIM:** "top-10 metropolitan markets"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly names the top-10 markets (Boston, Chicago, Denver, Los Angeles, Maryland, Northern Virginia, Portland, San Diego, San Francisco, and Seattle) for the year ended December 31, 2024.
+
+---
+
+**CLAIM:** "geographic concentration amplifies the impact of local economic shifts or net migration changes"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state that geographic concentration in top-10 markets creates risk from "long-term net migration shifts" and local economic conditions.
+
+---
+
+**CLAIM:** "regulatory compliance and reputational risks associated with AI bias and hallucinations"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors explicitly identify "hallucinatory results," "bias," "regulatory non-compliance," and "reputational harm" as AI-related risks disclosed in the filings.
+
+---
+
+**CLAIM:** "low housing inventory and rising mortgage rates" (Outlook section)
+LABEL: SUPPORTED
+REASON: Same as above — both "Increased mortgage rates" and "Low home inventory levels" are explicitly listed in the RAG Risk Factors source data.
+
+---
+
+**CLAIM:** "clear evidence of stabilized revenue growth"
+LABEL: INFERENCE
+REASON: No specific revenue growth figure or threshold is cited; this is a directional, qualitative forward-looking condition derivable from the disclosed risk of "not growing our revenue" in the source filings, stated here as a general condition rather than a specific quantitative target.
+
+---
+
+**SUMMARY NOTE:** The Executive Summary and Outlook sections contain no specific quantitative figures (no price targets, no percentages, no ratios, no specific dollar amounts, no specific thresholds). All claims are qualitative or directional, and each is either directly supported by the source data or, in one case, a reasonable inference from it. There are **no unsupported claims** in these sections.

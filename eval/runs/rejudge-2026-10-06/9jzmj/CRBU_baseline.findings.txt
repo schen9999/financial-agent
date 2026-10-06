@@ -1,0 +1,129 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the Executive Summary and Outlook sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "trading at $1.22 per share"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `"current_price": 1.22`.
+
+---
+
+CLAIM: "market capitalization of $130.8 million"
+LABEL: SUPPORTED
+REASON: Source data shows `"market_cap": 130793168.0`; rounded to one decimal place this is $130.8 million.
+
+---
+
+CLAIM: "accumulated deficit of $596.5 million"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both explicitly state "An accumulated deficit of $596.5 million has been recorded as of December 31, 2025."
+
+---
+
+CLAIM: "52-week high of $3.54"
+LABEL: SUPPORTED
+REASON: Source data shows `"week_52_high": 3.535`; rounded to two decimal places this is $3.54.
+
+---
+
+CLAIM: "The stock has declined sharply from its 52-week high of $3.54"
+LABEL: SUPPORTED
+REASON: Current price is $1.22 vs. 52-week high of $3.535; the stock is trading approximately 65% below its 52-week high, confirming a sharp decline arithmetically.
+
+---
+
+CLAIM: "differentiated CRISPR-based cell therapy platform"
+LABEL: UNSUPPORTED
+REASON: Neither the raw source data, SEC filing summaries, RAG highlights, nor any pre-written section describes the platform as "CRISPR-based"; the technology basis is not named in any provided context.
+
+---
+
+CLAIM: "vispa-cel through its pivotal trial"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state the company requires capital to "conduct the planned pivotal clinical trial for vispa-cel."
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "cash position of $142.8 million"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "The company currently has $142.8 million in cash, cash equivalents, and marketable securities."
+
+---
+
+CLAIM: "near-term operational runway of at least 12 months"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state the $142.8 million "is expected to fund operations for at least the next 12 months."
+
+---
+
+CLAIM: "accumulated deficit of $596.5 million with no approved products"
+LABEL: SUPPORTED
+REASON: Both figures are explicitly present in the RAG SEC Highlights: "$596.5 million" accumulated deficit and "No products have been commercialized."
+
+---
+
+CLAIM: "differentiated CRISPR-based allogeneic cell therapy platform" (Outlook)
+LABEL: UNSUPPORTED
+REASON: No source document, SEC filing summary, RAG section, or pre-written section identifies the platform technology as "CRISPR-based"; this specific qualifier has no basis in the provided context.
+
+---
+
+CLAIM: "off-the-shelf approaches remain largely unproven at scale"
+LABEL: UNSUPPORTED
+REASON: No source document or pre-written section makes any claim about the competitive landscape or the status of off-the-shelf cell therapy approaches at scale; this is an externally introduced assertion not grounded in the provided context.
+
+---
+
+CLAIM: "accelerating expense growth as pivotal trials advance"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "Capital consumption may accelerate due to unforeseen circumstances" and "Significant expenses are anticipated as the company progresses clinical trials," directly supporting this characterization.
+
+---
+
+CLAIM: "inevitable need for additional capital that introduces meaningful dilution risk"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "substantial additional financing will be required" and the Risk Factors section names "material risk of dilution or financing challenges."
+
+---
+
+CLAIM: "the pace and quality of clinical data from the vispa-cel pivotal trial" (as a key watch variable)
+LABEL: SUPPORTED
+REASON: The RAG sections explicitly identify the pivotal clinical trial for vispa-cel as a central funding and development milestone, grounding this as a relevant forward-looking watch item.
+
+---
+
+CLAIM: "any FDA interactions or regulatory guidance that could clarify or complicate the approval pathway" (as a key watch variable)
+LABEL: SUPPORTED
+REASON: The Risk Factors section explicitly cites "regulatory clearances" and "FDA requirements that could delay or prevent commercialization" as material uncertainties.
+
+---
+
+CLAIM: "the company's ability to demonstrate progress on commercial-scale manufacturing" (as a key watch variable)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors explicitly state the company "has not yet demonstrated the ability to…manufacture at commercial scale" and lists manufacturing capability as a key challenge.
+
+---
+
+CLAIM: "the terms and timing of any future capital raises" (as a key watch variable)
+LABEL: SUPPORTED
+REASON: The RAG sections explicitly state "substantial additional financing will be required" and the Risk Factors name dilution and financing challenges as material risks.
+
+---
+
+CLAIM: "a strategic partnership that validates the platform and reduces financing dependency" (as a thesis-strengthening scenario)
+LABEL: UNSUPPORTED
+REASON: No source document, SEC filing, RAG section, or pre-written section mentions a strategic partnership as a scenario, possibility, or watch item; this is an externally introduced forward-looking claim with no basis in the provided context.
+
+---
+
+CLAIM: "clinical setbacks, trial delays, unfavorable FDA feedback, or a dilutive capital raise executed from a position of weakness" (as thesis-weakening scenarios)
+LABEL: SUPPORTED
+REASON: Clinical and regulatory setbacks, trial delays, FDA requirements, and dilutive financing risk are all explicitly named in the Risk Factors and RAG sections as material adverse risks.

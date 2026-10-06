@@ -1,0 +1,94 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$466.8 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $466,822,987,776, which rounds to $466.8 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$128.9 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net income of $128,929,996,800, which rounds to $128.9 billion; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$4.86 trillion market cap"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $4,858,257,080,320, which rounds to $4.86 trillion; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "P/E ratio of 38.18"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio of 38.17546, which rounds to 38.18; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "smart home devices"
+LABEL: SUPPORTED
+REASON: Bloomberg news article dated 2026-09-30 reports Apple launching new 'Smart Home' products on October 13; also referenced in pre-written sections.
+
+---
+
+CLAIM: "iPhone Duo foldable"
+LABEL: SUPPORTED
+REASON: Bloomberg news article dated 2026-09-30 references "iPhone duos" as a foldable device; also referenced in pre-written sections.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "smart home devices and the iPhone Duo foldable" (as near-term growth catalysts)
+LABEL: SUPPORTED
+REASON: Both products are referenced in the Bloomberg news articles and pre-written Recent Developments and Financial Health sections.
+
+---
+
+CLAIM: "elevated P/E ratio" (as a characterization of the current multiple)
+LABEL: SUPPORTED
+REASON: The Financial Health pre-written section explicitly states the P/E of 38.18 "is elevated relative to historical averages," and the source data confirms pe_ratio of 38.17546.
+
+---
+
+CLAIM: "production ramps" for the iPhone Duo foldable
+LABEL: SUPPORTED
+REASON: The Bloomberg article states "the figure hinges on how quickly Apple ramps up production of the new foldable hardware," directly supporting this characterization.
+
+---
+
+CLAIM: "China-related supply chain and demand exposure"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights pre-written section and RAG Risk Factors explicitly identify China as a concentrated manufacturing location and source of geopolitical/supply chain risk.
+
+---
+
+**ADDITIONAL CHECKS — Claims absent from the Outlook that could have been made but were not; and checking for any implicit quantitative claims:**
+
+The Outlook section contains **no explicit numerical figures** (no price targets, no specific percentages, no unit sales projections, no ratio thresholds, no named dates). All forward-looking statements are qualitative and directional. The only quantitative or named-milestone content in the Outlook is the reference to the two product categories (smart home devices and iPhone Duo foldable) and the characterization of the P/E as "elevated," all of which are addressed above.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $466.8 billion in annual revenue | SUPPORTED |
+| 2 | $128.9 billion in net income | SUPPORTED |
+| 3 | $4.86 trillion market cap | SUPPORTED |
+| 4 | P/E ratio of 38.18 | SUPPORTED |
+| 5 | Smart home devices (product milestone) | SUPPORTED |
+| 6 | iPhone Duo foldable (product milestone) | SUPPORTED |
+| 7 | Smart home + iPhone Duo as near-term catalysts | SUPPORTED |
+| 8 | Elevated P/E (qualitative characterization) | SUPPORTED |
+| 9 | Production ramps for iPhone Duo | SUPPORTED |
+| 10 | China supply chain/demand exposure | SUPPORTED |
+
+**No UNSUPPORTED or INFERENCE labels were warranted.** All specific quantitative figures and named product milestones in the Executive Summary and Outlook are directly traceable to the source data or pre-written sections, and all derived figures pass arithmetic verification.

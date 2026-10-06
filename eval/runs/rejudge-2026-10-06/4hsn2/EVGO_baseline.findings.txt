@@ -1,0 +1,75 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $402.9 million in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $402,948,000, which rounds to $402.9 million; the Financial Health pre-written section also states "$402.9 million in revenue."
+
+---
+
+CLAIM: "market capitalization of $424.6 million"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $424,596,224, which rounds to $424.6 million.
+
+---
+
+CLAIM: "a valuation that offers little premium above a single year of top-line sales"
+LABEL: INFERENCE
+REASON: This is a direct comparison of market cap ($424.6M) to revenue ($402.9M), both present in the source data, yielding a price-to-sales ratio of approximately 1.05x — a derivable observation requiring no additional facts.
+
+---
+
+CLAIM: "The stock's steep decline from its 52-week high of $5.15 to $1.35"
+LABEL: SUPPORTED
+REASON: Source data explicitly states week_52_high of $5.15 and current_price of $1.35.
+
+---
+
+CLAIM: "$210.7 million cash position" (implied in the Outlook reference; first named in Outlook — see below)
+LABEL: N/A at this location — evaluated under Outlook.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "the trajectory of operating losses and cash burn relative to the $210.7 million cash position"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "As of December 31, 2025, the company had $210.7 million in cash, cash equivalents, and restricted cash," and the SEC Filing Highlights pre-written section repeats this figure.
+
+---
+
+CLAIM: "operating losses are expected to continue"
+LABEL: SUPPORTED
+REASON: Both the RAG — SEC Highlights and RAG — Risk Factors sections explicitly state the company "expects to continue incurring significant expenses and losses in the near to medium term" / "expectations of continuing losses in the near and medium-term."
+
+---
+
+CLAIM: "the DOE loan drawdown remains conditional and uncertain"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights and Risk Factors both explicitly state the company is "substantially dependent on the ability to fully draw down a Department of Energy loan, which has multiple conditions precedent."
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already evaluated above. The remaining Outlook content consists of qualitative directional statements and watch-item descriptions without discrete quantitative claims.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $402.9 million in revenue | SUPPORTED |
+| 2 | Market capitalization of $424.6 million | SUPPORTED |
+| 3 | Valuation offers little premium above a single year of top-line sales | INFERENCE |
+| 4 | 52-week high of $5.15 | SUPPORTED |
+| 5 | Current price of $1.35 | SUPPORTED |
+| 6 | $210.7 million cash position | SUPPORTED |
+| 7 | Operating losses expected to continue | SUPPORTED |
+| 8 | DOE loan drawdown conditional and uncertain | SUPPORTED |

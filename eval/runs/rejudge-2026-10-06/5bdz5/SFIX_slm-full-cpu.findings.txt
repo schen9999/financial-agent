@@ -1,0 +1,67 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "$1.35 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $1,348,119,040, which rounds to $1.35 billion; the pre-written Financial Health section also states "$1.35 billion," confirming the figure.
+
+---
+
+CLAIM: "market capitalization of approximately $358 million"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists market_cap as $358,057,888, which rounds to approximately $358 million.
+
+---
+
+CLAIM: "negative profit margin of -0.94%"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct as -0.94%; recomputation: -12,606,000 / 1,348,119,040 = -0.935%, which rounds to -0.94% (within 0.15 pp tolerance).
+
+---
+
+CLAIM: "significant distance from recent highs"
+LABEL: SUPPORTED
+REASON: The 52-week high is $5.745 and the current price is $2.68; $2.68 is approximately 53% below the 52-week high, confirming a significant distance arithmetically.
+
+---
+
+CLAIM: "high-risk speculative play dependent on executing a complex operational turnaround"
+LABEL: INFERENCE
+REASON: This characterization is directly restated from the pre-written Recent Developments section ("the stock remains a high-risk speculative play dependent on successful operational turnaround strategies"), which is itself grounded in the source data's risk disclosures.
+
+---
+
+CLAIM: "persistent client attrition"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and pre-written SEC Filing Highlights explicitly state that active clients declined in fiscal years 2023, 2024, and 2025.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: (no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers are present in the Outlook section)
+LABEL: N/A
+REASON: The Outlook section contains only qualitative and directional statements (e.g., "cautiously cautious," "primary drivers," "negative profit margin," "third-party manufacturing in China") without introducing any new specific quantitative claims beyond those already evaluated in the Executive Summary. The reference to "negative profit margin" is a restatement of the -0.94% figure already audited above.
+
+---
+
+CLAIM: "negative profit margin" (referenced again in Outlook)
+LABEL: SUPPORTED
+REASON: Consistent with the source data profit_margin_pct of -0.94%, already verified above.
+
+---
+
+CLAIM: "reduced reliance on volatile third-party manufacturing in China"
+LABEL: SUPPORTED
+REASON: The source data (RAG SEC Highlights and Risk Factors) explicitly states that "the majority of manufacturing" is in China via third-party vendors, grounding this as a factual watch-item rather than an invented qualifier.
+
+---
+
+**SUMMARY OF FINDINGS:** All quantitative claims in the Executive Summary and Outlook are either directly supported by the source data or are valid inferences/restatements from the pre-written sections. No claims were found to be UNSUPPORTED. The Outlook section is notably free of novel quantitative assertions, relying instead on qualitative framing of risks already documented in the source material.

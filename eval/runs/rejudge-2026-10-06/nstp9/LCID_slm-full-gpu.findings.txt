@@ -1,0 +1,61 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$1.55 billion in revenue"
+LABEL: SUPPORTED
+REASON: The source data lists revenue of $1,547,122,048, which rounds to $1.55 billion; the Financial Health section also states "$1.55 billion," confirming the figure.
+
+---
+
+CLAIM: "net loss of $4.60 billion"
+LABEL: SUPPORTED
+REASON: The source data lists net_income of -$4,604,930,048, which rounds to -$4.60 billion, consistent with the Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "accumulated deficit of $15.6 billion"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section both explicitly state the accumulated deficit stood at $15.6 billion as of December 31, 2025.
+
+---
+
+CLAIM: "trading near multi-year lows"
+LABEL: SUPPORTED
+REASON: The source data shows a current price of $4.17 against a 52-week low of $2.37 and a 52-week high of $23.778; $4.17 is arithmetically much closer to the 52-week low than the high, supporting the characterization of trading near lows.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "expansion of manufacturing in Arizona and Saudi Arabia"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section both explicitly name manufacturing facility expansions in Arizona and Saudi Arabia.
+
+---
+
+CLAIM: "development of the Midsize vehicle platform"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly references "the Midsize platform" as a named product milestone under R&D expenditures, and the SEC Filing Highlights pre-written section also names "the Midsize vehicle."
+
+---
+
+CLAIM: "massive R&D expenditures and operational losses they generate"
+LABEL: INFERENCE
+REASON: The source data confirms a net loss of $4.60 billion and the RAG sections confirm high R&D expenditures as a driver; characterizing these as "massive" is a directional restatement of figures present in the context.
+
+---
+
+CLAIM: "stability of support from the Public Investment Fund"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights, Risk Factors, and SEC Filing Highlights all explicitly name the Public Investment Fund (PIF) as holding significant equity and influence over the company.
+
+---
+
+*No additional quantitative figures, price targets, specific thresholds, ratios, percentages, or named forward-looking numbers appear in the Outlook section beyond those evaluated above.*

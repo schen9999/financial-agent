@@ -1,0 +1,60 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $674.35 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists `market_cap` as 674,353,577,984.0 USD, which rounds to $674.35 billion.
+
+---
+
+CLAIM: "$361.06 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists `revenue` as 361,060,007,936.0 USD, which rounds to $361.06 billion.
+
+---
+
+CLAIM: "$18.6 billion in combined dividends and buybacks"
+LABEL: UNSUPPORTED
+REASON: The source data states $8.6 billion in dividends and $10.0 billion in stock repurchases, which sum to $18.6 billion; however, the brief presents this as a single combined figure of "$18.6 billion" without decomposition, and while the arithmetic is correct ($8.6B + $10.0B = $18.6B), the framing merits a check — the arithmetic does verify, so this is SUPPORTED by recomputation.
+
+LABEL: SUPPORTED
+REASON: $8.6 billion in dividends + $10.0 billion in stock repurchases (both explicitly stated in the RAG SEC Highlights and Pre-written SEC Filing Highlights section) = $18.6 billion, confirmed by direct addition.
+
+---
+
+**OUTLOOK**
+
+---
+
+*(The Outlook section contains no additional specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers beyond qualitative directional statements and references to already-audited items. The named regions — Guyana, Permian Basin — and the reference to "Middle East-related disruptions" are qualitative and directional, not quantitative claims. However, I will flag any borderline items below.)*
+
+---
+
+CLAIM: "Guyana and the Permian Basin" (as primary drivers of advantaged volume growth)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state: "Advantaged Volume Growth contributed positively to earnings, driven mainly by growth in Guyana and the Permian Basin."
+
+---
+
+CLAIM: "Middle East-related disruptions" (as a headwind)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly identify Middle East disruptions as negatively impacting earnings by $1.06 billion in Q2 and $1.28 billion year-to-date, confirming this as a documented operational headwind.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap ~$674.35 billion | SUPPORTED |
+| 2 | $361.06 billion in annual revenue | SUPPORTED |
+| 3 | $18.6 billion in combined dividends and buybacks | SUPPORTED |
+| 4 | Guyana and Permian Basin as primary advantaged volume growth drivers | SUPPORTED |
+| 5 | Middle East-related disruptions as a headwind | SUPPORTED |
+
+**No unsupported or inference-labeled claims were identified.** All quantitative and forward-looking claims in the Executive Summary and Outlook are grounded in the source data.

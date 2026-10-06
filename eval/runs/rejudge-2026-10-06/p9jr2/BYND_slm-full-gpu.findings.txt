@@ -1,0 +1,79 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "trading near its 52-week low of $7.84"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `week_52_low: 7.84`, and the current price of $8.25 is close to that figure, consistent with "near its 52-week low."
+
+---
+
+CLAIM: "market capitalization under $150 million"
+LABEL: SUPPORTED
+REASON: Source data shows `market_cap: 141,850,208`, which is approximately $141.85 million — arithmetically under $150 million.
+
+---
+
+CLAIM: "negative forward P/E ratio"
+LABEL: SUPPORTED
+REASON: Source data shows `forward_pe: -0.7914124`, which is explicitly negative.
+
+---
+
+CLAIM: "reported revenue of $258.84 million"
+LABEL: SUPPORTED
+REASON: Source data shows `revenue: 258,844,992`, which rounds to $258.84 million; also confirmed in the Financial Health pre-written section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "persistent declines in plant-based meat demand"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "The plant-based meat category is experiencing weakness, including ongoing and persistent declines in demand."
+
+---
+
+CLAIM: "Global Operations Review"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and Risk Factors sections both explicitly name the "Global Operations Review" as an active initiative.
+
+---
+
+CLAIM: "ability to meet debt covenants without resorting to shareholder dilution"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states risks regarding "ability to comply with covenants governing its Notes and Loan and Security Agreement" and "the risk of shareholder dilution from the equitization of debt or exercise of warrants."
+
+---
+
+CLAIM: "stabilized operating cash flows"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and Risk Factors both reference "negative cash flows from operating activities" as a key concern, making stabilization of operating cash flows a directly grounded forward-looking watch-item.
+
+---
+
+CLAIM: "successful integration of the broader plant protein strategy"
+LABEL: SUPPORTED
+REASON: The 10-Q filing summary explicitly references the strategic repositioning to "Beyond The Plant Protein Company," and the Recent Developments section references this pivot; the claim is a direct restatement of this disclosed strategy.
+
+---
+
+CLAIM: "material weaknesses in internal controls"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states "The company must address existing material weaknesses in its internal control over financial reporting."
+
+---
+
+CLAIM: "supply chain vulnerabilities"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and Risk Factors both explicitly discuss supply chain vulnerability stemming from reliance on a limited number of third-party suppliers and distributors.
+
+---
+
+**SUMMARY NOTE:** No unsupported or inference-only claims were identified. All quantitative figures, named initiatives, and forward-looking conditions in the Executive Summary and Outlook are directly grounded in the raw source data or pre-written sections. No figures required arithmetic correction beyond standard rounding.

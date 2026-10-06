@@ -1,0 +1,61 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $1.72 billion"
+LABEL: SUPPORTED
+REASON: The source data lists market_cap = 1,717,953,280.0 USD, which rounds to approximately $1.72 billion; the Financial Health section also states "approximately $1.72 billion."
+
+---
+
+CLAIM: "net loss of nearly $400 million"
+LABEL: SUPPORTED
+REASON: The source data lists net_income = -399,975,008.0, which is nearly $400 million; confirmed in both the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "trades near the lower end of its 52-week range"
+LABEL: SUPPORTED
+REASON: The 52-week high is $28.25 and the 52-week low is $7.95, giving a range of $20.30; the current price of $12.26 sits $4.31 above the low and $15.99 below the high, placing it in the lower ~21% of the range, which arithmetically confirms "near the lower end." The Recent Developments section also states this explicitly.
+
+---
+
+CLAIM: "clinical hold on the MAGNITUDE trial"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "pending the resolution of a clinical hold on the IND for the MAGNITUDE trial," and the SEC Filing Highlights pre-written section repeats this.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "lifting of the clinical hold on the MAGNITUDE trial"
+LABEL: SUPPORTED
+REASON: The clinical hold on the MAGNITUDE trial IND is explicitly referenced in the RAG — SEC Highlights and the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "nexiguran ziclumeran"
+LABEL: SUPPORTED
+REASON: Named explicitly in the RAG — SEC Highlights ("nexiguran ziclumeran (NTLA-2001)") and in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "lonvoguran ziclumeran"
+LABEL: SUPPORTED
+REASON: Named explicitly in the RAG — SEC Highlights ("lonvoguran ziclumeran (NTLA-2002)") and in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "validating the *in vivo* CRISPR platform"
+LABEL: SUPPORTED
+REASON: The source data and all pre-written sections consistently describe Intellia's platform as an *in vivo* CRISPR gene-editing approach, and the unproven nature of this modality is a central theme throughout the SEC highlights and risk factors.
+
+---
+
+*No additional quantitative figures, price targets, specific thresholds, ratios, percentages, or named product milestones appear in the Executive Summary or Outlook sections beyond those evaluated above. The remaining language in both sections is qualitative or directional and does not constitute specific quantitative or forward-looking claims subject to this audit.*

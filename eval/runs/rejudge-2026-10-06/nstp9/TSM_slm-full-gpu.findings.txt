@@ -1,0 +1,42 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "robust profit margin of 49.92% on TWD 4.44 trillion in revenue"
+LABEL: SUPPORTED
+REASON: Both figures appear explicitly in the source data (profit_margin_pct: 49.92; revenue: 4,440,492,343,296 TWD ≈ TWD 4.44 trillion) and are restated identically in the Financial Health pre-written section.
+
+---
+
+CLAIM: "forward P/E of 22.2 that suggests anticipated earnings growth"
+LABEL: SUPPORTED
+REASON: The source data lists forward_pe: 22.157253, which rounds to 22.2 as stated; the Financial Health section also uses "22.2."
+
+---
+
+CLAIM: "a price near its 52-week high"
+LABEL: SUPPORTED
+REASON: Current price is $485.80 and the 52-week high is $487.44; $485.80 / $487.44 = 99.66%, confirming the stock is within 0.34% of its 52-week high and is arithmetically near it.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional (e.g., "cautiously constructive," "advanced node ramp-ups," "sustained margin resilience," "global semiconductor demand"). There are therefore no quantitative or forward-looking numerical claims in this section to audit.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Profit margin of 49.92% | SUPPORTED |
+| 2 | TWD 4.44 trillion in revenue | SUPPORTED |
+| 3 | Forward P/E of 22.2 | SUPPORTED |
+| 4 | Price near its 52-week high | SUPPORTED |
+
+All auditable quantitative claims in the Executive Summary are supported by the source data. The Outlook section contains no auditable quantitative claims.

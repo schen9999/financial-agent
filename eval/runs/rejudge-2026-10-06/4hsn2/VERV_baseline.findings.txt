@@ -1,0 +1,85 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "carrying an accumulated deficit of $743.0 million"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights, RAG Risk Factors, and SEC Filing Highlights pre-written section all explicitly state the accumulated deficit is $743.0 million as of December 31, 2024.
+
+---
+
+CLAIM: "supported by a combined liquidity position of approximately $497 million as of Q1 2025"
+LABEL: SUPPORTED
+REASON: The 10-Q balance sheet shows cash and cash equivalents of $96,554K and marketable securities of $400,523K as of March 31, 2025; summing these gives $497,077K ≈ $497 million, verified by recomputation.
+
+---
+
+CLAIM: "actively advancing Phase 1b trials for VERVE-102 and VERVE-201"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly lists "Heart-2 Phase 1b for VERVE-102" and "Pulse-1 Phase 1b for VERVE-201" as ongoing clinical trials.
+
+---
+
+CLAIM: "cash on hand alone declined from $172.6 million to $96.6 million in a single quarter"
+LABEL: SUPPORTED
+REASON: The 10-Q balance sheet shows cash and cash equivalents of $172,560K at December 31, 2024 and $96,554K at March 31, 2025, confirming the decline of approximately $76 million in Q1 2025 (one quarter); both figures round to the stated values.
+
+---
+
+CLAIM: "the Heart-2 and Pulse-1 programs"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly names "Heart-2 Phase 1b for VERVE-102" and "Pulse-1 Phase 1b for VERVE-201."
+
+---
+
+CLAIM: "planned Phase 2"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights states "planned Phase 2 for the PCSK9 program," which is referenced in context.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "the company's estimated funding runway into mid-2027"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and RAG Risk Factors both explicitly state "management estimates these funds will support operations only into mid-2027" / "the company estimates its existing capital will fund operations into mid-2027."
+
+---
+
+CLAIM: "its existing partnership with Eli Lilly"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights references "the Eli Lilly Research and Collaboration Agreement" and a "$20.0 million milestone payment received from Eli Lilly in February 2025," confirming an existing partnership.
+
+---
+
+CLAIM: "$20.0 million milestone payment" (implied via "milestone-driven capital" referencing the Eli Lilly precedent)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "an additional $20.0 million milestone payment received from Eli Lilly in February 2025."
+
+---
+
+CLAIM: "the Heart-2 (VERVE-102) and Pulse-1 (VERVE-201) Phase 1b trials"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly names both programs with these designations and phase labels.
+
+---
+
+CLAIM: "the trajectory of quarterly cash consumption relative to the mid-2027 runway estimate"
+LABEL: SUPPORTED
+REASON: The mid-2027 runway estimate is explicitly present in the source data (RAG SEC Highlights and RAG Risk Factors), and quarterly cash consumption is derivable from the Q1 2025 balance sheet figures; no unsupported figures are introduced.
+
+---
+
+CLAIM: "the PCSK9 program"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly references "a planned Phase 2 for the PCSK9 program."
+
+---
+
+*No price targets, specific percentage figures, valuation ratios, or other quantitative forward-looking numbers beyond those audited above appear in the Executive Summary or Outlook sections.*

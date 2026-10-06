@@ -1,0 +1,102 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $49.7 billion"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap = 49,659,387,904.0 USD, which rounds to approximately $49.7 billion; the Pre-written Financial Health section also states "$49.7 billion."
+
+---
+
+CLAIM: "negative net income of $987.77 million"
+LABEL: SUPPORTED
+REASON: Source data lists net_income = -987,766,016.0 USD, which rounds to -$987.77 million; confirmed in the Pre-written Financial Health section.
+
+---
+
+CLAIM: "52-week high of $402.16"
+LABEL: SUPPORTED
+REASON: Source data explicitly states week_52_high = 402.16.
+
+---
+
+CLAIM: "recovering from a low of $139.11"
+LABEL: SUPPORTED
+REASON: Source data explicitly states week_52_low = 139.11.
+
+---
+
+CLAIM: "[stock is notable for its] significant distance from its 52-week high of $402.16 despite recovering from a low of $139.11"
+LABEL: SUPPORTED
+REASON: Current price is $188.22; arithmetic check: $188.22 is 53.2% below the 52-week high of $402.16 (significant distance confirmed) and $49.11 above the 52-week low of $139.11 (recovery confirmed).
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "diversifying revenue streams beyond transaction fees"
+LABEL: INFERENCE
+REASON: The Pre-written SEC Filing Highlights and Risk Factors sections explicitly note revenue concentration in transaction fees from Bitcoin and Ethereum and the need to "diversify and grow subscription and services revenue," making this a direct restatement of disclosed risk/strategy language.
+
+---
+
+CLAIM: "stability of Bitcoin's price relative to Federal Reserve policy"
+LABEL: INFERENCE
+REASON: The news article explicitly links Bitcoin's price drop below $80,000 to Fed rate-hike expectations, and the Risk Factors cite macroeconomic conditions including interest rates as a key variable; this is a direct restatement of those disclosed facts.
+
+---
+
+CLAIM: "sustained increases in active users"
+LABEL: UNSUPPORTED
+REASON: No figure, trend, or reference to active user counts or active user growth appears anywhere in the source data, news articles, SEC filing summaries, or pre-written sections; this metric is introduced without any grounding in the provided context.
+
+---
+
+CLAIM: "successful expansion into services-based revenue"
+LABEL: INFERENCE
+REASON: The Pre-written Risk Factors and SEC Highlights explicitly identify diversification into subscription and services revenue (including stablecoin revenue) as a key strategic variable, making this a direct restatement of disclosed context.
+
+---
+
+CLAIM: "prolonged regulatory headwinds"
+LABEL: INFERENCE
+REASON: Regulatory and legal uncertainty is explicitly and extensively disclosed as a primary risk factor in both the SEC filing summaries and the Pre-written Risk Factors section.
+
+---
+
+CLAIM: "sustained declines in crypto liquidity"
+LABEL: INFERENCE
+REASON: The Pre-written SEC Filing Highlights and Risk Factors explicitly state that "any sustained drop in market liquidity… could adversely impact financial performance," making this a direct restatement.
+
+---
+
+CLAIM: "adverse shifts in interest rate expectations that dampen market sentiment"
+LABEL: INFERENCE
+REASON: The news article explicitly connects stronger-than-expected US jobs data, Fed rate-hike bets, and Bitcoin's price decline, and the Risk Factors cite interest rates as a macroeconomic risk; this is a direct restatement of disclosed context.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap ~$49.7 billion | SUPPORTED |
+| 2 | Net income -$987.77 million | SUPPORTED |
+| 3 | 52-week high of $402.16 | SUPPORTED |
+| 4 | 52-week low of $139.11 | SUPPORTED |
+| 5 | Significant distance from 52-week high / recovered from low | SUPPORTED |
+| 6 | Diversifying beyond transaction fees | INFERENCE |
+| 7 | Bitcoin price stability relative to Fed policy | INFERENCE |
+| 8 | Sustained increases in active users | **UNSUPPORTED** |
+| 9 | Expansion into services-based revenue | INFERENCE |
+| 10 | Prolonged regulatory headwinds | INFERENCE |
+| 11 | Sustained declines in crypto liquidity | INFERENCE |
+| 12 | Adverse shifts in interest rate expectations | INFERENCE |
+
+**One claim is flagged UNSUPPORTED:** the reference to "sustained increases in active users" as a strengthening-thesis indicator has no basis in any figure, trend, or metric present in the source data or pre-written sections.

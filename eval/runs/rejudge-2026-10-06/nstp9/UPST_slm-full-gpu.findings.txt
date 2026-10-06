@@ -1,0 +1,69 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections, then evaluate each.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $2.37 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 2,369,572,864.0 USD, which rounds to approximately $2.37 billion.
+
+---
+
+CLAIM: "$1.29 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 1,285,890,048.0 USD, which rounds to $1.29 billion.
+
+---
+
+CLAIM: "52-week high of $55.22"
+LABEL: SUPPORTED
+REASON: Source data explicitly states week_52_high = 55.22.
+
+---
+
+CLAIM: "current $24.35"
+LABEL: SUPPORTED
+REASON: Source data explicitly states current_price = 24.35.
+
+---
+
+CLAIM: "forward P/E ratio of 7.01"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 7.005259, which rounds to 7.01.
+
+---
+
+CLAIM: "signals strong market expectations for near-term earnings efficiency"
+LABEL: INFERENCE
+REASON: This is a directional interpretive restatement of the forward P/E being substantially lower than the trailing P/E (7.01 vs. 45.94), both figures present in the source data; the characterization follows directly from that comparison without requiring any absent fact.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "low forward P/E"
+LABEL: SUPPORTED
+REASON: Source data confirms forward_pe = 7.005259, which is materially lower than the trailing P/E of 45.94, making "low" arithmetically accurate in context.
+
+---
+
+*(No additional standalone quantitative figures, price targets, thresholds, ratios, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond the forward P/E reference already evaluated above. All remaining Outlook content consists of qualitative directional statements and risk characterizations with no specific numerical claims.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap ~$2.37 billion | SUPPORTED |
+| 2 | $1.29 billion annual revenue | SUPPORTED |
+| 3 | 52-week high of $55.22 | SUPPORTED |
+| 4 | Current price $24.35 | SUPPORTED |
+| 5 | Forward P/E of 7.01 | SUPPORTED |
+| 6 | Forward P/E signals strong near-term earnings efficiency expectations | INFERENCE |
+| 7 | "Low forward P/E" (Outlook) | SUPPORTED |

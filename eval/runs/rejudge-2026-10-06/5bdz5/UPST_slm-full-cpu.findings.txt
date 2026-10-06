@@ -1,0 +1,64 @@
+I will now systematically audit every quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, and forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+**CLAIM:** "annual revenue of $1.29 billion"
+**LABEL:** SUPPORTED
+**REASON:** Source data shows `"revenue": 1285890048.0`, which rounds to $1.29 billion; the pre-written Financial Health section also states "$1.29 billion."
+
+---
+
+**CLAIM:** "net profit margin of 4.69%"
+**LABEL:** SUPPORTED
+**REASON:** Source data explicitly states `"profit_margin_pct": 4.69`; also confirmed in the pre-written Financial Health section.
+
+---
+
+**CLAIM:** "trailing P/E of 45.94"
+**LABEL:** SUPPORTED
+**REASON:** Source data shows `"pe_ratio": 45.943398`, which rounds to 45.94; also stated in the pre-written Financial Health section as 45.94.
+
+---
+
+**CLAIM:** "forward P/E of 7.01"
+**LABEL:** SUPPORTED
+**REASON:** Source data shows `"forward_pe": 7.005259`, which rounds to 7.01; also stated in the pre-written Financial Health section as 7.01.
+
+---
+
+**CLAIM:** "recent 10-K and 10-Q filings"
+**LABEL:** SUPPORTED
+**REASON:** SEC filing data confirms a 10-K filed 2026-02-10 and a 10-Q filed 2026-08-04, both referenced in the pre-written Recent Developments section.
+
+---
+
+## OUTLOOK
+
+No explicit quantitative figures, price targets, thresholds, ratios, metrics, or percentages appear in the Outlook section. All statements are qualitative and directional (e.g., "cautiously constructive," "key variables to monitor," "strengthening thesis," "weakening view"). There are no named product milestones or forward-looking numbers to audit arithmetically.
+
+The only implicitly quantitative or semi-quantitative references are:
+
+---
+
+**CLAIM:** "gap between current profitability normalization and long-term growth sustainability"
+**LABEL:** INFERENCE
+**REASON:** This is a directional restatement of the observable divergence between the trailing P/E of 45.94 and the forward P/E of 7.01, both of which are present in the source data, making the inference fully derivable from those two figures without any external fact.
+
+---
+
+### Summary Table
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Annual revenue of $1.29 billion | SUPPORTED |
+| 2 | Net profit margin of 4.69% | SUPPORTED |
+| 3 | Trailing P/E of 45.94 | SUPPORTED |
+| 4 | Forward P/E of 7.01 | SUPPORTED |
+| 5 | Recent 10-K and 10-Q filings | SUPPORTED |
+| 6 | Gap between profitability normalization and long-term growth | INFERENCE |
+
+**No UNSUPPORTED claims were identified.** All quantitative figures in the Executive Summary are directly traceable to the raw source data, and the single inferential claim in the Outlook is fully derivable from two explicitly present figures.

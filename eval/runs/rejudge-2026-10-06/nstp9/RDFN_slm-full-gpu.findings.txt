@@ -1,0 +1,41 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "a history of losses"
+LABEL: SUPPORTED
+REASON: The 10-K SEC filing summary explicitly states "an extension of our history of losses and a failure to become profitable" as a material adverse effect, and the Financial Health pre-written section also references "a history of losses."
+
+---
+
+CLAIM: "failure to meet guidance could materially adversely affect its competitive position"
+LABEL: SUPPORTED
+REASON: The 10-K summary explicitly states "not achieving the revenue and net income (loss) guidance that we provide" as a material adverse effect, and the Recent Developments section directly echoes this language.
+
+---
+
+*(No specific quantitative figures, price targets, thresholds, ratios, metrics, or percentages appear in the Executive Summary beyond the qualitative claims above. All remaining statements are directional/qualitative and contain no auditable quantitative claims.)*
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "top-10 markets"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and Risk Factors sections explicitly identify "top-10 markets" (Boston, Chicago, Denver, Los Angeles, Maryland, Northern Virginia, Portland, San Diego, San Francisco, and Seattle) as the geographic concentration of real estate services revenue.
+
+---
+
+*(No specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, or named product milestones appear in the Outlook section. All remaining statements — "services margins," "transaction volumes," "rising mortgage rates," "housing inventory," "MLS participants" — are qualitative directional claims with no specific numbers attached that require arithmetic verification.)*
+
+---
+
+**SUMMARY ASSESSMENT**
+
+The Executive Summary and Outlook sections are notably sparse in specific quantitative claims. The two auditable factual claims identified ("history of losses" and "failure to meet guidance could materially adversely affect its competitive position") are both SUPPORTED by the source data. The reference to "top-10 markets" in the Outlook is also SUPPORTED. No unsupported quantitative figures, fabricated price targets, invented ratios, or unverifiable metrics were detected. The AI appropriately refrained from inventing numbers given that the source data contained no financial metrics (price, revenue, P/E, margins, etc.), consistent with the Financial Health section's explicit statement that such data was unavailable.

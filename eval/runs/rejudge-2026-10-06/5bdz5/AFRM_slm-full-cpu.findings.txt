@@ -1,0 +1,34 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $25.2 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists `market_cap: 25222238208.0`, which equals approximately $25.2 billion, matching the pre-written Financial Health section verbatim.
+
+---
+
+CLAIM: "45.29% net profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly states `profit_margin_pct: 45.29`, and the pre-written Financial Health section confirms "profit margin of 45.29%."
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. It is composed entirely of qualitative, directional, and conditional statements (e.g., "cautiously constructive," "strong margin profile," "regulatory clarity," "competitive positioning"). There are therefore no additional quantitative or forward-looking claims to audit in this section.
+
+---
+
+**SUMMARY**
+
+| Claim | Label |
+|---|---|
+| Market cap ~$25.2 billion | SUPPORTED |
+| 45.29% net profit margin | SUPPORTED |
+
+Both quantitative claims in the audited sections are supported by the raw source data. The Outlook section introduces no additional quantifiable claims requiring verification.

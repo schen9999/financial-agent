@@ -1,0 +1,55 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "currently trading near its 52-week low of $0.97"
+LABEL: SUPPORTED
+REASON: The source data explicitly lists the 52-week low as $0.97, and the current price of $1.02 is arithmetically near that level.
+
+---
+
+CLAIM: "market capitalization of approximately $345.9 million"
+LABEL: SUPPORTED
+REASON: The source data lists market_cap as $345,892,608, which rounds to approximately $345.9 million.
+
+---
+
+CLAIM: "accumulated deficit of $408.1 million"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "the accumulated deficit stood at $408.1 million" as of December 31, 2025.
+
+---
+
+CLAIM: "a cash balance of $18.6 million"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "the company had a cash balance of $18.6 million as of December 31, 2025."
+
+---
+
+CLAIM: "raises substantial doubt about the company's ability to continue as a going concern"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "The company's recurring losses raise substantial doubt about its ability to continue as a going concern for the next 12 months."
+
+---
+
+CLAIM: "current cash reserves are exhausted in the fourth quarter of 2026"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "Management estimates that current cash and cash equivalents will only fund operations into the fourth quarter of 2026."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "the current cash position is insufficient to sustain operations beyond late 2026"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section states cash will only fund operations "into the fourth quarter of 2026," which is consistent with "beyond late 2026"; the characterization is arithmetically and directionally accurate.
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already evaluated above.*

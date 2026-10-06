@@ -1,0 +1,55 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of $428.5 million"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 428,488,288.0, which rounds to $428.5 million.
+
+---
+
+CLAIM: "accumulated operating losses of $1.6 billion to date"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights and RAG — Risk Factors both explicitly state accumulated losses totaling $1.6 billion as of December 31, 2025.
+
+---
+
+CLAIM: "trading at $2.79 per share"
+LABEL: SUPPORTED
+REASON: Source data shows current_price = 2.79 USD.
+
+---
+
+CLAIM: "cash runway projected only through Q3 2027"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights and RAG — Risk Factors both explicitly state existing cash is expected to fund operations only into/through Q3 2027.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "meaningful progress on EDIT-401 or any other pipeline program advancing toward clinical milestones would be a material positive catalyst"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights explicitly names EDIT-401 as the most advanced program, currently in preclinical stages, making a forward-looking reference to its clinical advancement grounded in the source data.
+
+---
+
+CLAIM: "the Q3 2027 funding horizon"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights and RAG — Risk Factors both explicitly state cash is projected to fund operations through Q3 2027.
+
+---
+
+CLAIM: "contingent payments from the BMS collaboration or the Vertex license agreement"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights and the SEC Filing Highlights pre-written section both explicitly name the BMS collaboration and the Vertex license agreement as the primary limited external funding sources.
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, percentages, or named product milestones appear in the Outlook section beyond those audited above. The remaining language in the Outlook is qualitative/directional and contains no specific numerical claims subject to audit.*

@@ -1,0 +1,41 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "exceptional 40.3% profit margin"
+LABEL: SUPPORTED
+REASON: The source data explicitly states `"profit_margin_pct": 40.3`, and the pre-written Financial Health and Recent Developments sections both confirm "40.3% profit margin."
+
+---
+
+CLAIM: "robust annual revenue of $331.8 billion"
+LABEL: SUPPORTED
+REASON: Source data shows `"revenue": 331839012864.0`; dividing by 1 billion gives $331.839 billion, which rounds to $331.8 billion — within acceptable rounding tolerance.
+
+---
+
+CLAIM: "substantial $3.9 trillion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows `"market_cap": 3899747991552.0`, which equals approximately $3.9 trillion; the pre-written sections also state "market capitalization of approximately $3.9 trillion."
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional (e.g., "cautiously constructive," "sustained margin expansion," "capital spending outpaces revenue realization"). There are no numerical claims to audit in this section.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | 40.3% profit margin | SUPPORTED |
+| 2 | $331.8 billion annual revenue | SUPPORTED |
+| 3 | $3.9 trillion market capitalization | SUPPORTED |
+
+All three quantitative claims in the audited sections are supported by the raw source data. The Outlook section contains no auditable quantitative or forward-looking numerical claims.

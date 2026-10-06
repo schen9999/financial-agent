@@ -1,0 +1,123 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "commanding a $5.65 trillion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 5,649,190,617,088.0, which rounds to $5.65 trillion; the Financial Health section also states "$5.65 trillion market capitalization."
+
+---
+
+CLAIM: "63.7% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data shows profit_margin = 0.63663; 0.63663 × 100 = 63.663%, which rounds to 63.7%, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "$303 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 302,970,011,648, which rounds to $303 billion; confirmed in the Financial Health section as "$303 billion in annual revenue."
+
+---
+
+CLAIM: "current P/E of 29.6x"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 29.576487, which rounds to 29.6x; confirmed in the Financial Health section.
+
+---
+
+CLAIM: "forward P/E of 14.9x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 14.905945, which rounds to 14.9x; confirmed in the Financial Health section.
+
+---
+
+CLAIM: "wide gap between the current P/E of 29.6x and the forward P/E of 14.9x"
+LABEL: SUPPORTED
+REASON: Both figures are present in the source data (29.576487 and 14.905945); the gap of approximately 14.7x is arithmetically verifiable and directionally accurate.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "over 80% of its approximately 42,000-person workforce in innovation roles"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states "approximately 42,000 people" and "Over 80% of the workforce holds technical roles"; the SEC Filing Highlights pre-written section also states "over 80% in R&D roles" — note the AI brief says "innovation roles" rather than "technical roles" or "R&D roles," but this is a minor paraphrase of the same sourced fact; the 42,000 and 80%+ figures are both explicitly present.
+
+---
+
+CLAIM: "a notably low turnover rate"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states "The turnover rate was 3.7% in fiscal year 2026"; the characterization of this as "notably low" is a qualitative judgment consistent with the pre-written SEC Filing Highlights section which calls it "a low 3.7% turnover rate."
+
+---
+
+CLAIM: "the gap between the current and forward P/E ratios means the thesis is highly execution-dependent"
+LABEL: INFERENCE
+REASON: Both P/E figures (29.6x current, 14.9x forward) are present in the source data; the conclusion that the gap implies execution-dependence is a direct logical derivation from those two figures without requiring any additional external fact.
+
+---
+
+CLAIM: "the constructive view would strengthen if NVIDIA demonstrates consistent earnings execution that closes the gap implied by the forward P/E"
+LABEL: INFERENCE
+REASON: This is a forward-looking conditional derived directly from the sourced forward P/E of 14.9x versus current P/E of 29.6x; no additional external facts are required beyond those present in the source data.
+
+---
+
+CLAIM: "regulatory conditions stabilize" (as a condition for the constructive view to strengthen)
+LABEL: SUPPORTED
+REASON: Regulatory risks including export controls and geopolitical constraints are explicitly documented in the RAG Risk Factors and SEC Filing Highlights sections; the directional framing is consistent with sourced material.
+
+---
+
+CLAIM: "supply chain reliability improves" (as a condition for the constructive view to strengthen)
+LABEL: SUPPORTED
+REASON: Supply chain and manufacturing dependency risks are explicitly documented in the RAG Risk Factors and the pre-written Risk Factors section; the directional framing is grounded in sourced material.
+
+---
+
+CLAIM: "if export restrictions broaden materially" (as a condition for the view to weaken)
+LABEL: SUPPORTED
+REASON: Export restrictions are explicitly cited as a risk in the RAG Risk Factors ("Complex laws, rules, regulations, and export restrictions") and the pre-written Risk Factors section ("export restrictions, particularly regarding AI and advanced chips").
+
+---
+
+CLAIM: "competitive alternatives gain meaningful traction" (as a condition for the view to weaken)
+LABEL: SUPPORTED
+REASON: Competition and rapid technology change are explicitly documented risk factors in both the RAG Risk Factors and the pre-written Risk Factors section.
+
+---
+
+CLAIM: "or quarterly results fail to meet the elevated growth expectations the market has already priced in" (as a condition for the view to weaken)
+LABEL: INFERENCE
+REASON: This is directly derivable from the sourced forward P/E of 14.9x versus current P/E of 29.6x, which implies significant embedded earnings growth expectations; no external facts are required.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $5.65 trillion market cap | SUPPORTED |
+| 2 | 63.7% net profit margin | SUPPORTED |
+| 3 | $303 billion annual revenue | SUPPORTED |
+| 4 | Current P/E of 29.6x | SUPPORTED |
+| 5 | Forward P/E of 14.9x | SUPPORTED |
+| 6 | Wide gap between 29.6x and 14.9x P/E | SUPPORTED |
+| 7 | ~42,000-person workforce, 80%+ in innovation roles | SUPPORTED |
+| 8 | Notably low turnover rate | SUPPORTED |
+| 9 | Gap implies execution-dependence | INFERENCE |
+| 10 | Constructive view strengthens if forward P/E gap closes | INFERENCE |
+| 11 | Regulatory stabilization as upside condition | SUPPORTED |
+| 12 | Supply chain improvement as upside condition | SUPPORTED |
+| 13 | Broader export restrictions as downside risk | SUPPORTED |
+| 14 | Competitive alternatives as downside risk | SUPPORTED |
+| 15 | Quarterly miss as downside risk | INFERENCE |
+
+**No UNSUPPORTED claims were identified.** All quantitative figures in the Executive Summary and Outlook are either directly present in the source data or derivable from it, and all period labels, entity names, and qualitative characterizations are grounded in the provided context.

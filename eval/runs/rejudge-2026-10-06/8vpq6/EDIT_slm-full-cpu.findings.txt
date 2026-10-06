@@ -1,0 +1,71 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "substantial accumulated deficit of $1.6 billion"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both explicitly state "As of December 31, 2025, the accumulated deficit stands at $1.6 billion," and the Pre-Written SEC Filing Highlights section repeats this figure.
+
+---
+
+CLAIM: "proximity to the 52-week low of $1.66"
+LABEL: SUPPORTED
+REASON: The stock data explicitly lists `week_52_low: 1.66`, and the current price of $2.62 is above but near that low, making the proximity claim arithmetically consistent with the source data.
+
+---
+
+CLAIM: "imminent cash runway expiration in Q3 2027"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "existing cash and cash equivalents as of December 31, 2025, are expected to fund operating expenses and capital expenditures into the third quarter of 2027," which is directly restated in the Pre-Written SEC Filing Highlights and Risk Factors sections.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "execution of collaboration agreements with partners like BMS and Vertex"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections explicitly name Bristol Myers Squibb (BMS) and Vertex Pharmaceuticals as the two collaboration/license agreement partners providing contingent external funding sources.
+
+---
+
+CLAIM: "the Q3 2027 cash runway expiration"
+LABEL: SUPPORTED
+REASON: Same source as above — the RAG SEC Highlights and Pre-Written sections explicitly state cash is expected to fund operations "into the third quarter of 2027."
+
+---
+
+**ADDITIONAL CHECK — figures present in pre-written sections but NOT carried into the Executive Summary/Outlook (no omission penalty required, but confirming no hidden claims were missed):**
+
+The Executive Summary and Outlook contain no references to:
+- The $2.62 current price (beyond the implicit "proximity" claim)
+- The $402.4 million market cap
+- The $47.0 million revenue figure
+- The $73.9 million net loss figure
+- The -157.3% profit margin
+- The -3.48 forward P/E
+- The $4.537 52-week high
+- The specific annual net losses of $160.1M, $237.1M, or $153.2M
+- Any specific product name (e.g., EDIT-401)
+- Any specific price target
+
+No additional quantitative or forward-looking claims requiring audit entries are present in the Executive Summary or Outlook beyond those evaluated above.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Accumulated deficit of $1.6 billion | SUPPORTED |
+| 2 | 52-week low of $1.66 | SUPPORTED |
+| 3 | Cash runway expiration in Q3 2027 (Executive Summary) | SUPPORTED |
+| 4 | Collaboration agreements with BMS and Vertex | SUPPORTED |
+| 5 | Q3 2027 cash runway expiration (Outlook) | SUPPORTED |
+
+All five auditable claims in the Executive Summary and Outlook are **SUPPORTED** by the source data.

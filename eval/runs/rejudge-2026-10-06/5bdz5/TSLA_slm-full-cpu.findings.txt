@@ -1,0 +1,93 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $1.50 trillion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 1,495,812,145,152.0 USD ≈ $1.50 trillion, and the pre-written Financial Health section states "approximately $1.50 trillion."
+
+---
+
+CLAIM: "annual revenue of $103.62 billion"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 103,619,002,368.0 USD ≈ $103.62 billion, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "trailing P/E ratio of 350.68"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 350.67593, which rounds to 350.68, matching the claim exactly.
+
+---
+
+CLAIM: "modest current profit margins of 3.67%"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 3.67, matching the claim exactly.
+
+---
+
+CLAIM: "the Cybercab" (as a named product milestone)
+LABEL: SUPPORTED
+REASON: The Cybercab is explicitly named in both the RAG SEC Highlights and Risk Factors sections as a product under development with production ramp risks.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "potential for margin expansion through software services and energy storage"
+LABEL: UNSUPPORTED
+REASON: No quantitative figure, specific margin target, or directional margin data for software services or energy storage is present anywhere in the source data or pre-written sections; this is an analytical assertion with no grounding in the provided context.
+
+---
+
+CLAIM: "trajectory of automotive gross margins excluding regulatory credits"
+LABEL: UNSUPPORTED
+REASON: No automotive gross margin figure (with or without regulatory credits) appears anywhere in the source data or pre-written sections; this specific metric is entirely absent from the context.
+
+---
+
+CLAIM: "progress of the Cybercab production ramp"
+LABEL: SUPPORTED
+REASON: The Cybercab production ramp is explicitly cited as a risk and watch item in the RAG SEC Highlights and Risk Factors sections.
+
+---
+
+CLAIM: "scalability of AI infrastructure without prohibitive cost increases"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections explicitly discuss AI infrastructure challenges regarding availability and affordability of compute, memory, and energy resources.
+
+---
+
+CLAIM: "sustained volume growth in new markets"
+LABEL: UNSUPPORTED
+REASON: No specific volume figures, growth rates, or named new markets appear in the source data or pre-written sections; this forward-looking qualifier has no quantitative or factual anchor in the context.
+
+---
+
+CLAIM: "successful cost control in battery supply chains"
+LABEL: SUPPORTED
+REASON: Battery supply chain cost risks (raw material volatility for lithium and nickel, single-source supplier dependency) are explicitly discussed in the RAG SEC Highlights and Risk Factors sections, making this a directional restatement of a present risk.
+
+---
+
+CLAIM: "prolonged production delays"
+LABEL: SUPPORTED
+REASON: Production delays are explicitly cited as a primary risk factor in both the RAG SEC Highlights and Risk Factors sections (including for the Cybercab and other new vehicle lines).
+
+---
+
+CLAIM: "further erosion of market share in key regions"
+LABEL: UNSUPPORTED
+REASON: No market share figures, regional breakdowns, or prior market share erosion data appear anywhere in the source data or pre-written sections; this claim introduces facts entirely absent from the context.
+
+---
+
+CLAIM: "regulatory headwinds impacting autonomous driving deployments"
+LABEL: SUPPORTED
+REASON: Autonomous driving solutions and associated regulatory compliance risks are explicitly named in the Risk Factors section of the pre-written content and RAG data.

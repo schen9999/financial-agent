@@ -1,0 +1,81 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$103.6 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $103,619,002,368, which rounds to $103.6 billion; the pre-written Financial Health section also states "$103.6 billion."
+
+---
+
+CLAIM: "$1.46 trillion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $1,463,662,804,992, which rounds to $1.46 trillion; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "net profit margin of just 3.7%"
+LABEL: SUPPORTED
+REASON: Source data shows profit_margin of 0.03671, which rounds to 3.7%; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "current P/E of 346.3x"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio of 346.34576, which rounds to 346.3x; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "forward P/E of 171.7x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe of 171.64972, which rounds to 171.7x; confirmed in the pre-written Financial Health and Recent Developments sections.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "tariff pressures on critical battery materials"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections explicitly reference "heightened import tariffs in 2025" impacting supply chain costs and battery materials.
+
+---
+
+CLAIM: "supply chain fragility across hundreds of global suppliers"
+LABEL: SUPPORTED
+REASON: Both RAG sections and the pre-written Risk Factors section explicitly state Tesla "relies on hundreds of global suppliers."
+
+---
+
+CLAIM: "thin current profit margins"
+LABEL: SUPPORTED
+REASON: Source data confirms a 3.7% net profit margin, described as "modest" and "thin" in the pre-written sections.
+
+---
+
+CLAIM: "Cybercab, Robotaxi, or full self-driving capabilities"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections explicitly name "Cybercab" and "Robotaxi" as products with uncertain consumer adoption timelines; autonomous/full self-driving is also explicitly referenced.
+
+---
+
+CLAIM: "pace and regulatory progress of autonomous driving commercialization, particularly the Cybercab and Robotaxi programs"
+LABEL: SUPPORTED
+REASON: Both the RAG SEC Highlights and the pre-written SEC Filing Highlights section explicitly name Cybercab and Robotaxi as key autonomous driving programs with uncertain timelines and regulatory uncertainties.
+
+---
+
+CLAIM: "global demand signals across key markets for early warning of production-demand mismatches"
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors and SEC Filing Highlights sections explicitly identify demand forecasting challenges across diverse global markets and production-demand mismatches as material risks.
+
+---
+
+**SUMMARY NOTE**
+
+There are no additional standalone quantitative figures (specific price targets, specific thresholds, specific ratios, specific percentages, or specific named numeric milestones) in the Outlook section beyond those already evaluated above. All claims in both sections are either directly present in the source data or the pre-written sections, and all derived figures have been arithmetically verified. No claims are UNSUPPORTED or INFERENCE.

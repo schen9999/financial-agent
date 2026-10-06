@@ -1,0 +1,55 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "currently trading near its 52-week low of $0.97"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `week_52_low: 0.97`, and the current price of $1.04 is arithmetically near that level.
+
+---
+
+CLAIM: "market capitalization of approximately $352.7 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `market_cap: 352674816.0`, which rounds to approximately $352.7 million.
+
+---
+
+CLAIM: "accumulated deficit of $408.1 million"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "the accumulated deficit stood at $408.1 million" as of December 31, 2025.
+
+---
+
+CLAIM: "cash reserves of $18.6 million"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "the company had a cash balance of $18.6 million as of December 31, 2025."
+
+---
+
+CLAIM: "insufficient to sustain operations beyond the fourth quarter of 2026"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "Management estimates that current cash and cash equivalents will only fund operations into the fourth quarter of 2026."
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional (e.g., "cautiously constructive," "successful capital preservation," "positive interim data," "substantial doubt"). There are therefore no quantitative or forward-looking numerical claims to audit in this section.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | 52-week low of $0.97 | SUPPORTED |
+| 2 | Market cap ~$352.7 million | SUPPORTED |
+| 3 | Accumulated deficit of $408.1 million | SUPPORTED |
+| 4 | Cash reserves of $18.6 million | SUPPORTED |
+| 5 | Operations unsustainable beyond Q4 2026 | SUPPORTED |
+
+All five auditable quantitative claims in the Executive Summary are **SUPPORTED** by the source data. The Outlook section contains no auditable quantitative claims.
