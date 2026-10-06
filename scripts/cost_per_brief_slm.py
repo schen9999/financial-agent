@@ -22,10 +22,15 @@ Price, one of:
   --hourly-usd H                     a whole resource at H per hour
                                      (VM.GPU.A10.1: the GPU price covers
                                      the VM)
-  --e5 OCPU GIB --ocpu-usd P --gb-usd Q
+  --e5 OCPU GIB --ocpu-usd P --gb-usd Q [--decimal-gb]
                                      E5 Flex: OCPU x P + memory x Q per
-                                     hour, memory converted from GiB (a
-                                     Kubernetes request) to GB (the SKU)
+                                     hour. Each GiB (a Kubernetes request,
+                                     a shape's memory) is billed as one GB
+                                     of the memory metric: OCI's memory GB
+                                     is binary in practice (a node showing
+                                     62.79 GiB fits a 64 GiB shape).
+                                     --decimal-gb converts GiB to 10^9-byte
+                                     GB instead (x 1.0737), a sensitivity.
 
 Also printed, as context: the ledger's tokens and calls per brief, and the
 endpoint seconds per brief (sum of call latencies; calls overlap, so this
@@ -56,9 +61,11 @@ def iso(s: str) -> datetime:
     return datetime.fromisoformat(s.replace("Z", "+00:00"))
 
 
-def e5_hourly(ocpu: float, gib: float, ocpu_usd: float, gb_usd: float) -> tuple[float, float]:
-    """(USD per hour, memory in GB) for an E5 Flex share."""
-    gb = gib * GB_PER_GIB
+def e5_hourly(ocpu: float, gib: float, ocpu_usd: float, gb_usd: float,
+              decimal_gb: bool = False) -> tuple[float, float]:
+    """(USD per hour, billed memory GB) for an E5 Flex share: each GiB
+    billed as one GB, or converted to decimal GB with decimal_gb."""
+    gb = gib * GB_PER_GIB if decimal_gb else gib
     return ocpu * ocpu_usd + gb * gb_usd, gb
 
 
@@ -91,13 +98,17 @@ def main(argv=None) -> int:
     price.add_argument("--e5", nargs=2, type=float, metavar=("OCPU", "GIB"))
     ap.add_argument("--ocpu-usd", type=float)
     ap.add_argument("--gb-usd", type=float)
+    ap.add_argument("--decimal-gb", action="store_true",
+                    help="convert GiB to 10^9-byte GB instead of billing each GiB as one GB")
     args = ap.parse_args(argv)
     if args.e5:
         if args.ocpu_usd is None or args.gb_usd is None:
             ap.error("--e5 needs --ocpu-usd and --gb-usd")
-        hourly, gb = e5_hourly(*args.e5, args.ocpu_usd, args.gb_usd)
-        basis = (f"E5 Flex {args.e5[0]:g} OCPU x ${args.ocpu_usd} + {args.e5[1]:g} GiB = "
-                 f"{gb:.2f} GB x ${args.gb_usd} = ${hourly:.4f}/h")
+        hourly, gb = e5_hourly(*args.e5, args.ocpu_usd, args.gb_usd, args.decimal_gb)
+        mem = (f"{args.e5[1]:g} GiB = {gb:.2f} decimal GB" if args.decimal_gb
+               else f"{args.e5[1]:g} GiB billed as {gb:g} GB")
+        basis = (f"E5 Flex {args.e5[0]:g} OCPU x ${args.ocpu_usd} + {mem} x ${args.gb_usd} "
+                 f"= ${hourly:.4f}/h")
     else:
         hourly, basis = args.hourly_usd, f"${args.hourly_usd:.2f}/h, whole resource"
     s = summarize(args.workflow, hourly)

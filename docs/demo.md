@@ -19,8 +19,8 @@ run IDs and links lead to the full record.
   A10 2.45%. No pair is statistically different at this sample size, which
   is not the same as equivalent. It does state fewer figures: about 4 per
   brief against 7.
-- **Cost per brief, model only:** CPU $0.011, A10 at most $0.029, hosted
-  $0.037. The CPU is cheapest but takes about 6 minutes a brief, so it
+- **Cost per brief, model only:** CPU $0.0107, A10 at most $0.0293, hosted
+  $0.0370. The CPU is cheapest but takes about 6 minutes a brief, so it
   suits batch work. The A10 takes 31 s against hosted's 26 s and ran at
   38% utilization, so $0.029 is a ceiling.
 - **Two eval layers, because each misses what the other catches.** The
@@ -47,7 +47,7 @@ Same image (`1f51dad`), same 40 tickers, same judge (v2), October 2026.
 | Figures stated per brief | 6.9 | 4.0 | 3.9 |
 | Model errors among figures (adjudicated) | 2 (claims not in the sources) | 1 (a truncated value) | 2 (right figure, wrong label) |
 | Time per brief (pipeline) | 25.9 s | 355.1 s | 31.1 s |
-| Model cost per brief | $0.0370 (n = 3) | $0.0110 | $0.0293, a ceiling |
+| Model cost per brief | $0.0370 (n = 3) | $0.0107 | $0.0293, a ceiling |
 | Traffic proof | n/a | EXACT | EXACT |
 
 Fisher tests on every pair: p ≥ 0.126 (all claims), p ≥ 0.35 (claims
@@ -219,7 +219,7 @@ quantity (two in the A10 run) or a claim the sources do not hold. The
 root cause, the currency mislabel in the upstream data, is a known
 limitation, recorded and not yet fixed.
 
-**What does a brief cost, and what is excluded?** Model cost only: $0.0110
+**What does a brief cost, and what is excluded?** Model cost only: $0.0107
 on a 4-OCPU slice of an E5 node, at most $0.0293 on an A10 (the whole VM
 at $2.00 an hour, divided over the briefs the run produced), $0.0370
 through the hosted API (n = 3; the cost of record stays $0.0366 from

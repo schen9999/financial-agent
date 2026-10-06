@@ -2042,8 +2042,9 @@ the judge (eval-only) are excluded on all three arms.
 |---|---|---|---|
 | Hosted (Anthropic API) | **$0.0370** | `scripts/cost_report.py`, n = 3 (AAPL, NVDA, JPM): $0.0285 exact + $0.0085 RAG-internal estimate. Run locally on the `1f51dad` pipeline code (nothing under `agent/` or the requirements has changed since), not inside the image | 25.9 s pipeline (`9jzmj`) |
 | GPU SLM `p9jr2` | **$0.0293, a ceiling** | the whole VM.GPU.A10.1 at $2.00/h × the run's wall time: 2,112 s for 40 briefs = 52.8 s each, 68.2 briefs an hour at parallelism 2 | 31.1 s pipeline |
-| CPU SLM `8vpq6` | **$0.0110** | the llama.cpp pod's request, 4 OCPU + 30 GiB (32.21 GB) at $0.03/OCPU-h + $0.002/GB-h = $0.1844/h, × 8,576 s for 40 briefs = 214.4 s each, 16.8 briefs an hour | 355.1 s pipeline |
-| — sensitivity, approximate | $0.0223 | the whole node, 8 OCPU + 62.79 GiB kernel-visible (67.41 GB) = $0.3748/h | |
+| CPU SLM `8vpq6` | **$0.0107** | the llama.cpp pod's request, 4 OCPU + 30 GiB billed as 30 GB, at $0.03/OCPU-h + $0.002/GB-h = $0.1800/h, × 8,576 s for 40 briefs = 214.4 s each, 16.8 briefs an hour | 355.1 s pipeline |
+| — sensitivity: memory converted to decimal GB | $0.0110 | 30 GiB = 32.21 GB, $0.1844/h ([cost.md](cost.md): OCI's memory GB taken as binary) | |
+| — sensitivity, approximate: the whole node | $0.0219 | 8 OCPU + 64 GiB (the shape's memory, inferred from 62.79 GiB kernel-visible) = $0.3680/h | |
 
 - **The CPU arm is the cheapest per brief, at 13.7× hosted's per-ticker
   latency** (355 s against 26 s). That suits batch work — overnight
@@ -2071,10 +2072,10 @@ python scripts/cost_per_brief_slm.py \
   --label gpu-p9jr2 --hourly-usd 2.00
 python scripts/cost_per_brief_slm.py \
   eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6-workflow.json \
-  --label cpu-8vpq6-pod --e5 4 30 --ocpu-usd 0.03 --gb-usd 0.002
+  --label cpu-8vpq6-pod --e5 4 30 --ocpu-usd 0.03 --gb-usd 0.002     # add --decimal-gb for $0.0110
 python scripts/cost_per_brief_slm.py \
   eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6-workflow.json \
-  --label cpu-8vpq6-node-approx --e5 8 62.785 --ocpu-usd 0.03 --gb-usd 0.002
+  --label cpu-8vpq6-node-approx --e5 8 64 --ocpu-usd 0.03 --gb-usd 0.002
 ```
 
 **The three numeric unsupported claims of `p9jr2`**, all in the Executive

@@ -239,8 +239,9 @@ Phase 3 — demo polish:
   every arm): hosted $0.0370 (n = 3, run locally on the 1f51dad pipeline
   code; the demo cost table uses it with that label), GPU SLM p9jr2
   $0.0293 (a CEILING: whole A10 VM at $2.00/h, A10 at 38% utilization),
-  CPU SLM 8vpq6 $0.0110 (pod request 4 OCPU + 30 GiB; whole node $0.0223,
-  approximate). CPU is cheapest at 13.7x hosted's latency: batch, not
+  CPU SLM 8vpq6 $0.0107 (pod request 4 OCPU + 30 GiB billed as 30 GB —
+  OCI's memory GB taken as binary; $0.0110 converted to decimal GB; whole
+  node 8 OCPU + 64 GiB $0.0219, approximate). CPU is cheapest at 13.7x hosted's latency: batch, not
   interactive. Prices from the OCI price API (cost.md); never project a
   GPU floor without a run. $0.0316 is a dated pre-retrieval-fix record — never quote
   it as current. $0.0269 is retired. "54% cost reduction" is retired.

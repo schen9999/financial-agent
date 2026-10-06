@@ -9,8 +9,10 @@ cps = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(cps)
 
 
-def test_e5_hourly_converts_gib_to_gb():
+def test_e5_hourly_bills_each_gib_as_one_gb_unless_asked_to_convert():
     hourly, gb = cps.e5_hourly(4, 30, 0.03, 0.002)
+    assert gb == 30 and round(hourly, 6) == 0.18
+    hourly, gb = cps.e5_hourly(4, 30, 0.03, 0.002, decimal_gb=True)
     assert round(gb, 3) == 32.212
     assert round(hourly, 6) == round(4 * 0.03 + 32.21225472 * 0.002, 6)
 

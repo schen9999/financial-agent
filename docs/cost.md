@@ -62,10 +62,12 @@ here are saved unmodified in
   kernel-visible memory (`kubectl` capacity, 2026-10-05,
   [`eval/runs/oke-node-capacity-2026-10-05.txt`](../eval/runs/oke-node-capacity-2026-10-05.txt)),
   below the shape's configured memory, which the cluster does not show.
-- Memory is billed per "Gigabytes Per Hour". Kubernetes requests are in
-  GiB, so per-brief figures convert GiB to GB (× 1.0737). If OCI's GB is
-  binary in practice (62.79 GiB visible fits a 64 GiB shape), that
-  conversion overstates the memory term by 7.4%.
+- Memory is billed per "Gigabytes Per Hour". Per-brief figures bill each
+  GiB (a Kubernetes request, a shape's memory) as one GB of that metric:
+  OCI's memory GB is taken as binary, since a node showing 62.79 GiB fits
+  a 64 GiB shape — an inference, not a statement from the price list.
+  Converting GiB to 10^9-byte GB instead (× 1.0737) raises the memory term
+  by 7.4%; the per-brief figures give that as a sensitivity.
 - These are list prices for the cluster's compute. The cluster was
   provided to the project, not created by it, so no node-hour total is
   given here; per-brief serving cost is in
