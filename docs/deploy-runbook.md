@@ -1494,7 +1494,26 @@ then, stop and keep the current numbers of record.
   attributable to the fix and the prompt rule; run-to-run variance means
   no rate difference is claimed beyond "not detected".
 
-3. **[NOT YET EXECUTED]** Runs, in order: hosted smoke, CPU smoke, GPU
+   **Hosted smoke `grounding-eval-5jvhh` (2026-10-06, EXECUTED):**
+   Succeeded 11/11, 0 retries, 0 failed attempts; 0/76 unsupported
+   (Wilson 95% CI 0.0–4.8%), numeric 0/60, gate passed; stock block empty
+   0/10; 70 agent calls, no Trunc/Loop/Parse/Fmt/Err; 26.8 s per ticker;
+   est. $1.0441. The stock dicts carry `financial_currency` and
+   `profit_margin_pct`. The 10-ticker set has no foreign filer and no
+   margin above 100%, so this smoke checks the platform, not the fix.
+   RAG faithfulness (rf-v1, unvalidated, never part of the grounding rate)
+   20/250 = 8.00% against 1.56–2.17% in the earlier hosted smokes: 13 of
+   the 20 are AMZN highlights (7/9) and MSFT highlights (6/8), both the
+   limitation-(2) refusal ("the context only contains excerpts from the
+   Risk Factors section"), near-identical to `hm527`'s and served from the
+   RAG answer cache; rf-v1 listed the refusal's "sections I would need"
+   bullets as claims this time (in `hm527` the AMZN refusal gave none).
+   Judge listing variance, not a pipeline change. Files:
+   `eval/runs/hosted-smoke-f304375.log`, `eval/runs/5jvhh-workflow.json`,
+   `eval/runs/grounding-eval-5jvhh-attempts.json`,
+   `eval/runs/raw/5jvhh-findings/`, `eval/runs/5jvhh-claims.jsonl`.
+
+3. **[IN PROGRESS]** Runs, in order: hosted smoke, CPU smoke, GPU
    smoke, hosted extended, CPU extended, GPU extended — each SLM run
    through `make slm-eval-run` (traffic proof), the extended SLM runs
    behind `make run-time-check`; `kubectl top` during the CPU runs, the
