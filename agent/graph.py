@@ -44,7 +44,7 @@ from agent.core import (
     _SECTIONS,
     _haiku_section,
     synthesize,
-    _trim_stock, _trim_news, _trim_sec, _data_context,
+    _trim_stock, _trim_news, _trim_sec, _data_context, _currency_rule,
     DEFAULT_HIGHLIGHTS_QUERY,
     DEFAULT_RISKS_QUERY,
 )
@@ -286,7 +286,8 @@ def research_node(state: BriefState) -> dict:
     # Sonnet, or the SLM under SLM_FULL (format-guarded there); the critic
     # below stays on Sonnet either way — the one hosted dependency of the
     # multi-agent path under SLM_FULL.
-    brief = synthesize(ticker, company, sections, state.get("feedback"))
+    brief = synthesize(ticker, company, sections, state.get("feedback"),
+                       currency_rule=_currency_rule(state["stock"]))
 
     return {
         "rag_highlights": highlights, "rag_risks": risks,

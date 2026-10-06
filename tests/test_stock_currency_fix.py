@@ -174,3 +174,42 @@ def test_preflight_collects_per_ticker_and_records_failures():
     assert out["TM"] == {"currency": "USD", "financialCurrency": "JPY"}
     assert out["BAD"]["error"].startswith("RuntimeError")
     assert len(pre.read_tickers(pre.DEFAULT_TICKERS)) == 40
+
+
+# --- the rule in the synthesis prompt ---------------------------------------------------
+
+def test_synthesis_prompt_carries_the_rule_only_when_given():
+    sections = ["### Financial Health\nx"]
+    plain = core._synthesis_prompt("AAPL", "Apple", sections)
+    assert plain == core._synthesis_prompt("AAPL", "Apple", sections, currency_rule="")
+    assert "Currency rule" not in plain
+    rule = core._currency_rule(NEW_TM)
+    with_rule = core._synthesis_prompt("TM", "Toyota", sections, currency_rule=rule)
+    assert "- Currency rule: revenue and net_income are in JPY" in with_rule
+    # the rule sits with the grounding rules, before the section headings
+    assert with_rule.index("Currency rule") < with_rule.index("### Executive Summary")
+
+
+def test_synthesize_passes_the_rule_into_its_prompt(monkeypatch):
+    seen = []
+    monkeypatch.setattr(core, "invoke_recorded",
+                        lambda llm, site, messages, **kw: seen.append(messages[0].content)
+                        or type("R", (), {"content": "brief"})())
+    core.synthesize("TM", "Toyota", ["s"], guard=False,
+                    currency_rule=core._currency_rule(NEW_TM))
+    assert "Currency rule: revenue and net_income are in JPY" in seen[0]
+    core.synthesize("AAPL", "Apple", ["s"], guard=False)
+    assert "Currency rule" not in seen[1]
+
+
+def test_every_synthesis_call_site_passes_the_rule():
+    """Drift guard, at source level (the eval harness mutates env at import):
+    the app paths, the multi-agent graph and the eval harness all hand the
+    synthesis the stock dict's currency rule."""
+    core_src = (_REPO / "agent/core.py").read_text(encoding="utf-8")
+    assert core_src.count("currency_rule=_currency_rule(stock)") == 3
+    assert 'currency_rule=_currency_rule(state["stock"])' in \
+        (_REPO / "agent/graph.py").read_text(encoding="utf-8")
+    harness = (_REPO / "grounding_check.py").read_text(encoding="utf-8")
+    assert 'currency_rule = _currency_rule(base["stock"])' in harness
+    assert harness.count("currency_rule=currency_rule") == 2

@@ -62,7 +62,7 @@ from agent.core import (
     _SECTIONS,
     _haiku_section,
     _section_llm,
-    _trim_stock, _trim_news, _trim_sec, _data_context,
+    _trim_stock, _trim_news, _trim_sec, _data_context, _currency_rule,
     synthesize,
     BriefFormatError,
     _synthesis_prompt,
@@ -336,7 +336,9 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
     # then fails this ticker loudly (BriefFormatError) — never judged as 0
     # claims. 0 of 370 committed findings files would have tripped it.
     t_syn = time.perf_counter()
-    brief = _retry(synthesize, ticker, company, sections, guard=True)
+    currency_rule = _currency_rule(base["stock"])
+    brief = _retry(synthesize, ticker, company, sections, guard=True,
+                   currency_rule=currency_rule)
     synth_s = time.perf_counter() - t_syn
 
     pipeline_s = retrieval_s + sections_s + synth_s
@@ -398,7 +400,8 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
     est_cost = haiku_cost
     if not slm_arm:
         est_cost += _price_est("claude-sonnet-4-6",
-                               _est_tokens(_synthesis_prompt(ticker, company, sections)),
+                               _est_tokens(_synthesis_prompt(ticker, company, sections,
+                                                             currency_rule=currency_rule)),
                                _est_tokens(brief))
     est_cost += _price_est("claude-sonnet-4-6",
                            _est_tokens(JUDGE_SYSTEM) + _est_tokens(

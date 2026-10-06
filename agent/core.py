@@ -208,8 +208,13 @@ def _parallel_sections(ticker: str, company: str, context: str) -> list[str]:
         return [f.result() for f in futures]
 
 
-def _synthesis_prompt(ticker: str, company: str, sections: list[str]) -> str:
+def _synthesis_prompt(ticker: str, company: str, sections: list[str], *,
+                      currency_rule: str = "") -> str:
+    """`currency_rule` is _currency_rule(stock): one more grounding rule for
+    a filer reporting in another currency than its listing's, "" (the
+    prompt unchanged) otherwise."""
     section_block = "\n\n".join(sections)
+    currency_line = f"\n- {currency_rule.strip()}" if currency_rule else ""
     return f"""Complete this investment brief for {company} ({ticker.upper()}) by writing the Executive Summary and Outlook. The four middle sections are already written below — include them verbatim.
 
 Pre-written sections:
@@ -218,7 +223,7 @@ Pre-written sections:
 GROUNDING RULES — follow strictly:
 - Cite a specific number ONLY if it appears explicitly in the pre-written sections above. Do NOT invent, estimate, or extrapolate any numeric figure.
 - Never fabricate price targets, future revenue or run-rate projections, P/E targets, or numeric valuation thresholds of any kind.
-- Write the Outlook as qualitative direction: name the key variables an investor should watch (e.g. "watch services-margin trend and China exposure") and describe what conditions would strengthen or weaken the thesis — without attaching invented numeric targets to any of them.
+- Write the Outlook as qualitative direction: name the key variables an investor should watch (e.g. "watch services-margin trend and China exposure") and describe what conditions would strengthen or weaken the thesis — without attaching invented numeric targets to any of them.{currency_line}
 
 ### Executive Summary  (2-3 sentences)
 Sentence 1: What the company does and its market position; you may reference financial figures that appear explicitly in the pre-written sections.
@@ -257,7 +262,7 @@ def synthesis_llm():
 
 
 def synthesize(ticker: str, company: str, sections: list[str], feedback: str | None = None,
-               *, guard: bool | None = None) -> str:
+               *, guard: bool | None = None, currency_rule: str = "") -> str:
     """Write the brief from the four sections. With `guard` (default: on under
     SLM_FULL; the eval harness turns it on for every arm) a brief missing its
     Executive Summary or Outlook is retried once, then raises BriefFormatError
@@ -265,7 +270,7 @@ def synthesize(ticker: str, company: str, sections: list[str], feedback: str | N
     as before."""
     if guard is None:
         guard = slm_full_enabled()
-    prompt = _synthesis_prompt(ticker, company, sections)
+    prompt = _synthesis_prompt(ticker, company, sections, currency_rule=currency_rule)
     if feedback:
         prompt = f"{feedback}\n\n{prompt}"
     messages = [HumanMessage(content=prompt)]
@@ -339,14 +344,16 @@ def stream_synthesis(ticker: str, stock_data: dict, news_data, sec_data: dict):
     if slm_full_enabled():
         # SLM path: one non-streamed, format-guarded call (the client never
         # streams — see agent/tools/slm.chat_completion), yielded whole.
-        checked, report = apply_numeric_check(synthesize(ticker, company, sections),
+        checked, report = apply_numeric_check(synthesize(ticker, company, sections,
+                                                         currency_rule=_currency_rule(stock)),
                                               stock_data, mode)
         print(f"[timing:{ticker}] slm_synthesis={time.perf_counter() - t1:.2f}s")
         yield checked
         set_cached_response(ticker, checked, numeric_check=report)
         return
     full_response = []
-    for chunk in _synthesis_llm.stream([HumanMessage(content=_synthesis_prompt(ticker, company, sections))]):
+    prompt = _synthesis_prompt(ticker, company, sections, currency_rule=_currency_rule(stock))
+    for chunk in _synthesis_llm.stream([HumanMessage(content=prompt)]):
         if chunk.content:
             full_response.append(chunk.content)
             # block mode may withhold sections, so it streams nothing until
@@ -418,7 +425,7 @@ def run_research_checked(ticker: str) -> dict:
     print(f"[timing:{ticker}] haiku_sections(parallel)={time.perf_counter() - t_sections:.2f}s")
 
     t_llm = time.perf_counter()
-    brief_text = synthesize(ticker, company, sections)
+    brief_text = synthesize(ticker, company, sections, currency_rule=_currency_rule(stock))
     print(f"[timing:{ticker}] {_synthesis_label}_invoke={time.perf_counter() - t_llm:.2f}s")
 
     brief, report = apply_numeric_check(brief_text, stock_data, mode)
