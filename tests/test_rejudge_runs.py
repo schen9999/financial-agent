@@ -16,3 +16,8 @@ def test_counting_reproduces_the_recorded_runs(tmp_path, monkeypatch):
     assert rj.run_all(["4hsn2"], tmp_path, workers=2)["4hsn2"]["unsupported"] == 15
     t = rj.table(summary, [("4hsn2", "5bdz5")])
     assert "| 4hsn2 vs 5bdz5 | 15/399 vs 19/265 |" in t
+
+
+def test_loads_the_env_file_for_the_judge_key():
+    src = (rj.ROOT / "eval" / "rejudge_runs.py").read_text(encoding="utf-8")
+    assert 'load_dotenv(ROOT / ".env")' in src
