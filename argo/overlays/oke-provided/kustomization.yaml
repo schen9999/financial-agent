@@ -28,7 +28,7 @@ configurations:
 images:
   - name: financial-agent-app
     newName: ghcr.io/schen9999/financial-agent-app
-    newTag: 1f51dad765ce7485ddd69ffc844dfe3b552a1e5b
+    newTag: f3043751eb51083b8c674d23ad4ff1da91cbdeac
 
 patches:
   - target:
