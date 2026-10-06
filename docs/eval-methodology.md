@@ -2171,9 +2171,10 @@ CPU +0.22% (−0.06% to +0.74%). No interval excludes zero.
   by the committed rules (`eval/numeric_check/upstream-findings.md`;
   `upstream_cause` in `scripts/numeric_adjudicated.py`): 6 currency — the
   hosted TM brief states revenue and net income as "$52.0 billion" and
-  "$4.5 billion", in three sections, from yen values labelled USD
-  (¥51.96 trillion and ¥4.48 trillion, so the brief also rescaled them by
-  1,000) — and 5 profit-margin fraction ("3.25%" for OMER in all three
+  "$4.5 billion", in three sections, from source values of 51.96 trillion
+  and 4.48 trillion in the filer's reporting currency (yen by their
+  magnitude, inferred), labelled USD — the brief also wrote them 1,000
+  times smaller — and 5 profit-margin fraction ("3.25%" for OMER in all three
   arms, "-2.49%" for LCID in the GPU arm, where the source fraction means
   324.9% and −249.2%). With those excluded, all three arms are at 0: the
   check finds no stock-field error that the upstream data does not

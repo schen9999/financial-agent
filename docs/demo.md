@@ -25,7 +25,8 @@ run IDs and links lead to the full record.
   38% utilization, so $0.029 is a ceiling.
 - **Two eval layers, because each misses what the other catches.** The
   judge accepted Toyota's revenue as "$52.0 billion" from a source value
-  of ¥51.96 trillion labelled as dollars. The deterministic numeric check
+  of 51.96 trillion in the filer's reporting currency (yen by its
+  magnitude, inferred), labelled USD. The deterministic numeric check
   flagged it. The check, in turn, cannot see a correct figure under the
   wrong label; the judge flagged both such cases in the A10 run.
 - **Hosted stays the production path.** The self-served model is a
@@ -206,11 +207,13 @@ build, using 20,488 of 23,028 MiB.
 
 **What does the Toyota case show about the judge?** That an LLM judge
 reasons about plausibility and can accept a wrong figure with a confident
-explanation. The stock data held Toyota's revenue in yen (¥51.96 trillion)
-labelled as dollars; the hosted brief wrote "$52.0 billion"; the judge
-marked it SUPPORTED, reasoning that the source value of
-51,957,024,686,080 JPY, as the pre-written section had it, "rounds to
-'$52.0 billion'".
+explanation. The stock data held Toyota's revenue as 51,957,024,686,080 —
+51.96 trillion in the filer's reporting currency (yen by its magnitude,
+inferred) — labelled USD. The hosted brief wrote "$52.0 billion", and the
+judge marked it SUPPORTED with this reason: "Source data shows revenue of
+51,957,024,686,080.0 JPY, which the Financial Health pre-written section
+rounds to '$52.0 billion'". The judge read the figure as yen itself, and
+still accepted a dollar figure 1,000 times smaller.
 The deterministic numeric check compared the figure with the stock field
 and flagged it. That is why both layers exist: the check covers every
 stock figure in every section, with no judgement; the judge covers what

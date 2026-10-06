@@ -475,8 +475,10 @@ Phase 3 — demo polish:
   number of record): 12 flags, TRUE_ERROR 8/569 hosted, 1/389 CPU, 2/423
   GPU, every one attributed to the upstream data findings (currency,
   margin fraction), 0 otherwise in every arm, no paired difference
-  excludes zero; the judge SUPPORTED the hosted TM yen-as-dollars figures
-  (two judge misses). The check cannot see truncation under its 2%
+  excludes zero; the judge SUPPORTED the hosted TM figures (51.96 trillion
+  in the filer's reporting currency — yen by magnitude, inferred, not
+  checked live — labelled USD, written as "$52.0 billion"; two judge
+  misses). The check cannot see truncation under its 2%
   tolerance (CHGG) or wrong labels (SFIX, CRBU): never cite it as covering
   either.
 - Cross-encoder reranking and the multi-agent supervisor shipped default-off
