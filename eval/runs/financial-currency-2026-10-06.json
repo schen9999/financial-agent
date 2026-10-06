@@ -1,0 +1,174 @@
+{
+ "retrieved": "2026-10-06T01:33:44Z",
+ "source": "yfinance Ticker.info: currency, financialCurrency",
+ "tickers": {
+  "AAPL": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "MSFT": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "GOOGL": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "AMZN": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "NVDA": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "META": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "TSLA": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "JPM": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "V": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "WMT": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "XOM": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "UNH": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "UPST": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "AFRM": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "RIVN": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "LCID": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "SNAP": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "PTON": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "ROKU": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "COIN": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "CALM": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "SFIX": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "RDFN": {
+   "currency": null,
+   "financialCurrency": "USD"
+  },
+  "BYND": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "CHGG": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "BLNK": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "OMER": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "EVGO": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "OCGN": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "EDIT": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "SANA": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "CRBU": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "VERV": {
+   "currency": null,
+   "financialCurrency": null
+  },
+  "BEAM": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "NTLA": {
+   "currency": "USD",
+   "financialCurrency": "USD"
+  },
+  "TSM": {
+   "currency": "USD",
+   "financialCurrency": "TWD"
+  },
+  "NVO": {
+   "currency": "USD",
+   "financialCurrency": "DKK"
+  },
+  "BABA": {
+   "currency": "USD",
+   "financialCurrency": "CNY"
+  },
+  "TM": {
+   "currency": "USD",
+   "financialCurrency": "JPY"
+  },
+  "SAP": {
+   "currency": "USD",
+   "financialCurrency": "EUR"
+  }
+ },
+ "reporting_differs_from_listing": [
+  "BABA",
+  "NVO",
+  "SAP",
+  "TM",
+  "TSM"
+ ],
+ "errors": []
+}

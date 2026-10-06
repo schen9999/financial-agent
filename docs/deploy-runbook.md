@@ -1445,6 +1445,62 @@ guard k3s NodePorts:
 The CronWorkflow stays suspended throughout. The CPU endpoint on OKE is
 not part of the live run and is left as it is.
 
+## Rerun on the stock-data-fix image (October 2026)
+
+The image carries only the stock-data fix plus currency-labelling prompt
+rule (commits `19582b9`, `f304375`): `financial_currency` and
+`profit_margin_pct` in the stock dict, the currency rule in the section
+context and the synthesis prompt for a filer reporting in another
+currency, and the numeric check's `currency_label` finding. Every arm
+re-runs on it at 40 tickers, same protocol as the `1f51dad` three-way.
+Hard cutoff 2026-10-25: if the reruns and the labelling are not done by
+then, stop and keep the current numbers of record.
+
+1. **[EXECUTED 2026-10-06]** Build, pin, deploy. Node 2 built and pushed
+   `ghcr.io/schen9999/financial-agent-app:f3043751eb51083b8c674d23ad4ff1da91cbdeac`
+   (digest `sha256:34896c1b…`; the code layer rebuilt, dependency layers
+   from cache) from a clean tree at `f304375`; the pin is commit
+   `88c1811`. On the operator, `make oke-up` rolled api, worker,
+   streamlit and mcp onto it, then `kubectl apply -k
+   argo/overlays/oke-provided` moved the grounding-eval WorkflowTemplate
+   to it — `make oke-up` applies the app overlay only, so the template
+   needs its own apply after every pin (a `kubectl diff` first showed the
+   two image lines as the only change). The nightly CronWorkflow stayed
+   suspended.
+2. **[EXECUTED 2026-10-06T01:33:44Z]** Reporting-currency preflight, from
+   the api pod (`scripts/financial_currency_preflight.py`, 40 tickers, no
+   request errors): `eval/runs/financial-currency-2026-10-06.json`. TM
+   JPY, TSM TWD, NVO DKK, BABA CNY, SAP EUR; the other 35 report in USD,
+   except VERV — **yfinance returned no quote for VERV as of 2026-10-06**
+   (`quoteType` NONE, no name, price, market cap or revenue). RDFN's
+   listing currency is missing (the stock tool defaults it to USD); it
+   reports in USD.
+
+**Declared before any run (2026-10-06), for the before/after against the
+`1f51dad` three-way:**
+
+- The comparison uses the tickers both sides have: VERV is excluded (no
+  quote as of 2026-10-06; it stays in the runs, all 40 tickers, and the new
+  runs' own rates are over 40).
+- Any ticker whose stock block is empty in a new run (`stock block empty`
+  in the aggregate, `eval/stock_block.py`) is excluded from the
+  before/after the same way, and listed.
+- The currency before/after uses the same check on both sides: the old
+  runs with `numeric_backtest.py --financial-currency` and this preflight
+  file, the new runs as they are.
+- Success criterion: currency and profit-margin TRUE_ERRORs at 0 in every
+  arm, and `currency_label` flags only where a brief writes a non-USD
+  amount in dollars. Grounding rates are compared as a dated before/after
+  attributable to the fix and the prompt rule; run-to-run variance means
+  no rate difference is claimed beyond "not detected".
+
+3. **[NOT YET EXECUTED]** Runs, in order: hosted smoke, CPU smoke, GPU
+   smoke, hosted extended, CPU extended, GPU extended — each SLM run
+   through `make slm-eval-run` (traffic proof), the extended SLM runs
+   behind `make run-time-check`; `kubectl top` during the CPU runs, the
+   nvidia-smi sampler on node 2 during the GPU runs; an Anthropic balance
+   check first.
+
 ## OKE (OCI) — Phase 2
 
 All OCI infrastructure is authored in `terraform/oci/` (fmt + validate
