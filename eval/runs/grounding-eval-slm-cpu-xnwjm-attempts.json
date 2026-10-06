@@ -1,0 +1,11 @@
+{
+ "eval_pods": 10,
+ "failed_attempts": [],
+ "failed_by_endpoint": {},
+ "phase": "Succeeded",
+ "retried_tickers": [],
+ "retries": 0,
+ "tickers": 10,
+ "unrecorded": [],
+ "workflow": "grounding-eval-slm-cpu-xnwjm"
+}

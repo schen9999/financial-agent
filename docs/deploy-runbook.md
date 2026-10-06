@@ -1513,6 +1513,18 @@ then, stop and keep the current numbers of record.
    `eval/runs/grounding-eval-5jvhh-attempts.json`,
    `eval/runs/raw/5jvhh-findings/`, `eval/runs/5jvhh-claims.jsonl`.
 
+   **CPU smoke `grounding-eval-slm-cpu-xnwjm` (2026-10-06, EXECUTED):**
+   Succeeded 11/11, 0 retries, 0 failed attempts, TRAFFIC PROOF: EXACT (70
+   calls, 94,597 + 24,567 tokens); 3/60 = 5.00% unsupported (CI 1.7–13.7%),
+   gate passed at its threshold, all three META hedged Outlook watch-items
+   (limitation 1; META listed 10 claims here and in `wnrjr`, which had 0
+   unsupported); numeric 0/36; stock block empty 0/10; 368.2 s per ticker;
+   RUN-TIME CHECK: PASS (extended projected 2 h 28 min mean, 2 h 51 min
+   worst); llama.cpp median 7,864m, peak 7,997m of 8,000m
+   (`eval/runs/top-cpu-smoke-f304375.txt`); RAG faithfulness 4/428
+   (unvalidated); est. $0.9175. Files: `eval/runs/cpu-smoke-f304375.log`,
+   `eval/runs/slm-proof-xnwjm/`, findings and claims.
+
 3. **[IN PROGRESS]** Runs, in order: hosted smoke, CPU smoke, GPU
    smoke, hosted extended, CPU extended, GPU extended — each SLM run
    through `make slm-eval-run` (traffic proof), the extended SLM runs

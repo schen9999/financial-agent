@@ -1,0 +1,190 @@
+Defaulted container "api" out of: api, wait-for-postgres (init)
+submitted workflow: grounding-eval-slm-cpu-xnwjm
+polling up to 22200 s (activeDeadlineSeconds=21600 + 600s margin)
+  [03:42:59] phase=Running progress=0/2
+  [03:43:20] phase=Running progress=0/2
+  [03:43:41] phase=Running progress=0/2
+  [03:44:03] phase=Running progress=0/2
+  [03:44:24] phase=Running progress=0/2
+  [03:44:45] phase=Running progress=0/2
+  [03:45:06] phase=Running progress=0/2
+  [03:45:28] phase=Running progress=0/2
+  [03:45:49] phase=Running progress=0/2
+  [03:46:10] phase=Running progress=0/2
+  [03:46:32] phase=Running progress=0/2
+  [03:46:53] phase=Running progress=0/2
+  [03:47:14] phase=Running progress=0/2
+  [03:47:36] phase=Running progress=0/2
+  [03:47:57] phase=Running progress=0/2
+  [03:48:19] phase=Running progress=0/2
+  [03:48:40] phase=Running progress=0/2
+  [03:49:01] phase=Running progress=0/2
+  [03:49:23] phase=Running progress=0/2
+  [03:49:44] phase=Running progress=0/2
+  [03:50:05] phase=Running progress=0/2
+  [03:50:27] phase=Running progress=0/2
+  [03:50:48] phase=Running progress=1/3
+  [03:51:10] phase=Running progress=1/3
+  [03:51:31] phase=Running progress=2/4
+  [03:51:52] phase=Running progress=2/4
+  [03:52:14] phase=Running progress=2/4
+  [03:52:35] phase=Running progress=2/4
+  [03:52:56] phase=Running progress=2/4
+  [03:53:18] phase=Running progress=2/4
+  [03:53:39] phase=Running progress=2/4
+  [03:54:01] phase=Running progress=2/4
+  [03:54:22] phase=Running progress=2/4
+  [03:54:43] phase=Running progress=2/4
+  [03:55:04] phase=Running progress=2/4
+  [03:55:26] phase=Running progress=2/4
+  [03:55:47] phase=Running progress=2/4
+  [03:56:08] phase=Running progress=2/4
+  [03:56:30] phase=Running progress=2/4
+  [03:56:51] phase=Running progress=2/4
+  [03:57:12] phase=Running progress=2/4
+  [03:57:34] phase=Running progress=2/4
+  [03:57:55] phase=Running progress=3/5
+  [03:58:16] phase=Running progress=3/5
+  [03:58:38] phase=Running progress=3/5
+  [03:58:59] phase=Running progress=4/6
+  [03:59:20] phase=Running progress=4/6
+  [03:59:42] phase=Running progress=4/6
+  [04:00:03] phase=Running progress=4/6
+  [04:00:25] phase=Running progress=4/6
+  [04:00:46] phase=Running progress=4/6
+  [04:01:07] phase=Running progress=4/6
+  [04:01:28] phase=Running progress=4/6
+  [04:01:50] phase=Running progress=4/6
+  [04:02:11] phase=Running progress=4/6
+  [04:02:33] phase=Running progress=4/6
+  [04:02:54] phase=Running progress=4/6
+  [04:03:15] phase=Running progress=4/6
+  [04:03:36] phase=Running progress=4/6
+  [04:03:58] phase=Running progress=4/6
+  [04:04:19] phase=Running progress=4/6
+  [04:04:40] phase=Running progress=4/6
+  [04:05:02] phase=Running progress=6/8
+  [04:05:23] phase=Running progress=6/8
+  [04:05:45] phase=Running progress=6/8
+  [04:06:06] phase=Running progress=6/8
+  [04:06:28] phase=Running progress=6/8
+  [04:06:49] phase=Running progress=6/8
+  [04:07:10] phase=Running progress=6/8
+  [04:07:32] phase=Running progress=6/8
+  [04:07:53] phase=Running progress=6/8
+  [04:08:14] phase=Running progress=6/8
+  [04:08:36] phase=Running progress=6/8
+  [04:08:57] phase=Running progress=6/8
+  [04:09:18] phase=Running progress=6/8
+  [04:09:40] phase=Running progress=6/8
+  [04:10:01] phase=Running progress=6/8
+  [04:10:22] phase=Running progress=6/8
+  [04:10:44] phase=Running progress=6/8
+  [04:11:05] phase=Running progress=6/8
+  [04:11:26] phase=Running progress=6/8
+  [04:11:48] phase=Running progress=6/8
+  [04:12:09] phase=Running progress=6/8
+  [04:12:30] phase=Running progress=6/8
+  [04:12:52] phase=Running progress=8/10
+  [04:13:13] phase=Running progress=8/10
+  [04:13:34] phase=Running progress=8/10
+  [04:13:56] phase=Running progress=8/10
+  [04:14:17] phase=Running progress=8/10
+  [04:14:39] phase=Running progress=8/10
+  [04:15:00] phase=Running progress=8/10
+  [04:15:21] phase=Running progress=8/10
+  [04:15:43] phase=Running progress=8/10
+  [04:16:04] phase=Running progress=8/10
+  [04:16:25] phase=Running progress=8/10
+  [04:16:47] phase=Running progress=8/10
+  [04:17:08] phase=Running progress=8/10
+  [04:17:29] phase=Running progress=8/10
+  [04:17:51] phase=Running progress=8/10
+  [04:18:12] phase=Running progress=8/10
+  [04:18:33] phase=Running progress=8/10
+  [04:18:55] phase=Running progress=8/10
+  [04:19:16] phase=Running progress=8/10
+  [04:19:38] phase=Running progress=8/10
+  [04:19:59] phase=Running progress=9/10
+  [04:20:20] phase=Running progress=9/10
+  [04:20:42] phase=Running progress=10/11
+  [04:21:03] phase=Succeeded progress=11/11
+
+=== aggregate step output ===
+==============================================================================
+  NIGHTLY GROUNDING EVAL — AGGREGATE
+==============================================================================
+  judge prompt      : v2
+  slm endpoint      : slm-cpu http://llamacpp.financial-agent.svc:8080 — qwen3.6-35b-a3b-q4km (ggml-org/Qwen3.6-35B-A3B-GGUF@baec3ebee244827cda0f4557eafa8b28f7545fa6:Qwen3.6-35B-A3B-Q4_K_M.gguf sha256:671e47e0ec53c665d048b98c3ecbfd5236b5ca9c3e02ed19fc8f81f7b85140c7)
+  slm server        : build b11347-5fc4f3c8c, /models/Qwen3.6-35B-A3B-Q4_K_M.gguf Q4_K - Medium, n_ctx 32768, 4 slots, thinking off
+  slm sampling      : {"planner": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 1024, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.0, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}, "rag": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 2048, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.1, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}, "react": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 1024, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.0, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}, "section": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 768, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.1, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}, "synthesis": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 4096, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.2, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}}
+  Ticker    Sup  Uns  Inf  Tot  Retr(s)  Pipe(s)
+  --------------------------------------------
+  AAPL        7    0    0    7   167.02   380.64
+  AMZN        3    0    0    3   140.00   306.73
+  GOOGL       2    0    0    2   159.62   364.52
+  JPM         6    0    0    6   160.98   354.91
+  META        7    3    0   10   173.55   378.80
+  MSFT        4    0    0    4   195.39   337.16
+  NVDA        4    0    0    4   266.03   419.43
+  TSLA       11    0    0   11   203.26   379.42
+  V           8    0    0    8   224.13   386.82
+  WMT         5    0    0    5   180.58   373.10
+  --------------------------------------------
+  TOTAL      57    3    0   60   187.06   368.15
+
+  tickers completed : 10
+  tickers skipped   : 0
+  stock block empty : 0/10
+  unsupported rate  : 5.00%   (gate: <= 5.0%)
+  95% CI (Wilson)   : 5.00% (95% CI 1.7–13.7%)
+  total claims      : 60   (gate: >= 30)
+  claims per ticker : mean 6.0, min 2 (GOOGL)   — read the rate with this: fewer checkable claims lowers it for free
+  numeric claims    : 36 = mean 3.6/ticker, min 2 (GOOGL)   — co-primary: claims that quote a figure (the judge's listing of qualitative phrases varies run to run)
+  numeric unsupported: 0/36 = 0.00% (95% CI 0.0–9.6%)
+  Argo retries      : 0
+
+  LLM calls (agent) : 70 over 10 completed ticker(s) = 7.0/ticker; endpoints slm-cpu
+  Site                         Calls   Prompt   Compl   Lat(s)  Max(s) Trunc Loop Parse Fmt Retry Err
+  rag:highlights                  10    25235    6542   182.05  264.58     0    0     0   0     0   0
+  rag:risks                       10    24072    4642   151.11  230.41     0    0     0   0     0   0
+  section:financial_health        10     9166    1426    53.41   68.75     0    0     0   0     0   0
+  section:recent_developments     10     9106    1257    46.12   71.48     0    0     0   0     0   0
+  section:risk_factors            10     5349    1403    53.92   70.27     0    0     0   0     0   0
+  section:sec_filing_highlights    10     7329    1207    68.06   86.77     0    0     0   0     0   0
+  synthesis                       10    14340    8090   111.52  142.11     0    0     0   0     0   0
+  SLM_TRAFFIC {"calls": 70, "calls_without_usage": 0, "completion_tokens": 24567, "endpoint": "slm-cpu", "errored_calls": 0, "prompt_tokens": 94597}
+  RAG faithfulness  : 4/428 RAG-answer claims unsupported by their own chunks, 0.93% (95% CI 0.4–2.4%) over 20 answers — judge rf-v1, UNVALIDATED, separate from the grounding rate above
+  est. run cost     : $0.9175   (chars/4 tokens priced from scripts/model_prices.json; excludes retries — cost of record stays scripts/cost_report.py)
+
+  GATE PASSED
+==============================================================================
+===EVAL_FINDINGS_TGZ_BEGIN pod=grounding-eval-slm-cpu-xnwjm-aggregate-844837709===
+H4sIAAAAAAAAA+3OMQ6CQBQE0D3K3sBdEPc4hkQxJAYSQM8vodNCK6zea+YnM8W/Ptv7ueuHSz/c5kPYRVqVUrZcfeZ256Y65VTqY5VDylVdcojNPu+8e8xLO8UYpnFcvu1+9QAAAAAAAAAAAPBHL6jGOREAKAAA
+===EVAL_FINDINGS_TGZ_END===
+time="2026-10-06T04:20:35.428Z" level=info msg="sub-process exited" argo=true error="<nil>"
+
+=== attempts: retries and failed attempts, from the workflow object and every pod's log (NOT in the aggregate above) ===
+workflow_nodes: 23 node(s)
+attempts of grounding-eval-slm-cpu-xnwjm (Succeeded): 10 eval pod(s) for 10 ticker(s)
+  Argo retries      : 0
+  failed attempts   : 0 - every eval pod succeeded on its first attempt
+  attempts record written: /home/ubuntu/grounding-eval-slm-cpu-xnwjm-attempts.json
+workflow_nodes: 23 node(s)
+Defaulted container "api" out of: api, wait-for-postgres (init)
+=== traffic proof for grounding-eval-slm-cpu-xnwjm (files in /home/ubuntu/slm-proof) ===
+  harness, final attempts : 70 calls, 94597 prompt + 24567 completion tokens (0 errored)
+  harness, failed attempts: 0 attempt(s), 0 calls, 0 prompt + 0 completion tokens (0 errored)
+  harness, all attempts   : 94597 prompt + 24567 completion tokens
+  server                  : 94597 prompt + 24567 completion tokens over the window (b11347-5fc4f3c8c, /models/Qwen3.6-35B-A3B-Q4_K_M.gguf)
+TRAFFIC PROOF: EXACT
+=== measured run time of grounding-eval-slm-cpu-xnwjm, projected to argo/eval-run-extended-slm-cpu.yaml ===
+run-time check for grounding-eval-slm-cpu-xnwjm against argo/eval-run-extended-slm-cpu.yaml
+  smoke: 10 tickers, parallelism 2, per ticker mean 0h07m, min 0h06m, max 0h08m; aggregate 0h00m
+  not Succeeded: none
+  projected 40 tickers (20 waves of 2): mean 2h28m, worst 2h51m
+  PASS  worst projection <= workflow deadline 16h00m
+  PASS  slowest smoke ticker 0h08m <= 75% of ticker deadline 1h30m
+  PASS  worst projection + 1 day capture < 7-day TTL
+RUN-TIME CHECK: PASS - ok to launch
+eval-run exit 0, traffic proof exit 0
