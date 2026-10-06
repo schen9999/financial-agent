@@ -258,6 +258,18 @@ density gap (sign test p ≤ 1e-8); not enough to detect a difference of a
 point or two in the unsupported rate. Say "not detected", never
 "equivalent".
 
+**What would you fix first in the app plane?** Four gaps, all found by
+reading the code for [reliability.md](reliability.md), none yet hit in a
+recorded run, and none changed before the demo (the image stays
+`f3043751`). First, a worker crash loses the job in flight: Celery
+acknowledges a task when the worker takes it, so I would acknowledge late
+and make the task idempotent. Second, the async path never writes the
+brief to Postgres, only the synchronous one does. Third, a job lost to a
+crash or a Redis restart reports "processing" or "queued" forever; it needs
+a deadline and an honest status. Fourth, the Anthropic client runs with no
+request timeout. Each fix gets a test that reproduces the failure first.
+Ranked by what a user would notice, the worker crash comes first.
+
 **What would you do next?** Fix the two upstream data defects (currency,
 profit margin as a fraction) and rerun every arm; measure the A10 at
 higher concurrency; apply the OKE Terraform when a compartment exists. The

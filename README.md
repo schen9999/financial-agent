@@ -33,6 +33,11 @@ An AI agent that researches stocks and answers follow-up questions using live fi
 - Compare GGUF quantizations on grounding (one Q4_K_M build of Qwen3.6-35B-A3B and the fine-tune's W4A16 went through the grounding eval; no precision comparison of GGUF builds did).
 - Benchmark other CPU targets (AMD EPYC, AMX-capable Xeon) and add OCI Generative AI as a hosted arm on the same harness.
 - Test whether a multi-agent supervisor improves a small open-weight model on CPU.
+- App plane, post-demo (no code change before the demo; the image stays `f3043751`). Four gaps found in the code, each fixed with a test that reproduces the failure first ([docs/reliability.md](docs/reliability.md)):
+  1. **Worker crash loses the job.** Set `task_acks_late` (with `task_reject_on_worker_lost`) so a task in flight is redelivered, and make `research_task` idempotent so a redelivered task cannot write twice.
+  2. **The async path never persists.** Write the brief to Postgres from the worker, as the synchronous route does, so `/history` covers both paths.
+  3. **Lost or stuck jobs report the wrong status.** Add a deadline: a job still "processing" past it, or unknown to the result backend after a Redis restart, reports "error" or "lost" instead of "processing" or "queued".
+  4. **No timeout on the Anthropic client.** Set an explicit request timeout (and keep the two retries deliberate rather than defaulted) so a hung call fails the request instead of holding it.
 
 The fuller list, with the reasoning behind it: [Known limitations and next steps](docs/system-tour.md#known-limitations-and-next-steps).
 
