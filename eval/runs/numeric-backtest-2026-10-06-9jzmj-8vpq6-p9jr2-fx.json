@@ -1,0 +1,858 @@
+{
+  "date": "2026-10-06",
+  "harness": "scripts/numeric_backtest.py --runs",
+  "check": "agent/numeric_check.py",
+  "rel_tol": 0.02,
+  "runs": [
+    "9jzmj",
+    "8vpq6",
+    "p9jr2"
+  ],
+  "financial_currency": {
+    "file": "eval\\runs\\financial-currency-2026-10-06.json",
+    "injected": {
+      "BABA": "CNY",
+      "NVO": "DKK",
+      "SAP": "EUR",
+      "TM": "JPY",
+      "TSM": "TWD"
+    }
+  },
+  "note": "Flags are unadjudicated; a flag is an error only once a human verdict says so. Stock-field numbers only. Not a number of record.",
+  "files": 560,
+  "briefs": 120,
+  "skipped": [],
+  "summary": {
+    "run": {
+      "8vpq6": {
+        "runs": [
+          "8vpq6"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 5,
+        "briefs_flagged_mismatch": 1,
+        "briefs_flagged_placeholder": 0,
+        "checked": 389,
+        "checked_distinct": 389,
+        "unchecked": 127,
+        "unchecked_reasons": {
+          "bound": 2,
+          "form": 1,
+          "period": 12
+        },
+        "findings": 11,
+        "distinct_findings": 11,
+        "distinct_mismatches": 1,
+        "by_kind": {
+          "currency_label": 10,
+          "mismatch": 1
+        },
+        "by_field": {
+          "net_income": 2,
+          "profit_margin": 1,
+          "revenue": 8
+        },
+        "by_section": {
+          "executive-summary": 4,
+          "financial-health": 7
+        },
+        "coverage": 0.7539,
+        "briefs_flagged_rate": {
+          "k": 5,
+          "n": 40,
+          "rate": 0.125,
+          "ci95": [
+            0.0546,
+            0.2611
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 1,
+          "n": 389,
+          "rate": 0.0026,
+          "ci95": [
+            0.0005,
+            0.0144
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0083
+            ],
+            "empty_draws": 0
+          }
+        },
+        "arm": "slm-full-cpu",
+        "model": "qwen3.6-35b-a3b-q4km",
+        "label": "Qwen3.6-35B-A3B Q4_K_M on the CPU endpoint, same-image three-way, 40 tickers, 2026-10-04",
+        "scope": "full"
+      },
+      "9jzmj": {
+        "runs": [
+          "9jzmj"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 6,
+        "briefs_flagged_mismatch": 1,
+        "briefs_flagged_placeholder": 0,
+        "checked": 569,
+        "checked_distinct": 569,
+        "unchecked": 253,
+        "unchecked_reasons": {
+          "period": 14,
+          "subline": 1
+        },
+        "findings": 24,
+        "distinct_findings": 24,
+        "distinct_mismatches": 2,
+        "by_kind": {
+          "currency_label": 22,
+          "mismatch": 2
+        },
+        "by_field": {
+          "net_income": 10,
+          "profit_margin": 2,
+          "revenue": 12
+        },
+        "by_section": {
+          "executive-summary": 7,
+          "financial-health": 11,
+          "recent-developments": 1,
+          "sec-filing-highlights": 5
+        },
+        "coverage": 0.6922,
+        "briefs_flagged_rate": {
+          "k": 6,
+          "n": 40,
+          "rate": 0.15,
+          "ci95": [
+            0.0706,
+            0.2907
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 2,
+          "n": 569,
+          "rate": 0.0035,
+          "ci95": [
+            0.001,
+            0.0127
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0112
+            ],
+            "empty_draws": 0
+          }
+        },
+        "arm": "baseline",
+        "model": "hosted",
+        "label": "hosted, same-image three-way (image 1f51dad), 40 tickers, 2026-10-04",
+        "scope": "full"
+      },
+      "p9jr2": {
+        "runs": [
+          "p9jr2"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 6,
+        "briefs_flagged_mismatch": 2,
+        "briefs_flagged_placeholder": 0,
+        "checked": 423,
+        "checked_distinct": 423,
+        "unchecked": 139,
+        "unchecked_reasons": {
+          "bound": 8,
+          "form": 1,
+          "period": 8,
+          "subline": 1
+        },
+        "findings": 14,
+        "distinct_findings": 14,
+        "distinct_mismatches": 3,
+        "by_kind": {
+          "currency_label": 11,
+          "mismatch": 3
+        },
+        "by_field": {
+          "net_income": 6,
+          "profit_margin": 2,
+          "revenue": 6
+        },
+        "by_section": {
+          "executive-summary": 4,
+          "financial-health": 7,
+          "recent-developments": 2,
+          "sec-filing-highlights": 1
+        },
+        "coverage": 0.7527,
+        "briefs_flagged_rate": {
+          "k": 6,
+          "n": 40,
+          "rate": 0.15,
+          "ci95": [
+            0.0706,
+            0.2907
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 3,
+          "n": 423,
+          "rate": 0.0071,
+          "ci95": [
+            0.0024,
+            0.0206
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.019
+            ],
+            "empty_draws": 0
+          }
+        },
+        "arm": "slm-full-gpu",
+        "model": "qwen3.6-35b-a3b-q4km",
+        "label": "Qwen3.6-35B-A3B Q4_K_M on the A10, same-image three-way, 40 tickers, 2026-10-05",
+        "scope": "full"
+      }
+    },
+    "arm": {
+      "baseline": {
+        "runs": [
+          "9jzmj"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 6,
+        "briefs_flagged_mismatch": 1,
+        "briefs_flagged_placeholder": 0,
+        "checked": 569,
+        "checked_distinct": 569,
+        "unchecked": 253,
+        "unchecked_reasons": {
+          "period": 14,
+          "subline": 1
+        },
+        "findings": 24,
+        "distinct_findings": 24,
+        "distinct_mismatches": 2,
+        "by_kind": {
+          "currency_label": 22,
+          "mismatch": 2
+        },
+        "by_field": {
+          "net_income": 10,
+          "profit_margin": 2,
+          "revenue": 12
+        },
+        "by_section": {
+          "executive-summary": 7,
+          "financial-health": 11,
+          "recent-developments": 1,
+          "sec-filing-highlights": 5
+        },
+        "coverage": 0.6922,
+        "briefs_flagged_rate": {
+          "k": 6,
+          "n": 40,
+          "rate": 0.15,
+          "ci95": [
+            0.0706,
+            0.2907
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 2,
+          "n": 569,
+          "rate": 0.0035,
+          "ci95": [
+            0.001,
+            0.0127
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0112
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "slm-full-cpu": {
+        "runs": [
+          "8vpq6"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 5,
+        "briefs_flagged_mismatch": 1,
+        "briefs_flagged_placeholder": 0,
+        "checked": 389,
+        "checked_distinct": 389,
+        "unchecked": 127,
+        "unchecked_reasons": {
+          "bound": 2,
+          "form": 1,
+          "period": 12
+        },
+        "findings": 11,
+        "distinct_findings": 11,
+        "distinct_mismatches": 1,
+        "by_kind": {
+          "currency_label": 10,
+          "mismatch": 1
+        },
+        "by_field": {
+          "net_income": 2,
+          "profit_margin": 1,
+          "revenue": 8
+        },
+        "by_section": {
+          "executive-summary": 4,
+          "financial-health": 7
+        },
+        "coverage": 0.7539,
+        "briefs_flagged_rate": {
+          "k": 5,
+          "n": 40,
+          "rate": 0.125,
+          "ci95": [
+            0.0546,
+            0.2611
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 1,
+          "n": 389,
+          "rate": 0.0026,
+          "ci95": [
+            0.0005,
+            0.0144
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0083
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "slm-full-gpu": {
+        "runs": [
+          "p9jr2"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 6,
+        "briefs_flagged_mismatch": 2,
+        "briefs_flagged_placeholder": 0,
+        "checked": 423,
+        "checked_distinct": 423,
+        "unchecked": 139,
+        "unchecked_reasons": {
+          "bound": 8,
+          "form": 1,
+          "period": 8,
+          "subline": 1
+        },
+        "findings": 14,
+        "distinct_findings": 14,
+        "distinct_mismatches": 3,
+        "by_kind": {
+          "currency_label": 11,
+          "mismatch": 3
+        },
+        "by_field": {
+          "net_income": 6,
+          "profit_margin": 2,
+          "revenue": 6
+        },
+        "by_section": {
+          "executive-summary": 4,
+          "financial-health": 7,
+          "recent-developments": 2,
+          "sec-filing-highlights": 1
+        },
+        "coverage": 0.7527,
+        "briefs_flagged_rate": {
+          "k": 6,
+          "n": 40,
+          "rate": 0.15,
+          "ci95": [
+            0.0706,
+            0.2907
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 3,
+          "n": 423,
+          "rate": 0.0071,
+          "ci95": [
+            0.0024,
+            0.0206
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.019
+            ],
+            "empty_draws": 0
+          }
+        }
+      }
+    },
+    "arm_model": {
+      "baseline:hosted": {
+        "runs": [
+          "9jzmj"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 6,
+        "briefs_flagged_mismatch": 1,
+        "briefs_flagged_placeholder": 0,
+        "checked": 569,
+        "checked_distinct": 569,
+        "unchecked": 253,
+        "unchecked_reasons": {
+          "period": 14,
+          "subline": 1
+        },
+        "findings": 24,
+        "distinct_findings": 24,
+        "distinct_mismatches": 2,
+        "by_kind": {
+          "currency_label": 22,
+          "mismatch": 2
+        },
+        "by_field": {
+          "net_income": 10,
+          "profit_margin": 2,
+          "revenue": 12
+        },
+        "by_section": {
+          "executive-summary": 7,
+          "financial-health": 11,
+          "recent-developments": 1,
+          "sec-filing-highlights": 5
+        },
+        "coverage": 0.6922,
+        "briefs_flagged_rate": {
+          "k": 6,
+          "n": 40,
+          "rate": 0.15,
+          "ci95": [
+            0.0706,
+            0.2907
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 2,
+          "n": 569,
+          "rate": 0.0035,
+          "ci95": [
+            0.001,
+            0.0127
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0112
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "slm-full-cpu:qwen3.6-35b-a3b-q4km": {
+        "runs": [
+          "8vpq6"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 5,
+        "briefs_flagged_mismatch": 1,
+        "briefs_flagged_placeholder": 0,
+        "checked": 389,
+        "checked_distinct": 389,
+        "unchecked": 127,
+        "unchecked_reasons": {
+          "bound": 2,
+          "form": 1,
+          "period": 12
+        },
+        "findings": 11,
+        "distinct_findings": 11,
+        "distinct_mismatches": 1,
+        "by_kind": {
+          "currency_label": 10,
+          "mismatch": 1
+        },
+        "by_field": {
+          "net_income": 2,
+          "profit_margin": 1,
+          "revenue": 8
+        },
+        "by_section": {
+          "executive-summary": 4,
+          "financial-health": 7
+        },
+        "coverage": 0.7539,
+        "briefs_flagged_rate": {
+          "k": 5,
+          "n": 40,
+          "rate": 0.125,
+          "ci95": [
+            0.0546,
+            0.2611
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 1,
+          "n": 389,
+          "rate": 0.0026,
+          "ci95": [
+            0.0005,
+            0.0144
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0083
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "slm-full-gpu:qwen3.6-35b-a3b-q4km": {
+        "runs": [
+          "p9jr2"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 6,
+        "briefs_flagged_mismatch": 2,
+        "briefs_flagged_placeholder": 0,
+        "checked": 423,
+        "checked_distinct": 423,
+        "unchecked": 139,
+        "unchecked_reasons": {
+          "bound": 8,
+          "form": 1,
+          "period": 8,
+          "subline": 1
+        },
+        "findings": 14,
+        "distinct_findings": 14,
+        "distinct_mismatches": 3,
+        "by_kind": {
+          "currency_label": 11,
+          "mismatch": 3
+        },
+        "by_field": {
+          "net_income": 6,
+          "profit_margin": 2,
+          "revenue": 6
+        },
+        "by_section": {
+          "executive-summary": 4,
+          "financial-health": 7,
+          "recent-developments": 2,
+          "sec-filing-highlights": 1
+        },
+        "coverage": 0.7527,
+        "briefs_flagged_rate": {
+          "k": 6,
+          "n": 40,
+          "rate": 0.15,
+          "ci95": [
+            0.0706,
+            0.2907
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 3,
+          "n": 423,
+          "rate": 0.0071,
+          "ci95": [
+            0.0024,
+            0.0206
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.019
+            ],
+            "empty_draws": 0
+          }
+        }
+      }
+    },
+    "partial_runs": [],
+    "all_full": {
+      "runs": [
+        "8vpq6",
+        "9jzmj",
+        "p9jr2"
+      ],
+      "briefs": 120,
+      "briefs_flagged": 17,
+      "briefs_flagged_mismatch": 4,
+      "briefs_flagged_placeholder": 0,
+      "checked": 1381,
+      "checked_distinct": 1381,
+      "unchecked": 519,
+      "unchecked_reasons": {
+        "bound": 10,
+        "form": 2,
+        "period": 34,
+        "subline": 2
+      },
+      "findings": 49,
+      "distinct_findings": 49,
+      "distinct_mismatches": 6,
+      "by_kind": {
+        "currency_label": 43,
+        "mismatch": 6
+      },
+      "by_field": {
+        "net_income": 18,
+        "profit_margin": 5,
+        "revenue": 26
+      },
+      "by_section": {
+        "executive-summary": 15,
+        "financial-health": 25,
+        "recent-developments": 3,
+        "sec-filing-highlights": 6
+      },
+      "coverage": 0.7268,
+      "briefs_flagged_rate": {
+        "k": 17,
+        "n": 120,
+        "rate": 0.1417,
+        "ci95": [
+          0.0904,
+          0.2152
+        ]
+      },
+      "mismatches_per_checked": {
+        "k": 6,
+        "n": 1381,
+        "rate": 0.0043,
+        "ci95": [
+          0.002,
+          0.0094
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            0.0007,
+            0.0094
+          ],
+          "empty_draws": 0
+        }
+      }
+    }
+  },
+  "crbu_assertion": {
+    "market_cap_ratio": 99.81,
+    "market_cap_stated": "$16.8 billion",
+    "placeholder": "[City Name]",
+    "passed": true
+  },
+  "injection": {
+    "seed": 42,
+    "clean_briefs": 103,
+    "by_type": {
+      "x10": {
+        "n": 97,
+        "detected": 97,
+        "recall": 1.0,
+        "ci95": [
+          0.9619,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "x100": {
+        "n": 97,
+        "detected": 97,
+        "recall": 1.0,
+        "ci95": [
+          0.9619,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "x0.01": {
+        "n": 97,
+        "detected": 97,
+        "recall": 1.0,
+        "ci95": [
+          0.9619,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "sign_flip": {
+        "n": 97,
+        "detected": 97,
+        "recall": 1.0,
+        "ci95": [
+          0.9619,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "swap_fields": {
+        "n": 96,
+        "detected": 96,
+        "recall": 1.0,
+        "ci95": [
+          0.9615,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "unit_down": {
+        "n": 73,
+        "detected": 73,
+        "recall": 1.0,
+        "ci95": [
+          0.95,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "placeholder": {
+        "n": 97,
+        "detected": 62,
+        "recall": 0.6392,
+        "ci95": [
+          0.54,
+          0.7278
+        ],
+        "example_misses": [
+          "8vpq6 AFRM: pe_ratio: 12.80 -> XX",
+          "8vpq6 BEAM: market_cap: $2.53 billion -> TBD",
+          "8vpq6 CHGG: market_cap: $81.9 million -> TBD",
+          "8vpq6 CRBU: market_cap: $130.8 million -> XX",
+          "8vpq6 GOOGL: profit_margin: 54.77% -> TBD",
+          "8vpq6 LCID: revenue: $1.55 billion -> XX",
+          "8vpq6 NVDA: market_cap: $5.65 trillion -> TBD",
+          "8vpq6 OCGN: market_cap: $345.9 million -> XX",
+          "8vpq6 SANA: current_price: $2.89 -> TBD",
+          "8vpq6 SNAP: net_income: -$311.24 million -> XX"
+        ]
+      }
+    },
+    "placeholder_by_token": {
+      "$X": {
+        "n": 5,
+        "detected": 5,
+        "recall": 1.0,
+        "ci95": [
+          0.5655,
+          1.0
+        ]
+      },
+      "N/A": {
+        "n": 10,
+        "detected": 9,
+        "recall": 0.9,
+        "ci95": [
+          0.5958,
+          0.9821
+        ]
+      },
+      "TBD": {
+        "n": 12,
+        "detected": 0,
+        "recall": 0.0,
+        "ci95": [
+          0.0,
+          0.2425
+        ]
+      },
+      "XX": {
+        "n": 9,
+        "detected": 0,
+        "recall": 0.0,
+        "ci95": [
+          0.0,
+          0.2991
+        ]
+      },
+      "[City Name]": {
+        "n": 13,
+        "detected": 13,
+        "recall": 1.0,
+        "ci95": [
+          0.7719,
+          1.0
+        ]
+      },
+      "[Company]": {
+        "n": 9,
+        "detected": 9,
+        "recall": 1.0,
+        "ci95": [
+          0.7009,
+          1.0
+        ]
+      },
+      "[X]": {
+        "n": 7,
+        "detected": 7,
+        "recall": 1.0,
+        "ci95": [
+          0.6457,
+          1.0
+        ]
+      },
+      "[insert date]": {
+        "n": 7,
+        "detected": 7,
+        "recall": 1.0,
+        "ci95": [
+          0.6457,
+          1.0
+        ]
+      },
+      "[\u25cf]": {
+        "n": 13,
+        "detected": 0,
+        "recall": 0.0,
+        "ci95": [
+          0.0,
+          0.2281
+        ]
+      },
+      "{market_cap}": {
+        "n": 12,
+        "detected": 12,
+        "recall": 1.0,
+        "ci95": [
+          0.7575,
+          1.0
+        ]
+      }
+    }
+  },
+  "adjudication": {
+    "path": "eval/numeric_check/adjudication-2026-10-06-9jzmj-8vpq6-p9jr2-fx.csv",
+    "verdicts": [
+      "TRUE_ERROR",
+      "FALSE_POSITIVE",
+      "OTHER_DEFECT"
+    ],
+    "rows": 49,
+    "verdicts_kept": 0
+  }
+}

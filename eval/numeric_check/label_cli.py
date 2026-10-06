@@ -30,9 +30,18 @@ the same csv writer scripts/numeric_backtest.py uses (minimal quoting, "\\n"
 line endings). Only the answered fields change. Restarting resumes at the
 first unlabeled row.
 
+With --drafts FILE (a drafts CSV: id, run, ticker, stated, draft_verdict,
+rule, rationale), each row also shows the drafted verdict, its rule and its
+rationale; Enter accepts the draft, t/f/o overrides it. The verdict goes
+into the adjudication CSV as any other, and the note records "draft X
+accepted" or "draft X changed" so drafted labels stay distinguishable. A
+drafts row whose run, ticker or stated figure disagrees with the
+adjudication row of the same id is refused at start.
+
 Usage:
   python eval/numeric_check/label_cli.py
   python eval/numeric_check/label_cli.py --csv path/to/adjudication.csv
+  python eval/numeric_check/label_cli.py --csv path/to/adjudication.csv --drafts path/to/drafts.csv
 """
 import argparse
 import csv
@@ -62,6 +71,10 @@ CURRENCY_FIELDS = {"revenue", "net_income"}
 CURRENCY_REMINDER = ("rule 5 (currency): compare to the real USD value; yen/TWD/DKK/"
                      "CNY/EUR magnitude as dollars = TRUE_ERROR, correct USD "
                      "flagged by the mislabeled source = FALSE_POSITIVE")
+CURRENCY_LABEL_REMINDER = ("rule 9 (currency_label): a reporting-currency amount (or a "
+                           "power-of-ten rescale) in dollars = TRUE_ERROR; FALSE_POSITIVE "
+                           "only if the brief states a conversion and its rate and the "
+                           "arithmetic holds, or the figure is misbound")
 MARGIN_REMINDER = ("rule 6 (margin, |source| > 1): the source is a fraction "
                    '(-2.49 = -249%); a brief writing "-2.49%" = TRUE_ERROR')
 
@@ -126,7 +139,9 @@ def has_doubt(note: str) -> bool:
 
 def reminders(r: dict) -> list[str]:
     out = []
-    if r.get("ticker") in CURRENCY_TICKERS and r.get("field") in CURRENCY_FIELDS:
+    if r.get("kind") == "currency_label":
+        out.append(CURRENCY_LABEL_REMINDER)
+    elif r.get("ticker") in CURRENCY_TICKERS and r.get("field") in CURRENCY_FIELDS:
         out.append(CURRENCY_REMINDER)
     if r.get("field") == "profit_margin":
         try:
@@ -162,7 +177,22 @@ def fmt_source(source: str) -> str:
     return source
 
 
-def show(af: AdjudicationFile, k: int, out) -> None:
+def load_drafts(path: Path, af: AdjudicationFile) -> dict:
+    """{id: draft row}, checked against the adjudication rows."""
+    with open(path, newline="", encoding="utf-8") as f:
+        drafts = {d["id"]: d for d in csv.DictReader(f)}
+    by_id = {r["id"]: r for r in af.rows}
+    bad = [i for i, d in drafts.items()
+           if i not in by_id or any(d[c] != by_id[i][c] for c in ("run", "ticker", "stated"))]
+    if bad:
+        raise SystemExit(f"{path.name}: drafts do not match the adjudication rows for id(s) {bad[:10]}")
+    unknown = sorted({d["draft_verdict"] for d in drafts.values()} - set(KEYS.values()))
+    if unknown:
+        raise SystemExit(f"{path.name}: draft verdict(s) outside {sorted(KEYS.values())}: {unknown}")
+    return drafts
+
+
+def show(af: AdjudicationFile, k: int, out, draft: dict | None = None) -> None:
     r = af.rows[k]
     mark = _highlighter(out)
     labeled, doubts = af.labeled_count(), af.doubt_count()
@@ -187,23 +217,29 @@ def show(af: AdjudicationFile, k: int, out) -> None:
         out.write(f"note       : {r['note']}\n")
     for line in reminders(r):
         out.write(f"!! {line}\n")
+    if draft:
+        out.write(f"draft      : {draft['draft_verdict']} (rule {draft['rule']}) — "
+                  f"{draft['rationale']}\n")
 
 
-def run(path: Path, inp=input, out=sys.stdout) -> None:
+def run(path: Path, inp=input, out=sys.stdout, drafts_path: Path | None = None) -> None:
     af = AdjudicationFile(path)
+    drafts = load_drafts(drafts_path, af) if drafts_path else {}
     undo: list[tuple[int, str, str]] = []  # (row, field, previous value)
     k = af.first_unlabeled()
     if k is None:
         out.write(f"all {len(af.rows)} rows labeled in {path.name}\n")
         return
     while k is not None:
-        show(af, k, out)
+        draft = drafts.get(af.rows[k]["id"])
+        show(af, k, out, draft)
         while True:
-            out.write("[t]rue error  [f]alse positive  [o]ther defect  "
+            out.write(("[Enter] accept draft  " if draft else "")
+                      + "[t]rue error  [f]alse positive  [o]ther defect  "
                       "[n]ote  [u]ndo  [q]uit: ")
             out.flush()
             a = inp().strip().lower()
-            if a in KEYS or a in ("n", "u", "q"):
+            if a in KEYS or a in ("n", "u", "q") or (a == "" and draft):
                 break
             out.write("unrecognized; use t, f, o, n, u or q\n")
         if a == "q":
@@ -214,6 +250,9 @@ def run(path: Path, inp=input, out=sys.stdout) -> None:
                 continue
             k, field, old = undo.pop()
             af.set(k, field, old)
+            # A drafted verdict also tagged the note; undo takes both back.
+            if field == "verdict" and undo and undo[-1][:2] == (k, "draft-note"):
+                af.set(k, "note", undo.pop()[2])
             out.write(f"undid {field} on id {af.rows[k]['id']}\n")
             continue
         if a == "n":
@@ -225,8 +264,15 @@ def run(path: Path, inp=input, out=sys.stdout) -> None:
                 undo.append((k, "note", old))
                 af.set(k, "note", f"{old} | {text}" if old.strip() else text)
             continue
+        verdict = draft["draft_verdict"] if a == "" else KEYS[a]
+        if draft:
+            old = af.rows[k]["note"]
+            tag = (f"draft {draft['draft_verdict']} accepted" if verdict == draft["draft_verdict"]
+                   else f"draft {draft['draft_verdict']} changed")
+            undo.append((k, "draft-note", old))
+            af.set(k, "note", f"{old} | {tag}" if old.strip() else tag)
         undo.append((k, "verdict", af.rows[k]["verdict"]))
-        af.set(k, "verdict", KEYS[a])
+        af.set(k, "verdict", verdict)
         k = af.first_unlabeled()
     left = len(af.rows) - af.labeled_count()
     out.write(f"\nsaved {path.name}: {af.labeled_count()}/{len(af.rows)} labeled, "
@@ -236,13 +282,14 @@ def run(path: Path, inp=input, out=sys.stdout) -> None:
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--csv", default=str(DEFAULT_CSV))
+    ap.add_argument("--drafts", type=Path, help="drafts CSV to show and accept row by row")
     args = ap.parse_args(argv)
     # Sentences carry characters a Windows cp1252 console cannot encode;
     # show a replacement rather than crash mid-row.
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     try:
-        run(Path(args.csv))
+        run(Path(args.csv), drafts_path=args.drafts)
     except (KeyboardInterrupt, EOFError):
         print("\nquit (every answer is already saved)")
 
