@@ -220,7 +220,10 @@ stock figure in every section, with no judgement; the judge covers what
 the check cannot see, such as a correct figure attached to the wrong
 quantity (two in the A10 run) or a claim the sources do not hold. The
 root cause, the currency mislabel in the upstream data, is a known
-limitation, recorded and not yet fixed.
+limitation, recorded and not yet fixed. And the check catches that defect
+only when a brief's figure departs from the mislabelled field: the CPU
+arm's faithful copy, "$51.96 trillion", passed both layers
+([debugging story](debugging-story.md#the-limits-of-each-layer)).
 
 **What does a brief cost, and what is excluded?** Model cost only: $0.0107
 on a 4-OCPU slice of an E5 node, at most $0.0293 on an A10 (the whole VM
