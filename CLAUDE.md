@@ -490,4 +490,18 @@ Phase 3 — demo polish:
   either.
 - Cross-encoder reranking and the multi-agent supervisor shipped default-off
   because evals showed no grounding gain at higher cost/latency. State it that way.
+- Judge noise (2026-10-06, eval-methodology "the judge's run-to-run noise
+  on identical inputs"): the same briefs re-judged with the same inputs,
+  prompt and temperature-0 judge moved by up to ~2x (4hsn2 15/399 ->
+  6/408; 5bdz5 19/265 -> 9/258), in the qualitative claims. New numbers of
+  record use THREE JUDGINGS per run (original + two re-judges,
+  eval/rejudge_runs.py): per-run mean and range; between arms a paired
+  ticker-level bootstrap on per-ticker rates averaged over the judgings;
+  per-judging Fisher only for continuity, labelled. Never pool the three
+  judgings' claims into one Fisher test.
+- The specificity result (hosted states more figures than the self-served
+  model) is stated from the JUDGE-INDEPENDENT count first
+  (eval/density_check.py): figures bound to a stock-data field as the
+  conservative figure, all numbers stated beside it; judge-based numeric
+  claims per ticker only as corroboration.
 - Any new number in docs must come from a committed, re-runnable harness.

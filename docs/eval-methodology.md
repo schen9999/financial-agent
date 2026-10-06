@@ -2316,6 +2316,94 @@ python scripts/slm_traffic_proof.py verify \
   --workflow eval/runs/slm-proof-p9jr2/grounding-eval-extended-slm-gpu-p9jr2-workflow.json   # EXACT
 ```
 
+### Dated finding: the judge's run-to-run noise on identical inputs, and density without the judge (2026-10-06)
+
+**Why it was measured.** On the stock-data-fix image (`f3043751`) the
+judge-flagged unsupported rate rose on all three arms against the
+`1f51dad` runs: hosted 1.70% → 3.76%, GPU 2.45% → 3.75%, CPU 3.63% →
+7.17% — almost entirely qualitative Outlook watch-items, none involving a
+currency figure, the currency rule's wording, or a margin. To separate the
+judge from the briefs, every brief of both three-ways was re-judged
+(`eval/rejudge_runs.py`) with the same judge v2 prompt and temperature-0
+Sonnet, from the inputs the judge saw the first time (each findings file's
+retrieved context, pre-written sections and audited text). The reading was
+written into the script before any call: similar rates on re-judge mean a
+judge-side shift; the new runs still worse means a brief-side change.
+
+**Result: same inputs, same prompt, temperature 0 — the rate moved by up
+to about 2× between two judgings.**
+
+| Run | Image | First judging | Re-judge 1 | Qualitative unsupported (first → re-judge) | Outlook unsupported (first → re-judge) |
+|---|---|---|---|---|---|
+| hosted `9jzmj` | `1f51dad` | 7/411 = 1.70% | 10/424 = 2.36% | 5/134 → 8/145 | 3 → 4 |
+| CPU `8vpq6` | `1f51dad` | 9/248 = 3.63% | 7/241 = 2.90% | 6/87 → 5/81 | 5 → 4 |
+| GPU `p9jr2` | `1f51dad` | 6/245 = 2.45% | 7/270 = 2.59% | 3/90 → 5/111 | 2 → 4 |
+| hosted `4hsn2` | `f3043751` | 15/399 = 3.76% | 6/408 = 1.47% | 12/129 → 4/136 | 9 → 2 |
+| GPU `nstp9` | `f3043751` | 10/267 = 3.75% | 8/245 = 3.27% | 6/101 → 4/77 | 7 → 5 |
+| CPU `5bdz5` ¹ | `f3043751` | 19/265 = 7.17% | 9/258 = 3.49% | 17/103 → 8/96 | 12 → 7 |
+
+¹ `5bdz5` is not citable (traffic proof FAIL); it is shown here because the
+question was about its judging.
+
+Old against new on re-judge: hosted 10/424 vs 6/408 (Fisher p = 0.45),
+GPU 7/270 vs 8/245 (p = 0.79), CPU 7/241 vs 9/258 (p = 0.80). The rise did
+not reproduce: under the pre-stated reading it is **judge-side variance,
+not a brief-side change**. It is not a directional drift either — the old
+briefs moved by small amounts both ways, the new ones down sharply. The
+variance sits in the qualitative claims: how many the judge lists, and
+which of them it labels UNSUPPORTED. Numeric claims barely move.
+
+**Consequence: three judgings per run** (adopted 2026-10-06 for the new
+numbers of record). Each run is judged three times — the original plus two
+re-judges (`--tag r2` for the second). A run's rate is reported as the mean
+of the three, with the range. Between arms the test is a paired,
+ticker-level bootstrap on each ticker's unsupported rate averaged over the
+three judgings, which carries both the judge's noise and the clustering of
+claims within briefs; pooling the three judgings' per-claim counts into one
+Fisher test would treat repeated judgings of the same claims as independent
+and make p-values too small. Fisher on each single judging is shown only for
+continuity with earlier records, labelled per judging. Cost: one judging of
+a 40-ticker run is about $0.88 at the price file's Sonnet rates (chars/4
+sizes from the re-judge: 3,690 input and 725 output tokens per brief).
+
+**Density holds without the judge.** The specificity result — hosted
+briefs state more figures than the self-served model's — was measured as
+numeric claims per brief, a judge-based count. It holds on judge-independent
+counts of the audited text, by the numeric check's own parser
+(`eval/density_check.py`, output `eval/runs/density-2026-10-06.txt`), and
+under re-judge. Paired per ticker, 40 tickers; 95% bootstrap CI; exact sign
+test.
+
+| Pair | Figures bound to a stock-data field (conservative) | All numbers stated | Numeric claims, re-judge 1 |
+|---|---|---|---|
+| hosted `9jzmj` − CPU `8vpq6` | **+1.62** (+1.02 to +2.23), p = 0.0002 | +3.10 (+2.17 to +4.15), p = 4e-9 | +2.98 (+2.20 to +3.77), p = 2e-8 |
+| hosted `9jzmj` − GPU `p9jr2` | **+1.80** (+1.32 to +2.30), p = 3e-8 | +3.38 (+2.45 to +4.47), p = 6e-10 | +3.00 (+2.25 to +3.80), p = 1e-8 |
+| CPU `8vpq6` − GPU `p9jr2` | +0.17 (−0.28 to +0.62), p = 0.36 | +0.28 (−0.23 to +0.78), p = 0.47 | +0.03 (−0.50 to +0.57), p = 1.0 |
+| hosted `4hsn2` − GPU `nstp9` | **+1.43** (+0.93 to +1.93), p = 0.0001 | +2.55 (+1.77 to +3.38), p = 1e-5 | +2.60 (+1.88 to +3.35), p = 6e-6 |
+| hosted `4hsn2` − CPU `5bdz5` ¹ | +1.48 (+0.97 to +2.00), p = 8e-6 | +2.75 (+1.95 to +3.65), p = 1e-6 | +2.75 (+2.02 to +3.50), p = 3e-7 |
+
+Means per brief, all numbers stated: hosted 6.80 (`9jzmj`) and 6.45
+(`4hsn2`); the self-served model 3.42–3.90. Bound to a stock field: hosted
+4.62 and 4.47; the self-served model 2.83–3.05. CPU and GPU — the same model
+— do not differ on any count. **From here on the specificity result is
+stated from the judge-independent count first, with the bound-to-field
+figure as the conservative one, and judge-based density as corroboration.**
+
+Counting correction: a first, ad-hoc pass of the "all numbers" count added
+the per-reason binding counts to the tokenizer's count, which already
+includes every number when the stock dict is empty; it double-counted the
+bound figures (about 11 numbers per hosted brief instead of 6.8). The
+committed `eval/density_check.py` counts each number once, and a test pins
+it.
+
+```bash
+python eval/rejudge_runs.py --date 2026-10-06 --runs 9jzmj 8vpq6 p9jr2 4hsn2 nstp9 5bdz5 \
+  --pairs 9jzmj:4hsn2 p9jr2:nstp9 8vpq6:5bdz5            # eval/runs/rejudge-2026-10-06/summary.md
+python eval/density_check.py --runs 9jzmj 8vpq6 p9jr2 4hsn2 nstp9 5bdz5 \
+  --pairs 9jzmj:8vpq6 9jzmj:p9jr2 8vpq6:p9jr2 4hsn2:5bdz5 4hsn2:nstp9 5bdz5:nstp9 \
+  --rejudge eval/runs/rejudge-2026-10-06                 # eval/runs/density-2026-10-06.txt
+```
+
 ### Dated finding: the aggregate step's template outgrew Argo's inline limit (2026-10-04)
 
 **Mechanism (Argo v3.7.18, read from its source).** The controller hands
