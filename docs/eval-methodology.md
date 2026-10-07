@@ -2497,7 +2497,7 @@ few labelled rows per run and stratum.
 | hosted `4hsn2` | 18.2 of 485 | 3.8% | 1.9–9.7% |
 | GPU `nstp9` | 25.3 of 290 | 8.7% | 5.4–18.5% |
 
-No test between these two estimates is made: they rest on 101 and 72
+No test between these two estimates is made: they rest on 108 and 72
 labels.
 
 **Judge-judge agreement** (no labels needed; all 793 claims listed by any

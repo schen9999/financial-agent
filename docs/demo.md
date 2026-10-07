@@ -233,6 +233,21 @@ is why the numbers lead with the deterministic check, which needs no
 judgement, and why "no difference detected" is the strongest grounding
 claim made.
 
+**The true-rate estimate is 8.7% for the GPU arm vs 3.8% hosted. Is the
+SLM worse?** Not shown. Those are point estimates from 180 blind labels by
+a single labeller, split across the two runs (72 and 108 labels), and they
+were not tested against each other. Their intervals are wide and overlap:
+5.4–18.5% and 1.9–9.7%. The direction fits a recorded pattern: most of the
+A10 arm's human-unsupported claims are hedged qualitative Outlook lines
+(among them a "services margins" watch-item copied from the prompt's
+example, limitation 8), the same kind of claim behind most of the
+judge-human disagreement. On the measures
+that need no judge, there is no difference in errors: wrong stock figures
+1/432 on the A10 and 1/565 hosted, and no currency-label errors on either.
+What does separate is how many figures each states (3.05 vs 4.47 per
+brief). To answer the question properly would take a larger labelled
+sample per arm and a pre-stated test.
+
 **How do you know the self-served model actually produced the run?** The
 traffic proof. Before and after each run the harness reads the llama.cpp
 server's own token counters; the tokens the harness logged must equal the
