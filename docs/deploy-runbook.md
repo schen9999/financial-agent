@@ -957,16 +957,38 @@ step 1, run `bash scripts/public_ui_up.sh`. The OCI rule and nginx's list
 are rendered from the same file, so they change together. Remove an entry
 the same way.
 
-**Fallback if the cloud controller may not manage NSGs** (the Service's
-events show an authorization error and no external IP): set the mode to
-`None` in `scripts/public_ui_render.py` (with `None`,
-`loadBalancerSourceRanges` is ignored) and ask the tenancy owner for these
-three changes to the NSG `pub_lb-tbhcuw`, then attach it with
-`oci.oraclecloud.com/oci-network-security-groups`:
-(1) delete ingress TCP 443 from 0.0.0.0/0; (2) delete ingress TCP 80 from
-0.0.0.0/0; (3) add ingress TCP 443 from each allowlist entry. Its egress to
-`workers-tbhcuw` (TCP 30000–32767 and 10256) and the workers' matching
-ingress already exist. nginx's allowlist stays the second layer.
+**Status (2026-10-07): NSG mode refused; NOT LIVE, awaiting the tenancy
+owner.** The first apply (NSG mode) put the nginx sidecar in place, but the
+cloud controller's `CreateNetworkSecurityGroup` calls failed with 404
+NotAuthorizedOrNotFound: it may not create NSGs in this VCN, so no load
+balancer was created. Streamlit was put back to ClusterIP (`kubectl apply
+-k k8s/overlays/oke-provided`; mcp and postgres reported "configured" for
+their last-applied annotation only, no restart); OCI holds no load balancer
+and the VCN still has its 7 NSGs. The two Secrets stay for the next attempt.
+
+**Fallback: join the owner's LB NSG** (security-rule management `None`,
+which makes the controller ignore `loadBalancerSourceRanges`; the LB is
+attached to the existing NSG `pub_lb-tbhcuw` with
+`oci.oraclecloud.com/oci-network-security-groups`). That NSG's egress to
+`workers-tbhcuw` (TCP 30000–32767, 10256) and the workers' matching
+ingress already exist, and the Service's node port is pinned to 30443 inside
+that range. What the tenancy owner changes, on the NSG `pub_lb-tbhcuw`:
+
+1. Delete the ingress rule: source 0.0.0.0/0, TCP, destination port 443.
+2. Delete the ingress rule: source 0.0.0.0/0, TCP, destination port 80.
+3. Add an ingress rule: stateful, source each allowlist CIDR (today one), TCP,
+   destination port 443.
+
+Any other public LB later placed in that NSG inherits the same allowlist.
+Then, on the operator: `ATTACH_NSG_NAME=pub_lb-tbhcuw bash
+scripts/public_ui_up.sh --diff`, then without `--diff`. The script refuses
+while the NSG still has any non-ICMP ingress rule from 0.0.0.0/0, so the LB
+never comes up open to the internet. In this mode adding an IP needs the
+owner too: a new rule 3 for the new CIDR, as well as the allowlist line
+(nginx's list). If the controller may not attach an NSG either, the
+Service's events say so and the alternative is an IAM grant from the owner
+letting the cluster manage NSGs in the VCN compartment, which restores the
+NSG-mode path as designed.
 
 **Teardown** (before the rest of the OKE teardown):
 

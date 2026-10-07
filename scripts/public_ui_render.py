@@ -58,7 +58,16 @@ def allow_conf(cidrs: list[str]) -> str:
     return "".join(f"allow {c};\n" for c in cidrs) + "deny all;\n"
 
 
-def service_patch(cidrs: list[str], lb_subnet: str, backend_nsg: str) -> list[dict]:
+def service_patch(cidrs: list[str], lb_subnet: str, backend_nsg: str | None = None,
+                  attach_nsg: str | None = None) -> list[dict]:
+    """NSG mode (backend_nsg): the cloud controller creates a front-end NSG
+    from loadBalancerSourceRanges and adds the worker rules. Attach mode
+    (attach_nsg, the fallback when the controller may not create NSGs): rule
+    management None — the controller ignores loadBalancerSourceRanges — and
+    the LB joins an existing NSG whose rules the tenancy owner keeps to the
+    allowlist (scripts/public_ui_up.sh refuses if it admits 0.0.0.0/0)."""
+    if (backend_nsg is None) == (attach_nsg is None):
+        raise SystemExit("give exactly one of --backend-nsg (NSG mode) or --attach-nsg (fallback)")
     ann = {
         "oci.oraclecloud.com/load-balancer-type": "lb",
         "service.beta.kubernetes.io/oci-load-balancer-shape": "flexible",
@@ -69,9 +78,13 @@ def service_patch(cidrs: list[str], lb_subnet: str, backend_nsg: str) -> list[di
         "service.beta.kubernetes.io/oci-load-balancer-tls-secret": "streamlit-tls",
         "service.beta.kubernetes.io/oci-load-balancer-backend-protocol": "HTTP",
         "service.beta.kubernetes.io/oci-load-balancer-connection-idle-timeout": "300",
-        "oci.oraclecloud.com/security-rule-management-mode": "NSG",
-        "oci.oraclecloud.com/oci-backend-network-security-group": backend_nsg,
     }
+    if backend_nsg:
+        ann["oci.oraclecloud.com/security-rule-management-mode"] = "NSG"
+        ann["oci.oraclecloud.com/oci-backend-network-security-group"] = backend_nsg
+    else:
+        ann["oci.oraclecloud.com/security-rule-management-mode"] = "None"
+        ann["oci.oraclecloud.com/oci-network-security-groups"] = attach_nsg
     return [
         {"op": "add", "path": "/metadata/annotations", "value": ann},
         {"op": "replace", "path": "/spec/ports",
@@ -87,16 +100,18 @@ def main(argv=None) -> int:
     ap.add_argument("--allowlist", type=Path, default=OVERLAY / "allowlist.txt")
     ap.add_argument("--out", type=Path, default=OVERLAY / "generated")
     ap.add_argument("--lb-subnet", required=True)
-    ap.add_argument("--backend-nsg", required=True)
+    ap.add_argument("--backend-nsg", help="NSG mode: the workers' NSG")
+    ap.add_argument("--attach-nsg", help="fallback: the existing LB NSG to join")
     args = ap.parse_args(argv)
-    for name, v in (("--lb-subnet", args.lb_subnet), ("--backend-nsg", args.backend_nsg)):
-        if not v.startswith("ocid1."):
+    for name, v in (("--lb-subnet", args.lb_subnet), ("--backend-nsg", args.backend_nsg),
+                    ("--attach-nsg", args.attach_nsg)):
+        if v is not None and not v.startswith("ocid1."):
             raise SystemExit(f"{name} is not an OCID")
     cidrs = read_allowlist(args.allowlist.read_text(encoding="utf-8"))
     args.out.mkdir(parents=True, exist_ok=True)
     (args.out / "allow.conf").write_text(allow_conf(cidrs), encoding="utf-8", newline="\n")
     (args.out / "service-patch.yaml").write_text(
-        json.dumps(service_patch(cidrs, args.lb_subnet, args.backend_nsg), indent=2) + "\n",
+        json.dumps(service_patch(cidrs, args.lb_subnet, args.backend_nsg, args.attach_nsg), indent=2) + "\n",
         encoding="utf-8", newline="\n")
     print(f"rendered {len(cidrs)} allowlist entr{'y' if len(cidrs) == 1 else 'ies'} into {args.out}")
     return 0

@@ -27,7 +27,7 @@ def test_allowlist_parsing_and_refusals():
 def test_one_list_feeds_nginx_and_the_load_balancer():
     cidrs = ["192.0.2.7/32", "198.51.100.0/24"]
     assert pr.allow_conf(cidrs) == "allow 192.0.2.7/32;\nallow 198.51.100.0/24;\ndeny all;\n"
-    ops = {o["path"]: o["value"] for o in pr.service_patch(cidrs, "ocid1.subnet.x", "ocid1.nsg.y")}
+    ops = {o["path"]: o["value"] for o in pr.service_patch(cidrs, "ocid1.subnet.x", backend_nsg="ocid1.nsg.y")}
     assert ops["/spec/loadBalancerSourceRanges"] == cidrs and ops["/spec/type"] == "LoadBalancer"
     assert ops["/spec/ports"] == [{"name": "https", "port": 443, "targetPort": "proxy", "protocol": "TCP",
                                    "nodePort": 30443}]
@@ -67,3 +67,20 @@ def test_nothing_identifying_is_committed():
     ignored = subprocess.run(["git", "check-ignore", str(OV / "allowlist.txt"), str(OV / "generated" / "x")],
                              capture_output=True, text=True, cwd=pr.ROOT).stdout.splitlines()
     assert len(ignored) == 2
+
+
+def test_fallback_joins_an_existing_nsg_with_rule_management_off():
+    ops = {o["path"]: o["value"] for o in pr.service_patch(["192.0.2.7/32"], "ocid1.subnet.x",
+                                                             attach_nsg="ocid1.nsg.lb")}
+    ann = ops["/metadata/annotations"]
+    assert ann["oci.oraclecloud.com/security-rule-management-mode"] == "None"
+    assert ann["oci.oraclecloud.com/oci-network-security-groups"] == "ocid1.nsg.lb"
+    assert "oci.oraclecloud.com/oci-backend-network-security-group" not in ann
+    for kw in ({}, {"backend_nsg": "ocid1.a", "attach_nsg": "ocid1.b"}):
+        with pytest.raises(SystemExit, match="exactly one"):
+            pr.service_patch(["192.0.2.7/32"], "ocid1.subnet.x", **kw)
+
+
+def test_up_script_refuses_an_open_nsg_in_fallback():
+    src = (pr.ROOT / "scripts" / "public_ui_up.sh").read_text(encoding="utf-8")
+    assert "source=='0.0.0.0/0'" in src and "refusing:" in src
