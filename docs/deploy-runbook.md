@@ -869,7 +869,9 @@ depends on:
    files. `<wf>-attempts.json` can be rebuilt from the workflow object and
    the pod log (`python3 eval/attempts.py --workflow … --log … --json-out
    …`) while both exist.
-10. **[NOT YET EXECUTED]** Teardown — operator:
+10. **[NOT YET EXECUTED]** Teardown — operator. If the public Streamlit UI
+    is up, take it down first ("Public Streamlit UI", Teardown) so the load
+    balancer is released before the namespace goes:
     ```bash
     pkill -f 'kubectl -n financial-agent port-forward'
     kubectl delete -k argo/overlays/oke-provided
@@ -882,6 +884,102 @@ depends on:
     ```
     GHCR image versions stay until deleted from the package's settings on
     github.com.
+
+## Public Streamlit UI (OKE provided cluster)
+
+Requested by the tenancy owner. **Streamlit only** is public — not the
+API, Argo, MCP or either llama.cpp endpoint, which stay ClusterIP (or, for
+node 2's GPU endpoint, keyed behind the egress-IP rule). Overlay
+`k8s/overlays/oke-provided-public-ui` (oke-provided plus the load balancer
+and an nginx sidecar); scripts `scripts/public_ui_secrets.sh`,
+`scripts/public_ui_up.sh`, `scripts/public_ui_render.py`.
+
+**What is public, to whom, and how it is protected**
+
+- One OCI flexible load balancer, 10 Mbps (inside the Always Free
+  allowance of one 10 Mbps LB per tenancy; about $9 a month at list price
+  if that allowance is used elsewhere), on subnet `pub_lb-tbhcuw`,
+  listening on **443 only**, TLS with a self-signed certificate (Secret
+  `streamlit-tls`; viewers check the SHA-256 fingerprint the operator gives
+  them, then accept the browser warning).
+- **Source restriction, twice, from one gitignored list**
+  (`k8s/overlays/oke-provided-public-ui/allowlist.txt`):
+  `loadBalancerSourceRanges` becomes ingress rules in a front-end NSG that
+  the cloud controller creates (`security-rule-management-mode: NSG`; with
+  `workers-tbhcuw` as the backend NSG it also adds, and on deletion
+  removes, the matching worker rules); nginx repeats the allowlist on the
+  `X-Forwarded-For` client address. The LB is deliberately **not** in the
+  `pub_lb-tbhcuw` NSG, which admits 443 and 80 from anywhere.
+- **Basic auth** in nginx: user `reviewer`, a random password, hash in the
+  Secret `streamlit-basic-auth`. The password lives only in
+  `~/public-ui/credentials` (0600) on the operator; read it in your own
+  terminal (`ssh oke-operator cat public-ui/credentials`), never in a shared
+  one, never in chat or git.
+- **Spend:** every uncached brief spends Anthropic credit (hosted $0.0357
+  per brief, same-image measurement); a ticker already generated in the
+  last 24 hours is served from the exact-key cache for free; follow-up
+  questions also spend credit, unmeasured (the ledger does not record the
+  hosted ReAct agent's calls). Someone generating new tickers back to back
+  would spend about $4 an hour. The app has no brief cap and none is added
+  before the demo (the image stays `f3043751`). **The hard cap is the
+  monthly spend limit on the Anthropic workspace**, set by the project owner
+  in the Anthropic console; the allowlist and basic auth limit who can
+  spend at all.
+
+**Bring up (operator, repo root, no eval running):**
+
+1. Allowlist: copy the gitignored file to the operator
+   (`scp k8s/overlays/oke-provided-public-ui/allowlist.txt
+   oke-operator:financial-agent/k8s/overlays/oke-provided-public-ui/`).
+   One IPv4 CIDR per line; the renderer refuses an empty list and anything
+   wider than /24.
+2. `bash scripts/public_ui_secrets.sh` — creates both Secrets; prints the
+   certificate fingerprint only.
+3. `bash scripts/public_ui_up.sh --diff`, then `bash scripts/public_ui_up.sh`:
+   refuses while an eval runs, looks up the subnet and NSG OCIDs by name,
+   renders, applies, waits for the external IP. Expected diff: the
+   streamlit Deployment (nginx sidecar) and Service, two new ConfigMaps.
+4. Verify: `kubectl get svc -A` shows the external IP; from an allowlisted
+   address `curl -sk -o /dev/null -w '%{http_code}' https://<ip>/` gives 401
+   and with the credentials 200; from the operator (egress IP not on the
+   list) the request times out. Load the page and generate one ticker that
+   is already cached (no spend).
+
+While the public UI is up, re-apply with `scripts/public_ui_up.sh`, not
+`make oke-up` (that applies `oke-provided` and would turn the Service back
+into ClusterIP, releasing the LB). Operator port-forwards to Streamlit go
+to the pod's own port: `kubectl -n financial-agent port-forward
+deploy/streamlit 8501`.
+
+**Add an IP** (a reviewer's, or yours when the residential IP changes):
+add one line to the allowlist on the laptop, copy it to the operator as in
+step 1, run `bash scripts/public_ui_up.sh`. The OCI rule and nginx's list
+are rendered from the same file, so they change together. Remove an entry
+the same way.
+
+**Fallback if the cloud controller may not manage NSGs** (the Service's
+events show an authorization error and no external IP): set the mode to
+`None` in `scripts/public_ui_render.py` (with `None`,
+`loadBalancerSourceRanges` is ignored) and ask the tenancy owner for these
+three changes to the NSG `pub_lb-tbhcuw`, then attach it with
+`oci.oraclecloud.com/oci-network-security-groups`:
+(1) delete ingress TCP 443 from 0.0.0.0/0; (2) delete ingress TCP 80 from
+0.0.0.0/0; (3) add ingress TCP 443 from each allowlist entry. Its egress to
+`workers-tbhcuw` (TCP 30000–32767 and 10256) and the workers' matching
+ingress already exist. nginx's allowlist stays the second layer.
+
+**Teardown** (before the rest of the OKE teardown):
+
+```bash
+kubectl -n financial-agent delete svc streamlit      # releases the LB and the controller's NSG rules
+kubectl apply -k k8s/overlays/oke-provided           # streamlit back to ClusterIP, no sidecar
+kubectl -n financial-agent get configmap -o name | grep streamlit-nginx | xargs -r kubectl -n financial-agent delete   # the two nginx ConfigMaps
+kubectl -n financial-agent delete secret streamlit-basic-auth streamlit-tls
+shred -u ~/public-ui/credentials; rm -f ~/public-ui/tls.crt
+```
+
+Then confirm no load balancer is left:
+`oci lb load-balancer list --compartment-id <the VCN's compartment> --all` is empty.
 
 ## SLM endpoints: Qwen3.6-35B-A3B on llama.cpp (CPU on OKE, GPU on node 2)
 
@@ -1430,16 +1528,19 @@ guard k3s NodePorts:
 
 1. **Capture the live run** (and the rehearsal) within the 7-day TTL:
    OKE step 9's capture list, from `~/slm-proof/`.
-2. **Port-forwards and tunnels down** (operator):
+2. **Public Streamlit UI down**, if it is up ("Public Streamlit UI",
+   Teardown): the load balancer, its NSG rules, the Secrets and the
+   operator's credentials file.
+3. **Port-forwards and tunnels down** (operator):
    `pkill -f 'kubectl -n argo port-forward'; pkill -f 'kubectl -n
    financial-agent port-forward'`; close the laptop's `ssh -N`.
-3. **Close ufw 30880** (node 2):
+4. **Close ufw 30880** (node 2):
    `sudo ufw delete allow from 129.80.187.92 to any port 30880 proto tcp`.
-4. **Ask the tenancy owner to remove the security-list rule** TCP 30880
+5. **Ask the tenancy owner to remove the security-list rule** TCP 30880
    from 129.80.187.92/32. Then confirm from the operator:
    `curl -s -m 10 -o /dev/null -w '%{http_code}\n' http://<node 2>:30880/health`
    prints `000`.
-5. **Only then, if wanted, restore vLLM** (node 2):
+6. **Only then, if wanted, restore vLLM** (node 2):
    `make vm-llamacpp-down && make vm-vllm`.
 
 The CronWorkflow stays suspended throughout. The CPU endpoint on OKE is

@@ -103,8 +103,8 @@ flowchart LR
     ssh --> bastion
 
     subgraph oke ["OKE, provided cluster: v1.34.1, 4x VM.Standard.E5.Flex (16 vCPU), cri-o"]
-        subgraph ns ["namespace financial-agent (every Service ClusterIP)"]
-            app["api · worker · streamlit · mcp<br/>image ghcr.io/…:1f51dad (pinned by git sha)"]
+        subgraph ns ["namespace financial-agent (every Service ClusterIP except streamlit)"]
+            app["api · worker · streamlit · mcp<br/>image ghcr.io/…:f3043751 (pinned by git sha)"]
             redis[("redis<br/>no volume")]
             pg[("postgres<br/>50Gi oci-bv PVC")]
             argo["Argo v3.7.18: grounding-eval<br/>WorkflowTemplate, eval pods (parallelism 2),<br/>aggregate + gate; CronWorkflow suspended"]
@@ -112,6 +112,8 @@ flowchart LR
         end
     end
     operator --> oke
+    viewers["allowlisted IPs only"] -->|"HTTPS 443"| lb["OCI flexible LB, 10 Mbps<br/>TLS (self-signed), NSG allowlist"]
+    lb -->|"nginx sidecar: allowlist + basic auth"| app
 
     subgraph node2 ["vm-a10-inst-2 (node 2): VM.GPU.A10.1, single-node k3s"]
         gpu["llama.cpp GPU endpoint (slm-gpu)<br/>same GGUF, all layers on the A10,<br/>keyed, NodePort 30880"]
@@ -135,8 +137,8 @@ flowchart LR
   each, two with ~28 GiB and two with ~58 GiB allocatable; no GPUs; cri-o,
   so every image comes from a registry; default StorageClass `oci-bv`.
 - The app plane: api, worker, streamlit and mcp from one image on GHCR,
-  pinned by git sha (`1f51dad` for every run on record), Redis without a
-  volume, Postgres on a 50Gi `oci-bv` PVC.
+  pinned by git sha (`f3043751` since 2026-10-06; `1f51dad` for the runs
+  before it), Redis without a volume, Postgres on a 50Gi `oci-bv` PVC.
 - Argo Workflows v3.7.18 with the grounding-eval WorkflowTemplate: one eval
   pod per ticker at parallelism 2, then the aggregate and its gate. The
   nightly CronWorkflow is suspended; runs are submitted from the operator
@@ -146,9 +148,23 @@ flowchart LR
 - The CPU SLM endpoint: llama.cpp b11347 serving Qwen3.6-35B-A3B Q4_K_M,
   8 CPU / 30Gi requested and limited, so it lands on a ~58 GiB node; the
   GGUF sits on a 50Gi `oci-bv` PVC. Keyed; reached only in-cluster.
-- Access: every Service is ClusterIP — no LoadBalancer, no NodePort. The
-  operator host (kubectl, helm) is reached by ssh through `oke-bastion`;
-  anything a person looks at is a `kubectl port-forward` behind `ssh -L`.
+- Access: every Service is ClusterIP except Streamlit's — no NodePort,
+  and the API, Argo, MCP and the CPU endpoint are not public. The operator
+  host (kubectl, helm) is reached by ssh through `oke-bastion`; Argo and
+  anything else a person looks at is a `kubectl port-forward` behind
+  `ssh -L`.
+- **What is public** (requested by the tenancy owner; overlay
+  `k8s/overlays/oke-provided-public-ui`): the Streamlit UI only, through one
+  OCI flexible load balancer (10 Mbps) on subnet `pub_lb-tbhcuw`, HTTPS on
+  443 with a self-signed certificate. **To whom:** the IPv4 addresses on a
+  gitignored allowlist (the project owner's and the tenancy owner's network
+  today; reviewers are added on request). **How it is protected:** the
+  allowlist is enforced twice — in a front-end NSG the cloud controller
+  manages from `loadBalancerSourceRanges`, and again in an nginx sidecar on
+  the client address — then basic auth in nginx (the password lives only on
+  the operator). Every uncached brief spends Anthropic credit; the hard cap
+  is the Anthropic workspace's monthly spend limit. Runbook: "Public
+  Streamlit UI".
 
 **vm-a10-inst-2 (node 2)**: VM.GPU.A10.1 (1× A10 24 GB, Ubuntu 22.04),
 single-node k3s.
