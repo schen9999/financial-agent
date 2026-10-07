@@ -27,3 +27,7 @@ determined.** The evidence that would settle it is each response's own
 `timings` (prompt and cache token counts), which the LLM ledger does not
 record — recording it changes image code, so it is a post-demo ledger
 change.
+
+The same pattern recurred on the CPU re-run `4kkgm` (−4); the call-by-call
+check is now `scripts/llamacpp_window_match.py`, and both failures sit in
+the cross-run table in `eval/runs/slm-proof-4kkgm/INVESTIGATION.md`.

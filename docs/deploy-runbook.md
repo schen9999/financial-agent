@@ -1604,8 +1604,13 @@ then, stop and keep the current numbers of record.
    (15/282 = 5.32%, CI 3.2–8.6%; numeric 2/166) and **TRAFFIC PROOF:
    FAIL** — the server counted 4 prompt tokens FEWER than the harness
    logged (353,897 against 353,901; completion 99,078 on both; 270 calls,
-   0 errored). `5bdz5` was off by +1 in the other direction. Cause not
-   investigated; the endpoint's log for the window is captured for it.
+   0 errored). `5bdz5` was off by +1 in the other direction. Investigated
+   offline (`eval/runs/slm-proof-4kkgm/INVESTIGATION.md`,
+   `scripts/llamacpp_window_match.py`): all 270 server tasks match the 270
+   ledger calls pair for pair and sum to the harness's tokens exactly; only
+   the `/metrics` prompt counter is off (4 below the server's own per-task
+   log). Cause not determined; both unexplained drifts are on the CPU
+   endpoint, every GPU proof is EXACT. No rule change.
    Under the rules above: **not citable**; the CPU arm's after side is not
    citable, the before/after covers hosted and GPU only, and there is no
    third attempt. Captured: `eval/runs/slm-proof-4kkgm/` (counter
