@@ -789,10 +789,12 @@ def markdown_three_way(res: dict) -> str:
             ci_s = f"{ci[0]:+.2%} to {ci[1]:+.2%}" if ci[0] is not None else "n/a"
             L.append(f"| {d} | {r['difference']:+.2%} | {ci_s} |")
     L += ["", "Upstream attribution of TRUE_ERRORs (eval/numeric_check/upstream-findings.md):", "",
-          "| Group | TRUE_ERRORs | Currency | Margin fraction | Not attributed |", "|---|---|---|---|---|"]
+          "| Group | TRUE_ERRORs | Currency | Margin fraction | Not attributed (SAP, margin scale) "
+          "| Other cause |", "|---|---|---|---|---|---|"]
     for g, r in res["upstream"]["by_group"].items():
         na = r["not_attributed_sap"] + r["not_attributed_margin_other_scale"]
-        L.append(f"| {g} | {r['true_errors']} | {r['currency']} | {r['margin_fraction']} | {na} |")
+        other = r["true_errors"] - r["currency"] - r["margin_fraction"] - na
+        L.append(f"| {g} | {r['true_errors']} | {r['currency']} | {r['margin_fraction']} | {na} | {other} |")
     L += ["", "Judge claims quoting the same figure (same run and ticker):", "",
           "| Id | Run | Ticker | Section | Field | Stated | Verdict | Judge |", "|---|---|---|---|---|---|---|---|"]
     for j in res["judge_on_same_figure"]:

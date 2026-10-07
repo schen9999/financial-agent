@@ -43,3 +43,10 @@ def test_retroactive_currency_set_reproduces_with_the_preflight_file():
     assert "currency_label TRUE_ERRORs per checked number" in na.markdown_three_way(res)
     with pytest.raises(AssertionError):
         na.run_three_way(FX_ADJ, ["9jzmj", "8vpq6", "p9jr2"], "2026-10-06", draws=50)
+
+
+def test_new_runs_show_true_errors_outside_the_upstream_causes():
+    adj = ADJ.parent / "adjudication-2026-10-06-4hsn2-nstp9.csv"
+    res = na.run_three_way(adj, ["4hsn2", "nstp9"], "2026-10-06", draws=200)
+    md = na.markdown_three_way(res)
+    assert "| baseline | 1 | 0 | 0 | 0 | 1 |" in md and "| slm-full-gpu | 1 | 0 | 0 | 0 | 1 |" in md
