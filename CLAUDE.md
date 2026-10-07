@@ -58,7 +58,13 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
   metrics-server chart 3.14.0 and the hosted smoke x2cx8 EXECUTED
   2026-10-03 — per-step status in the runbook): a cluster
   provisioned for us, NOT by terraform/oci — never run Terraform against
-  it. OKE v1.34.1, 4x VM.Standard.E5.Flex amd64 at 16 vCPU (two ~28 GiB,
+  it, with ONE exception (explicit owner override, 2026-10-07): terraform
+  import and plan only, read-only in the cloud, only in
+  terraform/oci-provided/, local gitignored state, apply/destroy NEVER;
+  every Terraform command there goes through scripts/tf_provided.sh, which
+  refuses anything but init, fmt, validate, plan, show, providers and
+  state list/show. Goal a zero-diff plan, timeboxed to one day; if not
+  reached, document what is codified and stop. OKE v1.34.1, 4x VM.Standard.E5.Flex amd64 at 16 vCPU (two ~28 GiB,
   two ~58 GiB allocatable), no GPUs, cri-o (no image import), default
   StorageClass oci-bv. CPU-only harness: no vLLM or GPU resources,
   USE_LOCAL_MODEL=false; hosted models unless SLM_FULL. Its optional CPU
@@ -93,7 +99,7 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (7266 lines, 580 tests collected: 579 passed + 1 skipped,
+3. The pytest suite (7293 lines, 593 tests collected: 592 passed + 1 skipped,
    the credit-gated judge test, as of 2026-10-06) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).

@@ -35,6 +35,10 @@ financial-lora-build/
 crash.log
 crash.*.log
 infra/terraform.tfvars
+# terraform/oci-provided: OCIDs and the imported state stay local
+terraform/oci-provided/terraform.tfvars
+terraform/oci-provided/generated*.tf
+terraform/oci-provided/*.tfplan
 # keep .terraform.lock.hcl and *.tf committed
 .venv-wsl/
 .streamlit/
