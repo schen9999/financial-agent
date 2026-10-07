@@ -31,6 +31,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OVERLAY = ROOT / "k8s" / "overlays" / "oke-provided-public-ui"
 MAX_PREFIX = 24
+# Pinned inside 30000-32767, the range workers-tbhcuw admits from the LB
+# subnets: left to the API server, the dry run drew 32769, outside it.
+NODE_PORT = 30443
 
 
 def read_allowlist(text: str) -> list[str]:
@@ -72,7 +75,8 @@ def service_patch(cidrs: list[str], lb_subnet: str, backend_nsg: str) -> list[di
     return [
         {"op": "add", "path": "/metadata/annotations", "value": ann},
         {"op": "replace", "path": "/spec/ports",
-         "value": [{"name": "https", "port": 443, "targetPort": "proxy", "protocol": "TCP"}]},
+         "value": [{"name": "https", "port": 443, "targetPort": "proxy", "protocol": "TCP",
+                    "nodePort": NODE_PORT}]},
         {"op": "add", "path": "/spec/type", "value": "LoadBalancer"},
         {"op": "add", "path": "/spec/loadBalancerSourceRanges", "value": cidrs},
     ]

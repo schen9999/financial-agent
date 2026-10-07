@@ -29,7 +29,9 @@ def test_one_list_feeds_nginx_and_the_load_balancer():
     assert pr.allow_conf(cidrs) == "allow 192.0.2.7/32;\nallow 198.51.100.0/24;\ndeny all;\n"
     ops = {o["path"]: o["value"] for o in pr.service_patch(cidrs, "ocid1.subnet.x", "ocid1.nsg.y")}
     assert ops["/spec/loadBalancerSourceRanges"] == cidrs and ops["/spec/type"] == "LoadBalancer"
-    assert ops["/spec/ports"] == [{"name": "https", "port": 443, "targetPort": "proxy", "protocol": "TCP"}]
+    assert ops["/spec/ports"] == [{"name": "https", "port": 443, "targetPort": "proxy", "protocol": "TCP",
+                                   "nodePort": 30443}]
+    assert 30000 <= pr.NODE_PORT <= 32767
     ann = ops["/metadata/annotations"]
     assert ann["oci.oraclecloud.com/security-rule-management-mode"] == "NSG"
     assert ann["service.beta.kubernetes.io/oci-load-balancer-shape-flex-max"] == "10"
