@@ -71,3 +71,11 @@ def test_slm_run_files(name, arm, extended):
     else:
         assert "name: tickers" not in spec  # smoke = the template's 10 default tickers
     assert "baseline" not in spec  # one arm per run; the baseline is eval-run-extended.yaml
+
+
+def test_gpu_p4_run_differs_from_the_gpu_run_only_in_name_and_parallelism():
+    base = _spec_lines("eval-run-extended-slm-gpu.yaml")
+    p4 = _spec_lines("eval-run-extended-slm-gpu-p4.yaml")
+    assert [ln for ln in p4 if ln not in base] == ["  generateName: grounding-eval-extended-slm-gpu-p4-",
+                                                   "  parallelism: 4"]
+    assert [ln for ln in base if ln not in p4] == ["  generateName: grounding-eval-extended-slm-gpu-"]
