@@ -1,0 +1,10 @@
+gpu-nstp9: grounding-eval-extended-slm-gpu-nstp9-workflow.json (Succeeded)
+  window            : 2026-10-06T05:20:32Z .. 2026-10-06T05:56:55Z = 2183 s
+  briefs            : 40  ->  54.6 s per brief, 66.0 briefs/hour at the run's parallelism
+  price             : $2.00/h, whole resource
+  cost per brief    : $0.0303  (serving only; excludes harness pods, storage, judge)
+  per brief, ledger : 6.75 calls, 8813 prompt + 2467 completion tokens, 59.4 endpoint s; pipeline 34.6 s
+eval/runs/gpu-nvsmi-ext-f304375.csv: 2581 samples, 2026-10-06 04:49:42 to 08:24:43 UTC
+  window                      start      end samples util mean median  p95  max       >0%  mem.used MiB
+  nstp9                    05:20:32 05:56:55     437     35.7%     0%  96% 100% 178 ( 41%)  20540-20540
+  outside every window: 2144 samples, 0 above 0%
