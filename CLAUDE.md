@@ -188,15 +188,27 @@ Phase 3 — demo polish:
   benchmarking, fresh eval run for current numbers.
 
 ## Documentation honesty rules (apply to ALL written output: docs, READMEs, comments)
-- Grounding numbers of record (since 2026-10-05): the same-image
-  three-way on image 1f51dad, 40 tickers, judge v2, judge-flagged rates —
-  hosted `9jzmj` 7/411 = 1.70% (CI 0.8–3.5%), CPU SLM `8vpq6` 9/248 =
-  3.63% (CI 1.9–6.8%), GPU SLM `p9jr2` 6/245 = 2.45% (CI 1.1–5.2%); no
-  pair separates. Always with run IDs, CIs, the numeric co-primary, the
-  calibration caveat (v2 calibration of record measured on September
-  claims, not reweighted to these runs: no true-rate estimate exists for
-  them) and 9jzmj's status (aggregate rebuilt offline). Hosted is the
-  production path. Never a before/after with j4cnp ("fell from 3.06% to
+- Numbers of record (since 2026-10-07), image f3043751, 40 tickers.
+  LEAD WITH THE DETERMINISTIC MEASURES: numeric check (adjudicated) wrong
+  stock figures 1/565 hosted `4hsn2` vs 1/432 GPU SLM `nstp9` (both the
+  current price written as the 52-week low); currency-label findings 0
+  and 0 (22 and 11 on 9jzmj/p9jr2 before the fix); figures bound to a
+  stock-data field 4.47 vs 3.05 per brief, +1.43 (CI +0.93 to +1.93,
+  p = 0.0001; eval/density_check.py). Judge-flagged grounding is
+  SECONDARY, judge v2, three judgings, mean (range): 4hsn2 2.55%
+  (1.47–3.76%), nstp9 3.57% (3.27–3.75%), numeric 0.86% vs 2.42%; paired
+  bootstrap -1.22 points (CI -4.39 to +1.78), no difference detected —
+  always with the judge's noise (up to ~2x between judgings) and its
+  calibration (precision ~29%, recall ~11%, calibration of record below)
+  stated right beside it. CPU SLM arm: `8vpq6` on the PREVIOUS image
+  1f51dad (2.89%, 2.13–3.63%), because both f3043751 CPU runs failed their
+  traffic proofs (5bdz5 +1, 4kkgm -4: every request matched the server
+  log, the /metrics counter drifted; not citable); compared ONLY with
+  1f51dad runs (9jzmj, p9jr2). SAME-IMAGE COMPARISONS ONLY. The one-judging
+  three-way on 1f51dad (9jzmj 1.70%, 8vpq6 3.63%, p9jr2 2.45%) is the
+  FORMER numbers of record (2026-10-05 to 2026-10-07), a dated record,
+  9jzmj with its aggregate-rebuilt status. Hosted is the production path.
+  Never a before/after with j4cnp ("fell from 3.06% to
   1.70%"): different pipeline (512 vs 2048 RAG cap), and the 10-ticker
   hosted smokes span 1.11–7.92% on judge listing alone. Table and
   framing rules: docs/numbers-of-record.md. `j4cnp` (2026-09-05/06),
@@ -249,7 +261,10 @@ Phase 3 — demo polish:
   run's judge-label counts), with its CI. Never quote recall computed on a
   judge-label-stratified sample as drawn.
 - Cost of record: $0.0366/brief (2026-09-06, post-retrieval-fix) from the
-  committed harness. Same-pipeline cost per brief on image 1f51dad (2026-10-05,
+  committed harness. Cost per brief on image f3043751 (2026-10-07, dated,
+  model cost only): hosted $0.0357 (n = 3, cost_report.py run locally on
+  the unchanged pipeline code), GPU SLM nstp9 $0.0303 (a CEILING, A10 at
+  35.7%); CPU from 8vpq6 below. Same-pipeline cost per brief on image 1f51dad (2026-10-05,
   dated, model cost only — harness pods, storage and judge excluded on
   every arm): hosted $0.0370 (n = 3, run locally on the 1f51dad pipeline
   code; the demo cost table uses it with that label), GPU SLM p9jr2

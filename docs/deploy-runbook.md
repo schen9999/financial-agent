@@ -1270,7 +1270,7 @@ snapshot.
    ```
 4. **Image pin** (operator, repo at the pushed `slm-harness`):
    ```bash
-   python3 scripts/pin_oke_image.py --overlay oke-provided --check     # pinned app image tag: 1f51dad…
+   python3 scripts/pin_oke_image.py --overlay oke-provided --check     # pinned app image tag: f3043751…
    kubectl -n financial-agent get deploy api -o jsonpath='{.spec.template.spec.containers[0].image}{"\n"}'   # same tag
    ```
 5. **Node 2 endpoint and GPU** (node 2, `ssh oci2`):
