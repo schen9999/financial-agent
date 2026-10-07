@@ -5,7 +5,7 @@ The centerpiece of this project is not the UI; it is that grounding is
 The grounding number of record: **12/392 = 3.06% unsupported (Wilson 95%
 CI 1.8–5.3%)**, hosted baseline `j4cnp` (2026-09-05/06), judge v2, fixed
 retrieval, 40 tickers. That is the judge-flagged rate; the reweighted true-rate estimate 5.7% (CI 3.5–9.9%),
-from the v2 calibration of record: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED). The former "49% pre-fix → 0/84"
+from the v2 September calibration (2026-09-24): precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED). The former "49% pre-fix → 0/84"
 (judge v1, pre-retrieval-fix, 2026-08-24) is a dated record only. Never a
 bare rate or a bare 0%.
 
@@ -95,7 +95,7 @@ rows, recovered post-hoc from containerd snapshots into
 UNSUPPORTED verdict was free-form, carried with claim=null; findings
 dumps are now a standing part of every run — see the runbook's
 findings-capture section). Calibration: this is a judge-flagged rate
-(judge v2 calibration of record: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED)); no reweighted estimate is computed for
+(judge v2 September calibration (2026-09-24): precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED)); no reweighted estimate is computed for
 this run. **Not the number of
 record**: superseded as a baseline by `j4cnp` (below, same tickers on
 the rebuilt image).
@@ -122,7 +122,7 @@ and the local arm's interval sits entirely above the gate. The ship-off
 decision for `USE_LOCAL_MODEL` now rests on this clearly separated
 40-ticker A/B (the earlier, underpowered measurements agree in
 direction). Calibration: these are judge-flagged rates (judge v2
-calibration of record: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED)). Reweighted true-rate estimates (`eval/reweight_calibration.py`):
+September calibration (2026-09-24): precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED)). Reweighted true-rate estimates (`eval/reweight_calibration.py`):
 `j4cnp` 5.7% (CI 3.5–9.9%), `lsnnc` 8.3% (CI 5.5–12.5%). The A/B
 direction (3.06% vs 8.15%, p = 0.0023) and the per-section attribution
 stand: the same judge scored both arms, so its misses apply to both.
@@ -148,7 +148,7 @@ overall A/B above is the measured result, the buckets are diagnostic):
 The headline is the judge-flagged comparison above (0.50% vs 19.82%,
 p = 4.6e-10). The sensitivity row reweights each bucket with
 `eval/reweight_calibration.py --by-section`, which assumes one
-judge-SUPPORTED miss rate (4/123 in the calibration of record) shared across
+judge-SUPPORTED miss rate (4/123 in the September calibration (2026-09-24)) shared across
 both arms and all sections; the sample cannot say whether misses
 differ by arm or section. Under that assumption the baseline's FH + RF
 estimate is almost entirely the assumed miss rate applied to its 199
@@ -261,7 +261,7 @@ Not supported: a size curve. The hosted arm is a different model family
 are not points on one scaling line; only the three Qwen2.5 arms share a
 family.
 
-Calibration: every rate here is a judge-flagged rate (judge v2 calibration of record:
+Calibration: every rate here is a judge-flagged rate (judge v2 September calibration (2026-09-24):
 precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED)). No reweighted estimate is computed: the held-out miss rates
 were measured on `j4cnp`/`lsnnc` claims and are not extended to other
 models. Comparisons hold in direction because all arms share the judge. A four-arm held-out sample is
@@ -427,7 +427,7 @@ side behind unchanged model IDs, which the repository cannot show.
 Split by that news change (2026-09-27, `eval/compare_runs.py pooled --news-split eval/runs/raw/j4cnp-findings eval/runs/raw/kcf7s-findings`): the 11 news-changed tickers went from 8/218 = 3.67% to 1/224 = 0.45% (p = 0.019), the other 29 from 16/560 = 2.86% to 10/548 = 1.82% (p = 0.32), so the drop concentrates where the news changed; this is a post hoc split of mostly large-cap names, suggestive rather than confirmation.
 
 **What it changes.** Nothing of record. The grounding number of record
-stays `j4cnp` 12/392 = 3.06%, and the calibration of record still
+stays `j4cnp` 12/392 = 3.06%, and the September calibration (2026-09-24) still
 reweights to `j4cnp`'s population (354 S / 12 U / 26 I). The hosted
 baseline to compare against is dated: quote the image with the rate.
 
@@ -731,7 +731,7 @@ p = 0.82.
   UNSUPPORTED, OMER INFERENCE, VERV SUPPORTED); they count in the totals
   and land in "unattributed". The aggregate's estimated run cost was
   $2.40.
-- Judge-flagged rates (judge v2; calibration of record: precision 60%
+- Judge-flagged rates (judge v2; September calibration (2026-09-24): precision 60%
   (9/15, CI 35.7–80.2%), population-weighted recall 32.5% on the baseline
   run (CI 16.0–52.4%)). No reweighted estimate: the calibration miss
   rates were measured on `j4cnp`/`lsnnc` claims and are not extended to
@@ -1282,7 +1282,7 @@ Two 10-ticker smokes on the provided OKE cluster, same pinned image
 (`ghcr.io/schen9999/financial-agent-app:2dd1aa38…`), judge v2, RAG cap 512.
 They validate the platform and the SLM path; they are not numbers of
 record, and 10 tickers cannot separate the arms (the intervals overlap).
-Rates are judge-flagged (v2; the calibration of record applies, and no
+Rates are judge-flagged (v2; the September calibration (2026-09-24) applies, and no
 reweighted estimate exists for these runs).
 
 | Run | Arm | Unsupported | Wilson 95% CI | Agent LLM calls | Pipeline per ticker | RAG answers cut at 512 |
@@ -1708,7 +1708,7 @@ from the pods' logs by `scripts/results_from_pod_log.py`.
 | Gate (≤ 5%, ≥ 30 claims) | passed — evaluated offline |
 | Estimated run cost | not reconstructable from the pod logs (it needs each brief's full text); $4.0998 per the rows stored in the workflow object, below |
 
-This is a judge-flagged rate with the v2 calibration of record applying; no
+This is a judge-flagged rate with the v2 September calibration (2026-09-24) applying; no
 reweighted estimate exists for this run. It is a dated run: `j4cnp` stays
 the number of record. `9jzmj` is the hosted arm on the comparison's own
 image — the pipeline with the 2048 RAG cap, so not the `j4cnp` pipeline
@@ -1784,7 +1784,7 @@ EXACT (94,520 + 24,756 tokens), 0 retries.
 
 **Headline: no grounding difference detected at this sample size; numeric
 density is the separated result.** Rates are judge-flagged (v2; the
-calibration of record applies and no reweighted estimate exists for either
+September calibration (2026-09-24) applies and no reweighted estimate exists for either
 run). When written (2026-10-04) `j4cnp` stayed the grounding number of
 record; since 2026-10-05 this run and `9jzmj`, with GPU `p9jr2`, are the
 grounding numbers of record (the same-image three-way, below).
@@ -1938,7 +1938,7 @@ size; numeric density separates the GPU from hosted, and does not separate
 the GPU from the CPU.** The CPU and GPU arms run the same model, engine
 and request settings on different hardware, so they should not differ:
 that pair is the consistency check, and it holds. Rates are judge-flagged
-(v2; the calibration of record applies and no reweighted estimate exists
+(v2; the September calibration (2026-09-24) applies and no reweighted estimate exists
 for these runs). The p-values are not adjusted for the three pairwise
 comparisons. **Since 2026-10-05 this three-way is the grounding number of
 record** ([numbers-of-record.md](numbers-of-record.md)); `j4cnp` is a dated
@@ -2404,6 +2404,157 @@ python eval/density_check.py --runs 9jzmj 8vpq6 p9jr2 4hsn2 nstp9 5bdz5 \
   --rejudge eval/runs/rejudge-2026-10-06                 # eval/runs/density-2026-10-06.txt
 ```
 
+### Numbers of record on the stock-data-fix image, three judgings per run, and the judge v2 calibration on those runs (2026-10-06/07)
+
+**Runs.** Image `f3043751` (stock-data fix plus currency-labelling prompt
+rule), 40 tickers, judge v2: hosted `grounding-eval-extended-4hsn2`
+(Succeeded, 0 retries, stock block empty 0/40, 26.7 s per ticker) and GPU
+SLM `grounding-eval-extended-slm-gpu-nstp9` (Succeeded, 0 retries, traffic
+proof EXACT, 34.6 s per ticker; node 2's A10, all layers on the GPU). Both
+CPU runs on this image failed their traffic proofs (`5bdz5` +1 token,
+`4kkgm` −4; `eval/runs/slm-proof-4kkgm/INVESTIGATION.md`) and are not
+citable. The CPU arm of record stays `8vpq6` on the **previous image**
+`1f51dad` (proof EXACT) and is compared only with the runs of its own
+image (`9jzmj`, `p9jr2`). Every comparison below is same-image.
+
+**Order of the measures.** The deterministic measures come first: the
+numeric check (adjudicated), the currency-label count and judge-independent
+density need no judge. Judge-flagged grounding is secondary, and is quoted
+with the judge's noise between judgings (up to about 2×, previous section)
+and its calibration on these runs (below) beside it.
+
+#### Deterministic measures
+
+| Measure | Hosted `4hsn2` | GPU `nstp9` | Same-image difference |
+|---|---|---|---|
+| Numeric check, TRUE_ERROR per checked number (adjudicated, one human, drafts reviewed) | 1/565 = 0.18% | 1/432 = 0.23% | GPU − hosted +0.05% (CI −0.51% to +0.71%), not separated |
+| Currency-label findings (a non-USD reporting-currency figure written in dollars) | 0 (22 on `9jzmj` before the fix) | 0 (11 on `p9jr2`) | — |
+| Figures bound to a stock-data field per brief, judge-independent (conservative) | 4.47 | 3.05 | hosted +1.43 (CI +0.93 to +1.93), sign p = 0.0001 |
+| All numbers stated per brief, judge-independent | 6.45 | 3.90 | hosted +2.55 (CI +1.77 to +3.38), p = 1.3e-5 |
+| Numeric claims per brief, judge-based (re-judge 2), corroboration | 6.85 | 4.05 | hosted +2.80 (CI +2.05 to +3.52), p = 1.9e-6 |
+
+The two TRUE_ERRORs are one kind: the current price written as the 52-week
+low (UPST hosted, "near its 52-week low of $24.35", low $22.555; EVGO GPU,
+"$1.35", low $1.23). All three judgings flagged both. The check caught them
+because the stated figure differs from the bound field; it does not cover
+wrong labels in general (SFIX and CRBU in `p9jr2` were invisible to it).
+The two FALSE_POSITIVEs are filing figures against yfinance net income
+(LCID, OMER): limitation 3, now three companies (BEAM, OMER, LCID). On
+`1f51dad` the same density measure gave hosted − CPU +1.62 (CI +1.02 to
++2.23, p = 0.0002) and CPU − GPU +0.17 (CI −0.28 to +0.62): the same model
+does not differ between CPU and GPU.
+
+#### Judge-flagged grounding (secondary): three judgings per run
+
+Mean of the three judgings (range); each judging's count in brackets.
+
+| Run | Image | Unsupported, all claims | Numeric claims |
+|---|---|---|---|
+| hosted `4hsn2` | `f3043751` | 2.55% (1.47–3.76%) [15/399, 6/408, 10/415] | 0.86% (0.73–1.11%) [3/270, 2/272, 2/274] |
+| GPU `nstp9` | `f3043751` | 3.57% (3.27–3.75%) [10/267, 8/245, 9/243] | 2.42% (2.38–2.47%) [4/166, 4/168, 4/162] |
+| CPU `8vpq6` | `1f51dad` | 2.89% (2.13–3.63%) [9/248, 7/241, 5/235] | 1.25% (0.63–1.86%) [3/161, 2/160, 1/158] |
+| hosted `9jzmj` | `1f51dad` | 2.16% (1.70–2.43%) [7/411, 10/424, 10/411] | 0.84% (0.72–1.08%) |
+| GPU `p9jr2` | `1f51dad` | 2.25% (1.69–2.59%) [6/245, 7/270, 4/236] | 1.71% (1.26–1.94%) |
+
+Paired ticker-level bootstrap on per-ticker rates averaged over the three
+judgings, same image only: `4hsn2` − `nstp9` −1.22 points (CI −4.39 to
++1.78), numeric −1.74 (CI −5.54 to +1.49); on `1f51dad`, `9jzmj` − `8vpq6`
+−0.74 (CI −2.67 to +1.03) and `8vpq6` − `p9jr2` +0.16 (CI −1.96 to +2.26).
+**No pair separates.** Not detected is not absent: at these rates a
+40-ticker run cannot resolve differences of a few points.
+
+#### The judge's calibration on these runs (2026-10-07) — calibration of record
+
+180 claims from `4hsn2` and `nstp9`, labelled blind by one labeller
+(`eval/label_cli.py`, no judge verdict shown), drawn from every claim any
+of the three judgings listed (775 after excluding 18 already labelled in
+earlier sets), in four strata with weights N/n:
+
+| Stratum | Population | Labelled | Human UNSUPPORTED |
+|---|---|---|---|
+| U: flagged UNSUPPORTED by at least one judging | 29 | 29 (all) | 9 |
+| I: INFERENCE in at least one judging | 76 | 30 | 3 |
+| W: Outlook watch-item, no digit | 174 | 40 | 2 |
+| S: the rest (SUPPORTED wherever listed) | 496 | 81 | 3 |
+
+UNSUPPORTED is the positive class; human SUPPORTED and INFERENCE are not.
+Population-weighted, with 95% stratified-bootstrap intervals:
+
+| Judging | Precision | Recall (a claim the judging did not list counts as missed) | Recall over the judging's own listed claims (the September definition) |
+|---|---|---|---|
+| original | 25.0% (8.3–44.0%) | 13.7% (4.4–30.4%) | 19.9% (7.2–49.7%) |
+| re-judge 1 | 30.8% (7.1–57.1%) | 9.2% (1.7–22.9%) | 13.3% (2.7–41.7%) |
+| re-judge 2 | 36.8% (16.7–60.0%) | 16.0% (6.2–36.7%) | 28.8% (10.7–78.0%) |
+| majority (≥ 2 of 3 say UNSUPPORTED) | 29.4% (8.3–52.9%) | 11.4% (3.1–27.9%) | — |
+
+**True-rate estimate** (post-stratified within each run, from that run's
+own labels; denominator: every claim any judging listed; Jeffreys
+intervals, a fully labelled stratum exact). **The intervals are wide**:
+few labelled rows per run and stratum.
+
+| Run | Estimated human-UNSUPPORTED claims | True rate | 95% CI |
+|---|---|---|---|
+| hosted `4hsn2` | 18.2 of 485 | 3.8% | 1.9–9.7% |
+| GPU `nstp9` | 25.3 of 290 | 8.7% | 5.4–18.5% |
+
+No test between these two estimates is made: they rest on 101 and 72
+labels.
+
+**Judge-judge agreement** (no labels needed; all 793 claims listed by any
+judging): two judgings list the same claim 72–74% of the time; where both
+list it, verdict kappa 0.79–0.86 (Fleiss 0.825 where all three list it);
+on flagged-or-not over the union, kappa 0.64–0.68 (Fleiss 0.653). The
+judgings flagged 24, 13 and 19 claims; 10 by all three, 12 by exactly one.
+The noise is mostly in which claims get listed and flagged, not in the
+verdict on a claim both judgings consider.
+
+**Reading.**
+
+- Precision is low because of one interaction: 16 of the 29 judge-flagged
+  claims were labelled INFERENCE by the human, and 14 of those 16 are
+  qualitative Outlook watch-items — the hedged "watch X" lines the judge
+  calls unsupported when the context lacks the metric (limitation 1).
+- Recall is low because most human-UNSUPPORTED claims sit in claims the
+  judge passed: the supported stratum's 3 of 81 stand for about 18 claims,
+  twice the flagged stratum's 9, and the INFERENCE and watch-item strata
+  add about 16 more.
+- The majority vote is no better than a single judging.
+- Against the September calibration (2026-09-24, now a dated record:
+  precision 60%, CI 35.7–80.2%; population-weighted recall 32.5% on
+  `j4cnp`, CI 16.0–52.4%) both figures are lower, with overlapping
+  intervals. The populations differ (September claims, the 512-cap
+  pipeline, a different labelling occasion), so this is not a measured
+  change in the judge.
+
+**What it means for the numbers.** A judge-flagged rate is a weak signal on
+these runs: roughly 3 in 10 flags are human-UNSUPPORTED, and roughly 1 in 9
+human-UNSUPPORTED claims is flagged. That is why the deterministic measures
+lead and judge-flagged grounding is secondary.
+
+**The three human-UNSUPPORTED claims in the supported stratum** (no note
+recorded: the labeller records the label only):
+
+| Run | Ticker | Section | Claim | Original | Re-judge 1 | Re-judge 2 |
+|---|---|---|---|---|---|---|
+| `4hsn2` | SAP | Executive Summary | SAP S/4HANA (as the named product milestone central to the cloud transition) | SUPPORTED | SUPPORTED | not listed |
+| `4hsn2` | CRBU | Outlook | cash runway limited to approximately 12 months | SUPPORTED | SUPPORTED | SUPPORTED |
+| `nstp9` | SAP | Executive Summary | ongoing migration to the SAP Business Technology Platform | not listed | not listed | SUPPORTED |
+
+```bash
+python eval/three_judging_stats.py --runs 9jzmj 8vpq6 p9jr2 4hsn2 nstp9 \
+  --judgings raw eval/runs/rejudge-2026-10-06 eval/runs/rejudge-2026-10-06-r2 \
+  --pairs 4hsn2:nstp9 4hsn2:8vpq6 nstp9:8vpq6 8vpq6:p9jr2 9jzmj:p9jr2 9jzmj:8vpq6 9jzmj:4hsn2 p9jr2:nstp9
+                                       # eval/runs/three-judging-2026-10-06.txt (cross-image pairs printed, not cited)
+python eval/density_check.py --runs 4hsn2 nstp9 8vpq6 p9jr2 \
+  --pairs 4hsn2:nstp9 4hsn2:8vpq6 nstp9:8vpq6 8vpq6:p9jr2 \
+  --rejudge eval/runs/rejudge-2026-10-06-r2      # eval/runs/density-2026-10-06-numbers-of-record.txt
+python scripts/numeric_adjudicated.py --date 2026-10-06 --runs 4hsn2 nstp9 \
+  --adjudication eval/numeric_check/adjudication-2026-10-06-4hsn2-nstp9.csv
+python eval/build_threejudge_calibration.py --runs 4hsn2 nstp9 \
+  --judgings raw eval/runs/rejudge-2026-10-06 eval/runs/rejudge-2026-10-06-r2
+python eval/threejudge_report.py                 # eval/runs/threejudge-calibration-2026-10-07.txt
+```
+
 ### Dated finding: the aggregate step's template outgrew Argo's inline limit (2026-10-04)
 
 **Mechanism (Argo v3.7.18, read from its source).** The controller hands
@@ -2755,6 +2906,12 @@ instead of ~90%. It is not quoted as current anywhere.
 
 #### Calibration of record (2026-09-24)
 
+*A dated record since 2026-10-07. The calibration of record for the current
+numbers is the three-judging calibration measured on those runs:
+["The judge's calibration on these runs"](#the-judges-calibration-on-these-runs-2026-10-07--calibration-of-record).
+This one was measured on September claims and still describes the runs of
+its time (`j4cnp`, `lsnnc`).*
+
 The set, per judge-label stratum:
 
 - **Judge-SUPPORTED: 4/123 human-UNSUPPORTED**, from the blind relabel of
@@ -2819,7 +2976,7 @@ first the same day from the held-out sample alone (judge-SUPPORTED
 1/20): `j4cnp` recall 25.4% (CI 7.4–58.4%), true rate 7.2% (CI
 3.1–22.0%); `lsnnc` recall 49.9% (CI 18.4–83.1%), true rate 9.8% (CI
 5.3–24.2%); pooled recall 39.1% (CI 13.0–74.0%), true rate 8.5% (CI
-4.2–23.1%). Replaced by the calibration of record above, which measures
+4.2–23.1%). Replaced by the September calibration (2026-09-24) above, which measures
 the judge-SUPPORTED stratum on 123 claims instead of 20.
 
 #### Dated finding: calibration batch first pass discarded, caught by a blind relabel (2026-09-24)

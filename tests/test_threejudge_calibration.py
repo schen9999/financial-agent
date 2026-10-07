@@ -112,3 +112,13 @@ def test_label_cli_refuses_the_key():
     from eval import label_cli
     src = (btc.ROOT / "eval" / "label_cli.py").read_text(encoding="utf-8")
     assert 'endswith("_key.csv")' in src and label_cli
+
+
+def test_true_rate_is_post_stratified_within_each_run():
+    U, S = "UNSUPPORTED", "SUPPORTED"
+    rows = [dict(_row("U", U, U, U, U), run="r"), dict(_row("U", S, U, U, U), run="r"),
+            dict(_row("S", S, S, S, S), run="r"), dict(_row("S", U, S, S, S), run="r")]
+    pop = [{"run": "r", "stratum": "U"}] * 2 + [{"run": "r", "stratum": "S"}] * 8
+    t = tr.true_rates(rows, pop, draws=500)["r"]
+    assert t["est"] == 1 + 8 * 0.5 and t["rate"] == 0.5 and t["N"] == 10
+    assert t["ci"][0] < 0.5 < t["ci"][1]

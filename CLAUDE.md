@@ -89,7 +89,7 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (7122 lines, 567 tests collected: 566 passed + 1 skipped,
+3. The pytest suite (7132 lines, 568 tests collected: 567 passed + 1 skipped,
    the credit-gated judge test, as of 2026-10-06) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
@@ -213,7 +213,22 @@ Phase 3 — demo polish:
   UNSUPPORTED measured 1/9 against human labels (2026-09-04), so v1 rates are
   lower bounds. Judge v2 is VALIDATED held-out (2026-09-06, 50 blind labels,
   zero dev-set overlap): kappa 0.580, UNSUPPORTED precision 60% (9/15, CI
-  35.7–80.2%). CALIBRATION OF RECORD (2026-09-24): judge-SUPPORTED stratum
+  35.7–80.2%). CALIBRATION OF RECORD (2026-10-07, applies to the current
+  numbers of record, measured on those runs): 180 blind labels on 4hsn2 +
+  nstp9, claims listed by any of three judgings, strata U/I/W/S reweighted
+  (eval/build_threejudge_calibration.py, eval/threejudge_report.py;
+  eval-methodology "The judge's calibration on these runs"). Precision on
+  UNSUPPORTED 25.0–36.8% per judging, majority 29.4% (CI 8.3–52.9%);
+  population-weighted recall 9.2–16.0% per judging, majority 11.4% (CI
+  3.1–27.9%), a claim a judging did not list counting as missed; recall
+  over each judging's own listed claims (the September definition)
+  13.3–28.8%. True-rate estimates, always labelled WIDE: 4hsn2 3.8% (CI
+  1.9–9.7%), nstp9 8.7% (CI 5.4–18.5%), denominator every claim any
+  judging listed; no test between them. Precision is driven by hedged
+  Outlook watch-items (limitation 1): 14 of the 16 judge-flagged claims
+  labelled INFERENCE. The SEPTEMBER CALIBRATION (2026-09-24) is a dated
+  record since 2026-10-07 and still describes the runs of its time:
+  judge-SUPPORTED stratum
   4/123 from a blind relabel of 123 claims, judge-UNSUPPORTED 9/15 and
   judge-INFERENCE 2/15 from the held-out sample; population-weighted
   recall 32.5% on the baseline run (CI 16.0–52.4%), lsnnc 59.2% (CI

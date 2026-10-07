@@ -193,6 +193,16 @@ def draw(rows: list[dict], seed: int, earlier: set[str]) -> tuple[list[dict], di
     return picked, method
 
 
+def earlier_claims() -> set[str]:
+    """Normalized claims of every earlier labelled set (excluded from the pool)."""
+    earlier = set()
+    for name in EARLIER:
+        if (JV / name).exists():
+            with open(JV / name, newline="", encoding="utf-8") as f:
+                earlier |= {norm(r["claim"]) for r in csv.DictReader(f)}
+    return earlier
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--runs", nargs="+", required=True)
@@ -205,11 +215,7 @@ def main(argv=None) -> int:
                               JV / "threejudge_method.json")
     if meth.exists() and not args.force:
         raise SystemExit(f"{meth.name} exists: the sample is drawn; --force redraws")
-    earlier = set()
-    for name in EARLIER:
-        if (JV / name).exists():
-            with open(JV / name, newline="", encoding="utf-8") as f:
-                earlier |= {norm(r["claim"]) for r in csv.DictReader(f)}
+    earlier = earlier_claims()
     rows = population(args.runs, args.judgings)
     picked, method = draw(rows, args.seed, earlier)
     random.Random(args.seed + 1).shuffle(picked)

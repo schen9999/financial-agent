@@ -23,6 +23,16 @@ judging listed. It is higher by construction — a claim the judging never
 listed cannot count against it — and is the figure comparable with the
 calibration of record. The majority has no listed-only form.
 
+True-rate estimate per run (post-stratified within the run): the claims
+of the run that any judging listed (the population, earlier-labelled claims
+excluded as in the draw), each stratum's human-UNSUPPORTED share taken from
+that run's own labelled rows, rate = sum_k N_k,run * p_k,run / N_run. 95%
+interval from Jeffreys posteriors per stratum (Beta(x + 0.5, n - x + 0.5),
+seeded Monte Carlo), as eval/reweight_calibration.py does; a stratum
+labelled in full (n = N) has no sampling error and enters exactly. The strata were
+drawn pooled over runs, so a run's rows in a stratum are a random subsample
+of it; few rows per run and stratum make these intervals wide.
+
 Agreement needs no human labels, so it is computed on the whole
 population (rebuilt from the method file's runs and judgings):
   listing     share of the union of claims each pair both listed
@@ -104,6 +114,37 @@ def boot(rows: list[dict], rater: str, draws: int = DRAWS, seed: int = SEED) -> 
     return {"precision": p, "precision_ci": ci(ps), "recall": rc, "recall_ci": ci(rs)}
 
 
+def true_rates(rows: list[dict], pop: list[dict], draws: int = DRAWS, seed: int = SEED) -> dict:
+    """{run: {N, est, rate, ci, strata: {k: (N, x, n)}}} from the labelled rows
+    and the population (btc.population, earlier-labelled claims removed)."""
+    rng = random.Random(seed)
+    out = {}
+    for run in sorted({p["run"] for p in pop}):
+        N = Counter(p["stratum"] for p in pop if p["run"] == run)
+        lab = [r for r in rows if r["run"] == run]
+        st = {k: (N[k], sum(r["human"] == "UNSUPPORTED" for r in lab if r["stratum"] == k),
+                  sum(1 for r in lab if r["stratum"] == k)) for k in "UIWS" if N[k]}
+        if any(n == 0 for _, _, n in st.values()):
+            raise SystemExit(f"{run}: a stratum with claims has no labelled rows")
+        tot = sum(N.values())
+        est = sum(Nk * x / n for Nk, x, n in st.values())
+        sims = sorted(sum(Nk * (x / n if n == Nk else rng.betavariate(x + 0.5, n - x + 0.5))
+                          for Nk, x, n in st.values()) / tot
+                      for _ in range(draws))
+        out[run] = {"N": tot, "est": est, "rate": est / tot,
+                    "ci": (sims[int(0.025 * draws)], sims[int(0.975 * draws) - 1]), "strata": st}
+    return out
+
+
+def true_rate_lines(tr_: dict) -> list[str]:
+    L = ["True unsupported rate, estimated from the human labels (per run, post-stratified; WIDE intervals)"]
+    for run, t in tr_.items():
+        st = ", ".join(f"{k} {x}/{n} of {Nk}" for k, (Nk, x, n) in t["strata"].items())
+        L.append(f"  {run:8} {t['est']:.1f}/{t['N']} = {t['rate']:.1%} (95% CI {t['ci'][0]:.1%}–{t['ci'][1]:.1%}); "
+                 f"strata human-U/labelled of N: {st}")
+    return L
+
+
 def cohen(a: list[str], b: list[str]) -> float | None:
     n = len(a)
     if not n:
@@ -179,9 +220,13 @@ def main(argv=None) -> int:
     ap.add_argument("--no-agreement", action="store_true")
     args = ap.parse_args(argv)
     method = json.loads(args.method.read_text(encoding="utf-8"))
-    lines = report(load(args.sample, args.key, method), method)
+    rows = load(args.sample, args.key, method)
+    lines = report(rows, method)
     if not args.no_agreement:
-        lines += agreement(btc.population(method["runs"], method["judgings"]))
+        pop = btc.population(method["runs"], method["judgings"])
+        earlier = btc.earlier_claims()
+        lines += true_rate_lines(true_rates(rows, [p for p in pop if btc.norm(p["claim"]) not in earlier]))
+        lines += agreement(pop)
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     print("\n".join(lines))
     return 0

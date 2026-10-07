@@ -254,7 +254,7 @@ C is at most $0.0055, and B is at least 363.
   3.06%. That calibration is not extended to these runs, so no true-rate
   estimate is given here. Every arm used the same judge, so the ranking
   holds in direction. See eval-methodology,
-  ["Calibration of record"](eval-methodology.md#calibration-of-record-2026-09-24).
+  ["September calibration (2026-09-24)"](eval-methodology.md#calibration-of-record-2026-09-24).
 - **The hosted rate moved between images** with no code change on its
   path: 24/778 = 3.08% on the 2026-09-05 image vs 11/772 = 1.42% on the
   2026-09-23 image, p = 0.039, cause unconfirmed

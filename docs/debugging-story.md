@@ -79,7 +79,7 @@ did with it differed (below).
   the brief — and the judge accepted the agreement, with a confident
   explanation, even after naming the currency. Its population-weighted
   recall on UNSUPPORTED claims is 32.5% on the September baseline
-  (calibration of record): misses are expected, and this is one.
+  (September calibration (2026-09-24)): misses are expected, and this is one.
 - **The numeric check** does not read: it binds each figure in a sentence
   to a stock field and compares numbers. A ratio of 0.001 is far outside
   2%, in every section, including the two the judge never audits.
