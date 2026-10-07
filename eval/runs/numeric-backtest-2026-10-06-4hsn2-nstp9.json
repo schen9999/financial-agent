@@ -1,0 +1,631 @@
+{
+  "date": "2026-10-06",
+  "harness": "scripts/numeric_backtest.py --runs",
+  "check": "agent/numeric_check.py",
+  "rel_tol": 0.02,
+  "runs": [
+    "4hsn2",
+    "nstp9"
+  ],
+  "financial_currency": null,
+  "note": "Flags are unadjudicated; a flag is an error only once a human verdict says so. Stock-field numbers only. Not a number of record.",
+  "files": 750,
+  "briefs": 80,
+  "skipped": [],
+  "summary": {
+    "run": {
+      "4hsn2": {
+        "runs": [
+          "4hsn2"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 2,
+        "briefs_flagged_mismatch": 2,
+        "briefs_flagged_placeholder": 0,
+        "checked": 565,
+        "checked_distinct": 565,
+        "unchecked": 244,
+        "unchecked_reasons": {
+          "bound": 2,
+          "period": 16
+        },
+        "findings": 2,
+        "distinct_findings": 2,
+        "distinct_mismatches": 2,
+        "by_kind": {
+          "mismatch": 2
+        },
+        "by_field": {
+          "net_income": 1,
+          "week_52_low": 1
+        },
+        "by_section": {
+          "executive-summary": 1,
+          "risk-factors": 1
+        },
+        "coverage": 0.6984,
+        "briefs_flagged_rate": {
+          "k": 2,
+          "n": 40,
+          "rate": 0.05,
+          "ci95": [
+            0.0138,
+            0.165
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 2,
+          "n": 565,
+          "rate": 0.0035,
+          "ci95": [
+            0.001,
+            0.0128
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0089
+            ],
+            "empty_draws": 0
+          }
+        },
+        "arm": "baseline",
+        "model": "hosted",
+        "label": "",
+        "scope": "full"
+      },
+      "nstp9": {
+        "runs": [
+          "nstp9"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 2,
+        "briefs_flagged_mismatch": 2,
+        "briefs_flagged_placeholder": 0,
+        "checked": 432,
+        "checked_distinct": 432,
+        "unchecked": 155,
+        "unchecked_reasons": {
+          "form": 5,
+          "period": 14
+        },
+        "findings": 2,
+        "distinct_findings": 2,
+        "distinct_mismatches": 2,
+        "by_kind": {
+          "mismatch": 2
+        },
+        "by_field": {
+          "net_income": 1,
+          "week_52_low": 1
+        },
+        "by_section": {
+          "executive-summary": 1,
+          "sec-filing-highlights": 1
+        },
+        "coverage": 0.7359,
+        "briefs_flagged_rate": {
+          "k": 2,
+          "n": 40,
+          "rate": 0.05,
+          "ci95": [
+            0.0138,
+            0.165
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 2,
+          "n": 432,
+          "rate": 0.0046,
+          "ci95": [
+            0.0013,
+            0.0167
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0117
+            ],
+            "empty_draws": 0
+          }
+        },
+        "arm": "slm-full-gpu",
+        "model": "qwen3.6-35b-a3b-q4km",
+        "label": "",
+        "scope": "full"
+      }
+    },
+    "arm": {
+      "baseline": {
+        "runs": [
+          "4hsn2"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 2,
+        "briefs_flagged_mismatch": 2,
+        "briefs_flagged_placeholder": 0,
+        "checked": 565,
+        "checked_distinct": 565,
+        "unchecked": 244,
+        "unchecked_reasons": {
+          "bound": 2,
+          "period": 16
+        },
+        "findings": 2,
+        "distinct_findings": 2,
+        "distinct_mismatches": 2,
+        "by_kind": {
+          "mismatch": 2
+        },
+        "by_field": {
+          "net_income": 1,
+          "week_52_low": 1
+        },
+        "by_section": {
+          "executive-summary": 1,
+          "risk-factors": 1
+        },
+        "coverage": 0.6984,
+        "briefs_flagged_rate": {
+          "k": 2,
+          "n": 40,
+          "rate": 0.05,
+          "ci95": [
+            0.0138,
+            0.165
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 2,
+          "n": 565,
+          "rate": 0.0035,
+          "ci95": [
+            0.001,
+            0.0128
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0089
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "slm-full-gpu": {
+        "runs": [
+          "nstp9"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 2,
+        "briefs_flagged_mismatch": 2,
+        "briefs_flagged_placeholder": 0,
+        "checked": 432,
+        "checked_distinct": 432,
+        "unchecked": 155,
+        "unchecked_reasons": {
+          "form": 5,
+          "period": 14
+        },
+        "findings": 2,
+        "distinct_findings": 2,
+        "distinct_mismatches": 2,
+        "by_kind": {
+          "mismatch": 2
+        },
+        "by_field": {
+          "net_income": 1,
+          "week_52_low": 1
+        },
+        "by_section": {
+          "executive-summary": 1,
+          "sec-filing-highlights": 1
+        },
+        "coverage": 0.7359,
+        "briefs_flagged_rate": {
+          "k": 2,
+          "n": 40,
+          "rate": 0.05,
+          "ci95": [
+            0.0138,
+            0.165
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 2,
+          "n": 432,
+          "rate": 0.0046,
+          "ci95": [
+            0.0013,
+            0.0167
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0117
+            ],
+            "empty_draws": 0
+          }
+        }
+      }
+    },
+    "arm_model": {
+      "baseline:hosted": {
+        "runs": [
+          "4hsn2"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 2,
+        "briefs_flagged_mismatch": 2,
+        "briefs_flagged_placeholder": 0,
+        "checked": 565,
+        "checked_distinct": 565,
+        "unchecked": 244,
+        "unchecked_reasons": {
+          "bound": 2,
+          "period": 16
+        },
+        "findings": 2,
+        "distinct_findings": 2,
+        "distinct_mismatches": 2,
+        "by_kind": {
+          "mismatch": 2
+        },
+        "by_field": {
+          "net_income": 1,
+          "week_52_low": 1
+        },
+        "by_section": {
+          "executive-summary": 1,
+          "risk-factors": 1
+        },
+        "coverage": 0.6984,
+        "briefs_flagged_rate": {
+          "k": 2,
+          "n": 40,
+          "rate": 0.05,
+          "ci95": [
+            0.0138,
+            0.165
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 2,
+          "n": 565,
+          "rate": 0.0035,
+          "ci95": [
+            0.001,
+            0.0128
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0089
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "slm-full-gpu:qwen3.6-35b-a3b-q4km": {
+        "runs": [
+          "nstp9"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 2,
+        "briefs_flagged_mismatch": 2,
+        "briefs_flagged_placeholder": 0,
+        "checked": 432,
+        "checked_distinct": 432,
+        "unchecked": 155,
+        "unchecked_reasons": {
+          "form": 5,
+          "period": 14
+        },
+        "findings": 2,
+        "distinct_findings": 2,
+        "distinct_mismatches": 2,
+        "by_kind": {
+          "mismatch": 2
+        },
+        "by_field": {
+          "net_income": 1,
+          "week_52_low": 1
+        },
+        "by_section": {
+          "executive-summary": 1,
+          "sec-filing-highlights": 1
+        },
+        "coverage": 0.7359,
+        "briefs_flagged_rate": {
+          "k": 2,
+          "n": 40,
+          "rate": 0.05,
+          "ci95": [
+            0.0138,
+            0.165
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 2,
+          "n": 432,
+          "rate": 0.0046,
+          "ci95": [
+            0.0013,
+            0.0167
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0117
+            ],
+            "empty_draws": 0
+          }
+        }
+      }
+    },
+    "partial_runs": [],
+    "all_full": {
+      "runs": [
+        "4hsn2",
+        "nstp9"
+      ],
+      "briefs": 80,
+      "briefs_flagged": 4,
+      "briefs_flagged_mismatch": 4,
+      "briefs_flagged_placeholder": 0,
+      "checked": 997,
+      "checked_distinct": 997,
+      "unchecked": 399,
+      "unchecked_reasons": {
+        "bound": 2,
+        "form": 5,
+        "period": 30
+      },
+      "findings": 4,
+      "distinct_findings": 4,
+      "distinct_mismatches": 4,
+      "by_kind": {
+        "mismatch": 4
+      },
+      "by_field": {
+        "net_income": 2,
+        "week_52_low": 2
+      },
+      "by_section": {
+        "executive-summary": 2,
+        "risk-factors": 1,
+        "sec-filing-highlights": 1
+      },
+      "coverage": 0.7142,
+      "briefs_flagged_rate": {
+        "k": 4,
+        "n": 80,
+        "rate": 0.05,
+        "ci95": [
+          0.0196,
+          0.1216
+        ]
+      },
+      "mismatches_per_checked": {
+        "k": 4,
+        "n": 997,
+        "rate": 0.004,
+        "ci95": [
+          0.0016,
+          0.0103
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            0.001,
+            0.0082
+          ],
+          "empty_draws": 0
+        }
+      }
+    }
+  },
+  "crbu_assertion": {
+    "market_cap_ratio": 99.81,
+    "market_cap_stated": "$16.8 billion",
+    "placeholder": "[City Name]",
+    "passed": true
+  },
+  "injection": {
+    "seed": 42,
+    "clean_briefs": 76,
+    "by_type": {
+      "x10": {
+        "n": 72,
+        "detected": 72,
+        "recall": 1.0,
+        "ci95": [
+          0.9493,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "x100": {
+        "n": 72,
+        "detected": 72,
+        "recall": 1.0,
+        "ci95": [
+          0.9493,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "x0.01": {
+        "n": 72,
+        "detected": 72,
+        "recall": 1.0,
+        "ci95": [
+          0.9493,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "sign_flip": {
+        "n": 72,
+        "detected": 71,
+        "recall": 0.9861,
+        "ci95": [
+          0.9254,
+          0.9975
+        ],
+        "example_misses": [
+          "nstp9 SAP: net_income: sign flipped on 7.80 billion"
+        ]
+      },
+      "swap_fields": {
+        "n": 72,
+        "detected": 72,
+        "recall": 1.0,
+        "ci95": [
+          0.9493,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "unit_down": {
+        "n": 57,
+        "detected": 57,
+        "recall": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "placeholder": {
+        "n": 72,
+        "detected": 53,
+        "recall": 0.7361,
+        "ci95": [
+          0.6242,
+          0.8241
+        ],
+        "example_misses": [
+          "4hsn2 BLNK: profit_margin: -52.48% -> TBD",
+          "4hsn2 CALM: pe_ratio: 52.84x -> XX",
+          "4hsn2 COIN: week_52_low: $139.11 -> N/A",
+          "4hsn2 EDIT: profit_margin: -157.32% -> XX",
+          "4hsn2 MSFT: profit_margin: 40.3% -> [\u25cf]",
+          "4hsn2 NVDA: market_cap: $5.77 trillion -> [\u25cf]",
+          "4hsn2 OCGN: market_cap: $353 million -> [\u25cf]",
+          "4hsn2 TM: pe_ratio: 8.09 -> XX",
+          "4hsn2 TSM: profit_margin: 49.92% -> [\u25cf]",
+          "4hsn2 V: profit_margin: 50.8% -> XX"
+        ]
+      }
+    },
+    "placeholder_by_token": {
+      "$X": {
+        "n": 12,
+        "detected": 12,
+        "recall": 1.0,
+        "ci95": [
+          0.7575,
+          1.0
+        ]
+      },
+      "N/A": {
+        "n": 11,
+        "detected": 9,
+        "recall": 0.8182,
+        "ci95": [
+          0.523,
+          0.9486
+        ]
+      },
+      "TBD": {
+        "n": 3,
+        "detected": 0,
+        "recall": 0.0,
+        "ci95": [
+          0.0,
+          0.5615
+        ]
+      },
+      "XX": {
+        "n": 6,
+        "detected": 0,
+        "recall": 0.0,
+        "ci95": [
+          0.0,
+          0.3903
+        ]
+      },
+      "[City Name]": {
+        "n": 6,
+        "detected": 6,
+        "recall": 1.0,
+        "ci95": [
+          0.6097,
+          1.0
+        ]
+      },
+      "[Company]": {
+        "n": 5,
+        "detected": 5,
+        "recall": 1.0,
+        "ci95": [
+          0.5655,
+          1.0
+        ]
+      },
+      "[X]": {
+        "n": 8,
+        "detected": 8,
+        "recall": 1.0,
+        "ci95": [
+          0.6756,
+          1.0
+        ]
+      },
+      "[insert date]": {
+        "n": 6,
+        "detected": 6,
+        "recall": 1.0,
+        "ci95": [
+          0.6097,
+          1.0
+        ]
+      },
+      "[\u25cf]": {
+        "n": 8,
+        "detected": 0,
+        "recall": 0.0,
+        "ci95": [
+          0.0,
+          0.3244
+        ]
+      },
+      "{market_cap}": {
+        "n": 7,
+        "detected": 7,
+        "recall": 1.0,
+        "ci95": [
+          0.6457,
+          1.0
+        ]
+      }
+    }
+  },
+  "adjudication": {
+    "path": "eval/numeric_check/adjudication-2026-10-06-4hsn2-nstp9.csv",
+    "verdicts": [
+      "TRUE_ERROR",
+      "FALSE_POSITIVE",
+      "OTHER_DEFECT"
+    ],
+    "rows": 4,
+    "verdicts_kept": 0
+  }
+}
