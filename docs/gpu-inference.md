@@ -132,10 +132,62 @@ node) and the A10 on node 2. Both measured as 40-ticker eval runs on image
 
 ## Capacity at higher parallelism
 
-**Not yet run.** A GPU run at parallelism 4 is planned to measure what
-the A10 sustains when it is kept busier. Until it runs, no throughput or
-cost figure above parallelism 2 is claimed, and none is projected from
-the 36–38% utilization.
+**Replay sweep, 2026-10-07** (`scripts/capacity_replay.py`, outputs in
+`eval/runs/capacity-sweep-2026-10-07/`). The 270 LLM calls of the A10 run
+of record `nstp9` replayed against the GPU endpoint on node 2 (from node 2
+itself, so no network path), at a fixed client concurrency P, one level
+after the other, nothing else using the endpoint. The ledger records each
+call's token counts but not its text, so each replayed request is
+**length-matched**: a token-exact prompt of the recorded length, cut from
+`nstp9`'s own retrieved contexts behind a distinct per-request marker, and
+exactly the recorded number of completion tokens (`n_predict`,
+`ignore_eos`). Prompt cache off; one connection per request; counts from the
+server's own per-request timings.
+
+| P | Wall for 270 calls | Requests/min | Output tok/s | Prompt tok/s | Latency p50 / p95 | A10 util mean (median) | VRAM | Errors |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 19.7 min | 13.7 | 83.6 | 298.6 | 2.1 s / 9.8 s | 90.9% (94%) | 20,540 MiB | 0 |
+| 2 | 15.2 min | 17.8 | 108.2 | 386.5 | 3.4 s / 16.6 s | 86.6% (92%) | 20,540 MiB | 0 |
+| 4 | 13.0 min | 20.8 | 126.6 | 452.5 | 5.8 s / 29.5 s | 82.0% (89%) | 20,540 MiB | 0 |
+
+- **The server, kept busy, does about 1.5× more work at P=4 than at P=1**
+  (output tokens per second 126.6 vs 83.6), and latency per call rises
+  about 3× (p95 29.5 s vs 9.8 s; synthesis calls median 27.3 s vs 9.3 s).
+  Every level ran the whole of `nstp9`'s call mix, which is 40 briefs of
+  model work: 13.0 minutes at P=4 against 19.7 at P=1.
+- **Why the eval run idled the GPU:** in `nstp9` the A10 averaged 36%
+  because each eval pod spends most of its time outside the model
+  (fetching data, retrieval, the judge). With the model calls alone, back
+  to back, it stays at 82–91%.
+- VRAM does not move with P: llama.cpp allocates the 32,768-token KV cache
+  at start (`--kv-unified`, shared by the 4 slots).
+- **P=8 was not run.** The endpoint serves 4 slots (`--parallel 4`), so
+  a client at P=8 only queues the extra requests at the server and measures
+  nothing P=4 does not. Serving 8 at once needs `--parallel 8` and a larger
+  shared context: `nstp9`'s largest call is 4,215 tokens (p95 3,698), and
+  8 × 4,215 = 33,720 exceeds the 32,768 tokens the 4 slots share now. That
+  is an endpoint restart with a new context size on the demo's GPU node,
+  which this sweep was approved without.
+- **Not a cost floor yet.** These are model-only figures from a replay;
+  the briefs-per-hour of a whole eval at P=4 come from the 40-ticker GPU
+  eval at parallelism 4 (below, when it has run).
+- **The counter drift reproduced, under control.** At every level the
+  requests' own timings sum exactly to the tokens sent (352,522 prompt,
+  98,665 generated), with no cache reuse, while the server's `/metrics`
+  prompt counter moved 1, 2 and 2 tokens less. The generated-token counter
+  matched exactly. This is the same small counter error behind the two
+  failed CPU traffic proofs (`eval/runs/slm-proof-4kkgm/INVESTIGATION.md`),
+  now seen on the GPU endpoint with nothing else running: the counter, not
+  outside traffic. No rule change: the proof still requires EXACT, and the
+  fix is the post-demo ledger change that records each response's own
+  timings.
+
+```bash
+python scripts/capacity_replay.py plan --run nstp9   --log eval/runs/slm-proof-nstp9/grounding-eval-extended-slm-gpu-nstp9.log   --out eval/runs/capacity-plan-nstp9.json
+python3 scripts/capacity_replay.py run --plan eval/runs/capacity-plan-nstp9.json   --url http://127.0.0.1:30880 --key-file ~/.llama-key --levels 1 2 4 --out ~/capacity-sweep-<date>   # node 2
+python scripts/capacity_replay.py summary --dir eval/runs/capacity-sweep-2026-10-07
+python scripts/nvsmi_summary.py eval/runs/capacity-sweep-2026-10-07/nvsmi.csv   --window P1 2026-10-07T21:54:33Z 2026-10-07T22:14:14Z   --window P2 2026-10-07T22:14:44Z 2026-10-07T22:29:56Z   --window P4 2026-10-07T22:30:26Z 2026-10-07T22:43:25Z
+```
 
 ## What has not run
 
@@ -143,4 +195,5 @@ the 36–38% utilization.
   (`terraform/oci/`) has never been applied.
 - vLLM serving Qwen3.6-35B-A3B on one A10 (computed infeasible above,
   not booted).
-- The A10 at any parallelism above 2.
+- A whole eval on the A10 at any parallelism above 2 (the replay sweep
+  above measured the server alone).

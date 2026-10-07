@@ -74,3 +74,18 @@ python scripts/llamacpp_window_match.py --dir eval/runs/slm-proof-4kkgm \
 python scripts/llamacpp_window_match.py --dir eval/runs/slm-proof-5bdz5 \
     --log eval/runs/slm-proof-5bdz5/grounding-eval-extended-slm-cpu-5bdz5.log
 ```
+
+## Addendum (2026-10-07): the drift reproduced on the GPU endpoint
+
+The A10 capacity sweep (`eval/runs/capacity-sweep-2026-10-07/`,
+`scripts/capacity_replay.py`) replayed `nstp9`'s 270 calls three times
+against the GPU endpoint, from node 2 itself, with nothing else using it
+and the prompt cache off. Each time the requests' own timings summed
+exactly to the tokens sent (352,522 prompt, 98,665 generated) and the
+cached-prompt counter did not move, yet `/metrics` `prompt_tokens_total`
+moved 352,521, 352,520 and 352,520: 1, 2 and 2 tokens short. The
+generated-token counter was exact. So the process-wide prompt counter can
+miss by a token or two with no outside traffic and no cache, on either
+endpoint (the four GPU eval proofs were nonetheless EXACT). The rule is
+unchanged; per-request `timings` in the ledger remain the fix.
+

@@ -31,10 +31,17 @@ def test_prompts_are_exact_length_with_a_distinct_prefix():
     assert cr.build_prompt(pool, [1, 2, 3, 4], 2, offset=0) == [1, 2]
 
 
-def test_percentile_and_table():
+def test_level_stats_counts_server_side_and_reads_the_counter_gap():
+    rows = [{"i": 0, "site": "s", "target_prompt": 10, "target_completion": 4, "sent_prompt": 10,
+             "latency_s": 2.0, "error": None, "prompt_n": 10, "predicted_n": 4, "tokens_cached": 13},
+            {"i": 1, "site": "s", "target_prompt": 20, "target_completion": 5, "sent_prompt": 20,
+             "latency_s": 4.0, "error": None, "prompt_n": 18, "predicted_n": 5, "tokens_cached": 24}]
+    delta = {"prompt_tokens_total": 27.0, "tokens_predicted_total": 9.0, "prompt_tokens_cached_total": 2.0}
+    lv = cr.level_stats(rows, delta, wall=60.0)
+    assert lv["requests_with_cache_reuse"] == 1          # sent - prompt_n, not tokens_cached
+    assert lv["counter_minus_requests"] == {"prompt": -1.0, "generated": 0.0}
+    assert not lv["server_matches_requests"] and lv["requests_per_min"] == 2.0
+    lv["P"] = 1
+    assert "| 1 | 2 (0) | 1.0 min | 2.0 | 0.1 | 0.5 | 3.0 s / 3.9 s | 1 | -1, +0 |" in cr.table({"levels": [lv]})
     assert cr.percentile([1, 2, 3, 4], 0.5) == 2.5
-    s = {"levels": [{"P": 1, "requests": 270, "errors": 0, "wall_s": 600, "requests_per_min": 27.0,
-                     "output_tok_per_s": 160.0, "prompt_tok_per_s": 580.0, "latency_p50_s": 1.8,
-                     "latency_p95_s": 5.0, "requests_with_cache_hits": 0, "server_matches_requests": True}]}
-    assert "| 1 | 270 (0) | 10.0 min | 27.0 | 160.0 | 580.0 | 1.8 s / 5.0 s | 0 | yes |" in cr.table(s)
-    json.dumps(s)
+    json.dumps(lv)

@@ -185,25 +185,43 @@ def run_level(ep: Endpoint, plan: dict, pool: list[int], p: int, out: Path) -> d
     with open(out / f"P{p}-requests.jsonl", "w", encoding="utf-8") as f:
         for r in rows:
             f.write(json.dumps(r) + "\n")
-    ok = [r for r in rows if not r["error"]]
     delta = {k: after.get(k, 0) - before.get(k, 0) for k in METRICS}
-    sum_prompt = sum((r["prompt_n"] or 0) + (r["tokens_cached"] or 0) for r in ok)
-    sum_gen = sum(r["predicted_n"] or 0 for r in ok)
+    lv = level_stats(rows, delta, wall)
+    lv.update({"P": p, "window_utc": [t_start.strftime("%H:%M:%S"), t_end.strftime("%H:%M:%S")],
+               "date_utc": t_start.strftime("%Y-%m-%d")})
+    return lv
+
+
+def level_stats(rows: list[dict], delta: dict, wall: float) -> dict:
+    """A level's figures from its request rows and /metrics deltas.
+
+    Server-side counts only: timings.prompt_n is the prompt tokens the
+    server processed for that request, so sent - prompt_n is the prefix it
+    reused from cache (0 expected: cache_prompt false, distinct markers).
+    (The response's tokens_cached is the slot's fill at release — prompt +
+    generated - 1 — not a cache hit.) The level's /metrics counters must
+    equal the requests' own sums: prompt_tokens_total + the cached counter
+    = the prompt tokens sent, tokens_predicted_total = the tokens generated.
+    """
+    ok = [r for r in rows if not r["error"]]
+    sent = sum(r["sent_prompt"] for r in ok)
+    processed = sum(r["prompt_n"] or 0 for r in ok)
+    gen = sum(r["predicted_n"] or 0 for r in ok)
     lat = [r["latency_s"] for r in ok]
+    counter_prompt = delta["prompt_tokens_total"] + delta["prompt_tokens_cached_total"]
     return {
-        "P": p, "requests": len(rows), "errors": len(rows) - len(ok),
-        "window_utc": [t_start.strftime("%H:%M:%S"), t_end.strftime("%H:%M:%S")],
-        "date_utc": t_start.strftime("%Y-%m-%d"), "wall_s": wall,
+        "requests": len(rows), "errors": len(rows) - len(ok), "wall_s": wall,
         "requests_per_min": len(ok) / wall * 60,
-        "output_tok_per_s": sum_gen / wall, "prompt_tok_per_s": sum_prompt / wall,
+        "output_tok_per_s": gen / wall, "prompt_tok_per_s": processed / wall,
         "latency_p50_s": percentile(lat, 0.5), "latency_p95_s": percentile(lat, 0.95),
         "length_mismatches": sum(1 for r in ok if r["sent_prompt"] != r["target_prompt"]
                                  or r["predicted_n"] != r["target_completion"]),
-        "requests_with_cache_hits": sum(1 for r in ok if (r["tokens_cached"] or 0) > 0),
+        "requests_with_cache_reuse": sum(1 for r in ok if (r["sent_prompt"] - (r["prompt_n"] or 0)) > 0),
+        "sum_prompt_sent": sent, "sum_prompt_processed": processed, "sum_generated": gen,
         "server_counter_delta": delta,
-        "server_matches_requests": (delta["prompt_tokens_total"] + delta["prompt_tokens_cached_total"] == sum_prompt
-                                    and delta["tokens_predicted_total"] == sum_gen),
-        "sum_prompt": sum_prompt, "sum_generated": sum_gen,
+        "counter_minus_requests": {"prompt": counter_prompt - sent,
+                                   "generated": delta["tokens_predicted_total"] - gen},
+        "server_matches_requests": counter_prompt == sent and delta["tokens_predicted_total"] == gen,
     }
 
 
@@ -230,18 +248,32 @@ def cmd_run(args) -> int:
 
 # ── summary ──────────────────────────────────────────────────────────────────
 def table(summary: dict) -> str:
-    L = ["| P | Requests (errors) | Wall | Requests/min | Output tok/s | Prompt tok/s | Latency p50 / p95 | Cache hits | Server = requests |",
+    L = ["| P | Requests (errors) | Wall | Requests/min | Output tok/s | Prompt tok/s | Latency p50 / p95 | Cache reuse | Counters − requests (prompt, generated) |",
          "|---|---|---|---|---|---|---|---|---|"]
     for lv in summary["levels"]:
         L.append(f"| {lv['P']} | {lv['requests']} ({lv['errors']}) | {lv['wall_s'] / 60:.1f} min | "
                  f"{lv['requests_per_min']:.1f} | {lv['output_tok_per_s']:.1f} | {lv['prompt_tok_per_s']:.1f} | "
-                 f"{lv['latency_p50_s']:.1f} s / {lv['latency_p95_s']:.1f} s | {lv['requests_with_cache_hits']} | "
-                 f"{'yes' if lv['server_matches_requests'] else 'NO'} |")
+                 f"{lv['latency_p50_s']:.1f} s / {lv['latency_p95_s']:.1f} s | {lv['requests_with_cache_reuse']} | "
+                 f"{lv['counter_minus_requests']['prompt']:+.0f}, {lv['counter_minus_requests']['generated']:+.0f} |")
     return "\n".join(L)
 
 
+def recompute(d: Path) -> dict:
+    """summary.json with every level's figures recomputed from its request
+    file (the run-time summary of 2026-10-07 read tokens_cached as cache
+    hits; the windows and counter deltas it recorded are kept)."""
+    s = json.loads((d / "summary.json").read_text(encoding="utf-8"))
+    for i, lv in enumerate(s["levels"]):
+        rows = [json.loads(x) for x in (d / f"P{lv['P']}-requests.jsonl").read_text(encoding="utf-8").splitlines() if x]
+        new = level_stats(rows, lv["server_counter_delta"], lv["wall_s"])
+        new.update({k: lv[k] for k in ("P", "window_utc", "date_utc")})
+        s["levels"][i] = new
+    return s
+
+
 def cmd_summary(args) -> int:
-    s = json.loads((Path(args.dir) / "summary.json").read_text(encoding="utf-8"))
+    s = recompute(Path(args.dir))
+    (Path(args.dir) / "summary-recomputed.json").write_text(json.dumps(s, indent=2) + "\n", encoding="utf-8")
     sys.stdout.reconfigure(encoding="utf-8")
     print(table(s))
     for lv in s["levels"]:

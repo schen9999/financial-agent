@@ -1,0 +1,85 @@
+{
+  "run": "nstp9",
+  "url_host": "127.0.0.1",
+  "calls": 270,
+  "levels": [
+    {
+      "P": 1,
+      "requests": 270,
+      "errors": 0,
+      "window_utc": [
+        "21:54:33",
+        "22:14:14"
+      ],
+      "date_utc": "2026-10-07",
+      "wall_s": 1180.7482059001923,
+      "requests_per_min": 13.72011400826077,
+      "output_tok_per_s": 83.56142275463264,
+      "prompt_tok_per_s": 680.4490542396929,
+      "latency_p50_s": 2.0975323915481567,
+      "latency_p95_s": 9.838362801074979,
+      "length_mismatches": 0,
+      "requests_with_cache_hits": 270,
+      "server_counter_delta": {
+        "prompt_tokens_total": 352521.0,
+        "tokens_predicted_total": 98665.0,
+        "prompt_tokens_cached_total": 0.0
+      },
+      "server_matches_requests": false,
+      "sum_prompt": 803439,
+      "sum_generated": 98665
+    },
+    {
+      "P": 2,
+      "requests": 270,
+      "errors": 0,
+      "window_utc": [
+        "22:14:44",
+        "22:29:56"
+      ],
+      "date_utc": "2026-10-07",
+      "wall_s": 912.0880527496338,
+      "requests_per_min": 17.761443043972054,
+      "output_tok_per_s": 108.17486283540141,
+      "prompt_tok_per_s": 880.8787677657941,
+      "latency_p50_s": 3.444317936897278,
+      "latency_p95_s": 16.615178966522215,
+      "length_mismatches": 0,
+      "requests_with_cache_hits": 270,
+      "server_counter_delta": {
+        "prompt_tokens_total": 352520.0,
+        "tokens_predicted_total": 98665.0,
+        "prompt_tokens_cached_total": 0.0
+      },
+      "server_matches_requests": false,
+      "sum_prompt": 803439,
+      "sum_generated": 98665
+    },
+    {
+      "P": 4,
+      "requests": 270,
+      "errors": 0,
+      "window_utc": [
+        "22:30:26",
+        "22:43:25"
+      ],
+      "date_utc": "2026-10-07",
+      "wall_s": 779.0982739925385,
+      "requests_per_min": 20.79326901468036,
+      "output_tok_per_s": 126.63999304527394,
+      "prompt_tok_per_s": 1031.2421767830724,
+      "latency_p50_s": 5.832126259803772,
+      "latency_p95_s": 29.454551911354063,
+      "length_mismatches": 0,
+      "requests_with_cache_hits": 270,
+      "server_counter_delta": {
+        "prompt_tokens_total": 352520.0,
+        "tokens_predicted_total": 98665.0,
+        "prompt_tokens_cached_total": 0.0
+      },
+      "server_matches_requests": false,
+      "sum_prompt": 803439,
+      "sum_generated": 98665
+    }
+  ]
+}
