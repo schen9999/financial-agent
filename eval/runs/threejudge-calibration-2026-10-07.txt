@@ -1,0 +1,17 @@
+Labelled 180 claims (judge v2, three judgings); runs 4hsn2 nstp9
+Stratum  population  labelled  human UNSUPPORTED
+  U              29        29          9
+  I              76        30          3
+  W             174        40          2
+  S             496        81          3
+Population-weighted precision and recall on UNSUPPORTED (95% stratified bootstrap)
+  j1        precision 25.0% (CI 8.3%–44.0%); recall 13.7% (CI 4.4%–30.4%); listed-only recall 19.9% (CI 7.2%–49.7%)
+  j2        precision 30.8% (CI 7.1%–57.1%); recall 9.2% (CI 1.7%–22.9%); listed-only recall 13.3% (CI 2.7%–41.7%)
+  j3        precision 36.8% (CI 16.7%–60.0%); recall 16.0% (CI 6.2%–36.7%); listed-only recall 28.8% (CI 10.7%–78.0%)
+  majority  precision 29.4% (CI 8.3%–52.9%); recall 11.4% (CI 3.1%–27.9%)
+Judge-judge agreement, whole population (793 claims listed by at least one judging)
+  j1-j2: both listed 589/793 = 74.3%; verdict kappa 0.836; flag kappa (union) 0.641
+  j1-j3: both listed 567/793 = 71.5%; verdict kappa 0.859; flag kappa (union) 0.642
+  j2-j3: both listed 571/793 = 72.0%; verdict kappa 0.794; flag kappa (union) 0.681
+  Fleiss, all three listed (548): verdict kappa 0.825; flag kappa (union, 793) 0.653
+  flagged UNSUPPORTED: j1 24, j2 13, j3 19; by all three 10, by exactly one 12

@@ -16,6 +16,13 @@ weighted sums, and precision = TP / (TP + FP), recall = TP / (TP + FN).
 Recall is over the claims at least one judging listed — a figure no
 judging listed is outside the population, as in every earlier calibration.
 
+Recall as each judging's single-judging calibration would measure it
+(September 2026: over the claims that judging listed) is reported beside
+it as "listed-only recall": the same weighted estimate over the rows that
+judging listed. It is higher by construction — a claim the judging never
+listed cannot count against it — and is the figure comparable with the
+calibration of record. The majority has no listed-only form.
+
 Agreement needs no human labels, so it is computed on the whole
 population (rebuilt from the method file's runs and judgings):
   listing     share of the union of claims each pair both listed
@@ -71,6 +78,12 @@ def pr(rows: list[dict], rater: str) -> tuple[float | None, float | None]:
         fp += r["w"] * (f and not u)
         fn += r["w"] * (u and not f)
     return (tp / (tp + fp) if tp + fp else None, tp / (tp + fn) if tp + fn else None)
+
+
+def listed(rows: list[dict], rater: str) -> list[dict]:
+    """The rows the judging listed, weights unchanged (an estimate over that
+    judging's own listed claims)."""
+    return [r for r in rows if r[rater] != "NOT_LISTED"]
 
 
 def boot(rows: list[dict], rater: str, draws: int = DRAWS, seed: int = SEED) -> dict:
@@ -147,9 +160,14 @@ def report(rows: list[dict], method: dict) -> list[str]:
     L.append("Population-weighted precision and recall on UNSUPPORTED (95% stratified bootstrap)")
     for rater in RATERS:
         b = boot(rows, rater)
-        L.append(f"  {rater:9} precision {pct(b['precision'])} (CI {pct(b['precision_ci'][0])}–"
-                 f"{pct(b['precision_ci'][1])}); recall {pct(b['recall'])} (CI {pct(b['recall_ci'][0])}–"
-                 f"{pct(b['recall_ci'][1])})")
+        line = (f"  {rater:9} precision {pct(b['precision'])} (CI {pct(b['precision_ci'][0])}–"
+                f"{pct(b['precision_ci'][1])}); recall {pct(b['recall'])} (CI {pct(b['recall_ci'][0])}–"
+                f"{pct(b['recall_ci'][1])})")
+        if rater != "majority":
+            lb = boot(listed(rows, rater), rater)
+            line += (f"; listed-only recall {pct(lb['recall'])} (CI {pct(lb['recall_ci'][0])}–"
+                     f"{pct(lb['recall_ci'][1])})")
+        L.append(line)
     return L
 
 

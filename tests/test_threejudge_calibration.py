@@ -83,6 +83,15 @@ def test_weighted_precision_recall_and_majority():
     assert tr.pr(rows, "majority") == (1.0, pytest.approx(1 / 11))
 
 
+def test_listed_only_recall_drops_unlisted_rows():
+    U, S, N = "UNSUPPORTED", "SUPPORTED", "NOT_LISTED"
+    rows = [_row("U", U, U, N, N), _row("U", U, N, U, N)]
+    for r in rows:
+        r["w"] = 1
+    assert tr.pr(rows, "j1") == (1.0, 0.5)
+    assert tr.pr(tr.listed(rows, "j1"), "j1") == (1.0, 1.0)
+
+
 def test_load_reweights_to_labelled_rows(tmp_path):
     (tmp_path / "s.csv").write_text("id,ticker,claim,context,human_label\n0,A,c,x,UNSUPPORTED\n"
                                     "1,A,c,x,\n2,A,c,x,SUPPORTED\n", encoding="utf-8")
