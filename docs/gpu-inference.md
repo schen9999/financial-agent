@@ -67,7 +67,36 @@ Computed from the published artifacts, **not booted**
 llama.cpp's CUDA 12.8.1 build serves the same Q4_K_M GGUF with all layers
 on the A10.
 
-## Qwen3.6 on CPU vs on the A10
+## The A10 against hosted, image `f3043751` (current)
+
+The A10 run of record on the current image (stock-data fix plus
+currency-labelling prompt rule): GPU `nstp9` (2026-10-06, 40 tickers, two
+briefs at a time, traffic proof EXACT) against hosted `4hsn2` on the same
+image. Source: [eval-methodology.md, the current runs](eval-methodology.md#numbers-of-record-on-the-stock-data-fix-image-three-judgings-per-run-and-the-judge-v2-calibration-on-those-runs-2026-10-0607).
+
+| | Hosted (`4hsn2`) | A10 (`nstp9`) |
+|---|---|---|
+| Pipeline time per brief, mean | 26.7 s | 34.6 s (1.3× hosted's) |
+| Briefs per hour, run's wall time, parallelism 2 | — | 66.0 |
+| Model cost per brief | $0.0357 (n = 3, API cost, same pipeline code) | **at most $0.0303** (the whole VM at $2.00/h × 2,183 s for 40 briefs) |
+| A10 utilization during the run | — | mean 35.7%, median sample 0%, above 0% in 41% of samples |
+| Wrong stock figures per checked number (numeric check, adjudicated) | 1/565 | 1/432 |
+| Figures bound to stock data per brief (no judge) | 4.47 | 3.05 |
+| Grounding (judge v2, judge-flagged, mean of three judgings) | 2.55% | 3.57% |
+
+- The A10 again sat mostly idle at two briefs at a time, so its cost per
+  brief is a ceiling, not an estimate of the floor.
+- Hosted cost is `scripts/cost_report.py` run locally on the unchanged
+  pipeline code; A10 cost is `scripts/cost_per_brief_slm.py` on the run's
+  workflow object, with utilization from `scripts/nvsmi_summary.py`
+  (output `eval/runs/cost-gpu-nstp9-2026-10-07.txt`).
+- Judge-flagged grounding is secondary: on these runs the judge's
+  precision is about 29% and its recall about 11%, and it moves by up to
+  2× between judgings. No difference was detected.
+- There is no citable CPU run on this image (both failed their traffic
+  proofs), so the CPU comparison below stays on the previous image.
+
+## Qwen3.6 on CPU vs on the A10, image `1f51dad` (dated)
 
 The same GGUF and the same llama.cpp build on both sides: the CPU
 endpoint in the OKE cluster (8 CPU / 30 GiB pod on a VM.Standard.E5.Flex
@@ -106,7 +135,7 @@ node) and the A10 on node 2. Both measured as 40-ticker eval runs on image
 **Not yet run.** A GPU run at parallelism 4 is planned to measure what
 the A10 sustains when it is kept busier. Until it runs, no throughput or
 cost figure above parallelism 2 is claimed, and none is projected from
-the 38% utilization.
+the 36–38% utilization.
 
 ## What has not run
 
