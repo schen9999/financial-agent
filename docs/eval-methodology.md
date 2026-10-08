@@ -2371,7 +2371,7 @@ limit was kept, and no eval pod of the A/B was killed or retried.
 | Criterion | Baseline `vks4c` | Rerank3 `2mzdd` | Result |
 |---|---|---|---|
 | 1. Highlights refusals (35 tickers with a RAG answer) | 5 | 7 | b = 2, c = 4, McNemar p = 0.69: **fails** (reranking refused more) |
-| 2. Numeric TRUE_ERROR per checked number | 1 flag (BLNK, current price as the 52-week low, draft TRUE_ERROR) | 0 flags | pending adjudication; does not change the decision |
+| 2. Numeric TRUE_ERROR per checked number (adjudicated) | 1/548 (BLNK: the current price written as the 52-week low) | 0/539 | −0.18 points (CI −0.60 to 0.00): passes |
 | 3. Figures bound to stock data per brief | 4.33 | 4.30 | −0.03 (CI −0.40 to +0.35): passes |
 | 4. Warm latency added per ticker | — | +11.0 s | 41.5% of the baseline's 26.4 s, limit 20%: **fails** |
 
@@ -2391,6 +2391,7 @@ limit was kept, and no eval pod of the A/B was killed or retried.
 
 ```bash
 python eval/rag_refusals.py --runs vks4c 2mzdd
+python scripts/numeric_adjudicated.py --date 2026-10-08 --runs vks4c 2mzdd   --adjudication eval/numeric_check/adjudication-2026-10-08-vks4c-2mzdd.csv
 python eval/density_check.py --runs vks4c 2mzdd --pairs 2mzdd:vks4c      # eval/runs/density-2026-10-08-rerank-ab.txt
 python eval/three_judging_stats.py --runs vks4c 2mzdd \
   --judgings raw eval/runs/rejudge-2026-10-08 eval/runs/rejudge-2026-10-08-r2 --pairs vks4c:2mzdd

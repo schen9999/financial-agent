@@ -1,0 +1,354 @@
+{
+  "date": "2026-10-08",
+  "harness": "scripts/numeric_adjudicated.py --adjudication --runs",
+  "adjudication": "eval/numeric_check/adjudication-2026-10-08-vks4c-2mzdd.csv",
+  "runs": [
+    "vks4c",
+    "2mzdd"
+  ],
+  "note": "Adjudicated numeric-check results, same-image runs. Not a number of record.",
+  "precision": {
+    "2mzdd": {
+      "rows": 0,
+      "TRUE_ERROR": 0,
+      "FALSE_POSITIVE": 0,
+      "OTHER_DEFECT": 0,
+      "other_defect_as_tp": {
+        "k": 0,
+        "n": 0,
+        "rate": null,
+        "ci95": [
+          0.0,
+          1.0
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            0.0,
+            1.0
+          ],
+          "empty_draws": 10000
+        }
+      },
+      "other_defect_excluded": {
+        "k": 0,
+        "n": 0,
+        "rate": null,
+        "ci95": [
+          0.0,
+          1.0
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            0.0,
+            1.0
+          ],
+          "empty_draws": 10000
+        }
+      }
+    },
+    "vks4c": {
+      "rows": 1,
+      "TRUE_ERROR": 1,
+      "FALSE_POSITIVE": 0,
+      "OTHER_DEFECT": 0,
+      "other_defect_as_tp": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0,
+        "ci95": [
+          0.2065,
+          1.0
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "empty_draws": 3629
+        }
+      },
+      "other_defect_excluded": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0,
+        "ci95": [
+          0.2065,
+          1.0
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "empty_draws": 3629
+        }
+      }
+    }
+  },
+  "notes": {
+    "labelled": 1,
+    "doubt_notes": 0,
+    "notes": [
+      {
+        "id": "1",
+        "run": "vks4c",
+        "ticker": "BLNK",
+        "field": "week_52_low",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      }
+    ]
+  },
+  "true_error_rates": {
+    "flags": {
+      "run": {
+        "vks4c": {
+          "k": 1,
+          "n": 548,
+          "rate": 0.0018,
+          "ci95": [
+            0.0003,
+            0.0103
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.006
+            ],
+            "empty_draws": 0
+          }
+        },
+        "2mzdd": {
+          "k": 0,
+          "n": 539,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0071
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "differences": {
+        "2mzdd - vks4c": {
+          "difference": -0.0018,
+          "ci95": [
+            -0.006,
+            0.0
+          ],
+          "p_two_sided_bootstrap": 0.7258,
+          "excludes_zero": false,
+          "paired_by_ticker": true,
+          "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+        }
+      }
+    },
+    "true_error": {
+      "run": {
+        "vks4c": {
+          "k": 1,
+          "n": 548,
+          "rate": 0.0018,
+          "ci95": [
+            0.0003,
+            0.0103
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.006
+            ],
+            "empty_draws": 0
+          }
+        },
+        "2mzdd": {
+          "k": 0,
+          "n": 539,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0071
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "differences": {
+        "2mzdd - vks4c": {
+          "difference": -0.0018,
+          "ci95": [
+            -0.006,
+            0.0
+          ],
+          "p_two_sided_bootstrap": 0.7258,
+          "excludes_zero": false,
+          "paired_by_ticker": true,
+          "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+        }
+      }
+    },
+    "true_error_ex_upstream": {
+      "run": {
+        "vks4c": {
+          "k": 1,
+          "n": 548,
+          "rate": 0.0018,
+          "ci95": [
+            0.0003,
+            0.0103
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.006
+            ],
+            "empty_draws": 0
+          }
+        },
+        "2mzdd": {
+          "k": 0,
+          "n": 539,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0071
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "differences": {
+        "2mzdd - vks4c": {
+          "difference": -0.0018,
+          "ci95": [
+            -0.006,
+            0.0
+          ],
+          "p_two_sided_bootstrap": 0.7258,
+          "excludes_zero": false,
+          "paired_by_ticker": true,
+          "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+        }
+      }
+    }
+  },
+  "upstream": {
+    "by_group": {
+      "baseline": {
+        "true_errors": 1,
+        "true_error_mismatches": 1,
+        "currency": 0,
+        "margin_fraction": 0,
+        "upstream_total": 0,
+        "not_attributed_sap": 0,
+        "not_attributed_margin_other_scale": 0
+      },
+      "baseline:hosted": {
+        "true_errors": 1,
+        "true_error_mismatches": 1,
+        "currency": 0,
+        "margin_fraction": 0,
+        "upstream_total": 0,
+        "not_attributed_sap": 0,
+        "not_attributed_margin_other_scale": 0
+      }
+    },
+    "rows": []
+  },
+  "judge_on_same_figure": [
+    {
+      "id": "1",
+      "run": "vks4c",
+      "ticker": "BLNK",
+      "section": "Executive Summary",
+      "field": "week_52_low",
+      "stated": "$0.51",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "trades near its 52-week low of $0.51",
+          "judge_label": "UNSUPPORTED"
+        }
+      ]
+    }
+  ],
+  "currency_label_true_errors": {
+    "run": {
+      "vks4c": {
+        "k": 0,
+        "n": 548,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.007
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "empty_draws": 0
+        }
+      },
+      "2mzdd": {
+        "k": 0,
+        "n": 539,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0071
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "empty_draws": 0
+        }
+      }
+    },
+    "differences": {
+      "2mzdd - vks4c": {
+        "difference": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "p_two_sided_bootstrap": 1.0,
+        "excludes_zero": false,
+        "paired_by_ticker": true,
+        "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+      }
+    }
+  },
+  "financial_currency": null
+}
