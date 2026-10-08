@@ -531,7 +531,10 @@ Phase 3 — demo polish:
   synthesis prompt's Outlook example ("watch services-margin trend") leaks
   into briefs as ungrounded "services margins" watch-items (NVDA and MSFT
   in m7qvv, AFRM in p9jr2); not changed in the stock-data-fix image, the
-  fix is post-demo. GPU smoke m7qvv (4/60, gate failed, all watch-items,
+  fix is post-demo. (9) added 2026-10-08: the current price stated as the
+  52-week low ("near its 52-week low of $X", X the current price) — UPST
+  4hsn2, EVGO nstp9, BLNK vks4c, hosted and SLM alike; adjudicated
+  TRUE_ERRORs, all judge-flagged; post-demo prompt fix beside (8). GPU smoke m7qvv (4/60, gate failed, all watch-items,
   numeric 0/30, proof EXACT) is smoke-level judge variance on qualitative
   watch-items (limitation 1), precedent 7c66k -> 9jzmj; the extended chain
   went ahead on the adjudicator's go. Numeric check on the

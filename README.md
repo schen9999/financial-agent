@@ -26,7 +26,7 @@ An AI agent that researches stocks and answers follow-up questions using live fi
 
 ## Next steps
 
-- After the demo, the deferred image changes: shrink the eval pod's output parameter (the aggregate's template now needs Argo's ConfigMap offload), count "52-week" phrases as labels rather than figures, and the recorded pipeline limitations (watch-items the judge cannot ground, refused filing-highlights answers for five tickers, unreconciled conflicting figures between yfinance and the filing, truncated derived figures). Each changes the pipeline, so each means new baselines on every arm.
+- After the demo, the deferred image changes: shrink the eval pod's output parameter (the aggregate's template now needs Argo's ConfigMap offload), count "52-week" phrases as labels rather than figures, and the recorded pipeline limitations (watch-items the judge cannot ground, refused filing-highlights answers for five tickers, unreconciled conflicting figures between yfinance and the filing, truncated derived figures, the synthesis prompt's example leaking into watch-items, and the current price stated as the 52-week low). Each changes the pipeline, so each means new baselines on every arm.
 - Measure the A10 endpoint at higher parallelism before quoting a GPU cost floor: it averaged 36–38% utilization at parallelism 2.
 - Apply the OKE Terraform when a compartment is available, and verify the vLLM `oke-gpu` overlay on the A10 pool.
 - Switch the numeric check from warn to block once the data defects are fixed.

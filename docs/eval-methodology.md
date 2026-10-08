@@ -2293,6 +2293,17 @@ comparison (post-demo), continuing 1–4 above:**
    known source. Not changed in the stock-data-fix image (it changes the
    synthesis prompt, so every arm would need new baselines); the fix — an
    example that names no metric, or none — is post-demo.
+9. *The current price stated as the 52-week low* (added 2026-10-08). A
+   brief says the stock "trades near its 52-week low of $X" with X the
+   current price, not the low: UPST in hosted `4hsn2` ($24.35; low
+   $22.555), EVGO in GPU `nstp9` ($1.35; low $1.23) and BLNK in hosted
+   `vks4c` ($0.51; low $0.45) — on both the hosted model and the
+   self-served one. Each is an adjudicated numeric-check TRUE_ERROR, and
+   the judge flagged each one UNSUPPORTED. The synthesis prompt passes
+   `week_52_low` and `current_price` as fields and says nothing about how to
+   state them. The fix — a prompt rule that the 52-week low and high are
+   quoted only as those fields, separately from the current price — changes
+   the synthesis prompt, so it is post-demo with limitation 8.
 
 ```bash
 python eval/multi_arm_stats.py \
