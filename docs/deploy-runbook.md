@@ -966,6 +966,28 @@ balancer was created. Streamlit was put back to ClusterIP (`kubectl apply
 their last-applied annotation only, no restart); OCI holds no load balancer
 and the VCN still has its 7 NSGs. The two Secrets stay for the next attempt.
 
+**Retry (2026-10-08): NSG mode refused again; reverted; an unauthenticated
+exposure by another actor recorded.** After the tenancy owner said the
+cluster policies were in place, `scripts/public_ui_up.sh` (NSG mode) was
+re-run at 02:30:58Z: `CreateNetworkSecurityGroup` (POST
+/20160918/networkSecurityGroups, us-ashburn-1; every resource involved in
+compartment `ruzhu`) returned 404 NotAuthorizedOrNotFound at 02:30:59,
+02:31:04, 02:31:18, 02:31:39 and 02:32:22 GMT (first opc-request-id
+`fafd60367aa6f9451af817353ab2d2e8/FFF79E0569DF879A6300C76A49414420/166A5735104C7321E1FC54677671009C`).
+Reverted to ClusterIP; the load balancer was deleted at 02:33:41Z and the
+`pub_lb-tbhcuw` security list is empty again. **Before the retry, outside
+this project's scripts**, the streamlit objects had been changed: at 02:04Z
+a Deployment revision with the unpullable image `financial-agent-app:local`
+(never ready), and from 02:05Z the Service as a LoadBalancer with **no
+source ranges**, in security-list mode — a TCP listener on 8501 and a
+security-list rule admitting 0.0.0.0/0 on 8501 — deleted and recreated at
+02:19–02:20Z. Traffic reached the running Streamlit pod (no sidecar, no
+auth): the UI was **reachable from anywhere without authentication from
+about 02:05 to 02:19Z and 02:22 to 02:31Z**, until the retry moved the
+Service to 443 → 30443. Who made those changes is not recorded (the apply
+overwrote the field managers). Do not expose Streamlit through any
+manifest but `k8s/overlays/oke-provided-public-ui`.
+
 **Fallback: join the owner's LB NSG** (security-rule management `None`,
 which makes the controller ignore `loadBalancerSourceRanges`; the LB is
 attached to the existing NSG `pub_lb-tbhcuw` with
