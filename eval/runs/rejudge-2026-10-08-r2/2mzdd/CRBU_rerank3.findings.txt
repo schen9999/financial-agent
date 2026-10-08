@@ -1,0 +1,99 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, and forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $10.0 million in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue of $10,035,000, and the pre-written Financial Health section states "$10.0 million in revenue," confirming this figure.
+
+---
+
+CLAIM: "a net loss of $103.4 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists net_income of -$103,403,000, which rounds to -$103.4 million, as also stated in the pre-written Financial Health section.
+
+---
+
+CLAIM: "an accumulated deficit of $596.5 million"
+LABEL: SUPPORTED
+REASON: The SEC Highlights and Risk Factors sections both explicitly state "accumulated deficit reached $596.5 million as of December 31, 2025."
+
+---
+
+CLAIM: "52-week high of $3.54"
+LABEL: SUPPORTED
+REASON: The raw source data lists week_52_high of $3.535, which rounds to $3.54 as stated; the pre-written sections also use $3.54.
+
+---
+
+CLAIM: "to $0.62"
+LABEL: SUPPORTED
+REASON: The raw source data lists current_price of $0.6174, which rounds to $0.62, consistent with the pre-written sections.
+
+---
+
+CLAIM: "a market capitalization of just $66.2 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap of $66,189,916, which rounds to $66.2 million, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "holding $142.8 million in cash as of December 31, 2025"
+LABEL: SUPPORTED
+REASON: The SEC Highlights section explicitly states "the company held $142.8 million in cash, cash equivalents, and marketable securities" as of December 31, 2025.
+
+---
+
+CLAIM: "lead candidates vispa-cel and CB-011 advancing through clinical trials"
+LABEL: SUPPORTED
+REASON: The SEC Highlights section explicitly names vispa-cel and CB-011 as product candidates requiring pivotal clinical trials, and the Risk Factors section references their clinical advancement.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "cash position of $142.8 million"
+LABEL: SUPPORTED
+REASON: Explicitly stated in the SEC Highlights section as the cash, cash equivalents, and marketable securities balance as of December 31, 2025.
+
+---
+
+CLAIM: "management believes provides at least 12 months of runway"
+LABEL: SUPPORTED
+REASON: The SEC Highlights section states "Management expects these funds to be sufficient to support current operating plans for at least the next 12 months from the filing date."
+
+---
+
+CLAIM: "an annual cash burn rate of $148-149 million"
+LABEL: SUPPORTED
+REASON: The SEC Highlights and Risk Factors sections both state net losses of $148.1 million in 2025 and $149.1 million in 2024, which the brief uses as a proxy for cash burn rate; the range $148–149 million is directly derivable from these two figures.
+
+---
+
+CLAIM: "no product revenue"
+LABEL: SUPPORTED
+REASON: The SEC Highlights section explicitly states "the company has never generated revenue from product sales," consistent across all source sections.
+
+---
+
+CLAIM: "an accumulated deficit of $596.5 million"
+LABEL: SUPPORTED
+REASON: Explicitly stated in both the SEC Highlights and Risk Factors sections as of December 31, 2025.
+
+---
+
+CLAIM: "clinical data readouts for vispa-cel and CB-011"
+LABEL: SUPPORTED
+REASON: Both vispa-cel and CB-011 are named as lead clinical candidates in the SEC Highlights and Risk Factors sections, with clinical trial advancement explicitly described as a key near-term activity.
+
+---
+
+CLAIM: "the 12-month runway assumption is deteriorating faster than anticipated"
+LABEL: INFERENCE
+REASON: This is a forward-looking watch-item derived directly from the stated 12-month runway figure (present in source) and the disclosed risk that "changing circumstances may cause capital to be consumed faster than anticipated" (present in Risk Factors), making it a restatement of a disclosed risk rather than an independently sourced figure.

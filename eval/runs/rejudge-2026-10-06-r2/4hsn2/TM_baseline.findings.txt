@@ -1,0 +1,142 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the Executive Summary and Outlook sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "generating ¥51.96 trillion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = ¥51,957,024,686,080, which rounds to ¥51.96 trillion; the pre-written Financial Health section also states "¥51.96 trillion."
+
+---
+
+CLAIM: "¥4.48 trillion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net_income = ¥4,483,796,959,232, which rounds to ¥4.48 trillion; confirmed in the pre-written sections.
+
+---
+
+CLAIM: "8.63% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 8.63; also present in the Financial Health section.
+
+---
+
+CLAIM: "The stock currently trades at $184.12"
+LABEL: SUPPORTED
+REASON: Source data shows current_price = 184.12 USD.
+
+---
+
+CLAIM: "market capitalization of $218.0 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 218,031,849,472, which rounds to $218.0 billion.
+
+---
+
+CLAIM: "P/E ratio of 8.09x"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 8.089631, which rounds to 8.09x.
+
+---
+
+CLAIM: "3.4% dividend yield"
+LABEL: SUPPORTED
+REASON: Source data shows dividend_yield = 3.4.
+
+---
+
+CLAIM: "notable value candidate in the Consumer Cyclical sector"
+LABEL: SUPPORTED
+REASON: Source data confirms sector = "Consumer Cyclical."
+
+---
+
+CLAIM: "the low multiple also signals that the market is pricing in meaningful near-term uncertainty"
+LABEL: INFERENCE
+REASON: This is a qualitative interpretation directly derived from the low P/E of 8.09x, which is explicitly stated in the source data and echoed in the pre-written Recent Developments section ("the market may be pricing in near-term headwinds").
+
+---
+
+CLAIM: "Toyota's upcoming earnings guidance"
+LABEL: INFERENCE
+REASON: The pre-written Recent Developments section explicitly states "Investors should monitor upcoming earnings reports," making this a direct restatement of that forward-looking watch-item.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "3.4% dividend yield" (Outlook section)
+LABEL: SUPPORTED
+REASON: Source data shows dividend_yield = 3.4; repeated reference is consistent with source.
+
+---
+
+CLAIM: "P/E ratio that sits well below what might be expected for a company of its scale"
+LABEL: INFERENCE
+REASON: This is a qualitative comparative judgment derived from the stated P/E of 8.09x and market cap of $218.0 billion, both present in the source data; no external benchmark figure is cited, making this a derivable directional inference rather than an unsupported external claim.
+
+---
+
+CLAIM: "the gap between the trailing P/E of 8.09x and the forward P/E of 11.67x"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 8.089631 (≈8.09x) and forward_pe = 11.667934 (≈11.67x); both figures are present and correctly quoted.
+
+---
+
+CLAIM: "it implies the market anticipates some compression in earnings power going forward"
+LABEL: INFERENCE
+REASON: A forward P/E (11.67x) higher than the trailing P/E (8.09x) arithmetically implies lower expected future earnings relative to current price, which is a standard and directly derivable interpretation from the two figures present in the source data.
+
+---
+
+CLAIM: "revenue and net income are denominated in JPY while the stock trades in USD"
+LABEL: SUPPORTED
+REASON: Source data confirms financial_currency = "JPY" and currency = "USD"; the pre-written sections also state this explicitly.
+
+---
+
+CLAIM: "a sustained strengthening of the yen relative to the dollar could either help or hurt the investment case depending on an investor's base currency and hedging posture"
+LABEL: INFERENCE
+REASON: This is a qualitative directional inference derived from the confirmed JPY/USD currency mismatch in the source data; no specific exchange rate figure or threshold is cited, so no arithmetic check is required, and the derivation is fully grounded in present facts.
+
+---
+
+CLAIM: "Progress — or lack thereof — on Toyota's electrification and autonomous vehicle strategy"
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section explicitly references "EV Transition" and "electrification and autonomous technologies" as material risk/watch items.
+
+---
+
+CLAIM: "upcoming earnings disclosures show margin stability"
+LABEL: INFERENCE
+REASON: This is a forward-looking watch-item directly derived from the current 8.63% profit margin in the source data and the pre-written sections' instruction to monitor upcoming earnings reports; no specific future margin figure is asserted.
+
+---
+
+### Summary Table
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | ¥51.96 trillion revenue | SUPPORTED |
+| 2 | ¥4.48 trillion net income | SUPPORTED |
+| 3 | 8.63% profit margin | SUPPORTED |
+| 4 | $184.12 current price | SUPPORTED |
+| 5 | $218.0 billion market cap | SUPPORTED |
+| 6 | P/E of 8.09x | SUPPORTED |
+| 7 | 3.4% dividend yield (×2) | SUPPORTED |
+| 8 | Consumer Cyclical sector | SUPPORTED |
+| 9 | Market pricing in near-term uncertainty | INFERENCE |
+| 10 | Upcoming earnings guidance | INFERENCE |
+| 11 | Forward P/E of 11.67x | SUPPORTED |
+| 12 | Gap implies earnings compression | INFERENCE |
+| 13 | JPY revenue/income, USD stock | SUPPORTED |
+| 14 | Yen/dollar impact on investment case | INFERENCE |
+| 15 | EV/autonomous strategy watch | SUPPORTED |
+| 16 | Margin stability watch | INFERENCE |
+
+**No claims were found to be UNSUPPORTED.** All quantitative figures are directly present in the source data and correctly transcribed; all forward-looking and qualitative claims are either grounded in explicit source statements or are straightforward derivations from present figures.

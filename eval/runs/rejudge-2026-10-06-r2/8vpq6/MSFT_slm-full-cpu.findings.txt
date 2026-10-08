@@ -1,0 +1,29 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "robust annual revenue of $331.84 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as $331,839,012,864, which rounds to $331.84 billion, matching the pre-written Financial Health section exactly.
+
+---
+
+CLAIM: "40.3% profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data lists profit_margin as 0.40305, which equals 40.305%, rounding to 40.3%; this matches the pre-written Financial Health section.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional (e.g., "cautiously constructive," "heavy capital expenditures," "pace of enterprise AI adoption," "aggressive discounting"). There are no numerical claims to audit in this section.
+
+---
+
+**SUMMARY**
+
+Both quantitative claims in the audited sections are supported by the source data. The Outlook section is entirely qualitative and contains no auditable quantitative or forward-looking numerical claims.

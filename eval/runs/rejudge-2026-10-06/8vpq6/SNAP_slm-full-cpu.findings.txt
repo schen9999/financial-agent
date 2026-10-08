@@ -1,0 +1,48 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$6.35 billion in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as $6,351,084,032, which rounds to $6.35 billion, and the same figure appears in the Financial Health pre-written section.
+
+---
+
+CLAIM: "net income of -$311.24 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists net_income as -$311,243,008, which rounds to -$311.24 million, consistent with the Financial Health pre-written section.
+
+---
+
+CLAIM: "forward P/E of 7.20"
+LABEL: SUPPORTED
+REASON: The raw source data lists forward_pe as 7.195729, which rounds to 7.20, consistent with the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "negative margins"
+LABEL: SUPPORTED
+REASON: The raw source data lists profit_margin as -0.04901 (-4.9%), confirming the margins are negative.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional in nature (e.g., "cautiously constructive," "consistent improvement," "resilience," "stagnates further"). There are therefore no additional quantitative or forward-looking claims to audit in this section.
+
+---
+
+**SUMMARY TABLE**
+
+| Claim | Label |
+|---|---|
+| $6.35 billion in revenue | SUPPORTED |
+| Net income of -$311.24 million | SUPPORTED |
+| Forward P/E of 7.20 | SUPPORTED |
+| Negative margins | SUPPORTED |
+
+All four auditable quantitative claims in the Executive Summary are supported by the raw source data. The Outlook section contains no quantitative or forward-looking figures requiring audit entries.

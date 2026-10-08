@@ -1,0 +1,93 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$4.3 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $4,261,082,112, which rounds to $4.3 billion; the pre-written Financial Health section also states "$4.3 billion in revenue."
+
+---
+
+CLAIM: "45.3% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data shows profit_margin of 0.45289, which equals 45.289% — within 0.15 percentage points of 45.3%; the pre-written sections also state 45.3%.
+
+---
+
+CLAIM: "$23.9 billion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $23,879,301,120, which rounds to $23.9 billion.
+
+---
+
+CLAIM: "P/E of 12.8x"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio of 12.797467, which rounds to 12.8x.
+
+---
+
+CLAIM: "forward P/E of 14.7x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe of 14.658577, which rounds to 14.7x.
+
+---
+
+CLAIM: "P/E of 12.8x and forward P/E of 14.7x sit below historical averages for fintech peers"
+LABEL: UNSUPPORTED
+REASON: No historical fintech peer P/E averages appear anywhere in the source data, SEC filings, or pre-written sections; the pre-written Financial Health section makes the same assertion but provides no supporting benchmark figures.
+
+---
+
+CLAIM: "52-week range of $42.10–$90.44"
+LABEL: SUPPORTED
+REASON: Source data shows week_52_low of 42.095 (rounds to $42.10) and week_52_high of 90.44, matching the claim exactly.
+
+---
+
+CLAIM: "current mid-range price"
+LABEL: SUPPORTED
+REASON: The midpoint of the 52-week range is (42.095 + 90.44) / 2 = $66.27; the current price of $70.77 is above the midpoint but within the range and reasonably described as near mid-range, consistent with the pre-written section's characterization of "near mid-range levels."
+
+---
+
+CLAIM: "loss or disruption of either relationship, on as little as 30–90 days' notice"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly states partner agreements "can be terminated with 30-90 days' notice," and the Risk Factors pre-written section repeats this figure.
+
+---
+
+CLAIM: "Celtic Bank and Lead Bank" (as the named originating bank partners)
+LABEL: SUPPORTED
+REASON: Both Celtic Bank and Lead Bank are explicitly named in the RAG SEC Highlights and Risk Factors sections as the originating bank partners.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "45.3% net profit margin" (second instance, in Outlook)
+LABEL: SUPPORTED
+REASON: Same as above; source data profit_margin of 0.45289 rounds to 45.3%.
+
+---
+
+CLAIM: "below-peer-average valuation multiples"
+LABEL: UNSUPPORTED
+REASON: No peer-average valuation multiples are present in the source data or any pre-written section; there is no benchmark against which to verify this comparative claim.
+
+---
+
+CLAIM: "Celtic Bank and Lead Bank partnerships" (in Outlook watch-list)
+LABEL: SUPPORTED
+REASON: Both entities are explicitly named in the RAG SEC Highlights and Risk Factors sections.
+
+---
+
+CLAIM: "profit margin as competitive pressure on pricing intensifies" (implied forward-looking sustainability of the margin)
+LABEL: INFERENCE
+REASON: This is a directional forward-looking statement derived from the combination of the stated 45.3% margin and the SEC-disclosed competitive pressure risks; no specific future margin figure is asserted, making it a qualitative inference from present facts rather than an unsupported quantitative claim.

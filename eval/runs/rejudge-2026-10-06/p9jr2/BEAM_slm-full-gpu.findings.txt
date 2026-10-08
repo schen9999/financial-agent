@@ -1,0 +1,96 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "market capitalization of approximately $2.53 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap = 2,530,547,712.0, which rounds to approximately $2.53 billion, and the pre-written Financial Health section confirms "approximately $2.53 billion."
+
+---
+
+CLAIM: "negative profit margin of -55.45%"
+LABEL: SUPPORTED
+REASON: The raw source data lists profit_margin = -0.55449003, which equals -55.449%, rounding to -55.45%; confirmed in the pre-written sections.
+
+---
+
+CLAIM: "accumulated deficit of $1.6 billion"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both explicitly state "accumulated deficit stood at $1.6 billion" as of December 31, 2025.
+
+---
+
+CLAIM: "trading near its 52-week low of $20.23"
+LABEL: SUPPORTED
+REASON: The raw source data lists week_52_low = 20.23 and current_price = 24.50; arithmetic check: $24.50 is 21.1% above the 52-week low of $20.23, and the 52-week range spans $20.23–$38.26 (a $18.03 range), placing $24.50 in the lower third of the range (~23.7% of the way up), which is consistent with "near its 52-week low." The pre-written Recent Developments section also uses this characterization.
+
+---
+
+CLAIM: "cash position of $1.2 billion"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "the company held $1.2 billion in cash, cash equivalents, and marketable securities" as of December 31, 2025, confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "runway of at least 12 months to fund ongoing operations"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights states the $1.2 billion cash position "is believed to be sufficient to fund operations and capital expenditures for at least the next 12 months," confirmed in the pre-written SEC Filing Highlights section.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "substantial cash reserve of $1.2 billion"
+LABEL: SUPPORTED
+REASON: Same as above; explicitly stated in RAG SEC Highlights and pre-written SEC Filing Highlights section.
+
+---
+
+CLAIM: "mitigates immediate existential risk and provides a buffer to advance its pipeline without immediate dilution"
+LABEL: INFERENCE
+REASON: This is a directional inference drawn from the stated 12-month runway and the absence of committed external capital beyond the Sixth Street facility; no single source states this exact characterization, but it is directly derivable from the combination of the $1.2 billion cash figure and the "at least 12 months" runway disclosure.
+
+---
+
+CLAIM: "absence of commercial products"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state the company "has not yet completed any pivotal clinical trials, obtained marketing approvals, or manufactured a commercial-scale medicine."
+
+---
+
+CLAIM: "lack of pivotal trial completions"
+LABEL: SUPPORTED
+REASON: Both RAG sections explicitly state the company "has not completed any pivotal clinical trials."
+
+---
+
+CLAIM: "inevitability of continued operating losses"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights states "The company expects to incur losses for the foreseeable future and may never achieve or maintain profitability," confirmed in the pre-written SEC Filing Highlights section.
+
+---
+
+CLAIM: "12-month runway"
+LABEL: SUPPORTED
+REASON: Explicitly stated in the RAG SEC Highlights as "at least the next 12 months," confirmed in the pre-written SEC Filing Highlights section.
+
+---
+
+CLAIM: "any updates regarding the Sixth Street credit facility"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly names "a credit facility with Sixth Street Lending Partners" as the only committed external capital source, confirmed in the pre-written SEC Filing Highlights section.
+
+---
+
+**Summary of Labels:**
+- SUPPORTED: 11
+- INFERENCE: 1
+- UNSUPPORTED: 0
+
+All quantitative and forward-looking claims in the Executive Summary and Outlook are either directly supported by the source data or represent a single-step inference from explicitly present facts. No claims were found to be unsupported.

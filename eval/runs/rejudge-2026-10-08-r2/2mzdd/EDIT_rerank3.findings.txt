@@ -1,0 +1,79 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of $422.3 million"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap as 422,345,088.0 USD, which rounds to $422.3 million.
+
+---
+
+CLAIM: "currently generating $47.0 million in revenue"
+LABEL: SUPPORTED
+REASON: Source data lists revenue as 47,005,000.0 USD, which rounds to $47.0 million.
+
+---
+
+CLAIM: "sustaining a net loss of $73.9 million"
+LABEL: SUPPORTED
+REASON: Source data lists net_income as -73,949,000.0 USD, which rounds to a net loss of $73.9 million.
+
+---
+
+CLAIM: "$1.6 billion in accumulated operating losses"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights and RAG — Risk Factors both explicitly state accumulated losses totaling $1.6 billion as of December 31, 2025.
+
+---
+
+CLAIM: "trades near the lower end of its 52-week range of $1.66–$4.33"
+LABEL: SUPPORTED
+REASON: Source data confirms 52-week low of $1.66 and high of $4.33; current price is $2.75. Arithmetic check: the range spans $2.67 ($4.33 − $1.66); $2.75 sits $1.09 above the low, placing it at approximately 41% of the range from the bottom — consistent with "near the lower end." The range figures $1.66 and $4.33 are explicitly present in the source data.
+
+---
+
+CLAIM: "cash reserves are projected to fund operations only through Q3 2027"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights explicitly states "Existing cash and cash equivalents as of December 31, 2025 are expected to fund operations into the third quarter of 2027."
+
+---
+
+CLAIM: "EDIT-401 and other preclinical programs"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights and the SEC Filing Highlights pre-written section both explicitly name EDIT-401 as the lead/key program in preclinical development.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "Q3 2027 cash runway"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights explicitly states cash is expected to fund operations into the third quarter of 2027.
+
+---
+
+CLAIM: "deepening its collaboration with Bristol Myers Squibb"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights and the SEC Filing Highlights pre-written section both explicitly name Bristol Myers Squibb as a primary research collaboration partner; the characterization of "deepening" is a forward-looking framing of an existing named relationship, and the named entity and relationship are present in the source data.
+
+---
+
+CLAIM: "any transition of EDIT-401 or other programs from preclinical into clinical stages"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights explicitly names EDIT-401 as a key focus in preclinical stages with plans to prepare for clinical development, and the pre-written SEC Filing Highlights section confirms this characterization.
+
+---
+
+CLAIM: "IND filings, trial initiations, or early safety and efficacy readouts would represent the most meaningful positive catalysts"
+LABEL: INFERENCE
+REASON: No IND filing dates, trial initiation timelines, or efficacy readout schedules are present in the source data; this is a standard analytical inference about what constitutes a catalyst for a preclinical-stage biotech, derived from the confirmed preclinical status of EDIT-401 and the general development-stage characterization in the source data, but no specific figures or milestones are asserted.
+
+---
+
+*No additional specific quantitative figures, price targets, thresholds, ratios, named metrics, percentages, or forward-looking numbers appear in the Outlook section beyond those already evaluated above.*

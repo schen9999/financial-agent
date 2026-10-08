@@ -1,0 +1,98 @@
+I will now systematically audit every quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, and forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "a meaningful asset base of $614.2 million in total assets"
+LABEL: SUPPORTED
+REASON: The 10-Q summary states total assets of $614,163 thousand as of March 31, 2025, which rounds to $614.2 million; also confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$400.5 million in marketable securities"
+LABEL: SUPPORTED
+REASON: The 10-Q balance sheet shows marketable securities of $400,523 thousand as of March 31, 2025, which rounds to $400.5 million; confirmed in both the Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "cash declining from $172.6 million to $96.6 million in a single quarter"
+LABEL: SUPPORTED
+REASON: The 10-Q shows cash and cash equivalents of $172,560 thousand at December 31, 2024, and $96,554 thousand at March 31, 2025, rounding to $172.6 million and $96.6 million respectively; the period (one quarter, Q1 2025) matches the column headers present in the source.
+
+---
+
+CLAIM: "Eli Lilly partnership"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights and RAG sections explicitly reference a Research and Collaboration Agreement with Eli Lilly and Company effective July 2023.
+
+---
+
+CLAIM: "dual pipeline candidates (VERVE-102 and VERVE-201)"
+LABEL: SUPPORTED
+REASON: Both VERVE-102 (Heart-2 Phase 1b) and VERVE-201 (Pulse-1 Phase 1b) are explicitly named in the RAG — SEC Highlights section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "pre-revenue, high-burn clinical-stage company with no approved products"
+LABEL: SUPPORTED
+REASON: The RAG and pre-written sections explicitly state no revenue from product sales, no approved products, and net losses of $198.7 million in 2024 confirming high burn.
+
+---
+
+CLAIM: "Eli Lilly research collaboration, which provides both validation and a potential non-dilutive funding avenue"
+LABEL: INFERENCE
+REASON: The Eli Lilly collaboration is confirmed in the source data; characterizing it as a "non-dilutive funding avenue" is a direct inference from the nature of collaboration agreements (as opposed to equity offerings), derivable from the source's distinction between equity financing and collaboration agreements as separate funding mechanisms.
+
+---
+
+CLAIM: "accelerating quarterly cash burn raises near-term financing risk"
+LABEL: INFERENCE
+REASON: The cash decline of approximately $76 million in Q1 2025 (from $172.6M to $96.6M) is confirmed in the source; characterizing this as "accelerating" is an inference — the Financial Health section uses the word "accelerated cash burn" and the Recent Developments section states "accelerated cash burn," making this a direct restatement of language present in the pre-written sections.
+
+---
+
+CLAIM: "the trajectory of quarterly cash consumption relative to the marketable securities buffer"
+LABEL: SUPPORTED
+REASON: Both the cash figure ($96.6M) and marketable securities figure ($400.5M) are present in the source data, and the pre-written sections explicitly advise monitoring cash burn rates relative to the company's liquidity position.
+
+---
+
+CLAIM: "clinical data from VERVE-102 and VERVE-201"
+LABEL: SUPPORTED
+REASON: Both VERVE-102 and VERVE-201 are explicitly named as ongoing clinical candidates in the RAG — SEC Highlights section.
+
+---
+
+CLAIM: "any expansion or deepening of the Eli Lilly partnership"
+LABEL: SUPPORTED
+REASON: The Eli Lilly Research and Collaboration Agreement is explicitly referenced in the source data, making a watch-item about its expansion grounded in a named, confirmed entity.
+
+---
+
+CLAIM: "the company's ability to access capital on favorable terms"
+LABEL: SUPPORTED
+REASON: The RAG — Risk Factors section explicitly states the risk that the company may be unable to raise capital on acceptable terms, directly grounding this forward-looking watch-item.
+
+---
+
+CLAIM: "The thesis would strengthen on positive clinical readouts, a broadened strategic partnership, or a moderation in burn rate"
+LABEL: SUPPORTED
+REASON: All three named factors (clinical trial outcomes, partnership developments, and burn rate trajectory) are explicitly discussed as material variables in the pre-written sections and RAG data; no specific quantitative thresholds are asserted, so no arithmetic check is required.
+
+---
+
+CLAIM: "it would weaken on clinical setbacks, an inability to raise capital without severe dilution, or a deterioration in the broader biotech funding environment"
+LABEL: SUPPORTED
+REASON: Clinical setbacks and inability to raise capital are explicitly named risk factors in the RAG — Risk Factors section; the "broader biotech funding environment" is a qualitative contextual factor consistent with the disclosed funding risks, though the specific phrase does not appear verbatim — however, no specific quantitative figure is asserted, and the underlying risks are grounded in the source. The "broader biotech funding environment" qualifier is not explicitly present in the source data.
+
+REVISED:
+CLAIM: "a deterioration in the broader biotech funding environment"
+LABEL: UNSUPPORTED
+REASON: While general funding risk is disclosed in the source, the specific qualifier "broader biotech funding environment" as a named watch-item does not appear in any source data, RAG section, or pre-written section, and no fact in the context supports this specific framing.

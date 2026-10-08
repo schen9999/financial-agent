@@ -1,0 +1,49 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$5.9 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $5,882,999,808, which rounds to $5.9 billion; the Pre-written Financial Health section also states "$5.9 billion."
+
+---
+
+CLAIM: "$21.1 billion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $21,138,765,824, which rounds to $21.1 billion; confirmed in the Pre-written Financial Health section.
+
+---
+
+CLAIM: "net loss of $3.2 billion"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$3,232,999,936, which rounds to -$3.2 billion; confirmed in the Pre-written Financial Health and Recent Developments sections.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "monetization of Autonomy+ features beginning April 2026"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights explicitly states "The company plans to begin charging for Autonomy+ advanced driver assistance features starting April 2026."
+
+---
+
+CLAIM: "sharp demand pull-forward and subsequent decline following the September 2025 expiration"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights and Risk Factors both state the federal EV tax credits expired on September 30, 2025, causing a pull-forward of deliveries into Q3 and a corresponding decline in Q4.
+
+---
+
+CLAIM: "R2 production ramp execution and whether deliveries begin on schedule in Q2 2026"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights explicitly states "The company expects to begin customer deliveries of the R2 model in Q2 2026," confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+*No additional standalone quantitative figures, price targets, specific thresholds, ratios, or named metrics appear in the Outlook section beyond those audited above. The remaining language in both sections is qualitative or directional and does not constitute specific quantitative or forward-looking claims subject to this audit.*

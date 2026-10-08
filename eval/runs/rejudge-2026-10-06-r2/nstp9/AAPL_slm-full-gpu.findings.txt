@@ -1,0 +1,109 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$4.86 trillion market capitalization"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap = 4,858,257,080,320.0 USD, which equals approximately $4.858 trillion, rounding to $4.86 trillion as stated; the pre-written Financial Health section also states "approximately $4.86 trillion."
+
+---
+
+CLAIM: "27.62% net profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists profit_margin_pct = 27.62, and the pre-written Financial Health section confirms "27.62% net profit margin."
+
+---
+
+CLAIM: "$466.82 billion in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue = 466,822,987,776.0 USD, which equals approximately $466.82 billion; the pre-written Financial Health section states "$466.82 billion in revenue."
+
+---
+
+CLAIM: "P/E ratio of 38.18"
+LABEL: SUPPORTED
+REASON: The raw source data lists pe_ratio = 38.17546, which rounds to 38.18; the pre-written Financial Health section also states "P/E ratio of 38.18."
+
+---
+
+CLAIM: "upcoming smart home products" (as a named product milestone)
+LABEL: SUPPORTED
+REASON: The Bloomberg news article titled "Gurman Reports Apple Is Launching New 'Smart Home' Products on October 13" (published 2026-09-30) explicitly references new smart home products launching on October 13.
+
+---
+
+CLAIM: "foldable iPhone ramp-up" (as a named product milestone)
+LABEL: SUPPORTED
+REASON: The Bloomberg news article "Apple will sell 6 million iPhone duos in 2026, Counterpoint says" references the ramp-up of foldable hardware, and the pre-written Recent Developments section explicitly mentions "foldable hardware."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "margin trajectory of the Services segment" (as a key variable to monitor)
+LABEL: INFERENCE
+REASON: The 10-Q data provides Services revenue and cost of sales figures (e.g., Q3 2026 Services net sales $30,739M vs. cost $7,494M), from which a Services margin trajectory is directly derivable; the claim is a directional restatement of a trend observable from those figures.
+
+---
+
+CLAIM: "adoption rates of new hardware categories like foldables" (as a key variable)
+LABEL: SUPPORTED
+REASON: The Bloomberg article explicitly references the foldable iPhone (iPhone duos) and Counterpoint's 6 million unit forecast contingent on production ramp-up, establishing foldables as a named, sourced product category and adoption as a key variable.
+
+---
+
+CLAIM: "geopolitical tensions on supply chain stability" (as a key variable)
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights and Risk Factors sections explicitly identify geopolitical tensions and supply chain disruptions as material risks, directly sourced from the 10-K filing summary and RAG sections.
+
+---
+
+CLAIM: "sustained growth in high-margin services" (as a thesis-strengthening condition)
+LABEL: INFERENCE
+REASON: The 10-Q data shows Services gross margin is derivable (e.g., nine-month 2026 Services: $91,728M revenue minus $21,765M cost = ~$69,963M gross profit, ~76.3% margin vs. Products ~39.9%), confirming Services is higher-margin; the directional claim that sustained growth there strengthens the thesis is a direct inference from those present figures.
+
+---
+
+CLAIM: "successful diversification of manufacturing away from concentrated regions" (as a thesis-strengthening condition)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors explicitly identify supply chain concentration in specific regions (China, India, Japan, South Korea, Taiwan, Vietnam) and single-source dependencies as key risks, making diversification away from those regions a directly sourced thesis condition.
+
+---
+
+CLAIM: "macroeconomic pressures significantly dampen consumer spending in key international markets" (as a thesis-weakening condition)
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors and SEC Highlights explicitly state that adverse macroeconomic conditions can reduce consumer confidence and spending, and that the majority of net sales occur outside the U.S., directly sourcing this thesis-weakening condition.
+
+---
+
+CLAIM: "competitive pressures erode gross margins faster than anticipated" (as a thesis-weakening condition)
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors and SEC Highlights explicitly identify intense global competition and downward pressure on gross margins as disclosed risks in the 10-K, directly sourcing this condition.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $4.86 trillion market cap | SUPPORTED |
+| 2 | 27.62% net profit margin | SUPPORTED |
+| 3 | $466.82 billion in revenue | SUPPORTED |
+| 4 | P/E ratio of 38.18 | SUPPORTED |
+| 5 | Upcoming smart home products (milestone) | SUPPORTED |
+| 6 | Foldable iPhone ramp-up (milestone) | SUPPORTED |
+| 7 | Services segment margin trajectory | INFERENCE |
+| 8 | Foldables adoption rates | SUPPORTED |
+| 9 | Geopolitical tensions / supply chain | SUPPORTED |
+| 10 | Sustained growth in high-margin services | INFERENCE |
+| 11 | Manufacturing diversification away from concentrated regions | SUPPORTED |
+| 12 | Macro pressures dampening international consumer spending | SUPPORTED |
+| 13 | Competitive pressures eroding gross margins | SUPPORTED |
+
+**No UNSUPPORTED claims were identified.** All quantitative figures are directly traceable to the raw source data, and all forward-looking qualitative conditions are grounded in explicitly sourced risk disclosures or news articles.

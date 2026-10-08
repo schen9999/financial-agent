@@ -1,0 +1,25 @@
+# slm-full-gpu: every agent LLM call on the GPU llama.cpp endpoint on node 2
+# (k8s/llamacpp/overlays/k3s-gpu, same GGUF and engine build as the CPU
+# endpoint), reached from OKE over the security-list rule; the judge stays
+# Sonnet v2. If node 2 serves the -hybrid-ncmoe<n> alias, this run is
+# HYBRID, never "GPU". Submit with the traffic proof, never bare:
+#   make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-slm-gpu-smoke.yaml
+# 10-ticker smoke (the template's default tickers).
+# Judge spend: ~$0.06/ticker (grounding judge + RAG-faithfulness judge).
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: grounding-eval-slm-gpu-
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  workflowTemplateRef:
+    name: grounding-eval
+  activeDeadlineSeconds: 10800
+  arguments:
+    parameters:
+      - name: arms
+        value: slm-full-gpu
+      - name: ticker-deadline-seconds
+        value: "3600"

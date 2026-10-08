@@ -1,0 +1,41 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "annual revenue of $265.51 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as $265,512,000, which rounds to $265.51 million, and the same figure appears in the Financial Health pre-written section.
+
+---
+
+CLAIM: "negative net income of $52.99 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists net_income as -$52,997,000, which rounds to -$52.99 million, consistent with both the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "trading near its 52-week low of $0.45"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists week_52_low as $0.45, and the same figure appears in the Recent Developments pre-written section.
+
+---
+
+CLAIM: "market capitalization of approximately $79.98 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap as $79,984,192, which rounds to approximately $79.98 million, consistent with the Financial Health pre-written section.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional (e.g., "cautiously constructive," "substantial risks," "closely monitor," "would be strengthened," "would weaken"). There are therefore no quantitative or forward-looking numerical claims to audit in this section.
+
+---
+
+**SUMMARY**
+
+All four quantitative claims in the Executive Summary are SUPPORTED by the raw source data. The Outlook section contains no auditable quantitative or forward-looking numerical claims.

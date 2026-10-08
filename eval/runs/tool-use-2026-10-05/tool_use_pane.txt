@@ -1,0 +1,70 @@
+ubuntu@o-tbhcuw:~/financial-agent$ cd ~/financial-agent
+ubuntu@o-tbhcuw:~/financial-agent$ for r in hosted cpu gpu; do
+> kubectl -n financial-agent exec deploy/api -- python eval/tool_use_check.py --route $r --json-out /tmp/tool_use_$r.jso
+n
+> kubectl -n financial-agent exec deploy/api -- cat /tmp/tool_use_$r.json > ~/tool_use_$r.json
+> done
+Defaulted container "api" out of: api, wait-for-postgres (init)
+  AAPL   expected get_stock_data    called ['get_stock_data'] completed=True 9.52s
+  MSFT   expected get_stock_data    called ['get_stock_data'] completed=True 4.65s
+  NVDA   expected get_stock_data    called ['get_stock_data'] completed=True 5.13s
+  JPM    expected get_stock_data    called ['get_stock_data'] completed=True 5.91s
+  TSLA   expected get_company_news  called ['get_company_news'] completed=True 13.13s
+  AMZN   expected get_company_news  called ['get_company_news'] completed=True 13.61s
+  GOOGL  expected get_sec_filings   called ['get_sec_filings'] completed=True 10.1s
+  META   expected get_sec_filings   called ['get_sec_filings'] completed=True 3.84s
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and
+faster downloads.
+Loading weights: 100%|██████████| 199/199 [00:00<00:00, 13495.45it/s]
+[rag] retrieval reranking=OFF 3.387s candidates=3 top_n=3
+  WMT    expected query_sec_filing  called ['get_sec_filings', 'query_sec_filing'] completed=True 19.98s
+[rag] retrieval reranking=OFF 2.679s candidates=3 top_n=3
+  V      expected query_sec_filing  called ['get_sec_filings', 'query_sec_filing'] completed=True 18.57s
+
+  route hosted: parse rate 1.0 (12 valid, 0 invalid); correct tool 10/10 (first 8/10); completed 10/10; errors 0; endpoi
+nts ['anthropic']
+  written: /tmp/tool_use_hosted.json
+Defaulted container "api" out of: api, wait-for-postgres (init)
+Defaulted container "api" out of: api, wait-for-postgres (init)
+  AAPL   expected get_stock_data    called ['get_stock_data'] completed=True 20.55s
+  MSFT   expected get_stock_data    called ['get_stock_data'] completed=True 12.5s
+  NVDA   expected get_stock_data    called ['get_stock_data'] completed=True 8.16s
+  JPM    expected get_stock_data    called ['get_stock_data'] completed=True 9.59s
+  TSLA   expected get_company_news  called ['get_company_news'] completed=True 43.97s
+  AMZN   expected get_company_news  called ['get_company_news'] completed=True 32.2s
+  GOOGL  expected get_sec_filings   called ['get_sec_filings'] completed=True 32.85s
+  META   expected get_sec_filings   called ['get_sec_filings'] completed=True 14.56s
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and
+faster downloads.
+Loading weights: 100%|██████████| 199/199 [00:00<00:00, 14866.00it/s]
+[rag] retrieval reranking=OFF 35.818s candidates=3 top_n=3
+  WMT    expected query_sec_filing  called ['query_sec_filing'] completed=True 51.31s
+[rag] retrieval reranking=OFF 40.900s candidates=3 top_n=3
+  V      expected query_sec_filing  called ['query_sec_filing'] completed=True 67.12s
+
+  route cpu: parse rate 1.0 (10 valid, 0 invalid); correct tool 10/10 (first 10/10); completed 10/10; errors 0; endpoint
+s ['slm-cpu']
+  written: /tmp/tool_use_cpu.json
+Defaulted container "api" out of: api, wait-for-postgres (init)
+Defaulted container "api" out of: api, wait-for-postgres (init)
+  AAPL   expected get_stock_data    called ['get_stock_data'] completed=True 4.85s
+  MSFT   expected get_stock_data    called ['get_stock_data'] completed=True 1.43s
+  NVDA   expected get_stock_data    called ['get_stock_data'] completed=True 1.11s
+  JPM    expected get_stock_data    called ['get_stock_data'] completed=True 1.12s
+  TSLA   expected get_company_news  called ['get_company_news'] completed=True 4.77s
+  AMZN   expected get_company_news  called ['get_company_news'] completed=True 3.14s
+  GOOGL  expected get_sec_filings   called ['get_sec_filings'] completed=True 4.55s
+  META   expected get_sec_filings   called ['get_sec_filings'] completed=True 1.62s
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and
+faster downloads.
+Loading weights: 100%|██████████| 199/199 [00:00<00:00, 14802.20it/s]
+[rag] retrieval reranking=OFF 2.082s candidates=3 top_n=3
+  WMT    expected query_sec_filing  called ['query_sec_filing'] completed=True 5.55s
+[rag] retrieval reranking=OFF 4.119s candidates=3 top_n=3
+  V      expected query_sec_filing  called ['query_sec_filing'] completed=True 7.48s
+
+  route gpu: parse rate 1.0 (10 valid, 0 invalid); correct tool 10/10 (first 10/10); completed 10/10; errors 0; endpoint
+s ['slm-gpu']
+  written: /tmp/tool_use_gpu.json
+Defaulted container "api" out of: api, wait-for-postgres (init)
+ubuntu@o-tbhcuw:~/financial-agent$

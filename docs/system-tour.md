@@ -41,7 +41,7 @@ Headline figures (numbers-of-record, "Current"):
 - Grounding: **12/392 = 3.06% unsupported (Wilson 95% CI 1.8–5.3%)**,
   hosted baseline `j4cnp` (2026-09-05/06), judge v2, fixed retrieval, 40
   tickers. That is the judge-flagged rate; the reweighted true-rate estimate 5.7% (CI 3.5–9.9%)
-  (section 5). Calibration of record: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED). The former headline, "49% pre-fix → 0/84" (judge
+  (section 5). September calibration (2026-09-24): precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED). The former headline, "49% pre-fix → 0/84" (judge
   v1, pre-retrieval-fix, 2026-08-24), is a dated record only.
 - Cost per brief: **$0.0366** (2026-09-06, post-retrieval-fix; 3-ticker
   mean over AAPL/NVDA/JPM from the committed `scripts/cost_report.py`).
@@ -50,6 +50,8 @@ Headline figures (numbers-of-record, "Current"):
   served from the exact-key cache.
 
 ## 2. The single-node k3s topology on OCI
+
+*Dated: this section describes the September k3s topology. Where the system runs for the November demo — the provided OKE cluster plus node 2's A10 endpoint, with `vm-a10-inst-1` as frozen standby — is in [architecture.md, "Deployed topology (October 2026)"](architecture.md#deployed-topology-october-2026).*
 
 The full designed topology runs on single-node k3s on OCI A10 VMs,
 reachable only by ssh. It first ran on a VM.GPU.A10.2 (two A10 24 GB
@@ -152,7 +154,7 @@ heuristic over paraphrased text, coverage ~78–79%):
 The headline is the judge-flagged comparison above (0.50% vs 19.82%,
 p = 4.6e-10). The sensitivity row reweights each bucket with
 `eval/reweight_calibration.py --by-section`, which assumes one
-judge-SUPPORTED miss rate (4/123 in the calibration of record) shared across
+judge-SUPPORTED miss rate (4/123 in the September calibration (2026-09-24)) shared across
 both arms and all sections; the sample cannot say whether misses
 differ by arm or section. Under that assumption the baseline's FH + RF
 estimate is almost entirely the assumed miss rate applied to its 199
@@ -185,7 +187,7 @@ result: the model serves, the harness measured it, and it fails the gate
 in exactly the text it owns.
 
 **Caveat that travels with the table.** These are judge-flagged v2
-rates. Calibration of record (2026-09-24): precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED).
+rates. September calibration (2026-09-24): precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED).
 Reweighted true-rate estimates: `j4cnp` 5.7% (CI 3.5–9.9%), `lsnnc`
 8.3% (CI 5.5–12.5%). The A/B direction and the per-section attribution
 stand because both arms share the judge. Also on record: the
@@ -382,7 +384,7 @@ python eval/agreement.py --labeled eval/judge_validation/holdout_sample.csv \
                          --key eval/judge_validation/holdout_key.csv
 
 # population-weighted recall (32.5% on j4cnp) and true-rate estimates,
-# calibration of record: relabeled judge-SUPPORTED + held-out U and I
+# September calibration (2026-09-24): relabeled judge-SUPPORTED + held-out U and I
 python eval/reweight_calibration.py \
   --labeled eval/judge_validation/relabel_S.csv \
   --key eval/judge_validation/relabel_S_key.csv --use ALL \

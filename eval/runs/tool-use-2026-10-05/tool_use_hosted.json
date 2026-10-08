@@ -1,0 +1,215 @@
+{
+  "summary": {
+    "route": "hosted",
+    "questions": 10,
+    "parse_rate": 1.0,
+    "tool_calls": 12,
+    "invalid_tool_calls": 0,
+    "expected_called": 10,
+    "expected_first": 8,
+    "completed": 10,
+    "errors": 0,
+    "endpoints": [
+      "anthropic"
+    ]
+  },
+  "provenance": null,
+  "rows": [
+    {
+      "tool_calls": 1,
+      "invalid_tool_calls": 0,
+      "tools_called": [
+        "get_stock_data"
+      ],
+      "expected_tool": "get_stock_data",
+      "expected_called": true,
+      "expected_first": true,
+      "completed": true,
+      "error": null,
+      "ticker": "AAPL",
+      "question": "What is the current P/E ratio?",
+      "wall_s": 9.52,
+      "llm_calls": 0,
+      "endpoints": [],
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    },
+    {
+      "tool_calls": 1,
+      "invalid_tool_calls": 0,
+      "tools_called": [
+        "get_stock_data"
+      ],
+      "expected_tool": "get_stock_data",
+      "expected_called": true,
+      "expected_first": true,
+      "completed": true,
+      "error": null,
+      "ticker": "MSFT",
+      "question": "What is the market capitalization right now?",
+      "wall_s": 4.65,
+      "llm_calls": 0,
+      "endpoints": [],
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    },
+    {
+      "tool_calls": 1,
+      "invalid_tool_calls": 0,
+      "tools_called": [
+        "get_stock_data"
+      ],
+      "expected_tool": "get_stock_data",
+      "expected_called": true,
+      "expected_first": true,
+      "completed": true,
+      "error": null,
+      "ticker": "NVDA",
+      "question": "What is the 52-week high?",
+      "wall_s": 5.13,
+      "llm_calls": 0,
+      "endpoints": [],
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    },
+    {
+      "tool_calls": 1,
+      "invalid_tool_calls": 0,
+      "tools_called": [
+        "get_stock_data"
+      ],
+      "expected_tool": "get_stock_data",
+      "expected_called": true,
+      "expected_first": true,
+      "completed": true,
+      "error": null,
+      "ticker": "JPM",
+      "question": "What is the dividend yield?",
+      "wall_s": 5.91,
+      "llm_calls": 0,
+      "endpoints": [],
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    },
+    {
+      "tool_calls": 1,
+      "invalid_tool_calls": 0,
+      "tools_called": [
+        "get_company_news"
+      ],
+      "expected_tool": "get_company_news",
+      "expected_called": true,
+      "expected_first": true,
+      "completed": true,
+      "error": null,
+      "ticker": "TSLA",
+      "question": "What has been in the news about the company recently?",
+      "wall_s": 13.13,
+      "llm_calls": 0,
+      "endpoints": [],
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    },
+    {
+      "tool_calls": 1,
+      "invalid_tool_calls": 0,
+      "tools_called": [
+        "get_company_news"
+      ],
+      "expected_tool": "get_company_news",
+      "expected_called": true,
+      "expected_first": true,
+      "completed": true,
+      "error": null,
+      "ticker": "AMZN",
+      "question": "Summarize the latest news headlines about the company.",
+      "wall_s": 13.61,
+      "llm_calls": 0,
+      "endpoints": [],
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    },
+    {
+      "tool_calls": 1,
+      "invalid_tool_calls": 0,
+      "tools_called": [
+        "get_sec_filings"
+      ],
+      "expected_tool": "get_sec_filings",
+      "expected_called": true,
+      "expected_first": true,
+      "completed": true,
+      "error": null,
+      "ticker": "GOOGL",
+      "question": "When was the most recent 10-K filed, and what does its summary say?",
+      "wall_s": 10.1,
+      "llm_calls": 0,
+      "endpoints": [],
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    },
+    {
+      "tool_calls": 1,
+      "invalid_tool_calls": 0,
+      "tools_called": [
+        "get_sec_filings"
+      ],
+      "expected_tool": "get_sec_filings",
+      "expected_called": true,
+      "expected_first": true,
+      "completed": true,
+      "error": null,
+      "ticker": "META",
+      "question": "What is the filing date of the company's latest 10-Q?",
+      "wall_s": 3.84,
+      "llm_calls": 0,
+      "endpoints": [],
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    },
+    {
+      "tool_calls": 2,
+      "invalid_tool_calls": 0,
+      "tools_called": [
+        "get_sec_filings",
+        "query_sec_filing"
+      ],
+      "expected_tool": "query_sec_filing",
+      "expected_called": true,
+      "expected_first": false,
+      "completed": true,
+      "error": null,
+      "ticker": "WMT",
+      "question": "According to its SEC filings, what are the main risk factors?",
+      "wall_s": 19.98,
+      "llm_calls": 1,
+      "endpoints": [
+        "anthropic"
+      ],
+      "prompt_tokens": 2783,
+      "completion_tokens": 210
+    },
+    {
+      "tool_calls": 2,
+      "invalid_tool_calls": 0,
+      "tools_called": [
+        "get_sec_filings",
+        "query_sec_filing"
+      ],
+      "expected_tool": "query_sec_filing",
+      "expected_called": true,
+      "expected_first": false,
+      "completed": true,
+      "error": null,
+      "ticker": "V",
+      "question": "What do the company's SEC filings say about competition?",
+      "wall_s": 18.57,
+      "llm_calls": 1,
+      "endpoints": [
+        "anthropic"
+      ],
+      "prompt_tokens": 2455,
+      "completion_tokens": 192
+    }
+  ]
+}

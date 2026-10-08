@@ -1,0 +1,94 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "trading at $107.00 USD"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `"current_price": 107.0` in USD.
+
+---
+
+CLAIM: "market capitalization of $266.2 billion"
+LABEL: SUPPORTED
+REASON: Source data gives `"market_cap": 266188718080.0`; dividing by 1 billion yields ~$266.19B, which rounds to $266.2B.
+
+---
+
+CLAIM: "¥1.04 trillion CNY in revenue"
+LABEL: SUPPORTED
+REASON: Source data gives `"revenue": 1044970995712.0` CNY; dividing by 1 trillion yields ~1.045 trillion, consistent with "¥1.04 trillion CNY."
+
+---
+
+CLAIM: "¥73.3 billion CNY in net income"
+LABEL: SUPPORTED
+REASON: Source data gives `"net_income": 73325002752.0` CNY; dividing by 1 billion yields ~73.3B CNY.
+
+---
+
+CLAIM: "net profit margin of 7.04%"
+LABEL: SUPPORTED
+REASON: Source data explicitly states `"profit_margin_pct": 7.04`; also verifiable as 73,325,002,752 / 1,044,970,995,712 ≈ 7.02%, within 0.15 pp of 7.04% (the source field is the direct citation).
+
+---
+
+CLAIM: "trailing P/E of 26.49"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists `"pe_ratio": 26.48515`, which rounds to 26.49.
+
+---
+
+CLAIM: "forward P/E of 11.59"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists `"forward_pe": 11.590769`, which rounds to 11.59.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "wide gap between the trailing and forward P/E ratios"
+LABEL: SUPPORTED
+REASON: Trailing P/E is 26.49 and forward P/E is 11.59 per source data; the gap of ~14.9 points is arithmetically verifiable and directionally accurate as "wide."
+
+---
+
+CLAIM: "Pinduoduo and JD.com" (named competitors)
+LABEL: SUPPORTED
+REASON: Both Pinduoduo and JD.com are explicitly named in the pre-written Risk Factors section as rivals in domestic e-commerce.
+
+---
+
+CLAIM: "upcoming financial disclosures from Hong Kong exchange filings"
+LABEL: SUPPORTED
+REASON: The pre-written SEC Filing Highlights section explicitly states Alibaba files with Hong Kong authorities and directs investors to the Hong Kong Stock Exchange for current disclosures.
+
+---
+
+**ADDITIONAL CHECKS — Claims that are directional/forward-looking but contain no additional quantitative figures:**
+
+The Outlook section contains no additional specific numerical figures, price targets, growth rate percentages, or named product milestones beyond those already audited above. All remaining statements (e.g., "margins stabilize or expand," "cloud services growth," "regulatory clarity improves") are qualitative directional assertions with no quantitative specificity, and therefore fall outside the scope of this audit's quantitative claim checks.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $107.00 USD current price | SUPPORTED |
+| 2 | $266.2 billion market cap | SUPPORTED |
+| 3 | ¥1.04 trillion CNY revenue | SUPPORTED |
+| 4 | ¥73.3 billion CNY net income | SUPPORTED |
+| 5 | 7.04% net profit margin | SUPPORTED |
+| 6 | Trailing P/E of 26.49 | SUPPORTED |
+| 7 | Forward P/E of 11.59 | SUPPORTED |
+| 8 | "Wide gap" between trailing and forward P/E | SUPPORTED |
+| 9 | Pinduoduo and JD.com as named competitors | SUPPORTED |
+| 10 | Hong Kong exchange filings reference | SUPPORTED |
+
+**All audited quantitative and factual claims in the Executive Summary and Outlook are SUPPORTED by the source data.** No unsupported or inference-only claims were identified.

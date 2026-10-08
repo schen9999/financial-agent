@@ -1,0 +1,43 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $333.8 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap as 333,815,513,088.0, which rounds to approximately $333.8 billion, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "trailing revenue of $450.5 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as 450,525,986,816.0, which rounds to $450.5 billion, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "trading below its 52-week high of $461.62"
+LABEL: SUPPORTED
+REASON: The raw source data confirms week_52_high = 461.62 and current_price = 371.90; 371.90 < 461.62, so the stock is indeed trading below its 52-week high of $461.62.
+
+---
+
+CLAIM: "forward P/E of 16.45"
+LABEL: SUPPORTED
+REASON: The raw source data lists forward_pe = 16.448336, which rounds to 16.45, within the 0.1x tolerance threshold.
+
+---
+
+CLAIM: "current P/E of 23.92"
+LABEL: SUPPORTED
+REASON: The raw source data lists pe_ratio = 23.916397, which rounds to 23.92, within the 0.1x tolerance threshold.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no additional specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers beyond qualitative directional statements. All claims in the Outlook are narrative and directional (e.g., "cautiously constructive," "dominant market position," "improving forward valuation profile," "anticipated earnings growth," "medical inflation and utilization rates") and do not introduce any new quantitative claims requiring verification.
+
+No additional entries are required for the Outlook section.

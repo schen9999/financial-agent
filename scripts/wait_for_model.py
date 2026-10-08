@@ -23,13 +23,15 @@ from eval.runtime_guards import check_local_model_served  # noqa: E402
 
 def wait_for_model(url: str, name: str, timeout: float = 120.0, interval: float = 5.0,
                    check=check_local_model_served, sleep=time.sleep,
-                   clock=time.monotonic) -> list[str]:
+                   clock=time.monotonic, api_key: str | None = None) -> list[str]:
     """Return the served ids once `name` is listed; SystemExit after `timeout`."""
     deadline = clock() + timeout
     attempt = 0
     while True:
         attempt += 1
         try:
+            if api_key:
+                return check(url, name, timeout=10.0, api_key=api_key)
             return check(url, name, timeout=10.0)
         except SystemExit as e:
             if clock() + interval > deadline:
@@ -46,8 +48,17 @@ def main():
     ap.add_argument("--name", required=True)
     ap.add_argument("--timeout", type=float, default=120.0)
     ap.add_argument("--interval", type=float, default=5.0)
+    ap.add_argument("--api-key-env", default=None, metavar="VAR",
+                    help="env var holding the server's API key (keyed llama-server); "
+                         "the key itself never appears on the command line")
     args = ap.parse_args()
-    ids = wait_for_model(args.url, args.name, args.timeout, args.interval)
+    key = None
+    if args.api_key_env:
+        import os
+        key = os.environ.get(args.api_key_env)
+        if not key:
+            raise SystemExit(f"--api-key-env {args.api_key_env}: variable is empty or unset")
+    ids = wait_for_model(args.url, args.name, args.timeout, args.interval, api_key=key)
     print(f"/v1/models: {ids}")
 
 

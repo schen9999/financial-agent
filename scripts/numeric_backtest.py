@@ -36,9 +36,26 @@ the "[City Name]" placeholder; the script exits non-zero otherwise.
 Nothing here is a number of record: the backtest counts flags, and a flag is
 only an error once adjudicated.
 
+--runs RUN... restricts the backtest to those runs (e.g. the same-image
+three-way 9jzmj 8vpq6 p9jr2) and writes its own adjudication CSV
+(default eval/numeric_check/adjudication-<date>-<runs>.csv). It never
+writes the main adjudication.csv — a path naming it is redirected — since
+the writer rewrites a file from the rows it is given and renumbers ids. The CRBU assertion still runs on
+lsnnc; the fine-tune comparisons and the replays are skipped.
+
+--financial-currency FILE (with --runs only) adds each ticker's reporting
+currency to stock dicts that lack one, so runs from before the stock-data
+fix are checked with the currency_label rule too — the same check on both
+sides of the fix. FILE is scripts/financial_currency_preflight.py output
+({"tickers": {T: {"financialCurrency": ...}}}) or a plain {T: code} map.
+Outputs and the CSV get a "-fx" tag; without the option nothing changes.
+
 Usage:
   python scripts/numeric_backtest.py [--date 2026-09-29] [--seed 42]
   python scripts/numeric_backtest.py --precision
+  python scripts/numeric_backtest.py --runs 9jzmj 8vpq6 p9jr2 --date 2026-10-05
+  python scripts/numeric_backtest.py --runs 9jzmj 8vpq6 p9jr2 --date <date> \\
+      --financial-currency eval/runs/financial-currency-<date>.json
 """
 import argparse
 import csv
@@ -84,6 +101,11 @@ RUN_INFO = {
     "cnkp2": {"label": "Qwen2.5-7B-Instruct base, four-arm set, 2026-09-23"},
     "dvvxk": {"label": "hosted, same-image rerun of kcf7s, 2026-09-24"},
     "r5nzh": {"label": "financial-lora GPTQ W4A16, 40 tickers, 2026-09-29"},
+    "9jzmj": {"label": "hosted, same-image three-way (image 1f51dad), 40 tickers, 2026-10-04"},
+    "8vpq6": {"label": "Qwen3.6-35B-A3B Q4_K_M on the CPU endpoint, same-image three-way, "
+                       "40 tickers, 2026-10-04"},
+    "p9jr2": {"label": "Qwen3.6-35B-A3B Q4_K_M on the A10, same-image three-way, "
+                       "40 tickers, 2026-10-05"},
 }
 PARTIAL_SCOPE = "partial: Exec Summary + Outlook only"
 
@@ -137,6 +159,7 @@ def load_brief(path: Path, raw_dir: Path) -> dict | None:
     sections = (nc.split_sections(prewritten) if prewritten else []) \
         + nc.split_sections(audited)
     model = meta.get("local_model_served_name") \
+        or meta.get("slm_served_name") \
         or RUN_INFO.get(run, {}).get("model") \
         or ("hosted" if arm == "baseline" else "unrecorded")
     return {
@@ -1077,7 +1100,13 @@ def main():
     ap.add_argument("--adjudication", default=str(ADJ_PATH))
     ap.add_argument("--precision", action="store_true",
                     help="report adjudicated precision from --adjudication")
+    ap.add_argument("--runs", nargs="+",
+                    help="only these runs; writes its own adjudication CSV")
+    ap.add_argument("--financial-currency", type=Path,
+                    help="with --runs: reporting currency per ticker, added to dicts lacking it")
     args = ap.parse_args()
+    if args.financial_currency and not args.runs:
+        ap.error("--financial-currency goes with --runs")
 
     if args.precision:
         with open(args.adjudication, newline="", encoding="utf-8") as f:
@@ -1098,6 +1127,8 @@ def main():
     if not briefs:
         sys.exit(f"no findings files under {raw_dir}")
 
+    if args.runs:
+        return main_runs(args, briefs, skipped, len(files))
     summary, rows = backtest(briefs)
     crbu = assert_crbu(briefs)
     recall = injection_recall(briefs, args.seed)
@@ -1156,6 +1187,82 @@ def main():
         print(f"  inject {kind:12} {r['detected']:3}/{r['n']:3} "
               f"recall {r['recall']} CI {r['ci95']}")
     print(f"wrote {_rel(out)} (+ .md) and {len(rows)} adjudication rows "
+          f"({kept} verdicts kept)")
+
+
+def _shown(p: Path) -> str:
+    """Repo-relative when inside the repo, else the path as given."""
+    return _rel(p) if Path(p).resolve().is_relative_to(REPO) else str(p)
+
+
+def load_financial_currency(path: Path) -> dict:
+    """{ticker: reporting currency} from preflight output or a plain map."""
+    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    if "tickers" in data:
+        return {t: v["financialCurrency"] for t, v in data["tickers"].items()
+                if v.get("financialCurrency")}
+    return {t: c for t, c in data.items() if c}
+
+
+def inject_financial_currency(briefs: list[dict], fx: dict) -> dict:
+    """Add financial_currency to each brief's stock dict that lacks it;
+    returns {ticker: code} for the non-USD ones injected."""
+    out = {}
+    for b in briefs:
+        code = fx.get(b["ticker"])
+        if code and "financial_currency" not in b["stock"]:
+            b["stock"]["financial_currency"] = code
+            if code.upper() != "USD":
+                out[b["ticker"]] = code
+    return dict(sorted(out.items()))
+
+
+def main_runs(args, briefs: list[dict], skipped: list[str], n_files: int) -> None:
+    """--runs: the backtest over the named runs only, into its own CSV."""
+    missing = sorted(set(args.runs) - {b["run"] for b in briefs})
+    if missing:
+        sys.exit(f"no findings for run(s): {', '.join(missing)}")
+    tag = "-".join(args.runs)
+    fx_file = getattr(args, "financial_currency", None)
+    injected = {}
+    if fx_file:
+        tag += "-fx"
+        injected = inject_financial_currency(
+            [b for b in briefs if b["run"] in args.runs], load_financial_currency(fx_file))
+    adj = Path(args.adjudication)
+    if adj.resolve() == ADJ_PATH.resolve():
+        adj = ADJ_PATH.with_name(f"adjudication-{args.date}-{tag}.csv")
+    selected = [b for b in briefs if b["run"] in args.runs]
+    summary, rows = backtest(selected)
+    lsnnc_crbu = [b for b in briefs if b["run"] == "lsnnc" and b["ticker"] == "CRBU"]
+    backtest(lsnnc_crbu)  # attaches the report the assertion reads
+    crbu = assert_crbu(lsnnc_crbu)
+    recall = injection_recall(selected, args.seed)
+    kept = write_adjudication(rows, adj)
+    result = {
+        "date": args.date, "harness": "scripts/numeric_backtest.py --runs",
+        "check": "agent/numeric_check.py", "rel_tol": nc.DEFAULT_REL_TOL,
+        "runs": args.runs,
+        "financial_currency": ({"file": str(fx_file), "injected": injected} if fx_file else None),
+        "note": ("Flags are unadjudicated; a flag is an error only once a "
+                 "human verdict says so. Stock-field numbers only. Not a "
+                 "number of record."),
+        "files": n_files, "briefs": len(selected), "skipped": skipped,
+        "summary": summary, "crbu_assertion": crbu, "injection": recall,
+        "adjudication": {"path": _shown(adj), "verdicts": list(VERDICTS),
+                         "rows": len(rows), "verdicts_kept": kept},
+    }
+    out = Path(args.out) if args.out else \
+        REPO / "eval" / "runs" / f"numeric-backtest-{args.date}-{tag}.json"
+    out.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8", newline="\n")
+    table = table_markdown(summary)
+    out.with_suffix(".md").write_text(
+        f"# Numeric-check backtest, {args.date}, runs {', '.join(args.runs)} "
+        f"(unadjudicated)\n\nGenerated by scripts/numeric_backtest.py --runs; "
+        f"see {out.name}.\n\n" + table, encoding="utf-8", newline="\n")
+    print(table)
+    print(f"CRBU assertion: {crbu}")
+    print(f"wrote {_shown(out)} (+ .md) and {len(rows)} adjudication rows to {_shown(adj)} "
           f"({kept} verdicts kept)")
 
 

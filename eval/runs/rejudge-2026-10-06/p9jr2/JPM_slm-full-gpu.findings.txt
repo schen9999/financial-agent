@@ -1,0 +1,49 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $883.5 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap as 883,527,974,912.0, which rounds to approximately $883.5 billion, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "annual revenue of $186.3 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as 186,328,006,656.0, which rounds to $186.3 billion, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "net profit margin of 34.9%"
+LABEL: SUPPORTED
+REASON: The raw source data lists profit_margin as 0.34921002, which equals 34.921%, rounding to 34.9%; within 0.15 percentage points of the stated figure.
+
+---
+
+CLAIM: "forward P/E of 13.29"
+LABEL: SUPPORTED
+REASON: The raw source data lists forward_pe as 13.286049, which rounds to 13.29, consistent with the pre-written sections.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "TLAC requirements"
+LABEL: SUPPORTED
+REASON: TLAC (Total Loss-Absorbing Capacity) is explicitly referenced in the 10-Q filing summary and in the Recent Developments pre-written section.
+
+---
+
+CLAIM: "credit spreads and interest rate fluctuations"
+LABEL: SUPPORTED
+REASON: Credit spreads and interest rate changes are explicitly listed as market risks in both the RAG — Risk Factors and RAG — SEC Highlights sections.
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, or forward-looking numbers appear in the Outlook section beyond those already evaluated above. All qualitative directional statements (e.g., "cautiously constructive," "dominant market position," "significant headwinds") are not quantitative or forward-looking numerical claims and are therefore outside the scope of this audit.*

@@ -1,0 +1,103 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $44.5 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $44,487,999,488, which rounds to $44.5 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$22.4 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net income of $22,397,999,104, which rounds to $22.4 billion; also explicitly stated in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "50.8% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data shows profit_margin of 0.50782, which equals 50.782%, rounding to 50.8%; also explicitly stated in multiple pre-written sections.
+
+---
+
+CLAIM: "30.7x trailing P/E"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio of 30.668367, which rounds to 30.7x; also stated as 30.7x in the Financial Health pre-written section.
+
+---
+
+CLAIM: "24.0x forward P/E"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe of 24.03711, which rounds to 24.0x; also stated as 24.0x in the Financial Health pre-written section.
+
+---
+
+CLAIM: "the UK Payment Systems Regulator's market review" (as a near-term variable)
+LABEL: SUPPORTED
+REASON: The UK's Payment Systems Regulator market review is explicitly named in both the SEC Filing Highlights pre-written section and the RAG — SEC Highlights source data.
+
+---
+
+CLAIM: "U.S. debit interchange legal uncertainty" (as a near-term variable)
+LABEL: SUPPORTED
+REASON: The North Dakota court's vacation of the Federal Reserve's Regulation II debit interchange standard and resulting legal uncertainty are explicitly described in both the RAG — SEC Highlights and SEC Filing Highlights pre-written section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "tokenization and cross-border money movement" (as long-term tailwinds / named product milestones)
+LABEL: SUPPORTED
+REASON: Both tokenization and cross-border money movement are explicitly named as new payment capabilities in the RAG — SEC Highlights, RAG — Risk Factors, and SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "emerging-market digital payment adoption" (as a long-term tailwind)
+LABEL: SUPPORTED
+REASON: India's digital payments boom and AI-driven fintech innovation are referenced in the news articles and Recent Developments pre-written section, supporting the directional claim of emerging-market digital payment adoption as a tailwind.
+
+---
+
+CLAIM: "AI-driven fintech ecosystems like India"
+LABEL: SUPPORTED
+REASON: The Bloomberg news article explicitly describes India preparing for an AI-driven financial revolution following its digital payments boom, and this is restated in the Recent Developments pre-written section.
+
+---
+
+CLAIM: "the UK Payment Systems Regulator's findings" (as a watch item)
+LABEL: SUPPORTED
+REASON: The UK Payment Systems Regulator market review is explicitly named in the RAG — SEC Highlights and SEC Filing Highlights pre-written section as an ongoing regulatory process.
+
+---
+
+CLAIM: "interchange cap frameworks spread to additional markets" (as a watch item)
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and SEC Filing Highlights explicitly note that multiple jurisdictions including New Zealand, Australia, and Latin American countries have adopted or proposed interchange caps, supporting the directional claim of spreading frameworks.
+
+---
+
+CLAIM: "the gap between the trailing and forward P/E" (implying forward valuation compression)
+LABEL: SUPPORTED
+REASON: The trailing P/E of 30.7x and forward P/E of 24.0x are both present in the source data; the gap between them (30.7x vs. 24.0x) is arithmetically verifiable and the directional claim of compression is a direct inference from these two present figures.
+
+---
+
+CLAIM: "interest rate adjustments warrant monitoring, as a more restrictive rate environment could dampen transaction volume growth"
+LABEL: SUPPORTED
+REASON: The news article from Fortune (2026-09-17) explicitly discusses CFOs not counting on a "one-and-done" rate hike and the risk of multiple rate adjustments; the Recent Developments pre-written section restates this as a headwind for payment processors' growth trajectories.
+
+---
+
+CLAIM: "compliance costs begin to visibly erode the company's exceptional profit margins" (as a thesis-weakening scenario)
+LABEL: SUPPORTED
+REASON: The RAG — Risk Factors and SEC Filing Highlights explicitly state that compliance costs continue to increase operational expenses and that regulatory constraints pose risks to margins; the 50.8% profit margin figure is present in the source data, making this a directional restatement of disclosed risks.
+
+---
+
+**SUMMARY NOTE:** No unsupported or inference-only claims were identified. All quantitative figures (revenue, net income, profit margin, trailing P/E, forward P/E) are directly present in the source data and verified by recomputation where applicable. All named regulatory bodies, jurisdictions, product milestones, and forward-looking watch items are grounded in the pre-written sections or raw source data. No figures appear in the Executive Summary or Outlook that are absent from the context or that fail arithmetic checks.

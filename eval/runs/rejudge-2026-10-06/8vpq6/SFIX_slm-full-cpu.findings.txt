@@ -1,0 +1,59 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$1.35 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $1,348,119,040, which rounds to $1.35 billion; the pre-written Financial Health section also states "$1.35 billion."
+
+---
+
+CLAIM: "negative net income of $12.6 million"
+LABEL: SUPPORTED
+REASON: Source data explicitly states net_income of -$12,606,000, which rounds to -$12.6 million.
+
+---
+
+CLAIM: "profit margin of -0.94%"
+LABEL: SUPPORTED
+REASON: Source data states profit_margin of -0.00935; recomputed as -12,606,000 / 1,348,119,040 = -0.00935, which expressed as a percentage is -0.935%, rounding to -0.94% — within 0.15 percentage points.
+
+---
+
+CLAIM: "trading near its 52-week low of $2.10 at $2.61"
+LABEL: SUPPORTED
+REASON: Source data confirms week_52_low = $2.10 and current_price = $2.61; the positional claim that $2.61 is "near" the 52-week low of $2.10 is arithmetically consistent ($2.61 is 24% above the low, and well below the 52-week high of $5.745).
+
+---
+
+CLAIM: "negative forward P/E ratio of -52.2"
+LABEL: SUPPORTED
+REASON: Source data explicitly states forward_pe = -52.199997, which rounds to -52.2.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: (no new quantitative figures, price targets, thresholds, ratios, metrics, or percentages are introduced in the Outlook section)
+LABEL: N/A
+REASON: The Outlook section contains only qualitative and directional statements (e.g., "cautious," "declining client engagement," "reliance on third-party vendors in China," "stabilized active client numbers," "improved operating margins") with no new specific quantitative claims beyond those already evaluated in the Executive Summary. All directional characterizations are consistent with the source data and pre-written sections and do not introduce any new figures requiring arithmetic verification.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $1.35 billion in annual revenue | SUPPORTED |
+| 2 | Negative net income of $12.6 million | SUPPORTED |
+| 3 | Profit margin of -0.94% | SUPPORTED |
+| 4 | 52-week low of $2.10 at $2.61 | SUPPORTED |
+| 5 | Negative forward P/E ratio of -52.2 | SUPPORTED |
+
+All five quantitative claims in the Executive Summary are fully supported by the source data. The Outlook section introduces no new quantitative claims requiring verification.

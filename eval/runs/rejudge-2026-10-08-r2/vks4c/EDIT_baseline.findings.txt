@@ -1,0 +1,93 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the Executive Summary and Outlook sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "currently trading at $2.75 per share"
+LABEL: SUPPORTED
+REASON: The source data explicitly lists `"current_price": 2.75`.
+
+---
+
+CLAIM: "market capitalization of $422.3 million"
+LABEL: SUPPORTED
+REASON: Source data shows `"market_cap": 422345088.0`; $422,345,088 rounds to $422.3 million.
+
+---
+
+CLAIM: "negative profit margin of -157.32%"
+LABEL: SUPPORTED
+REASON: Source data explicitly states `"profit_margin_pct": -157.32`; also verifiable as net_income / revenue = -73,949,000 / 47,005,000 = -157.32%.
+
+---
+
+CLAIM: "the company's cash runway extends only through Q3 2027"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and Risk Factors both explicitly state "existing cash expected to fund operations only into the third quarter of 2027."
+
+---
+
+CLAIM: "52-week range of $1.66–$4.33"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists `"week_52_high": 4.33` and `"week_52_low": 1.66`.
+
+---
+
+CLAIM: "its most advanced candidate, EDIT-401"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states "EDIT-401 is a key product candidate under development" and the SEC Filing Highlights pre-written section states "EDIT-401 remains the most advanced product candidate."
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "a cash runway that expires in Q3 2027"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and Risk Factors both explicitly state existing cash is projected to fund operations through Q3 2027.
+
+---
+
+CLAIM: "a $1.6 billion accumulated deficit"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states "accumulated significant operating losses totaling $1.6 billion as of December 31, 2025."
+
+---
+
+CLAIM: "even the most advanced candidate, EDIT-401, remains years from potential commercialization"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states "Years of development remain before any product candidate is ready for commercialization," and the SEC Filing Highlights pre-written section confirms EDIT-401 is the most advanced candidate with "years of preclinical and clinical development" remaining.
+
+---
+
+CLAIM: "a successful capital raise that meaningfully extends its runway beyond Q3 2027"
+LABEL: INFERENCE
+REASON: Q3 2027 is the stated runway endpoint from source data; "beyond Q3 2027" is a direct logical extension of that figure used as a threshold for improvement, derivable without any additional facts.
+
+---
+
+CLAIM: "growing regulatory familiarity with CRISPR-based therapies and increasing industry validation" (as a broader tailwind)
+LABEL: UNSUPPORTED
+REASON: Neither the raw source data, the SEC filing summaries, the RAG sections, nor any of the pre-written sections contain any reference to regulatory familiarity with CRISPR therapies or industry validation as a tailwind; this claim has no grounding in the provided context.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $2.75 per share | SUPPORTED |
+| 2 | Market cap $422.3 million | SUPPORTED |
+| 3 | Profit margin -157.32% | SUPPORTED |
+| 4 | Cash runway through Q3 2027 | SUPPORTED |
+| 5 | 52-week range $1.66–$4.33 | SUPPORTED |
+| 6 | EDIT-401 most advanced candidate | SUPPORTED |
+| 7 | Cash runway expires Q3 2027 (Outlook) | SUPPORTED |
+| 8 | $1.6 billion accumulated deficit | SUPPORTED |
+| 9 | EDIT-401 years from commercialization | SUPPORTED |
+| 10 | Runway "beyond Q3 2027" as improvement threshold | INFERENCE |
+| 11 | Growing regulatory familiarity with CRISPR / industry validation tailwind | UNSUPPORTED |

@@ -1,0 +1,46 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "currently trading near its 52-week low of $7.84"
+LABEL: SUPPORTED
+REASON: The source data explicitly lists `week_52_low: 7.84`, and the current price of $8.06 is arithmetically near that figure (within ~3%).
+
+---
+
+CLAIM: "market capitalization of approximately $138.6 million"
+LABEL: SUPPORTED
+REASON: Source data lists `market_cap: 138583360.0`, which rounds to approximately $138.6 million; the pre-written Financial Health section also states this figure.
+
+---
+
+CLAIM: "anomalous profit margin of 115.85%"
+LABEL: SUPPORTED
+REASON: Source data explicitly states `profit_margin_pct: 115.85`, and the pre-written Financial Health section repeats this figure verbatim.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: (no explicit quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section)
+LABEL: N/A
+REASON: The Outlook section contains only qualitative and directional statements (e.g., "cautious," "declining consumer demand," "intense competitive dynamics," "stabilize liquidity," "comply with debt covenants"). There are no specific quantitative figures, percentages, ratios, price targets, or named numeric milestones to audit in this section.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | 52-week low of $7.84 | SUPPORTED |
+| 2 | Market cap ~$138.6 million | SUPPORTED |
+| 3 | Profit margin of 115.85% | SUPPORTED |
+| 4 | Outlook section (no quantitative claims) | N/A |
+
+All three auditable quantitative claims in the Executive Summary are directly supported by the raw source data. The Outlook section contains no quantitative or forward-looking numeric claims requiring verification.

@@ -1,0 +1,76 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $735.8 billion in annual sales"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as $735,839,977,472, which rounds to $735.8 billion, and the same figure appears in the Financial Health pre-written section.
+
+---
+
+CLAIM: "commanding an $860.7 billion market capitalization"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap as $860,745,826,304, which rounds to $860.7 billion, consistent with the Financial Health pre-written section.
+
+---
+
+CLAIM: "a 39.2x P/E ratio"
+LABEL: SUPPORTED
+REASON: The raw source data lists pe_ratio as 39.188408, which rounds to 39.2x, matching the Financial Health pre-written section's "39.2x."
+
+---
+
+CLAIM: "deploying $2.9 billion in tariff refunds"
+LABEL: SUPPORTED
+REASON: The 10-Q filing summary explicitly states "the Company received approximately $2.9 billion in tariff refunds," and this figure is repeated in both the Recent Developments and Financial Health pre-written sections.
+
+---
+
+CLAIM: "already thin 3.0% profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data lists profit_margin_pct as 3.0, and the Financial Health pre-written section states "the 3.0% profit margin."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "the $2.9 billion tariff refund"
+LABEL: SUPPORTED
+REASON: The 10-Q filing summary explicitly states "approximately $2.9 billion in tariff refunds," confirmed in multiple pre-written sections.
+
+---
+
+CLAIM: "deepening U.S.-India trade ties" (as a potential long-term supply chain benefit)
+LABEL: SUPPORTED
+REASON: The Recent Developments pre-written section references India's trade portal and U.S.-India bilateral trade, and the underlying news article confirms this development; the directional characterization is grounded in the source material.
+
+---
+
+CLAIM: (implicit forward-looking figure) bilateral trade between India and the U.S. "targeted to reach $500 billion by 2030" — *this specific figure is referenced in the pre-written Recent Developments section and the Outlook alludes to "deepening U.S.-India trade ties" without stating the $500 billion figure explicitly*
+REASON: No specific quantitative figure ($500 billion / 2030) appears in the Outlook section itself; the Outlook only references "U.S.-India trade ties" directionally. No numerical claim to audit here.
+
+---
+
+*No other specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already audited above.*
+
+---
+
+**SUMMARY TABLE**
+
+| Claim | Label |
+|---|---|
+| $735.8 billion in annual sales | SUPPORTED |
+| $860.7 billion market capitalization | SUPPORTED |
+| 39.2x P/E ratio | SUPPORTED |
+| $2.9 billion in tariff refunds (Executive Summary) | SUPPORTED |
+| 3.0% profit margin | SUPPORTED |
+| $2.9 billion tariff refund (Outlook) | SUPPORTED |
+| U.S.-India trade ties as long-term supply chain benefit (directional, no specific number stated) | SUPPORTED |
+
+All quantitative claims in the Executive Summary and Outlook are supported by the raw source data or pre-written sections. No unsupported or inference-only quantitative claims were identified.

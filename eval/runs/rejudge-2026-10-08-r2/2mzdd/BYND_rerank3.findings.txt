@@ -1,0 +1,71 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "$258.8 million in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as $258,844,992, which rounds to $258.8 million; the pre-written Financial Health section also states "$258.8 million in revenue."
+
+---
+
+CLAIM: "52-week high of $230.70"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `week_52_high: 230.7`, matching the figure cited.
+
+---
+
+CLAIM: "stock has collapsed from a 52-week high of $230.70 to $7.66"
+LABEL: SUPPORTED
+REASON: Both the 52-week high ($230.70) and the current price ($7.66) are explicitly present in the raw source data, and $7.66 < $230.70 confirms the directional claim of collapse.
+
+---
+
+CLAIM: "market capitalization to approximately $131.7 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `market_cap: 131705760.0`, which equals approximately $131.7 million.
+
+---
+
+CLAIM: "negative forward P/E"
+LABEL: SUPPORTED
+REASON: The raw source data lists `forward_pe: -0.73481447`, which is negative, confirming this claim.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "tariff exposure on key inputs such as Canadian-sourced pea protein"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states "The company sources majority pea protein volume and manufactures products in Canada, making them vulnerable to import tariffs," and the SEC Filing Highlights pre-written section references "tariff exposure on Canadian-sourced pea protein."
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond qualitative directional statements and the named strategic rebrand "Beyond The Plant Protein Company," which is supported by the 10-Q filing summary and pre-written sections.)*
+
+---
+
+CLAIM: "Beyond The Plant Protein Company" repositioning (named milestone)
+LABEL: SUPPORTED
+REASON: The 10-Q SEC filing summary explicitly states "Our strategic repositioning to 'Beyond The Plant Protein Company'" and the pre-written Recent Developments section repeats this exact name.
+
+---
+
+### Summary Table
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $258.8 million in revenue | SUPPORTED |
+| 2 | 52-week high of $230.70 | SUPPORTED |
+| 3 | Stock collapsed from $230.70 to $7.66 | SUPPORTED |
+| 4 | Market cap ~$131.7 million | SUPPORTED |
+| 5 | Negative forward P/E | SUPPORTED |
+| 6 | Tariff exposure on Canadian-sourced pea protein | SUPPORTED |
+| 7 | "Beyond The Plant Protein Company" rebrand (named milestone) | SUPPORTED |
+
+**No unsupported or inference-labeled claims were identified.** All quantitative figures and named milestones in the Executive Summary and Outlook are directly traceable to the raw source data or pre-written sections, and all derived/directional claims pass arithmetic verification.

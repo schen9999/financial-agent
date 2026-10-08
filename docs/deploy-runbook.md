@@ -1,9 +1,10 @@
 # Deploy runbook
 
-> **Status:** Authored and reviewed, never applied: no OKE compartment was provisioned. The demo runs on single-node k3s on OCI A10 VMs.
+> **Status:** The Terraform OKE path is authored and reviewed, never applied: no compartment for it was provisioned. A provided OKE cluster now exists: its app plane, Argo and a hosted smoke ran there on 2026-10-03, and its CPU SLM endpoint served one traffic-proven smoke (dated runs; per-step status in those sections). The demo runs on single-node k3s on OCI A10 VMs.
 
-Three targets, one manifest tree: `kind` (local, fully working today),
-`k3s` (single-VM validation, Phase 1.75), and `oke` (OCI, Phase 2).
+Four targets, one manifest tree: `kind` (local, fully working today),
+`k3s` (single-VM validation, Phase 1.75), `oke-provided` (a provided OKE
+cluster, hosted models only) and `oke` (the Terraform cluster, Phase 2).
 Anything not yet executed is marked **NOT YET EXECUTED** with its phase;
 everything else has been run end-to-end on this repo.
 
@@ -551,11 +552,1417 @@ second copy. Per-claim rows (commit these too) then come from
 with `--contexts-dir eval/runs/<wf>-contexts --out
 eval/runs/<wf>-claims.jsonl`.
 
+If a run's aggregate step did not run (workflow Error after every eval pod
+completed), the aggregate can be rebuilt from the same log with the
+unchanged aggregate code — and must be recorded as rebuilt:
+
+```bash
+python scripts/results_from_pod_log.py --log eval/runs/raw/<wf>.log \
+    --out eval/runs/<wf>-results-rebuilt.json --aggregate-out eval/runs/<wf>-aggregate.txt
+```
+
+It stops if a pod's printed counts, LLM call lines or attempt record do
+not agree with its findings; the estimated run cost cannot be rebuilt.
+Used for `9jzmj` (2026-10-04) after validating it line for line against
+`7c66k`'s in-cluster aggregate.
+
+A workflow object for a 40-ticker run carries its nodes in
+`status.compressedNodes`: read it through `python3 scripts/workflow_nodes.py
+expand` (the make targets do) before `eval/attempts.py`.
+
 Emergency fallback if the logs are gone too (used 2026-09-05 to recover
 9j2dj): deleted pods' written files survive in containerd snapshot upper
 layers — on the node, `find` the containerd root (k3s:
 `/var/lib/rancher/k3s/agent/containerd`) under
 `io.containerd.snapshotter.v1.overlayfs/snapshots` for `eval_findings`.
+
+## OKE (provided cluster)
+
+An OKE cluster provisioned for us — **not** created by `terraform/oci`
+(never run it against this cluster): OKE v1.34.1, four
+VM.Standard.E5.Flex amd64 nodes at 16 vCPU (two ~28 GiB, two ~58 GiB
+allocatable), no GPUs, cri-o (no image import: everything pulls from a
+registry), default StorageClass `oci-bv`. **CPU-only harness: no vLLM, no
+GPU resources, `USE_LOCAL_MODEL=false`; hosted models unless an `slm-full`
+arm is run.** Nothing here may be cited as vLLM serving on OKE; SLM serving
+on it is the llama.cpp CPU endpoint of the next section, citable only as
+far as that section's EXECUTED steps state.
+
+Overlays: `k8s/overlays/oke-provided` + `argo/overlays/oke-provided`
+(the Terraform path keeps `oke`). App image from GHCR, pinned by git sha
+in both overlays (`scripts/pin_oke_image.py`); postgres/redis fully
+qualified for cri-o; Postgres PVC on `oci-bv` at 50Gi (the block volume
+floor); every Service ClusterIP — no LoadBalancer, no NodePort; nightly
+CronWorkflow suspended; workflow ttlStrategy 7 days.
+
+Where commands run: **laptop = WSL** (the `oke-bastion` / `oke-operator`
+ssh aliases live in WSL's `~/.ssh/config`); **node 2** (`ssh oci2`) builds
+and pushes the image (step 1); **operator** = the private host with
+kubectl/helm, reached as `ssh oke-operator` (ProxyJump through
+`oke-bastion`).
+
+Two operator facts, found 2026-10-03, that every remote command below
+depends on:
+
+- **kubectl on the operator authenticates through the `oci` credential
+  plugin, and that plugin reads stdin.** Anything piped into
+  `ssh oke-operator 'kubectl ...'` is consumed by the plugin, not by
+  kubectl, so `--from-file=/dev/stdin` and `--from-env-file=/dev/stdin`
+  do not work there. (Streaming into node 2's k3s works as written: k3s
+  has no credential plugin.)
+- **A non-interactive ssh command does not get the operator's interactive
+  environment.** `ssh oke-operator 'bash -lc "kubectl ..."'` fails
+  (`getting credentials: exec: executable oci failed with exit code 1`);
+  `ssh oke-operator 'bash -ic "kubectl ..."' < /dev/null` works — the
+  interactive shell reads `~/.bashrc`. It prints two job-control warnings
+  on stderr (`cannot set terminal process group`, `no job control in this
+  shell`); they are harmless. Read-only example, the one that fetched
+  `eval/runs/x2cx8-workflow.json`:
+  ```bash
+  ssh oke-operator 'bash -ic "kubectl -n financial-agent get workflow <wf> -o json"' < /dev/null > eval/runs/<wf>-workflow.json
+  ```
+
+1. **[EXECUTED 2026-10-03 — image `2dd1aa38bb3e` built and pushed from
+   node 2, pinned in commit `0ad7d42`; the hosted smoke's pods ran
+   `ghcr.io/schen9999/financial-agent-app:2dd1aa38…`
+   (`eval/runs/x2cx8-workflow.json`)]** Build, push, pin — **node 2
+   (`ssh oci2`), not the laptop**: on 2026-10-03 the laptop's WSL disk
+   filled during a build and WSL then failed to start. Clean tree on the
+   pushed commit to deploy: `slm-harness`, which carries everything on
+   `oke-deploy` plus the SLM work, so one image serves the hosted smoke,
+   every SLM run and the hosted baseline. GHCR login needs a PAT with
+   `write:packages` (a separate one from the cluster's read-only PAT):
+   ```bash
+   # node 2
+   cd ~/financial-agent && git fetch && git checkout slm-harness && git pull
+   docker login ghcr.io -u schen9999 --password-stdin   # paste the write PAT, then Ctrl-D
+   make oke-images      # refuses a dirty tree; pushes ghcr.io/schen9999/financial-agent-app:<sha>
+   # the target edited the pin into both oke-provided overlays: carry that
+   # edit off as a patch and leave node 2's tree clean (nothing is committed here)
+   git diff > /tmp/pin.patch && git checkout -- .
+   ```
+   ```bash
+   # laptop, from the repo, on the same commit: apply, commit and push the pin
+   scp oci2:/tmp/pin.patch /tmp/pin.patch
+   git apply /tmp/pin.patch
+   git commit -am "Pin oke-provided images to <sha12>" && git push
+   ```
+   The tag is the commit the image was built from; the pin commit comes
+   after it. New GHCR packages are private, hence the pull secret below.
+   A new image re-runs every arm on it: hosted smoke, CPU smoke, then the
+   extended runs.
+2. **[EXECUTED 2026-10-03 — no separate capture; evidenced by step 8's
+   run on the pinned image]** Repo on the operator. The repo is public —
+   no PAT to clone:
+   ```bash
+   ssh oke-operator
+   git clone https://github.com/schen9999/financial-agent.git && cd financial-agent
+   git checkout slm-harness         # the branch carrying the pin; or git pull, if already cloned
+   python3 scripts/pin_oke_image.py --check     # must print the sha just pinned
+   kubectl get nodes -o wide && kubectl get storageclass   # 4 nodes; oci-bv (default)
+   ```
+   The operator needs `make`, `openssl`, `python3` (stdlib only, 3.6+
+   syntax) and github.com egress (`make argo-install` fetches the pinned
+   Argo release manifest).
+3. **[EXECUTED 2026-10-03 with the temp-file method below — the stdin
+   form first written here does not work on the operator]** Secrets — none
+   committed; on the operator a secret exists on disk only as a 0600 temp
+   file, shredded as soon as the Secret is created:
+   ```bash
+   # operator: namespace, then the GHCR pull secret from a read:packages PAT
+   kubectl apply -f k8s/base/00-namespace.yaml
+   read -rs GHCR_PAT    # paste the read-only PAT (not echoed, not in history)
+   kubectl -n financial-agent create secret docker-registry ghcr-pull-secret \
+     --docker-server=ghcr.io --docker-username=schen9999 --docker-password="$GHCR_PAT"
+   unset GHCR_PAT
+   ```
+   ```bash
+   # laptop (WSL), from the repo: .env to a 0600 file on the operator.
+   # cat reads the stream here, not kubectl, so the credential plugin
+   # cannot swallow it; umask 077 makes the file owner-only from creation
+   # (plain scp would keep the source file's mode).
+   ssh oke-operator 'umask 077; cat > ~/app-secrets.env' < .env
+   ```
+   ```bash
+   # operator (interactive shell): create the Secret, then destroy the file
+   kubectl -n financial-agent create secret generic app-secrets \
+     --from-env-file=$HOME/app-secrets.env --dry-run=client -o yaml | kubectl apply -f -
+   shred -u ~/app-secrets.env
+   ```
+   Do **not** stream it into kubectl over ssh
+   (`ssh oke-operator 'kubectl ... --from-env-file=/dev/stdin' < .env`):
+   the OKE `oci` credential plugin consumes stdin, and a non-login ssh
+   command lacks the plugin's PATH (see "Where commands run"). The same
+   applies to `slm-endpoints` (SLM step 1).
+   Same keys as `make deploy` / `vm-up` (`--from-env-file` of the whole
+   `.env`; `REDIS_URL` / `DATABASE_URL` in it are overridden by app-config
+   and infra-secrets, later in `envFrom`). `--from-env-file` skips comments
+   and blank lines and keeps `=` and spaces inside values (verified on
+   kind 2026-10-02). kubectl does **not** strip quotes,
+   so `.env` values must be unquoted. The pull secret lives in
+   `financial-agent` only: the workflow pods run there, and nothing in
+   `argo` pulls from GHCR. `infra-secrets` (random Postgres password) is
+   generated by `oke-up` on first run, as on k3s.
+4. **[EXECUTED 2026-10-03 — api, mcp, postgres, redis, streamlit and
+   worker pods Running throughout `eval/runs/top-hosted-smoke.txt`]** App
+   plane — operator:
+   ```bash
+   make oke-up
+   kubectl -n financial-agent get pods -o wide   # all Running/Ready, spread over nodes
+   kubectl -n financial-agent get pvc,svc        # PVC Bound on oci-bv; every svc ClusterIP
+   ```
+   `oke-up` refuses to apply on an UNPINNED or mismatched pin, a missing
+   `oci-bv` StorageClass (wrong kubeconfig), or missing `app-secrets` /
+   `ghcr-pull-secret`, then waits on every rollout (the first Postgres
+   rollout includes provisioning and attaching the block volume). The
+   bound PV is 50Gi (`kubectl get pv`); a smaller request would only be
+   rounded up to the OCI floor.
+5. **[EXECUTED 2026-10-03 — evidenced by workflow `grounding-eval-x2cx8`
+   Succeeded, step 8]** Argo — operator:
+   ```bash
+   make argo-install
+   make argo-deploy ARGO_OVERLAY=oke-provided    # must print suspend=true
+   ```
+   `argo-deploy` also applies the eval RBAC from `argo/base/rbac.yaml`,
+   including — since 2026-10-04 — the Role that lets the Argo
+   **controller** (ServiceAccount `argo` in namespace `argo`) create
+   ConfigMaps in `financial-agent`. A 40-ticker run needs it: the
+   aggregate's template exceeds Argo's 131,072-byte inline limit and is
+   offloaded to a ConfigMap (eval-methodology, "the aggregate step's
+   template outgrew Argo's inline limit"). Check it before any extended
+   run:
+   ```bash
+   kubectl -n financial-agent get role,rolebinding argo-controller-template-offload
+   kubectl auth can-i create configmaps -n financial-agent --as system:serviceaccount:argo:argo   # yes
+   ```
+   `argo-deploy` runs the same pin check for this overlay. The nightly
+   CronWorkflow ships suspended (every fire spends Anthropic credits);
+   evals here are submitted by hand with `make eval-run`.
+6. **[EXECUTED 2026-10-03 — installed via helm chart 3.14.0 (app
+   v0.9.0), not the 3.12.2 first written here; `kubectl top` output is the
+   two `eval/runs/top-*-smoke.txt` captures]** metrics-server — check
+   first; installing it is a **cluster-level change** (kube-system,
+   cluster-wide API service):
+   ```bash
+   kubectl get apiservice v1beta1.metrics.k8s.io && kubectl top nodes   # present? stop here
+   # absent: install the pinned chart via helm
+   helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
+   helm repo update
+   helm search repo metrics-server/metrics-server --versions | head -5   # 3.14.0 must be listed
+   helm upgrade --install metrics-server metrics-server/metrics-server \
+     --version 3.14.0 --namespace kube-system
+   kubectl -n kube-system rollout status deploy/metrics-server --timeout=180s
+   kubectl top nodes
+   ```
+   Chart 3.14.0 = metrics-server v0.9.0. If `kubectl top` reports
+   kubelet x509 errors, stop: `--kubelet-insecure-tls` weakens kubelet
+   TLS verification cluster-wide and is a decision, not a workaround.
+7. **[NOT YET EXECUTED]** Access — port-forward only:
+   ```bash
+   # operator (binds the operator's localhost only)
+   nohup kubectl -n financial-agent port-forward svc/streamlit 8501:8501 >/tmp/pf-streamlit.log 2>&1 &
+   nohup kubectl -n financial-agent port-forward svc/api 8000:8000 >/tmp/pf-api.log 2>&1 &
+   ```
+   ```bash
+   # laptop (WSL); local 32xxx so kind (30xxx) and the k3s tunnel (31xxx) stay free
+   ssh -N -L 32501:localhost:8501 -L 32080:localhost:8000 oke-operator
+   curl -s localhost:32080/health
+   curl -s -X POST localhost:32080/research -H 'Content-Type: application/json' \
+     -d '{"ticker":"AAPL"}' | python3 -m json.tool | head -40
+   # Streamlit: http://localhost:32501
+   ```
+   Optional Argo UI: `kubectl -n argo port-forward svc/argo-server
+   2746:2746` on the operator plus `-L 32746:localhost:2746`.
+8. **[EXECUTED 2026-10-03 — `grounding-eval-x2cx8` Succeeded 11/11 on
+   image `2dd1aa3`: 10/10 tickers, 84 claims, 2/84 = 2.38% unsupported
+   (Wilson 95% CI 0.7–8.3%), judge v2, stock block empty 0/10, gate passed
+   (`eval/runs/hosted-smoke.log`). Its printed LLM-call table
+   double-counts the two RAG sites — see the note after this step]**
+   Hosted smoke = platform validation (10 tickers,
+   hosted baseline arm, judge v2, RAG faithfulness on; the first eval on
+   the cluster, on the same pinned image as every later run). An
+   estimated ~$0.90 of Anthropic credit: dvvxk's harness estimate of
+   $2.34 per 40 tickers scaled to 10, plus ~$0.03/ticker for the two
+   RAG-faithfulness judge calls. On the operator, in two shells:
+   ```bash
+   make eval-run          # argo/eval-run.yaml; prints "submitted workflow: <wf>"
+   ```
+   ```bash
+   WF=<wf>; OUT=~/$WF-top.txt; : > $OUT
+   while :; do
+     P=$(kubectl -n financial-agent get workflow $WF -o jsonpath='{.status.phase}')
+     case "$P" in Succeeded|Failed|Error) echo "=== $(date -u +%FT%TZ) phase=$P" >> $OUT; break;; esac
+     { echo "=== $(date -u +%FT%TZ) phase=$P"; kubectl top pods -n financial-agent --containers; kubectl top nodes; } >> $OUT
+     sleep 15
+   done
+   ```
+   Then capture (step 9) and check the aggregate output: `stock block
+   empty : N/10` (briefs written without stock data — a swallowed
+   yfinance failure; Yahoo has returned 429 from this egress IP) and
+   `tickers skipped`. Grep the log for `429` / `Too Many Requests` too.
+   This is a dated **platform-validation run, not a number of record**;
+   report it with its Wilson CI and the judge v2 calibration note.
+
+   **x2cx8, as measured (2026-10-03).** The aggregate printed `90 calls =
+   9.0/ticker` with 20 calls on each RAG site. The real figure is 70
+   calls, 7.0/ticker, 10 per RAG site: on image `2dd1aa3` the two RAG
+   threads each registered the hosted usage handler, so every hosted RAG
+   call was written to the ledger twice (fixed by a lock in
+   `agent/tools/rag.py`; finding and corrected token figures in
+   [eval-methodology.md](eval-methodology.md), "Smokes on image
+   `2dd1aa3`"). Grounding counts, the gate and the estimated run cost are
+   unaffected. Resource use from the step's `kubectl top` loop
+   (`eval/runs/top-hosted-smoke.txt`): eval pods 3–6 millicores at steady
+   state and ~600 MiB each; the one 560m reading is startup (imports and
+   the embedding-model load) — the same pod reads 6m in the next sample.
+   The image this ran on is superseded: re-run this step on the next image
+   before any SLM run is compared with it.
+
+   **Re-run on image `30c832b` (2026-10-03): `grounding-eval-hm527`**
+   Succeeded 11/11 — 10/10 tickers, 90 claims, 1/90 = 1.11% unsupported
+   (Wilson 95% CI 0.2–6.0%), judge v2, 70 agent calls = 7.0/ticker (the
+   ledger double count is gone), no truncation (`eval/runs/hm527-smoke.log`,
+   `eval/runs/hm527-top.txt`, findings in `eval/runs/raw/hm527-findings`).
+   Superseded in turn by the next image (attempt logging).
+
+   **Re-run on image `1f51dad` (2026-10-03): `grounding-eval-7c66k` —
+   GATE FAILED.** 10/10 tickers, 101 claims, 8/101 = 7.92% unsupported
+   (Wilson 95% CI 4.1–14.9%), judge v2, 0 Argo retries, 70 agent calls, no
+   truncation; numeric unsupported 0/59. All 8 unsupported claims are
+   qualitative phrases in MSFT's brief, which the judge listed in this
+   pass (14 qualitative MSFT claims, against 1 and 0 in the two earlier
+   smokes on the same retrieved context and near-identical text). It is
+   recorded as a failed gate; the gate and the judge are not changed
+   (`eval/runs/hosted-smoke-3.log`, `eval/runs/raw/7c66k-findings`,
+   `eval/runs/grounding-eval-7c66k-attempts.json`; eval-methodology,
+   "Hosted smokes on the 10-ticker set"). The new aggregate lines and the
+   attempts block ran on OKE for the first time in this run. A smoke
+   validates the platform; arms are compared on the extended runs, numeric
+   co-primary first.
+9. **[EXECUTED 2026-10-03 for `x2cx8`: in the repo are the `make
+   eval-run` output (`eval/runs/hosted-smoke.log`), the top capture
+   (`eval/runs/top-hosted-smoke.txt`), the workflow object
+   (`eval/runs/x2cx8-workflow.json`), and — commit `8147b67` — the
+   findings extraction (`eval/runs/raw/x2cx8-findings/`), the per-claim
+   rows (`eval/runs/x2cx8-claims.jsonl`) and their contexts
+   (`eval/runs/x2cx8-contexts/`); the full pod log was captured to
+   `eval/runs/raw/x2cx8.log`, kept local like every pod log (gitignored:
+   its payload duplicates the findings)]** Findings + top capture — within 7 days (the
+   ttlStrategy deletes the workflow and its pods, and their logs, after
+   that):
+   ```bash
+   # operator
+   kubectl -n financial-agent logs -l workflows.argoproj.io/workflow=$WF --prefix --tail=-1 > ~/$WF.log
+   ```
+   ```bash
+   # laptop (WSL), from the repo
+   scp oke-operator:'~/<wf>.log' eval/runs/raw/<wf>.log
+   scp oke-operator:'~/<wf>-top.txt' eval/runs/<wf>-top.txt
+   scp oke-operator:'~/<wf>-attempts.json' eval/runs/<wf>-attempts.json   # retries + failed attempts, written by make eval-run
+   python3 scripts/extract_findings.py --log eval/runs/raw/<wf>.log --out eval/runs/raw/<wf>-findings/
+   python3 eval/stock_block.py eval/runs/raw/<wf>-findings
+   ```
+   then the per-claim rows as in "Findings capture" above. The capture
+   list for every run: the pod log, the top capture, the workflow object
+   (`kubectl get workflow <wf> -o json` → `eval/runs/<wf>-workflow.json`),
+   **`<wf>-attempts.json`**, and for SLM runs the `~/slm-proof/<wf>*`
+   files. `<wf>-attempts.json` can be rebuilt from the workflow object and
+   the pod log (`python3 eval/attempts.py --workflow … --log … --json-out
+   …`) while both exist.
+10. **[NOT YET EXECUTED]** Teardown — operator. If the public Streamlit UI
+    is up, take it down first ("Public Streamlit UI", Teardown) so the load
+    balancer is released before the namespace goes:
+    ```bash
+    pkill -f 'kubectl -n financial-agent port-forward'
+    kubectl delete -k argo/overlays/oke-provided
+    kubectl delete -k k8s/overlays/oke-provided    # deletes the PVC
+    kubectl get storageclass oci-bv -o jsonpath='{.reclaimPolicy}'   # Delete => the block volume and stored briefs go too
+    kubectl -n financial-agent delete secret app-secrets infra-secrets ghcr-pull-secret
+    kubectl delete namespace financial-agent
+    kubectl delete -k argo/install                 # only if nothing else here uses Argo
+    helm uninstall metrics-server -n kube-system   # only if step 6 installed it
+    ```
+    GHCR image versions stay until deleted from the package's settings on
+    github.com.
+
+## Public Streamlit UI (OKE provided cluster)
+
+Requested by the tenancy owner. **Streamlit only** is public — not the
+API, Argo, MCP or either llama.cpp endpoint, which stay ClusterIP (or, for
+node 2's GPU endpoint, keyed behind the egress-IP rule). Overlay
+`k8s/overlays/oke-provided-public-ui` (oke-provided plus the load balancer
+and an nginx sidecar); scripts `scripts/public_ui_secrets.sh`,
+`scripts/public_ui_up.sh`, `scripts/public_ui_render.py`.
+
+**What is public, to whom, and how it is protected**
+
+- One OCI flexible load balancer, 10 Mbps (inside the Always Free
+  allowance of one 10 Mbps LB per tenancy; about $9 a month at list price
+  if that allowance is used elsewhere), on subnet `pub_lb-tbhcuw`,
+  listening on **443 only**, TLS with a self-signed certificate (Secret
+  `streamlit-tls`; viewers check the SHA-256 fingerprint the operator gives
+  them, then accept the browser warning).
+- **Source restriction, twice, from one gitignored list**
+  (`k8s/overlays/oke-provided-public-ui/allowlist.txt`):
+  `loadBalancerSourceRanges` becomes an ingress rule on 443 for each
+  allowlist CIDR in the LB subnet's security list, added and removed by the
+  cloud controller (**security-list management mode All**, since
+  2026-10-08: the controller may manage security lists, may not create
+  NSGs; All also adds the LB-to-node-port and health-check rules, needed
+  because the workers' NSG admits only members of `pub_lb-tbhcuw`); nginx
+  repeats the allowlist on the `X-Forwarded-For` client address. The LB is
+  attached to **no NSG** — in particular not to `pub_lb-tbhcuw`, which
+  admits 443 and 80 from anywhere. `scripts/public_ui_up.sh` refuses to
+  apply if the security list already admits 443 from anything wider than
+  the allowlist, and after the apply checks that it holds exactly the
+  allowlist on 443, that the LB has no NSG and only a TLS listener on 443,
+  and puts the Service back to ClusterIP if not
+  (`scripts/public_ui_guard.py`).
+- **Basic auth** in nginx: user `reviewer`, a random password, hash in the
+  Secret `streamlit-basic-auth`. The password lives only in
+  `~/public-ui/credentials` (0600) on the operator; read it in your own
+  terminal (`ssh oke-operator cat public-ui/credentials`), never in a shared
+  one, never in chat or git.
+- **Spend:** every uncached brief spends Anthropic credit (hosted $0.0357
+  per brief, same-image measurement); a ticker already generated in the
+  last 24 hours is served from the exact-key cache for free; follow-up
+  questions also spend credit, unmeasured (the ledger does not record the
+  hosted ReAct agent's calls). Someone generating new tickers back to back
+  would spend about $4 an hour. The app has no brief cap and none is added
+  before the demo (the image stays `f3043751`). **The hard cap is the
+  monthly spend limit on the Anthropic workspace**, set by the project owner
+  in the Anthropic console; the allowlist and basic auth limit who can
+  spend at all.
+
+**Bring up (operator, repo root, no eval running):**
+
+1. Allowlist: copy the gitignored file to the operator
+   (`scp k8s/overlays/oke-provided-public-ui/allowlist.txt
+   oke-operator:financial-agent/k8s/overlays/oke-provided-public-ui/`).
+   One IPv4 CIDR per line; the renderer refuses an empty list and anything
+   wider than /24.
+2. `bash scripts/public_ui_secrets.sh` — creates both Secrets; prints the
+   certificate fingerprint only.
+3. `bash scripts/public_ui_up.sh --diff`, then `bash scripts/public_ui_up.sh`:
+   refuses while an eval runs, looks up the subnet and NSG OCIDs by name,
+   renders, applies, waits for the external IP. Expected diff: the
+   streamlit Deployment (nginx sidecar) and Service, two new ConfigMaps.
+4. Verify: `kubectl get svc -A` shows the external IP; from an allowlisted
+   address `curl -sk -o /dev/null -w '%{http_code}' https://<ip>/` gives 401
+   and with the credentials 200; from the operator (egress IP not on the
+   list) the request times out. Load the page and generate one ticker that
+   is already cached (no spend).
+
+While the public UI is up, re-apply with `scripts/public_ui_up.sh`, not
+`make oke-up` (that applies `oke-provided` and would turn the Service back
+into ClusterIP, releasing the LB). Operator port-forwards to Streamlit go
+to the pod's own port: `kubectl -n financial-agent port-forward
+deploy/streamlit 8501`.
+
+**Add an IP** (a reviewer's, or yours when the residential IP changes):
+add one line to the allowlist on the laptop, copy it to the operator as in
+step 1, run `bash scripts/public_ui_up.sh`. The OCI rule and nginx's list
+are rendered from the same file, so they change together. Remove an entry
+the same way.
+
+**Status (2026-10-07): NSG mode refused; NOT LIVE, awaiting the tenancy
+owner.** The first apply (NSG mode) put the nginx sidecar in place, but the
+cloud controller's `CreateNetworkSecurityGroup` calls failed with 404
+NotAuthorizedOrNotFound: it may not create NSGs in this VCN, so no load
+balancer was created. Streamlit was put back to ClusterIP (`kubectl apply
+-k k8s/overlays/oke-provided`; mcp and postgres reported "configured" for
+their last-applied annotation only, no restart); OCI holds no load balancer
+and the VCN still has its 7 NSGs. The two Secrets stay for the next attempt.
+
+**Retry (2026-10-08): NSG mode refused again; reverted; an unauthenticated
+exposure by another actor recorded.** After the tenancy owner said the
+cluster policies were in place, `scripts/public_ui_up.sh` (NSG mode) was
+re-run at 02:30:58Z: `CreateNetworkSecurityGroup` (POST
+/20160918/networkSecurityGroups, us-ashburn-1; every resource involved in
+compartment `ruzhu`) returned 404 NotAuthorizedOrNotFound at 02:30:59,
+02:31:04, 02:31:18, 02:31:39 and 02:32:22 GMT (first opc-request-id
+`fafd60367aa6f9451af817353ab2d2e8/FFF79E0569DF879A6300C76A49414420/166A5735104C7321E1FC54677671009C`).
+Reverted to ClusterIP; the load balancer was deleted at 02:33:41Z and the
+`pub_lb-tbhcuw` security list is empty again. **Before the retry, outside
+this project's scripts**, the streamlit objects had been changed: at 02:04Z
+a Deployment revision with the unpullable image `financial-agent-app:local`
+(never ready), and from 02:05Z the Service as a LoadBalancer with **no
+source ranges**, in security-list mode — a TCP listener on 8501 and a
+security-list rule admitting 0.0.0.0/0 on 8501 — deleted and recreated at
+02:19–02:20Z. Traffic reached the running Streamlit pod (no sidecar, no
+auth): the UI was **reachable from anywhere without authentication from
+about 02:05 to 02:19Z and 02:22 to 02:31Z**, until the retry moved the
+Service to 443 → 30443. Who made those changes is not recorded (the apply
+overwrote the field managers). **Rule from 2026-10-08: every change in the
+`financial-agent` namespace goes through this repository's overlays and
+scripts only** (for Streamlit, `k8s/overlays/oke-provided-public-ui` via
+`scripts/public_ui_up.sh`); nothing is applied there by hand or from other
+manifests.
+
+**Security-list mode, first apply (2026-10-08 02:4xZ): stopped, another
+actor in the namespace.** `scripts/public_ui_up.sh` (security-list mode)
+passed its pre-apply guard (the LB subnet's list admitted nothing on 443)
+and applied at about 02:41Z. The controller's `CreateLoadBalancer` (POST
+/20170115/loadBalancers) returned 409 Conflict at 02:44:25 GMT; then the
+`streamlit` Service was **deleted by someone else** at about 02:46:48Z
+(the controller logged "Deleted load balancer" and could not remove its
+finalizer: "services streamlit not found"), and the script stopped on the
+missing Service before its revert. No load balancer was left and the
+security list stayed empty. `kubectl apply -k k8s/overlays/oke-provided`
+restored Streamlit to ClusterIP without the sidecar, and found a ClusterIP
+`streamlit` Service only seconds old that it had not created: another actor
+was applying in the namespace at the same time. Nothing more is applied
+until the namespace has a single operator.
+
+**Third outside exposure (2026-10-08) and closure.** After the 02:47Z
+restore, the `streamlit` Service was recreated outside the project's
+scripts (02:47:28Z) and made a LoadBalancer again (02:48:41Z): TCP
+listener on 8501, the `pub_lb-tbhcuw` security list admitting 0.0.0.0/0 on
+8501, Streamlit answering 200 without authentication at 129.159.168.142.
+Closed by `kubectl apply -k k8s/overlays/oke-provided` at 02:52:04Z; the
+LB was deleted at 02:52:24Z and the rule removed. Exposure about
+02:48:41–02:52:24Z; no brief was cached in it. The tenancy owner then
+confirmed he had stopped; a five-minute watch of the namespace (every
+object's resourceVersion, every event, 02:53:53–02:58:56Z) showed no
+change before the next apply.
+
+**LIVE (2026-10-08 03:12Z), security-list mode, verified.** First attempt
+after the quiet watch: `CreateLoadBalancer` returned 409 Conflict for ten
+minutes ("Token Collision: For token: <compartment>~createLoadBalancer~<Service
+UID>") and the script reverted to ClusterIP. The controller's idempotency
+token is the compartment plus the Service's UID, and that Service (created
+outside the project's scripts at 02:47:28Z) had already had a load balancer
+created and deleted under it with different settings; OCI refuses a reused
+token with a different request. **Fix: a Service with a fresh UID** —
+`kubectl -n financial-agent delete svc streamlit`, then
+`scripts/public_ui_up.sh`. With Service `758cef09` (03:12:50Z) every guard
+passed and the checks gave:
+
+- security list `pub_lb-tbhcuw`: exactly one ingress rule, TCP 443 from
+  99.164.75.62/32;
+- load balancer: flexible 10 Mbps, no NSG, one listener, 443 with TLS;
+- from 99.164.75.62: 401 without credentials and with a wrong password, 200
+  with them; `/_stcore/health` 200; the websocket upgrade answers 101;
+  ports 80 and 8501 do not answer; certificate SHA-256 fingerprint
+  90:5B:E5:28:…:6A:7C, as issued;
+- from the operator (egress not on the allowlist): timeout;
+- generating a cached ticker in the page needs a browser (no headless
+  browser on the laptop): done by the project owner.
+
+URL: https://129.80.19.30/ (user `reviewer`; the password stays on the
+operator).
+
+**Fallback: join the owner's LB NSG** (security-rule management `None`,
+which makes the controller ignore `loadBalancerSourceRanges`; the LB is
+attached to the existing NSG `pub_lb-tbhcuw` with
+`oci.oraclecloud.com/oci-network-security-groups`). That NSG's egress to
+`workers-tbhcuw` (TCP 30000–32767, 10256) and the workers' matching
+ingress already exist, and the Service's node port is pinned to 30443 inside
+that range. What the tenancy owner changes, on the NSG `pub_lb-tbhcuw`:
+
+1. Delete the ingress rule: source 0.0.0.0/0, TCP, destination port 443.
+2. Delete the ingress rule: source 0.0.0.0/0, TCP, destination port 80.
+3. Add an ingress rule: stateful, source each allowlist CIDR (today one), TCP,
+   destination port 443.
+
+Any other public LB later placed in that NSG inherits the same allowlist.
+Then, on the operator: `ATTACH_NSG_NAME=pub_lb-tbhcuw bash
+scripts/public_ui_up.sh --diff`, then without `--diff`. The script refuses
+while the NSG still has any non-ICMP ingress rule from 0.0.0.0/0, so the LB
+never comes up open to the internet. In this mode adding an IP needs the
+owner too: a new rule 3 for the new CIDR, as well as the allowlist line
+(nginx's list). If the controller may not attach an NSG either, the
+Service's events say so and the alternative is an IAM grant from the owner
+letting the cluster manage NSGs in the VCN compartment, which restores the
+NSG-mode path as designed.
+
+**Teardown** (before the rest of the OKE teardown):
+
+```bash
+kubectl -n financial-agent delete svc streamlit      # releases the LB and the controller's NSG rules
+kubectl apply -k k8s/overlays/oke-provided           # streamlit back to ClusterIP, no sidecar
+kubectl -n financial-agent get configmap -o name | grep streamlit-nginx | xargs -r kubectl -n financial-agent delete   # the two nginx ConfigMaps
+kubectl -n financial-agent delete secret streamlit-basic-auth streamlit-tls
+shred -u ~/public-ui/credentials; rm -f ~/public-ui/tls.crt
+```
+
+Then confirm no load balancer is left:
+`oci lb load-balancer list --compartment-id <the VCN's compartment> --all` is empty.
+
+## SLM endpoints: Qwen3.6-35B-A3B on llama.cpp (CPU on OKE, GPU on node 2)
+
+The self-served SLM behind the `slm-full-*` arms and `SLM_FULL`
+(`agent/tools/slm.py`; method: [eval-methodology.md](eval-methodology.md),
+"Self-served SLM arm"). One GGUF (ggml-org Q4_K_M @`baec3eb`, 20.4 GB,
+sha256-verified by the init container) and one engine build (llama.cpp
+b11347) on both endpoints, `k8s/llamacpp/`. **Status 2026-10-03: steps
+1–3 and the CPU smoke of step 6 are executed; the GPU endpoint is loaded
+but has served no eval. No doc may claim more of either endpoint than an
+EXECUTED step states.**
+Node 1 (`oci1`) is frozen: nothing below touches it.
+
+Prerequisite: "OKE (provided cluster)" steps 1–8 done with the image built
+and pinned from `slm-harness` — one image for the hosted smoke (its step 8),
+every SLM run and the hosted baseline. A new image means every arm
+re-runs on it, in this order: hosted smoke (OKE step 8), CPU smoke, GPU
+smoke, then the extended runs with their same-image hosted baseline
+(step 6).
+
+1. **[EXECUTED 2026-10-03 with the temp-file method below for the
+   operator — streaming into kubectl over ssh works on node 2's k3s and
+   does not work on the operator]** Keys — laptop (WSL). One key per
+   endpoint, never in a ConfigMap; the GPU key goes to both clusters:
+   ```bash
+   # laptop (WSL)
+   GPU_KEY=$(openssl rand -hex 32)
+   # node 2: k3s has no credential plugin, so the stream reaches kubectl
+   printf %s "$GPU_KEY" | ssh oci2 'KUBECONFIG=$HOME/.kube/config kubectl -n financial-agent \
+     create secret generic llamacpp-api-key --from-file=LLAMA_API_KEY=/dev/stdin'
+   # operator: the oci credential plugin would consume the stream, so land
+   # it in a 0600 file instead (cat reads it, not kubectl)
+   printf %s "$GPU_KEY" | ssh oke-operator 'umask 077; cat > ~/slm-gpu.key'
+   unset GPU_KEY
+   ```
+   ```bash
+   # operator (interactive shell)
+   kubectl -n financial-agent create secret generic slm-endpoints \
+     --from-literal=SLM_CPU_API_KEY=$(openssl rand -hex 32) \
+     --from-file=SLM_GPU_API_KEY=$HOME/slm-gpu.key \
+     --from-literal=SLM_GPU_URL=http://<node-2-public-ip>:30880
+   shred -u ~/slm-gpu.key
+   kubectl -n financial-agent rollout restart deployment/api deployment/worker deployment/streamlit deployment/mcp
+   ```
+   (`--from-file=KEY=<path>` stores the file's bytes exactly; `printf %s`
+   writes no trailing newline.) The CPU key is generated on the
+   operator and lives only in `slm-endpoints`, which both the CPU server and
+   the harness read. The restart lets the app pods pick up the new Secret.
+2. **[EXECUTED 2026-10-03 — the endpoint reported build
+   `b11347-5fc4f3c8c`, `/models/Qwen3.6-35B-A3B-Q4_K_M.gguf`, n_ctx 32768,
+   4 slots through the harness's own path (provenance lines of
+   `eval/runs/cpu-smoke.log`)]** CPU endpoint — operator:
+   ```bash
+   make oke-llamacpp
+   ```
+   Applies `k8s/llamacpp/overlays/oke-cpu`; the init container downloads
+   and verifies the GGUF into a 50Gi `oci-bv` PVC (first rollout only),
+   then llama-server loads it. 30Gi requested == limit, so it can only land
+   on a ~58 GiB node (`kubectl -n financial-agent get pod -l
+   app.kubernetes.io/name=llamacpp -o wide`). The target prints the
+   fetch-gguf result, the server's build / `n_threads` lines (record them
+   with the run), and `server_facts()` from inside the api pod — the
+   harness's own path (app-config + Secret, key, `/v1/models`, `/props`).
+3. **[EXECUTED 2026-10-03 — llama-server loaded the GGUF with all
+   layers on the A10: nvidia-smi shows `/app/llama-server` holding 20,488
+   MiB of 23,028 MiB (driver 570.124.06), args `--n-gpu-layers all
+   --n-cpu-moe 0`, alias `qwen3.6-35b-a3b-q4km`; the server rejects a bad
+   key (`unauthorized: Invalid API Key` in its log). It answered the 20
+   requests of step 6's RAG natural-length pre-check, then the GPU smoke
+   `k6zxd` and GPU extended `p9jr2` of step 6 (2026-10-05, traffic proof
+   EXACT on both)]** GPU endpoint — node 2 only (`ssh oci2`):
+   ```bash
+   cd ~/financial-agent && git fetch && git checkout <branch> && git pull
+   export KUBECONFIG=$HOME/.kube/config
+   make vm-llamacpp           # scales the financial-lora vLLM to 0, deletes its Service, takes 30880
+   ```
+   First run downloads 20.4 GB into `/home/ubuntu/models/qwen3.6-35b-a3b-gguf`.
+   The target prints the GPU layout — record it: the deployed args
+   (`--n-gpu-layers`, `--n-cpu-moe`) and **llama-server's own memory on
+   the GPU from `nvidia-smi --query-compute-apps`**, and it fails if no
+   llama-server process holds GPU memory. llama.cpp b11347 does not log
+   layer offload at default verbosity (there is no `offloaded N/N layers`
+   line to grep), so process memory is the evidence: 20,488 MiB of 23,028
+   MiB on 2026-10-03 is this GGUF fully on the A10.
+
+   The first line of the server log reads `ERROR: driverInitFileInfo 531
+   result=1ERROR: init 608 result=1ERROR: init 250 result=1`. It is not a
+   llama.cpp message: the string `driverInitFileInfo` is in the NVIDIA
+   driver's `libnvidia-sandboxutils.so.570.124.06` (on node 2:
+   `grep -l driverInitFileInfo /usr/lib/x86_64-linux-gnu/libnvidia*.so*`),
+   a driver library the NVIDIA container runtime mounts into the pod, and
+   it prints before llama-server's first timestamped line. Why that
+   library's init returns 1 here is not determined; it did not prevent
+   the load (memory figure above; the server answers and enforces its key).
+
+   If the model does not load
+   (CUDA out of memory in the log), do not lower anything else: rerun with
+   `make vm-llamacpp NCMOE=<n>` (smallest n that loads) — the served alias
+   becomes `qwen3.6-35b-a3b-q4km-hybrid-ncmoe<n>`; patch the OKE side to
+   match (`kubectl -n financial-agent patch secret slm-endpoints --type merge
+   -p '{"stringData":{"SLM_GPU_MODEL_NAME":"<that alias>"}}'`), and every
+   result from it is labelled **hybrid**. Then, on node 2:
+   ```bash
+   curl -s -o /dev/null -w '%{http_code}\n' localhost:30880/v1/models   # 401: the key is enforced
+   curl -s localhost:30880/health                                          # {"status":"ok"} (public by design)
+   ```
+4. **[EXECUTED — ufw and security-list rules in place; evidence captured
+   2026-10-05 22:32 UTC from the operator, whose egress is 129.80.187.92:
+   `GET http://<node 2>:30880/v1/models` without a key → HTTP 401
+   `Invalid API Key`, with `SLM_GPU_API_KEY` → HTTP 200 serving the plain
+   alias `qwen3.6-35b-a3b-q4km` (no `-hybrid` suffix), n_ctx 32768
+   (`eval/runs/gpu-exposure-check-2026-10-05.txt`; the key went into a
+   0600 header file, never printed, then shredded). The OKE harness
+   reached the endpoint for both GPU runs of step 6, traffic proof EXACT
+   on `k6zxd` and `p9jr2`]** Exposure — only after step 3 shows 401 without
+   the key, and only port 30880. The VCN security list is the boundary
+   (k3s NodePorts route around ufw — see the single-VM network baseline);
+   ufw is defense in depth:
+   ```bash
+   sudo ufw allow from 129.80.187.92 to any port 30880 proto tcp   # node 2
+   ```
+   Then the security-list rule: TCP 30880 from 129.80.187.92/32 only — never
+   a range (node 2's app NodePorts 30080/30501 have no auth). The financial-
+   lora vLLM (unkeyed) is at 0 replicas with no Service, so nothing unkeyed
+   answers on 30880. From the OKE side:
+   ```bash
+   kubectl -n financial-agent exec deploy/api -- env SLM_FULL=true SLM_ENDPOINT=gpu python -c \
+     "import json; from agent.tools.slm import server_facts; print(json.dumps(server_facts(), indent=1))"
+   ```
+5. **[EXECUTED 2026-10-05 on image `1f51dad`, all three routes (JSONs
+   written 02:54:17, 02:59:15, 02:59:57 UTC):
+   parse rate 1.0, correct tool 10/10, completed 10/10, errors 0 on each
+   (`eval/runs/tool-use-2026-10-05/`: the three JSONs and the saved tmux
+   pane `tool_use_pane.txt`; eval-methodology, "Tool-use check"). Not
+   under a traffic proof]** Tool-use check, one route at a time (no LLM
+   judge; ~10 hosted Sonnet calls for the hosted route). As run — the
+   copy-out is `cat` through `kubectl exec`, not the `kubectl cp` this
+   step listed before:
+   ```bash
+   cd ~/financial-agent
+   for r in hosted cpu gpu; do
+     kubectl -n financial-agent exec deploy/api -- python eval/tool_use_check.py --route $r --json-out /tmp/tool_use_$r.json
+     kubectl -n financial-agent exec deploy/api -- cat /tmp/tool_use_$r.json > ~/tool_use_$r.json
+   done
+   ```
+   Keep the terminal output too: the `[rag] retrieval … <s>` lines are
+   only on stdout (save the pane, e.g. `tmux capture-pane -pS - >
+   ~/tool_use_pane.txt`). Nothing else may use the GPU endpoint while
+   its route runs, and run it before the GPU smoke, not during one.
+6. **[CPU smoke EXECUTED 2026-10-03 on image `2dd1aa3` —
+   `grounding-eval-slm-cpu-nb6r6` Succeeded 11/11, TRAFFIC PROOF: EXACT
+   (70 calls, 92,282 prompt + 22,466 completion tokens on both sides),
+   RUN-TIME CHECK: PASS (`eval/runs/cpu-smoke.log`,
+   `eval/runs/slm-proof-nb6r6/`). On image `1f51dad`, EXECUTED
+   2026-10-03/04: CPU smoke `wnrjr` (traffic proof EXACT), hosted extended
+   `9jzmj` (workflow Error at aggregate; rebuilt offline — below) and CPU
+   extended `8vpq6` (Succeeded, traffic proof EXACT, 40/40 on the first
+   attempt). On the same image, EXECUTED 2026-10-05: GPU smoke `k6zxd` and
+   GPU extended `p9jr2` (both Succeeded, traffic proof EXACT, 0 retries —
+   below)]**
+   Runs, in order, each through the traffic proof
+   (operator; nothing else may use that endpoint during a run — the proof
+   FAILs on foreign traffic):
+   ```bash
+   make slm-eval-run ENDPOINT=cpu EVAL_RUN_FILE=argo/eval-run-slm-cpu-smoke.yaml \
+     PROJECT_FOR=argo/eval-run-extended-slm-cpu.yaml       # prints measured + projected run time
+   make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-slm-gpu-smoke.yaml \
+     PROJECT_FOR=argo/eval-run-extended-slm-gpu.yaml       # after the seclist rule
+   make eval-run EVAL_RUN_FILE=argo/eval-run-extended.yaml                         # same-image hosted baseline (9jzmj, 2026-10-04: see below)
+   make run-time-check WF=<cpu smoke wf> NEXT=argo/eval-run-extended-slm-cpu.yaml && \
+     make slm-eval-run ENDPOINT=cpu EVAL_RUN_FILE=argo/eval-run-extended-slm-cpu.yaml
+   make run-time-check WF=<gpu smoke wf> NEXT=argo/eval-run-extended-slm-gpu.yaml && \
+     make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-extended-slm-gpu.yaml
+   ```
+   `slm-eval-run` snapshots `/metrics` (from the api pod, the harness's
+   network path), runs `eval-run`, captures every pod's log into
+   `~/slm-proof/<wf>.log`, snapshots again and prints `TRAFFIC PROOF:
+   EXACT | LOWER-BOUND | FAIL`; it exits non-zero on FAIL even if the gate
+   passed. With `PROJECT_FOR` it also prints the smoke's measured wall time
+   per ticker (`scripts/run_time_projection.py`: each task's Argo node,
+   retries included, under the run's own parallelism) and the projection
+   for the extended run. `run-time-check` is the gate: it exits non-zero —
+   and `&&` keeps the extended run from launching — unless the worst-case
+   projection (slowest smoke ticker × ⌈40 / parallelism⌉ waves + the
+   aggregate) fits the run file's `activeDeadlineSeconds`, the slowest smoke
+   ticker is within 75% of `ticker-deadline-seconds`, and the projection
+   plus a day of capture fits the 7-day TTL. Do not raise a deadline to make
+   it pass without saying so in the run's write-up.
+   Stop after each smoke and check the aggregate's `Loop`, `Trunc`,
+   `Parse`, `Fmt` columns and failure kinds before going on; loops in the
+   smoke mean stop and review before any penalty change. Findings: as
+   "Findings capture" above, from `~/slm-proof/<wf>.log`.
+
+   **nb6r6, as measured (2026-10-03; dated smoke, not a number of
+   record).** 10/10 tickers, 73 claims, 3/73 = 4.11% unsupported (Wilson
+   95% CI 1.4–11.4%), judge v2, gate passed; 70 agent calls = 7.0/ticker,
+   all on `slm-cpu`. **Trunc: 13 of the 20 RAG answers hit the 512-token
+   cap (highlights 9/10, risks 4/10)** against 0/20 on the hosted smoke —
+   the reason the RAG cap is now one shared 2048 (`RAG_MAX_TOKENS`) and
+   this smoke must be re-run. Mean pipeline time 355.9 s per ticker (26.4
+   s hosted). Resource use, from the same `kubectl top` loop as OKE step 8
+   (`eval/runs/top-cpu-smoke.txt`): the llamacpp pod peaked at 7,998m —
+   saturating its 8-CPU limit, which is 8 vCPU = 4 physical cores with SMT
+   — and 27,424 MiB of its 30Gi; the harness is near idle beside it
+   (worker ≤ 43m, api ≤ 5m, eval pods single-digit millicores at steady
+   state with 490–780m startup spikes). For the later concurrency sweep:
+   `--threads 8` on 4 physical cores is the only setting run; thread count
+   against physical cores is untested.
+
+   **Before the next image — RAG natural-length pre-check [EXECUTED
+   2026-10-03 — PROMPT CHECK: EXACT 20/20; natural completion tokens
+   median 577, p95 802, max 854 (MSFT `rag:risks`); 12 of 20 above 512,
+   1 above 800, 0 above 1024; `RAG_MAX_TOKENS` set to 2048
+   (`eval/runs/rag-natural-length-gpu-nb6r6.{txt,json}`;
+   eval-methodology, "RAG natural-length pre-check")].** A truncated
+   answer only shows the SLM wanted more than 512 tokens. `scripts/rag_natural_length.py` replays nb6r6's 20 RAG
+   prompts (rebuilt from its captured log by the real query-engine path;
+   `eval/runs/rag-natural-length-requests-nb6r6.json`) with the `rag`
+   site's sampling, thinking off, and `max_tokens` 4096, on the GPU
+   endpoint — same GGUF and engine, minutes instead of the CPU's hour. On
+   node 2, with nothing else using the endpoint:
+   ```bash
+   cd ~/financial-agent && git pull
+   export KUBECONFIG=$HOME/.kube/config
+   LLAMA_API_KEY=$(kubectl -n financial-agent get secret llamacpp-api-key -o jsonpath='{.data.LLAMA_API_KEY}' | base64 -d) \
+     python3 scripts/rag_natural_length.py run \
+       --requests eval/runs/rag-natural-length-requests-nb6r6.json \
+       --url http://localhost:30880 --api-key-env LLAMA_API_KEY \
+       --out ~/rag-natural-length-gpu-nb6r6.json | tee ~/rag-natural-length-gpu-nb6r6.txt
+   ```
+   It prints median / p95 / max completion tokens per site and `PROMPT
+   CHECK: EXACT` only if every request tokenized to the prompt-token count
+   nb6r6's ledger recorded for it (otherwise it lists the deltas and exits
+   non-zero). The cap must clear the max with room for the 40-ticker
+   tail (4× the prompts): the 2026-10-03 max of 854 is why it is 2048 and
+   not 1024. Copy both files into `eval/runs/`. Re-run this before
+   changing the model, the quant, the sampling or the RAG prompt.
+
+   **CPU smoke re-run on image `30c832b` (2026-10-03):
+   `grounding-eval-slm-cpu-9jddz` — gate passed, TRAFFIC PROOF: FAIL,
+   explained.** 10/10 tickers, 53 claims, 1/53 = 1.89% unsupported (Wilson
+   95% CI 0.3–9.9%), judge v2, Trunc 0 on every site, 70 calls in the
+   final attempts. The Anthropic balance ran out mid-run: the first NVDA
+   attempt finished its SLM generation, failed at the judge on the
+   credit-balance 400 (the harness's FATAL guard, exit 1), and Argo retried
+   it after the balance was reloaded. The server counted 10,123 prompt +
+   2,943 completion tokens more than the final attempts sent — one NVDA
+   brief's worth — and that image did not record a failed attempt's calls,
+   so the proof cannot balance. It is recorded as **FAIL, explained: one
+   retry (NVDA) after credit exhaustion**, never as a pass
+   (`eval/runs/9jddz-smoke.log`, `eval/runs/slm-proof-9jddz/`,
+   `eval/runs/9jddz-workflow.json`; eval-methodology, "Smokes on image
+   `30c832b`"). **This run is not citable; the CPU baseline on the new
+   image is the next CPU smoke (`wnrjr`, below).** Check the Anthropic balance before every
+   run: an exhausted balance costs a retry on the CPU endpoint and, on
+   images up to `30c832b`, the proof.
+
+   **Hosted extended on image `1f51dad` (2026-10-04):
+   `grounding-eval-extended-9jzmj` — workflow Error at aggregate
+   (controller lacked configmaps create for template offload); rebuilt
+   offline from all 40 pod findings dumps; gate evaluated offline; est.
+   run cost not reconstructable.** All 40 eval pods completed on their
+   first attempt. Rebuilt aggregate: 7/411 = 1.70% unsupported (Wilson 95%
+   CI 0.8–3.5%), numeric 2/277 = 0.72%, judge v2, no truncation, gate
+   passed (`eval/runs/9jzmj-aggregate.txt`,
+   `eval/runs/9jzmj-results-rebuilt.json`, findings in
+   `eval/runs/raw/9jzmj-findings`). The rebuild was validated first on
+   `7c66k`, where it reproduces the in-cluster aggregate exactly apart
+   from the estimated-cost line, so `9jzmj` is the same-image hosted
+   extended baseline. The workflow object
+   (`eval/runs/9jzmj-workflow.json`) confirms it independently: the
+   aggregate run on the rows Argo stored prints the same report, plus est.
+   run cost $4.0998. Before the next extended run, apply the controller
+   Role (OKE step 5) — every 40-ticker run depends on it until the eval
+   pod's output parameter is shrunk, which is deferred to after the
+   comparison because it changes the image.
+
+   **CPU smoke and CPU extended on image `1f51dad` (2026-10-03/04).**
+   `grounding-eval-slm-cpu-wnrjr`: 10/10 tickers, 1/58 = 1.72%
+   unsupported (Wilson 95% CI 0.3–9.1%), numeric 0/33, TRAFFIC PROOF:
+   EXACT (94,520 + 24,756 tokens), 0 retries, run-time check passed.
+   `grounding-eval-extended-slm-cpu-8vpq6`: Succeeded, 40/40 tickers on
+   the first attempt, 0 retries, TRAFFIC PROOF: EXACT (270 calls, 342,244
+   + 96,811 tokens), 9/248 = 3.63% unsupported (CI 1.9–6.8%), numeric
+   3/161 = 1.86% (CI 0.6–5.3%), no Trunc/Loop/Parse/Fmt/Err, gate passed —
+   a dated, citable run. Its aggregate step was the first live use of the
+   controller's ConfigMap template offload on OKE (the Role of OKE step 5).
+   Files: `eval/runs/cpu-extended.log`, `eval/runs/top-cpu-ext.txt`,
+   `eval/runs/slm-proof-8vpq6/`, `eval/runs/slm-proof-wnrjr/`, findings in
+   `eval/runs/raw/`. Comparison with hosted `9jzmj`:
+   eval-methodology, "CPU SLM extended run `8vpq6`"
+   (`eval/runs/9jzmj-vs-8vpq6-comparison.txt`).
+
+   **GPU smoke and GPU extended on image `1f51dad` (2026-10-05).**
+   `grounding-eval-slm-gpu-k6zxd`: 10/10 tickers, 3/63 = 4.76% unsupported
+   (Wilson 95% CI 1.6–13.1%, all three on AAPL, qualitative), numeric
+   0/32, gate passed, TRAFFIC PROOF: EXACT (70 calls, 95,185 + 25,317
+   tokens), 0 retries, mean pipeline 30.82 s per ticker; RUN-TIME CHECK:
+   PASS (projected 40 tickers in 20 waves of 2: mean 37 min, worst 48 min).
+   `grounding-eval-extended-slm-gpu-p9jr2`: Succeeded 03:13:00–03:48:12
+   UTC, 40/40 tickers on the first attempt, 0 retries, TRAFFIC PROOF: EXACT
+   (270 calls, 350,290 + 98,232 tokens), 6/245 = 2.45% unsupported (CI
+   1.1–5.2%), numeric 3/155 = 1.94% (CI 0.7–5.5%), no
+   Trunc/Loop/Parse/Fmt/Retry/Err on any call, stock block empty 0/40,
+   gate passed — a dated, citable run, served all-GPU (alias without
+   `-hybrid`). An nvidia-smi sampler ran on node 2 every 5 s from 02:51:49
+   to 03:50:49 UTC across the tool-use check and both runs
+   (`eval/runs/gpu-nvsmi-p9jr2.csv`, sliced per run by
+   `scripts/nvsmi_summary.py`); there is no `kubectl top` capture for the
+   GPU runs (the endpoint is not on OKE). Files: `eval/runs/gpu-smoke.log`,
+   `eval/runs/gpu-extended.log`, `eval/runs/slm-proof-k6zxd/`,
+   `eval/runs/slm-proof-p9jr2/`, the two `*-attempts.json`, findings in
+   `eval/runs/raw/`. Three-way comparison with hosted `9jzmj` and CPU
+   `8vpq6`: eval-methodology, "GPU SLM extended run `p9jr2`"
+   (`eval/runs/9jzmj-8vpq6-p9jr2-comparison.txt`).
+
+   **From the next image: retries are part of the report.** `make
+   eval-run` prints, under the aggregate's output, an attempts block from
+   the workflow object and every pod's log (`eval/attempts.py`): Argo
+   retries, the tickers, and each failed attempt's cause, LLM calls and
+   Trunc/Parse/Fmt/Err counts, labelled as from failed attempts. The
+   same report is written to `~/<workflow>-attempts.json` (`ATTEMPTS_DIR`)
+   — capture it with the run (OKE step 9). The aggregate pod itself only
+   names the retried tickers: it has no RBAC to read other pods' logs, by
+   decision. `slm-eval-run` saves the workflow object beside the pod log
+   and the proof counts the failed attempts' tokens (`--workflow`). A run
+   is citable only on **EXACT**, or on **LOWER-BOUND with every excess
+   token attributed to calls the harness itself logged as failed**; a
+   failed attempt without a complete call record is FAIL. The aggregate
+   also prints claims per ticker, numeric claims per ticker and the
+   numeric-claim unsupported rate next to the all-claims rate — read them
+   together (eval-methodology, "Dated finding: claim density"); for a
+   two-run comparison, `python3 eval/multi_arm_stats.py --run … --run …`
+   prints the numeric comparison and the density table.
+7. **[NOT YET EXECUTED]** Live app on the SLM (optional, for the demo):
+   `make oke-slm-app ON=true ENDPOINT=cpu` (cache keys become
+   `research:slm-cpu:<T>`, so no hosted brief is served as an SLM one);
+   `make oke-slm-app ON=false` to return.
+8. **[NOT YET EXECUTED]** Restore node 2's financial-lora vLLM (node 2):
+   `make vm-llamacpp-down && make vm-vllm` — but first remove the ufw rule
+   and the security-list rule: the vLLM endpoint has no key.
+
+## Demo live run (November 2026): GPU smoke from the OKE harness
+
+**[NOT YET EXECUTED]** The live part of the demo (docs/demo.md, "The live
+run"): one GPU smoke, `argo/eval-run-slm-gpu-smoke.yaml`, from the OKE
+harness against node 2's llama.cpp endpoint, with the traffic proof. It is
+a new dated run on image `1f51dad`; capture it like `k6zxd`. Nothing here
+changes a manifest.
+
+**Network facts this section depends on.** The VCN security list is the
+boundary for node 2's NodePorts: k3s NodePorts route around ufw, which is
+defense in depth only (SLM step 4). The security-list rule admitting TCP
+30880 from 129.80.187.92/32 stays in place until after the demo. The
+financial-lora vLLM, when `make vm-vllm` restores it, also answers on
+30880 **without a key**.
+
+**vLLM stays scaled to 0 on node 2 until after the demo; llama.cpp keeps
+running there.** Because k3s NodePorts bypass ufw, the security-list
+rule stays open to the OKE egress IP until the demo, and vLLM on 30880
+is unkeyed, serving vLLM on node 2 while the rule stands would expose an
+unkeyed model to that IP. The default path never swaps; the one way vLLM
+comes back before the demo is the contingency below, which closes the
+rule first.
+
+### Preflight — the day before, and again 30 minutes before
+
+Run every check from the shell named; stop at the first failure and take
+its branch below. Nothing in the preflight sends tokens to the GPU
+endpoint, and all of it finishes before the run's first traffic-proof
+snapshot.
+
+1. **Anthropic balance** (console, billing page): the judge is Sonnet on
+   every arm; the smoke's harness estimate was $0.9463 (`k6zxd`). Keep
+   enough for the rehearsal, the demo run and a re-run. A low balance
+   fails the run loudly (`eval/runtime_guards.py`), mid-run.
+2. **OKE nodes and pods Ready** (operator):
+   ```bash
+   kubectl get nodes                                   # 4 Ready
+   kubectl -n financial-agent get pods                 # api, worker, streamlit, mcp, redis, postgres, llamacpp Running
+   kubectl -n argo get pods                            # workflow-controller, argo-server Running
+   ```
+3. **CronWorkflow still suspended** (operator):
+   ```bash
+   kubectl -n financial-agent get cronworkflow grounding-eval-nightly -o jsonpath='{.spec.suspend}{"\n"}'   # true
+   ```
+4. **Image pin** (operator, repo at the pushed `slm-harness`):
+   ```bash
+   python3 scripts/pin_oke_image.py --overlay oke-provided --check     # pinned app image tag: f3043751…
+   kubectl -n financial-agent get deploy api -o jsonpath='{.spec.template.spec.containers[0].image}{"\n"}'   # same tag
+   ```
+5. **Node 2 endpoint and GPU** (node 2, `ssh oci2`):
+   ```bash
+   curl -s localhost:30880/health                                     # {"status":"ok"}
+   curl -s -o /dev/null -w '%{http_code}\n' localhost:30880/v1/models # 401: key enforced
+   nvidia-smi --query-compute-apps=pid,process_name,used_memory --format=csv   # llama-server ~20,488 MiB
+   ```
+   And vLLM is at 0 (`kubectl -n financial-agent get deploy vllm` shows
+   `0/0`). If vLLM is serving on 30880, that is the unkeyed exposure this
+   section rules out: run `make vm-llamacpp` at once (it scales vLLM to 0
+   and takes the port back), then tell the tenancy owner.
+6. **30880 from OKE** (operator, whose egress is the cluster's,
+   129.80.187.92): `scripts/gpu_exposure_check.sh` (how to run it is in
+   its header) prints HTTP 401 without the key and HTTP 200 with it,
+   serving the plain alias `qwen3.6-35b-a3b-q4km`, as in
+   `eval/runs/gpu-exposure-check-2026-10-05.txt`. Then the harness's own
+   path:
+   ```bash
+   kubectl -n financial-agent exec deploy/api -- env SLM_FULL=true SLM_ENDPOINT=gpu python -c \
+     "import json; from agent.tools.slm import server_facts; print(json.dumps(server_facts(), indent=1))"
+   ```
+7. **Yahoo from the cluster** (operator; one request — yfinance has
+   answered 429 from this egress IP):
+   ```bash
+   kubectl -n financial-agent exec deploy/api -- python -c \
+     "import yfinance as yf; print(yf.Ticker('AAPL').fast_info['lastPrice'])"   # a price, not an error
+   ```
+8. **Screen sharing: nothing shown prints a key.** What the demo shows is
+   safe: `scripts/gpu_exposure_check.sh` reads the key into a 0600 header
+   file and prints only the endpoint's responses; `server_facts()` returns
+   no key; `make slm-eval-run` writes its snapshots to files and its
+   recipe is silent; llama-server takes its key from an environment
+   variable, not an argument, so `ps` does not show it. On a shared screen
+   never run `kubectl get secret … -o yaml|json`, `kubectl exec … env`,
+   `printenv`/`env` in a pod or on node 2, `cat /proc/<pid>/environ`, or
+   `cat .env` on the laptop; `kubectl describe secret` shows sizes only.
+   The run's output shows node 2's public IP and the operator's private
+   addresses — not credentials (30880 admits only the OKE egress IP).
+   Pre-open the terminals to be shared (operator, node 2, laptop), clear
+   their scrollback (`clear && printf '\e[3J'`, or tmux `clear-history`),
+   and run the preflight in other terminals.
+9. **Port-forwards and tunnels up** (operator, then laptop):
+   ```bash
+   # operator
+   nohup kubectl -n argo port-forward svc/argo-server 2746:2746 >/tmp/pf-argo.log 2>&1 &
+   nohup kubectl -n financial-agent port-forward svc/streamlit 8501:8501 >/tmp/pf-streamlit.log 2>&1 &
+   # laptop (WSL)
+   ssh -N -L 32746:localhost:2746 -L 32501:localhost:8501 oke-operator
+   # Argo UI: https://localhost:32746 (check that it loads and lists the
+   # workflows; argo-server's auth mode decides whether it asks for a token)
+   # Streamlit: http://localhost:32501
+   ```
+
+**The day before only: a full rehearsal.** Run the launch below once,
+end to end, and capture it. It measures the timings this section leaves
+open (the swap's model load, the smoke's wall time on the day) and
+proves the path. A rehearsal is a dated smoke like any other; it is not
+an arm comparison.
+
+### Launch (operator)
+
+```bash
+cd ~/financial-agent
+make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-slm-gpu-smoke.yaml
+```
+
+The target snapshots the endpoint's counters from the api pod, submits
+and follows the workflow (`[hh:mm:ss] phase=Running progress=n/11`),
+captures every pod's log into `~/slm-proof/<wf>.log`, snapshots again and
+prints the aggregate, the attempts block and `TRAFFIC PROOF: EXACT |
+LOWER-BOUND | FAIL`. `k6zxd` took 9 min 40 s. Nothing else may call the
+GPU endpoint until it finishes: other traffic fails the proof.
+
+On screen while it runs: the operator pane with the target's progress;
+the Argo UI graph (ten eval pods, two at a time, then the aggregate); a
+node 2 pane with `watch -n 2 nvidia-smi` (the A10's utilization moving
+with the calls, ~20.5 GB held). At the end: the aggregate table, the gate
+line, `stock block empty`, the LLM-call table (Trunc, Loop, Parse, Fmt,
+Err all 0), the attempts block (0 retries) and `TRAFFIC PROOF: EXACT`.
+
+### Failure branches
+
+Every branch ends at the recorded runs: `eval/runs/gpu-smoke.log`
+(`k6zxd`, the smoke) and `eval/runs/gpu-extended.log` (`p9jr2`, the A10
+run of record), open on the laptop before the demo starts. Say what
+failed; do not debug live beyond the first check named.
+
+- **Node 2 down** (`ssh oci2` fails, or `/health` does not answer on the
+  node): a stopped VM is restarted by the tenancy owner in the console,
+  and the model's load time is not one to wait out live. Fallback.
+- **The endpoint answers 401 to the harness** (`server_facts` or the run's
+  first calls): the key in OKE's `slm-endpoints` Secret no longer matches
+  node 2's `llamacpp-api-key`. Re-keying is SLM step 1, not a live step.
+  Fallback.
+- **000 — no HTTP answer from the operator.** One check, on node 2:
+  `curl -s localhost:30880/health`. If it answers there, the path from OKE
+  is blocked (security-list rule) — the tenancy owner's console. If it
+  does not, the pod is down or restarting: `kubectl -n financial-agent get
+  pods -l app.kubernetes.io/name=llamacpp`; if it is not Running within a
+  minute or two, fallback.
+- **Yahoo 429** (preflight 7 errors, or the aggregate's `stock block
+  empty` is above 0/10): the run still completes, but those briefs had no
+  stock data, so their figures say nothing about the model. Show the
+  count, do not quote the run's rate, do not retry (the 429 is on the
+  egress IP). Fallback for the numbers.
+- **The smoke fails its gate** (above 5% unsupported, or under 30 claims):
+  a smoke's rate moves with how many qualitative claims the judge lists for
+  one ticker — `7c66k` failed at 7.92% on MSFT alone, `k6zxd` passed at
+  4.76% with all three on AAPL. Show which ticker holds the unsupported
+  claims and that the numeric column is 0; arms are compared on the
+  40-ticker runs, so go to `p9jr2`. Do not re-run to get a pass.
+- **The balance runs out mid-run** (the run fails on the credit-balance
+  error; retries appear in the attempts block): fallback; the proof may
+  not be citable.
+- **TRAFFIC PROOF: FAIL or LOWER-BOUND**: say what the proof caught
+  (traffic the harness did not log, or a failed attempt) — that is the
+  proof working. The run is not citable. Fallback.
+
+### Contingency only: vLLM needed on node 2 before the demo
+
+Not part of the default path. If vLLM must serve on node 2 before the
+demo, in this order, all of it finished before the rehearsal:
+
+1. **Close 30880 first.** Ask the tenancy owner to remove the
+   security-list rule (TCP 30880 from 129.80.187.92/32); on node 2,
+   `sudo ufw delete allow from 129.80.187.92 to any port 30880 proto tcp`;
+   from the operator, `curl -s -m 10 -o /dev/null -w '%{http_code}\n'
+   http://<node 2>:30880/health` prints `000`.
+2. **Then vLLM** (node 2): `make vm-llamacpp-down && make vm-vllm`
+   (rollout waits up to 15 minutes, then polls the model for up to 2).
+3. **Swap back to llama.cpp** (node 2):
+   ```bash
+   cd ~/financial-agent && git pull
+   export KUBECONFIG=$HOME/.kube/config
+   make vm-llamacpp            # scales vLLM to 0, deletes its Service, takes 30880; the GGUF is already on disk
+   curl -s localhost:30880/health && curl -s -o /dev/null -w '%{http_code}\n' localhost:30880/v1/models   # ok, 401
+   ```
+4. **Re-open 30880 for the OKE egress IP only:** `sudo ufw allow from
+   129.80.187.92 to any port 30880 proto tcp` on node 2, and ask the
+   tenancy owner to re-add the security-list rule (129.80.187.92/32,
+   never a range). Then preflight 5 and 6.
+
+Time: the Kubernetes steps take a minute or two each. Loading the 20.4 GB
+GGUF into the A10 is not recorded — `make vm-llamacpp` waits up to an
+hour (`rollout status --timeout=3600s`), then polls the model for up to
+5 minutes; measure it if this path is used and write it here. The two
+security-list changes depend on the tenancy owner. If `make vm-llamacpp`
+fails on GPU memory, something else holds the A10: check `nvidia-smi`
+first; do not lower layers or switch to a hybrid layout for the demo (a
+hybrid run is labelled hybrid, not GPU).
+
+### Teardown, after the demo
+
+In this order — vLLM answers on 30880 without a key, and ufw does not
+guard k3s NodePorts:
+
+1. **Capture the live run** (and the rehearsal) within the 7-day TTL:
+   OKE step 9's capture list, from `~/slm-proof/`.
+2. **Public Streamlit UI down**, if it is up ("Public Streamlit UI",
+   Teardown): the load balancer, its NSG rules, the Secrets and the
+   operator's credentials file.
+3. **Port-forwards and tunnels down** (operator):
+   `pkill -f 'kubectl -n argo port-forward'; pkill -f 'kubectl -n
+   financial-agent port-forward'`; close the laptop's `ssh -N`.
+4. **Close ufw 30880** (node 2):
+   `sudo ufw delete allow from 129.80.187.92 to any port 30880 proto tcp`.
+5. **Ask the tenancy owner to remove the security-list rule** TCP 30880
+   from 129.80.187.92/32. Then confirm from the operator:
+   `curl -s -m 10 -o /dev/null -w '%{http_code}\n' http://<node 2>:30880/health`
+   prints `000`.
+6. **Only then, if wanted, restore vLLM** (node 2):
+   `make vm-llamacpp-down && make vm-vllm`.
+
+The CronWorkflow stays suspended throughout. The CPU endpoint on OKE is
+not part of the live run and is left as it is.
+
+## Rerun on the stock-data-fix image (October 2026)
+
+The image carries only the stock-data fix plus currency-labelling prompt
+rule (commits `19582b9`, `f304375`): `financial_currency` and
+`profit_margin_pct` in the stock dict, the currency rule in the section
+context and the synthesis prompt for a filer reporting in another
+currency, and the numeric check's `currency_label` finding. Every arm
+re-runs on it at 40 tickers, same protocol as the `1f51dad` three-way.
+Hard cutoff 2026-10-25: if the reruns and the labelling are not done by
+then, stop and keep the current numbers of record.
+
+1. **[EXECUTED 2026-10-06]** Build, pin, deploy. Node 2 built and pushed
+   `ghcr.io/schen9999/financial-agent-app:f3043751eb51083b8c674d23ad4ff1da91cbdeac`
+   (digest `sha256:34896c1b…`; the code layer rebuilt, dependency layers
+   from cache) from a clean tree at `f304375`; the pin is commit
+   `88c1811`. On the operator, `make oke-up` rolled api, worker,
+   streamlit and mcp onto it, then `kubectl apply -k
+   argo/overlays/oke-provided` moved the grounding-eval WorkflowTemplate
+   to it — `make oke-up` applies the app overlay only, so the template
+   needs its own apply after every pin (a `kubectl diff` first showed the
+   two image lines as the only change). The nightly CronWorkflow stayed
+   suspended.
+2. **[EXECUTED 2026-10-06T01:33:44Z]** Reporting-currency preflight, from
+   the api pod (`scripts/financial_currency_preflight.py`, 40 tickers, no
+   request errors): `eval/runs/financial-currency-2026-10-06.json`. TM
+   JPY, TSM TWD, NVO DKK, BABA CNY, SAP EUR; the other 35 report in USD,
+   except VERV — **yfinance returned no quote for VERV as of 2026-10-06**
+   (`quoteType` NONE, no name, price, market cap or revenue). RDFN's
+   listing currency is missing (the stock tool defaults it to USD); it
+   reports in USD.
+
+**Declared before any run (2026-10-06), for the before/after against the
+`1f51dad` three-way:**
+
+- The comparison uses the tickers both sides have: VERV is excluded (no
+  quote as of 2026-10-06; it stays in the runs, all 40 tickers, and the new
+  runs' own rates are over 40).
+- Any ticker whose stock block is empty in a new run (`stock block empty`
+  in the aggregate, `eval/stock_block.py`) is excluded from the
+  before/after the same way, and listed.
+- The currency before/after uses the same check on both sides: the old
+  runs with `numeric_backtest.py --financial-currency` and this preflight
+  file, the new runs as they are.
+- Success criterion: currency and profit-margin TRUE_ERRORs at 0 in every
+  arm, and `currency_label` flags only where a brief writes a non-USD
+  amount in dollars. Grounding rates are compared as a dated before/after
+  attributable to the fix and the prompt rule; run-to-run variance means
+  no rate difference is claimed beyond "not detected".
+
+   **Hosted smoke `grounding-eval-5jvhh` (2026-10-06, EXECUTED):**
+   Succeeded 11/11, 0 retries, 0 failed attempts; 0/76 unsupported
+   (Wilson 95% CI 0.0–4.8%), numeric 0/60, gate passed; stock block empty
+   0/10; 70 agent calls, no Trunc/Loop/Parse/Fmt/Err; 26.8 s per ticker;
+   est. $1.0441. The stock dicts carry `financial_currency` and
+   `profit_margin_pct`. The 10-ticker set has no foreign filer and no
+   margin above 100%, so this smoke checks the platform, not the fix.
+   RAG faithfulness (rf-v1, unvalidated, never part of the grounding rate)
+   20/250 = 8.00% against 1.56–2.17% in the earlier hosted smokes: 13 of
+   the 20 are AMZN highlights (7/9) and MSFT highlights (6/8), both the
+   limitation-(2) refusal ("the context only contains excerpts from the
+   Risk Factors section"), near-identical to `hm527`'s and served from the
+   RAG answer cache; rf-v1 listed the refusal's "sections I would need"
+   bullets as claims this time (in `hm527` the AMZN refusal gave none).
+   Judge listing variance, not a pipeline change. Files:
+   `eval/runs/hosted-smoke-f304375.log`, `eval/runs/5jvhh-workflow.json`,
+   `eval/runs/grounding-eval-5jvhh-attempts.json`,
+   `eval/runs/raw/5jvhh-findings/`, `eval/runs/5jvhh-claims.jsonl`.
+
+   **CPU smoke `grounding-eval-slm-cpu-xnwjm` (2026-10-06, EXECUTED):**
+   Succeeded 11/11, 0 retries, 0 failed attempts, TRAFFIC PROOF: EXACT (70
+   calls, 94,597 + 24,567 tokens); 3/60 = 5.00% unsupported (CI 1.7–13.7%),
+   gate passed at its threshold, all three META hedged Outlook watch-items
+   (limitation 1; META listed 10 claims here and in `wnrjr`, which had 0
+   unsupported); numeric 0/36; stock block empty 0/10; 368.2 s per ticker;
+   RUN-TIME CHECK: PASS (extended projected 2 h 28 min mean, 2 h 51 min
+   worst); llama.cpp median 7,864m, peak 7,997m of 8,000m
+   (`eval/runs/top-cpu-smoke-f304375.txt`); RAG faithfulness 4/428
+   (unvalidated); est. $0.9175. Files: `eval/runs/cpu-smoke-f304375.log`,
+   `eval/runs/slm-proof-xnwjm/`, findings and claims.
+
+   **GPU smoke `grounding-eval-slm-gpu-m7qvv` (2026-10-06, EXECUTED, GATE
+   FAILED):** 10/10 tickers, 0 retries, 0 failed attempts, TRAFFIC PROOF:
+   EXACT (70 calls, 94,775 + 24,830 tokens); 4/60 = 6.67% unsupported (CI
+   2.6–15.9%) against the 5% gate; numeric 0/30; stock block empty 0/10;
+   36.4 s per ticker; RUN-TIME CHECK: PASS (extended projected 38 min mean,
+   47 min worst); RAG faithfulness 3/402 (unvalidated); est. $0.9023. All
+   four unsupported claims are hedged Outlook watch-items (limitation 1):
+   NVDA "trend of services margins", "sustained demand elasticity",
+   "market saturation"; MSFT "trajectory of services margins …". The judge
+   listed 5 qualitative claims for NVDA here against 0 in `k6zxd`. "services
+   margins" echoes the synthesis prompt's own example ("watch
+   services-margin trend"), as did `p9jr2`'s AFRM claim (known limitation
+   8, eval-methodology). Recorded as smoke-level judge variance on
+   qualitative watch-items (limitation 1), not a platform failure — the
+   precedent is hosted smoke `7c66k` (gate failed on MSFT watch-items),
+   after which the extended run `9jzmj` went ahead. The run plan stopped
+   the chain at the gate; the adjudicator then started it (2026-10-06
+   04:49:54Z, tmux `rerun` on the operator,
+   `~/rerun-chain.sh grounding-eval-slm-gpu-m7qvv
+   grounding-eval-slm-cpu-xnwjm`), with the same stop rules. nvidia-smi on node 2 every 5 s,
+   04:34:46 onward: `eval/runs/gpu-nvsmi-m7qvv.csv`. Files:
+   `eval/runs/gpu-smoke-f304375.log`, `eval/runs/slm-proof-m7qvv/`,
+   findings and claims.
+
+   **Extended chain (2026-10-06, EXECUTED; stopped at the CPU run):**
+   - Hosted `grounding-eval-extended-4hsn2`: Succeeded, 0 retries;
+     15/399 = 3.76% unsupported (CI 2.3–6.1%), numeric 3/270; stock
+     block empty 0/40; gate passed; 26.7 s per ticker; est. $4.1162.
+   - GPU `grounding-eval-extended-slm-gpu-nstp9`: Succeeded, 0 retries,
+     TRAFFIC PROOF: EXACT; 10/267 = 3.75% (CI 2.0–6.8%), numeric 4/166;
+     stock block empty 0/40; gate passed; 34.6 s per ticker; est.
+     $3.3433. nvidia-smi on node 2 every 5 s, 04:49:42–08:24:
+     `eval/runs/gpu-nvsmi-ext-f304375.csv`.
+   - CPU `grounding-eval-extended-slm-cpu-5bdz5`: every eval pod on its
+     first attempt, 0 retries, but **GATE FAILED** (19/265 = 7.17%, CI
+     4.6–10.9%; numeric 2/162) and **TRAFFIC PROOF: FAIL** — the server
+     counted 1 prompt token more than the harness logged (346,636 against
+     346,635; 0 completion tokens apart), with no failed calls. Cause not
+     determined. Under the proof rule the run is **not citable**.
+     Investigated offline (`eval/runs/slm-proof-5bdz5/INVESTIGATION.md`,
+     with the endpoint's own log): 270 server tasks match the 270 harness
+     calls pair for pair and sum to the harness's tokens exactly; no
+     outside traffic; the +1 is a counter movement outside any logged
+     request. Settling it needs per-request `timings` in the ledger, a
+     post-demo change. The chain
+     stopped there (`~/rerun-chain.log`). `kubectl top` during it:
+     `eval/runs/top-cpu-ext-f304375.txt`.
+
+   **LangSmith tracing (2026-10-06).** The LangSmith monthly unique-trace
+   quota was exhausted on 2026-10-06: trace uploads from the local re-judge
+   (`eval/rejudge_runs.py`) were rejected with HTTP 429 ("Monthly unique
+   traces usage limit exceeded"). Uploads are best-effort and the judge
+   calls themselves were unaffected. Tracing is now off for local eval
+   scripts (`LANGCHAIN_TRACING_V2=false` in the laptop's `.env`, which is
+   not committed). On the OKE cluster it is still on: `app-secrets`, made
+   from that `.env` before the change, carries `LANGCHAIN_TRACING_V2=true`
+   and a `LANGCHAIN_API_KEY`; the app pods and the eval pods (`envFrom:
+   app-secrets`) read it, and the api pod's `tracing_enabled()` returns
+   True. Left unchanged while the CPU re-run `4kkgm` runs; to turn it off
+   there, re-create `app-secrets` from the updated `.env` (OKE step 3) and
+   restart the app Deployments.
+
+   **CPU extended re-run — rules recorded 2026-10-06, before it starts:**
+   - It replaces `5bdz5` only because `5bdz5`'s traffic proof FAILed.
+     Its grounding rate is the CPU arm's result whatever the gate says.
+   - If its traffic proof is not EXACT, the CPU arm's after side is not
+     citable, the before/after covers hosted and GPU only, and there is no
+     third attempt.
+   - Same protocol: `make run-time-check` against the CPU smoke
+     (`grounding-eval-slm-cpu-xnwjm`), then `make slm-eval-run
+     ENDPOINT=cpu`, `kubectl top` every 15 s throughout.
+
+   **CPU extended re-run result (2026-10-06):**
+   `grounding-eval-extended-slm-cpu-4kkgm`, 17:52–20:19Z. Run-time check
+   PASS (projected worst 2h51m). Every eval pod on its first attempt, 0
+   retries, no failed attempts; stock block empty 0/40. **GATE FAILED**
+   (15/282 = 5.32%, CI 3.2–8.6%; numeric 2/166) and **TRAFFIC PROOF:
+   FAIL** — the server counted 4 prompt tokens FEWER than the harness
+   logged (353,897 against 353,901; completion 99,078 on both; 270 calls,
+   0 errored). `5bdz5` was off by +1 in the other direction. Investigated
+   offline (`eval/runs/slm-proof-4kkgm/INVESTIGATION.md`,
+   `scripts/llamacpp_window_match.py`): all 270 server tasks match the 270
+   ledger calls pair for pair and sum to the harness's tokens exactly; only
+   the `/metrics` prompt counter is off (4 below the server's own per-task
+   log). Cause not determined; both unexplained drifts are on the CPU
+   endpoint, every GPU proof is EXACT. No rule change.
+   Under the rules above: **not citable**; the CPU arm's after side is not
+   citable, the before/after covers hosted and GPU only, and there is no
+   third attempt. Captured: `eval/runs/slm-proof-4kkgm/` (counter
+   snapshots, workflow object, pod log, `llamacpp-server-window.log`),
+   `eval/runs/raw/4kkgm-findings/`, `eval/runs/4kkgm-claims.jsonl` and
+   `-contexts/`, the attempts record, `eval/runs/cpu-rerun-f304375.log`
+   (make output) and `eval/runs/top-cpu-rerun-f304375.txt`.
+
+3. **[STOPPED — CPU extended failed its gate and its traffic proof]** Runs, in order: hosted smoke, CPU smoke, GPU
+   smoke, hosted extended, CPU extended, GPU extended — each SLM run
+   through `make slm-eval-run` (traffic proof), the extended SLM runs
+   behind `make run-time-check`; `kubectl top` during the CPU runs, the
+   nvidia-smi sampler on node 2 during the GPU runs; an Anthropic balance
+   check first.
+
+## Traffic proof by per-request match (declared 2026-10-07)
+
+**From 2026-10-07, before any run it judges, the traffic proof of an SLM
+run is the per-request match** (`scripts/traffic_proof_tasks.py`), not the
+`/metrics` counter. A run is citable only if it gives **TASK-EXACT**:
+
+- every task in the endpoint's own llama-server log, from the workflow's
+  creation to the capture taken right after the run, is complete (prompt
+  eval, eval and release lines);
+- the server's tasks and the harness's calls (every eval pod, every
+  attempt; `EVAL_LLM_CALL` lines) match one for one on (prompt tokens,
+  completion tokens), nothing unmatched on either side. A task's prompt
+  tokens are release `n_tokens` − generated + 1, which includes a cached
+  prefix, as the API's usage does.
+
+Any other traffic in the window, or between the run's end and the capture,
+leaves an unmatched task: FAIL. The counter proof (`make slm-eval-run`,
+`scripts/slm_traffic_proof.py`) still runs and its difference is reported
+beside the verdict; it no longer decides.
+
+**Why.** In the 2026-10-07 replay on the GPU endpoint (A10 capacity check
+below), 352,522 prompt tokens were sent three times, the server's own
+per-request timings summed to exactly that each time, and the counter moved
+1, 2 and 2 tokens less, with nothing else on the endpoint and no cache. The
+counter proof had failed `5bdz5` (+1), `4kkgm` (−4) and `6z5xz` (+8) on the
+same drift while every request matched. **Those three stay not citable**:
+they were judged under the rule in force when they ran and are not
+re-scored. The CPU arm stays `8vpq6` on image `1f51dad`.
+
+**Procedure, after `make slm-eval-run`:**
+
+```bash
+# operator: the workflow's creation time (window start)
+kubectl -n financial-agent get workflow <wf> -o jsonpath='{.metadata.creationTimestamp}'
+# GPU endpoint, from the laptop, right after the run (node 2 runs it):
+ssh oci2 "kubectl -n financial-agent logs deploy/llamacpp --since-time=<creationTimestamp>" > eval/runs/slm-proof-<run>/llamacpp-server-window.log
+# CPU endpoint: the same command on the operator
+python3 scripts/traffic_proof_tasks.py --endpoint slm-gpu     --server-log eval/runs/slm-proof-<run>/llamacpp-server-window.log     --log eval/runs/slm-proof-<run>/<wf>.log     --before eval/runs/slm-proof-<run>/<wf>-before.json --after eval/runs/slm-proof-<run>/<wf>-after.json     --json-out eval/runs/slm-proof-<run>/proof-tasks.json
+```
+
+## A10 capacity check (2026-10-07)
+
+1. **[EXECUTED 2026-10-07]** Replay sweep on node 2, P = 1, 2, 4
+   (`scripts/capacity_replay.py`, `nstp9`'s 270 calls length-matched, from
+   node 2 itself, nvidia-smi every second): 0 errors, lengths exact, no
+   cache reuse; output 83.6 / 108.2 / 126.6 tok/s. P=8 not run (4 server
+   slots; 8 × 4,215 tokens exceeds the shared 32,768). The prompt counter
+   missed by 1, 2, 2 tokens against exact per-request timings. Results:
+   [gpu-inference.md](gpu-inference.md), "Capacity at higher parallelism";
+   files `eval/runs/capacity-sweep-2026-10-07/`.
+2. **[EXECUTED 2026-10-07 — TRAFFIC PROOF FAIL, not citable]** GPU
+   extended eval at parallelism 4, `grounding-eval-extended-slm-gpu-p4-6z5xz`
+   (`argo/eval-run-extended-slm-gpu-p4.yaml`, behind the balance check and
+   `make run-time-check` against `nstp9`, both PASS): 40/40 first attempt,
+   gate passed, but the server counted 8 prompt tokens more than the
+   harness. Every call matched the server's own log; only the counter
+   drifted (`eval/runs/slm-proof-6z5xz/INVESTIGATION.md`). No re-judges; no
+   figure from it is quoted.
+3. **[EXECUTED 2026-10-08 — CITABLE, per-request proof TASK-EXACT]** The
+   one re-run of the P=4 GPU eval, the first run judged by the per-request
+   proof: `grounding-eval-extended-slm-gpu-p4-xgtxx` (01:44–02:08Z, balance
+   check and run-time check PASS). 40/40 first attempt, 0 retries, stock
+   block empty 0/40, gate passed. Proof: 270 server tasks matched the 270
+   calls one for one (353,205 prompt + 97,762 completion tokens; 2,032 from
+   a cached prefix), none incomplete; the counter (reported, not deciding)
+   was 3 prompt tokens low and the old counter proof printed FAIL. Three
+   judgings: 2.12% mean (1.54–2.97%: 8/269, 4/259, 5/271), numeric 0.41%
+   (1/163, 1/165, 0/163). 100.8 briefs an hour, $0.0198 per brief (a
+   ceiling), A10 mean 45.0%. Files: `eval/runs/slm-proof-xgtxx/`
+   (`proof-tasks.json`), findings, claims, `eval/runs/three-judging-2026-10-08-xgtxx.txt`,
+   `eval/runs/cost-gpu-p4-xgtxx-2026-10-08.txt`, `eval/runs/gpu-nvsmi-p4b-f304375.csv`.
+
+## CPU core-scaling benchmark (2026-10-08)
+
+**[EXECUTED 2026-10-08]** `bash scripts/llama_bench_cpu.sh 4 8 15`
+(operator, tmux; 05:04–06:01Z, endpoint scaled to 0 and restored). Prompt
+2,048 tokens 61.1 / 109.8 / 103.6 tok/s, generation 12.9 / 13.3 / 12.8
+tok/s at 4 / 8 / 15 vCPU (16 not schedulable). The endpoint was killed once
+during its cold reload (exit 137 at 06:17Z) and came up on the second
+start; `/health` ok. Results: [gpu-inference.md](gpu-inference.md), "CPU
+core scaling".
+
+## Reranking A/B (2026-10-08)
+
+**[EXECUTED 2026-10-08 — decision DON'T SHIP]** Pre-registered in
+eval-methodology before any run.
+
+1. Memory smoke `grounding-eval-rerank3-smoke-262mz` (AAPL, rerank3): peak
+   1,487 MiB of 2,048 MiB, CPU at the 1.5 limit, exit 0; limit kept.
+2. Balance check OK; `make eval-run` with `argo/eval-run-extended.yaml` and
+   `argo/eval-run-extended-rerank3.yaml` in two tmux sessions, 20 s apart:
+   `grounding-eval-extended-vks4c` (done 03:54Z) and
+   `grounding-eval-extended-rerank3-2mzdd` (04:05Z); both 40/40 first
+   attempt, 0 retries.
+3. Re-judges 1 and 2 of both (`eval/runs/rejudge-2026-10-08{,-r2}/`).
+4. Warm latency Job (`k8s/jobs/rerank-latency-bench`, built with the load
+   restrictor off), then deleted.
+5. `scripts/rerank_ab_decide.py`: DON'T SHIP (refusals and latency fail).
+   Files: findings, claims and contexts of both runs, workflow objects,
+   attempts records, `eval/runs/rr-ab-*-f304375.log`,
+   `eval/runs/rerank-latency-*`, `eval/runs/rerank-ab-decision-2026-10-08.json`.
+
+## Terraform: the provided cluster (import and plan only)
+
+**[EXECUTED 2026-10-07 — zero diff]** Under the owner's exception
+(CLAUDE.md): import and plan only, in `terraform/oci-provided/`, local
+gitignored state, never apply; every command through
+`scripts/tf_provided.sh`. Operator, repo root, Terraform 1.9.8 in `~/bin`
+(release zip checked against HashiCorp's SHA256SUMS), instance-principal
+auth:
+
+```bash
+python3 scripts/tf_provided_imports.py          # 94 import blocks (read-only oci lists)
+bash scripts/tf_provided.sh init -input=false
+bash scripts/tf_provided.sh plan -input=false -generate-config-out=generated-config.tf
+python3 scripts/tf_provided_fixup.py            # plan then: 94 to import, 0 to add/change/destroy
+python3 - <<'PY' | while read -r to id; do bash scripts/tf_provided.sh import -input=false "$to" "$id" < /dev/null; done
+import re
+t = open("terraform/oci-provided/generated-imports.tf").read()
+for to, i in re.findall(r'to = (\S+)\n  id = "([^"]+)"', t): print(to, i)
+PY
+bash scripts/tf_provided.sh plan -input=false -detailed-exitcode   # exit 0: "No changes"
+```
+
+94 imported, 0 failed; the final plan: "No changes. Your infrastructure
+matches the configuration." What is codified and what is not:
+`terraform/oci-provided/README.md`. The generated configuration and state
+stay on the operator (OCIDs).
 
 ## OKE (OCI) — Phase 2
 

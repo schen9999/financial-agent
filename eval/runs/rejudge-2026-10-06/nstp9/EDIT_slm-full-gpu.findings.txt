@@ -1,0 +1,61 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections, then evaluate each against the source data.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "currently trading at $2.79"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `"current_price": 2.79`.
+
+---
+
+CLAIM: "market capitalization of approximately $428.5 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `"market_cap": 428488288.0`, which rounds to approximately $428.5 million.
+
+---
+
+CLAIM: "net loss of $73.9 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `"net_income": -73949000.0`, which equals approximately -$73.9 million; also confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "accumulated deficit of $1.6 billion"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both explicitly state "accumulated deficit stood at $1.6 billion" as of December 31, 2025.
+
+---
+
+CLAIM: "existing cash reserves projected to fund operations only through the third quarter of 2027"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "existing cash and cash equivalents as of December 31, 2025, are expected to fund operating expenses and capital expenditures into the third quarter of 2027."
+
+---
+
+CLAIM: "advancing its primary candidate, EDIT-401, through clinical development"
+LABEL: UNSUPPORTED
+REASON: The source data (RAG SEC Highlights and Risk Factors) consistently describes EDIT-401 as being in "preclinical" stages, not clinical development; characterizing its advancement as "through clinical development" misrepresents the stage disclosed in the source.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "progression of clinical data for EDIT-401"
+LABEL: UNSUPPORTED
+REASON: The source data consistently states that EDIT-401 and all most advanced programs remain in preclinical testing stages; there is no clinical data referenced in any source material, making "clinical data for EDIT-401" unsupported.
+
+---
+
+CLAIM: "preclinical-to-clinical transition"
+LABEL: INFERENCE
+REASON: This is a directional restatement derivable from the source's repeated description of programs being in preclinical stages, implying a future transition to clinical stages is the next developmental step; no specific figure or period is asserted.
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, metrics, percentages, or named forward-looking numbers appear in the Outlook section beyond those evaluated above.*

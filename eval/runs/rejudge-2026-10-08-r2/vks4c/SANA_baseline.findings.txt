@@ -1,0 +1,51 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $814 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `market_cap: 814260928.0`, which rounds to approximately $814 million, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "net loss of $211.8 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `net_income: -211822000.0`, which equals approximately -$211.8 million, also confirmed in the pre-written sections.
+
+---
+
+CLAIM: "Trading near its 52-week low of $2.61 at $2.72 per share"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `week_52_low: 2.61` and `current_price: 2.72`; the claim correctly identifies both figures and the positional relationship (current price is above but near the 52-week low).
+
+---
+
+CLAIM: "well off its 52-week high of $6.55"
+LABEL: SUPPORTED
+REASON: The raw source data lists `week_52_high: 6.55`; at $2.72, the stock is approximately 58.5% below its 52-week high, confirming it is "well off" that level arithmetically.
+
+---
+
+CLAIM: "no FDA-approved therapeutics currently on the market"
+LABEL: SUPPORTED
+REASON: The SEC Highlights and Risk Factors sections both explicitly state "there are no FDA-approved therapeutics currently based on pluripotent stem cells (PSCs) or utilizing the company's fusogen technology."
+
+---
+
+CLAIM: "disclosed going concern doubt"
+LABEL: SUPPORTED
+REASON: Both the RAG SEC Highlights and Risk Factors sections explicitly state "substantial doubt exists regarding the company's ability to continue as a going concern."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: (no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section)
+LABEL: N/A
+REASON: The Outlook section is composed entirely of qualitative, directional, and conditional statements (e.g., "cautious," "most consequential variable," "could force delay," "geopolitical and macroeconomic headwinds"). There are no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers to audit in this section.

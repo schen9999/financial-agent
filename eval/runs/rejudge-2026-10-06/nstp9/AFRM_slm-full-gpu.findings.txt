@@ -1,0 +1,47 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$1.93 billion in net income"
+LABEL: SUPPORTED
+REASON: The source data lists net_income = $1,929,793,024, which rounds to $1.93 billion, and the pre-written Financial Health and Recent Developments sections both confirm "net income of $1.93 billion" / "nearly $1.93 billion."
+
+---
+
+CLAIM: "$4.26 billion in revenues"
+LABEL: SUPPORTED
+REASON: The source data lists revenue = $4,261,082,112, which rounds to $4.26 billion, consistent with the pre-written Financial Health section's "$4.26 billion."
+
+---
+
+CLAIM: "trailing P/E ratio of 13.52"
+LABEL: SUPPORTED
+REASON: The source data lists pe_ratio = 13.517179, which rounds to 13.52, matching the pre-written sections and the claim exactly.
+
+---
+
+CLAIM: "strong 45.29% profit margin"
+LABEL: SUPPORTED
+REASON: The source data explicitly lists profit_margin_pct = 45.29, and this figure is confirmed in the pre-written Financial Health and Recent Developments sections.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional in nature (e.g., "cautiously constructive," "sustained margin expansion," "sharp deterioration"). There are therefore no quantitative or forward-looking numerical claims to audit in this section.
+
+---
+
+**SUMMARY TABLE**
+
+| Claim | Label |
+|---|---|
+| $1.93 billion in net income | SUPPORTED |
+| $4.26 billion in revenues | SUPPORTED |
+| Trailing P/E ratio of 13.52 | SUPPORTED |
+| 45.29% profit margin | SUPPORTED |
+| No quantitative claims in Outlook | N/A |

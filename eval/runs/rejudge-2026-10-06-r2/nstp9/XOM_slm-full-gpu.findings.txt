@@ -1,0 +1,57 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $674.35 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists `market_cap: 674353577984.0`, which equals approximately $674.35 billion, matching the claim exactly.
+
+---
+
+CLAIM: "$361.06 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists `revenue: 361060007936.0`, which equals approximately $361.06 billion, matching the claim exactly.
+
+---
+
+CLAIM: "$18.6 billion in combined dividends and buybacks"
+LABEL: UNSUPPORTED
+REASON: The source data states $8.6 billion in dividends and $10.0 billion in stock repurchases, which sum to $18.6 billion; however, the claim presents this as a single combined figure of "$18.6 billion in combined dividends and buybacks" without decomposition — while the arithmetic checks out (8.6 + 10.0 = 18.6), the pre-written SEC Filing Highlights section lists these as two separate figures and never aggregates them to $18.6 billion, so the combined presentation is an inference the model made. Re-evaluating under the inference rule: the derivation is a direct addition of two explicitly present figures (8.6 + 10.0 = 18.6), making this fully derivable.
+LABEL: INFERENCE
+REASON: $18.6 billion is derived by adding the two explicitly stated figures from the source — $8.6 billion in dividends and $10.0 billion in stock repurchases — a direct arithmetic step with no missing facts required.
+
+---
+
+**OUTLOOK**
+
+---
+
+*(The Outlook section contains no additional standalone quantitative figures, price targets, thresholds, ratios, metrics, or percentages beyond references to entities and qualitative directional statements already covered or not quantitative in nature. The named regions — Guyana, Permian Basin, Middle East — and qualitative descriptors such as "cautiously constructive," "primary drivers," and "sustained high realizations" are not quantitative claims subject to this audit. However, I will flag any remaining items below for completeness.)*
+
+---
+
+CLAIM: "Guyana and the Permian Basin" (as primary drivers of advantaged volume growth)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state: "Advantaged Volume Growth contributed positively to earnings, driven mainly by growth in Guyana and the Permian Basin," directly corroborating this claim.
+
+---
+
+CLAIM: "Middle East-related disruptions" (as a headwind)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state that "Middle East disruptions negatively impacted earnings by $1.06 billion in Q2 and $1.28 billion year-to-date," confirming Middle East disruptions as a material earnings headwind.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap ~$674.35 billion | SUPPORTED |
+| 2 | $361.06 billion annual revenue | SUPPORTED |
+| 3 | $18.6 billion combined dividends and buybacks | INFERENCE |
+| 4 | Guyana and Permian Basin as advantaged volume growth drivers | SUPPORTED |
+| 5 | Middle East disruptions as a headwind | SUPPORTED |

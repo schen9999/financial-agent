@@ -1,0 +1,68 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$266 million in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $265,512,000; the pre-written Financial Health section rounds this to $266 million, and the claim uses the same rounded figure (within normal rounding convention).
+
+---
+
+CLAIM: "net loss of $53 million"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$52,997,000, which rounds to -$53 million as stated in the claim.
+
+---
+
+CLAIM: "trading at $0.74"
+LABEL: SUPPORTED
+REASON: Source data shows current_price of $0.739, which rounds to $0.74.
+
+---
+
+CLAIM: "near its 52-week low"
+LABEL: SUPPORTED
+REASON: The 52-week low is $0.45 and the 52-week high is $1.56; at $0.739, the stock sits at (0.739 − 0.45)/(1.56 − 0.45) = 0.289/1.11 ≈ 26% of the way up its 52-week range, placing it in the lower quarter — arithmetically consistent with "near its 52-week low."
+
+---
+
+CLAIM: "a fraction of its 52-week high of $1.56"
+LABEL: SUPPORTED
+REASON: Source data explicitly states week_52_high of $1.56; $0.739/$1.56 ≈ 0.47x, which is indeed a fraction of the high.
+
+---
+
+CLAIM: "market capitalization of just $82 million"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $82,049,312, which rounds to $82 million.
+
+---
+
+**OUTLOOK**
+
+The Outlook section is largely qualitative and directional. I will identify every quantitative or specific factual claim embedded within it.
+
+---
+
+CLAIM: (No explicit quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section.)
+LABEL: N/A
+REASON: The Outlook section contains only qualitative directional statements (e.g., "headwinds meaningfully outweighing visible tailwinds," "execution risk is high," "already thin market capitalization") and watch-item descriptions without attaching any specific numbers, percentages, ratios, price targets, or quantitative thresholds. There are no quantitative claims to audit beyond those already covered in the Executive Summary.
+
+---
+
+**SUMMARY TABLE**
+
+| Claim | Label |
+|---|---|
+| $266 million in revenue | SUPPORTED |
+| Net loss of $53 million | SUPPORTED |
+| Trading at $0.74 | SUPPORTED |
+| Near its 52-week low | SUPPORTED |
+| 52-week high of $1.56 | SUPPORTED |
+| Market capitalization of just $82 million | SUPPORTED |
+
+All quantitative claims in the Executive Summary are supported by the source data. The Outlook section contains no quantitative claims requiring audit.

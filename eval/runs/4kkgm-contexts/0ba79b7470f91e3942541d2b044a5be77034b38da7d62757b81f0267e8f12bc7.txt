@@ -1,0 +1,78 @@
+STOCK DATA:
+{
+  "ticker": "OMER",
+  "company_name": "Omeros Corporation",
+  "current_price": 18.51,
+  "currency": "USD",
+  "market_cap": 1339907840.0,
+  "pe_ratio": 15.172131,
+  "forward_pe": 15.04878,
+  "week_52_high": 21.24,
+  "week_52_low": 4.06,
+  "financial_currency": "USD",
+  "revenue": 38422000.0,
+  "net_income": 116533000.0,
+  "profit_margin_pct": 324.88,
+  "dividend_yield": 0.0,
+  "sector": "Healthcare",
+  "industry": "Biotechnology"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-03-31",
+    "summary": "ITEM 1A. RISK FACTORS The risks and uncertainties described below may have a material adverse effect on our business, prospects, financial condition or operating results. In addition, we may be adversely affected by risks that we currently deem immaterial or by other risks that are not currently known to us. You should carefully consider these risks before making an investment decision. The trading price of our common stock could decline due to any of these risks and you may lose all or part of your investment. In assessing the risks described below, you should also refer to the other information contained in this Annual Report on Form 10-K. Risks Related to Our Products, Product Candidates, Programs and Operations Our ability to achieve profitability is highly dependent on the commercial "
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-12",
+    "summary": "ITEM 1A. RISK FACTORS We operate in an environment that involves a number of risks and uncertainties. Before making an investment decision you should carefully consider the risks described in Part I, Item 1A, \u201cRisk Factors\u201d of our Annual Report on Form 10-K for the year ended December 31, 2025, as filed with the SEC on March 31, 2026. In assessing the risk factors set forth in our Annual Report on Form 10-K for the year ended December 31, 2025, you should also refer to the other information included therein and in this Quarterly Report on Form 10-Q, including the supplemental risk factor below. In addition, we may be adversely affected by risks that we currently deem to be immaterial or by other risks that are not currently known to us. Due to these risks and uncertainties, known and unkno"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] Based on the provided text from the SEC EDGAR filings for ticker OMER, here are the key takeaways regarding the company's financial condition, risks, and operational outlook:
+
+**Financial Position and Indebtedness**
+*   **Cash Reserves:** As of December 31, 2025, the company held $171.8 million in cash, cash equivalents, and short-term investments.
+*   **Operating Losses:** The company has incurred cumulative operating losses since inception. For the year ended December 31, 2025, cash used in operations was $116.1 million, and the net loss was $3.4 million.
+*   **Debt Structure:** The company had $70.8 million in outstanding aggregate principal amount of its 2029 Notes and approximately $1.2 million in outstanding finance lease obligations. The $17.1 million in 5.25% convertible senior notes due in February 2026 (the "2026 Notes") had matured and been repaid in full as of the reporting date.
+*   **Future Capital Needs:** The company expects to continue spending substantial amounts on clinical trials, manufacturing, commercializing YARTEMLEA, supporting sales and marketing, and servicing its convertible senior notes. There is no assurance that sufficient revenue will be generated to fund operations, potentially requiring additional capital raises through debt, equity, or partnerships.
+
+**Product Commercialization and Revenue Dependence**
+*   **Reliance on YARTEMLEA:** The company’s ability to achieve profitability is highly dependent on the commercial success of YARTEMLEA, its only commercialized product approved by the FDA in the United States in December 2025.
+*   **Commercialization Risks:** Success depends on overcoming several hurdles, including physician and patient acceptance, limited experience in marketing and third-party manufacturing, reliance on limited suppliers, and reimbursement policies from government and private payers.
+*   **Reimbursement Challenges:** Revenue prospects are heavily influenced by the pricing, availability, and duration of coverage from third-party payers. Increasing demands for discounts and challenges to pricing by payers could adversely impact profitability.
+
+**Partnerships and Milestone Payments**
+*   **Novo Nordisk Agreement:** Future value realization is contingent on the successful development, regulatory approval, and commercialization of zaltenibart. If Novo Nordisk fails to successfully develop or commercialize this product, the company may receive substantially less in milestone and royalty payments than expected, or none at all.
+*   **Revenue Variability:** Even if commercialized, royalty revenue from zaltenibart may vary significantly due to pricing, reimbursement, sales volumes, and competition.
+
+**General Risk Factors**
+*   **Indebtedness Risks:** Existing and future indebtedness could limit cash flow available for operations, restrict the ability to obtain additional financing, dilute existing stockholders (via conversion of notes), and place the company at a competitive disadvantage against less leveraged competitors.
+*   **Covenant Compliance:** Failure to comply with financial covenants or make scheduled payments could result in default, making all indebtedness immediately payable.
+*   **Preclinical Programs:** The company may lack sufficient funds to advance preclinical programs to a point where they can generate revenue through partnerships, which could harm business prospects.
+*   **Stock Price Volatility:** The trading price of common stock could decline due to these risks, and investors may lose all or part of their investment.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] The primary risk factors disclosed include:
+
+*   **Dependence on YARTEMLEA:** The company’s ability to achieve profitability is highly dependent on the commercial success of YARTEMLEA, its only commercialized product. Failure to successfully commercialize this product could materially adversely affect the business, financial condition, and stock price.
+*   **Commercialization Challenges:** There are risks associated with limited experience in marketing, selling, and distributing YARTEMLEA, reliance on a limited number of manufacturers and suppliers, and potential lack of acceptance by physicians, patients, and payers.
+*   **Reimbursement and Pricing Risks:** Success depends heavily on obtaining adequate coverage and reimbursement from government and private payers. Risks include delays in reimbursement, limited coverage for approved uses, reimbursement rates that do not cover costs, and pressure from payers to provide discounts or challenge prices. Additionally, changes in government programs like the Inflation Reduction Act may reduce payments.
+*   **Regulatory and International Risks:** There is a risk of failing to obtain regulatory approval in the EU or other foreign territories, as well as challenges in complying with post-approval regulatory requirements. In non-U.S. jurisdictions, products may be subject to government price controls and separate reimbursement approvals.
+*   **Dependence on Novo Nordisk:** The value realized from zaltenibart depends on Novo Nordisk’s development, regulatory approval, and commercialization efforts. Novo Nordisk controls key decisions, and the company may receive little or no additional payments if Novo Nordisk fails to advance or commercialize the product successfully.
+*   **Financial Losses and Capital Needs:** The company has incurred cumulative operating losses since inception and expects to continue incurring losses until significant revenue is generated. There is a risk that the company may be unable to raise additional capital when needed, which could force it to delay, scale back, or discontinue development or commercialization programs.
+*   **Indebtedness:** The company has outstanding convertible senior notes and finance lease obligations, which could limit cash flow available for operations and expose the company to financial risks.

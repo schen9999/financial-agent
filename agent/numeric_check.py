@@ -24,7 +24,17 @@ Scope rules, chosen for precision over coverage:
     implies ("$16.8 billion" also covers 16.75-16.85B). A hedged figure
     ("approximately $400 million") treats integer trailing zeros as
     rounding too (+-50M there), an unhedged one does not.
-  - profit_margin in the dict is a fraction; the text states percent.
+  - profit_margin in the dict is a fraction; the text states percent. A
+    dict with profit_margin_pct (a percentage, from the stock-data fix of
+    2026-10) is compared as is.
+  - Currency (dicts with financial_currency only): when the filer reports
+    in another currency than USD, a revenue or net income figure stated in
+    dollars is a "currency_label" finding — wrong whatever its number, so
+    it is not compared — and a figure marked with the reporting currency's
+    code, symbol or name ("¥51.96 trillion", "51.96 trillion yen") is
+    compared as usual. An unmarked figure is compared as usual. Dicts
+    without financial_currency (every run before the fix) are checked
+    exactly as before.
 
 Placeholders are flagged too: bracketed template tokens ([City Name],
 [Company], [X]), {curly} template slots, literal "$X" figures, and "N/A"-style
@@ -134,6 +144,12 @@ _POST_LABELS = [
 ]
 _POST_RES = [(f, re.compile(_VALUE + _POST_GAP + r"(?:" + p + r")", re.I))
              for f, p in _POST_LABELS]
+# For a non-USD reporting currency only: the same, allowing a currency word
+# or code between the value and the label ("51.96 trillion yen in revenue").
+_FX_WORD = (r"(?:\s+(?:new\s+taiwan\s+dollars?|nt\s+dollars?|yen|yuan|renminbi|"
+            r"kroner|krone|euros?|USD|JPY|CNY|RMB|TWD|DKK|EUR|GBP|CHF|KRW|INR|SEK|NOK)\b)?")
+_POST_FX_RES = [(f, re.compile(_VALUE + _FX_WORD + _POST_GAP + r"(?:" + p + r")", re.I))
+                for f, p in _POST_LABELS]
 # The net_income/net_loss/profit_margin number-before labels need "net" or
 # "profit" to be present (the gap may hold "net"); checked in code.
 
@@ -144,6 +160,69 @@ _RANGE_RE = re.compile(
 
 _NA_RE = re.compile(r"(?:N/A|n/a|\bNA\b|not available|unavailable|"
                     r"not applicable|not disclosed|\bnull\b|\bnone\b)", re.I)
+
+# Currency markers, used only for dicts with a non-USD financial_currency.
+# A prefix the value regex does not consume ("¥51.96 trillion", "JPY 51.96
+# trillion", "NT$ 4.4 trillion") and a suffix after the value ("51.96
+# trillion yen"). Each maps to the reporting currencies it can denote.
+CURRENCY_FIELDS = {"revenue", "net_income"}
+_FX_PREFIX = (r"NT\$\s?|[¥€£]\s?|(?:JPY|CNY|RMB|TWD|DKK|EUR|GBP|CHF|KRW|INR|SEK|NOK)"
+              r"\s?(?=\d)")
+_FX_PREFIX_RE = re.compile(_FX_PREFIX)
+_FX_BEFORE_RE = re.compile((r"(?:" + _FX_PREFIX + r")$").replace(r"(?=\d)", ""))
+_FX_AFTER_RE = re.compile(
+    r"\s*(?:(?i:new\s+taiwan\s+dollars?|nt\s+dollars?|u\.?s\.?\s+dollars?|yen|yuan|"
+    r"renminbi|kroner|krone|euros?|pounds?\s+sterling)\b|"
+    r"(?:USD|JPY|CNY|RMB|TWD|DKK|EUR|GBP|CHF|KRW|INR|SEK|NOK)\b)")
+_FX_MARKS = {
+    "¥": {"JPY", "CNY"}, "€": {"EUR"}, "£": {"GBP"}, "nt$": {"TWD"},
+    "yen": {"JPY"}, "yuan": {"CNY"}, "renminbi": {"CNY"}, "rmb": {"CNY"},
+    "kroner": {"DKK", "SEK", "NOK"}, "krone": {"DKK", "NOK"},
+    "euro": {"EUR"}, "euros": {"EUR"}, "pounds sterling": {"GBP"},
+    "pound sterling": {"GBP"}, "new taiwan dollar": {"TWD"},
+    "new taiwan dollars": {"TWD"}, "nt dollar": {"TWD"}, "nt dollars": {"TWD"},
+    "us dollars": {"USD"}, "u.s. dollars": {"USD"}, "us dollar": {"USD"},
+    "u.s. dollar": {"USD"},
+}
+
+
+def _foreign(stock: dict) -> str | None:
+    """The reporting currency when it is set and not USD, else None."""
+    fin = (stock.get("financial_currency") or "").strip().upper()
+    return fin if fin and fin != "USD" else None
+
+
+def _marks(token: str) -> set[str]:
+    t = re.sub(r"\s+", " ", token.strip().lower())
+    if t in _FX_MARKS:
+        return _FX_MARKS[t]
+    return {t.upper()} if re.fullmatch(r"[a-z]{3}", t) else set()
+
+
+def _stated_currencies(sentence: str, b: dict) -> set[str] | None:
+    """The currencies a money value is marked with, or None when unmarked:
+    a $ or USD the value regex consumed, a prefix just before the value, or
+    a currency word or code just after it."""
+    vs, ve = b["value_span"]
+    if b["value"]["cur"] or re.search(r"USD\s*$", sentence[vs:ve]):
+        return {"USD"}
+    out = set()
+    m = _FX_BEFORE_RE.search(sentence[max(0, vs - 6):vs])
+    if m:
+        out |= _marks(m.group(0))
+    m = _FX_AFTER_RE.match(sentence, ve)
+    if m:
+        out |= _marks(m.group(0))
+    return out or None
+
+
+def _source_raw(field: str, stock: dict) -> tuple[float | None, bool]:
+    """(source value, is_percent): profit margin comes from profit_margin_pct
+    when the dict has it (a percentage), else from profit_margin (a
+    fraction)."""
+    if field == "profit_margin" and stock.get("profit_margin_pct") is not None:
+        return stock["profit_margin_pct"], True
+    return stock.get(field), False
 
 # Words before "revenue" that keep it the company total; anything else that
 # looks like a noun ("services revenue", "advertising revenue") is a subline.
@@ -329,8 +408,11 @@ def _form_ok(field: str, v: dict, trade_label: bool) -> bool:
     return False
 
 
-def _bindings_in_sentence(sentence: str) -> tuple[list[dict], list[dict]]:
-    """Label-bound values and N/A fillers in one sentence."""
+def _bindings_in_sentence(sentence: str, foreign: bool = False) -> tuple[list[dict], list[dict]]:
+    """Label-bound values and N/A fillers in one sentence. With `foreign`
+    (a non-USD reporting currency), a currency prefix the value regex does
+    not consume may sit between a label and its value ("revenue of ¥51.96
+    trillion")."""
     out, nas, taken = [], [], []
 
     def overlaps(s, e):
@@ -360,7 +442,7 @@ def _bindings_in_sentence(sentence: str) -> tuple[list[dict], list[dict]]:
     # Number-before next: "<value> [in] [annual|net|...] <label>" is the
     # tightest binding there is ("20.8x trailing earnings" must not be
     # claimed by a preceding "trades at").
-    for field, rx in _POST_RES:
+    for field, rx in (_POST_FX_RES if foreign else _POST_RES):
         for m in rx.finditer(sentence):
             tail = sentence[m.end("num"):m.end()].lower()
             if field in ("net_income", "net_loss") and not re.search(r"\bnet\b", tail):
@@ -392,6 +474,10 @@ def _bindings_in_sentence(sentence: str) -> tuple[list[dict], list[dict]]:
             # where the stock trades now, not the 52-week figure.
             if real in ("week_52_high", "week_52_low") and "at" in toks:
                 continue
+            if foreign and real in CURRENCY_FIELDS:
+                fx = _FX_PREFIX_RE.match(sentence, pos)
+                if fx:
+                    pos = fx.end()
             vm = _VALUE_RE.match(sentence, pos)
             if not vm:
                 na = _NA_RE.match(sentence, pos)
@@ -460,7 +546,7 @@ def _scope(b: dict, sentence: str, stock: dict, company: set[str]) -> str | None
     scope_text = _AS_OF_RE.sub(" ", _TTM_RE.sub(" ", scope_text))
     if _PERIOD_RE.search(scope_text):
         return "period"
-    if stock.get(field) is None:
+    if _source_raw(field, stock)[0] is None:
         return "no_source"
     return None
 
@@ -478,8 +564,9 @@ def _stated_value(b: dict) -> tuple[float, float]:
 
 
 def _source_value(field: str, stock: dict) -> float:
-    src = float(stock[field])
-    return src * 100.0 if field == "profit_margin" else src
+    raw, is_pct = _source_raw(field, stock)
+    src = float(raw)
+    return src * 100.0 if field == "profit_margin" and not is_pct else src
 
 
 def compare(stated: float, source: float, slack: float,
@@ -524,8 +611,9 @@ def check_section(section: str, text: str, stock: dict,
     checked = 0
     consumed = []
     company = _company_tokens(stock)
+    fin = _foreign(stock)
     for off, sent in _sentences(text):
-        found, nas = _bindings_in_sentence(sent)
+        found, nas = _bindings_in_sentence(sent, foreign=bool(fin))
         for b in found:
             reason = _scope(b, sent, stock, company)
             vs, ve = b["value_span"]
@@ -545,24 +633,44 @@ def check_section(section: str, text: str, stock: dict,
             consumed.append((off + vs, off + ve))
             checked += 1
             stated, slack = _stated_value(b)
-            source = _source_value(b["field"], stock)
+            raw, is_pct = _source_raw(b["field"], stock)
             rec["stated_value"] = stated
+            if fin and b["field"] in CURRENCY_FIELDS:
+                curs = _stated_currencies(sent, b)
+                if curs is not None and fin not in curs:
+                    findings.append({
+                        "section": section, "field": b["field"],
+                        "stated": b["stated"], "stated_value": stated,
+                        "source": raw, "ratio": None, "kind": "currency_label",
+                        "sentence": sent.strip(),
+                        "stated_currency": "/".join(sorted(curs)),
+                        "financial_currency": fin,
+                    })
+                    continue
+            source = _source_value(b["field"], stock)
             if not compare(stated, source, slack, rel_tol):
-                findings.append({
+                f = {
                     "section": section, "field": b["field"],
                     "stated": b["stated"], "stated_value": stated,
-                    "source": stock[b["field"]],
+                    "source": raw,
                     "ratio": (stated / source) if source else None,
                     "kind": "mismatch", "sentence": sent.strip(),
-                })
+                }
+                if is_pct:
+                    f["source_is_pct"] = True
+                findings.append(f)
         for na in nas:
-            if stock.get(na["field"]) is not None:
-                findings.append({
+            raw, is_pct = _source_raw(na["field"], stock)
+            if raw is not None:
+                f = {
                     "section": section, "field": na["field"],
                     "stated": na["stated"], "stated_value": None,
-                    "source": stock[na["field"]], "ratio": None,
+                    "source": raw, "ratio": None,
                     "kind": "placeholder", "sentence": sent.strip(),
-                })
+                }
+                if is_pct:
+                    f["source_is_pct"] = True
+                findings.append(f)
         for tok in _placeholders(sent):
             findings.append({
                 "section": section, "field": None, "stated": tok,
@@ -616,6 +724,9 @@ def check_sections(sections, stock: dict,
             report["unchecked_reasons"][k] = report["unchecked_reasons"].get(k, 0) + n
     report["mismatches"] = sum(f["kind"] == "mismatch" for f in report["findings"])
     report["placeholders"] = sum(f["kind"] == "placeholder" for f in report["findings"])
+    if _foreign(stock):
+        report["currency_labels"] = sum(f["kind"] == "currency_label"
+                                        for f in report["findings"])
     return report
 
 
@@ -624,12 +735,12 @@ def check_brief(markdown: str, stock: dict,
     return check_sections(split_sections(markdown), stock, rel_tol)
 
 
-def _fmt(field: str | None, value) -> str:
+def _fmt(field: str | None, value, is_pct: bool = False) -> str:
     if value is None:
         return "n/a"
     value = float(value)
     if field == "profit_margin":
-        return f"{value * 100:.1f}%"
+        return f"{value if is_pct else value * 100:.1f}%"
     if field in PE_FIELDS:
         return f"{value:.1f}x"
     if field in MONEY_FIELDS:
@@ -647,15 +758,20 @@ def render_note(findings: list[dict]) -> str:
     lines = ["", "---", "**Numeric check** (deterministic; stock data only): "
              f"{len(findings)} issue(s)."]
     for f in findings:
+        pct = f.get("source_is_pct", False)
         if f["kind"] == "mismatch":
             ratio = f" ({f['ratio']:.3g}x)" if f["ratio"] is not None else ""
             lines.append(f"- {f['section']}: {FIELD_NAMES[f['field']]} stated "
-                         f"{f['stated']}, stock data {_fmt(f['field'], f['source'])}"
+                         f"{f['stated']}, stock data {_fmt(f['field'], f['source'], pct)}"
                          f"{ratio}")
+        elif f["kind"] == "currency_label":
+            lines.append(f"- {f['section']}: {FIELD_NAMES[f['field']]} stated "
+                         f"{f['stated']} in {f['stated_currency']}; the stock data "
+                         f"reports it in {f['financial_currency']}")
         elif f["field"]:
             lines.append(f"- {f['section']}: {FIELD_NAMES[f['field']]} stated "
                          f"\"{f['stated']}\", stock data "
-                         f"{_fmt(f['field'], f['source'])}")
+                         f"{_fmt(f['field'], f['source'], pct)}")
         else:
             lines.append(f"- {f['section']}: unfilled placeholder \"{f['stated']}\"")
     return "\n".join(lines) + "\n"
@@ -682,7 +798,8 @@ def apply_numeric_check(brief: str, stock: dict, mode: str | None = None,
     report.pop("bindings", None)
     out = brief
     if mode == "block":
-        bad = {f["section"] for f in report["findings"] if f["kind"] == "mismatch"}
+        bad = {f["section"] for f in report["findings"]
+               if f["kind"] in ("mismatch", "currency_label")}
         for s in reversed(spans):
             if s["heading"] in bad:
                 out = (out[:s["body_start"]] + "\n\n" + BLOCK_NOTICE + "\n\n"

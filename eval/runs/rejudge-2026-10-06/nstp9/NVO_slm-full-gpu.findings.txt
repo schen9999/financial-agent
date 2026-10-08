@@ -1,0 +1,55 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "DKK 329.43 billion in revenue"
+LABEL: SUPPORTED
+REASON: The source data lists revenue of 329,430,990,848 DKK, and the pre-written sections explicitly state "DKK 329.43 billion in revenue," matching exactly.
+
+---
+
+CLAIM: "DKK 116.44 billion in net income"
+LABEL: SUPPORTED
+REASON: The source data lists net income of 116,442,996,736 DKK, and the pre-written sections explicitly state "DKK 116.44 billion in net income," matching exactly.
+
+---
+
+CLAIM: "robust 35.35% profit margin"
+LABEL: SUPPORTED
+REASON: The source data explicitly lists profit_margin_pct as 35.35, and this figure appears verbatim in the pre-written sections.
+
+---
+
+CLAIM: "trading near its 52-week low of $35.12"
+LABEL: SUPPORTED
+REASON: The source data lists week_52_low as $35.12 and current_price as $37.54; $37.54 is $2.42 above the 52-week low, which is arithmetically consistent with "near its 52-week low," and the $35.12 figure is explicitly present in the source data.
+
+---
+
+CLAIM: "attractive 4.79% dividend yield"
+LABEL: SUPPORTED
+REASON: The source data explicitly lists dividend_yield as 4.79.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional (e.g., "cautiously constructive," "enduring structural demand," "strong cash generation capabilities," "sustained clinical data validation"). There are no numerical claims to audit in this section.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | DKK 329.43 billion in revenue | SUPPORTED |
+| 2 | DKK 116.44 billion in net income | SUPPORTED |
+| 3 | 35.35% profit margin | SUPPORTED |
+| 4 | 52-week low of $35.12 | SUPPORTED |
+| 5 | 4.79% dividend yield | SUPPORTED |
+
+All five auditable quantitative claims in the Executive Summary are **SUPPORTED** by the source data. The Outlook section contains **no quantitative claims** requiring audit.

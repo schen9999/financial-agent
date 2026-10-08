@@ -1,0 +1,55 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "currently trading at $2.89 per share"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `"current_price": 2.89` for SANA.
+
+---
+
+CLAIM: "market capitalization of $865 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `"market_cap": 865152256.0`, which rounds to $865 million; the pre-written Financial Health section also states "$865 million."
+
+---
+
+CLAIM: "well off its 52-week high of $6.55"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `"week_52_high": 6.55`; at $2.89 the stock is 55.9% below that high, confirming "well off."
+
+---
+
+CLAIM: "hovering near its 52-week low of $2.61"
+LABEL: SUPPORTED
+REASON: The raw source data lists `"week_52_low": 2.61`; at $2.89 the stock is only $0.28 (≈10.7%) above the 52-week low, arithmetically consistent with "hovering near." The figure $2.61 is explicitly present in the source data.
+
+---
+
+CLAIM: "a negative net income of $211.8 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `"net_income": -211822000.0`, which rounds to -$211.8 million; confirmed in the pre-written Financial Health section.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. It is composed entirely of qualitative directional statements, categorical risk descriptions, and conditional narrative language (e.g., "going concern designation," "absence of commercial revenue," "unproven cell engineering technology," "external capital," "third-party manufacturing partners," "clinical trial readouts," "successful capital raise," "strategic partnership"). None of these constitute quantitative or specifically enumerable claims subject to the audit criteria defined above.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $2.89 per share | SUPPORTED |
+| 2 | Market cap of $865 million | SUPPORTED |
+| 3 | 52-week high of $6.55 | SUPPORTED |
+| 4 | 52-week low of $2.61 | SUPPORTED |
+| 5 | Negative net income of $211.8 million | SUPPORTED |
+
+All five auditable quantitative claims in the Executive Summary are **SUPPORTED** by the raw source data. The Outlook section contains no auditable quantitative or forward-looking numerical claims.

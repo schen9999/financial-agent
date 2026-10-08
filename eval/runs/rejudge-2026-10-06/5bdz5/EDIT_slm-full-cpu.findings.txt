@@ -1,0 +1,55 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$1.6 billion accumulated deficit"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both explicitly state "As of December 31, 2025, the accumulated deficit stood at $1.6 billion."
+
+---
+
+CLAIM: "cash runway extending only through the third quarter of 2027"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "Existing cash and cash equivalents as of December 31, 2025, are expected to fund operating expenses and capital expenditures into the third quarter of 2027."
+
+---
+
+CLAIM: "trading near multi-year lows"
+LABEL: INFERENCE
+REASON: The current price of $2.79 is close to the 52-week low of $1.66 (within the same 52-week range), making "near multi-year lows" a directional restatement derivable from the stock data, though "multi-year" extends beyond the 52-week window provided and is not strictly verifiable from the source data alone; however, the proximity to the 52-week low is supported arithmetically ($2.79 vs. $1.66 low, $4.537 high — $2.79 sits in the lower portion of the range).
+
+---
+
+CLAIM: "EDIT-401"
+LABEL: SUPPORTED
+REASON: EDIT-401 is explicitly named in the RAG SEC Highlights as the company's primary development focus ("Focus on EDIT-401").
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "impending cash runway expiration in the third quarter of 2027"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state cash is projected to fund operations "into the third quarter of 2027."
+
+---
+
+CLAIM: "EDIT-401 program"
+LABEL: SUPPORTED
+REASON: EDIT-401 is explicitly named in the RAG SEC Highlights and Risk Factors sections as the primary development candidate.
+
+---
+
+CLAIM: "contingent payments from strategic partners like BMS and Vertex"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "The only significant committed potential external sources of funds are the right to contingent payments under collaboration agreements with BMS and retained portions of contingent upfront payments under a license agreement with Vertex."
+
+---
+
+*No additional quantitative figures, price targets, specific ratios, percentages, or named milestones appear in the Executive Summary or Outlook sections beyond those audited above.*

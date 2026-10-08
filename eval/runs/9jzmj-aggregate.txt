@@ -1,0 +1,74 @@
+==============================================================================
+  NIGHTLY GROUNDING EVAL — AGGREGATE
+==============================================================================
+  judge prompt      : v2
+  Ticker    Sup  Uns  Inf  Tot  Retr(s)  Pipe(s)
+  --------------------------------------------
+  AAPL       13    0    0   13     6.18    25.55
+  AFRM       10    2    0   12     6.38    27.35
+  AMZN        2    0    0    2     6.14    25.49
+  BABA       10    0    1   11     1.05    20.24
+  BEAM       14    0    2   16     5.55    26.48
+  BLNK        9    0    0    9     6.05    25.58
+  BYND        3    0    0    3     5.44    26.97
+  CALM        9    0    1   10     6.57    26.06
+  CHGG        8    1    0    9     6.42    26.48
+  COIN       15    0    1   16     5.67    26.81
+  CRBU       11    0    0   11     5.36    26.99
+  EDIT       12    0    2   14     5.46    26.58
+  EVGO        8    0    1    9     6.67    28.52
+  GOOGL       7    0    1    8     5.58    24.82
+  JPM         7    0    0    7     6.28    25.90
+  LCID       15    3    1   19     5.98    28.24
+  META       15    0    0   15     5.59    25.86
+  MSFT        8    0    1    9     5.94    26.34
+  NTLA       11    0    1   12     6.03    28.14
+  NVDA        8    0    1    9     5.44    25.77
+  NVO        13    1    2   16     1.14    20.89
+  OCGN        7    0    0    7     5.57    27.01
+  OMER       11    0    3   14     5.98    27.72
+  PTON       13    0    1   14     6.40    27.13
+  RDFN        3    0    0    3     5.77    24.72
+  RIVN       12    0    1   13     5.90    30.20
+  ROKU        9    0    1   10     4.67    24.48
+  SANA        5    0    0    5     7.97    27.74
+  SAP         8    0    1    9     1.12    19.57
+  SFIX       11    0    0   11    10.56    28.67
+  SNAP       12    0    0   12     5.40    28.68
+  TM          8    0    0    8     1.21    17.60
+  TSLA       11    0    0   11     7.57    30.41
+  TSM         8    0    0    8     1.23    20.97
+  UNH        11    0    1   12     5.46    24.05
+  UPST        5    0    0    5     5.32    25.94
+  V          15    0    0   15     6.66    28.59
+  VERV        8    0    0    8     5.37    26.74
+  WMT         4    0    0    4     4.17    21.68
+  XOM        12    0    0   12     5.12    27.51
+  --------------------------------------------
+  TOTAL     381    7   23  411     5.41    25.86
+
+  tickers completed : 40
+  tickers skipped   : 0
+  stock block empty : 0/40
+  unsupported rate  : 1.70%   (gate: <= 5.0%)
+  95% CI (Wilson)   : 1.70% (95% CI 0.8–3.5%)
+  total claims      : 411   (gate: >= 30)
+  claims per ticker : mean 10.3, min 2 (AMZN)   — read the rate with this: fewer checkable claims lowers it for free
+  numeric claims    : 277 = mean 6.9/ticker, min 1 (RDFN)   — co-primary: claims that quote a figure (the judge's listing of qualitative phrases varies run to run)
+  numeric unsupported: 2/277 = 0.72% (95% CI 0.2–2.6%)
+  Argo retries      : 0
+
+  LLM calls (agent) : 270 over 40 completed ticker(s) = 6.8/ticker; endpoints anthropic
+  Site                         Calls   Prompt   Compl   Lat(s)  Max(s) Trunc Loop Parse Fmt Retry Err
+  rag:highlights                  35    99503   11537     4.10    5.57     0    0     0   0     0   0
+  rag:risks                       35    95346   12760     4.47    9.17     0    0     0   0     0   0
+  section:financial_health        40    26603    7123     2.24    3.06     0    0     0   0     0   0
+  section:recent_developments     40    26323    6578     2.21    2.77     0    0     0   0     0   0
+  section:risk_factors            40    16768    7593     2.36    3.80     0    0     0   0     0   0
+  section:sec_filing_highlights    40    15866    6382     1.96    2.96     0    0     0   0     0   0
+  synthesis                       40    71484   48192    17.86   20.47     0    0     0   0     0   0
+  RAG faithfulness  : 14/1017 RAG-answer claims unsupported by their own chunks, 1.38% (95% CI 0.8–2.3%) over 70 answers — judge rf-v1, UNVALIDATED, separate from the grounding rate above
+
+  GATE PASSED
+==============================================================================
+(aggregate exit code 0; rebuilt offline from 9jzmj.log by scripts/results_from_pod_log.py; est. run cost not reconstructable)

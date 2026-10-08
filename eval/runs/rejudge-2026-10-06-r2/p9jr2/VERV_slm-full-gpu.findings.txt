@@ -1,0 +1,55 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$524.3 million in cash and marketable securities"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and SEC Filing Highlights pre-written section both explicitly state "the firm holds $524.3 million in cash and marketable securities" as of December 31, 2024.
+
+---
+
+CLAIM: "$20.0 million milestone payment from Eli Lilly"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states "in February 2025, the company received a $20.0 million milestone payment from Eli Lilly and Company (Lilly) under the Lp(a) program," and this figure is repeated in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "management's projection that existing resources will fund operations into mid-2027"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights, RAG — Risk Factors, and SEC Filing Highlights pre-written section all explicitly state that "the company believes its existing resources will fund operating expenses and capital expenditure requirements into mid-2027."
+
+---
+
+CLAIM: "ongoing clinical trials for its Lp(a) and PCSK9 programs"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly names "the Heart-2 Phase 1b trial of VERVE-102, the Pulse-1 Phase 1b trial of VERVE-201, and a planned Phase 2 clinical trial for the PCSK9 program" as ongoing/planned clinical activities, and the SEC Filing Highlights pre-written section references "ongoing clinical trials for its Lp(a) and PCSK9 programs."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "robust liquidity buffer that extends the runway into mid-2027"
+LABEL: SUPPORTED
+REASON: The mid-2027 funding runway is explicitly stated in the RAG — SEC Highlights, RAG — Risk Factors, and the SEC Filing Highlights and Risk Factors pre-written sections; "robust liquidity buffer" is a qualitative characterization consistent with the $524.3 million figure in the source data.
+
+---
+
+CLAIM: "safety and efficacy data emerging from the Lp(a) and PCSK9 programs"
+LABEL: SUPPORTED
+REASON: Both the Lp(a) and PCSK9 programs are explicitly named in the RAG — SEC Highlights as active clinical programs driving expenses, and the SEC Filing Highlights pre-written section references these same programs.
+
+---
+
+CLAIM: "further milestone payments" (as a forward-looking watch-item contingent on positive clinical readouts)
+LABEL: INFERENCE
+REASON: The source data confirms that milestone payments exist under collaboration agreements (e.g., the $20.0 million Lilly milestone) and that the Lilly collaboration and other agreements include milestone structures; the claim that positive clinical readouts could "trigger further milestone payments" is a direct logical inference from the existence of milestone-based collaboration agreements described in the RAG — SEC Highlights, requiring no additional facts beyond what is present.
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, percentages, or named product milestones appear in the Executive Summary or Outlook sections beyond those evaluated above.*

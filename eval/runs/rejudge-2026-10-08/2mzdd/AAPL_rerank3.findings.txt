@@ -1,0 +1,109 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$467 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $466,822,987,776, which rounds to $467 billion; also explicitly stated in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "$129 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net income of $128,929,996,800, which rounds to $129 billion; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$4.9 trillion market cap"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $4,913,422,663,680, which rounds to $4.9 trillion; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "38.3x P/E"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio of 38.257954, which rounds to 38.3x; also stated in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "new smart home devices … entering the market"
+LABEL: SUPPORTED
+REASON: Bloomberg news article dated 2026-09-30 reports Apple launching new 'Smart Home' products on October 13; also referenced in Recent Developments pre-written section.
+
+---
+
+CLAIM: "iPhone Duo foldable entering the market"
+LABEL: SUPPORTED
+REASON: Bloomberg news article dated 2026-09-30 references "iPhone duos" foldable hardware; also referenced in Recent Developments pre-written section as "iPhone Duo foldable."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "year-over-year revenue acceleration visible in the 9M 2026 figures"
+LABEL: SUPPORTED
+REASON: The 10-Q data shows nine-month total net sales of $364,357M for the period ended June 27, 2026 vs. $313,695M for the period ended June 28, 2025, confirming year-over-year revenue acceleration; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "9M 2026 figures" (period label)
+LABEL: SUPPORTED
+REASON: The 10-Q filing header explicitly shows "Nine Months Ended June 27, 2026" as a column, consistent with labeling this as 9M 2026.
+
+---
+
+CLAIM: "new smart home devices" launch as a near-term catalyst
+LABEL: SUPPORTED
+REASON: Bloomberg article (2026-09-30) reports smart home product launch on October 13; also in Recent Developments pre-written section.
+
+---
+
+CLAIM: "iPhone Duo foldable" as a near-term catalyst
+LABEL: SUPPORTED
+REASON: Bloomberg article (2026-09-30) references "iPhone duos" foldable; also in Recent Developments pre-written section.
+
+---
+
+CLAIM: "international markets … represent the majority of revenue"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights pre-written section explicitly states "international sales representing the majority of total net sales," sourced from Apple's 2025 Form 10-K.
+
+---
+
+CLAIM: "tariff escalation materially raises production costs" (as a headwind risk)
+LABEL: SUPPORTED
+REASON: The Risk Factors pre-written section and RAG — Risk Factors explicitly identify tariffs on imports from China, India, Taiwan, and other manufacturing regions as a material risk to production costs.
+
+---
+
+CLAIM: "supply chain disruptions delay new product availability" (as a headwind risk)
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights and Risk Factors pre-written sections explicitly identify supply chain concentration and disruption risk as material to product availability.
+
+---
+
+CLAIM: "consumer spending softens in key international markets" (as a headwind risk)
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and Risk Factors pre-written sections explicitly identify adverse economic conditions, recession, and reduced consumer confidence in international markets as material risks.
+
+---
+
+CLAIM: "Asia-concentrated supply chain exposure"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights pre-written section explicitly names China, India, Japan, South Korea, Taiwan, and Vietnam as the concentrated manufacturing regions, consistent with "Asia-concentrated."
+
+---
+
+CLAIM: "At current valuation multiples, there is limited room for execution missteps"
+LABEL: INFERENCE
+REASON: This is a qualitative judgment derived directly from the stated 38.3x trailing P/E and 35.1x forward P/E figures in the source data, which are both present in context; the conclusion that elevated multiples leave limited margin for error is a standard, obvious derivation from those two figures without requiring any external fact.
+
+---
+
+**SUMMARY NOTE:** No figures in the Executive Summary or Outlook were found to be UNSUPPORTED. All quantitative claims are either directly present in the source data/pre-written sections or are arithmetic derivations verifiable from present figures. No period mismatches, absent entities, or failed arithmetic checks were identified.

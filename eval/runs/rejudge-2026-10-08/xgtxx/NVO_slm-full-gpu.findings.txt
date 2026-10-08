@@ -1,0 +1,43 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "DKK 329.4 billion in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data shows revenue of 329,430,990,848 DKK, which rounds to DKK 329.4 billion, and this figure is explicitly repeated in all pre-written sections.
+
+---
+
+CLAIM: "DKK 116.4 billion in net income"
+LABEL: SUPPORTED
+REASON: The raw source data shows net income of 116,442,996,736 DKK, which rounds to DKK 116.4 billion, confirmed in all pre-written sections.
+
+---
+
+CLAIM: "exceptional 35.35% profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly states profit_margin_pct = 35.35, and this figure is repeated across all pre-written sections.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "sustainability of its 35.35% profit margin against competitive pricing pressures"
+LABEL: SUPPORTED
+REASON: The 35.35% profit margin is directly present in the raw source data (profit_margin_pct: 35.35) and repeated throughout the pre-written sections.
+
+---
+
+**Notes on claims NOT audited as quantitative but reviewed for completeness:**
+
+The following claims in the Executive Summary and Outlook are qualitative or directional in nature (not quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers) and therefore fall outside the audit scope per the instructions: references to "dominant force," "cautiously constructive," "massive addressable market," "strong cash generation profile," "pace of capacity expansion," "consumer loyalty," "brand equity," "market share gains," "regulatory headwinds," "patent challenges," and "margin compression." These are narrative characterizations, not specific quantitative claims.
+
+---
+
+**Summary:** All four auditable quantitative claims in the Executive Summary and Outlook are **SUPPORTED** by the raw source data. No unsupported or inference-only quantitative claims were identified in these sections.

@@ -1,0 +1,2 @@
+id,run,scope,arm,model,ticker,section,kind,field,sentence,stated,source,ratio,occurrences,verdict,note
+1,vks4c,full,baseline,hosted,BLNK,Executive Summary,mismatch,week_52_low,"The stock is notable now precisely because it trades near its 52-week low of $0.51 — a steep decline from $2.63 — while the company simultaneously executes a significant restructuring through its BlinkForward Initiative, creating a high-risk, high-uncertainty inflection point for investors.",$0.51,0.45,1.133,1,TRUE_ERROR,draft TRUE_ERROR accepted

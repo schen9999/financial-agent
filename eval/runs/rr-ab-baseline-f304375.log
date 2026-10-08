@@ -1,0 +1,173 @@
+submitted workflow: grounding-eval-extended-vks4c
+polling up to 11400 s (activeDeadlineSeconds=10800 + 600s margin)
+  [03:24:11] phase=Running progress=0/2
+  [03:24:32] phase=Running progress=0/2
+  [03:24:53] phase=Running progress=0/2
+  [03:25:15] phase=Running progress=0/2
+  [03:25:36] phase=Running progress=1/3
+  [03:25:57] phase=Running progress=2/4
+  [03:26:19] phase=Running progress=2/4
+  [03:26:40] phase=Running progress=2/4
+  [03:27:01] phase=Running progress=2/4
+  [03:27:23] phase=Running progress=4/6
+  [03:27:44] phase=Running progress=4/6
+  [03:28:05] phase=Running progress=4/6
+  [03:28:27] phase=Running progress=4/6
+  [03:28:48] phase=Running progress=6/8
+  [03:29:10] phase=Running progress=6/8
+  [03:29:31] phase=Running progress=6/8
+  [03:29:52] phase=Running progress=6/8
+  [03:30:13] phase=Running progress=7/9
+  [03:30:35] phase=Running progress=8/10
+  [03:30:56] phase=Running progress=8/10
+  [03:31:18] phase=Running progress=8/10
+  [03:31:39] phase=Running progress=8/10
+  [03:32:00] phase=Running progress=10/12
+  [03:32:22] phase=Running progress=10/12
+  [03:32:43] phase=Running progress=10/12
+  [03:33:04] phase=Running progress=10/12
+  [03:33:26] phase=Running progress=12/14
+  [03:33:47] phase=Running progress=12/14
+  [03:34:08] phase=Running progress=12/14
+  [03:34:30] phase=Running progress=12/14
+  [03:34:51] phase=Running progress=14/16
+  [03:35:13] phase=Running progress=14/16
+  [03:35:34] phase=Running progress=14/16
+  [03:35:55] phase=Running progress=14/16
+  [03:36:17] phase=Running progress=15/17
+  [03:36:38] phase=Running progress=16/18
+  [03:36:59] phase=Running progress=16/18
+  [03:37:21] phase=Running progress=16/18
+  [03:37:42] phase=Running progress=16/18
+  [03:38:04] phase=Running progress=17/19
+  [03:38:25] phase=Running progress=18/20
+  [03:38:46] phase=Running progress=18/20
+  [03:39:08] phase=Running progress=19/21
+  [03:39:29] phase=Running progress=19/21
+  [03:39:51] phase=Running progress=20/22
+  [03:40:12] phase=Running progress=20/22
+  [03:40:33] phase=Running progress=20/22
+  [03:40:55] phase=Running progress=21/23
+  [03:41:16] phase=Running progress=21/23
+  [03:41:37] phase=Running progress=21/23
+  [03:41:59] phase=Running progress=21/23
+  [03:42:20] phase=Running progress=23/25
+  [03:42:41] phase=Running progress=23/25
+  [03:43:03] phase=Running progress=23/25
+  [03:43:24] phase=Running progress=23/25
+  [03:43:45] phase=Running progress=25/27
+  [03:44:07] phase=Running progress=25/27
+  [03:44:28] phase=Running progress=25/27
+  [03:44:50] phase=Running progress=25/27
+  [03:45:11] phase=Running progress=26/28
+  [03:45:32] phase=Running progress=27/29
+  [03:45:54] phase=Running progress=27/29
+  [03:46:15] phase=Running progress=27/29
+  [03:46:36] phase=Running progress=28/30
+  [03:46:58] phase=Running progress=28/30
+  [03:47:19] phase=Running progress=29/31
+  [03:47:41] phase=Running progress=29/31
+  [03:48:02] phase=Running progress=29/31
+  [03:48:23] phase=Running progress=30/32
+  [03:48:45] phase=Running progress=31/33
+  [03:49:06] phase=Running progress=31/33
+  [03:49:27] phase=Running progress=31/33
+  [03:49:49] phase=Running progress=32/34
+  [03:50:10] phase=Running progress=33/35
+  [03:50:31] phase=Running progress=33/35
+  [03:50:53] phase=Running progress=33/35
+  [03:51:14] phase=Running progress=34/36
+  [03:51:35] phase=Running progress=34/36
+  [03:51:57] phase=Running progress=35/37
+  [03:52:18] phase=Running progress=36/38
+  [03:52:40] phase=Running progress=36/38
+  [03:53:01] phase=Running progress=38/40
+  [03:53:22] phase=Running progress=38/40
+  [03:53:44] phase=Running progress=38/40
+  [03:54:05] phase=Succeeded progress=41/41
+
+=== aggregate step output ===
+  NIGHTLY GROUNDING EVAL — AGGREGATE
+==============================================================================
+  judge prompt      : v2
+  Ticker    Sup  Uns  Inf  Tot  Retr(s)  Pipe(s)
+  --------------------------------------------
+  AAPL       13    0    0   13     5.65    27.66
+  AFRM        8    0    0    8     6.01    27.31
+  AMZN        3    0    0    3     6.39    26.14
+  BABA       10    0    1   11     1.10    22.71
+  BEAM        9    0    0    9     5.70    27.37
+  BLNK        8    1    0    9     7.30    28.97
+  BYND        9    1    0   10     5.53    26.43
+  CALM       10    0    0   10     7.38    27.81
+  CHGG        5    1    0    6     6.40    25.71
+  COIN        6    0    0    6     5.26    26.34
+  CRBU       12    0    0   12     5.40    29.02
+  EDIT        9    1    2   12     5.90    27.77
+  EVGO        9    0    1   10     6.57    26.68
+  GOOGL       8    0    0    8     5.94    27.72
+  JPM         7    0    0    7     7.54    25.84
+  LCID       16    0    1   17     7.72    30.02
+  META        9    0    0    9     5.47    25.94
+  MSFT        8    0    0    8     5.81    26.76
+  NTLA       11    0    3   14     5.85    27.71
+  NVDA        6    0    0    6     5.67    24.52
+  NVO         8    0    1    9     3.10    23.45
+  OCGN        9    0    3   12     5.93    27.63
+  OMER        9    3    1   13    10.76    33.12
+  PTON       10    0    2   12     6.86    27.35
+  RDFN        2    0    0    2     6.39    25.97
+  RIVN       16    1    1   18     5.97    28.60
+  ROKU        5    0    0    5     4.51    25.27
+  SANA        6    0    0    6     5.47    25.62
+  SAP         8    0    0    8     4.30    22.57
+  SFIX       12    0    1   13    10.52    29.18
+  SNAP        9    0    0    9     5.78    27.50
+  TM         11    0    1   12     1.29    19.58
+  TSLA       10    0    2   12     5.97    26.86
+  TSM         8    0    0    8     1.21    20.82
+  UNH        14    0    0   14     6.20    26.24
+  UPST        7    0    0    7     5.85    26.13
+  V          12    0    0   12     6.94    28.37
+  VERV       10    0    2   12     5.32    25.39
+  WMT        13    1    3   17     4.17    22.59
+  XOM        10    0    0   10     6.04    25.49
+  --------------------------------------------
+  TOTAL     365    9   25  399     5.78    26.40
+
+  tickers completed : 40
+  tickers skipped   : 0
+  stock block empty : 0/40
+  unsupported rate  : 2.26%   (gate: <= 5.0%)
+  95% CI (Wilson)   : 2.26% (95% CI 1.2–4.2%)
+  total claims      : 399   (gate: >= 30)
+  claims per ticker : mean 10.0, min 2 (RDFN)   — read the rate with this: fewer checkable claims lowers it for free
+  numeric claims    : 274 = mean 6.8/ticker, min 1 (RDFN)   — co-primary: claims that quote a figure (the judge's listing of qualitative phrases varies run to run)
+  numeric unsupported: 3/274 = 1.09% (95% CI 0.4–3.2%)
+  Argo retries      : 0
+
+  LLM calls (agent) : 270 over 40 completed ticker(s) = 6.8/ticker; endpoints anthropic
+  Site                         Calls   Prompt   Compl   Lat(s)  Max(s) Trunc Loop Parse Fmt Retry Err
+  rag:highlights                  35   100407   11739     4.15    5.82     0    0     0   0     0   0
+  rag:risks                       35    96265   12355     4.36    9.34     0    0     0   0     0   0
+  section:financial_health        40    26839    7158     2.26    3.03     0    0     0   0     0   0
+  section:recent_developments     40    26559    6652     2.26    2.80     0    0     0   0     0   0
+  section:risk_factors            40    16583    7505     2.37    3.13     0    0     0   0     0   0
+  section:sec_filing_highlights    40    16287    6158     1.94    2.61     0    0     0   0     0   0
+  synthesis                       40    71378   48091    18.04   20.76     0    0     0   0     0   0
+  RAG faithfulness  : 17/1063 RAG-answer claims unsupported by their own chunks, 1.60% (95% CI 1.0–2.5%) over 70 answers — judge rf-v1, UNVALIDATED, separate from the grounding rate above
+  est. run cost     : $4.1387   (chars/4 tokens priced from scripts/model_prices.json; excludes retries — cost of record stays scripts/cost_report.py)
+
+  GATE PASSED
+==============================================================================
+===EVAL_FINDINGS_TGZ_BEGIN pod=grounding-eval-extended-vks4c-aggregate-289299838===
+H4sIAAAAAAAAA+3OTQqCUBQF4LeUt4O8hr7lhNAPQiiotf7EWQ1qZKPvm5wL5wzu5dndT9d+OPfDbT6kXVSrUsqWq8/c7mjqNtqIEpGqqI8lUm72eefdY166Kec0jePybferBwAAAAAAAAAAgD96AVF3fFgAKAAA
+===EVAL_FINDINGS_TGZ_END===
+time="2026-10-08T03:53:47.432Z" level=info msg="sub-process exited" argo=true error="<nil>"
+
+=== attempts: retries and failed attempts, from the workflow object and every pod's log (NOT in the aggregate above) ===
+workflow_nodes: 83 node(s) (read from status.compressedNodes)
+attempts of grounding-eval-extended-vks4c (Succeeded): 40 eval pod(s) for 40 ticker(s)
+  Argo retries      : 0
+  failed attempts   : 0 - every eval pod succeeded on its first attempt
+  attempts record written: /home/ubuntu/grounding-eval-extended-vks4c-attempts.json

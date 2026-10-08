@@ -1,0 +1,92 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "market capitalization of approximately $1.49 trillion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 1,492,178,567,168.0 USD ≈ $1.49 trillion, and the Financial Health pre-written section states "approximately $1.49 trillion."
+
+---
+
+CLAIM: "annual revenue of $103.62 billion"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 103,619,002,368.0 USD ≈ $103.62 billion, confirmed in the Financial Health section.
+
+---
+
+CLAIM: "trailing P/E ratio of 349.82"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 349.82407, which rounds to 349.82, consistent with the claim.
+
+---
+
+CLAIM: "current profit margins of only 3.67%"
+LABEL: SUPPORTED
+REASON: Source data shows profit_margin_pct = 3.67, exactly matching the claim.
+
+---
+
+CLAIM: "the Cybercab" (as a named product milestone)
+LABEL: SUPPORTED
+REASON: The Cybercab is explicitly named in both the RAG SEC Highlights and RAG Risk Factors sections as a product subject to production ramp and regulatory hurdles.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "margin trajectory of the services and energy segments"
+LABEL: UNSUPPORTED
+REASON: No segment-level margin data for services or energy segments appears anywhere in the source data, pre-written sections, or SEC filing summaries; this specific segmentation is absent from the context.
+
+---
+
+CLAIM: "resolution of supply chain bottlenecks for critical raw materials"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections explicitly identify supply chain vulnerabilities and raw material volatility (lithium, nickel) as key operational risks, making this a direct restatement of sourced content.
+
+---
+
+CLAIM: "regulatory progress surrounding autonomous driving solutions"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly lists "autonomous driving solutions" and regulatory/permitting hurdles as disclosed risk items.
+
+---
+
+CLAIM: "Tailwinds from vertical integration efforts"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights pre-written section explicitly states Tesla is "pursuing vertical integration through internal cell manufacturing to reduce costs."
+
+---
+
+CLAIM: "AI-driven efficiency gains"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections discuss AI advancements and their role in Tesla's operational strategy, providing a basis for this directional claim.
+
+---
+
+CLAIM: "further deterioration in automotive gross margins"
+LABEL: UNSUPPORTED
+REASON: No automotive gross margin figure, trend, or segment-level gross margin data appears anywhere in the source data or pre-written sections; neither a current level nor a prior-period comparison is present to ground this specific metric reference.
+
+---
+
+CLAIM: "setbacks in regulatory approvals for novel products"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "regulatory, permitting, and quality control hurdles may delay revenue generation" for novel products like the Cybercab, directly supporting this forward-looking watch-item.
+
+---
+
+**Summary of Labels:**
+| Label | Count |
+|---|---|
+| SUPPORTED | 10 |
+| UNSUPPORTED | 2 |
+| INFERENCE | 0 |
+
+The two unsupported claims are the reference to "services and energy segment" margin trajectory (no segment data in source) and "automotive gross margins" deterioration (no gross margin figures of any kind in source data).

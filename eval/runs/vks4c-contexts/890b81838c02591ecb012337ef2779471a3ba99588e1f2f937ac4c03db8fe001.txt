@@ -1,0 +1,73 @@
+STOCK DATA:
+{
+  "ticker": "XOM",
+  "company_name": "ExxonMobil Holdings Corporation",
+  "current_price": 164.05,
+  "currency": "USD",
+  "market_cap": 674559164416.0,
+  "pe_ratio": 21.113256,
+  "forward_pe": 14.400975,
+  "week_52_high": 176.41,
+  "week_52_low": 110.39,
+  "financial_currency": "USD",
+  "revenue": 361060007936.0,
+  "net_income": 32757000192.0,
+  "profit_margin_pct": 9.07,
+  "dividend_yield": 2.5,
+  "sector": "Energy",
+  "industry": "Oil & Gas Integrated"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "message": "No 10-K found"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-03",
+    "summary": "Item 1A. Risk Factors\" of ExxonMobil\u2019s 2025 Form 10-K. Forward-looking and other statements regarding environmental and other sustainability efforts and aspirations are not an indication that these statements are material to investors or require disclosure in our filing with the SEC or any other regulatory authority. In addition, historical, current, and forward-looking environmental and other sustainability-related statements may be based on standards for measuring progress that are still developing, internal controls and processes that continue to evolve, and assumptions that are subject to change in the future, including future rule-making. Actions needed to advance ExxonMobil\u2019s 2030 greenhouse gas emission-reductions plans are incorporated into its medium term business plans, which are"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from ExxonMobil's Latest Filings
+
+## Financial Performance
+- **Upstream Earnings**: Total upstream earnings reached $7.9 billion in Q2 2026 (compared to $5.4 billion in Q2 2025) and $13.7 billion year-to-date
+- **Shareholder Returns**: The company distributed $8.6 billion in dividends and repurchased $10.0 billion of common stock
+
+## Production & Operations
+- **Oil-Equivalent Production**: Declined to 4,514 thousand barrels daily in Q2 2026 from 4,630 in Q2 2025, primarily due to Middle East disruptions, divestments, and entitlement changes
+- **Production Mix**: Crude oil production of 3,373 thousand barrels daily in Q2 2026, with natural gas production at 6,849 million cubic feet daily
+
+## Earnings Drivers
+- **Positive Factors**: Price increases added $4.65 billion in Q2 earnings (higher crude realizations), and advantaged volume growth contributed $1.14 billion, mainly from Guyana and Permian expansion
+- **Negative Factors**: Middle East volume disruptions reduced earnings by $1.06 billion in Q2; higher depreciation expenses decreased earnings by $690 million
+
+## Market Conditions
+- Crude oil prices remained within the 10-year historical range despite supply disruptions in the Middle East
+- Natural gas prices stayed elevated above the 10-year average
+- Global refining margins were sharply above historical ranges due to unprecedented capacity reductions
+
+## Strategic Focus
+- Advantaged assets (Permian, Guyana, and LNG) continue driving growth
+- Structural cost savings contributed $170 million in Q2 2026
+- Environmental commitments are being incorporated into medium-term business plans with 2030 greenhouse gas reduction targets
+
+RAG — RISK FACTORS:
+[From Pinecone cache] Based on the provided context, the document references risk factors but does not provide a detailed list of the primary risk factors themselves. The context only includes a brief mention that states: "Item 1A. Risk Factors" of ExxonMobil's 2025 Form 10-K."
+
+This indicates that comprehensive risk factor disclosures are contained in that section of the 2025 Form 10-K filing, but the specific primary risk factors are not detailed in the excerpts provided. The context does mention that forward-looking statements regarding environmental and sustainability efforts are not necessarily material to investors or required SEC disclosure, and it notes that historical and forward-looking environmental statements may be based on developing standards and evolving internal controls.
+
+To obtain the complete list of primary risk factors, you would need to refer directly to Item 1A of the 2025 Form 10-K filing.

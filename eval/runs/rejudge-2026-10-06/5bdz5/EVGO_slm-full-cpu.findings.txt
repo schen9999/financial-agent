@@ -1,0 +1,35 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$402.9 million in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue of $402,948,000, which rounds to $402.9 million, and the same figure appears in the pre-written Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "net loss of $54.1 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists net_income of -$54,125,000, which rounds to -$54.1 million, consistent with the pre-written sections.
+
+---
+
+CLAIM: "stock price trading near its 52-week low of $1.23"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly states week_52_low = 1.23 and current_price = 1.35; the current price is $0.12 above the 52-week low, which arithmetically supports the characterization of trading "near" the low.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional (e.g., "cautiously constructive," "persistent operating losses," "sustained growth in EV adoption"). There are therefore no additional quantitative or forward-looking claims to audit in this section.
+
+---
+
+**SUMMARY**
+
+All three quantitative claims in the audited sections are **SUPPORTED**. The Outlook section is entirely qualitative and contains no auditable numerical or milestone-specific claims.

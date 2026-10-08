@@ -1,0 +1,43 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$402.9 million in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $402,948,000, which rounds to $402.9 million; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "negative net income of $54.1 million"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$54,125,000, which rounds to -$54.1 million; also confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "trading near its 52-week low of $1.23"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists week_52_low as $1.23, and current_price is $1.29; arithmetic confirms $1.29 is near (within $0.06 of) the 52-week low of $1.23, consistent with the positional claim.
+
+---
+
+**OUTLOOK**
+
+---
+
+*(No specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section. All claims in the Outlook are qualitative or directional in nature — e.g., "cautiously constructive," "persistent operating losses," "restrictive loan covenants," "near-term volatility," "long-term tailwinds" — and do not constitute quantitative or forward-looking numerical claims subject to audit under the defined criteria.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $402.9 million in revenue | SUPPORTED |
+| 2 | Negative net income of $54.1 million | SUPPORTED |
+| 3 | Trading near its 52-week low of $1.23 | SUPPORTED |
+
+All three auditable quantitative claims in the Executive Summary are supported by the raw source data. The Outlook section contains no auditable quantitative or forward-looking numerical claims.

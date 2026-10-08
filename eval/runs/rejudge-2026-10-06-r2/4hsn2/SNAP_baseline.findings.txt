@@ -1,0 +1,85 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "474 million daily active users as of Q4 2025"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights, RAG Risk Factors, and the SEC Filing Highlights pre-written section all explicitly state "474 million daily active users (DAUs) as of Q4 2025."
+
+---
+
+CLAIM: "$6.4 billion in revenue"
+LABEL: SUPPORTED
+REASON: The Financial Health pre-written section states "$6.4 billion in revenue"; the raw source data shows revenue of $6,351,084,032, which rounds to $6.4 billion.
+
+---
+
+CLAIM: "market capitalization of $9.5 billion"
+LABEL: SUPPORTED
+REASON: Raw source data shows market_cap of $9,487,619,072, which rounds to $9.5 billion, consistent with the Financial Health section.
+
+---
+
+CLAIM: "52-week high of $9.13"
+LABEL: SUPPORTED
+REASON: Raw source data explicitly lists week_52_high as $9.13.
+
+---
+
+CLAIM: "[stock sits] at $5.61"
+LABEL: SUPPORTED
+REASON: Raw source data explicitly lists current_price as $5.61.
+
+---
+
+CLAIM: "[stock] sits well below its 52-week high of $9.13 at $5.61"
+LABEL: SUPPORTED
+REASON: $5.61 < $9.13 by arithmetic ($5.61 is approximately 38.6% below the 52-week high), so the positional claim holds.
+
+---
+
+CLAIM: "a forward P/E of 7.23"
+LABEL: SUPPORTED
+REASON: Raw source data lists forward_pe as 7.234416, which rounds to 7.23, consistent with the Financial Health section's stated 7.23.
+
+---
+
+CLAIM: "a net loss of $311 million"
+LABEL: SUPPORTED
+REASON: Raw source data shows net_income of -$311,243,008, which rounds to -$311 million, consistent with the pre-written sections.
+
+---
+
+CLAIM: "a negative profit margin of -4.9%"
+LABEL: SUPPORTED
+REASON: Raw source data explicitly lists profit_margin_pct as -4.9%; cross-check: -311,243,008 / 6,351,084,032 = -4.90%, confirmed within 0.15 pp.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "concentration of revenue in advertising — with no long-term advertiser commitments"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors and SEC Filing Highlights pre-written section both explicitly state "most advertisers lack long-term commitments."
+
+---
+
+CLAIM: "[advertising revenue concentration / sensitivity to] platform privacy changes" (iOS and Google)
+LABEL: SUPPORTED
+REASON: Both RAG sections and the pre-written SEC Filing Highlights and Risk Factors sections explicitly identify Apple's iOS privacy updates and similar changes from Google as material headwinds.
+
+---
+
+CLAIM: "[revenue concentration in advertising]" (implied ~87% figure underlying the concentration claim)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights, RAG Risk Factors, and pre-written sections all explicitly state advertising accounts for approximately 87% of revenue; the Outlook references this concentration without citing the specific percentage, but the underlying fact is supported.
+
+---
+
+*Note: The Outlook section contains no additional standalone quantitative figures, price targets, specific thresholds, ratios, or named product milestones beyond those already evaluated above. All remaining claims in the Outlook are qualitative directional statements (e.g., "cautious," "stabilizing," "early traction," "credible narrowing") that do not constitute specific quantitative or forward-looking numerical claims subject to this audit.*

@@ -1,0 +1,61 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$2.45 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $2,446,000,128, which rounds to $2.45 billion; the pre-written Financial Health section also states "$2.45 billion," confirming the figure.
+
+---
+
+CLAIM: "net profit margin of 2.58%"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists `profit_margin_pct: 2.58`, and the pre-written sections repeat this figure.
+
+---
+
+CLAIM: "forward P/E of 21.17"
+LABEL: SUPPORTED
+REASON: Source data lists `forward_pe: 21.168716`, which rounds to 21.17; the pre-written sections also state 21.17.
+
+---
+
+CLAIM: "modest market capitalization of approximately $2.2 billion"
+LABEL: SUPPORTED
+REASON: Source data shows `market_cap: 2,198,747,904`, which is approximately $2.2 billion; the pre-written sections confirm this figure.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "company's recent return to net income"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights (RAG) explicitly state "Peloton reported net income in fiscal year 2026," and source data shows `net_income: 63,200,000`.
+
+---
+
+CLAIM: "strategic pivot toward operational efficiency and international expansion"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "Operating expenses may increase due to investments in growth, product development, and international expansion," and restructuring plans are referenced; the directional characterization of a strategic pivot is grounded in the pre-written SEC Filing Highlights section.
+
+---
+
+CLAIM: "success of the Precor integration in the commercial market"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly reference "the integration of Precor and Peloton for Business" and expansion into the commercial fitness market, and the pre-written SEC Filing Highlights section also names "Precor integration."
+
+---
+
+CLAIM: "micro-store strategy"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly reference the "transition from legacy retail showrooms to smaller-format micro-stores," and the pre-written SEC Filing Highlights section names "micro-stores."
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, or specific forward-looking numbers appear in the Outlook section beyond those evaluated above.*

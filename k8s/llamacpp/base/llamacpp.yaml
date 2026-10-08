@@ -1,0 +1,161 @@
+# llama.cpp llama-server serving Qwen3.6-35B-A3B (Q4_K_M GGUF) behind an
+# OpenAI-compatible API — the self-served SLM behind SLM_FULL. One base for
+# both endpoints so they run the SAME artifact and the SAME engine build:
+#   overlays/oke-cpu   CPU build, PVC on oci-bv, ClusterIP (provided OKE)
+#   overlays/k3s-gpu   CUDA 12.8 build, one A10, hostPath, NodePort 30880
+# Separate deploy unit like k8s/vllm: the app overlays never include it.
+#
+# Pinned here, once: the GGUF (repo revision, file, byte size, sha256). The
+# engine build (b11347) is pinned by image digest in each overlay.
+# Text-only: the vision encoder ships in a separate mmproj file, never loaded.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: llamacpp-models
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/name: llamacpp
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 50Gi # 20.4 GB GGUF + a resumable .partial; OCI block volume floor
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llamacpp
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/name: llamacpp
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate # one RWO volume / one GPU — never two pods against it
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: llamacpp
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: llamacpp
+        app.kubernetes.io/part-of: financial-agent
+    spec:
+      enableServiceLinks: false
+      initContainers:
+        # Downloads the pinned GGUF once, verifies its sha256, and only then
+        # renames it into place; a restart resumes a partial download, and a
+        # verified file is not re-hashed (marker + exact size).
+        - name: fetch-gguf
+          image: docker.io/curlimages/curl:8.22.0@sha256:58adaa4e8dca9c988bae2aba4ab3434a0bb2da16bbe3f92dec39ec7785166777
+          securityContext:
+            runAsUser: 0 # write the root-owned PVC / hostPath
+          env:
+            - name: GGUF_URL # revision-pinned, never a branch name
+              value: https://huggingface.co/ggml-org/Qwen3.6-35B-A3B-GGUF/resolve/baec3ebee244827cda0f4557eafa8b28f7545fa6/Qwen3.6-35B-A3B-Q4_K_M.gguf
+            - name: GGUF_FILE
+              value: Qwen3.6-35B-A3B-Q4_K_M.gguf
+            - name: GGUF_SIZE
+              value: "20419565568"
+            - name: GGUF_SHA256
+              value: 671e47e0ec53c665d048b98c3ecbfd5236b5ca9c3e02ed19fc8f81f7b85140c7
+          command: ["sh", "-c"]
+          args:
+            - |
+              set -e
+              f="/models/$GGUF_FILE"; ok="/models/.verified-$GGUF_SHA256"
+              if [ -f "$ok" ] && [ -f "$f" ] && [ "$(stat -c %s "$f")" = "$GGUF_SIZE" ]; then
+                echo "verified earlier: $GGUF_FILE ($GGUF_SIZE bytes, sha256 $GGUF_SHA256)"
+                exit 0
+              fi
+              echo "fetching $GGUF_URL"
+              curl -fSL --retry 5 --retry-delay 10 -C - -o "$f.partial" "$GGUF_URL"
+              echo "verifying sha256"
+              if ! echo "$GGUF_SHA256  $f.partial" | sha256sum -c -; then
+                rm -f "$f.partial"
+                echo "sha256 MISMATCH — partial deleted, refusing to serve it"
+                exit 1
+              fi
+              mv "$f.partial" "$f"
+              touch "$ok"
+              echo "verified: $GGUF_FILE ($(stat -c %s "$f") bytes)"
+          volumeMounts:
+            - name: models
+              mountPath: /models
+      containers:
+        - name: llama-server
+          image: llamacpp-backend # placeholder — overlays pin the CPU or CUDA build by digest
+          imagePullPolicy: IfNotPresent
+          # The image's entrypoint is llama-server. Overlays append only the
+          # hardware-specific args (threads, GPU layers); everything that can
+          # change outputs is identical across endpoints. Flag and value are
+          # separate items: llama-server rejects --flag=value (tested, b11347).
+          args:
+            - --model
+            - /models/Qwen3.6-35B-A3B-Q4_K_M.gguf
+            - --alias
+            - qwen3.6-35b-a3b-q4km
+            - --host
+            - 0.0.0.0
+            - --port
+            - "8080"
+            - --ctx-size # shared by the slots (--kv-unified); KV ~20 KiB/token (10 attention layers)
+            - "32768"
+            - --parallel
+            - "4"
+            - --kv-unified
+            - --jinja # the GGUF's chat template: Qwen3-Coder XML tool calls, enable_thinking
+            - --metrics # token counters for scripts/slm_traffic_proof.py
+            - --no-webui
+          env:
+            - name: LLAMA_API_KEY # every route except /health requires it
+              valueFrom:
+                secretKeyRef:
+                  name: llamacpp-api-key
+                  key: LLAMA_API_KEY
+          ports:
+            - containerPort: 8080
+              name: http
+          volumeMounts:
+            - name: models
+              mountPath: /models
+              readOnly: true
+          startupProbe:
+            httpGet:
+              path: /health # public: answers 503 while the model loads
+              port: http
+            periodSeconds: 10
+            failureThreshold: 90 # 20 GB from disk (and to VRAM on the GPU)
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 30
+            failureThreshold: 6
+      volumes:
+        - name: models
+          persistentVolumeClaim:
+            claimName: llamacpp-models
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: llamacpp
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/name: llamacpp
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  selector:
+    app.kubernetes.io/name: llamacpp
+  ports:
+    - port: 8080
+      targetPort: http
+      name: http

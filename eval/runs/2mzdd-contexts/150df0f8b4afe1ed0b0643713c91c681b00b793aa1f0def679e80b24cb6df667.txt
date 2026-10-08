@@ -1,0 +1,87 @@
+STOCK DATA:
+{
+  "ticker": "COIN",
+  "company_name": "Coinbase Global, Inc.",
+  "current_price": 178.45,
+  "currency": "USD",
+  "market_cap": 47081697280.0,
+  "forward_pe": 62.903835,
+  "week_52_high": 402.16,
+  "week_52_low": 139.11,
+  "financial_currency": "USD",
+  "revenue": 6043752960.0,
+  "net_income": -987766016.0,
+  "profit_margin_pct": -16.34,
+  "dividend_yield": 0.0,
+  "sector": "Financial Services",
+  "industry": "Financial Data & Stock Exchanges"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-12",
+    "summary": "ITEM 1A. RISK FACTORS Investing in our Class A common stock involves a high degree of risk. You should carefully consider the risks and uncertainties described below, together with all of the other information in this Annual Report on Form 10-K, including the section titled \u201cManagement\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d and the Consolidated Financial Statements and related notes. The risks and uncertainties described below are not the only ones we face. Additional risks and uncertainties that we are unaware of or that we deem immaterial may also become important factors that adversely affect our business. If any of the following risks occur, our business, operating results, financial condition, and future prospects could be materially and adversely "
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-07-30",
+    "summary": "Item 1A Risk Factors in the Annual Report for additional details about these regulations. 41 Table of Contents We are required to hold corporate liquid assets at our subsidiaries to meet capital requirements established by our regulators based on the value of crypto assets and payment stablecoins held in custody. Our money-transmitting subsidiary, CB Inc., and our custodian subsidiary, Coinbase Custody Trust Company, LLC (\u201cCCTC\u201d), which is a fiduciary under New York State Law and a qualified custodian under the Investment Advisers Act of 1940, are required to maintain minimum net capital requirements under agreements with the New York State Department of Financial Services. These subsidiaries and other subsidiaries are also subject to maintenance capital requirements by other regulators bo"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from the Risk Factors Disclosure
+
+Based on the risk factors section of the filing, here are the primary concerns highlighted:
+
+## Revenue Concentration and Volatility
+The company's revenue is heavily concentrated in a limited number of areas, with Bitcoin and Ethereum transactions representing approximately 45-46% of total trading volume. Additionally, stablecoin revenue from payment stablecoins is a significant portion of subscription and services revenue. This concentration creates vulnerability if demand for these specific assets declines.
+
+## Crypto Asset Price Dependency
+Operating results fluctuate significantly based on crypto asset prices and trading volumes, which are highly volatile and subject to numerous unpredictable factors. The company's revenue is substantially dependent on both the prices of crypto assets and the volume of transactions on its platform.
+
+## Multiple Risk Factors Affecting Operations
+The company faces numerous operational challenges including:
+- Regulatory and legislative changes
+- System failures and security breaches
+- Competition from other platforms
+- Talent attraction and retention
+- Macroeconomic conditions
+- Dependence on third-party blockchain networks
+
+## Bitcoin and Ethereum Specific Risks
+Particular vulnerabilities exist related to these major assets, including blockchain scaling challenges, network disruptions, mining-related concerns, environmental perception issues, and regulatory restrictions on mining and staking activities.
+
+## Forecast Difficulty
+Due to the rapidly evolving nature of the business and market volatility, accurate forecasting is difficult, and period-to-period comparisons may not be meaningful indicators of future performance.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company identifies several primary risk factors affecting its business:
+
+## Operating Results Volatility
+The most significant risk is that operating results fluctuate substantially due to the highly volatile nature of cryptocurrency assets. This volatility stems from unpredictable factors including crypto asset trading activity, market sentiment, regulatory changes, and macroeconomic conditions.
+
+## Revenue Dependency on Crypto Prices and Trading Volume
+A substantial portion of total revenue depends on cryptocurrency asset prices and transaction volumes on the platform. Declines in either could significantly reduce revenue and adversely affect the business.
+
+## Revenue Concentration
+Net revenue is concentrated in a limited number of areas:
+- **Transaction revenue**: Primarily from Bitcoin and Ethereum trading, which drove approximately 45-46% of total trading volume
+- **Subscription and services revenue**: Mainly from stablecoin revenue related to payment stablecoins
+
+If revenue from these concentrated areas declines without replacement from other sources, the business would be adversely affected.
+
+## Crypto Asset Price and Demand Uncertainty
+The price and transaction volume of crypto assets are subject to significant uncertainty and volatility, influenced by numerous factors including market conditions, regulatory changes, technological developments, competition from other payment services, and global economic conditions.
+
+## Bitcoin and Ethereum Specific Risks
+Given the concentration in these assets, specific risks include blockchain network disruptions, environmental concerns, scaling challenges, regulatory restrictions on mining or staking, and technological vulnerabilities.
+
+These risks collectively create uncertainty in forecasting growth and evaluating future business performance.

@@ -1,0 +1,61 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "robust profit margin of 8.63%"
+LABEL: SUPPORTED
+REASON: The source data explicitly states `"profit_margin_pct": 8.63`, and the pre-written sections confirm "profit margin of 8.63%" multiple times.
+
+---
+
+CLAIM: "revenues of ¥51.96 trillion"
+LABEL: SUPPORTED
+REASON: Source data shows `"revenue": 51957024686080.0` JPY, which equals approximately ¥51.96 trillion, consistent with the pre-written sections.
+
+---
+
+CLAIM: "P/E ratio of 8.09"
+LABEL: SUPPORTED
+REASON: Source data shows `"pe_ratio": 8.089631`, which rounds to 8.09 as stated.
+
+---
+
+CLAIM: "3.4% dividend yield"
+LABEL: SUPPORTED
+REASON: Source data explicitly states `"dividend_yield": 3.4`.
+
+---
+
+CLAIM: "forward P/E of 11.67"
+LABEL: SUPPORTED
+REASON: Source data shows `"forward_pe": 11.667934`, which rounds to 11.67 as stated.
+
+---
+
+CLAIM: "¥4.48 trillion net income"
+LABEL: SUPPORTED
+REASON: Source data shows `"net_income": 4483796959232.0` JPY, which equals approximately ¥4.48 trillion, consistent with the pre-written sections.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "Key variables to monitor include the stability of global consumer demand, particularly in key markets like North America and China"
+LABEL: UNSUPPORTED
+REASON: Neither "North America" nor "China" appears anywhere in the source data, news articles, SEC filing summaries, or pre-written sections; these specific market names are introduced without any grounding in the provided context.
+
+---
+
+CLAIM: "the company's progress in transitioning toward electrification without eroding its renowned hybrid margins"
+LABEL: UNSUPPORTED
+REASON: Neither "electrification," "hybrid," nor any product-line or technology milestone appears in the source data, news articles, SEC filings, or pre-written sections; this is an introduced claim with no basis in the provided context.
+
+---
+
+*No other quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section. All remaining Outlook content is qualitative directional language (e.g., "cautiously constructive," "supply chain disruptions," "consumer confidence") that mirrors the pre-written Risk Factors section without introducing new specific quantitative claims subject to audit.*

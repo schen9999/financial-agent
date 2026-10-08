@@ -1,0 +1,43 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "currently valued at approximately $814.26 million"
+LABEL: SUPPORTED
+REASON: The source data lists market_cap as 814,260,928.0 USD, which rounds to approximately $814.26 million, and this figure is explicitly repeated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "reporting a net income loss of $211.82 million"
+LABEL: SUPPORTED
+REASON: The source data lists net_income as -211,822,000.0 USD, which equals a loss of $211.822 million, consistent with the stated $211.82 million; the Financial Health section also states this figure.
+
+---
+
+CLAIM: "trades near its 52-week low of $2.61"
+LABEL: SUPPORTED
+REASON: The source data explicitly lists week_52_low as 2.61, and the current price of 2.72 is indeed near that low; both figures appear in the source data and pre-written sections.
+
+---
+
+CLAIM: "a negative forward P/E ratio"
+LABEL: SUPPORTED
+REASON: The source data lists forward_pe as -4.89993, which is a negative value, confirming the claim directionally; the Financial Health section also states "negative forward P/E ratio of -4.90."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "absence of FDA-approved therapeutics"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections explicitly state "There are no FDA-approved therapeutics currently known that are cell products derived from pluripotent stem cells (PSCs) or utilize the company's fusogen technology."
+
+---
+
+*Note: The Outlook section contains no additional specific quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers beyond those already evaluated above and the qualitative directional statements (which are not quantitative claims subject to audit). All auditable claims have been addressed.*

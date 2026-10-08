@@ -1,0 +1,57 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$6.35 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data lists revenue as $6,351,084,032, which rounds to $6.35 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "market capitalization of approximately $9.49 billion"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap as $9,487,619,072, which rounds to approximately $9.49 billion; also confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "near the lower end of its 52-week range"
+LABEL: SUPPORTED
+REASON: Current price is $5.61, 52-week low is $3.81, and 52-week high is $9.13; $5.61 sits at (5.61 − 3.81) / (9.13 − 3.81) = 1.80 / 5.32 ≈ 33.8% of the range from the low, which is arithmetically in the lower third of the range, consistent with "lower end."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "daily active user growth"
+LABEL: SUPPORTED
+REASON: DAU growth trends are explicitly discussed in the SEC Filing Highlights and Risk Factors pre-written sections, as well as the RAG data, making this a grounded reference.
+
+---
+
+CLAIM: "core 18–34 cohort"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections explicitly state the majority of users are aged 18–34, and the SEC Filing Highlights pre-written section references "core 18–34 demographic."
+
+---
+
+*No additional standalone quantitative figures, price targets, specific thresholds, ratios, named product milestones, or forward-looking numerical claims appear in the Outlook section beyond those evaluated above.*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $6.35 billion in revenue | SUPPORTED |
+| 2 | Market cap ~$9.49 billion | SUPPORTED |
+| 3 | Near lower end of 52-week range | SUPPORTED |
+| 4 | Daily active user growth (as a named metric) | SUPPORTED |
+| 5 | Core 18–34 cohort | SUPPORTED |
+
+**Notable observation:** The Executive Summary and Outlook sections are notably sparse in hard quantitative claims — they largely rely on directional language and qualitative framing. The few specific figures present are all traceable to the source data. No unsupported or inference-only claims were identified.

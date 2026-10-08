@@ -1,0 +1,72 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$445.9 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $445,865,984,000, which rounds to $445.9 billion; the pre-written Financial Health section also states "$445.9 billion in annual revenue."
+
+---
+
+CLAIM: "54.8% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data shows profit_margin_pct = 54.77%, which rounds to 54.8%; the pre-written sections also state 54.8%.
+
+---
+
+CLAIM: "trades at $350.50"
+LABEL: SUPPORTED
+REASON: Source data shows current_price = 350.5, matching $350.50 exactly.
+
+---
+
+CLAIM: "meaningfully below its 52-week high of $408.61"
+LABEL: SUPPORTED
+REASON: Source data shows week_52_high = 408.61, and $350.50 < $408.61, so the positional claim holds arithmetically.
+
+---
+
+CLAIM: "domestic construction moratoriums" (as a near-term variable)
+LABEL: SUPPORTED
+REASON: The Bloomberg article dated 2026-09-21 explicitly describes U.S. communities imposing moratoriums on new data center construction, and the pre-written Recent Developments section references this directly.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "over-70% revenue concentration" (in advertising)
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly states "Over 70% of total revenues come from online advertising," and the pre-written Risk Factors section repeats "Over 70% of revenues derive from online advertising."
+
+---
+
+CLAIM: "EU Digital Markets Act appeal" (as a watch variable)
+LABEL: SUPPORTED
+REASON: The Bloomberg article dated 2026-09-29 explicitly states Google will appeal the EU move under the Digital Markets Act, and the pre-written Recent Developments section references this directly.
+
+---
+
+*(No additional standalone quantitative figures, price targets, thresholds, ratios, or forward-looking numbers appear in the Outlook section beyond those already evaluated above. The Outlook is largely qualitative and directional, referencing the same figures already covered.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $445.9 billion in annual revenue | SUPPORTED |
+| 2 | 54.8% net profit margin | SUPPORTED |
+| 3 | Trades at $350.50 | SUPPORTED |
+| 4 | 52-week high of $408.61 | SUPPORTED |
+| 5 | Meaningfully below its 52-week high (positional) | SUPPORTED |
+| 6 | Domestic construction moratoriums | SUPPORTED |
+| 7 | Over-70% revenue concentration in advertising | SUPPORTED |
+| 8 | EU Digital Markets Act appeal | SUPPORTED |
+
+All eight verifiable claims in the Executive Summary and Outlook are **SUPPORTED** by the source data. No quantitative figures were found to be unsupported or requiring inference labeling. Notably, the brief does not introduce any figures (e.g., P/E ratios, net income, market cap, 52-week low, EQT's $50 billion figure) that appear in the pre-written sections but are absent from the source data — those figures were available but simply not cited in the audited sections, which is appropriate.

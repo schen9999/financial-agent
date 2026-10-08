@@ -1,0 +1,76 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$4.2 trillion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 4,200,982,642,688.0 USD, which rounds to $4.2 trillion; the pre-written Financial Health section also states "$4.2 trillion."
+
+---
+
+CLAIM: "$445.9 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 445,865,984,000.0 USD, which rounds to $445.9 billion; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "54.8% profit margin"
+LABEL: SUPPORTED
+REASON: Source data shows profit_margin = 0.54771, which rounds to 54.8%; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "trades below its 52-week high of $408.61"
+LABEL: SUPPORTED
+REASON: Source data shows week_52_high = 408.61 and current_price = 343.50; 343.50 < 408.61 confirms the stock is below its 52-week high.
+
+---
+
+CLAIM: "current price of $343.50"
+LABEL: SUPPORTED
+REASON: Source data explicitly states current_price = 343.5 USD.
+
+---
+
+CLAIM: "forward P/E of 22.8x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 22.791302, which rounds to 22.8x; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "signals that the market is pricing in meaningful earnings expansion ahead"
+LABEL: INFERENCE
+REASON: The forward P/E of 22.8x is higher than the trailing P/E of 17.2x (both present in source data), making the directional inference that the market expects earnings expansion a direct comparison of two present figures.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "over 70% of revenues remain tied to online advertising"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly states "Over 70% of total revenues come from online advertising," and this is reproduced verbatim in the pre-written Risk Factors section.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already evaluated above or directional/qualitative statements that contain no auditable quantitative claim.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $4.2 trillion market capitalization | SUPPORTED |
+| 2 | $445.9 billion in annual revenue | SUPPORTED |
+| 3 | 54.8% profit margin | SUPPORTED |
+| 4 | Trades below 52-week high of $408.61 | SUPPORTED |
+| 5 | Current price of $343.50 | SUPPORTED |
+| 6 | Forward P/E of 22.8x | SUPPORTED |
+| 7 | Market pricing in earnings expansion (forward > trailing P/E) | INFERENCE |
+| 8 | Over 70% of revenues tied to online advertising | SUPPORTED |

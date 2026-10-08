@@ -1,0 +1,43 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections, then evaluate each.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "45.29% profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly states `"profit_margin": 0.45289`, which equals 45.29% (rounded to two decimal places), and the Financial Health pre-written section confirms "profit margin of 45.29%."
+
+---
+
+CLAIM: "trailing P/E ratio of 12.80"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly states `"pe_ratio": 12.797467`, which rounds to 12.80, and the Financial Health section confirms "trailing P/E ratio of 12.80."
+
+---
+
+CLAIM: "recent 10-K and 10-Q filings"
+LABEL: SUPPORTED
+REASON: The SEC Filing Summaries confirm a 10-K filed 2026-08-27 and a 10-Q filed 2026-05-07, both explicitly present in the source data.
+
+---
+
+**OUTLOOK**
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, metrics, or percentages appear in the Outlook section beyond qualitative/directional language. All forward-looking statements in the Outlook are qualitative in nature — e.g., "cautiously constructive," "significant regulatory and competitive risks," "threatening funding continuity," "high-margin profile," "fluctuating interest rate environment" — and contain no specific numbers, named milestones, or quantitative thresholds to audit.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | 45.29% profit margin | SUPPORTED |
+| 2 | Trailing P/E ratio of 12.80 | SUPPORTED |
+| 3 | Recent 10-K and 10-Q filings | SUPPORTED |
+
+No quantitative claims in the Outlook section require evaluation. All three auditable claims in the Executive Summary are **SUPPORTED** by the raw source data.

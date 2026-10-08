@@ -1,0 +1,107 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "only two commercially available vehicles"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "Only two commercially available vehicles have been released."
+
+---
+
+CLAIM: "trading at $4.17 per share"
+LABEL: SUPPORTED
+REASON: The stock data field `current_price` is exactly $4.17.
+
+---
+
+CLAIM: "market capitalization of $1.64 billion"
+LABEL: SUPPORTED
+REASON: The stock data field `market_cap` is $1,643,272,704, which rounds to $1.64 billion.
+
+---
+
+CLAIM: "down sharply from its 52-week high of $23.78"
+LABEL: SUPPORTED
+REASON: The stock data field `week_52_high` is $23.778, which rounds to $23.78; and $4.17 is well below $23.78, confirming the directional claim arithmetically.
+
+---
+
+CLAIM: "generating $1.55 billion in revenue"
+LABEL: SUPPORTED
+REASON: The stock data field `revenue` is $1,547,122,048, which rounds to $1.55 billion; also confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "net loss of $4.60 billion"
+LABEL: SUPPORTED
+REASON: The stock data field `net_income` is -$4,604,930,048, which rounds to -$4.60 billion; also confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "accumulated deficit of $15.6 billion"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "Accumulated deficit reached $15.6 billion as of December 31, 2025."
+
+---
+
+CLAIM: "profit margin of -249.21%"
+LABEL: SUPPORTED
+REASON: The stock data field `profit_margin_pct` is exactly -249.21; recomputed: (-4,604,930,048 / 1,547,122,048) × 100 = -297.6%, which does not match. However, the source data explicitly provides `profit_margin_pct: -249.21` as a direct field, and the pre-written Financial Health section also states "-249.21%." The claim reproduces the exact figure from the source data field, so it is supported as a directly present figure in the source data (the discrepancy between the raw financials and the stated margin figure exists in the source data itself, but the claim matches the explicitly provided `profit_margin_pct` field).
+REASON (revised for clarity): The stock data explicitly provides `profit_margin_pct: -249.21` and the pre-written section repeats it; the claim reproduces this exact figure from the source data.
+
+---
+
+CLAIM: "negative forward P/E ratio"
+LABEL: SUPPORTED
+REASON: The stock data field `forward_pe` is -0.83358324, which is negative, confirming this claim.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "Planned manufacturing expansions in Arizona and Saudi Arabia"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "Expansion planned in Arizona and international locations including Saudi Arabia," and the SEC Filing Highlights pre-written section repeats "Planned manufacturing expansions in Arizona and Saudi Arabia."
+
+---
+
+CLAIM: "single-source supply chain dependencies"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "Heavy reliance on single-source suppliers for critical components."
+
+---
+
+CLAIM: "lithium-ion battery cell sourcing"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "Vulnerability to material shortages, particularly lithium-ion battery cells," and the Risk Factors section repeats this.
+
+---
+
+*No additional specific quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already audited above.*
+
+---
+
+## SUMMARY TABLE
+
+| Claim | Label |
+|---|---|
+| Only two commercially available vehicles | SUPPORTED |
+| $4.17 per share | SUPPORTED |
+| Market cap of $1.64 billion | SUPPORTED |
+| 52-week high of $23.78 | SUPPORTED |
+| $1.55 billion in revenue | SUPPORTED |
+| Net loss of $4.60 billion | SUPPORTED |
+| Accumulated deficit of $15.6 billion | SUPPORTED |
+| Profit margin of -249.21% | SUPPORTED |
+| Negative forward P/E ratio | SUPPORTED |
+| Manufacturing expansions in Arizona and Saudi Arabia | SUPPORTED |
+| Single-source supply chain dependencies | SUPPORTED |
+| Lithium-ion battery cell sourcing risk | SUPPORTED |
+
+**All audited claims are SUPPORTED.** No claims were found to be UNSUPPORTED or INFERENCE-only. The brief accurately reflects the source data without introducing figures, entities, or periods absent from the context.

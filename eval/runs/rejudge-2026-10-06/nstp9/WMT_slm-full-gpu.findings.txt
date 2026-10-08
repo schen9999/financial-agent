@@ -1,0 +1,64 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "annual revenue of $735.8 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as $735,839,977,472, which rounds to $735.8 billion, and the same figure appears in the Financial Health pre-written section.
+
+---
+
+CLAIM: "market capitalization of approximately $836.2 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap as $836,155,342,848, which rounds to approximately $836.2 billion, consistent with the Financial Health section.
+
+---
+
+CLAIM: "$2.9 billion in tariff refunds"
+LABEL: SUPPORTED
+REASON: The 10-Q filing summary explicitly states "the Company received approximately $2.9 billion in tariff refunds pursuant to the CBP process."
+
+---
+
+CLAIM: "leadership transitions to John Furner as President and CEO"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "John Furner became President and Chief Executive Officer," effective February 2026.
+
+---
+
+**OUTLOOK**
+
+No explicit quantitative figures, price targets, thresholds, ratios, metrics, or percentages appear in the Outlook section. All claims in the Outlook are qualitative or directional in nature (e.g., "cautiously constructive," "margin expansion," "volume growth versus margin compression," "execution failures"). These are forward-looking narrative statements without specific numbers to audit against the source data.
+
+There are, however, two named concepts/milestones worth checking:
+
+---
+
+CLAIM: "omnichannel strategy"
+LABEL: SUPPORTED
+REASON: The Risk Factors pre-written section and RAG — Risk Factors explicitly reference "failure to successfully execute the omnichannel strategy" as a disclosed strategic risk.
+
+---
+
+CLAIM: "AI-enabled workforce integration"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights pre-written section and RAG — SEC Highlights explicitly describe Walmart's strategy of "aligning its 2.1 million-strong workforce with AI-enabled technologies to automate repetitive tasks."
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Annual revenue of $735.8 billion | SUPPORTED |
+| 2 | Market cap of approximately $836.2 billion | SUPPORTED |
+| 3 | $2.9 billion in tariff refunds | SUPPORTED |
+| 4 | John Furner as President and CEO | SUPPORTED |
+| 5 | Omnichannel strategy (as a named risk/variable) | SUPPORTED |
+| 6 | AI-enabled workforce integration (as a named variable) | SUPPORTED |
+
+**No claims in the Executive Summary or Outlook are UNSUPPORTED or INFERENCE.** All quantitative figures are directly present in the source data, and all named milestones/concepts are explicitly grounded in the pre-written sections or raw source data. Notably, the Outlook section is written in purely qualitative/directional language, containing no derived ratios, price targets, or period-specific metrics that would require arithmetic verification.

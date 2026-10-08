@@ -1,0 +1,81 @@
+STOCK DATA:
+{
+  "ticker": "UPST",
+  "company_name": "Upstart Holdings, Inc.",
+  "current_price": 24.35,
+  "currency": "USD",
+  "market_cap": 2369572864.0,
+  "pe_ratio": 45.943398,
+  "forward_pe": 7.005259,
+  "week_52_high": 55.22,
+  "week_52_low": 22.555,
+  "financial_currency": "USD",
+  "revenue": 1285890048.0,
+  "net_income": 60334000.0,
+  "profit_margin_pct": 4.69,
+  "dividend_yield": 0.0,
+  "sector": "Financial Services",
+  "industry": "Credit Services"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-10",
+    "summary": "ITEM 1A. RISK FACTORS RISK FACTORS Investing in our common stock involves a high degree of risk. The risks and uncertainties described below should be carefully considered, together with all of the other information in this Annual Report on Form 10-K, including the section titled \u201cManagement\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d and our consolidated financial statements and related notes, before making a decision to invest in our common stock. Our business, financial condition, results of operations, or prospects could also be harmed by risks and uncertainties not currently known to us or that we currently do not believe are material. If any of the risks actually occur, our business, financial condition, results of operations, and prospects could be ad"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-04",
+    "summary": "ITEM 1A. RISK FACTORS RISK FACTORS Investing in our common stock involves a high degree of risk. The risks and uncertainties described below should be carefully considered, together with all of the other information in this Quarterly Report on Form 10-Q, including the section titled \u201cManagement\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d and our condensed consolidated financial statements and related notes, before making a decision to invest in our common stock. Our business, financial condition, results of operations, or prospects could also be harmed by risks and uncertainties not currently known to us or that we currently do not believe are material. If any of the risks actually occur, our business, financial condition, results of operations, and prospect"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] Based on the provided risk factors from the SEC EDGAR filings for Upstart (ticker: UPST), the key takeaways regarding the company's business, financial condition, and operational risks include:
+
+**1. Sensitivity to Economic Conditions**
+The company’s business is heavily influenced by uncontrollable macroeconomic factors. Uncertainty, volatility, and negative economic trends can reduce borrower demand, approval rates, and loan origination volumes. Because many borrowers have poor or limited credit histories, they are disproportionately affected by inflation, unemployment, and recessionary conditions. Adverse economic developments can lead to higher delinquencies, defaults, and charge-offs, while also increasing funding costs and reducing liquidity in capital markets.
+
+**2. Dependence on Institutional Capital and Funding Risks**
+Upstart relies on diverse and resilient sources of capital from institutional investors, including through whole loans, pass-through certificates, and asset-backed securities. Key risks include:
+*   **Committed Capital and Co-Investment:** A significant portion of funding comes from arrangements that may require the company to compensate investors if loan credit performance deviates from expectations or if committed sale volumes are not met.
+*   **Cost of Capital:** Capital arrangements made during high-interest-rate periods may become more costly if rates decline.
+*   **Capital Constraints:** If institutional investors reduce funding or if the company cannot secure new arrangements on reasonable terms, it may be forced to rely more heavily on its balance sheet, incur higher funding costs, or accept less favorable terms.
+
+**3. Securitization and Financing Exposures**
+The company facilitates securitizations and uses warehouse credit facilities to finance loans. Risks associated with these activities include:
+*   **Risk Retention:** As a sole sponsor, Upstart must retain a portion of the credit risk under Regulation RR. If these retained interests decline in value or cannot be refinanced on acceptable terms, liquidity and results of operations could suffer.
+*   **Representations and Warranties:** If representations regarding transferred loans are inaccurate, the company may be required to repurchase loans or make indemnification payments. High volumes of such repurchases could harm the company’s reputation and liquidity.
+*   **Regulatory Compliance:** Changes in laws, such as the Dodd-Frank Act, the Investment Company Act of 1940, and the "Volcker Rule," may limit the structure of securitizations or restrict access to capital markets.
+
+**4. Technology and AI Model Effectiveness**
+The company’s growth prospects are tied to the effectiveness of its artificial intelligence (AI) models. If these models fail to accurately or timely reflect changes in economic conditions regarding borrower credit risk, or if there are significant disruptions or failures in the AI lending platform, the business could be adversely affected.
+
+**5. Operational and Strategic Risks**
+*   **Lending Partners:** The business depends on retaining existing lending partners and attracting new ones, as a limited number of partners account for a significant portion of originations and revenue.
+*   **Loan Aggregators:** The company relies on strategic relationships with loan aggregators to attract applicants; failure to maintain these relationships could harm the business.
+*   **Product Mix:** A significant portion of historical business has depended on a single loan product, making the company vulnerable to shifts in product demand.
+*   **Profitability:** The company has incurred net losses in the past and may not achieve or sustain profitability in the future.
+*   **Reputation and Brand:** Failure to maintain, protect, and promote the brand, or issues related to data security and improper access to borrower data, could harm the business.
+*   **Regulatory Compliance:** The business is subject to a wide range of evolving laws and regulations. Failure or perceived failure to comply could harm financial condition and operations.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] The primary risk factors disclosed include:
+
+*   **Economic Conditions:** The business is adversely affected by uncontrollable economic factors, including uncertainty, volatility, and negative trends that impact capital supply, borrower demand, and repayment ability. Adverse macroeconomic conditions can reduce loan origination volumes, increase funding costs, and lead to higher delinquencies and defaults.
+*   **Loan Funding and Capital Sources:** The company depends on diverse and resilient loan funding from institutional investors, lending partners, and securitization programs. Inability to maintain these sources, manage risks associated with committed capital, or secure economical financing could decrease capital supply or force reliance on more costly alternatives.
+*   **AI Model Effectiveness:** Growth and financial results depend on the ability to improve AI models and ensure they accurately reflect changes in economic conditions and borrower credit risk. Ineffective models could adversely affect business prospects.
+*   **Borrower Approval and Demand:** The business relies on approving a significant number of borrowers. Failure to do so, or shifts in product demand, could negatively impact growth and operations.
+*   **Concentration of Lending Partners:** A limited number of lending partners account for a significant portion of loan originations and revenue. Dependence on retaining these partners and attracting new ones poses a risk.
+*   **Profitability and Financial Performance:** The company has incurred net losses in the past and may not achieve profitability in the future. Quarterly results may fluctuate significantly.
+*   **Balance Sheet and Credit Risks:** Risks associated with loans held on the balance sheet, the Upstart Macro Index (UMI), and loan servicing and collections obligations could harm the business.
+*   **Reputation and Brand:** Failure to maintain, protect, and promote the brand may harm the business. Additionally, high volumes of loan repurchases due to inaccurate representations and warranties could harm reputation.
+*   **Technology and Security:** Security breaches, improper data access, or disruptions/failures in technology systems, including the AI lending platform, could adversely affect results and expose the company to liability.
+*   **Strategic Relationships:** The business relies on strategic relationships with loan aggregators to attract applicants. Inability to maintain or replace these services could harm the business.
+*   **Regulatory Compliance:** The business is subject to a wide range of evolving laws and regulations. Failure or perceived failure to comply could harm the business.
+*   **Counterparty Risk:** Risks arising from derivative instruments, beneficial interests, warehouse facilities, and custodial arrangements, where a counterparty’s failure to perform could result in losses.

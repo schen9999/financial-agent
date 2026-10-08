@@ -1,0 +1,85 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "$361.1 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $361,060,007,936, which rounds to $361.1 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$32.8 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net income of $32,757,000,192, which rounds to $32.8 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "market capitalization of $674.6 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $674,559,164,416, which rounds to $674.6 billion; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "current P/E of 21.1x"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio of 21.113256, which rounds to 21.1x; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "forward P/E of 14.4x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe of 14.400975, which rounds to 14.4x; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "first-half 2026 upstream earnings growth"
+LABEL: SUPPORTED
+REASON: The SEC Highlights confirm upstream earnings of $13.7 billion for the first half of 2026, up from $12.2 billion in the same period of 2025, confirming year-over-year growth in H1 2026.
+
+---
+
+CLAIM: "cumulative structural cost savings of $16.3 billion relative to 2019 levels"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "Structural Cost Savings reached $16.3 billion cumulatively relative to 2019 levels," also repeated in the SEC Filing Highlights pre-written section.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "continued volume growth from high-return assets in Guyana and the Permian"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state that Advantaged Volume Growth contributed $1.9 billion in earnings year-to-date, "primarily from Guyana and Permian expansion," confirming these as active growth assets.
+
+---
+
+CLAIM: "a capital return program that signals management confidence in cash generation"
+LABEL: INFERENCE
+REASON: The source data confirms $8.6 billion in dividends and $10.0 billion in share repurchases in H1 2026; the characterization of this as signaling "management confidence" is a directional interpretive step from those two present figures.
+
+---
+
+CLAIM: "the acknowledged misalignment between current business trends and net-zero 2050 pathways"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "current trends are not yet aligned with net-zero 2050 targets," and the SEC Filing Highlights pre-written section repeats this verbatim.
+
+---
+
+CLAIM: "Guyana and Permian expansion proceeds on schedule" [as a thesis-strengthening condition]
+LABEL: UNSUPPORTED
+REASON: No schedule, timeline, or milestone data for Guyana or Permian expansion is present in any source material, so the claim that expansion is or could be "on schedule" references a benchmark absent from the context.
+
+---
+
+CLAIM: "the gap between current and forward earnings closes as implied" [as a thesis-strengthening condition]
+LABEL: INFERENCE
+REASON: This is a direct logical consequence of the two P/E figures already present in the source (current P/E 21.1x vs. forward P/E 14.4x), requiring no additional facts — the gap is observable from those two numbers and the directional implication follows arithmetically.
+
+---
+
+*No additional quantitative figures, price targets, specific thresholds, named product milestones, or forward-looking numbers appear in the Executive Summary or Outlook sections beyond those audited above.*

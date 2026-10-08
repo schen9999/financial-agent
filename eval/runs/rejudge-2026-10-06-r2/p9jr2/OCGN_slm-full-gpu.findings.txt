@@ -1,0 +1,73 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "micro-cap biotechnology firm"
+LABEL: SUPPORTED
+REASON: The source data lists the sector as "Healthcare," industry as "Biotechnology," and market cap of ~$345.9 million, which falls within the conventional micro-cap range; the Financial Health section also uses this exact label.
+
+---
+
+CLAIM: "currently trading near its 52-week low of $0.97"
+LABEL: SUPPORTED
+REASON: The source data explicitly states week_52_low = 0.97, and current_price = 1.02, confirming the stock is trading near that low; the $0.97 figure is directly present in the data.
+
+---
+
+CLAIM: "market capitalization of approximately $345.9 million"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 345,892,608.0, which rounds to approximately $345.9 million.
+
+---
+
+CLAIM: "accumulated deficit of $408.1 million"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "the accumulated deficit stood at $408.1 million" as of December 31, 2025.
+
+---
+
+CLAIM: "cash balance of $18.6 million"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "the company had a cash balance of $18.6 million as of December 31, 2025."
+
+---
+
+CLAIM: "raises substantial doubt about the company's ability to continue as a going concern without external capital"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "The company's recurring losses raise substantial doubt about its ability to continue as a going concern for the next 12 months."
+
+---
+
+CLAIM: "current cash reserves are exhausted in the fourth quarter of 2026"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "Management estimates that current cash and cash equivalents will only fund operations into the fourth quarter of 2026."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "current cash position is insufficient to sustain operations beyond late 2026"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights states cash of $18.6 million "will only fund operations into the fourth quarter of 2026," making "beyond late 2026" a direct restatement of that fact.
+
+---
+
+CLAIM: "survival is contingent on successful capital raising rather than organic growth"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states the company "must raise significant additional capital to fund future operations" and "has not generated significant revenue from the sale of products," directly supporting this characterization.
+
+---
+
+CLAIM: "could force the elimination of business opportunities"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states "Failure to secure funding could force the company to delay, limit, or eliminate business opportunities."
+
+---
+
+**Summary of findings:** All specific quantitative figures (52-week low of $0.97, market cap of ~$345.9 million, accumulated deficit of $408.1 million, cash balance of $18.6 million, Q4 2026 cash runway) are directly present in the source data or pre-written sections and are verified as accurate. All forward-looking and qualitative claims are grounded in explicit source language. No unsupported or inference-only claims were identified in these two sections.

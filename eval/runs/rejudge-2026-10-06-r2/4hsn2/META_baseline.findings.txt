@@ -1,0 +1,91 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $228.2 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $228,246,994,944, which rounds to $228.2 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$68.1 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net income of $68,097,998,848, which rounds to $68.1 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "29.83% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists profit_margin_pct as 29.83; also confirmed by $68.1B / $228.2B ≈ 29.84%, within 0.15 pp.
+
+---
+
+CLAIM: "market capitalization of $1.89 trillion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $1,889,994,932,224, which rounds to $1.89 trillion; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "36% September rally"
+LABEL: SUPPORTED
+REASON: The news article from Bloomberg (2026-09-25) explicitly states "Meta shares have surged 36% in September"; also repeated in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "trailing P/E of 27.95"
+LABEL: SUPPORTED
+REASON: Source data lists pe_ratio as 27.954031, which rounds to 27.95; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "forward P/E of 21.25"
+LABEL: SUPPORTED
+REASON: Source data lists forward_pe as 21.254269, which rounds to 21.25; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$68 billion data center expansion"
+LABEL: SUPPORTED
+REASON: The Bloomberg news article (2026-09-21) describes "New data centres worth $68 billion disrupted in US"; also referenced in the Recent Developments pre-written section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "forward valuation compression relative to the trailing P/E"
+LABEL: SUPPORTED
+REASON: Forward P/E of 21.25 is arithmetically lower than trailing P/E of 27.95, confirming compression; both figures are present in the source data.
+
+---
+
+CLAIM: "oversubscribed bond demand tied to data center financing"
+LABEL: SUPPORTED
+REASON: The Bloomberg article (2026-09-19) states CleanSpark's Meta-tied data center bond "saw $10 billion in demand," and the Recent Developments pre-written section describes it as oversubscribed; the $10 billion demand figure is in the source but the brief does not quote the $10 billion figure here, only the oversubscription characterization, which is supported.
+
+---
+
+CLAIM: "GDPR, DMA, DSA, and emerging AI regulations"
+LABEL: SUPPORTED
+REASON: All four regulatory frameworks (GDPR, DMA, DSA, EU AI Act) are explicitly named in the RAG SEC Highlights, RAG Risk Factors, and the Risk Factors pre-written section.
+
+---
+
+CLAIM: "A view upgrade to straightforwardly constructive would require visible AI monetization progress and regulatory stabilization"
+LABEL: INFERENCE
+REASON: This is a forward-looking qualitative threshold derived directly from the two headwind categories (AI monetization and regulatory environment) discussed in the same Outlook section, both of which are grounded in source data; no new external fact is required.
+
+---
+
+CLAIM: "a deterioration in either user engagement trends or the regulatory environment would shift the stance toward neutral or cautious"
+LABEL: INFERENCE
+REASON: This directional conclusion follows directly from the user engagement and regulatory risks explicitly documented in the SEC filing summaries, RAG Risk Factors, and pre-written sections, requiring no fact absent from the context.
+
+---
+
+**Summary of findings:** All quantitative figures in the Executive Summary (revenue, net income, profit margin, market cap, September rally percentage, trailing P/E, forward P/E, and data center dollar figure) are SUPPORTED by the raw source data. The Outlook section contains no additional standalone quantitative figures beyond those already evaluated; its forward-looking statements are either SUPPORTED by reference to sourced facts or labeled INFERENCE where they are logical derivations from present context. No claims were found to be UNSUPPORTED.

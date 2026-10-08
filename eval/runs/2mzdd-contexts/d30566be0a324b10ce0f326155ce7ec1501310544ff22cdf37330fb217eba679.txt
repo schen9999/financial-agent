@@ -1,0 +1,109 @@
+STOCK DATA:
+{
+  "ticker": "SFIX",
+  "company_name": "Stitch Fix, Inc.",
+  "current_price": 2.73,
+  "currency": "USD",
+  "market_cap": 364738080.0,
+  "forward_pe": -54.6,
+  "week_52_high": 5.745,
+  "week_52_low": 2.1,
+  "financial_currency": "USD",
+  "revenue": 1348119040.0,
+  "net_income": -12606000.0,
+  "profit_margin_pct": -0.94,
+  "dividend_yield": 0.0,
+  "sector": "Consumer Cyclical",
+  "industry": "Apparel Retail"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-09-24",
+    "summary": "ITEM 1A. RISK FACTORS RISK FACTOR SUMMARY Our business is subject to numerous risks. The following summary highlights some of the risks you should consider with respect to our business and prospects. This summary is not complete and the risks summarized below are not the only risks we face. You should review and consider carefully the risks and uncertainties described in more detail in \u201cRisk Factors\u201d below, which includes a more complete discussion of the risks summarized here. RISKS RELATING TO OUR BUSINESS \u2022 We have in the past been and may in the future be unable to retain clients or maintain a high level of engagement with our clients and maintain or increase their spending with us, which has and could continue to harm our business, financial condition, or operating results. \u2022 Our grow"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-06-11",
+    "summary": "ITEM 1A. RISK FACTORS RISK FACTOR SUMMARY Our business is subject to numerous risks. The following summary highlights some of the risks you should consider with respect to our business and prospects. This summary is not complete and the risks summarized below are not the only risks we face. You should review and consider carefully the risks and uncertainties described in more detail in \u201cRisk Factors\u201d below, which includes a more complete discussion of the risks summarized here. RISKS RELATING TO OUR BUSINESS \u2022 We have in the past been and may in the future be unable to retain clients or maintain a high level of engagement with our clients and maintain or increase their spending with us, which has and could continue to harm our business, financial condition, or operating results. \u2022 Our grow"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I can only provide information based on the context given, which contains excerpts from the 2025 Form 10-K. The context does not include any 10-Q filing information.
+
+Based on the 10-K excerpts provided, the key takeaways are:
+
+**Business Challenges:**
+- The company has experienced declining active clients over the past three fiscal years, which has negatively impacted revenue and is expected to continue affecting results
+- Client retention and engagement remain critical concerns, as a significant portion of revenue depends on repeat purchases from highly engaged existing clients
+
+**Growth and Marketing:**
+- Attracting new clients cost-effectively is essential to growth, but marketing spend increases don't guarantee proportional client acquisition or favorable returns on investment
+- New product and service launches require substantial resource investments and carry execution risks
+
+**Supply Chain and Sourcing Risks:**
+- Nearly all merchandise is sourced from third-party vendors, with the majority of manufacturing in China
+- The company faces exposure to price increases, tariffs, inflationary pressures, shipping cost fluctuations, and potential shipping delays
+- Recent trade policy uncertainty, particularly regarding tariffs on Chinese goods, creates an unpredictable business environment
+
+**Operational Risks:**
+- Inventory management, fulfillment center operations, and shipping arrangements are critical to business success
+- Expansion of offerings may strain management and operational resources
+
+The context provided focuses primarily on risk factors rather than overall financial performance or strategic achievements.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses risk factors across several key categories:
+
+## Business Operations Risks
+- Client retention and engagement challenges, including the ability to maintain or increase customer spending
+- Dependence on attracting new clients for growth
+- Inventory management effectiveness
+- Fulfillment center operational constraints and staffing adequacy
+- Shipping arrangements and potential interruptions
+- Inability to achieve or maintain revenue growth and profitability
+- Management of business transformation and strategies
+- Attraction and retention of key personnel and effective succession planning
+- Brand maintenance and reputation management
+- Management of Stylists (the company's workforce)
+- Acquisition and retention of merchandise vendors
+- Accuracy of client metrics measurement
+
+## Merchandise and Supply Chain Risks
+- Sourcing and pricing of merchandise and raw materials
+- Tariff impacts and shifting trade policies
+- Price increases and inflationary pressures
+- Shipping and freight cost increases and delays
+- Heavy reliance on third-party vendors, particularly those manufacturing in China
+
+## Marketing and Technology Risks
+- Effectiveness and cost-efficiency of paid marketing efforts
+- System interruptions affecting website access and technology infrastructure performance
+- Data security compromises and cybersecurity threats
+- Open source software risks
+- Cookie tracking technology restrictions and regulatory changes
+
+## Regulatory and Compliance Risks
+- Privacy and security law compliance obligations
+- Internet and eCommerce regulation changes
+- Intellectual property protection
+- Tax policy and tariff changes
+- Sales tax collection requirements
+
+## Market and Economic Risks
+- Dependence on consumer discretionary spending
+- Competitive industry pressures
+- Natural disasters, public health crises, and catastrophic events
+
+## Stock and Ownership Risks
+- Stock price volatility
+- Dual class structure concentrating voting control
+- Potential shareholder dilution from future securities issuances

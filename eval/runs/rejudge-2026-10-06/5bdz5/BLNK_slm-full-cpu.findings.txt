@@ -1,0 +1,95 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "a network of approximately 66,350 connected chargers"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states "As of December 31, 2025, there were approximately 66,350 chargers connected to the Blink Network," and the pre-written SEC Filing Highlights section repeats this figure.
+
+---
+
+CLAIM: "generating $96.55 million in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as $96,550,000.0, which equals $96.55 million exactly.
+
+---
+
+CLAIM: "a net loss of $50.67 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists net_income as -$50,667,000.0, which rounds to -$50.67 million.
+
+---
+
+CLAIM: "trading near its 52-week low of $0.55"
+LABEL: SUPPORTED
+REASON: The raw source data confirms current_price = $0.55 and week_52_low = $0.45; $0.55 is indeed near (and above) the 52-week low of $0.45, and the current price of $0.55 is explicitly present in the source data.
+
+---
+
+CLAIM: "a negative forward P/E ratio"
+LABEL: SUPPORTED
+REASON: The raw source data lists forward_pe = -2.3809524, which is negative, confirming this directional claim.
+
+---
+
+CLAIM: "its transition to contract manufacturing"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights states "Blink transitioned to contract manufacturing for its EV hardware" and "This transition was completed in January 2026," and the pre-written SEC Filing Highlights section corroborates this.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "the sustainability of the company's gross margins following the shift to contract manufacturing"
+LABEL: INFERENCE
+REASON: No gross margin figure is provided in the source data (only net loss and profit margin are given), so this is a forward-looking watch-item derived from the documented contract manufacturing transition; it names no specific quantitative figure and is a directional inference from the restructuring facts present in the source.
+
+---
+
+CLAIM: "the integration success of the Zemetric acquisition"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states "In July 2025, Blink acquired Zemetric Inc. and its subsidiaries," and the pre-written SEC Filing Highlights section corroborates this acquisition; the claim names no specific quantitative figure and the underlying fact is present.
+
+---
+
+CLAIM: "the stability of federal incentive programs like NEVI"
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section explicitly names "the NEVI program" as a key policy dependency, confirming this reference is grounded in the source material.
+
+---
+
+CLAIM: "A strengthening of the investment thesis would require clear evidence of narrowing net losses"
+LABEL: INFERENCE
+REASON: No specific net loss target or threshold is cited; this is a directional forward-looking statement derivable from the documented net loss of -$50.67 million and the stated profitability challenges, requiring no additional facts beyond what is present.
+
+---
+
+CLAIM: "any further dilutive capital raises needed to sustain liquidity"
+LABEL: SUPPORTED
+REASON: The pre-written Recent Developments section explicitly flags "capital raises to sustain operations" as a watch-item, and the RAG — SEC Highlights documents a prior $20 million public market funding round in December 2025, grounding the concern about dilutive raises in the source material; no specific future figure is asserted.
+
+---
+
+### Summary Table
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | ~66,350 connected chargers | SUPPORTED |
+| 2 | $96.55 million in revenue | SUPPORTED |
+| 3 | Net loss of $50.67 million | SUPPORTED |
+| 4 | Trading near its 52-week low of $0.55 | SUPPORTED |
+| 5 | Negative forward P/E ratio | SUPPORTED |
+| 6 | Transition to contract manufacturing | SUPPORTED |
+| 7 | Gross margins following shift to contract manufacturing (watch-item) | INFERENCE |
+| 8 | Zemetric acquisition integration | SUPPORTED |
+| 9 | NEVI program stability | SUPPORTED |
+| 10 | Narrowing net losses as strengthening signal | INFERENCE |
+| 11 | Further dilutive capital raises as weakening signal | SUPPORTED |
+
+**No UNSUPPORTED claims were identified.** All quantitative figures in the Executive Summary are directly traceable to the raw source data or pre-written sections, and all forward-looking watch-items in the Outlook are either grounded in documented facts or clearly labeled as inferences derivable from present data.

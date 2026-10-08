@@ -1,0 +1,199 @@
+submitted workflow: grounding-eval-extended-rerank3-2mzdd
+polling up to 11400 s (activeDeadlineSeconds=10800 + 600s margin)
+  [03:24:31] phase=Running progress=0/2
+  [03:24:52] phase=Running progress=0/2
+  [03:25:14] phase=Running progress=0/2
+  [03:25:35] phase=Running progress=0/2
+  [03:25:56] phase=Running progress=0/2
+  [03:26:18] phase=Running progress=0/2
+  [03:26:39] phase=Running progress=2/4
+  [03:27:01] phase=Running progress=2/4
+  [03:27:22] phase=Running progress=2/4
+  [03:27:43] phase=Running progress=2/4
+  [03:28:05] phase=Running progress=2/4
+  [03:28:26] phase=Running progress=4/6
+  [03:28:47] phase=Running progress=4/6
+  [03:29:09] phase=Running progress=4/6
+  [03:29:30] phase=Running progress=4/6
+  [03:29:51] phase=Running progress=4/6
+  [03:30:13] phase=Running progress=4/6
+  [03:30:34] phase=Running progress=6/8
+  [03:30:55] phase=Running progress=6/8
+  [03:31:17] phase=Running progress=6/8
+  [03:31:38] phase=Running progress=6/8
+  [03:31:59] phase=Running progress=6/8
+  [03:32:21] phase=Running progress=6/8
+  [03:32:42] phase=Running progress=8/10
+  [03:33:03] phase=Running progress=8/10
+  [03:33:25] phase=Running progress=8/10
+  [03:33:46] phase=Running progress=8/10
+  [03:34:07] phase=Running progress=8/10
+  [03:34:29] phase=Running progress=9/11
+  [03:34:50] phase=Running progress=10/12
+  [03:35:12] phase=Running progress=10/12
+  [03:35:33] phase=Running progress=10/12
+  [03:35:54] phase=Running progress=10/12
+  [03:36:16] phase=Running progress=10/12
+  [03:36:37] phase=Running progress=11/13
+  [03:36:58] phase=Running progress=12/14
+  [03:37:20] phase=Running progress=12/14
+  [03:37:41] phase=Running progress=12/14
+  [03:38:02] phase=Running progress=12/14
+  [03:38:24] phase=Running progress=13/15
+  [03:38:45] phase=Running progress=13/15
+  [03:39:06] phase=Running progress=14/16
+  [03:39:28] phase=Running progress=14/16
+  [03:39:49] phase=Running progress=14/16
+  [03:40:10] phase=Running progress=14/16
+  [03:40:32] phase=Running progress=15/17
+  [03:40:53] phase=Running progress=15/17
+  [03:41:14] phase=Running progress=16/18
+  [03:41:36] phase=Running progress=16/18
+  [03:41:57] phase=Running progress=16/18
+  [03:42:18] phase=Running progress=16/18
+  [03:42:40] phase=Running progress=17/19
+  [03:43:01] phase=Running progress=17/19
+  [03:43:22] phase=Running progress=17/19
+  [03:43:44] phase=Running progress=18/20
+  [03:44:05] phase=Running progress=18/20
+  [03:44:27] phase=Running progress=18/20
+  [03:44:48] phase=Running progress=18/20
+  [03:45:09] phase=Running progress=19/21
+  [03:45:31] phase=Running progress=19/21
+  [03:45:52] phase=Running progress=20/22
+  [03:46:13] phase=Running progress=20/22
+  [03:46:35] phase=Running progress=20/22
+  [03:46:56] phase=Running progress=20/22
+  [03:47:17] phase=Running progress=21/23
+  [03:47:39] phase=Running progress=21/23
+  [03:48:00] phase=Running progress=22/24
+  [03:48:21] phase=Running progress=22/24
+  [03:48:43] phase=Running progress=22/24
+  [03:49:04] phase=Running progress=22/24
+  [03:49:25] phase=Running progress=23/25
+  [03:49:47] phase=Running progress=23/25
+  [03:50:08] phase=Running progress=23/25
+  [03:50:29] phase=Running progress=24/26
+  [03:50:51] phase=Running progress=24/26
+  [03:51:12] phase=Running progress=24/26
+  [03:51:33] phase=Running progress=25/27
+  [03:51:55] phase=Running progress=25/27
+  [03:52:16] phase=Running progress=26/28
+  [03:52:37] phase=Running progress=26/28
+  [03:52:59] phase=Running progress=26/28
+  [03:53:20] phase=Running progress=26/28
+  [03:53:41] phase=Running progress=27/29
+  [03:54:03] phase=Running progress=27/29
+  [03:54:24] phase=Running progress=27/29
+  [03:54:46] phase=Running progress=28/30
+  [03:55:07] phase=Running progress=28/30
+  [03:55:28] phase=Running progress=28/30
+  [03:55:50] phase=Running progress=29/31
+  [03:56:11] phase=Running progress=29/31
+  [03:56:33] phase=Running progress=30/32
+  [03:56:54] phase=Running progress=30/32
+  [03:57:15] phase=Running progress=30/32
+  [03:57:37] phase=Running progress=30/32
+  [03:57:58] phase=Running progress=31/33
+  [03:58:19] phase=Running progress=31/33
+  [03:58:41] phase=Running progress=31/33
+  [03:59:02] phase=Running progress=32/34
+  [03:59:24] phase=Running progress=32/34
+  [03:59:45] phase=Running progress=32/34
+  [04:00:06] phase=Running progress=33/35
+  [04:00:28] phase=Running progress=33/35
+  [04:00:49] phase=Running progress=34/36
+  [04:01:11] phase=Running progress=34/36
+  [04:01:32] phase=Running progress=34/36
+  [04:01:53] phase=Running progress=35/37
+  [04:02:15] phase=Running progress=35/37
+  [04:02:36] phase=Running progress=36/38
+  [04:02:57] phase=Running progress=37/39
+  [04:03:19] phase=Running progress=37/39
+  [04:03:40] phase=Running progress=38/40
+  [04:04:02] phase=Running progress=38/40
+  [04:04:23] phase=Running progress=39/40
+  [04:04:44] phase=Running progress=40/41
+  [04:05:06] phase=Succeeded progress=41/41
+
+=== aggregate step output ===
+  --------------------------------------------
+  AAPL       10    0    3   13    36.59    56.39
+  AFRM       12    2    3   17    37.53    56.16
+  AMZN        3    0    0    3    36.00    57.03
+  BABA        9    0    1   10    15.01    35.05
+  BEAM       12    0    0   12    36.37    57.58
+  BLNK       10    0    1   11    36.70    57.84
+  BYND        8    0    1    9    46.01    67.34
+  CALM       11    0    0   11    37.63    58.62
+  CHGG        7    0    2    9    44.44    64.06
+  COIN       14    0    0   14    38.97    58.98
+  CRBU       15    0    0   15    49.50    70.90
+  EDIT       12    0    1   13    35.43    58.25
+  EVGO        4    0    0    4    61.62    80.17
+  GOOGL       6    0    0    6    34.01    55.20
+  JPM         7    0    0    7    37.52    56.41
+  LCID        8    0    0    8    38.80    59.05
+  META        8    0    1    9    49.90    70.48
+  MSFT        5    0    0    5    37.29    59.05
+  NTLA       16    1    3   20    43.91    66.34
+  NVDA        6    0    0    6    37.96    58.66
+  NVO         8    0    0    8    14.25    33.67
+  OCGN        8    0    0    8    38.09    58.68
+  OMER       10    0    1   11    39.18    61.69
+  PTON       10    0    1   11    37.54    59.91
+  RDFN        7    0    0    7    37.60    55.75
+  RIVN       11    0    0   11    36.87    60.01
+  ROKU       10    0    0   10    61.42    82.95
+  SANA        4    0    0    4    44.29    64.21
+  SAP         7    0    0    7    18.07    36.03
+  SFIX       13    1    3   17    38.00    57.29
+  SNAP       11    0    0   11    35.72    56.45
+  TM          8    2    0   10    14.33    32.90
+  TSLA       11    0    1   12    37.97    59.80
+  TSM         7    0    0    7    15.89    36.54
+  UNH        12    0    2   14    37.26    58.20
+  UPST        9    0    2   11    35.49    56.24
+  V          11    0    0   11    37.02    58.98
+  VERV        9    0    2   11    37.16    57.47
+  WMT         8    0    0    8    34.37    52.54
+  XOM        14    1    4   19    41.88    63.85
+  --------------------------------------------
+  TOTAL     371    7   32  410    37.09    57.67
+
+  tickers completed : 40
+  tickers skipped   : 0
+  stock block empty : 0/40
+  unsupported rate  : 1.71%   (gate: <= 5.0%)
+  95% CI (Wilson)   : 1.71% (95% CI 0.8–3.5%)
+  total claims      : 410   (gate: >= 30)
+  claims per ticker : mean 10.2, min 3 (AMZN)   — read the rate with this: fewer checkable claims lowers it for free
+  numeric claims    : 265 = mean 6.6/ticker, min 2 (RDFN)   — co-primary: claims that quote a figure (the judge's listing of qualitative phrases varies run to run)
+  numeric unsupported: 3/265 = 1.13% (95% CI 0.4–3.3%)
+  Argo retries      : 0
+
+  LLM calls (agent) : 270 over 40 completed ticker(s) = 6.8/ticker; endpoints anthropic
+  Site                         Calls   Prompt   Compl   Lat(s)  Max(s) Trunc Loop Parse Fmt Retry Err
+  rag:highlights                  35   102202   10838     3.94    5.61     0    0     0   0     0   0
+  rag:risks                       35    99722   12592     4.54    6.25     0    0     0   0     0   0
+  section:financial_health        40    26839    7352     2.32    2.86     0    0     0   0     0   0
+  section:recent_developments     40    26559    6610     2.24    2.72     0    0     0   0     0   0
+  section:risk_factors            40    16820    7585     2.34    3.02     0    0     0   0     0   0
+  section:sec_filing_highlights    40    15386    6025     1.88    2.66     0    0     0   0     0   0
+  synthesis                       40    71576   48131    18.00   20.41     0    0     0   0     0   0
+  RAG faithfulness  : 12/987 RAG-answer claims unsupported by their own chunks, 1.22% (95% CI 0.7–2.1%) over 70 answers — judge rf-v1, UNVALIDATED, separate from the grounding rate above
+  est. run cost     : $4.0949   (chars/4 tokens priced from scripts/model_prices.json; excludes retries — cost of record stays scripts/cost_report.py)
+
+  GATE PASSED
+==============================================================================
+===EVAL_FINDINGS_TGZ_BEGIN pod=grounding-eval-extended-rerank3-2mzdd-aggregate-2912105395===
+H4sIAAAAAAAAA+3OMQ6CQBQE0D3K3sBdCOxxDIlKSAwkgJ5fQqeFVli918xPZop/fXb3820YL8PYL6dwiLQppey5+cz9zk3V5jbXua5CylVdUojNMe+8eyxrN8cY5mlav+1+9QAAAAAAAAAAAPBHL2aCz4kAKAAA
+===EVAL_FINDINGS_TGZ_END===
+time="2026-10-08T04:04:44.043Z" level=info msg="sub-process exited" argo=true error="<nil>"
+
+=== attempts: retries and failed attempts, from the workflow object and every pod's log (NOT in the aggregate above) ===
+workflow_nodes: 83 node(s) (read from status.compressedNodes)
+attempts of grounding-eval-extended-rerank3-2mzdd (Succeeded): 40 eval pod(s) for 40 ticker(s)
+  Argo retries      : 0
+  failed attempts   : 0 - every eval pod succeeded on its first attempt
+  attempts record written: /home/ubuntu/grounding-eval-extended-rerank3-2mzdd-attempts.json

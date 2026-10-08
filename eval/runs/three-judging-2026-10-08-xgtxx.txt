@@ -1,0 +1,24 @@
+Three judgings per run: raw, eval/runs/rejudge-2026-10-06, eval/runs/rejudge-2026-10-06-r2
+  xgtxx: raw, eval/runs/rejudge-2026-10-08, eval/runs/rejudge-2026-10-08-r2
+Per run (judge v2; j1 = original judging)
+  nstp9
+    all claims: mean 3.57% (range 3.27%–3.75%); j1 10/267 = 3.75%; j2 8/245 = 3.27%; j3 9/243 = 3.70%
+    numeric   : mean 2.42% (range 2.38%–2.47%); j1 4/166 = 2.41%; j2 4/168 = 2.38%; j3 4/162 = 2.47%
+    j1 Wilson: 3.75% (95% CI 2.0–6.8%)
+  4hsn2
+    all claims: mean 2.55% (range 1.47%–3.76%); j1 15/399 = 3.76%; j2 6/408 = 1.47%; j3 10/415 = 2.41%
+    numeric   : mean 0.86% (range 0.73%–1.11%); j1 3/270 = 1.11%; j2 2/272 = 0.74%; j3 2/274 = 0.73%
+    j1 Wilson: 3.76% (95% CI 2.3–6.1%)
+  xgtxx
+    all claims: mean 2.12% (range 1.54%–2.97%); j1 8/269 = 2.97%; j2 4/259 = 1.54%; j3 5/271 = 1.85%
+    numeric   : mean 0.41% (range 0.00%–0.61%); j1 1/163 = 0.61%; j2 1/165 = 0.61%; j3 0/163 = 0.00%
+    j1 Wilson: 2.97% (95% CI 1.5–5.8%)
+Between runs: paired ticker-level bootstrap on per-ticker rates averaged over the three judgings
+  nstp9 - xgtxx
+    rate        : ticker-averaged 3.38% vs 1.63%, diff +1.75 pts (95% bootstrap CI -1.07 to +4.73) over 40 tickers; nstp9 higher on 9, equal 25, xgtxx higher 6; sign p = 0.6072
+    numeric_rate: ticker-averaged 2.87% vs 0.23%, diff +2.64 pts (95% bootstrap CI -0.23 to +6.29) over 39 tickers; nstp9 higher on 3, equal 35, xgtxx higher 1; sign p = 0.6250
+    per-judging Fisher, all claims (continuity only): j1 p = 0.6409; j2 p = 0.2500; j3 p = 0.2782
+  4hsn2 - xgtxx
+    rate        : ticker-averaged 2.16% vs 1.63%, diff +0.53 pts (95% bootstrap CI -1.31 to +2.46) over 40 tickers; 4hsn2 higher on 8, equal 26, xgtxx higher 6; sign p = 0.7905
+    numeric_rate: ticker-averaged 1.09% vs 0.23%, diff +0.86 pts (95% bootstrap CI -0.36 to +2.55) over 39 tickers; 4hsn2 higher on 3, equal 35, xgtxx higher 1; sign p = 0.6250
+    per-judging Fisher, all claims (continuity only): j1 p = 0.6690; j2 p = 1.0000; j3 p = 0.7913

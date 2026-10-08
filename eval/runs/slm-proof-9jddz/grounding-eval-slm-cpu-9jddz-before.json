@@ -1,0 +1,1 @@
+{"build": "b11347-5fc4f3c8c", "counters": {"n_decode_total": 8193.0, "prompt_tokens_cached_total": 0.0, "prompt_tokens_total": 92282.0, "tokens_predicted_total": 22466.0}, "endpoint": "slm-cpu", "model_path": "/models/Qwen3.6-35B-A3B-Q4_K_M.gguf", "url": "http://llamacpp.financial-agent.svc:8080"}

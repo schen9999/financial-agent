@@ -1,0 +1,71 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "trading at $8.06"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `"current_price": 8.06`.
+
+---
+
+CLAIM: "market capitalization of $138.6 million"
+LABEL: SUPPORTED
+REASON: Source data shows `"market_cap": 138583360.0`; $138,583,360 rounds to $138.6 million.
+
+---
+
+CLAIM: "96% decline from its 52-week high of $230.70"
+LABEL: SUPPORTED
+REASON: Source data confirms `"week_52_high": 230.7`; decline = (230.70 − 8.06) / 230.70 = 222.64 / 230.70 ≈ 96.5%, which rounds to 96% — within acceptable tolerance, and the $230.70 figure is explicitly present.
+
+---
+
+CLAIM: "52-week high of $230.70"
+LABEL: SUPPORTED
+REASON: Source data explicitly states `"week_52_high": 230.7`.
+
+---
+
+CLAIM: "trading near its 52-week low of $7.84"
+LABEL: SUPPORTED
+REASON: Source data confirms `"week_52_low": 7.84`; current price of $8.06 vs. low of $7.84 — the stock is $0.22 above its 52-week low, which is arithmetically "near" the low, and the $7.84 figure is explicitly present.
+
+---
+
+CLAIM: "52-week low of $7.84"
+LABEL: SUPPORTED
+REASON: Source data explicitly states `"week_52_low": 7.84`.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "forward earnings profile that remains negative"
+LABEL: SUPPORTED
+REASON: Source data shows `"forward_pe": -0.773186`, confirming a negative forward P/E, which reflects a negative forward earnings profile.
+
+---
+
+No additional specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond the directional/qualitative statements already covered or the forward earnings reference above. All remaining Outlook content is qualitative (e.g., "cautious," "compounding headwinds," "history of losses," "material execution risk") and does not constitute auditable quantitative claims under the defined scope.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Trading at $8.06 | SUPPORTED |
+| 2 | Market cap of $138.6 million | SUPPORTED |
+| 3 | 96% decline from 52-week high | SUPPORTED |
+| 4 | 52-week high of $230.70 | SUPPORTED |
+| 5 | Trading near 52-week low of $7.84 | SUPPORTED |
+| 6 | 52-week low of $7.84 | SUPPORTED |
+| 7 | Forward earnings profile remains negative | SUPPORTED |
+
+All auditable quantitative claims in the Executive Summary and Outlook are **SUPPORTED** by the source data.

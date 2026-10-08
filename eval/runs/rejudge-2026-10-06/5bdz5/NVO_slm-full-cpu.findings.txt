@@ -1,0 +1,62 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number appearing in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating DKK 329.43 billion in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue of 329,430,990,848 DKK, and the pre-written sections consistently state "DKK 329.43 billion," matching to two decimal places.
+
+---
+
+CLAIM: "DKK 116.44 billion in net income"
+LABEL: SUPPORTED
+REASON: The raw source data lists net_income of 116,442,996,736 DKK, which rounds to DKK 116.44 billion, as stated in the pre-written sections and source data.
+
+---
+
+CLAIM: "an exceptional 35.35% profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists profit_margin_pct as 35.35, and this figure is confirmed in the pre-written Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "trading near its 52-week low of $35.12"
+LABEL: SUPPORTED
+REASON: The raw source data lists week_52_low as 35.12 USD; the current price of $37.54 is approximately $2.42 above the 52-week low, which is consistent with "near its 52-week low."
+
+---
+
+CLAIM: "a compelling P/E ratio of 9.18"
+LABEL: SUPPORTED
+REASON: The raw source data lists pe_ratio as 9.178484, which rounds to 9.18, matching the claim exactly.
+
+---
+
+CLAIM: "a strong 4.79% dividend yield"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists dividend_yield as 4.79, matching the claim exactly.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional in nature (e.g., "cautiously constructive," "pace of manufacturing scale-up," "trajectory of pricing negotiations," "competitive response"). There are therefore no quantitative or forward-looking numerical claims in the Outlook section to audit.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | DKK 329.43 billion in revenue | SUPPORTED |
+| 2 | DKK 116.44 billion in net income | SUPPORTED |
+| 3 | 35.35% profit margin | SUPPORTED |
+| 4 | 52-week low of $35.12 | SUPPORTED |
+| 5 | P/E ratio of 9.18 | SUPPORTED |
+| 6 | 4.79% dividend yield | SUPPORTED |
+
+All six auditable quantitative claims in the Executive Summary are **SUPPORTED** by the raw source data. The Outlook section contains no auditable quantitative claims.

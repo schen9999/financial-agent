@@ -1,0 +1,55 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $48.28 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists `market_cap: 48282157056.0`, which equals approximately $48.28 billion, and the same figure appears in the Financial Health pre-written section.
+
+---
+
+CLAIM: "net loss of $987.77 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `net_income: -987766016.0`, which rounds to -$987.77 million, consistent with the Financial Health section.
+
+---
+
+CLAIM: "trailing revenue of $6.04 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists `revenue: 6043752960.0`, which equals approximately $6.04 billion, consistent with the Financial Health section.
+
+---
+
+CLAIM: "high forward P/E ratio of 64.66"
+LABEL: SUPPORTED
+REASON: The raw source data lists `forward_pe: 64.659744`, which rounds to 64.66, consistent with the Financial Health section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "potential for normalized trading volumes"
+LABEL: INFERENCE
+REASON: This is a directional forward-looking restatement derivable from the source data's repeated emphasis on revenue dependence on trading volumes and their high volatility, though no specific normalized volume figure is cited.
+
+---
+
+CLAIM: "long-term institutionalization of digital assets"
+LABEL: UNSUPPORTED
+REASON: Neither the raw source data, the SEC filing summaries, nor any pre-written section contains any reference to "institutionalization of digital assets" as a named trend or forward-looking driver.
+
+---
+
+CLAIM: "subscription and services revenue relative to transactional volatility"
+LABEL: SUPPORTED
+REASON: The SEC Highlights and pre-written SEC Filing Highlights section explicitly state that subscription and services revenue has grown and is influenced by stablecoin activity, and that revenue is substantially dependent on transaction volumes, grounding this qualitative comparison in the source data.
+
+---
+
+*Note: The Outlook section contains no additional specific quantitative figures, price targets, thresholds, ratios, or named product milestones beyond those addressed above. All remaining claims in the Outlook are qualitative or directional and do not constitute quantitative or forward-looking numerical claims subject to the audit criteria.*

@@ -1,0 +1,52 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$775.7 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $775,680,032,768, which rounds to $775.7 billion; the pre-written Financial Health section also states "$775.7 billion."
+
+---
+
+CLAIM: "$2.8 trillion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $2,803,578,699,776, which rounds to $2.8 trillion; confirmed in the pre-written Financial Health section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "strong profit margins"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct of 17.44%, and the pre-written Financial Health section characterizes this as "solid operational efficiency," supporting the characterization of strong profit margins.
+
+---
+
+CLAIM: "data center supply constraints emerging from local regulatory moratoriums"
+LABEL: SUPPORTED
+REASON: The Bloomberg news article dated 2026-09-21 explicitly states "Communities across the country are now pushing through moratoriums on new construction," and this is reflected in the pre-written Recent Developments section.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already evaluated above. The remaining claims in the Outlook are qualitative directional statements — e.g., "cautiously constructive," "strengthen," "turn more cautious" — and references to named markets/segments such as China, India, AWS, AI, and automation, which are drawn from the Risk Factors section and carry no specific quantitative claims requiring arithmetic verification.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $775.7 billion in annual revenue | SUPPORTED |
+| 2 | $2.8 trillion market capitalization | SUPPORTED |
+| 3 | Strong profit margins (implied by context) | SUPPORTED |
+| 4 | Data center regulatory moratoriums constraining supply | SUPPORTED |
+
+---
+
+**AUDITOR'S NOTE:** The Executive Summary and Outlook sections are notably sparse in specific quantitative claims beyond revenue and market cap. The AI author largely avoided introducing new figures not present in the source data. No price targets, P/E ratios, net income figures, 52-week high/low references, dividend yield figures, or forward-looking numerical thresholds appear in the audited sections — even though such figures exist in the source data and pre-written sections. All four identifiable verifiable claims check out as SUPPORTED.

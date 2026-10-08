@@ -1,0 +1,71 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections, then evaluate each.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $20.7 billion"
+LABEL: SUPPORTED
+REASON: The source data lists market_cap as $20,704,407,552, which rounds to approximately $20.7 billion, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "net income of -$3.23 billion"
+LABEL: SUPPORTED
+REASON: The source data lists net_income as -$3,232,999,936, which rounds to -$3.23 billion, matching the pre-written Financial Health section.
+
+---
+
+CLAIM: "$5.88 billion in revenue"
+LABEL: SUPPORTED
+REASON: The source data lists revenue as $5,882,999,808, which rounds to $5.88 billion, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "joint venture with Volkswagen"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Summaries explicitly describe an equally-owned joint venture between Rivian and Volkswagen Group for next-generation electrical architecture and software technology.
+
+---
+
+CLAIM: "R2 platform launch"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state that customer deliveries for the R2 platform are expected to begin in Q2 2026, confirming the R2 platform as a named milestone.
+
+---
+
+CLAIM: "monetization of new software features"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state that fees for Autonomy+ features are expected to begin in April 2026, confirming the forward-looking monetization of software features.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "Normal Factory as it transitions to the R2 platform"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights confirm vehicles are manufactured at the Normal Factory in Illinois and that R2 deliveries are expected to begin in Q2 2026, supporting the transition reference.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, percentages, or named product milestones with numerical specificity appear in the Outlook section beyond those already captured above or referenced qualitatively without numbers.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | ~$20.7 billion market cap | SUPPORTED |
+| 2 | Net income of -$3.23 billion | SUPPORTED |
+| 3 | $5.88 billion in revenue | SUPPORTED |
+| 4 | Joint venture with Volkswagen | SUPPORTED |
+| 5 | R2 platform launch (milestone) | SUPPORTED |
+| 6 | Monetization of new software features | SUPPORTED |
+| 7 | Normal Factory / R2 platform transition | SUPPORTED |
+
+**All auditable quantitative and forward-looking claims in the Executive Summary and Outlook are SUPPORTED by the source data.** No figures were found to be unsupported or requiring inference beyond direct rounding from the raw data.

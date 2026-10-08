@@ -1,0 +1,30 @@
+# slm-full-gpu at PARALLELISM 4: the A10 capacity check's eval leg (the
+# replay sweep, scripts/capacity_replay.py, measured the server alone).
+# Identical to argo/eval-run-extended-slm-gpu.yaml except spec.parallelism,
+# which overrides the WorkflowTemplate's 2: four eval pods at a time, each
+# sending its section and RAG calls to the endpoint's 4 slots (32,768-token
+# context shared, --kv-unified; nstp9's largest call was 4,215 tokens, so
+# 4 in flight always fit). Submit with the traffic proof, never bare:
+#   make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-extended-slm-gpu-p4.yaml
+# behind make run-time-check against nstp9 (its projection uses nstp9's
+# parallelism 2, so it over-counts the waves: conservative).
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: grounding-eval-extended-slm-gpu-p4-
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  workflowTemplateRef:
+    name: grounding-eval
+  activeDeadlineSeconds: 28800
+  parallelism: 4
+  arguments:
+    parameters:
+      - name: arms
+        value: slm-full-gpu
+      - name: ticker-deadline-seconds
+        value: "3600"
+      - name: tickers
+        value: '["AAPL","MSFT","GOOGL","AMZN","NVDA","META","TSLA","JPM","V","WMT","XOM","UNH","UPST","AFRM","RIVN","LCID","SNAP","PTON","ROKU","COIN","CALM","SFIX","RDFN","BYND","CHGG","BLNK","OMER","EVGO","OCGN","EDIT","SANA","CRBU","VERV","BEAM","NTLA","TSM","NVO","BABA","TM","SAP"]'

@@ -1,0 +1,85 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "market capitalization of $1.49 trillion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 1,492,178,567,168.0 USD ≈ $1.49 trillion, and the pre-written Financial Health section states "$1.49 trillion."
+
+---
+
+CLAIM: "annual revenue of $103.6 billion"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 103,619,002,368.0 USD ≈ $103.6 billion, consistent with the pre-written section.
+
+---
+
+CLAIM: "net profit margin of 3.67%"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 3.67.
+
+---
+
+CLAIM: "P/E ratio of 349.82"
+LABEL: SUPPORTED
+REASON: Source data explicitly states pe_ratio = 349.82407, which rounds to 349.82.
+
+---
+
+CLAIM: "trading well below its 52-week high of $498.83"
+LABEL: SUPPORTED
+REASON: Source data confirms week_52_high = 498.83 and current_price = 377.81; $377.81 is $121.02 below $498.83, which is arithmetically "well below" (approximately 24.3% below the high).
+
+---
+
+CLAIM: "forward P/E of 176.16"
+LABEL: SUPPORTED
+REASON: Source data explicitly states forward_pe = 176.15654, which rounds to 176.16.
+
+---
+
+CLAIM: "Cybercab and Robotaxi" (as named product milestones)
+LABEL: SUPPORTED
+REASON: Both "Cybercab" and "Robotaxi" are explicitly named in the RAG — SEC Highlights and RAG — Risk Factors sections as products under development.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "regulatory developments around the Cybercab and Robotaxi"
+LABEL: SUPPORTED
+REASON: Cybercab and Robotaxi are named in the SEC filing highlights as products with uncertain consumer adoption timelines and regulatory context implied by autonomous driving risk disclosures; both product names appear explicitly in the source RAG sections.
+
+---
+
+CLAIM: "internal battery cell production ramps successfully enough to reduce external procurement costs"
+LABEL: INFERENCE
+REASON: The source data states Tesla intends to supplement supplier-sourced cells with internally manufactured batteries and that failure could force procurement at higher costs; the directional claim that successful internal ramp would reduce external procurement costs is a direct logical inversion of the stated risk, derivable without any absent fact.
+
+---
+
+*(No other specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, or named product milestones appear in the Outlook section beyond those already evaluated above.)*
+
+---
+
+## SUMMARY TABLE
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap $1.49 trillion | SUPPORTED |
+| 2 | Annual revenue $103.6 billion | SUPPORTED |
+| 3 | Net profit margin 3.67% | SUPPORTED |
+| 4 | P/E ratio of 349.82 | SUPPORTED |
+| 5 | Trading well below 52-week high of $498.83 | SUPPORTED |
+| 6 | Forward P/E of 176.16 | SUPPORTED |
+| 7 | Cybercab and Robotaxi as named product milestones | SUPPORTED |
+| 8 | Regulatory developments around Cybercab and Robotaxi | SUPPORTED |
+| 9 | Internal battery ramp reducing external procurement costs | INFERENCE |
+
+**No UNSUPPORTED claims were identified.** All quantitative figures in the Executive Summary and Outlook are either directly present in the source data or derivable from it. The one INFERENCE is a straightforward logical inversion of an explicitly stated risk.

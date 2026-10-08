@@ -1,0 +1,64 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $22.68 billion"
+LABEL: SUPPORTED
+REASON: Source data shows `market_cap: 22681288704.0`, which equals approximately $22.68 billion; the Pre-written Financial Health section also states "approximately $22.68 billion."
+
+---
+
+CLAIM: "net profit margin of 6.82%"
+LABEL: SUPPORTED
+REASON: Source data explicitly states `profit_margin_pct: 6.82`, confirmed in both the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "$5.21 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows `revenue: 5209110016.0`, which equals approximately $5.21 billion; the Financial Health section also states "annual revenue of $5.21 billion."
+
+---
+
+CLAIM: "trading near its 52-week high of $159.89"
+LABEL: SUPPORTED
+REASON: Source data shows `week_52_high: 159.89` and `current_price: 152.725`; at ~95.5% of the 52-week high, "near its 52-week high" is arithmetically supported, and the exact figure $159.89 matches the source.
+
+---
+
+CLAIM: "forward P/E of 38.65"
+LABEL: SUPPORTED
+REASON: Source data shows `forward_pe: 38.64607`, which rounds to 38.65; the Financial Health and Recent Developments sections also state 38.65.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "well-capitalized competitors like Amazon, Apple, and Google"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and SEC Filing Highlights pre-written section explicitly name Amazon, Apple, and Google as major competitors with greater financial resources.
+
+---
+
+*(No additional quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond the competitor names already evaluated above. All other statements in the Outlook are qualitative directional assertions — "cautiously constructive," "remains sensitive," "would be strengthened," "would weaken" — with no specific numerical claims to audit.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap ~$22.68 billion | SUPPORTED |
+| 2 | Net profit margin 6.82% | SUPPORTED |
+| 3 | $5.21 billion annual revenue | SUPPORTED |
+| 4 | 52-week high of $159.89 | SUPPORTED |
+| 5 | Forward P/E of 38.65 | SUPPORTED |
+| 6 | Competitors Amazon, Apple, Google | SUPPORTED |
+
+All auditable claims in the Executive Summary and Outlook are supported by the source data. No unsupported or inference-only claims were identified.

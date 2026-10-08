@@ -1,0 +1,85 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating revenue of 329.4 billion DKK"
+LABEL: SUPPORTED
+REASON: Source data lists revenue of 329,430,990,848 DKK (financial_currency: DKK), which rounds to 329.4 billion DKK; the Pre-written Financial Health section also states this figure explicitly.
+
+---
+
+CLAIM: "net income of 116.4 billion DKK"
+LABEL: SUPPORTED
+REASON: Source data lists net_income of 116,442,996,736 DKK, which rounds to 116.4 billion DKK; confirmed in the Pre-written Financial Health section.
+
+---
+
+CLAIM: "35.35% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct: 35.35, and the Pre-written Financial Health section repeats this figure.
+
+---
+
+CLAIM: "trades at $38.26"
+LABEL: SUPPORTED
+REASON: Source data lists current_price: 38.26 USD, confirmed in the Pre-written Financial Health section.
+
+---
+
+CLAIM: "a steep discount to its 52-week high of $64.16"
+LABEL: SUPPORTED
+REASON: Source data lists week_52_high: 64.16; $38.26 vs. $64.16 represents a ~40.4% decline, which is arithmetically a steep discount, and the 52-week high figure is explicitly present in the source data.
+
+---
+
+CLAIM: "a low P/E of 9.35x"
+LABEL: SUPPORTED
+REASON: Source data lists pe_ratio: 9.354523, which rounds to 9.35x; confirmed in the Pre-written Financial Health section.
+
+---
+
+CLAIM: "a forward P/E of 11.50x"
+LABEL: SUPPORTED
+REASON: Source data lists forward_pe: 11.501758, which rounds to 11.50x; confirmed in the Pre-written Financial Health section.
+
+---
+
+CLAIM: "a 4.7% dividend yield"
+LABEL: SUPPORTED
+REASON: Source data lists dividend_yield: 4.7, confirmed in the Pre-written Financial Health section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "industry-leading profit margins"
+LABEL: INFERENCE
+REASON: The 35.35% profit margin is present in the source data; "industry-leading" is a directional characterization derivable from the Pre-written Financial Health section's description of it as "exceptional" and demonstrating "operational excellence and pricing power in the pharmaceutical sector," though no explicit industry benchmark is provided for direct comparison.
+
+---
+
+CLAIM: "intensifying competition from Eli Lilly, Roche, and a growing field of GLP-1 entrants"
+LABEL: SUPPORTED
+REASON: The Pre-written Risk Factors section explicitly names Eli Lilly and Roche as competitors in the GLP-1 market and references "other manufacturers," directly supporting this claim.
+
+---
+
+CLAIM: "the company's exceptional margins" (implicitly referencing 35.35%)
+LABEL: SUPPORTED
+REASON: The 35.35% profit margin figure is present in the source data and is described as "exceptional" and "elevated" in the Pre-written sections, providing direct grounding for this characterization.
+
+---
+
+CLAIM: "the absence of recent financial disclosures"
+LABEL: SUPPORTED
+REASON: Source data SEC filings show "No 10-K found" and "No 10-Q found," and the Pre-written SEC Filing Highlights section explicitly states no recent filings were available for review.
+
+---
+
+*No additional standalone quantitative figures, price targets, thresholds, ratios, or forward-looking numbers appear in the Outlook section beyond those already audited above or those that are qualitative/directional in nature.*

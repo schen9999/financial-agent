@@ -1,0 +1,32 @@
+{
+  "population": {
+    "U": 29,
+    "I": 76,
+    "W": 174,
+    "S": 496
+  },
+  "sample": {
+    "U": 29,
+    "I": 30,
+    "W": 40,
+    "S": 81
+  },
+  "targets": {
+    "U": 60,
+    "I": 30,
+    "W": 40
+  },
+  "total": 180,
+  "seed": 20261006,
+  "excluded_as_earlier": 18,
+  "runs": [
+    "4hsn2",
+    "nstp9"
+  ],
+  "judgings": [
+    "raw",
+    "eval/runs/rejudge-2026-10-06",
+    "eval/runs/rejudge-2026-10-06-r2"
+  ],
+  "matching": "normalized equal / containment / content-word Jaccard >= 0.6"
+}

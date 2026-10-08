@@ -1,0 +1,55 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "market capitalization of approximately $1.49 trillion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 1,492,178,567,168.0 USD ≈ $1.49 trillion, and the Financial Health pre-written section states "approximately $1.49 trillion."
+
+---
+
+CLAIM: "annual revenue of $103.62 billion"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 103,619,002,368.0 USD ≈ $103.62 billion, consistent with the Financial Health section.
+
+---
+
+CLAIM: "trailing P/E ratio of 349.82"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 349.82407, which rounds to 349.82 as stated.
+
+---
+
+CLAIM: "current profit margins of only 3.67%"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists profit_margin_pct = 3.67.
+
+---
+
+CLAIM: "the Cybercab" (as a named product milestone)
+LABEL: SUPPORTED
+REASON: The Cybercab is explicitly named in both the RAG SEC Highlights and RAG Risk Factors sections as a product under development with associated ramp and regulatory risks.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "margin trajectory of the services and energy segments"
+LABEL: UNSUPPORTED
+REASON: No segment-level margin data for services or energy segments appears anywhere in the source data, pre-written sections, or SEC filing summaries; these specific segment labels are absent from the context.
+
+---
+
+CLAIM: "further deterioration in automotive gross margins"
+LABEL: UNSUPPORTED
+REASON: No automotive gross margin figure, trend, or segment breakdown is present anywhere in the source data or pre-written sections; the context provides only an overall profit margin of 3.67%, making any reference to a distinct "automotive gross margin" metric unsupported.
+
+---
+
+*(All other statements in the Outlook — supply chain bottlenecks for critical raw materials, regulatory progress on autonomous driving, vertical integration efforts, AI-driven efficiency, competition, execution risks in new product ramps, production delays, regulatory approvals for novel products — are qualitative directional claims drawn from the SEC highlights and risk factors sections and contain no specific quantitative figures, price targets, thresholds, ratios, or named forward-looking numbers requiring numerical verification under the audit scope.)*

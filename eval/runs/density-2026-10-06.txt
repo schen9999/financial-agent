@@ -1,0 +1,39 @@
+Judge-independent: numbers stated in the audited text
+  9jzmj    mean  6.80 per brief (40 briefs)
+  8vpq6    mean  3.70 per brief (40 briefs)
+  p9jr2    mean  3.42 per brief (40 briefs)
+  4hsn2    mean  6.45 per brief (40 briefs)
+  nstp9    mean  3.90 per brief (40 briefs)
+  5bdz5    mean  3.70 per brief (40 briefs)
+  9jzmj - 8vpq6: +3.10 (95% bootstrap CI +2.17 to +4.15); 9jzmj more on 33, equal 6, 8vpq6 more 1; sign p = 4.1e-09
+  9jzmj - p9jr2: +3.38 (95% bootstrap CI +2.45 to +4.47); 9jzmj more on 36, equal 3, p9jr2 more 1; sign p = 5.5e-10
+  8vpq6 - p9jr2: +0.28 (95% bootstrap CI -0.23 to +0.78); 8vpq6 more on 18, equal 9, p9jr2 more 13; sign p = 0.4731
+  4hsn2 - 5bdz5: +2.75 (95% bootstrap CI +1.95 to +3.65); 4hsn2 more on 33, equal 3, 5bdz5 more 4; sign p = 1.1e-06
+  4hsn2 - nstp9: +2.55 (95% bootstrap CI +1.77 to +3.38); 4hsn2 more on 31, equal 4, nstp9 more 5; sign p = 1.3e-05
+  5bdz5 - nstp9: -0.20 (95% bootstrap CI -0.62 to +0.23); 5bdz5 more on 15, equal 7, nstp9 more 18; sign p = 0.7283
+Judge-independent, conservative: figures bound to a stock-data field
+  9jzmj    mean  4.62 per brief (40 briefs)
+  8vpq6    mean  3.00 per brief (40 briefs)
+  p9jr2    mean  2.83 per brief (40 briefs)
+  4hsn2    mean  4.47 per brief (40 briefs)
+  nstp9    mean  3.05 per brief (40 briefs)
+  5bdz5    mean  3.00 per brief (40 briefs)
+  9jzmj - 8vpq6: +1.62 (95% bootstrap CI +1.02 to +2.23); 9jzmj more on 28, equal 6, 8vpq6 more 6; sign p = 0.0002
+  9jzmj - p9jr2: +1.80 (95% bootstrap CI +1.32 to +2.30); 9jzmj more on 30, equal 9, p9jr2 more 1; sign p = 3.0e-08
+  8vpq6 - p9jr2: +0.17 (95% bootstrap CI -0.28 to +0.62); 8vpq6 more on 18, equal 10, p9jr2 more 12; sign p = 0.3616
+  4hsn2 - 5bdz5: +1.48 (95% bootstrap CI +0.97 to +2.00); 4hsn2 more on 27, equal 10, 5bdz5 more 3; sign p = 8.4e-06
+  4hsn2 - nstp9: +1.43 (95% bootstrap CI +0.93 to +1.93); 4hsn2 more on 27, equal 8, nstp9 more 5; sign p = 0.0001
+  5bdz5 - nstp9: -0.05 (95% bootstrap CI -0.50 to +0.38); 5bdz5 more on 12, equal 15, nstp9 more 13; sign p = 1.0000
+Judge-based: numeric claims per brief (rejudge-2026-10-06)
+  9jzmj    mean  6.97 per brief (40 briefs)
+  8vpq6    mean  4.00 per brief (40 briefs)
+  p9jr2    mean  3.98 per brief (40 briefs)
+  4hsn2    mean  6.80 per brief (40 briefs)
+  nstp9    mean  4.20 per brief (40 briefs)
+  5bdz5    mean  4.05 per brief (40 briefs)
+  9jzmj - 8vpq6: +2.98 (95% bootstrap CI +2.20 to +3.77); 9jzmj more on 34, equal 4, 8vpq6 more 2; sign p = 1.9e-08
+  9jzmj - p9jr2: +3.00 (95% bootstrap CI +2.25 to +3.80); 9jzmj more on 35, equal 3, p9jr2 more 2; sign p = 1.0e-08
+  8vpq6 - p9jr2: +0.03 (95% bootstrap CI -0.50 to +0.57); 8vpq6 more on 17, equal 6, p9jr2 more 17; sign p = 1.0000
+  4hsn2 - 5bdz5: +2.75 (95% bootstrap CI +2.02 to +3.50); 4hsn2 more on 35, equal 1, 5bdz5 more 4; sign p = 3.4e-07
+  4hsn2 - nstp9: +2.60 (95% bootstrap CI +1.88 to +3.35); 4hsn2 more on 30, equal 6, nstp9 more 4; sign p = 6.2e-06
+  5bdz5 - nstp9: -0.15 (95% bootstrap CI -0.57 to +0.28); 5bdz5 more on 14, equal 10, nstp9 more 16; sign p = 0.8555

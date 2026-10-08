@@ -1,0 +1,97 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$5.9 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $5,882,999,808, which rounds to $5.9 billion; the pre-written Financial Health section also states "$5.9 billion in revenue."
+
+---
+
+CLAIM: "$20.7 billion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $20,704,407,552, which rounds to $20.7 billion; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "net loss of $3.2 billion"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$3,232,999,936, which rounds to -$3.2 billion; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "Trading near its 52-week low of $12.39"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists week_52_low as $12.39; confirmed in the pre-written Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "at a current price of $14.30"
+LABEL: SUPPORTED
+REASON: Source data shows current_price of $14.30; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "planned April 2026 launch of Autonomy+ subscription fees"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section both explicitly state "planned Autonomy+ subscription fees beginning April 2026."
+
+---
+
+CLAIM: "R2 launch and begin Q2 2026 customer deliveries on schedule"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "The company expects to begin customer deliveries of the R2 model in Q2 2026," confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "Autonomy+ subscriptions"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section both reference Autonomy+ as a planned subscription service with fees beginning April 2026.
+
+---
+
+CLAIM: "FleetOS"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly names FleetOS as "the proprietary fleet management platform, offered as a subscription service for commercial vehicles," confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "expansion of Universal Hands Free to a meaningful road network"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights states Universal Hands Free expanded "from fewer than 150,000 miles to over 3.5 million miles of road availability," confirmed in the SEC Filing Highlights pre-written section; the characterization of "meaningful road network" is a qualitative restatement of the 3.5+ million miles figure present in the source.
+
+---
+
+CLAIM: "planned R2 launch"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section both confirm R2 customer deliveries expected in Q2 2026.
+
+---
+
+CLAIM: "on-time execution of R2 deliveries beginning Q2 2026"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "The company expects to begin customer deliveries of the R2 model in Q2 2026," confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "adoption rate and margin profile of software and services offerings (particularly Autonomy+ once fees begin in April 2026)"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section both confirm Autonomy+ subscription fees are planned to begin April 2026.
+
+---
+
+CLAIM: "progress toward positive unit economics at the Normal facility"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights confirms Rivian's manufacturing facility is located in Normal, Illinois with an annual capacity of 215,000 vehicles; the reference to the Normal facility is grounded in the source data.
+
+---
+
+**SUMMARY NOTE:** No quantitative claims in the Outlook section introduce new figures beyond those already audited in the Executive Summary. All forward-looking milestones (R2 Q2 2026, Autonomy+ April 2026, FleetOS, Universal Hands Free, VW joint venture) are traceable to the RAG SEC Highlights or pre-written sections. No figures fail arithmetic checks, period-label checks, or presence checks.

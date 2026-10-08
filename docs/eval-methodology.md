@@ -5,7 +5,7 @@ The centerpiece of this project is not the UI; it is that grounding is
 The grounding number of record: **12/392 = 3.06% unsupported (Wilson 95%
 CI 1.8–5.3%)**, hosted baseline `j4cnp` (2026-09-05/06), judge v2, fixed
 retrieval, 40 tickers. That is the judge-flagged rate; the reweighted true-rate estimate 5.7% (CI 3.5–9.9%),
-from the v2 calibration of record: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED). The former "49% pre-fix → 0/84"
+from the v2 September calibration (2026-09-24): precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED). The former "49% pre-fix → 0/84"
 (judge v1, pre-retrieval-fix, 2026-08-24) is a dated record only. Never a
 bare rate or a bare 0%.
 
@@ -95,7 +95,7 @@ rows, recovered post-hoc from containerd snapshots into
 UNSUPPORTED verdict was free-form, carried with claim=null; findings
 dumps are now a standing part of every run — see the runbook's
 findings-capture section). Calibration: this is a judge-flagged rate
-(judge v2 calibration of record: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED)); no reweighted estimate is computed for
+(judge v2 September calibration (2026-09-24): precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED)); no reweighted estimate is computed for
 this run. **Not the number of
 record**: superseded as a baseline by `j4cnp` (below, same tickers on
 the rebuilt image).
@@ -122,7 +122,7 @@ and the local arm's interval sits entirely above the gate. The ship-off
 decision for `USE_LOCAL_MODEL` now rests on this clearly separated
 40-ticker A/B (the earlier, underpowered measurements agree in
 direction). Calibration: these are judge-flagged rates (judge v2
-calibration of record: precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED)). Reweighted true-rate estimates (`eval/reweight_calibration.py`):
+September calibration (2026-09-24): precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED)). Reweighted true-rate estimates (`eval/reweight_calibration.py`):
 `j4cnp` 5.7% (CI 3.5–9.9%), `lsnnc` 8.3% (CI 5.5–12.5%). The A/B
 direction (3.06% vs 8.15%, p = 0.0023) and the per-section attribution
 stand: the same judge scored both arms, so its misses apply to both.
@@ -148,7 +148,7 @@ overall A/B above is the measured result, the buckets are diagnostic):
 The headline is the judge-flagged comparison above (0.50% vs 19.82%,
 p = 4.6e-10). The sensitivity row reweights each bucket with
 `eval/reweight_calibration.py --by-section`, which assumes one
-judge-SUPPORTED miss rate (4/123 in the calibration of record) shared across
+judge-SUPPORTED miss rate (4/123 in the September calibration (2026-09-24)) shared across
 both arms and all sections; the sample cannot say whether misses
 differ by arm or section. Under that assumption the baseline's FH + RF
 estimate is almost entirely the assumed miss rate applied to its 199
@@ -261,7 +261,7 @@ Not supported: a size curve. The hosted arm is a different model family
 are not points on one scaling line; only the three Qwen2.5 arms share a
 family.
 
-Calibration: every rate here is a judge-flagged rate (judge v2 calibration of record:
+Calibration: every rate here is a judge-flagged rate (judge v2 September calibration (2026-09-24):
 precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED)). No reweighted estimate is computed: the held-out miss rates
 were measured on `j4cnp`/`lsnnc` claims and are not extended to other
 models. Comparisons hold in direction because all arms share the judge. A four-arm held-out sample is
@@ -427,7 +427,7 @@ side behind unchanged model IDs, which the repository cannot show.
 Split by that news change (2026-09-27, `eval/compare_runs.py pooled --news-split eval/runs/raw/j4cnp-findings eval/runs/raw/kcf7s-findings`): the 11 news-changed tickers went from 8/218 = 3.67% to 1/224 = 0.45% (p = 0.019), the other 29 from 16/560 = 2.86% to 10/548 = 1.82% (p = 0.32), so the drop concentrates where the news changed; this is a post hoc split of mostly large-cap names, suggestive rather than confirmation.
 
 **What it changes.** Nothing of record. The grounding number of record
-stays `j4cnp` 12/392 = 3.06%, and the calibration of record still
+stays `j4cnp` 12/392 = 3.06%, and the September calibration (2026-09-24) still
 reweights to `j4cnp`'s population (354 S / 12 U / 26 I). The hosted
 baseline to compare against is dated: quote the image with the rate.
 
@@ -731,7 +731,7 @@ p = 0.82.
   UNSUPPORTED, OMER INFERENCE, VERV SUPPORTED); they count in the totals
   and land in "unattributed". The aggregate's estimated run cost was
   $2.40.
-- Judge-flagged rates (judge v2; calibration of record: precision 60%
+- Judge-flagged rates (judge v2; September calibration (2026-09-24): precision 60%
   (9/15, CI 35.7–80.2%), population-weighted recall 32.5% on the baseline
   run (CI 16.0–52.4%)). No reweighted estimate: the calibration miss
   rates were measured on `j4cnp`/`lsnnc` claims and are not extended to
@@ -1130,6 +1130,1712 @@ small (51 of 323). Its own errors are mostly power-of-ten slips: 239 of
 the 245 other TRUE_ERROR mismatches, mainly market cap (117) and net
 income (86).
 
+## Self-served SLM arm (`slm-full-*`): method (set up 2026-10-02) and the 2026-10-03 smokes
+
+This section is the method `slm-full` runs are reported under. Run so far:
+one 10-ticker CPU smoke (`nb6r6`, 2026-10-03, "Smokes on image `2dd1aa3`"
+below). Since then, on image `1f51dad`: CPU smoke `wnrjr`, CPU extended
+`8vpq6` (2026-10-04), GPU smoke `k6zxd` and GPU extended `p9jr2`
+(2026-10-05), all with traffic proof EXACT — "CPU SLM extended run
+`8vpq6`" and "GPU SLM extended run `p9jr2`" below. Model: Qwen3.6-35B-A3B (MoE, 35B total / 3B active,
+vision-language; served text-only), one artifact for both endpoints:
+`ggml-org/Qwen3.6-35B-A3B-GGUF` @`baec3eb` `Qwen3.6-35B-A3B-Q4_K_M.gguf`
+(20,419,565,568 bytes, sha256 `671e47e0…40c7`), on llama.cpp `llama-server`
+build b11347 (`5fc4f3c`).
+
+**What it routes.** Under `SLM_FULL=true` every agent LLM call goes to one
+OpenAI-compatible endpoint (`agent/tools/slm.py`): the four sections, the
+synthesis, the SEC RAG answer synthesis (per query; `Settings.llm` is never
+touched), and — outside the eval — the multi-agent planner and synthesis
+and the ReAct `/ask` agent. The grounding judge stays Sonnet,
+`JUDGE_PROMPT_VERSION` v2, inputs unchanged, so the v2 calibration applies
+to the main rate. The multi-agent critic also stays Sonnet: it is the one
+hosted dependency of the SLM path, and only when `MULTI_AGENT_ENABLED` is on.
+There is no hosted fallback; config errors, HTTP errors and unparseable
+structured output raise.
+
+**Arms and endpoints.** `slm-full-cpu` → llama.cpp CPU build on OKE
+(`k8s/llamacpp/overlays/oke-cpu`: 8 threads, 8 CPU / 30Gi, VM.Standard.E5.Flex);
+`slm-full-gpu` → CUDA 12.8.1 build on node 2's A10
+(`k8s/llamacpp/overlays/k3s-gpu`, all layers on the GPU). Same GGUF, same
+engine release, same server args except threads / GPU layers, so CPU vs GPU
+compares hardware only. If the GPU needs `--n-cpu-moe`, the endpoint serves
+`…-hybrid-ncmoe<n>` and every table labels that run **hybrid**, never GPU.
+The GPU layout is evidenced by llama-server's own memory in `nvidia-smi`,
+not by a log line: b11347 logs no layer offload at default verbosity. On
+2026-10-03 `/app/llama-server` held 20,488 MiB of the A10's 23,028 MiB
+with `--n-gpu-layers all --n-cpu-moe 0` — the whole GGUF on the GPU
+(`make vm-llamacpp` prints and checks this).
+Retrieval is the baseline arm's (no rerank, top-3), and both arms run the
+same RAG pipeline: llama_index's default `compact` response mode, one
+answer call per query (the three retrieved chunks fit one prompt under
+either arm's context window), same prompt template, temperature and cap.
+
+**Request settings, sent explicitly on every call** (llama-server applies
+its own defaults to anything omitted, `min_p` 0.05 among them). Temperature
+mirrors the hosted call each site replaces (sections 0.1, synthesis 0.2,
+RAG 0.1, planner and ReAct 0); `top_p` 0.8 and `top_k` 20 from the Qwen3.6
+card; `min_p` 0, presence/frequency penalty 0, `repeat_penalty` 1.0 (none),
+DRY / XTC / typical / top-n-sigma neutral. Thinking off per request
+(`chat_template_kwargs.enable_thinking: false`, `LOCAL_MODEL_THINKING`);
+Qwen3.6 thinks by default and does not support the `/no_think` switch.
+`max_tokens` per site, sized from the largest committed outputs
+(`python eval/findings_scan.py eval/runs/raw/*-findings`, chars/4): sections
+768 (hosted max 331), synthesis 4096 (hosted max 1,719), planner and ReAct
+1024. RAG answers get one budget in both arms: `RAG_MAX_TOKENS` = 2048
+(`agent/tools/slm.py`), read by the SLM `rag` profile and passed to the
+hosted llama_index Anthropic LLM (`agent/tools/rag.py`); a test holds the
+two together (`tests/test_rag_settings.py`). Through image `2dd1aa3` both
+arms ran llama_index's Anthropic default of 512, which truncated 13 of the
+20 SLM answers on smoke `nb6r6` and none of the hosted smoke's 20 (`x2cx8`,
+max 456 tokens). **Consequence for the hosted arm: a hosted run on an image
+with the 2048 cap is not the `j4cnp` pipeline exactly — hosted answers that
+were cut at 512 now complete.** On the 40-ticker set that is at least the
+SFIX risk-factors answer, which stops mid-structure in `j4cnp` (on a
+dangling `## Tax-Related Risks` heading), `kcf7s` (`## Tax`) and `dvvxk`
+(`**Intellectual Property**:`). Runs before the ledger recorded no finish
+reason, so a cut that happened to land on a sentence end cannot be counted;
+"at least one of ~70 answers per run" is all the committed findings show.
+`j4cnp` was the number of record until 2026-10-05, measured under the 512
+cap; the same-image three-way below replaced it. (Committed
+RAG answers reach 693 tokens by chars/4 under that cap, so chars/4
+overstates Claude's token count.) The value is sized from a measurement
+("RAG natural-length pre-check" below: the smoke's 20 SLM answers ran to a
+max of 854 tokens when nothing cut them), and truncations stay counted per
+run. The full set is in each run's provenance.
+
+**Counted per run** (the LLM ledger, `agent/llm_ledger.py`; findings
+metadata, result rows, aggregate): calls, prompt/completion tokens and
+latency per call site, per-step wall time, truncations (`finish_reason`
+length), repetition loops (a run of 5–60 words repeated three times back to
+back; retroactively, `eval/findings_scan.py` finds 0 in every committed
+hosted, 1.5B-base and 7B-base run and 19 in the fine-tune arms' sections —
+`lsnnc` 3, `r5nzh` 5, `v924f` 11, each one sentence restated back to back),
+parse failures (unparseable tool calls; planner JSON, retried once),
+format failures (Executive Summary / Outlook missing: retried once, then
+the ticker fails loudly — 0 of the 370 committed findings files would have),
+retries, and `stock block empty`. Failed tickers keep their ledger.
+
+**Traffic proof.** llama-server has no request counter, but its token
+counters are exact: over a run, Δ`tokens_predicted_total` and
+Δ(`prompt_tokens_total` + `prompt_tokens_cached_total`) equal the summed
+`usage` the harness recorded (verified against a live llama-server b11347).
+`make slm-eval-run` snapshots `/metrics` before and after and reconciles
+them with the harness's tokens over **every attempt**
+(`scripts/slm_traffic_proof.py`): the aggregate's `SLM_TRAFFIC` line, which
+covers the final attempt of each ticker, plus the calls of every failed
+attempt Argo retried, read back from the pod logs (next paragraph). EXACT,
+LOWER-BOUND (excess only from calls the harness saw fail), or FAIL; a
+failed attempt that left no complete call record can never be explained
+away as LOWER-BOUND. Each SLM ticker also fails if any agent call was
+served by anything but its arm's endpoint. **A run is citable as an SLM
+result only on EXACT, or on LOWER-BOUND with every excess token attributed
+to calls the harness itself logged as failed.** Any FAIL — including an
+explained one — is not citable.
+
+**Retried attempts stay visible** (since the image after `30c832b`; added
+after smoke `9jddz`). The workflow retries a failed eval pod once and hands
+the aggregate only the final attempt, so a failed attempt used to vanish
+from the report and from the proof. Now every eval pod writes, to its own
+log, `EVAL_ATTEMPT_BEGIN`, one `EVAL_LLM_CALL` line per LLM call as it
+returns (tokens and the truncation / loop / parse / format / error flags),
+and `EVAL_ATTEMPT_END` with the outcome and cause on every exit Python
+still controls; the attempt number is Argo's `{{retries}}`, checked on
+Argo v3.7.18. `eval/attempts.py` reads the workflow object and the pod
+logs and reports the number of retries, the tickers, and for each failed
+attempt Argo's message, the cause from the pod log, its LLM calls per site
+and its failure counts — labelled as from failed attempts, never merged
+into the final-attempt table. `make eval-run` prints that report under the
+aggregate's output and writes it to `~/<workflow>-attempts.json` for the
+capture steps; the aggregate itself names the retried tickers (the
+aggregate pod cannot read other pods' logs and is given no RBAC to, so the
+detail comes from the run report). A pod that is killed (deadline, out of memory) leaves its
+calls but no END record: its record is marked incomplete and its listed
+calls are a lower bound.
+
+**RAG faithfulness — a separate, unvalidated metric.** The main judge treats
+the RAG answers as source text, so an unfaithful RAG answer reads as
+supported there. With `EVAL_RAG_FAITHFULNESS=true` (on in `oke-provided`,
+every arm) each RAG answer is judged against exactly the chunks it was
+written from (`eval/rag_faithfulness.py`, prompt `rf-v1`, Sonnet,
+temperature 0). No human labels exist for `rf-v1`: report it as a
+judge-flagged rate, in its own column, never folded into the grounding rate.
+
+**Reporting.** Each SLM arm against the hosted baseline arm run on the SAME
+pinned OKE image (`argo/eval-run-extended.yaml`); unsupported rate with
+Wilson 95% CI, Fisher exact vs that baseline, per-section attribution
+(`eval/section_attribution.py`), parse/format failures, stock-block-empty
+count, the judge v2 calibration note; CPU vs GPU in one table only with the
+quant stated (both Q4_K_M here). **Numeric claims are co-primary with the
+rate**: numeric claims per ticker (claims that quote a figure) and the
+unsupported rate over numeric claims sit beside every all-claims rate,
+with claims per ticker (mean, min) — in the aggregate, and in
+`eval/multi_arm_stats.py`, which runs `eval/claim_density.py` itself —
+because an arm that states fewer checkable facts gets a lower unsupported
+rate for free, and the count of qualitative claims is judge noise ("Dated
+finding: claim density" below). Retries and failed attempts are reported
+with the run. Dated runs only.
+
+### Smokes on image `2dd1aa3` (2026-10-03): dated, to be re-run on the next image
+
+Two 10-ticker smokes on the provided OKE cluster, same pinned image
+(`ghcr.io/schen9999/financial-agent-app:2dd1aa38…`), judge v2, RAG cap 512.
+They validate the platform and the SLM path; they are not numbers of
+record, and 10 tickers cannot separate the arms (the intervals overlap).
+Rates are judge-flagged (v2; the September calibration (2026-09-24) applies, and no
+reweighted estimate exists for these runs).
+
+| Run | Arm | Unsupported | Wilson 95% CI | Agent LLM calls | Pipeline per ticker | RAG answers cut at 512 |
+|---|---|---|---|---|---|---|
+| `x2cx8` | hosted baseline | 2/84 = 2.38% | 0.7–8.3% | 70 (7.0/ticker); the aggregate printed 90, see below | 26.4 s | 0 of 20 |
+| `nb6r6` | `slm-full-cpu`, traffic proof EXACT | 3/73 = 4.11% | 1.4–11.4% | 70 (7.0/ticker) | 355.9 s | 13 of 20 (highlights 9/10, risks 4/10) |
+
+`nb6r6`'s proof: 70 calls, 92,282 prompt + 22,466 completion tokens on the
+harness side and on the server's `/metrics` over the run
+(`eval/runs/slm-proof-nb6r6/`). Both smokes re-run on the next image (the
+lock fix and the 2048 RAG cap change it), before any extended run.
+
+**Dated finding: the hosted RAG ledger rows of `x2cx8` are double-counted.**
+The aggregate reported 20 calls on each RAG site and 9.0 agent calls per
+ticker for the hosted arm, against 10 and 7.0 for the SLM arm. The hosted
+path makes one RAG answer call per query, like the SLM path. The brief's two
+RAG queries run in two threads; both reached `_ensure_settings()` in
+`agent/tools/rag.py` before either had finished loading the embedding model,
+and each registered its own usage handler, so every hosted RAG answer was
+written to the ledger twice. The SLM arm was unaffected (that handler skips
+SLM responses; the adapter records its own). Evidence, from the workflow
+object (`eval/runs/x2cx8-workflow.json`): every (ticker, site) has exactly
+two rows with the same tokens and the same latency (total = 2 × max to
+within 0.01 s, all 20 pairs), and TSLA's two risk-answer rows sum to 11.79 s
+inside a 7.09 s retrieval stage. Corrected, per real call:
+
+| Site | Calls | Prompt tokens | Completion tokens | Median | p95 | Max | Truncated |
+|---|---|---|---|---|---|---|---|
+| `rag:highlights` | 10 | 26,568 | 2,728 | 280 | 353 | 365 | 0 |
+| `rag:risks` | 10 | 25,352 | 3,613 | 366 | 435 | 456 | 0 |
+| both | 20 | 51,920 | 6,341 | 338 | 412 | 456 | 0 |
+
+(completion tokens per answer; p95 interpolated — with 10 answers per site
+it sits just under the max). Reproduce:
+
+```bash
+python scripts/rag_ledger_from_workflow.py eval/runs/x2cx8-workflow.json
+```
+
+Not affected: the grounding counts and the gate; the run's estimated cost
+($1.0318), which is built from chars/4 estimates of the sections, synthesis
+and judge plus the RAG-faithfulness judge's recorded usage and never
+included the RAG answer calls; and the **cost of record** — the handler was
+introduced on 2026-10-02 (commit `1a417be`, branch `slm-harness` only),
+`scripts/cost_report.py` counts RAG tokens through its own single
+`TokenCountingHandler`, and its recorded RAG input tokens for AAPL / NVDA /
+JPM (4,868 / 5,927 / 5,003, `cost_record_post_fix.json`) equal the corrected
+x2cx8 figures for the same tickers token for token. Fix: a lock around the
+one-time setup (which also loads the embedding model once per pod instead
+of twice); `tests/test_rag_settings.py` holds one handler and one ledger
+row per API call under two concurrent callers.
+
+**Resource readings** (`kubectl top` every 15 s;
+`eval/runs/top-hosted-smoke.txt`, `eval/runs/top-cpu-smoke.txt`; e.g.
+`grep llamacpp eval/runs/top-cpu-smoke.txt | sort -k2 -n | tail -1`).
+Hosted smoke: eval pods 3–6 millicores at steady state, ~600 MiB each; the
+one 560m reading is startup (imports and the embedding-model load) — the
+same pod reads 6m in the next sample. CPU smoke: the llama.cpp pod peaked
+at 7,998m, saturating its 8-CPU limit (8 vCPU = 4 physical cores with SMT),
+and at 27,424 MiB of its 30Gi; the harness beside it is near idle (worker ≤
+43m, api ≤ 5m, eval pods single-digit millicores at steady state with
+490–780m startup spikes). The CPU arm's 355.9 s per ticker against 26.4 s
+hosted is therefore the endpoint's time, not the harness's. Untested, for
+the later concurrency sweep: the server ran `--threads 8` on 4 physical
+cores and no other thread count was tried.
+
+### RAG natural-length pre-check on the GPU endpoint (2026-10-03, a dated check)
+
+A truncated answer only says the model wanted more than the cap. To size
+the shared cap, `nb6r6`'s 20 RAG answer calls were replayed with nothing
+cutting them: the prompts rebuilt from the smoke's captured log through
+the real query-engine path (`scripts/rag_natural_length.py build`), the
+`rag` site's sampling unchanged (temperature 0.1, every sampler explicit,
+thinking off), `max_tokens` 4096, sent to the GPU endpoint on node 2
+(`localhost:30880`, served alias `qwen3.6-35b-a3b-q4km`, build
+`b11347-5fc4f3c8c`, all layers on the A10), two at a time, one sample per
+prompt. **Prompt check EXACT, 20 of 20**: the GPU server counted exactly
+the prompt tokens `nb6r6`'s ledger recorded on the CPU endpoint for each
+request, so these are the smoke's prompts and the two endpoints tokenize
+them identically. Every answer ended on its own (`finish_reason` stop).
+
+| Site | n | Min | Median | p95 | Max | > 512 | > 800 | > 1024 | Hit 4096 |
+|---|---|---|---|---|---|---|---|---|---|
+| `rag:highlights` | 10 | 482 | 668 | 795 | 799 | 9 | 0 | 0 | 0 |
+| `rag:risks` | 10 | 101 | 449 | 738 | 854 | 3 | 1 | 0 | 0 |
+| both | 20 | 101 | 577 | 802 | 854 | 12 | 1 | 0 | 0 |
+
+(completion tokens; p95 interpolated; the max is MSFT `rag:risks`.)
+
+**CPU vs GPU length, where the CPU smoke was not truncated.** Seven of the
+smoke's 20 answers ended on their own on the CPU endpoint; the same
+prompts on the GPU endpoint gave:
+
+| Ticker, site | CPU smoke `nb6r6` | GPU pre-check | Difference |
+|---|---|---|---|
+| AMZN `rag:risks` | 325 | 323 | −2 |
+| AAPL `rag:highlights` | 487 | 482 | −5 |
+| JPM `rag:risks` | 494 | 472 | −22 |
+| TSLA `rag:risks` | 403 | 426 | +23 |
+| WMT `rag:risks` | 150 | 101 | −49 |
+| META `rag:risks` | 333 | 389 | +56 |
+| GOOGL `rag:risks` | 326 | 401 | +75 |
+
+Three agree within 22 tokens and four differ by 23 to 75. These are
+independent samples at temperature 0.1 on two builds of one engine (CPU
+and CUDA), so token-for-token equality is not expected; the lengths are of
+the same order in both directions (median difference −2). One more
+data point on that variance: AAPL `rag:risks` hit the 512 cap on the CPU
+smoke and finished at 486 on the GPU. The pre-check therefore measures a
+length distribution from one sample per prompt, not a fixed length per
+prompt.
+
+**Cap decision: 2048 for both arms.** 1024 would have cut none of these 20
+answers, but the margin over the measured max (854) is 1.2×, on 10
+tickers. The extended runs send 4× the prompts over a wider set of
+filings, and the hosted arm already shows how far the tail moves: its
+10-ticker smoke peaked at 456 tokens, yet on the 40-ticker set the SFIX
+risk-factors answer reached the 512 cap. 2048 is 2.4× the measured SLM
+max. It is a ceiling, not a target, and truncations are still counted in
+every run — a non-zero `Trunc` on a RAG site at 2048 is a finding to
+report, not something the cap is assumed to prevent. On the hosted arm the
+change only raises `max_tokens` in the request (smoke max 456; see the
+`j4cnp` caveat under "Request settings"). On the CPU arm the RAG stage
+will take longer than `nb6r6`'s, since answers the smoke cut at 512 now
+run to their natural length (median 577); the run-time gate re-measures
+that on the re-smoke.
+
+This is a dated check of 20 answers, not a number of record, and not an
+eval run: no traffic proof applies and it says nothing about grounding.
+Results: `eval/runs/rag-natural-length-gpu-nb6r6.{txt,json}`. Reproduce:
+
+```bash
+python scripts/rag_natural_length.py build \
+  --log eval/runs/slm-proof-nb6r6/grounding-eval-slm-cpu-nb6r6.log \
+  --out eval/runs/rag-natural-length-requests-nb6r6.json
+# node 2 (stdlib only), nothing else using the endpoint:
+LLAMA_API_KEY=... python3 scripts/rag_natural_length.py run \
+  --requests eval/runs/rag-natural-length-requests-nb6r6.json \
+  --url http://localhost:30880 --api-key-env LLAMA_API_KEY \
+  --out ~/rag-natural-length-gpu-nb6r6.json
+```
+
+### Smokes on image `30c832b` (2026-10-03): dated; the CPU run's traffic proof is FAIL, explained
+
+The re-smokes on the image with the lock fix and the 2048 RAG cap, same 10
+tickers, judge v2 (judge-flagged rates; no reweighted estimate exists for
+these runs). Not numbers of record.
+
+| Run | Arm | Unsupported | Wilson 95% CI | Claims / ticker (mean, min) | Numeric claims / ticker | Numeric unsupported | Agent LLM calls | Pipeline per ticker | RAG answers truncated | Traffic proof |
+|---|---|---|---|---|---|---|---|---|---|---|
+| `hm527` | hosted baseline | 1/90 = 1.11% | 0.2–6.0% | 9.0, 3 | 6.1 | 0/61 (CI 0.0–5.9%) | 70 (7.0/ticker) | 26.9 s | 0 of 20 (max 564 tokens) | n/a (hosted) |
+| `9jddz` | `slm-full-cpu` — **not citable** | 1/53 = 1.89% | 0.3–9.9% | 5.3, 2 | 3.1 | 0/31 (CI 0.0–11.0%) | 70 (7.0/ticker), final attempts | 345.2 s | 0 of 20 (max 877 tokens) | **FAIL, explained** |
+
+What the image changed, as measured: the hosted ledger now shows 10 rows
+per RAG site and 70 calls (the double count is gone); no RAG answer was
+truncated in either arm (`scripts/rag_ledger_from_workflow.py` on each
+run's workflow object). The SLM answers ran to a median of 585 and a max of
+877 tokens, in line with the pre-check (577, 854). One hosted answer
+reached 564 tokens — above the old 512 cap — so the "not the `j4cnp`
+pipeline exactly" caveat already applies on the 10-ticker set.
+
+**`9jddz`: traffic proof FAIL, explained: one retry (NVDA) after credit
+exhaustion.** The Anthropic balance ran out during the run. The first NVDA
+attempt (`eval-ticker(1:NVDA)(0)`, pod `…-eval-one-2600813302`) finished
+its SLM generation, then hit the credit-balance 400 at the judge; the
+harness's guard stopped the pod with `FATAL: Anthropic credit balance too
+low` (exit 1), as designed. Argo retried NVDA after the balance was
+reloaded, and that attempt succeeded. The aggregate and the proof saw only
+the final attempts: harness 94,573 prompt + 24,754 completion tokens,
+server 104,696 + 27,697 — the server counted 10,123 prompt + 2,943
+completion tokens more. NVDA's successful attempt sent 10,109 + 2,939
+tokens, so the excess is the size of one NVDA brief to within 14 + 4
+tokens. That is consistent with the failed attempt, not a reconciliation:
+image `30c832b` did not log a failed attempt's calls, so what that attempt
+sent was never recorded. The verdict stays **FAIL** — it is not rewritten
+as a pass, and under the proof rule this run is **not citable** as an SLM
+result. Its figures are kept here as a dated record, always with that
+status; the CPU baseline is the next CPU smoke (`wnrjr`, on `1f51dad`:
+traffic proof EXACT — "CPU SLM extended run `8vpq6`" below), on the image that logs
+failed attempts.
+Re-running the proof with the attempt-aware verifier gives the same
+verdict with the reason spelled out:
+
+```bash
+python eval/attempts.py --workflow eval/runs/9jddz-workflow.json \
+  --log eval/runs/slm-proof-9jddz/grounding-eval-slm-cpu-9jddz.log
+python scripts/slm_traffic_proof.py verify \
+  --before eval/runs/slm-proof-9jddz/grounding-eval-slm-cpu-9jddz-before.json \
+  --after eval/runs/slm-proof-9jddz/grounding-eval-slm-cpu-9jddz-after.json \
+  --log eval/runs/slm-proof-9jddz/grounding-eval-slm-cpu-9jddz.log \
+  --workflow eval/runs/9jddz-workflow.json     # TRAFFIC PROOF: FAIL
+```
+
+Both smokes re-run on the next image (attempt logging and the claim-density
+lines change it) before any extended run.
+
+### Dated finding: claim density differs between the arms, and between judge passes (2026-10-03)
+
+The hosted smoke `hm527` produced 90 judged claims and the CPU SLM smoke
+`9jddz` 53, over the same 10 tickers on the same image; the earlier SLM
+smoke `nb6r6` had 73. AMZN, GOOGL and V each have 2 claims in `9jddz`. The
+unsupported rate divides by judged claims, so this matters to every
+SLM-vs-hosted comparison. From `eval/claim_density.py`:
+
+| Run | Arm | Claims / ticker (mean, min) | Numeric claims / ticker (mean, min) | Numeric unsupported | Qualitative claims / ticker | Briefs audited on numbers only | Audited words / ticker | Numbers in audited text / ticker |
+|---|---|---|---|---|---|---|---|---|
+| `x2cx8` | hosted | 8.4, 4 | 5.8, 3 | 0/58 (CI 0.0–6.2%) | 2.6 | 3 of 10 | 338 | 5.9 |
+| `hm527` | hosted | 9.0, 3 | 6.1, 3 | 0/61 (CI 0.0–5.9%) | 2.9 | 3 of 10 | 347 | 6.2 |
+| `nb6r6` | SLM CPU | 7.3, 2 | 3.5, 2 | 0/35 (CI 0.0–9.9%) | 3.8 | 3 of 10 | 200 | 3.7 |
+| `9jddz` | SLM CPU (not citable) | 5.3, 2 | 3.1, 2 | 0/31 (CI 0.0–11.0%) | 2.2 | 5 of 10 | 201 | 3.1 |
+| `j4cnp` | hosted, 40 tickers | 9.8, 4 | 6.5, 2 | 4/260 = 1.54% (CI 0.6–3.9%) | 3.2 | 9 of 40 | 338 | 8.1 |
+
+("Numeric" = the judge's quoted claim contains a digit,
+`eval.label.numeric_claim_counts`; audited text = Executive Summary +
+Outlook without headings and the disclaimer. The numeric rate is a
+judge-flagged rate over a subset of the claims: the v2 calibration was
+measured over all claims and has not been repeated for this subset, and
+`j4cnp`'s rate, the number of record until 2026-10-05, is 12/392 over all
+claims.)
+
+Two separate effects:
+
+1. **The SLM writes less, and half the numbers.** Its audited text is about
+   200 words against the hosted arm's ~340, with ~3 numbers against ~6, in
+   both SLM smokes. It follows the synthesis prompt to the letter: a
+   three-sentence Executive Summary that cites two figures in its first
+   sentence, and a one-paragraph Outlook with no figure at all (the prompt
+   asks for a qualitative Outlook and forbids invented numbers). The hosted
+   model writes longer sentences that carry more figures and more named
+   specifics. No section is missing in any brief, and nothing was truncated.
+   Numeric claims track this directly: the judge extracted almost exactly
+   the numbers present (3.1 claims for 3.1 numbers in `9jddz`, 6.1 for 6.2
+   in `hm527`).
+2. **Whether the judge audits qualitative phrases varies from brief to
+   brief, and that swings the count.** The v2 prompt asks for quantitative
+   figures, named milestones and forward-looking numbers. Sometimes the
+   judge also lists qualitative phrases as claims, sometimes it declares
+   them out of scope. `nb6r6` and `9jddz` have the same amount of SLM text;
+   numeric claims fell by 4 (35 to 31) and qualitative claims by 16 (38 to
+   22). GOOGL is the clearest case: 11 claims in `nb6r6`, of which 9 are
+   phrases such as "dominant market position" and "strong cash generation"
+   (two of them labelled UNSUPPORTED), and 2 claims in `9jddz`, where the
+   judge wrote that everything but the two figures was qualitative and
+   outside the audit. The hosted arm shows the same instability: V has 6
+   claims in `x2cx8` and 16 in `hm527`, 10 of them qualitative.
+
+For the three 2-claim briefs in `9jddz` (AMZN, GOOGL, V) both effects
+coincide: each has exactly two figures, both in the Executive Summary; the
+Outlook is hedged and conditional but, more to the point, contains no
+number; and the judge audited numbers only in all three. Hedged wording is
+not what removed the claims — the hosted Outlooks are hedged the same way,
+and judge v2 treats a hedged claim like any other — the absence of
+checkable specifics is.
+
+In one sentence each, for the record:
+
+- **The SLM synthesis states about half the figures of the hosted one —
+  3.1 against 6.1 numeric claims per ticker (`9jddz` vs `hm527`) — because
+  it follows the synthesis prompt literally.**
+- **Judge v2's listing of qualitative claims varies from run to run (GOOGL
+  11 claims vs 2 across the two SLM smokes; V 6 vs 16 across the two
+  hosted smokes). This is recorded, not fixed: changing the judge's claim
+  scope would be a new judge version and would need its own calibration.**
+
+Consequences, applied from the next image on:
+
+- **Numeric claims are the co-primary metric.** Every all-claims rate is
+  reported with numeric claims per ticker (mean, min) and the unsupported
+  rate over numeric claims; claims per ticker (mean, min) stays beside
+  them. The numeric count is the stable part: it follows the numbers in
+  the text, not the judge's pass. The aggregate prints these lines (each
+  result row carries its numeric counts), and `eval/multi_arm_stats.py`
+  leads with the numeric comparison and runs `eval/claim_density.py`
+  itself. Supported claims per ticker was considered as the co-primary and
+  rejected: it carries the qualitative-claim noise.
+- A lower SLM unsupported rate is not evidence of better grounding unless
+  the density is comparable; state both. On these smokes the SLM's rate is
+  over about half as many checkable figures.
+- In all four smokes every unsupported claim was a qualitative one: the
+  numeric unsupported count is 0 in each (0/58, 0/61, 0/35, 0/31; note the
+  wide intervals). The all-claims rates of the smokes therefore measure
+  qualitative claims only — the part the judge lists inconsistently (2 of
+  `nb6r6`'s 3 unsupported claims were GOOGL's qualitative phrases).
+
+```bash
+python eval/claim_density.py --run x2cx8 eval/runs/raw/x2cx8-findings \
+  --run hm527 eval/runs/raw/hm527-findings --run nb6r6 eval/runs/raw/nb6r6-findings \
+  --run 9jddz eval/runs/raw/9jddz-findings --run j4cnp eval/runs/raw/j4cnp-findings \
+  --tickers AMZN GOOGL V
+python eval/multi_arm_stats.py --run hosted-hm527 eval/runs/hm527-claims.jsonl eval/runs/raw/hm527-findings \
+  --run slm-cpu-9jddz eval/runs/9jddz-claims.jsonl eval/runs/raw/9jddz-findings
+```
+
+### Hosted smokes on the 10-ticker set: smoke-level run-to-run variance (2026-10-03)
+
+Three hosted-baseline smokes on the same 10 tickers, judge v2, on three
+consecutive images of the same pipeline. Dated runs; none is a number of
+record. Rates are judge-flagged (v2; no reweighted estimate exists for these
+runs).
+
+| Run | Image | RAG cap | Unsupported | Wilson 95% CI | Gate (≤ 5%) | Numeric unsupported | Qualitative claims listed | MSFT claims (numeric + qualitative) | MSFT unsupported |
+|---|---|---|---|---|---|---|---|---|---|
+| `x2cx8` | `2dd1aa3` | 512 ¹ | 2/84 = 2.38% | 0.7–8.3% | passed | 0/58 | 26 | 6 + 1 | 0 |
+| `hm527` | `30c832b` | 2048 | 1/90 = 1.11% | 0.2–6.0% | passed | 0/61 | 29 | 9 + 0 | 0 |
+| `7c66k` | `1f51dad` | 2048 | 8/101 = 7.92% | 4.1–14.9% | **FAILED** | 0/59 | 42 | 8 + 14 | 8 |
+
+¹ `x2cx8` ran under the 512-token RAG cap, the other two under 2048. No
+hosted RAG answer was cut in `x2cx8` (max 456 tokens), so the cap did not
+bind in that run.
+
+**This is smoke-level run-to-run variance, and `7c66k`'s gate failure is
+one ticker.** All 8 of its unsupported claims are on MSFT; the other nine
+tickers have none. The judge listed 14 qualitative claims for MSFT in
+`7c66k`, against 1 in `x2cx8` and 0 in `hm527`, and labelled 8 of them
+UNSUPPORTED. Numeric unsupported is 0 in all three runs, and all 11
+unsupported claims across the three are qualitative. The gate and the
+judge are unchanged; `7c66k` stays recorded as a failed gate.
+
+**What did not change between the runs.** MSFT's retrieved chunks are
+identical in the three runs for both RAG queries, and the stock, news and
+SEC-summary blocks of every ticker are byte-identical between `hm527` and
+`7c66k`. The three MSFT syntheses say the same things, several near
+verbatim: `hm527`'s Outlook has "The primary tailwind is the secular
+enterprise demand for AI-integrated workflows, where Microsoft's deep
+customer relationships and existing platform footprint provide a
+meaningful distribution advantage", and `x2cx8`'s has "evidence of AI
+monetization gaining traction" and "watch the trajectory of profit margins
+as AI infrastructure spending scales" — none listed by the judge in those
+runs. `x2cx8` also has "uncertain returns on accelerating capital
+expenditure" inside a claim the judge labelled SUPPORTED; in `7c66k` the
+same wording is two of the eight UNSUPPORTED claims.
+
+**The eight claims** (all from the Outlook or the Executive Summary's
+last sentence; full text and the judge's reasons in
+`eval/runs/raw/7c66k-findings/MSFT_baseline.md`):
+
+- Absent from the context — the model's own knowledge or an editorial
+  assertion: "The primary tailwind is the secular enterprise demand for
+  cloud infrastructure and AI-integrated productivity tools"; "Microsoft's
+  deeply embedded customer relationships and broad platform footprint
+  provide a durable distribution advantage".
+- Watch-items and conditions naming a metric the context does not
+  contain: "watch the trajectory of cloud and AI services margins …";
+  "watch competitive win-rate signals in cloud workloads …"; "… would
+  strengthen if margin trends hold or improve alongside evidence of AI
+  monetization gaining traction".
+- Judge strictness on a qualifier: "accelerating capital expenditures for
+  AI infrastructure" and "the uncertain return timeline on accelerating
+  capital expenditures" (the context says "substantial capital
+  expenditures on an accelerated timeline"); "… the company's historically
+  strong profitability" (the context has one period's margin).
+
+**Interpretation.** The same ungrounded MSFT content appeared in all three
+syntheses. The lower runs are judge misses, not cleaner briefs — consistent
+with judge v2's population-weighted recall on UNSUPPORTED (32.5% on the
+baseline run, CI 16.0–52.4%; pooled 47.9%, CI 26.5–68.3%; "Calibration of
+record"). A 10-ticker smoke's all-claims rate is dominated by which
+qualitative phrases the judge lists in that pass: one ticker moved the
+rate from 1.11% to 7.92% with nothing else changing. So a smoke validates
+the platform and the plumbing (calls, truncation, retries, traffic proof);
+it does not rank arms. **Arms are compared on the extended runs, numeric
+co-primary first.**
+
+**Two known limitations, recorded and deliberately not changed.** Fixing
+either changes the pipeline and requires new baselines on every arm, so
+neither changes during this comparison; both are post-demo work.
+
+1. *Synthesis prompt and judge interact.* The synthesis prompt asks the
+   Outlook to "name the key variables an investor should watch" and gives
+   metric-style examples; judge v2 labels a hedged watch-item UNSUPPORTED
+   when the context lacks the metric it names (check 1: hedging does not
+   downgrade a missing fact). Every arm runs the same prompt and the same
+   judge, so every arm carries this — whenever the judge lists the
+   watch-item at all.
+2. *The highlights RAG query reaches only risk-factor text for half the
+   smoke tickers.* For AMZN, JPM, MSFT, NVDA and WMT the highlights query
+   retrieves only Item 1A chunks in all three runs, so the RAG highlights
+   answer is a refusal ("I cannot provide a summary of the latest 10-K and
+   10-Q … only excerpts from the Risk Factors section"), and the brief's
+   "SEC Filing Highlights" section is itself a refusal for 4–5 of the 10
+   briefs each run (5 in `x2cx8`, 4 in `hm527` and `7c66k`). MSFT's Item
+   1A anchor is working here (its first chunk starts "ITEM 1A. RISK
+   FACTORS"); the limit is what the index holds, not a failed anchor. It
+   leaves those briefs' Outlooks with little context to stand on when the
+   judge does list their qualitative phrases.
+
+```bash
+python eval/claim_density.py --run x2cx8 eval/runs/raw/x2cx8-findings \
+  --run hm527 eval/runs/raw/hm527-findings --run 7c66k eval/runs/raw/7c66k-findings --tickers MSFT
+python eval/compare_runs.py contexts --a hm527 eval/runs/raw/hm527-findings --b 7c66k eval/runs/raw/7c66k-findings
+# RAG highlights refusals, and SEC Filing Highlights sections that are refusals, per run:
+grep -lE '^\[From Pinecone cache\] I cannot provide a summary' eval/runs/raw/7c66k-findings/*_baseline.md
+for f in eval/runs/raw/7c66k-findings/*_baseline.md; do
+  grep -A2 '^### SEC Filing Highlights' $f | grep -qE 'cannot provide|Unable to provide' && basename $f _baseline.md
+done
+# MSFT's retrieved chunks, identical across the three runs:
+python -c "import json; c=[json.load(open(f'eval/runs/raw/{r}-findings/MSFT_baseline.ragf.json',encoding='utf-8'))['answers'] for r in ('x2cx8','hm527','7c66k')]; print(all(a[w]['chunks']==c[0][w]['chunks'] for a in c for w in ('highlights','risks')))"
+```
+
+### Hosted extended run `9jzmj` on image `1f51dad` (2026-10-04): the same-image hosted baseline
+
+**Status, stated first: workflow Error at aggregate (controller lacked
+configmaps create for template offload); rebuilt offline from all 40 pod
+findings dumps; gate evaluated offline; est. run cost not reconstructable.**
+
+`grounding-eval-extended-9jzmj` ran the 40-ticker set on the hosted baseline
+arm, judge v2, image `1f51dad` — the image the SLM extended runs use. All 40
+eval pods completed on their first attempt; the aggregate step never
+started (next section), so the workflow's phase is Error and no in-cluster
+aggregate exists. The aggregate below is `scripts/eval_aggregate.py` — the
+same code, unchanged since the image commit — run on per-ticker rows rebuilt
+from the pods' logs by `scripts/results_from_pod_log.py`.
+
+| | `9jzmj` (rebuilt offline) |
+|---|---|
+| Unsupported (judge-flagged, v2) | 7/411 = 1.70% (Wilson 95% CI 0.8–3.5%) |
+| Numeric claims (co-primary) | 277 = 6.9/ticker (min 1, RDFN); unsupported 2/277 = 0.72% (CI 0.2–2.6%) |
+| Claims per ticker | mean 10.3, min 2 (AMZN) |
+| Tickers | 40 completed, 0 skipped, stock block empty 0/40, 0 Argo retries |
+| Unsupported by ticker | LCID 3, AFRM 2, CHGG 1, NVO 1 |
+| Agent LLM calls | 270 (35 tickers × 7, and 5 tickers × 4 with no RAG answer: BABA, NVO, SAP, TM, TSM); no truncation, loop, parse, format or error flags |
+| RAG answers | 70; longest 786 tokens (above the old 512 cap) |
+| Gate (≤ 5%, ≥ 30 claims) | passed — evaluated offline |
+| Estimated run cost | not reconstructable from the pod logs (it needs each brief's full text); $4.0998 per the rows stored in the workflow object, below |
+
+This is a judge-flagged rate with the v2 September calibration (2026-09-24) applying; no
+reweighted estimate exists for this run. It is a dated run: `j4cnp` stays
+the number of record. `9jzmj` is the hosted arm on the comparison's own
+image — the pipeline with the 2048 RAG cap, so not the `j4cnp` pipeline
+exactly (see "Request settings").
+
+**Why the rebuild can be trusted.** The rows the aggregate would have
+received were Argo output parameters, which are not in the pod logs; what
+they were computed from is. For each pod the rebuild takes the label counts
+by recounting its findings dump with the harness's own function, the
+numeric counts and the stock-block check the same way, the per-site LLM
+ledger from the findings metadata, the RAG-faithfulness verdicts from the
+pod's `.ragf.json`, retrieval and pipeline time from the pod's result line
+and the attempt from its END record. It stops rather than guess if a
+pod's printed counts differ from the recount, if its `EVAL_LLM_CALL` lines
+disagree with its ledger in calls or tokens, or if an attempt did not end
+ok; none of that happened on either run.
+
+**Validation on `7c66k`** (same image, and it has a real in-cluster
+aggregate): the aggregate run on rows rebuilt from `7c66k`'s pod logs
+reproduces the cluster's printed aggregate **exactly — all 41 lines except
+the estimated-cost line**: every per-ticker row, the totals, 8/101 = 7.92%
+with its CI, numeric 0/59, the full per-site LLM table, the
+RAG-faithfulness line and the GATE FAILED verdict.
+`tests/test_results_from_pod_log.py` holds this against the committed
+files. On that basis `9jzmj` is citable as the same-image hosted extended
+baseline, always with the status line above.
+
+**Second confirmation, from the workflow object itself**
+(`eval/runs/9jzmj-workflow.json`, fetched read-only 2026-10-04). The
+object still holds the output parameter each eval pod handed back — the
+exact rows the aggregate step would have received. Running the same
+aggregate on those 40 stored rows prints the same report as the pod-log
+rebuild, line for line, plus the one line the rebuild cannot produce:
+`est. run cost : $4.0998`. Field by field, the rebuilt rows equal the
+stored ones in everything the aggregate reads (counts, numeric counts,
+attempt, judge version, stock-block flag, timings to the printed two
+decimals, the per-site and per-endpoint ledger, RAG-faithfulness verdicts).
+The object also confirms the failure and the attempt count independently
+of the logs: 83 nodes — 40 eval pods Succeeded, each on attempt 0, and the
+aggregate node in Error with the `configmaps is forbidden` message.
+
+```bash
+python scripts/workflow_nodes.py results eval/runs/9jzmj-workflow.json > /tmp/9jzmj-stored-rows.json
+python scripts/eval_aggregate.py --input /tmp/9jzmj-stored-rows.json     # same report + est. run cost
+python scripts/workflow_nodes.py expand eval/runs/9jzmj-workflow.json > /tmp/9jzmj-expanded.json
+python eval/attempts.py --workflow /tmp/9jzmj-expanded.json --log eval/runs/raw/9jzmj.log   # 40 pods, 0 retries
+```
+
+```bash
+python scripts/results_from_pod_log.py --log eval/runs/raw/7c66k.log \
+  --out eval/runs/7c66k-results-rebuilt.json --aggregate-out eval/runs/7c66k-aggregate-rebuilt.txt
+#   VALIDATION: EXACT apart from the estimated-cost line
+python scripts/results_from_pod_log.py --log eval/runs/raw/9jzmj.log \
+  --out eval/runs/9jzmj-results-rebuilt.json --aggregate-out eval/runs/9jzmj-aggregate.txt
+# from the committed rows alone (the raw logs are not committed):
+python scripts/eval_aggregate.py --input eval/runs/9jzmj-results-rebuilt.json
+```
+
+### CPU SLM extended run `8vpq6` against hosted `9jzmj` (2026-10-04): the same-image comparison
+
+`grounding-eval-extended-slm-cpu-8vpq6`: the 40-ticker set on the
+`slm-full-cpu` arm (Qwen3.6-35B-A3B Q4_K_M on llama.cpp b11347, CPU
+endpoint on the provided OKE cluster), judge v2, image `1f51dad`. Workflow
+Succeeded; 40 of 40 tickers on the first attempt, 0 Argo retries;
+**TRAFFIC PROOF: EXACT** over every attempt (270 calls, 342,244 prompt +
+96,811 completion tokens on the harness and on the server); no truncation,
+loop, parse, format or error flag on any call; gate passed. It is a dated,
+citable SLM run. Its aggregate step was the first live use of the template
+offload on OKE (template 301,083 bytes, 2.30× the inline limit; next
+section). The CPU smoke on the same image that fed the run-time gate is
+`wnrjr`: 1/58 = 1.72% (Wilson 95% CI 0.3–9.1%), numeric 0/33, traffic proof
+EXACT (94,520 + 24,756 tokens), 0 retries.
+
+**Headline: no grounding difference detected at this sample size; numeric
+density is the separated result.** Rates are judge-flagged (v2; the
+September calibration (2026-09-24) applies and no reweighted estimate exists for either
+run). When written (2026-10-04) `j4cnp` stayed the grounding number of
+record; since 2026-10-05 this run and `9jzmj`, with GPU `p9jr2`, are the
+grounding numbers of record (the same-image three-way, below).
+
+| | Hosted `9jzmj` | CPU SLM `8vpq6` | Test |
+|---|---|---|---|
+| Unsupported, all claims | 7/411 = 1.70% (CI 0.8–3.5%) | 9/248 = 3.63% (CI 1.9–6.8%) | Fisher exact p = 0.126 |
+| Unsupported, numeric claims (co-primary) | 2/277 = 0.72% (CI 0.2–2.6%) | 3/161 = 1.86% (CI 0.6–5.3%) | Fisher exact p = 0.362 |
+| — sensitivity: without claims numeric only through "52-week" | 2/271 = 0.74% (CI 0.2–2.7%) | 2/158 = 1.27% (CI 0.3–4.5%) | Fisher exact p = 0.628 |
+| Numeric claims per ticker | 6.92 | 4.03 | paired over the 40 tickers: +2.90 (95% bootstrap CI +2.15 to +3.70); hosted higher on 35, equal on 3, lower on 2; exact sign test p = 1e-8 |
+| — sensitivity: without "52-week" | 6.78 | 3.95 | paired +2.83 (CI +2.08 to +3.62); 35 / 3 / 2; p = 1e-8 |
+| Claims per ticker (mean, min) | 10.3, 2 | 6.2, 2 | |
+| Qualitative claims per ticker | 3.3 | 2.1 | |
+| Briefs the judge audited on numbers only | 7 of 40 | 16 of 40 | |
+| Audited text per ticker | 340 words, 8.9 numbers | 202 words, 4.5 numbers | |
+| Unsupported by section: Financial Health | 1/190 | 2/128 | |
+| Risk Factors | 0/17 | 0/12 | |
+| Recent Developments | 0/36 | 1/17 | |
+| SEC Filing Highlights | 0/87 | 0/47 | |
+| unattributed (restates no pre-written section) | 6/81 | 6/44 | |
+| RAG faithfulness (rf-v1, **unvalidated**, own denominator) | 14/1017 = 1.38% (CI 0.8–2.3%), 70 answers | 6/1415 = 0.42% (CI 0.2–0.9%), 70 answers | Fisher exact p = 0.012 |
+| Agent LLM calls | 270 | 270 | |
+| Pipeline per ticker, mean (min–max) | 25.9 s (17.6–30.4) | 355.1 s (100.4–432.6) | 13.7× |
+| Retrieval per ticker, mean | 5.4 s | 170.0 s | |
+| Traffic proof | n/a (hosted) | EXACT | |
+| Aggregate | rebuilt offline (above) | in-cluster | |
+
+- **Grounding.** The SLM's rate is higher on every denominator and none of
+  the differences is detected: p = 0.126 over all claims, 0.362 over
+  numeric claims, 0.628 with the "52-week" phrases removed. This is "no
+  difference detected at this sample size", not "equivalent": the
+  intervals are wide (the SLM's upper bound is 6.8% over all claims).
+- **Density.** The hosted arm states more figures on 35 of the 40 tickers:
+  2.90 more numeric claims per ticker (CI +2.15 to +3.70). The SLM's
+  audited text is about 40% shorter with half the numbers, as in the
+  smokes ("Dated finding: claim density"). The SLM's rate is therefore
+  over a little more than half as many checkable figures.
+- **RAG faithfulness** is reported side by side with its denominators and
+  the unvalidated label, and is not part of the grounding rate. The SLM's
+  RAG answers are longer — 1,415 judged claims against 1,017 over the same
+  70 answers — so the lower rate is not a validated quality claim: the
+  judge has no human-label calibration and the two rates are over
+  different amounts of text.
+
+**Latency per call site** (seconds per call, mean and max; the harness's
+ledger):
+
+| Site | Hosted mean | Hosted max | CPU SLM mean | CPU SLM max |
+|---|---|---|---|---|
+| `rag:highlights` (35 calls each) | 4.10 | 5.57 | 186.66 | 251.03 |
+| `rag:risks` (35) | 4.47 | 9.17 | 159.76 | 271.11 |
+| `section:financial_health` (40) | 2.24 | 3.06 | 46.23 | 82.17 |
+| `section:recent_developments` (40) | 2.21 | 2.77 | 50.39 | 90.18 |
+| `section:risk_factors` (40) | 2.36 | 3.80 | 62.68 | 106.10 |
+| `section:sec_filing_highlights` (40) | 1.96 | 2.96 | 62.79 | 93.22 |
+| `synthesis` (40) | 17.86 | 20.47 | 114.45 | 155.76 |
+
+**CPU during `8vpq6`** (`kubectl top` every 15 s, 705 samples,
+`eval/runs/top-cpu-ext.txt`): the llama.cpp pod ran at a median of 7,806m
+and peaked at 8,000m — its 8-CPU limit — with 27,449 Mi of its 30Gi. The
+harness beside it is idle: the 40 eval pods have a median of 1m (10 of 975
+readings are startup spikes above 100m, the rest at most 47m), the worker
+peaks at 48m and the api at 172m. The 13.7× per-ticker time is the
+endpoint's.
+
+**The three numeric unsupported claims of `8vpq6`** — only one is a wrong
+number:
+
+- **CHGG — a wrong number (truncation).** Claim: "net income of -$52.9
+  million". The context has `net_income: -52997000.0`, which is -$53.0
+  million; the SLM wrote -52.997M as -52.9M. The figure was produced in the
+  SLM's Financial Health section and carried into the summary. On the same
+  data the hosted run wrote "$53 million" (SUPPORTED).
+- **BEAM — a context source conflict, judged against the filing.** Claim:
+  "reporting a net loss of $86.52 million". The figure is in the context
+  and quoted correctly (yfinance `net_income: -86520000.0`). The RAG answer
+  from the filing, also in the context, says "net losses of $80.0 million
+  (2025)". The judge labelled the claim UNSUPPORTED because the two
+  sources disagree and it took the filing as authoritative.
+- **META — judge error.** Claim: "strong market sentiment near 52-week
+  highs". The price, 728.08, is at 80% of the 52-week range
+  (520.26–779.82), 6.6% below the high, and nearer the high than the
+  midpoint; the judge wrote that it was closer to the midpoint. The same
+  claim on the same data ("shares near 52-week highs") is SUPPORTED in
+  `9jzmj`, and MSFT at 82% of its range was SUPPORTED as "near the upper
+  end" in `7c66k`. The claim is not a figure at all; it counts as numeric
+  only because "52-week" contains digits.
+
+Neither of the hosted arm's two numeric unsupported claims is a wrong
+number either: AFRM's is a peer comparison absent from the context, NVO's a
+qualitative pipeline statement.
+
+**The "52-week" caveat.** A numeric claim is one whose quoted text contains
+a digit (`eval.label.numeric_claim_counts`), so positional phrases such as
+"near 52-week highs" count: 6 of the hosted arm's 277 numeric claims and 3
+of the SLM's 161. The sensitivity rows above drop them
+(`eval/claim_density.py`, strict count); nothing changes direction — the
+rate difference shrinks (2/271 vs 2/158) and the density result stands.
+Fixing the definition itself is a post-comparison change: it lives in code
+the harness runs inside the pinned image, and it is not changed now.
+
+**Two more known limitations, recorded and not changed during the
+comparison (post-demo):**
+
+3. *The context can contain conflicting figures from different sources,
+   and nothing reconciles or flags them.* BEAM's net income is -$86.52
+   million in the yfinance stock block and -$80.0 million in the filing's
+   RAG answer (different sources, possibly different periods). The brief
+   can quote either, and the judge may hold either against it. Recurring:
+   OMER in `p9jr2` is the second instance ("GPU SLM extended run `p9jr2`",
+   limitation 3 update).
+4. *The SLM truncates where it should round on at least one derived
+   figure.* CHGG's -52.997M became -52.9M in the SLM's Financial Health
+   section. One observed instance. The numeric check cannot measure how
+   often at its 2% tolerance: -52.9M against -52.997M is 0.18% off and
+   passes (2026-10-05, "Numeric check on the three-way" below).
+
+```bash
+python eval/multi_arm_stats.py \
+  --run hosted-9jzmj eval/runs/9jzmj-claims.jsonl eval/runs/raw/9jzmj-findings \
+  --run slm-cpu-8vpq6 eval/runs/8vpq6-claims.jsonl eval/runs/raw/8vpq6-findings \
+  --rows hosted-9jzmj eval/runs/9jzmj-workflow.json \
+  --rows slm-cpu-8vpq6 eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6-workflow.json
+python scripts/top_summary.py eval/runs/top-cpu-ext.txt
+#   both saved as eval/runs/9jzmj-vs-8vpq6-comparison.txt
+python scripts/slm_traffic_proof.py verify \
+  --before eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6-before.json \
+  --after eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6-after.json \
+  --log eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6.log \
+  --workflow eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6-workflow.json   # EXACT
+```
+
+### GPU SLM extended run `p9jr2` (2026-10-05): the three-way comparison with hosted `9jzmj` and CPU `8vpq6`
+
+`grounding-eval-extended-slm-gpu-p9jr2`: the 40-ticker set on the
+`slm-full-gpu` arm — the same GGUF on the same llama.cpp release as
+`8vpq6`, served on node 2's A10 with all layers on the GPU (alias
+`qwen3.6-35b-a3b-q4km`, no `-hybrid` suffix, so not a hybrid run), judge
+v2, image `1f51dad`. The harness on OKE reaches the endpoint over node 2's
+public address, port 30880 admitted from the OKE egress IP only; the
+harness's timers include that path. Workflow Succeeded 03:13:00–03:48:12
+UTC; 40 of 40 tickers on the first attempt, 0 Argo retries; **TRAFFIC
+PROOF: EXACT** (270 calls, 350,290 prompt + 98,232 completion tokens on the
+harness and on the server); no truncation, loop, parse, format, retry or
+error flag on any call; stock block empty on 0 of 40; gate passed. A dated,
+citable SLM run. The GPU smoke on the same image that fed the run-time gate
+is `k6zxd` (below).
+
+**Headline: no grounding difference detected on any pair at this sample
+size; numeric density separates the GPU from hosted, and does not separate
+the GPU from the CPU.** The CPU and GPU arms run the same model, engine
+and request settings on different hardware, so they should not differ:
+that pair is the consistency check, and it holds. Rates are judge-flagged
+(v2; the September calibration (2026-09-24) applies and no reweighted estimate exists
+for these runs). The p-values are not adjusted for the three pairwise
+comparisons. **Since 2026-10-05 this three-way is the grounding number of
+record** ([numbers-of-record.md](numbers-of-record.md)); `j4cnp` is a dated
+record with its 512-cap caveat, and no before/after is drawn between them.
+
+| | Hosted `9jzmj` | CPU SLM `8vpq6` | GPU SLM `p9jr2` | GPU vs hosted | GPU vs CPU |
+|---|---|---|---|---|---|
+| Unsupported, all claims | 7/411 = 1.70% (CI 0.8–3.5%) | 9/248 = 3.63% (CI 1.9–6.8%) | 6/245 = 2.45% (CI 1.1–5.2%) | Fisher p = 0.567 | Fisher p = 0.602 |
+| Unsupported, numeric claims (co-primary) | 2/277 = 0.72% (CI 0.2–2.6%) | 3/161 = 1.86% (CI 0.6–5.3%) | 3/155 = 1.94% (CI 0.7–5.5%) | p = 0.355 | p = 1.000 |
+| — sensitivity: without claims numeric only through "52-week" | 2/271 = 0.74% (CI 0.2–2.7%) | 2/158 = 1.27% (CI 0.3–4.5%) | 3/148 = 2.03% (CI 0.7–5.8%) | p = 0.351 | p = 0.676 |
+| Model errors in numeric claims (wrong value + wrong label + not in context; below) | 2/277 = 0.72% (CI 0.2–2.6%) | 1/161 = 0.62% (CI 0.1–3.4%) | 2/155 = 1.29% (CI 0.4–4.6%) | p = 0.621 | p = 0.617 |
+| Numeric claims per ticker | 6.92 | 4.03 | 3.88 | paired +3.05 for hosted (95% bootstrap CI +2.33 to +3.83); hosted higher on 34, equal 5, lower 1; sign test p = 2.1e-9 | paired +0.15 for CPU (CI −0.35 to +0.68); 17 / 6 / 17; p = 1.0 |
+| — sensitivity: without "52-week" | 6.78 | 3.95 | 3.70 | +3.08 (CI +2.33 to +3.88); 35 / 4 / 1; p = 1.1e-9 | +0.25 (CI −0.28 to +0.78); 19 / 5 / 16; p = 0.736 |
+| Claims per ticker (mean, min) | 10.3, 2 | 6.2, 2 | 6.1, 2 | | |
+| Qualitative claims per ticker | 3.3 | 2.1 | 2.2 | | |
+| Briefs the judge audited on numbers only | 7 of 40 | 16 of 40 | 15 of 40 | | |
+| Audited text per ticker | 340 words, 8.9 numbers | 202 words, 4.5 numbers | 203 words, 4.4 numbers | | |
+| Unsupported by section: Financial Health | 1/190 | 2/128 | 3/119 | | |
+| Risk Factors | 0/17 | 0/12 | 0/10 | | |
+| Recent Developments | 0/36 | 1/17 | 1/29 | | |
+| SEC Filing Highlights | 0/87 | 0/47 | 0/51 | | |
+| unattributed | 6/81 | 6/44 | 2/36 | | |
+| RAG faithfulness (rf-v1, **unvalidated**, own denominator) | 14/1017 = 1.38% (CI 0.8–2.3%) | 6/1415 = 0.42% (CI 0.2–0.9%) | 6/1465 = 0.41% (CI 0.2–0.9%) | p = 0.011 | p = 1.000 |
+| Agent LLM calls | 270 | 270 | 270 | | |
+| Pipeline per ticker, mean (min–max) | 25.9 s (17.6–30.4) | 355.1 s (100.4–432.6) | 31.1 s (12.5–47.6) | GPU 1.2× slower | CPU 11.4× slower |
+| Retrieval per ticker, mean | 5.4 s | 170.0 s | 13.9 s | GPU 2.6× | CPU 12.2× |
+| Traffic proof | n/a (hosted) | EXACT | EXACT | | |
+
+Every arm made 270 agent calls: 35 tickers × 7 and 5 × 4. The five ADRs
+make no RAG call in any arm (known limitation 5 below).
+
+- **Grounding.** No pair separates on any denominator: all claims, numeric
+  claims, the "52-week" sensitivity, or model errors alone. That is "no
+  difference detected at this sample size", not "equivalent". The GPU's
+  upper bound over all claims is 5.2%, its numeric upper bound 5.5%.
+- **Density.** The GPU arm states 3.05 fewer numeric claims per ticker
+  than hosted (lower on 34 of 40 tickers), as the CPU arm did, so its rate
+  is over a little more than half as many checkable figures. GPU against
+  CPU: +0.15 numeric claims per ticker with an interval across zero, 17
+  tickers each way and 6 equal, and the same audited length (203 vs 202
+  words). Moving the model from CPU to GPU did not change what it writes.
+- **RAG faithfulness** is reported side by side, with its denominators and
+  the unvalidated label, and is not part of the grounding rate. The GPU
+  and CPU arms are indistinguishable (6/1465 vs 6/1415). The SLM's lower
+  rate against hosted is over longer answers and is not a validated
+  quality claim, as for `8vpq6`.
+
+**Latency per call site** (seconds per call, mean and max, from the
+harness's ledger; ratios are slower / faster, from
+`eval/multi_arm_stats.py`):
+
+| Site (calls per arm) | Hosted mean | CPU mean | GPU mean (max) | CPU / GPU | GPU / hosted |
+|---|---|---|---|---|---|
+| `rag:highlights` (35) | 4.10 | 186.66 | 13.94 (24.70) | 13.4× | 3.4× |
+| `rag:risks` (35) | 4.47 | 159.76 | 10.69 (25.07) | 14.9× | 2.4× |
+| `section:financial_health` (40) | 2.24 | 46.23 | 4.54 (6.23) | 10.2× | 2.0× |
+| `section:recent_developments` (40) | 2.21 | 50.39 | 4.77 (7.61) | 10.6× | 2.2× |
+| `section:risk_factors` (40) | 2.36 | 62.68 | 5.46 (9.91) | 11.5× | 2.3× |
+| `section:sec_filing_highlights` (40) | 1.96 | 62.79 | 5.00 (9.29) | 12.6× | 2.6× |
+| `synthesis` (40) | 17.86 | 114.45 | 11.41 (19.50) | 10.0× | hosted 1.6× slower |
+| Per ticker, pipeline | 25.86 | 355.06 | 31.15 | 11.4× | 1.2× |
+| Per ticker, retrieval | 5.41 | 169.95 | 13.91 | 12.2× | 2.6× |
+
+The GPU is 10–15× faster than the CPU endpoint at every site. Against
+hosted it is 2.0–3.4× slower per call everywhere except the synthesis, where
+hosted is 1.6× slower: hosted writes the longer brief (340 audited words
+against 203). Per ticker that nets out to 1.2×, 31.1 s against 25.9 s. All
+three runs used the workflow template's parallelism of 2.
+
+**GPU use** (`eval/runs/gpu-nvsmi-p9jr2.csv`: nvidia-smi on node 2 every
+5 s, 709 samples, 02:51:49–03:50:49 UTC; `scripts/nvsmi_summary.py`, each
+Argo run's window from its workflow object):
+
+| Window | Samples | Util mean | Median | p95 | Max | Samples above 0% | memory.used |
+|---|---|---|---|---|---|---|---|
+| Tool-use GPU route, **approximate** (02:59:15–02:59:57) | 8 | 69.5% | 94% | 94% | 94% | 6 (75%) | 20,540 MiB |
+| Smoke `k6zxd` (03:01:40–03:11:20) | 116 | 34.8% | 0% | 100% | 100% | 47 (41%) | 20,540 MiB |
+| Extended `p9jr2` (03:13:00–03:48:12) | 422 | 38.1% | 0% | 99% | 100% | 182 (43%) | 20,540 MiB |
+| Outside every window | 163 | — | — | — | — | 0 | — |
+
+The tool-use window is approximate: the check's JSON carries no
+timestamps, so the window runs from the CPU route's output file
+(written 02:59:15) to the GPU route's (02:59:57); the GPU route's own
+`wall_s` sums to 35.6 s. No GPU activity falls outside the three windows,
+which also confirms node 2's clock against the workflow times.
+`utilization.gpu` is the share of each sample period in which a kernel
+ran, and `memory.used` is the whole GPU's (constant at 20,540 MiB; the
+20,488 MiB recorded 2026-10-03 is llama-server's own process memory, a
+different measure). **During `p9jr2`, at parallelism 2, the GPU averaged
+38% and its median sample was 0%: the A10 has headroom.** That is all the
+capture shows; no throughput at higher parallelism is projected from it
+without a run. The CPU endpoint during `8vpq6` was the opposite: median
+7,806m of its 8,000m limit.
+
+**Cost per brief, the three arms on the same pipeline (2026-10-05).**
+Dated measurements, not the cost of record, which stays $0.0366
+(2026-09-06). Every figure is model cost only: harness pods, storage and
+the judge (eval-only) are excluded on all three arms.
+
+| Arm | Cost per brief | How it was measured | Time per brief |
+|---|---|---|---|
+| Hosted (Anthropic API) | **$0.0370** | `scripts/cost_report.py`, n = 3 (AAPL, NVDA, JPM): $0.0285 exact + $0.0085 RAG-internal estimate. Run locally on the `1f51dad` pipeline code (nothing under `agent/` or the requirements has changed since), not inside the image | 25.9 s pipeline (`9jzmj`) |
+| GPU SLM `p9jr2` | **$0.0293, a ceiling** | the whole VM.GPU.A10.1 at $2.00/h × the run's wall time: 2,112 s for 40 briefs = 52.8 s each, 68.2 briefs an hour at parallelism 2 | 31.1 s pipeline |
+| CPU SLM `8vpq6` | **$0.0107** | the llama.cpp pod's request, 4 OCPU + 30 GiB billed as 30 GB, at $0.03/OCPU-h + $0.002/GB-h = $0.1800/h, × 8,576 s for 40 briefs = 214.4 s each, 16.8 briefs an hour | 355.1 s pipeline |
+| — sensitivity: memory converted to decimal GB | $0.0110 | 30 GiB = 32.21 GB, $0.1844/h ([cost.md](cost.md): OCI's memory GB taken as binary) | |
+| — sensitivity, approximate: the whole node | $0.0219 | 8 OCPU + 64 GiB (the shape's memory, inferred from 62.79 GiB kernel-visible) = $0.3680/h | |
+
+- **The CPU arm is the cheapest per brief, at 13.7× hosted's per-ticker
+  latency** (355 s against 26 s). That suits batch work — overnight
+  briefs, the eval itself — not interactive use. Its endpoint was
+  saturated during the run (median 7,806m of its 8,000m limit), so more
+  parallelism would not lower the figure at this pod size.
+- **The GPU figure is a ceiling.** The A10 averaged 38% utilization during
+  `p9jr2`, median sample 0%, at parallelism 2, and was above 0% in 43%
+  of samples while billed for the whole run. Whether higher parallelism
+  lowers the figure, and by how much, is not measured; no floor is
+  projected without a run.
+- **Hosted is n = 3**, the cost harness's three tickers, and its
+  RAG-internal part is a tokenizer estimate. It sits within $0.0004 of the
+  2026-09-06 record ($0.0366) on the same tickers; the RAG input tokens are
+  identical (4,868 / 5,927 / 5,003).
+- The SLM figures bill a resource for the run's measured wall time; the
+  hosted figure prices tokens. They answer the same question (what one
+  brief costs to produce) by different methods. Prices: OCI price-list
+  API read 2026-10-05 ([cost.md](cost.md)).
+
+```bash
+python scripts/cost_report.py --json-out eval/runs/cost-record-1f51dad-2026-10-05.json
+python scripts/cost_per_brief_slm.py \
+  eval/runs/slm-proof-p9jr2/grounding-eval-extended-slm-gpu-p9jr2-workflow.json \
+  --label gpu-p9jr2 --hourly-usd 2.00
+python scripts/cost_per_brief_slm.py \
+  eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6-workflow.json \
+  --label cpu-8vpq6-pod --e5 4 30 --ocpu-usd 0.03 --gb-usd 0.002     # add --decimal-gb for $0.0110
+python scripts/cost_per_brief_slm.py \
+  eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6-workflow.json \
+  --label cpu-8vpq6-node-approx --e5 8 64 --ocpu-usd 0.03 --gb-usd 0.002
+```
+
+**The three numeric unsupported claims of `p9jr2`**, all in the Executive
+Summary. Two are model errors (wrong label), one is a source conflict.
+Types: *wrong value* (the figure is not the context's), *wrong label* (the
+figure is in the context but attached to the wrong quantity), *source
+conflict* (quoted correctly from one source, held against another), *judge
+error* (correct against the context), *not in context* (an assertion the
+context lacks, no figure misquoted). Model errors are wrong value + wrong
+label + not in context — everything except source conflicts and judge
+errors: an unsupported claim with no basis in the context is what the
+grounding eval exists to catch, and leaving it out would favor the hosted
+arm, whose two are of that type. The adjudication is
+`eval/runs/numeric-error-types-2026-10-05.json`; `eval/error_types.py`
+checks it covers exactly the UNSUPPORTED numeric claims of each run and
+prints the counts and tests (`eval/runs/numeric-error-types-2026-10-05.txt`).
+
+- **SFIX — wrong label.** Claim: "…stabilizing the customer base near its
+  recent low of $2.61". $2.61 is `current_price`; the only low in the
+  context is `week_52_low: 2.1`. The summary calls the current price a low.
+  The GPU's own Recent Developments section has it right ("between $2.10
+  and $5.75 … near the lower end at $2.61"), and on the same data `8vpq6`
+  ("trading near its 52-week low of $2.10 at $2.61") and `9jzmj` ("from its
+  52-week high of $5.75 to $2.61") are SUPPORTED.
+- **CRBU — wrong label; the judge's stated reason is incorrect, the verdict
+  stands.** Claim: "a market capitalization near its 52-week low of
+  $1.22". The figure is right: `week_52_low: 1.215` is $1.22 at two
+  decimals, and the GPU's Financial Health section quotes $1.215. But a
+  per-share price is attached to "market capitalization" ($130.8 million in
+  the context), the same class of error as SFIX. The judge's reason ("the
+  52-week low is $1.215, not $1.22; $1.22 is the current price") rejects a
+  correct rounding; it is recorded as an incorrect judge reason, not as a
+  judge error, because the claim is wrong on the label.
+- **OMER — context source conflict, judged against the filing.** Claim: "a
+  notable net income of $116.53 million". Quoted correctly from yfinance
+  (`net_income: 116533000.0`); the filing's RAG answer in the same context
+  says "the net loss was $3.4 million" for FY2025. All three arms put the
+  $116.5 million in their Financial Health section; only the GPU carried it
+  into the audited summary. The same mechanism as BEAM in `8vpq6`.
+
+**By type, across the three runs** (`eval/error_types.py`):
+
+| Type | Hosted `9jzmj` | CPU `8vpq6` | GPU `p9jr2` |
+|---|---|---|---|
+| Wrong value | 0 | 1 (CHGG) | 0 |
+| Wrong label | 0 | 0 | 2 (SFIX, CRBU) |
+| Source conflict | 0 | 1 (BEAM) | 1 (OMER) |
+| Judge error | 0 | 1 (META) | 0 ¹ |
+| Not in context | 2 (AFRM, NVO) | 0 | 0 |
+| **Model errors / numeric claims** | **2/277** (CI 0.2–2.6%) | **1/161** (CI 0.1–3.4%) | **2/155** (CI 0.4–4.6%) |
+
+¹ CRBU's verdict stands; its stated reason is incorrect (above).
+
+Model errors, exact two-sided Fisher, unadjusted: hosted vs CPU p = 1.000,
+hosted vs GPU p = 0.621, CPU vs GPU p = 0.617 — no pair separates. Hosted's
+two are *not in context*: AFRM compares its P/E to "historical averages for
+fintech peers" the context does not hold, and NVO's is a qualitative
+pipeline statement, numeric only through "GLP-1". The arms differ in the
+kind of error (hosted asserts what the context lacks; the GPU attaches
+right figures to wrong quantities; the CPU misquotes one value), not
+detectably in the count.
+
+**Overlap with `8vpq6`'s three (CHGG, BEAM, META): no ticker overlaps, and
+two classes recur.** The source conflict recurs (BEAM, then OMER), and so
+does a price-range claim the judge mishandles (META's verdict, CRBU's
+reason). On the tickers themselves: CHGG's truncation did not repeat — the
+GPU wrote "$52.99 million" in Financial Health and "a net loss of $53
+million" in the summary (SUPPORTED). BEAM's conflict is still in the GPU
+brief, -$86.52 million in Financial Health and "$86.5 million" in Recent
+Developments, but neither section is audited, so it was never judged. META
+has no 52-week claim in the GPU's audited text.
+
+**Numeric check on the three-way, adjudicated (dated record, 2026-10-05;
+not a number of record).** The deterministic check (`agent/numeric_check.py`,
+stock-field figures only, relative tolerance 2%) was run offline over the
+three runs' findings (`scripts/numeric_backtest.py --runs 9jzmj 8vpq6
+p9jr2`): 12 distinct flags, every section of every brief, not only the
+audited ones. All 12 were labelled by one human adjudicator, not blind to
+the arm, under the rules written 2026-09-30 (`eval/numeric_check/README.md`),
+with no doubt notes (`eval/numeric_check/adjudication-2026-10-05-9jzmj-8vpq6-p9jr2.csv`).
+
+| Run | Flags | TRUE_ERROR | FALSE_POSITIVE | TRUE_ERROR per checked number (cluster bootstrap 95% CI) | Excluding the upstream data findings |
+|---|---|---|---|---|---|
+| Hosted `9jzmj` | 8 | 8 | 0 | 8/569 = 1.41% (0.0–3.9%) | 0/569 |
+| CPU SLM `8vpq6` | 1 | 1 | 0 | 1/389 = 0.26% (0.0–0.8%) | 0/389 |
+| GPU SLM `p9jr2` | 3 | 2 | 1 | 2/423 = 0.47% (0.0–1.2%) | 0/423 |
+
+Paired ticker-bootstrap differences in the TRUE_ERROR rate: CPU − hosted
+−1.15% (CI −3.44% to 0.00%), GPU − hosted −0.93% (−3.34% to +0.53%), GPU −
+CPU +0.22% (−0.06% to +0.74%). No interval excludes zero.
+
+- **Every TRUE_ERROR is attributed to the two upstream data findings**
+  by the committed rules (`eval/numeric_check/upstream-findings.md`;
+  `upstream_cause` in `scripts/numeric_adjudicated.py`): 6 currency — the
+  hosted TM brief states revenue and net income as "$52.0 billion" and
+  "$4.5 billion", in three sections, from source values of 51.96 trillion
+  and 4.48 trillion in the filer's reporting currency (yen by their
+  magnitude, inferred), labelled USD — the brief also wrote them 1,000
+  times smaller — and 5 profit-margin fraction ("3.25%" for OMER in all three
+  arms, "-2.49%" for LCID in the GPU arm, where the source fraction means
+  324.9% and −249.2%). With those excluded, all three arms are at 0: the
+  check finds no stock-field error that the upstream data does not
+  explain, in any arm.
+- The FALSE_POSITIVE is OMER's "net loss of $3.4 million" in the GPU's SEC
+  Filing Highlights: the filing's figure, which the check bound to the
+  yfinance `net_income` — the same source conflict as the judge's OMER
+  claim (above), seen from the other side.
+- **Where the adjudication and the judge disagree:** TM in `9jzmj`. The
+  audited Executive Summary's "$52.0 billion in annual revenue" and "$4.5
+  billion in net income" are SUPPORTED by the judge and TRUE_ERROR here.
+  The judge's reason accepts the scale error outright: "Source data shows
+  revenue of 51,957,024,686,080.0 JPY, which the Financial Health
+  pre-written section rounds to '$52.0 billion'". Two judge misses on
+  audited figures, consistent with judge v2's population-weighted recall
+  (32.5%); they are not in the judge-flagged rates above. No other flag
+  overlaps a judged claim: the other ten sit in sections the judge does
+  not audit.
+
+**What the check cannot see.** Two of the numeric problems the judge's
+audit found are invisible to it: (1) **truncation under the 2% tolerance**
+— CPU's CHGG "-$52.9 million" for -52.997M is 0.18% off and passes (so
+the numeric check cannot measure known limitation 4 at its current
+tolerance); (2) **wrong labels** — GPU's SFIX "recent low of $2.61" (the
+current price) and CRBU "market capitalization near its 52-week low of
+$1.22" (a per-share figure) quote correct values, and the check binds
+figures to fields, not to what the sentence calls them. It also checks
+stock-field figures only: news and filing figures (BEAM's and OMER's
+filing-side numbers) are out of its scope.
+
+```bash
+python scripts/numeric_backtest.py --runs 9jzmj 8vpq6 p9jr2 --date 2026-10-05
+python eval/numeric_check/label_cli.py --csv eval/numeric_check/adjudication-2026-10-05-9jzmj-8vpq6-p9jr2.csv
+python scripts/numeric_adjudicated.py --date 2026-10-05 \
+  --adjudication eval/numeric_check/adjudication-2026-10-05-9jzmj-8vpq6-p9jr2.csv \
+  --runs 9jzmj 8vpq6 p9jr2
+#   eval/runs/numeric-adjudicated-2026-10-05-9jzmj-8vpq6-p9jr2.{json,md}
+```
+
+**Smoke `k6zxd` (2026-10-05, dated, never an arm comparison).** 10/10
+tickers, 3/63 = 4.76% unsupported (Wilson 95% CI 1.6–13.1%), gate passed
+(≤ 5%), numeric 0/32 (3.2 per ticker), traffic proof EXACT (70 calls,
+95,185 + 25,317 tokens), 0 retries, mean pipeline 30.82 s per ticker, RAG
+faithfulness 1/446 over 20 answers (rf-v1, unvalidated). All three
+unsupported claims are on AAPL and qualitative: hedged Outlook watch-items
+("strong brand loyalty", "sustained margin expansion in services",
+"successful diversification of hardware revenue streams"), known limitation
+1. The judge listed 11 qualitative claims for AAPL here, against 5 in
+`hm527` and 2 in `wnrjr`: smoke-level run-to-run variance from the judge's
+listing, the `7c66k` MSFT pattern ("Hosted smokes on the 10-ticker set"),
+not a property of the GPU arm. The smoke's run-time projection for the
+extended run was mean 37 min, worst 48 min; `p9jr2` took 35 min 12 s.
+
+**Tool-use check** (`eval/tool_use_check.py`, 2026-10-05, image `1f51dad`,
+one route after another from the api pod; ten fixed questions per route,
+scored from the message trace with no judge; `eval/runs/tool-use-2026-10-05/`,
+three JSONs and the saved tmux pane):
+
+| Route | Parse rate | Tool calls (valid / invalid) | Correct tool | Expected tool first | Completed | Errors | Endpoints in the ledger | Wall time, 10 questions |
+|---|---|---|---|---|---|---|---|---|
+| hosted (Sonnet 4.6) | 1.0 | 12 / 0 | 10/10 | 8/10 | 10/10 | 0 | `anthropic` ² | 104.4 s |
+| cpu | 1.0 | 10 / 0 | 10/10 | 10/10 | 10/10 | 0 | `slm-cpu` | 292.8 s |
+| gpu | 1.0 | 10 / 0 | 10/10 | 10/10 | 10/10 | 0 | `slm-gpu` | 35.6 s |
+
+On WMT and V the hosted agent called `get_sec_filings` before
+`query_sec_filing`; both SLM routes called `query_sec_filing` directly.
+**n = 10 per route: this does not show that Qwen picks tools better than
+Sonnet.** All three routes parse, pick the right tool and finish on every
+question. The check is not under a traffic proof; what served each route
+is what its JSON records (the SLM routes' `provenance`: endpoint, URL,
+alias `qwen3.6-35b-a3b-q4km`, artifact).
+
+² See known limitation 6: the ledger recorded only the hosted route's two
+RAG answer calls.
+
+**Retrieval on the CPU tool-use route.** The pane's `[rag] retrieval
+reranking=OFF` lines (stdout only) show the two `query_sec_filing`
+retrievals at 35.818 s (WMT) and 40.900 s (V) on the CPU route, against
+3.387 s and 2.679 s on hosted and 2.082 s and 4.119 s on GPU. The
+retrieval step runs in the api pod; **hypothesis, not tested:** contention
+between the api pod and the CPU llama.cpp pod. Recorded as an outlier with
+that hypothesis (known limitation 7).
+
+**Known limitations added 2026-10-05, recorded and not changed during the
+comparison (post-demo), continuing 1–4 above:**
+
+3. *(update)* The yfinance-vs-filing conflict is **recurring, not a
+   one-off**: net income twice in two SLM runs — BEAM (-$86.52 million
+   yfinance vs -$80.0 million filing) in `8vpq6` and OMER ($116.53 million
+   yfinance net income vs a $3.4 million net loss in the filing) in
+   `p9jr2`. Each arm's Financial Health section quotes the yfinance
+   figure; whether the judge sees the conflict depends on whether the
+   audited summary repeats it.
+5. *Foreign filers get no SEC context on any arm.* BABA, NVO, SAP, TM and
+   TSM file 20-F, so they make no RAG call — 35 of 40 tickers make the two
+   RAG calls, in `9jzmj`, `8vpq6` and `p9jr2` alike — and their briefs run
+   on stock and news data only (both RAG fields "(not available)" in the
+   contexts). The deliberate coverage gap, recorded since the September runs (`9j2dj`, `j4cnp`).
+6. *The LLM ledger does not record the hosted ReAct agent's calls.* On the
+   hosted tool-use route `llm_calls` is 0 on 8 of 10 questions; the only
+   ledger records are the RAG answer calls behind WMT's and V's
+   `query_sec_filing`. The hosted route is therefore attributed by its
+   setting (`SLM_FULL=false`), not by the ledger; the SLM routes' calls are
+   in the ledger (2 or 3 per question).
+7. *Retrieval outliers on the CPU tool-use route* (35.8 s and 40.9 s
+   against 2–4 s on the other routes), cause not determined; contention
+   with the CPU llama.cpp pod is the working hypothesis.
+8. *The synthesis prompt's example leaks into briefs* (added 2026-10-06).
+   The Outlook rule gives the example "watch services-margin trend and
+   China exposure", and briefs repeat it for companies whose context has
+   no services-margin figure: NVDA and MSFT in GPU smoke `m7qvv` ("trend
+   of services margins", "trajectory of services margins …") and AFRM in
+   `p9jr2` ("Investors should closely monitor the trajectory of services
+   margins"), each judged UNSUPPORTED because the term appears nowhere in
+   the source data or pre-written sections. A form of limitation 1 with a
+   known source. Not changed in the stock-data-fix image (it changes the
+   synthesis prompt, so every arm would need new baselines); the fix — an
+   example that names no metric, or none — is post-demo.
+9. *The current price stated as the 52-week low* (added 2026-10-08). A
+   brief says the stock "trades near its 52-week low of $X" with X the
+   current price, not the low: UPST in hosted `4hsn2` ($24.35; low
+   $22.555), EVGO in GPU `nstp9` ($1.35; low $1.23) and BLNK in hosted
+   `vks4c` ($0.51; low $0.45) — on both the hosted model and the
+   self-served one. Each is an adjudicated numeric-check TRUE_ERROR, and
+   the judge flagged each one UNSUPPORTED. The synthesis prompt passes
+   `week_52_low` and `current_price` as fields and says nothing about how to
+   state them. The fix — a prompt rule that the 52-week low and high are
+   quoted only as those fields, separately from the current price — changes
+   the synthesis prompt, so it is post-demo with limitation 8.
+
+```bash
+python eval/multi_arm_stats.py \
+  --run hosted-9jzmj eval/runs/9jzmj-claims.jsonl eval/runs/raw/9jzmj-findings \
+  --run slm-cpu-8vpq6 eval/runs/8vpq6-claims.jsonl eval/runs/raw/8vpq6-findings \
+  --run slm-gpu-p9jr2 eval/runs/p9jr2-claims.jsonl eval/runs/raw/p9jr2-findings \
+  --rows hosted-9jzmj eval/runs/9jzmj-workflow.json \
+  --rows slm-cpu-8vpq6 eval/runs/slm-proof-8vpq6/grounding-eval-extended-slm-cpu-8vpq6-workflow.json \
+  --rows slm-gpu-p9jr2 eval/runs/slm-proof-p9jr2/grounding-eval-extended-slm-gpu-p9jr2-workflow.json
+python scripts/nvsmi_summary.py eval/runs/gpu-nvsmi-p9jr2.csv \
+  --window "tool-use gpu (approx)" 2026-10-05T02:59:15Z 2026-10-05T02:59:57Z \
+  --workflow "smoke k6zxd" eval/runs/slm-proof-k6zxd/grounding-eval-slm-gpu-k6zxd-workflow.json \
+  --workflow "extended p9jr2" eval/runs/slm-proof-p9jr2/grounding-eval-extended-slm-gpu-p9jr2-workflow.json
+#   both saved as eval/runs/9jzmj-8vpq6-p9jr2-comparison.txt
+python eval/error_types.py eval/runs/numeric-error-types-2026-10-05.json
+#   saved as eval/runs/numeric-error-types-2026-10-05.txt
+python scripts/slm_traffic_proof.py verify \
+  --before eval/runs/slm-proof-p9jr2/grounding-eval-extended-slm-gpu-p9jr2-before.json \
+  --after eval/runs/slm-proof-p9jr2/grounding-eval-extended-slm-gpu-p9jr2-after.json \
+  --log eval/runs/slm-proof-p9jr2/grounding-eval-extended-slm-gpu-p9jr2.log \
+  --workflow eval/runs/slm-proof-p9jr2/grounding-eval-extended-slm-gpu-p9jr2-workflow.json   # EXACT
+```
+
+### Dated finding: hosted run-to-run variance, from two existing runs (2026-10-08)
+
+Two hosted runs on the same image (`f3043751`), the same 40 tickers and the
+same pipeline, a day apart, each judged three times: `4hsn2` (2026-10-06)
+and `vks4c` (2026-10-08, the reranking A/B's baseline arm). Same image and
+inputs except the live data each fetched.
+
+| Measure | `4hsn2` | `vks4c` | Paired difference (4hsn2 − vks4c) |
+|---|---|---|---|
+| Judge-flagged unsupported, mean of three judgings (range) | 2.55% (1.47–3.76%) | 2.59% (2.26–2.83%) | −0.03 points (CI −1.92 to +2.03) |
+| Numeric claims unsupported, mean (range) | 0.86% (0.73–1.11%) | 1.48% (1.09–1.89%) | −0.39 points (CI −2.46 to +1.67) |
+| Numeric check TRUE_ERROR (adjudicated) | 1/565 (UPST) | 1/548 (BLNK) | — (one each, the same kind: limitation 9) |
+| All numbers stated per brief (no judge) | 6.45 | 6.42 | +0.03 (CI −0.57 to +0.65) |
+| Figures bound to stock data per brief (no judge) | 4.47 | 4.33 | +0.15 (CI −0.38 to +0.68) |
+| Highlights refusals (35 tickers) | 9 | 5 | — (JPM, MSFT, NVDA, UNH, UPST in both) |
+
+**Reading.** Between two runs of the same hosted pipeline, the
+deterministic measures barely move, and the judge-flagged rate moves less
+than it does between judgings of one run: the six single judgings span
+1.47–3.76%, the two runs' means differ by 0.04 points. The one measure
+that moves is the refusal count (9 vs 5; five tickers refuse in both, the
+rest vary), so a refusal difference between two runs needs a paired test
+— as the reranking A/B's criterion was.
+
+**The planned extra hosted variance runs are dropped.** Their purpose was
+to size run-to-run variance before comparing arms. These two runs already
+give it on every measure the comparisons use, and the judge's own noise
+(three judgings per run) is the larger term; more hosted runs would spend
+about $4 each to re-measure the same thing.
+
+```bash
+python eval/three_judging_stats.py --runs 4hsn2   --judgings raw eval/runs/rejudge-2026-10-06 eval/runs/rejudge-2026-10-06-r2   --run-judgings vks4c raw eval/runs/rejudge-2026-10-08 eval/runs/rejudge-2026-10-08-r2   --pairs 4hsn2:vks4c                                  # eval/runs/three-judging-2026-10-08-hosted-variance.txt
+python eval/density_check.py --runs 4hsn2 vks4c --pairs 4hsn2:vks4c   # eval/runs/density-2026-10-08-hosted-variance.txt
+python eval/rag_refusals.py --runs 4hsn2 vks4c
+```
+
+### Reranking A/B, pre-registered (2026-10-08, before any run)
+
+**Question:** should cross-encoder reranking (20 cosine candidates reranked
+to 3 by `BAAI/bge-reranker-base`) replace plain top-3 retrieval? It shipped
+default-off after the June A/B (judge v1, pre-retrieval-fix) showed no
+grounding gain at 4–5× the retrieval latency. The judge is too weak a
+measure on these runs (calibration of record: recall about 11%), so the
+decision rests on measures that need no judge.
+
+**Design.** Two fresh 40-ticker hosted runs on image `f3043751`, submitted
+in one window: `argo/eval-run-extended.yaml` (arm baseline) and
+`argo/eval-run-extended-rerank3.yaml` (arm rerank3), each judged three
+times. A one-ticker memory smoke first (`argo/eval-run-rerank3-smoke.yaml`):
+if the eval pod's memory is tight with the cross-encoder loaded, the rerank
+arm's pod limit is raised in the WorkflowTemplate, never the image.
+Latency comes from a separate warm benchmark
+(`scripts/rerank_latency_bench.py` as the Job
+`k8s/jobs/rerank-latency-bench`): every eval pod is fresh and loads the
+model inside its first timed retrieval, which an app process does once.
+
+**Reranking ships only if all four hold** (`scripts/rerank_ab_decide.py`):
+
+1. **Refusals** (`eval/rag_refusals.py`, the rule fixed 2026-10-07):
+   paired by ticker over the tickers with a highlights answer, b = baseline
+   refused and rerank3 did not, c = the reverse; **b − c ≥ 3 and exact
+   two-sided McNemar p < 0.05**. Refusals of the SEC-highlights answer are
+   what better retrieval could fix (limitation 2).
+2. **Numeric errors**: TRUE_ERROR per checked number (numeric check,
+   adjudicated): **the upper end of the 95% CI of rerank3 − baseline ≤ +0.5
+   percentage points**.
+3. **Specificity**: figures bound to a stock-data field per brief
+   (judge-independent): **the lower end of the 95% CI of rerank3 −
+   baseline ≥ −0.5**.
+4. **Latency**: the per-ticker time reranking adds, warm (2 × the paired
+   median per-query difference, two RAG queries per ticker), **≤ 20% of the
+   baseline run's mean pipeline time per ticker**.
+
+Reported, not deciding: judge-flagged grounding over three judgings. It
+blocks shipping only if rerank3 is worse with the paired CI excluding zero.
+Cost per brief is unchanged by reranking (the same LLM calls; the
+cross-encoder runs in the pod) and is not a criterion.
+
+**Result (2026-10-08): DON'T SHIP** — two of the four criteria fail
+(`scripts/rerank_ab_decide.py`, output `eval/runs/rerank-ab-decision-2026-10-08.json`).
+Runs on image `f3043751`, 40 tickers each, submitted together at 03:24Z:
+baseline `grounding-eval-extended-vks4c` and rerank3
+`grounding-eval-extended-rerank3-2mzdd`; both 40/40 on the first attempt,
+0 retries, stock block empty 0/40, gates passed. The one-ticker memory smoke
+(`grounding-eval-rerank3-smoke-262mz`) peaked at 1,487 MiB of the eval pod's
+2,048 MiB with the cross-encoder loaded and the pod at its 1.5-CPU limit; the
+limit was kept, and no eval pod of the A/B was killed or retried.
+
+| Criterion | Baseline `vks4c` | Rerank3 `2mzdd` | Result |
+|---|---|---|---|
+| 1. Highlights refusals (35 tickers with a RAG answer) | 5 | 7 | b = 2, c = 4, McNemar p = 0.69: **fails** (reranking refused more) |
+| 2. Numeric TRUE_ERROR per checked number (adjudicated) | 1/548 (BLNK: the current price written as the 52-week low) | 0/539 | −0.18 points (CI −0.60 to 0.00): passes |
+| 3. Figures bound to stock data per brief | 4.33 | 4.30 | −0.03 (CI −0.40 to +0.35): passes |
+| 4. Warm latency added per ticker | — | +11.0 s | 41.5% of the baseline's 26.4 s, limit 20%: **fails** |
+
+- **Latency** (`scripts/rerank_latency_bench.py`, Job `k8s/jobs/rerank-latency-bench`,
+  70 queries × 3 repeats, model loaded once in 12.4 s): retrieval alone
+  median 0.11 s without reranking, 5.60 s with it (p95 0.18 s vs 14.1 s);
+  paired median difference 5.48 s per query, two queries per ticker. The
+  cross-encoder on 1.5 CPUs is the cost; in the eval pods, which also load
+  it, each reranked retrieval took about 22 s.
+- **Judge-flagged grounding, reported** (three judgings): baseline 2.59%
+  (2.26–2.83%), rerank3 2.52% (1.71–3.39%); paired baseline − rerank3
+  +0.21 points (CI −1.88 to +2.32): no difference, no block.
+- Reranking stays default-off. Which tickers refuse varies between runs
+  (4hsn2 and 9jzmj each refused 9, this baseline 5), so the refusal count is
+  noisy at 35 tickers; the pre-stated test still required a drop, and the
+  reranked arm moved the other way.
+
+```bash
+python eval/rag_refusals.py --runs vks4c 2mzdd
+python scripts/numeric_adjudicated.py --date 2026-10-08 --runs vks4c 2mzdd   --adjudication eval/numeric_check/adjudication-2026-10-08-vks4c-2mzdd.csv
+python eval/density_check.py --runs vks4c 2mzdd --pairs 2mzdd:vks4c      # eval/runs/density-2026-10-08-rerank-ab.txt
+python eval/three_judging_stats.py --runs vks4c 2mzdd \
+  --judgings raw eval/runs/rejudge-2026-10-08 eval/runs/rejudge-2026-10-08-r2 --pairs vks4c:2mzdd
+python scripts/rerank_ab_decide.py --baseline vks4c --rerank 2mzdd \
+  --adjudication eval/numeric_check/adjudication-2026-10-08-vks4c-2mzdd.csv \
+  --latency eval/runs/rerank-latency-2026-10-08.json \
+  --judgings-baseline raw eval/runs/rejudge-2026-10-08 eval/runs/rejudge-2026-10-08-r2 \
+  --judgings-rerank raw eval/runs/rejudge-2026-10-08 eval/runs/rejudge-2026-10-08-r2
+```
+
+### Traffic proof by per-request match (declared 2026-10-07)
+
+The traffic proof shows that the self-served model, and nothing else,
+produced an SLM run. Until 2026-10-07 it compared the harness's token sums
+with the movement of llama-server's process-wide `/metrics` counters. **From
+2026-10-07, declared before any run it judges, it matches the server's own
+per-request log against the harness's calls one for one**
+(`scripts/traffic_proof_tasks.py`): every task in the endpoint's log window
+complete, the multisets of (prompt, completion) tokens equal, nothing
+unmatched on either side — verdict TASK-EXACT, otherwise FAIL. The counter
+difference is reported beside it and does not decide.
+
+**Evidence for the change.** The A10 capacity replay
+(`eval/runs/capacity-sweep-2026-10-07/`) sent the same 352,522 prompt and
+98,665 completion tokens three times to the GPU endpoint, with nothing else
+on it and the prompt cache off. Each time the server's per-request timings
+summed exactly to what was sent; the prompt counter moved 352,521, 352,520
+and 352,520 — 1, 2 and 2 short — while the completion counter was exact. The
+counter method had failed three runs on the same kind of drift while every
+request matched the server's log: CPU `5bdz5` (+1), CPU `4kkgm` (−4), GPU
+`6z5xz` (+8) (`eval/runs/slm-proof-4kkgm/INVESTIGATION.md`,
+`eval/runs/slm-proof-6z5xz/INVESTIGATION.md`).
+
+**Not retroactive.** `5bdz5`, `4kkgm` and `6z5xz` were judged under the
+counter rule and stay not citable; they are not re-scored. The CPU arm of
+record stays `8vpq6` (image `1f51dad`, counter proof EXACT). Runs before
+2026-10-07 with an EXACT counter proof keep it.
+
+### Dated finding: the judge's run-to-run noise on identical inputs, and density without the judge (2026-10-06)
+
+**Why it was measured.** On the stock-data-fix image (`f3043751`) the
+judge-flagged unsupported rate rose on all three arms against the
+`1f51dad` runs: hosted 1.70% → 3.76%, GPU 2.45% → 3.75%, CPU 3.63% →
+7.17% — almost entirely qualitative Outlook watch-items, none involving a
+currency figure, the currency rule's wording, or a margin. To separate the
+judge from the briefs, every brief of both three-ways was re-judged
+(`eval/rejudge_runs.py`) with the same judge v2 prompt and temperature-0
+Sonnet, from the inputs the judge saw the first time (each findings file's
+retrieved context, pre-written sections and audited text). The reading was
+written into the script before any call: similar rates on re-judge mean a
+judge-side shift; the new runs still worse means a brief-side change.
+
+**Result: same inputs, same prompt, temperature 0 — the rate moved by up
+to about 2× between two judgings.**
+
+| Run | Image | First judging | Re-judge 1 | Qualitative unsupported (first → re-judge) | Outlook unsupported (first → re-judge) |
+|---|---|---|---|---|---|
+| hosted `9jzmj` | `1f51dad` | 7/411 = 1.70% | 10/424 = 2.36% | 5/134 → 8/145 | 3 → 4 |
+| CPU `8vpq6` | `1f51dad` | 9/248 = 3.63% | 7/241 = 2.90% | 6/87 → 5/81 | 5 → 4 |
+| GPU `p9jr2` | `1f51dad` | 6/245 = 2.45% | 7/270 = 2.59% | 3/90 → 5/111 | 2 → 4 |
+| hosted `4hsn2` | `f3043751` | 15/399 = 3.76% | 6/408 = 1.47% | 12/129 → 4/136 | 9 → 2 |
+| GPU `nstp9` | `f3043751` | 10/267 = 3.75% | 8/245 = 3.27% | 6/101 → 4/77 | 7 → 5 |
+| CPU `5bdz5` ¹ | `f3043751` | 19/265 = 7.17% | 9/258 = 3.49% | 17/103 → 8/96 | 12 → 7 |
+
+¹ `5bdz5` is not citable (traffic proof FAIL); it is shown here because the
+question was about its judging.
+
+Old against new on re-judge: hosted 10/424 vs 6/408 (Fisher p = 0.45),
+GPU 7/270 vs 8/245 (p = 0.79), CPU 7/241 vs 9/258 (p = 0.80). The rise did
+not reproduce: under the pre-stated reading it is **judge-side variance,
+not a brief-side change**. It is not a directional drift either — the old
+briefs moved by small amounts both ways, the new ones down sharply. The
+variance sits in the qualitative claims: how many the judge lists, and
+which of them it labels UNSUPPORTED. Numeric claims barely move.
+
+**Consequence: three judgings per run** (adopted 2026-10-06 for the new
+numbers of record). Each run is judged three times — the original plus two
+re-judges (`--tag r2` for the second). A run's rate is reported as the mean
+of the three, with the range. Between arms the test is a paired,
+ticker-level bootstrap on each ticker's unsupported rate averaged over the
+three judgings, which carries both the judge's noise and the clustering of
+claims within briefs; pooling the three judgings' per-claim counts into one
+Fisher test would treat repeated judgings of the same claims as independent
+and make p-values too small. Fisher on each single judging is shown only for
+continuity with earlier records, labelled per judging. Cost: one judging of
+a 40-ticker run is about $0.88 at the price file's Sonnet rates (chars/4
+sizes from the re-judge: 3,690 input and 725 output tokens per brief).
+
+**Density holds without the judge.** The specificity result — hosted
+briefs state more figures than the self-served model's — was measured as
+numeric claims per brief, a judge-based count. It holds on judge-independent
+counts of the audited text, by the numeric check's own parser
+(`eval/density_check.py`, output `eval/runs/density-2026-10-06.txt`), and
+under re-judge. Paired per ticker, 40 tickers; 95% bootstrap CI; exact sign
+test.
+
+| Pair | Figures bound to a stock-data field (conservative) | All numbers stated | Numeric claims, re-judge 1 |
+|---|---|---|---|
+| hosted `9jzmj` − CPU `8vpq6` | **+1.62** (+1.02 to +2.23), p = 0.0002 | +3.10 (+2.17 to +4.15), p = 4e-9 | +2.98 (+2.20 to +3.77), p = 2e-8 |
+| hosted `9jzmj` − GPU `p9jr2` | **+1.80** (+1.32 to +2.30), p = 3e-8 | +3.38 (+2.45 to +4.47), p = 6e-10 | +3.00 (+2.25 to +3.80), p = 1e-8 |
+| CPU `8vpq6` − GPU `p9jr2` | +0.17 (−0.28 to +0.62), p = 0.36 | +0.28 (−0.23 to +0.78), p = 0.47 | +0.03 (−0.50 to +0.57), p = 1.0 |
+| hosted `4hsn2` − GPU `nstp9` | **+1.43** (+0.93 to +1.93), p = 0.0001 | +2.55 (+1.77 to +3.38), p = 1e-5 | +2.60 (+1.88 to +3.35), p = 6e-6 |
+| hosted `4hsn2` − CPU `5bdz5` ¹ | +1.48 (+0.97 to +2.00), p = 8e-6 | +2.75 (+1.95 to +3.65), p = 1e-6 | +2.75 (+2.02 to +3.50), p = 3e-7 |
+
+Means per brief, all numbers stated: hosted 6.80 (`9jzmj`) and 6.45
+(`4hsn2`); the self-served model 3.42–3.90. Bound to a stock field: hosted
+4.62 and 4.47; the self-served model 2.83–3.05. CPU and GPU — the same model
+— do not differ on any count. **From here on the specificity result is
+stated from the judge-independent count first, with the bound-to-field
+figure as the conservative one, and judge-based density as corroboration.**
+
+Counting correction: a first, ad-hoc pass of the "all numbers" count added
+the per-reason binding counts to the tokenizer's count, which already
+includes every number when the stock dict is empty; it double-counted the
+bound figures (about 11 numbers per hosted brief instead of 6.8). The
+committed `eval/density_check.py` counts each number once, and a test pins
+it.
+
+```bash
+python eval/rejudge_runs.py --date 2026-10-06 --runs 9jzmj 8vpq6 p9jr2 4hsn2 nstp9 5bdz5 \
+  --pairs 9jzmj:4hsn2 p9jr2:nstp9 8vpq6:5bdz5            # eval/runs/rejudge-2026-10-06/summary.md
+python eval/density_check.py --runs 9jzmj 8vpq6 p9jr2 4hsn2 nstp9 5bdz5 \
+  --pairs 9jzmj:8vpq6 9jzmj:p9jr2 8vpq6:p9jr2 4hsn2:5bdz5 4hsn2:nstp9 5bdz5:nstp9 \
+  --rejudge eval/runs/rejudge-2026-10-06                 # eval/runs/density-2026-10-06.txt
+```
+
+### Numbers of record on the stock-data-fix image, three judgings per run, and the judge v2 calibration on those runs (2026-10-06/07)
+
+**Runs.** Image `f3043751` (stock-data fix plus currency-labelling prompt
+rule), 40 tickers, judge v2: hosted `grounding-eval-extended-4hsn2`
+(Succeeded, 0 retries, stock block empty 0/40, 26.7 s per ticker) and GPU
+SLM `grounding-eval-extended-slm-gpu-nstp9` (Succeeded, 0 retries, traffic
+proof EXACT, 34.6 s per ticker; node 2's A10, all layers on the GPU). Both
+CPU runs on this image failed their traffic proofs (`5bdz5` +1 token,
+`4kkgm` −4; `eval/runs/slm-proof-4kkgm/INVESTIGATION.md`) and are not
+citable. The CPU arm of record stays `8vpq6` on the **previous image**
+`1f51dad` (proof EXACT) and is compared only with the runs of its own
+image (`9jzmj`, `p9jr2`). Every comparison below is same-image.
+
+**Order of the measures.** The deterministic measures come first: the
+numeric check (adjudicated), the currency-label count and judge-independent
+density need no judge. Judge-flagged grounding is secondary, and is quoted
+with the judge's noise between judgings (up to about 2×, previous section)
+and its calibration on these runs (below) beside it.
+
+#### Deterministic measures
+
+| Measure | Hosted `4hsn2` | GPU `nstp9` | Same-image difference |
+|---|---|---|---|
+| Numeric check, TRUE_ERROR per checked number (adjudicated, one human, drafts reviewed) | 1/565 = 0.18% | 1/432 = 0.23% | GPU − hosted +0.05% (CI −0.51% to +0.71%), not separated |
+| Currency-label findings (a non-USD reporting-currency figure written in dollars) | 0 (22 on `9jzmj` before the fix) | 0 (11 on `p9jr2`) | — |
+| Figures bound to a stock-data field per brief, judge-independent (conservative) | 4.47 | 3.05 | hosted +1.43 (CI +0.93 to +1.93), sign p = 0.0001 |
+| All numbers stated per brief, judge-independent | 6.45 | 3.90 | hosted +2.55 (CI +1.77 to +3.38), p = 1.3e-5 |
+| Numeric claims per brief, judge-based (re-judge 2), corroboration | 6.85 | 4.05 | hosted +2.80 (CI +2.05 to +3.52), p = 1.9e-6 |
+
+The two TRUE_ERRORs are one kind: the current price written as the 52-week
+low (UPST hosted, "near its 52-week low of $24.35", low $22.555; EVGO GPU,
+"$1.35", low $1.23). All three judgings flagged both. The check caught them
+because the stated figure differs from the bound field; it does not cover
+wrong labels in general (SFIX and CRBU in `p9jr2` were invisible to it).
+The two FALSE_POSITIVEs are filing figures against yfinance net income
+(LCID, OMER): limitation 3, now three companies (BEAM, OMER, LCID). On
+`1f51dad` the same density measure gave hosted − CPU +1.62 (CI +1.02 to
++2.23, p = 0.0002) and CPU − GPU +0.17 (CI −0.28 to +0.62): the same model
+does not differ between CPU and GPU.
+
+#### Judge-flagged grounding (secondary): three judgings per run
+
+Mean of the three judgings (range); each judging's count in brackets.
+
+| Run | Image | Unsupported, all claims | Numeric claims |
+|---|---|---|---|
+| hosted `4hsn2` | `f3043751` | 2.55% (1.47–3.76%) [15/399, 6/408, 10/415] | 0.86% (0.73–1.11%) [3/270, 2/272, 2/274] |
+| GPU `nstp9` | `f3043751` | 3.57% (3.27–3.75%) [10/267, 8/245, 9/243] | 2.42% (2.38–2.47%) [4/166, 4/168, 4/162] |
+| CPU `8vpq6` | `1f51dad` | 2.89% (2.13–3.63%) [9/248, 7/241, 5/235] | 1.25% (0.63–1.86%) [3/161, 2/160, 1/158] |
+| hosted `9jzmj` | `1f51dad` | 2.16% (1.70–2.43%) [7/411, 10/424, 10/411] | 0.84% (0.72–1.08%) |
+| GPU `p9jr2` | `1f51dad` | 2.25% (1.69–2.59%) [6/245, 7/270, 4/236] | 1.71% (1.26–1.94%) |
+
+Paired ticker-level bootstrap on per-ticker rates averaged over the three
+judgings, same image only: `4hsn2` − `nstp9` −1.22 points (CI −4.39 to
++1.78), numeric −1.74 (CI −5.54 to +1.49); on `1f51dad`, `9jzmj` − `8vpq6`
+−0.74 (CI −2.67 to +1.03) and `8vpq6` − `p9jr2` +0.16 (CI −1.96 to +2.26).
+**No pair separates.** Not detected is not absent: at these rates a
+40-ticker run cannot resolve differences of a few points.
+
+#### The judge's calibration on these runs (2026-10-07) — calibration of record
+
+180 claims from `4hsn2` and `nstp9`, labelled blind by one labeller
+(`eval/label_cli.py`, no judge verdict shown), drawn from every claim any
+of the three judgings listed (775 after excluding 18 already labelled in
+earlier sets), in four strata with weights N/n:
+
+| Stratum | Population | Labelled | Human UNSUPPORTED |
+|---|---|---|---|
+| U: flagged UNSUPPORTED by at least one judging | 29 | 29 (all) | 9 |
+| I: INFERENCE in at least one judging | 76 | 30 | 3 |
+| W: Outlook watch-item, no digit | 174 | 40 | 2 |
+| S: the rest (SUPPORTED wherever listed) | 496 | 81 | 3 |
+
+UNSUPPORTED is the positive class; human SUPPORTED and INFERENCE are not.
+Population-weighted, with 95% stratified-bootstrap intervals:
+
+| Judging | Precision | Recall (a claim the judging did not list counts as missed) | Recall over the judging's own listed claims (the September definition) |
+|---|---|---|---|
+| original | 25.0% (8.3–44.0%) | 13.7% (4.4–30.4%) | 19.9% (7.2–49.7%) |
+| re-judge 1 | 30.8% (7.1–57.1%) | 9.2% (1.7–22.9%) | 13.3% (2.7–41.7%) |
+| re-judge 2 | 36.8% (16.7–60.0%) | 16.0% (6.2–36.7%) | 28.8% (10.7–78.0%) |
+| majority (≥ 2 of 3 say UNSUPPORTED) | 29.4% (8.3–52.9%) | 11.4% (3.1–27.9%) | — |
+
+**True-rate estimate** (post-stratified within each run, from that run's
+own labels; denominator: every claim any judging listed; Jeffreys
+intervals, a fully labelled stratum exact). **The intervals are wide**:
+few labelled rows per run and stratum.
+
+| Run | Estimated human-UNSUPPORTED claims | True rate | 95% CI |
+|---|---|---|---|
+| hosted `4hsn2` | 18.2 of 485 | 3.8% | 1.9–9.7% |
+| GPU `nstp9` | 25.3 of 290 | 8.7% | 5.4–18.5% |
+
+No test between these two estimates is made: they rest on 108 and 72
+labels.
+
+**Judge-judge agreement** (no labels needed; all 793 claims listed by any
+judging): two judgings list the same claim 72–74% of the time; where both
+list it, verdict kappa 0.79–0.86 (Fleiss 0.825 where all three list it);
+on flagged-or-not over the union, kappa 0.64–0.68 (Fleiss 0.653). The
+judgings flagged 24, 13 and 19 claims; 10 by all three, 12 by exactly one.
+The noise is mostly in which claims get listed and flagged, not in the
+verdict on a claim both judgings consider.
+
+**Reading.**
+
+- Precision is low because of one interaction: 16 of the 29 judge-flagged
+  claims were labelled INFERENCE by the human, and 14 of those 16 are
+  qualitative Outlook watch-items — the hedged "watch X" lines the judge
+  calls unsupported when the context lacks the metric (limitation 1).
+- Recall is low because most human-UNSUPPORTED claims sit in claims the
+  judge passed: the supported stratum's 3 of 81 stand for about 18 claims,
+  twice the flagged stratum's 9, and the INFERENCE and watch-item strata
+  add about 16 more.
+- The majority vote is no better than a single judging.
+- Against the September calibration (2026-09-24, now a dated record:
+  precision 60%, CI 35.7–80.2%; population-weighted recall 32.5% on
+  `j4cnp`, CI 16.0–52.4%) both figures are lower, with overlapping
+  intervals. The populations differ (September claims, the 512-cap
+  pipeline, a different labelling occasion), so this is not a measured
+  change in the judge.
+
+**What it means for the numbers.** A judge-flagged rate is a weak signal on
+these runs: roughly 3 in 10 flags are human-UNSUPPORTED, and roughly 1 in 9
+human-UNSUPPORTED claims is flagged. That is why the deterministic measures
+lead and judge-flagged grounding is secondary.
+
+**The three human-UNSUPPORTED claims in the supported stratum** (no note
+recorded: the labeller records the label only):
+
+| Run | Ticker | Section | Claim | Original | Re-judge 1 | Re-judge 2 |
+|---|---|---|---|---|---|---|
+| `4hsn2` | SAP | Executive Summary | SAP S/4HANA (as the named product milestone central to the cloud transition) | SUPPORTED | SUPPORTED | not listed |
+| `4hsn2` | CRBU | Outlook | cash runway limited to approximately 12 months | SUPPORTED | SUPPORTED | SUPPORTED |
+| `nstp9` | SAP | Executive Summary | ongoing migration to the SAP Business Technology Platform | not listed | not listed | SUPPORTED |
+
+```bash
+python eval/three_judging_stats.py --runs 9jzmj 8vpq6 p9jr2 4hsn2 nstp9 \
+  --judgings raw eval/runs/rejudge-2026-10-06 eval/runs/rejudge-2026-10-06-r2 \
+  --pairs 4hsn2:nstp9 4hsn2:8vpq6 nstp9:8vpq6 8vpq6:p9jr2 9jzmj:p9jr2 9jzmj:8vpq6 9jzmj:4hsn2 p9jr2:nstp9
+                                       # eval/runs/three-judging-2026-10-06.txt (cross-image pairs printed, not cited)
+python eval/density_check.py --runs 4hsn2 nstp9 8vpq6 p9jr2 \
+  --pairs 4hsn2:nstp9 4hsn2:8vpq6 nstp9:8vpq6 8vpq6:p9jr2 \
+  --rejudge eval/runs/rejudge-2026-10-06-r2      # eval/runs/density-2026-10-06-numbers-of-record.txt
+python scripts/numeric_adjudicated.py --date 2026-10-06 --runs 4hsn2 nstp9 \
+  --adjudication eval/numeric_check/adjudication-2026-10-06-4hsn2-nstp9.csv
+python eval/build_threejudge_calibration.py --runs 4hsn2 nstp9 \
+  --judgings raw eval/runs/rejudge-2026-10-06 eval/runs/rejudge-2026-10-06-r2
+python eval/threejudge_report.py                 # eval/runs/threejudge-calibration-2026-10-07.txt
+```
+
+### Dated finding: the aggregate step's template outgrew Argo's inline limit (2026-10-04)
+
+**Mechanism (Argo v3.7.18, read from its source).** The controller hands
+each step its resolved template in the init container's `ARGO_TEMPLATE`
+env var. It clears `inputs.parameters` first and keeps `inputs.artifacts`,
+so the aggregate's template carries every ticker's result once, in the raw
+input artifact. When that template JSON is longer than
+`common.MaxEnvVarLen` = **131,072 bytes**, the controller writes it to a
+ConfigMap instead — named after the pod, in the workflow's namespace,
+owned by the Workflow — and mounts it at `/argo/config`. That takes
+`create` on configmaps in the workflow's namespace. The pinned
+`install.yaml` gives the controller only `get, watch, list`, so the step
+failed with `configmaps is forbidden: User "system:serviceaccount:argo:argo"
+cannot create resource "configmaps" … in the namespace "financial-agent"`.
+The workflow's `status.compressedNodes` is a separate mechanism (node-status
+compression near the 1 MB object limit), not the cause.
+
+**Size, from the captured smoke workflows** (results JSON-escaped as Go
+writes it; the rest of the template is about 1 KB):
+
+| Rows | Bytes per ticker | 10 tickers | Limit crossed from | 40 tickers |
+|---|---|---|---|---|
+| Hosted (`x2cx8`, `hm527`) | about 4,935 | 0.38× the limit | 27 tickers | about 198 KB, 1.5× |
+| SLM CPU (`9jddz`) | about 7,538 | 0.58× | 18 tickers | about 303 KB, 2.3× |
+| Hosted before the LLM ledger (`9j2dj`, 2026-09-05) | about 593 | — | not reached | about 24 KB |
+
+Measured on the two 40-ticker runs themselves
+(`python scripts/aggregate_template_size.py <workflow.json> …`): `9jzmj`
+198,065 bytes (1.51×; the aggregate errored), `8vpq6` 301,083 bytes (2.30×;
+the aggregate succeeded, through the offload).
+
+**Cause: the per-ticker LLM ledger added 2026-10-02** (and, on SLM arms,
+the endpoint provenance repeated in every row) made each row about eight
+times larger. That is why the September 40-ticker runs and every 10-ticker
+smoke passed, and the first 40-ticker run since the ledger did not.
+
+**Fixed now, no image change.** `argo/base/rbac.yaml` adds a Role
+(`configmaps: [create]`, in `financial-agent`) bound to the controller's
+ServiceAccount (`argo` in namespace `argo`) — every overlay inherits it;
+`render_diff` shows exactly that Role and RoleBinding added per overlay and
+nothing else. `create` is the only verb the controller uses; the ConfigMap
+goes with its Workflow through the owner reference. Proven on kind (Argo
+v3.7.18) with `scripts/template_offload_probe.py`,
+`eval/runs/kind-template-offload-2026-10-04.txt`:
+
+- without the Role, a 150 KB template ends in Error with the same
+  `configmaps is forbidden` message as on OKE, and no ConfigMap exists;
+- with it, the controller logs `Created configmap`, the ConfigMap holds
+  `ARGO_TEMPLATE` (150,343 bytes) owned by the Workflow, the init container
+  gets `ARGO_TEMPLATE=offloaded` and the `/argo/config` mount, the pod
+  reads all 150,014 payload bytes and the workflow succeeds; the controller
+  still cannot update or delete ConfigMaps;
+- a 100 KB template stays inline (no ConfigMap);
+- deleting the workflow garbage-collects the ConfigMap within seconds.
+
+First live use on OKE: `8vpq6` (2026-10-04), after the Role was applied
+there. Its aggregate step ran and succeeded with a 301,083-byte template,
+which only the ConfigMap offload can deliver.
+
+**Known post-comparison change (deferred, recorded).** The eval pod's
+output parameter should carry only what the aggregate reads: the aggregate
+never uses `llm_eval`, `inference_claims`, `timing_s`, `haiku_cost` or the
+payload's own `aggregate`/`arms`/`tickers`, the ledger can be written
+compactly, and the SLM sampling can travel as a hash; the full result
+would ride the findings dump, so an aggregate can always be rebuilt
+offline. With that goes a test of the worst-case 40-ticker template size
+against 131,072 and a pre-submit warning in `make eval-run`. It changes
+`grounding_check.py`, which is in the image, so every arm would re-run on
+the new image: it waits until the comparison on `1f51dad` is finished.
+Until then a 40-ticker run depends on the template offload.
+
+**Host-side readers and compressed node status.** A 40-ticker workflow
+object has `status.compressedNodes` and no `status.nodes`; readers that
+only looked at `status.nodes` saw no pods. `scripts/workflow_nodes.py`
+reads either form and stops with a plain message when the nodes are
+offloaded to Argo's database. `scripts/run_time_projection.py` and
+`scripts/rag_ledger_from_workflow.py` use it directly; `eval/attempts.py`
+runs inside the eval pods (the harness imports it), so it is left exactly
+as built into the pinned image and `make eval-run` / `slm-eval-run` expand
+the workflow object before handing it over. Run by hand, pipe the object
+through `python3 scripts/workflow_nodes.py expand` first. Validated on
+`9jzmj`'s real object (`status.compressedNodes` of 109 KB, no `nodes` key):
+unexpanded, `eval/attempts.py` reports 0 eval pods; expanded, 40 eval pods
+for 40 tickers and 0 retries, matching the pod log, and the run-time
+projection reads all 40 tickers from it.
+
+### Dated finding (computed, not booted): no 4-bit Qwen3.6-35B-A3B fits one A10 under vLLM (2026-10-02)
+
+Qwen publishes Qwen3.6-35B-A3B in BF16 and FP8 only (FP8 has no native
+Ampere support, and its weights exceed 24 GB). The community 4-bit builds,
+weighed from their safetensors headers with `--language-model-only`
+(vision tower skipped) and no MTP draft layers, against the A10's 23,028
+MiB (22.49 GiB):
+
+| Repo @ revision | Quant | On disk | Language model | At util 0.90 (20.24 GiB) | At 0.95 (21.36 GiB) |
+|---|---|---|---|---|---|
+| `palmfuture/Qwen3.6-35B-A3B-GPTQ-Int4` @`00a6698` | GPTQ int4 g128 | 22.73 GiB | 20.32 GiB | weights alone exceed it by 0.08 | 1.04 GiB left |
+| `QuantTrio/Qwen3.6-35B-A3B-AWQ` @`119886a` | AWQ int4 g128 | 23.70 GiB | 21.30 GiB | exceed by 1.06 | 0.07 GiB left |
+| `cyankiwi/Qwen3.6-35B-A3B-AWQ-4bit` @`00fcea2` | AWQ int4 g32 | 23.24 GiB | 21.90 GiB | exceed by 1.66 | exceed by 0.54 |
+
+Only the routed experts are 4-bit; attention, Gated DeltaNet, shared
+experts, embeddings and `lm_head` stay 16-bit (~4.5 GiB). The 1.04 GiB
+best case must hold the CUDA context, activations, CUDA graphs, the KV
+cache (~20 KiB/token: 10 full-attention layers × 2 KV heads × 256) and the
+per-sequence DeltaNet state, against a harness that sends up to ~8
+concurrent requests of up to ~5k tokens: no usable context. Separately,
+node 2's driver 570.124.06 supports CUDA 12.8; vLLM ≥ 0.19.0 (the card's
+minimum; Qwen3.5-architecture support since 0.17.0, quantized-GDN fix in
+0.19.0) publishes no CUDA 12.8 image — 0.19.x defaults to CUDA 12.9 and
+0.20+ to 13.0, which needs a 580-series driver. vLLM was **not booted**;
+these are arithmetic and published-artifact facts. The GPU arm runs
+llama.cpp's CUDA 12.8.1 build on the same GGUF instead. Reproduce:
+
+```bash
+python scripts/hf_safetensors_breakdown.py palmfuture/Qwen3.6-35B-A3B-GPTQ-Int4 \
+  --revision 00a66983516f8f8057741221277eed4141c9e431 --gpu-mib 23028 --util 0.90
+# QuantTrio/Qwen3.6-35B-A3B-AWQ @119886a1072372348f73ef0df2d801cdcc0f455b
+# cyankiwi/Qwen3.6-35B-A3B-AWQ-4bit @00fcea2d3bcf5389b518d4fc082e5590e0ba4844
+```
+
 ## Dated A/B on the single-VM target (2026-09-03)
 
 Same VM, same harness, same judge (v1), ~40 minutes apart, 10/10
@@ -1361,6 +3067,12 @@ instead of ~90%. It is not quoted as current anywhere.
 
 #### Calibration of record (2026-09-24)
 
+*A dated record since 2026-10-07. The calibration of record for the current
+numbers is the three-judging calibration measured on those runs:
+["The judge's calibration on these runs"](#the-judges-calibration-on-these-runs-2026-10-07--calibration-of-record).
+This one was measured on September claims and still describes the runs of
+its time (`j4cnp`, `lsnnc`).*
+
 The set, per judge-label stratum:
 
 - **Judge-SUPPORTED: 4/123 human-UNSUPPORTED**, from the blind relabel of
@@ -1425,7 +3137,7 @@ first the same day from the held-out sample alone (judge-SUPPORTED
 1/20): `j4cnp` recall 25.4% (CI 7.4–58.4%), true rate 7.2% (CI
 3.1–22.0%); `lsnnc` recall 49.9% (CI 18.4–83.1%), true rate 9.8% (CI
 5.3–24.2%); pooled recall 39.1% (CI 13.0–74.0%), true rate 8.5% (CI
-4.2–23.1%). Replaced by the calibration of record above, which measures
+4.2–23.1%). Replaced by the September calibration (2026-09-24) above, which measures
 the judge-SUPPORTED stratum on 123 claims instead of 20.
 
 #### Dated finding: calibration batch first pass discarded, caught by a blind relabel (2026-09-24)

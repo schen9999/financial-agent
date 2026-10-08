@@ -1,0 +1,61 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "currently trading at $1.19"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `"current_price": 1.19`.
+
+---
+
+CLAIM: "market capitalization of approximately $127.6 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `"market_cap": 127576944.0`, which rounds to approximately $127.6 million.
+
+---
+
+CLAIM: "accumulated deficit of $596.5 million"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both explicitly state "an accumulated deficit of $596.5 million as of December 31, 2025."
+
+---
+
+CLAIM: "extreme proximity to its 52-week low of $1.17"
+LABEL: SUPPORTED
+REASON: The raw source data lists `"week_52_low": 1.17`; the current price of $1.19 is $0.02 above that low, confirming extreme proximity arithmetically.
+
+---
+
+CLAIM: "existing cash reserves are explicitly insufficient to fund the pivotal clinical trial for its lead candidate, vispa-cel"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "the company currently does not have sufficient funds to conduct the planned pivotal clinical trial for vispa-cel."
+
+---
+
+CLAIM: "advancing vispa-cel and CB-011 through development"
+LABEL: SUPPORTED
+REASON: Both product candidates, vispa-cel and CB-011, are explicitly named in the RAG SEC Highlights and Risk Factors sections as the company's product candidates requiring additional financing.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "pivotal trial for vispa-cel, which currently lacks sufficient funding"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "the company currently does not have sufficient funds to conduct the planned pivotal clinical trial for vispa-cel."
+
+---
+
+CLAIM: "cash reserves below the threshold needed for near-term operations"
+LABEL: INFERENCE
+REASON: The source data states $142.8 million in cash is expected to fund operations for "at least the next 12 months," so a threshold for near-term operations is implicitly derivable from that figure, though no specific dollar threshold is named in the source; the claim is a directional restatement of the liquidity risk disclosed in the filings.
+
+---
+
+*No additional specific quantitative figures, price targets, ratios, percentages, or named product milestones appear in the Outlook section beyond those evaluated above.*

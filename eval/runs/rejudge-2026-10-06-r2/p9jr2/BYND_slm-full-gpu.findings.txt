@@ -1,0 +1,67 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+### EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "trading near its 52-week low of $7.84"
+LABEL: SUPPORTED
+REASON: The source data explicitly lists `week_52_low: 7.84`, and the current price of $8.25 is indeed near that low; the same figure appears in the pre-written Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "market capitalization under $150 million"
+LABEL: SUPPORTED
+REASON: Source data shows `market_cap: 141,850,208`, which is approximately $141.85 million — arithmetically confirmed to be under $150 million.
+
+---
+
+CLAIM: "negative forward P/E ratio"
+LABEL: SUPPORTED
+REASON: Source data explicitly states `forward_pe: -0.7914124`, confirming the forward P/E is negative.
+
+---
+
+CLAIM: "reported revenue of $258.84 million"
+LABEL: SUPPORTED
+REASON: Source data shows `revenue: 258,844,992`, which rounds to $258.84 million; the same figure appears in the pre-written Financial Health section.
+
+---
+
+### OUTLOOK
+
+---
+
+CLAIM: "persistent declines in plant-based meat demand"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states "The plant-based meat category is experiencing weakness, including ongoing and persistent declines in demand."
+
+---
+
+CLAIM: "Global Operations Review"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and Risk Factors sections both explicitly name the "Global Operations Review" as an active initiative.
+
+---
+
+CLAIM: "ability to meet debt covenants without resorting to shareholder dilution"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly references "risks regarding its ability to comply with covenants governing its Notes and Loan and Security Agreement, as well as the risk of shareholder dilution from the equitization of debt or exercise of warrants."
+
+---
+
+CLAIM: "material weaknesses in internal controls"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states "The company must address existing material weaknesses in its internal control over financial reporting."
+
+---
+
+CLAIM: "supply chain vulnerabilities"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and Risk Factors both explicitly describe supply chain vulnerability from reliance on a limited number of third-party suppliers and distributors.
+
+---
+
+**No additional quantitative figures, price targets, specific thresholds, ratios, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those audited above.** All forward-looking qualitative claims (e.g., "cautiously cautious," "potential path," "constructive view") are directional/narrative and contain no specific quantitative assertions requiring arithmetic verification.

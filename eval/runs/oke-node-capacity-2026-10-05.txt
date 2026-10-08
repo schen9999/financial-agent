@@ -1,0 +1,12 @@
+# OKE provided cluster, read-only from the operator 2026-10-05 (~23:20 UTC):
+#   kubectl get nodes -o custom-columns=NODE:.metadata.name,CPU:.status.capacity.cpu,MEM:.status.capacity.memory,ALLOC_MEM:.status.allocatable.memory
+#   kubectl -n financial-agent get pod -l app.kubernetes.io/name=llamacpp -o custom-columns=POD:.metadata.name,NODE:.spec.nodeName
+# capacity.memory is what the kernel sees, below the shape's configured memory, so a
+# whole-node figure from it is approximate. The llamacpp pod is the one in eval/runs/top-cpu-ext.txt (8vpq6).
+NODE            CPU   MEM          ALLOC_MEM
+10.140.41.238   16    32853944Ki   29503416Ki
+10.140.46.187   16    65834916Ki   60387236Ki
+10.140.46.95    16    32853936Ki   29503408Ki
+10.140.47.66    16    65834908Ki   60387228Ki
+POD                         NODE
+llamacpp-548f6b8bc6-dgxrf   10.140.47.66

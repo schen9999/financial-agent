@@ -1,0 +1,31 @@
+"""eval/rejudge_runs.py: with the original findings returned in place of a
+re-judge, the counting reproduces each run's recorded totals — so a real
+re-judge is compared on the same arithmetic. No API calls."""
+from eval import rejudge_runs as rj
+
+
+def test_counting_reproduces_the_recorded_runs(tmp_path, monkeypatch):
+    monkeypatch.setattr(rj, "rejudge_one", lambda parsed, attempts=3: parsed["findings"])
+    summary = rj.run_all(["4hsn2", "5bdz5"], tmp_path, workers=2)
+    assert (summary["4hsn2"]["unsupported"], summary["4hsn2"]["total"]) == (15, 399)
+    assert (summary["5bdz5"]["unsupported"], summary["5bdz5"]["total"]) == (19, 265)
+    assert summary["5bdz5"]["unsupported_qualitative"] == 17
+    assert len(list((tmp_path / "4hsn2").glob("*.findings.txt"))) == 40
+    # resumable: a second pass re-judges nothing
+    monkeypatch.setattr(rj, "rejudge_one", lambda *a, **k: (_ for _ in ()).throw(AssertionError))
+    assert rj.run_all(["4hsn2"], tmp_path, workers=2)["4hsn2"]["unsupported"] == 15
+    t = rj.table(summary, [("4hsn2", "5bdz5")])
+    assert "| 4hsn2 vs 5bdz5 | 15/399 vs 19/265 |" in t
+
+
+def test_loads_the_env_file_for_the_judge_key():
+    src = (rj.ROOT / "eval" / "rejudge_runs.py").read_text(encoding="utf-8")
+    assert 'load_dotenv(ROOT / ".env")' in src
+
+
+def test_summary_merge_keeps_earlier_runs(tmp_path):
+    import json
+    p = tmp_path / "summary.json"
+    p.write_text(json.dumps({"9jzmj": {"unsupported": 10}}))
+    merged = rj.merge_summary(p, {"4kkgm": {"unsupported": 7}})
+    assert merged == {"9jzmj": {"unsupported": 10}, "4kkgm": {"unsupported": 7}}

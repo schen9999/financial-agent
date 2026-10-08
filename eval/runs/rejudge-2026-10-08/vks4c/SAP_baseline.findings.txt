@@ -1,0 +1,78 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number appearing in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "€38.2 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of €38,192,001,024, which rounds to €38.2 billion; the pre-written Financial Health section also states this figure explicitly.
+
+---
+
+CLAIM: "€7.8 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net income of €7,795,999,744, which rounds to €7.8 billion; the pre-written Financial Health section also states this figure explicitly.
+
+---
+
+CLAIM: "$242.5 billion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $242,532,958,208, which rounds to $242.5 billion; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "forward P/E of 21.69x"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists forward_pe as 21.691198, which rounds to 21.69x.
+
+---
+
+CLAIM: "trailing P/E of 26.97x"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists pe_ratio as 26.974327, which rounds to 26.97x.
+
+---
+
+CLAIM: "moderate positioning within its 52-week range" (positional claim)
+LABEL: SUPPORTED
+REASON: The 52-week range is $144.97–$281.37 (spread of $136.40); the current price of $210.13 sits $65.16 above the low and $71.24 below the high, placing it arithmetically near the midpoint (~47.8% of the way from low to high), consistent with "moderate positioning."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "20.41% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists profit_margin_pct as 20.41.
+
+---
+
+CLAIM: "competitive dynamics against Salesforce and Oracle"
+LABEL: SUPPORTED
+REASON: The pre-written Recent Developments section explicitly names Salesforce and Oracle as rivals; these names are present in the direct input to the synthesis model.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already audited above.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | €38.2 billion in revenue | SUPPORTED |
+| 2 | €7.8 billion in net income | SUPPORTED |
+| 3 | $242.5 billion market capitalization | SUPPORTED |
+| 4 | Forward P/E of 21.69x | SUPPORTED |
+| 5 | Trailing P/E of 26.97x | SUPPORTED |
+| 6 | Moderate positioning within 52-week range | SUPPORTED |
+| 7 | 20.41% profit margin | SUPPORTED |
+| 8 | Competitive dynamics against Salesforce and Oracle | SUPPORTED |
+
+All audited claims are supported. No unsupported or inference-only claims were identified in the Executive Summary or Outlook sections.

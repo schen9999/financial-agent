@@ -1,0 +1,43 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating CNY 1.04 trillion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of 1,044,970,995,712 CNY, which rounds to CNY 1.04 trillion; the pre-written Financial Health section also states "Annual revenue stands at CNY 1.04 trillion."
+
+---
+
+CLAIM: "market capitalization of approximately $275.6 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of 275,642,155,008 USD, which rounds to approximately $275.6 billion.
+
+---
+
+CLAIM: "forward P/E of 12.00"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists forward_pe as 12.002404, which rounds to 12.00.
+
+---
+
+CLAIM: "higher trailing multiple of 26.83"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists pe_ratio as 26.828087, which rounds to 26.83.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "sustaining its 7.04% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists profit_margin_pct as 7.04%.
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already evaluated above.*

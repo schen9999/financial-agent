@@ -1,0 +1,49 @@
+{
+ "eval_pods": 11,
+ "failed_attempts": [
+  {
+   "attempt": 0,
+   "by_endpoint": {},
+   "by_site": {},
+   "calls": [],
+   "cause": "FATAL: Anthropic credit balance too low \u2014 stopping this eval run now.",
+   "finished": "2026-10-03T21:31:12Z",
+   "id_suffix": "2600813302",
+   "kind": null,
+   "message": "main: Error (exit code 1)",
+   "node": "eval-ticker(1:NVDA)(0)",
+   "phase": "Failed",
+   "pod": "grounding-eval-slm-cpu-9jddz-eval-one-2600813302",
+   "record": "none",
+   "started": "2026-10-03T21:23:21Z",
+   "ticker": "NVDA"
+  }
+ ],
+ "failed_by_endpoint": {},
+ "phase": "Succeeded",
+ "retried_tickers": [
+  "NVDA"
+ ],
+ "retries": 1,
+ "tickers": 10,
+ "unrecorded": [
+  {
+   "attempt": 0,
+   "by_endpoint": {},
+   "by_site": {},
+   "calls": [],
+   "cause": "FATAL: Anthropic credit balance too low \u2014 stopping this eval run now.",
+   "finished": "2026-10-03T21:31:12Z",
+   "id_suffix": "2600813302",
+   "kind": null,
+   "message": "main: Error (exit code 1)",
+   "node": "eval-ticker(1:NVDA)(0)",
+   "phase": "Failed",
+   "pod": "grounding-eval-slm-cpu-9jddz-eval-one-2600813302",
+   "record": "none",
+   "started": "2026-10-03T21:23:21Z",
+   "ticker": "NVDA"
+  }
+ ],
+ "workflow": "grounding-eval-slm-cpu-9jddz"
+}

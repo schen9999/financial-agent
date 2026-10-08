@@ -1,0 +1,79 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $2.4 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $2,446,000,128, which rounds to $2.4 billion; the pre-written sections also state "$2.4 billion in revenue."
+
+---
+
+CLAIM: "market capitalization of $2.2 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $2,198,747,904, which rounds to $2.2 billion; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "current share price of $5.01"
+LABEL: SUPPORTED
+REASON: Source data explicitly states current_price = 5.01.
+
+---
+
+CLAIM: "trading well below its 52-week high of $8.28"
+LABEL: SUPPORTED
+REASON: Source data confirms week_52_high = 8.28, and $5.01 is arithmetically below $8.28, so the positional claim holds.
+
+---
+
+CLAIM: "thin 2.58% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 2.58.
+
+---
+
+CLAIM: "only $63.2 million in net income"
+LABEL: SUPPORTED
+REASON: Source data states net_income = 63,200,000, i.e., $63.2 million.
+
+---
+
+CLAIM: "priced at a forward P/E of 21.2x"
+LABEL: SUPPORTED
+REASON: Source data states forward_pe = 21.168716, which rounds to 21.2x; confirmed in the pre-written sections.
+
+---
+
+**OUTLOOK**
+
+The Outlook section is largely qualitative and directional. I will identify every quantitative or specifically named/forward-looking claim.
+
+---
+
+CLAIM: (implicit reference to) "ongoing restructuring initiatives" (specifically the named restructuring years)
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights pre-written section explicitly names "Multiple restructuring initiatives (2022, 2024, 2025)," and the RAG SEC Highlights confirm the same three years; the Outlook references these without naming specific years, so no mismatch arises.
+
+---
+
+*(No additional standalone quantitative figures, price targets, thresholds, ratios, percentages, or named product milestones appear in the Outlook section beyond those already evaluated above or qualitative directional language. The Outlook contains no new numerical claims not already covered in the Executive Summary audit above.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $2.4 billion in revenue | SUPPORTED |
+| 2 | Market capitalization of $2.2 billion | SUPPORTED |
+| 3 | Current share price of $5.01 | SUPPORTED |
+| 4 | 52-week high of $8.28 / trading well below it | SUPPORTED |
+| 5 | 2.58% profit margin | SUPPORTED |
+| 6 | $63.2 million in net income | SUPPORTED |
+| 7 | Forward P/E of 21.2x | SUPPORTED |
+
+All quantitative claims in the Executive Summary and Outlook are supported by the source data. No unsupported or inference-only claims were identified.

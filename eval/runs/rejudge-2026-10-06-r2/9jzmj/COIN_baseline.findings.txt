@@ -1,0 +1,103 @@
+I will now systematically audit every quantitative, positional, and forward-looking claim in the Executive Summary and Outlook sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "generating $6.0 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $6,043,752,960, which rounds to $6.0 billion; the pre-written Financial Health section also states "$6.0 billion in revenue."
+
+---
+
+CLAIM: "at a $48.3 billion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $48,282,157,056, which rounds to $48.3 billion; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "net loss of $987.8 million"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$987,766,016, which rounds to -$987.8 million; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "a negative profit margin of -16.3%"
+LABEL: SUPPORTED
+REASON: Source data shows profit_margin of -0.16344, which rounds to -16.3%; also confirmed in the pre-written sections. Arithmetic check: -987,766,016 / 6,043,752,960 = -16.34%, rounds to -16.3%. ✓
+
+---
+
+CLAIM: "it sits well below its 52-week high of $402.16"
+LABEL: SUPPORTED
+REASON: Source data confirms 52-week high of $402.16 and current price of $183.00; $183.00 is 54.5% below $402.16, so "well below" holds arithmetically. ✓
+
+---
+
+CLAIM: "carrying a forward P/E of 64.7x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe of 64.659744, which rounds to 64.7x; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "Bitcoin has fallen below $80,000"
+LABEL: SUPPORTED
+REASON: The Bloomberg news article states "Bitcoin dropped as much as 3.5% after stronger-than-expected US jobs data… abruptly reversing the cryptocurrency's latest push above $80,000," confirming Bitcoin is below $80,000.
+
+---
+
+CLAIM: "macroeconomic headwinds from renewed Fed rate hike expectations"
+LABEL: SUPPORTED
+REASON: The Bloomberg news article explicitly states stronger-than-expected US jobs data "revived bets on a September Federal Reserve rate hike," confirming renewed Fed rate hike expectations.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "a weakening Bitcoin price environment"
+LABEL: SUPPORTED
+REASON: The Bloomberg article confirms Bitcoin dropped below $80,000, consistent with a weakening Bitcoin price environment.
+
+---
+
+CLAIM: "renewed Federal Reserve rate hike expectations"
+LABEL: SUPPORTED
+REASON: The Bloomberg article explicitly states the jobs data "revived bets on a September Federal Reserve rate hike."
+
+---
+
+CLAIM: "revenue model that remains heavily concentrated in transaction fees tied to crypto market activity — particularly Bitcoin and Ethereum volumes"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and pre-written SEC Filing Highlights section both state that Bitcoin and Ethereum trading pairs drove approximately 45–46% of total trading volume and that transaction fees constitute a large portion of revenues.
+
+---
+
+CLAIM: "Bitcoin and Ethereum volumes" (as the specific concentration areas)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly name "Bitcoin and Ethereum trading pairs" as driving approximately 45–46% of total trading volume, and the Risk Factors section names Bitcoin and Ethereum transactions as the concentrated revenue sources.
+
+---
+
+CLAIM: "Bitcoin and Ethereum price trends" (as a watch item)
+LABEL: SUPPORTED
+REASON: Both the RAG SEC Highlights and pre-written Risk Factors section identify Bitcoin and Ethereum as the primary revenue-concentration assets; this is a directional restatement of disclosed risk factors.
+
+---
+
+CLAIM: "Coinbase's established regulatory compliance infrastructure positions it favorably relative to less-regulated competitors if the broader industry faces a tightening legal environment"
+LABEL: INFERENCE
+REASON: The pre-written Financial Health section states Coinbase "maintains substantial scale and regulatory compliance infrastructure," and the Risk Factors section notes regulatory uncertainty; the relative competitive positioning claim is a reasonable inference from these facts but is not explicitly stated in the source data.
+
+---
+
+CLAIM: "a pivot or pause in Fed tightening could revive risk appetite and digital asset demand"
+LABEL: INFERENCE
+REASON: No source data explicitly states this causal relationship; it is a reasonable macro inference from the Bloomberg article's implication that Fed rate hike bets pressured Bitcoin, but the specific "pivot or pause" scenario and its effect are not present in the source data.
+
+---
+
+*No additional quantitative figures, price targets, specific thresholds, named product milestones, or other forward-looking numbers appear in the Outlook section beyond those already evaluated above.*

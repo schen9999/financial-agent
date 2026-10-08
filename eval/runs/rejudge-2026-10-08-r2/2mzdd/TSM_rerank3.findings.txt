@@ -1,0 +1,61 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+### EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "market capitalization of $2.45 trillion USD"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 2,449,053,057,024.0 USD ≈ $2.45 trillion, consistent with the pre-written Financial Health section's "$2.45 trillion USD."
+
+---
+
+CLAIM: "revenue of 4.44 trillion TWD"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 4,440,492,343,296.0 TWD ≈ 4.44 trillion TWD, matching the pre-written sections exactly.
+
+---
+
+CLAIM: "49.92% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 49.92, matching the claim exactly.
+
+---
+
+CLAIM: "trailing P/E of 35.06x"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 35.05568, which rounds to 35.06x as stated.
+
+---
+
+CLAIM: "forward P/E of 21.54x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 21.53696, which rounds to 21.54x as stated.
+
+---
+
+### OUTLOOK
+
+---
+
+CLAIM: "Samsung or Intel" (as competitors in advanced node manufacturing)
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section explicitly names "Samsung and Intel in advanced node manufacturing" as competitors.
+
+---
+
+CLAIM: "49.92% profit margin" (second mention, in Outlook)
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 49.92, matching the claim exactly.
+
+---
+
+CLAIM: "the gap between the trailing and forward P/E ratios closes through earnings growth rather than price decline"
+LABEL: INFERENCE
+REASON: Both the trailing P/E (35.06x) and forward P/E (21.54x) are present in the source data, and the directional observation that a gap exists between them is directly derivable by comparing the two figures; the framing of how that gap could close (earnings growth vs. price decline) is a standard financial derivation from those two present figures.
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Executive Summary or Outlook sections beyond those audited above.*

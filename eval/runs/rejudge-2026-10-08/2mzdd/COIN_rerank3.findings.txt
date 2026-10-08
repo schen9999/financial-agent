@@ -1,0 +1,85 @@
+I will now systematically audit every quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, and forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "generating $6.0 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $6,043,752,960, which rounds to $6.0 billion; the pre-written Financial Health section also states "$6.0 billion in revenue."
+
+---
+
+CLAIM: "market capitalization of $47.1 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $47,081,697,280, which rounds to $47.1 billion; confirmed in pre-written sections.
+
+---
+
+CLAIM: "net loss of $987.8 million"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$987,766,016, which rounds to -$987.8 million; confirmed in pre-written sections.
+
+---
+
+CLAIM: "negative profit margin of -16.34%"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct of -16.34%; arithmetic check: -987,766,016 / 6,043,752,960 = -16.34%. Confirmed.
+
+---
+
+CLAIM: "sits well below its 52-week high of $402.16"
+LABEL: SUPPORTED
+REASON: Source data confirms week_52_high of $402.16 and current_price of $178.45; $178.45 is 55.6% below $402.16, so "well below" holds arithmetically.
+
+---
+
+CLAIM: "forward P/E of 62.9x"
+LABEL: SUPPORTED
+REASON: Source data explicitly states forward_pe of 62.903835, which rounds to 62.9x; confirmed in pre-written Financial Health section.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "(1) the trajectory of crypto asset prices and trading volumes as the primary revenue lever"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections explicitly state that revenue is substantially dependent on crypto asset prices and trading volumes, and transaction fees represent the majority of revenue.
+
+---
+
+CLAIM: "(2) the pace and outcome of regulatory developments affecting custody, stablecoin, and money-transmitting operations"
+LABEL: SUPPORTED
+REASON: The 10-Q filing summary and Recent Developments section explicitly reference regulatory capital requirements for custody (CCTC) and money-transmitting (CB Inc.) subsidiaries and stablecoin operations.
+
+---
+
+CLAIM: "(3) whether stablecoin-related subscription and services revenue can diversify and stabilize the revenue mix"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections explicitly state that stablecoin revenue represents a material portion of subscription and services revenue.
+
+---
+
+CLAIM: "heightened regulatory scrutiny from New York State and other jurisdictions"
+LABEL: SUPPORTED
+REASON: The 10-Q filing summary explicitly names the New York State Department of Financial Services and references "other regulators" as sources of capital maintenance requirements.
+
+---
+
+CLAIM: "Bitcoin and Ethereum prices and elevated trading volumes — would directly benefit transaction fee revenue"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors and SEC Highlights sections explicitly state that revenue is substantially dependent on crypto asset prices and transaction volumes, and the Risk Factors pre-written section states transaction fees "represent the majority of revenue."
+
+---
+
+CLAIM: "Bitcoin and Ethereum transactions, which represent approximately 45-46% of total trading volume"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both explicitly state "Bitcoin and Ethereum transactions representing approximately 45-46% of total trading volume"; confirmed in pre-written SEC Filing Highlights section.
+
+---
+
+**No additional quantitative figures, price targets, thresholds, ratios, or named product milestones appear in the Outlook section.** All forward-looking directional statements (e.g., "cautiously neutral," "tilted to the downside," "thesis would strengthen/weaken") are qualitative judgments, not quantitative claims subject to audit under the defined criteria.

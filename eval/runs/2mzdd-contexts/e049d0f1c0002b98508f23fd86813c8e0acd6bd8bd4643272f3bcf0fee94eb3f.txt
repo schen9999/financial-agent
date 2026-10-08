@@ -1,0 +1,97 @@
+STOCK DATA:
+{
+  "ticker": "AFRM",
+  "company_name": "Affirm Holdings, Inc.",
+  "current_price": 75.31,
+  "currency": "USD",
+  "market_cap": 25411192832.0,
+  "pe_ratio": 13.544964,
+  "forward_pe": 15.598947,
+  "week_52_high": 90.44,
+  "week_52_low": 42.095,
+  "financial_currency": "USD",
+  "revenue": 4261082112.0,
+  "net_income": 1929793024.0,
+  "profit_margin_pct": 45.29,
+  "dividend_yield": 0.0,
+  "sector": "Financial Services",
+  "industry": "Credit Services"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-08-27",
+    "summary": "Item 1A. Risk Factors Investing in our Class A common stock involves a high degree of risk. You should consider carefully the material factors, risks and uncertainties described below that make an investment in our Company speculative or risky, together with all of the other information in this Form 10-K, including the section titled \u201cManagement\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d and our consolidated financial statements and the accompanying notes included elsewhere in this Form 10-K, before deciding whether to invest in shares of our Class A common stock. The risks and uncertainties described below are not the only ones we face. Additional risks and uncertainties of which we are currently unaware or that we currently deem immaterial may also become"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-05-07",
+    "summary": "Item 1A. Risk Factors The risks described under the heading \u201cRisk Factors\u201d in our Annual Report on Form 10-K for the fiscal year ended June 30, 2025 could materially and adversely affect our business, financial condition, results of operations, cash flows, future prospects, and the trading price of our Class A common stock. The risks and uncertainties described therein are not the only ones we face. Additional risks and uncertainties that we are unaware of or that we currently deem immaterial may also become important factors that adversely affect our business. You should carefully read and consider such risks, together with all of the other information in our Annual Report on Form 10-K for the fiscal year ended June 30, 2025, in this Quarterly Report on Form 10-Q (including the disclosure"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I cannot provide a summary of the latest 10-K and 10-Q based on the context provided. The information given contains only excerpts from the Risk Factors section of a 10-K filing for Affirm (AFRM), which focuses specifically on potential risks and challenges to the business.
+
+To provide a comprehensive summary of the latest 10-K and 10-Q filings, I would need access to additional sections such as:
+
+- Management's Discussion and Analysis (MD&A)
+- Financial statements and results of operations
+- Business overview and strategy
+- Liquidity and capital resources
+- Forward-looking statements
+
+The risk factors alone do not represent the full picture of a company's financial performance, operational achievements, or overall business status. A complete summary would require information from these other critical sections of the filings.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company faces several material risk factors across different categories:
+
+## Commercial Partner Risks
+- Inability to attract, retain, or grow relationships with commercial partners
+- Reliance on a small number of significant commercial partners, where loss of any could materially harm the business
+- Non-exclusive agreements lacking transaction volume commitments, allowing partners to work with competitors
+- Unpredictable pace of integration and rollout of early-stage relationships with large retailers
+- Agreements that can be terminated with 30-90 days' notice
+
+## Consumer and Market Risks
+- Inability to attract new consumers or retain existing ones
+- Dependence on consumer transaction volume for revenue
+- Significant impact from general economic conditions and consumer creditworthiness
+- Quarterly results that may fluctuate significantly
+
+## Competitive Risks
+- Highly competitive industry with low barriers to entry
+- Competition from legacy payment methods, mobile wallets, and other pay-over-time solutions
+- Intensifying competition from large financial incumbents and emerging technologies
+- Merchants offering proprietary pay-over-time options
+
+## Operational and Financial Risks
+- Reliance on a small number of originating bank partners (Celtic Bank and Lead Bank)
+- Dependence on various funding sources
+- Potential loan performance issues and credit risk
+- Inability to sustain profitability or revenue growth rates
+- Interest rate sensitivity
+
+## Regulatory and Compliance Risks
+- Extensive regulation and examination across multiple areas
+- Potential challenges to the originating bank partner model
+- Litigation and regulatory enforcement risks
+- Cyber-security and data protection vulnerabilities
+
+## Organizational Risks
+- Loss of key leadership or inability to retain skilled employees
+- International expansion challenges

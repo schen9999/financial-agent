@@ -1,0 +1,67 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $131.7 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `market_cap: 131705760.0`, which equals approximately $131.7 million; the pre-written Financial Health section also states this figure explicitly.
+
+---
+
+CLAIM: "reported revenue of $258.8 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `revenue: 258844992.0`, which rounds to $258.8 million; the pre-written Financial Health section also states "$258.8 million."
+
+---
+
+CLAIM: "significant decline to near 52-week lows"
+LABEL: SUPPORTED
+REASON: The current price of $7.66 is arithmetically near the 52-week low of $7.56 (difference of $0.10, or ~1.3% above the low), confirming the stock is trading near its 52-week low.
+
+---
+
+CLAIM: "strategic pivot to become a broader 'Beyond The Plant Protein Company'"
+LABEL: SUPPORTED
+REASON: The 10-Q filing summary explicitly states "Our strategic repositioning to 'Beyond The Plant Protein Company'" and the Recent Developments pre-written section repeats this verbatim.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "persistent declines in consumer demand for plant-based meats"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both explicitly state "persistent declines in demand within the plant-based meat category."
+
+---
+
+CLAIM: "ongoing Global Operations Review"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights section explicitly names the "Global Operations Review" as an active initiative, and the SEC Filing Highlights pre-written section repeats this.
+
+---
+
+CLAIM: "may result in substantial non-cash impairment charges"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights section explicitly states these initiatives "may result in non-cash charges, including provisions for excess and obsolete inventory, impairment charges, and write-offs of fixed assets"; the pre-written SEC Filing Highlights section also states "substantial non-cash impairment charges."
+
+---
+
+CLAIM: "successfully remediate material weaknesses in internal financial controls"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights section explicitly states "The company must remediate existing material weaknesses in its internal control over financial reporting," and the pre-written SEC Filing Highlights section repeats this.
+
+---
+
+CLAIM: "the company can meet its debt covenants without further dilutive financing"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights section explicitly identifies risks related to "ability to comply with covenants governing Notes and Loan and Security Agreements" and "further shareholder dilution resulting from the equitization of debt or the exercise of warrants," grounding both elements of this claim.
+
+---
+
+**SUMMARY NOTE — No Unsupported or Inference-only claims identified.** All quantitative figures ($131.7M market cap, $258.8M revenue, 52-week low proximity) are directly present in or arithmetically derivable from the source data. All qualitative forward-looking claims (Global Operations Review, non-cash impairment risk, debt covenant risk, dilution risk, material weakness remediation, demand declines, strategic repositioning name) are explicitly present in the source data or pre-written sections. No figures appear in the Executive Summary or Outlook that lack grounding in the provided context.

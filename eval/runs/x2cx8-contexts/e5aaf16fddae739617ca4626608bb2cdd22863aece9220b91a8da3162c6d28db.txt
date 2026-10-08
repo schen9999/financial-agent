@@ -1,0 +1,118 @@
+STOCK DATA:
+{
+  "ticker": "GOOGL",
+  "company_name": "Alphabet Inc.",
+  "current_price": 343.5,
+  "currency": "USD",
+  "market_cap": 4200982642688.0,
+  "pe_ratio": 17.243977,
+  "forward_pe": 22.791302,
+  "week_52_high": 408.61,
+  "week_52_low": 235.84,
+  "revenue": 445865984000.0,
+  "net_income": 244118994944.0,
+  "profit_margin": 0.54771,
+  "dividend_yield": 0.26,
+  "sector": "Communication Services",
+  "industry": "Internet Content & Information"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": "Google fights EU attempt to prise open Android to rival AI bots",
+    "source": "Bloomberg",
+    "published_at": "2026-09-29T06:01:56Z",
+    "description": "Google will appeal the EU move under the Digital Markets Act because it would hamper users\u2019 security"
+  },
+  {
+    "title": "Alibaba to add data centres in Europe, Middle East in AI push",
+    "source": "Bloomberg",
+    "published_at": "2026-09-23T03:22:58Z",
+    "description": "The Chinese e-commerce leader will set up its first cloud regions in Turkey, Finland and the Netherlands over the next 12 months"
+  },
+  {
+    "title": "New data centres worth $68 billion disrupted in US, data show",
+    "source": "Bloomberg",
+    "published_at": "2026-09-21T06:22:45Z",
+    "description": "Communities across the country are now pushing through moratoriums on new construction, often before developers can apply for permissions"
+  },
+  {
+    "title": "EQT plans $50 billion India investment, including Adani Connex",
+    "source": "Bloomberg",
+    "published_at": "2026-09-17T07:00:46Z",
+    "description": "The bulk of the buyout firm\u2019s investments \u2014 around $30 billion \u2014 will be in data centers, with another $5 billion devoted to renewable energy to power them, according to Jean Salata, chair of Stockholm-based EQT."
+  },
+  {
+    "title": "Google DeepMind staffer says AI may \u2018kill us all\u2019 in exit post",
+    "source": "Bloomberg",
+    "published_at": "2026-09-15T04:51:17Z",
+    "description": "Bilal Chugtai is the latest AI researcher to voice grave concerns about the new technology\u2019s misaligned capabilities that could eventually destroy humankind"
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-05",
+    "summary": "Item 1A Risk Factors of this Annual Report on Form 10-K. Culture and Workforce Our people are critical for our continued success, so we work hard to create an environment where employees can have fulfilling careers and perform at a high level. We offer industry-leading benefits and programs to take care of the diverse needs of our employees and their families, including opportunities for career growth and development, resources to support their financial health, and access to excellent healthcare choices. Our competitive compensation programs help us to attract and retain key talent, and we will continue to invest in recruiting talented people to technical and non-technical roles and rewarding them well. We provide a variety of high-quality training and support to managers to build and str"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-07-23",
+    "summary": "ITEM 1A. RISK FACTORS Our operations and financial results are subject to various risks and uncertainties, including but not limited to those described in Part I, Item 1A, \"Risk Factors\" in our Annual Report on Form 10-K for the year ended December 31, 2025, which could harm our business, reputation, financial condition, and operating results, and may affect the trading price and price volatility of our Class A and Class C stock. Below are material changes to our risk factors since our Annual Report on Form 10-K for the year ended December 31, 2025. Risks Specific to our Company Our increasing investment in new businesses, products, services, and technologies is inherently risky, and could divert management attention and harm our business, financial condition, and operating results. We hav"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I can only provide information based on the context given, which contains excerpts from a 10-K filing but does not include any 10-Q information.
+
+From the 10-K excerpts provided, the key takeaways are:
+
+**Revenue Concentration:**
+- Over 70% of total revenues come from online advertising, creating significant revenue dependency on this segment.
+
+**Advertising Industry Challenges:**
+- The company faces risks from reduced advertiser spending, ad-blocking technologies, and the need to adapt to AI-driven changes in advertising formats and delivery methods.
+- Advertiser spending correlates with economic conditions, making the business vulnerable to macroeconomic downturns.
+
+**Strategic Investment Risks:**
+- Significant investments in new businesses, products, and technologies across multiple industries beyond advertising carry inherent risks and may divert management attention.
+- Investments in AI infrastructure, including custom TPUs, and expansion into cloud services require substantial capital commitments with uncertain returns.
+
+**Operational Complexity:**
+- The company is entering into significant long-term leasing arrangements for compute capacity, increasing costs and operational complexity.
+- Large commercial agreements could create additional liabilities if counterparties or vendors underperform.
+
+**Competitive Pressures:**
+- Intense competition exists across devices, cloud services, and emerging technology areas, with competitors rapidly developing and deploying competing solutions.
+
+**Regulatory and Compliance Risks:**
+- Evolving regulations may require new capital investments and localized service delivery in different countries.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses several significant risk factors affecting its business:
+
+## Revenue Concentration Risk
+Over 70% of total revenues come from online advertising, creating substantial dependence on this single revenue stream. Reduced advertiser spending, loss of partners, shifts in advertising formats, and ad-blocking technologies could harm the business.
+
+## Advertising Industry Challenges
+The company faces risks from evolving advertising formats, particularly as AI reshapes the industry. There is no assurance the company will adapt effectively to these changes or that new advertising strategies will be successful. Additionally, technologies that block ads or impair third-party digital advertising functionality pose threats to revenue.
+
+## Macroeconomic Sensitivity
+Advertiser spending correlates with overall economic conditions, so adverse macroeconomic conditions could reduce advertising demand and create financial fluctuations.
+
+## Investment and Innovation Risks
+Significant investments in new businesses, products, services, and technologies across various industries are inherently risky and could divert management attention. These investments may not be commercially viable or generate adequate returns.
+
+## Infrastructure and Cost Risks
+Substantial investments in AI-optimized infrastructure, custom TPUs, and cloud computing capacity create significant costs and operational complexity. Large, long-duration commercial agreements increase liabilities if counterparties or vendors underperform.
+
+## Competitive Pressures
+The company faces intense competition in devices, cloud services, and emerging technology areas like life sciences and transportation. Competitors are well-funded and rapidly developing competing solutions.
+
+## Regulatory and Compliance Risks
+Business with financial services, healthcare, and public sector customers presents regulatory compliance risks, including government audits and requirements to meet sovereign operating requirements in different countries.

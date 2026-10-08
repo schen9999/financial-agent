@@ -42,7 +42,9 @@ from concurrent.futures import ThreadPoolExecutor
 
 from eval.stats import fisher_exact, format_rate_ci
 from eval.runtime_guards import check_fatal_api_error, check_local_model_served
-from eval.label import count_labels_deduped
+from eval.label import count_labels_deduped, numeric_claim_counts
+from eval import attempts as _attempts
+from eval.stock_block import stock_block_empty
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -54,18 +56,23 @@ os.environ["BYPASS_CACHE"] = "true"
 from dotenv import load_dotenv
 load_dotenv()
 
-from langchain_core.messages import HumanMessage
-
 from agent.core import (
     fetch_research_data,
     _rag_contexts,
     _SECTIONS,
     _haiku_section,
     _section_llm,
-    _trim_stock, _trim_news, _trim_sec, _data_context,
-    _llm as _sonnet,
+    _trim_stock, _trim_news, _trim_sec, _data_context, _currency_rule,
+    synthesize,
+    BriefFormatError,
     _synthesis_prompt,
+    DEFAULT_HIGHLIGHTS_QUERY,
+    DEFAULT_RISKS_QUERY,
 )
+from agent import llm_ledger
+from agent.tools import slm as _slm
+from agent.tools.rag import pop_sources
+from eval import rag_faithfulness
 from agent.grounding import (  # single source of truth for the judge
     JUDGE_PROMPT_VERSION,
     JUDGE_SYSTEM,
@@ -77,41 +84,27 @@ from agent.grounding import (  # single source of truth for the judge
 
 ALL_TICKERS = ["AAPL", "NVDA", "JPM", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "V", "WMT"]
 
-# Retrieval arms: env overrides applied per arm. Config in core/rag/reranker is
-# read at call-time, so toggling these in-process re-routes the next query.
-ARMS = {
-    "baseline": {
-        "label": "Baseline (top_k=3, no rerank)",
-        "env": {"RERANKING_ENABLED": "false", "BASELINE_TOP_K": "3"},
-    },
-    "context5": {
-        "label": "Plain top-5 (no rerank)",
-        "env": {"RERANKING_ENABLED": "false", "BASELINE_TOP_K": "5"},
-    },
-    "rerank3": {
-        "label": "Rerank 20 -> 3",
-        "env": {"RERANKING_ENABLED": "true", "RERANK_CANDIDATES": "20", "RERANK_TOP_N": "3"},
-    },
-    "rerank5": {
-        "label": "Rerank 20 -> 5",
-        "env": {"RERANKING_ENABLED": "true", "RERANK_CANDIDATES": "20", "RERANK_TOP_N": "5"},
-    },
-    "local-model": {
-        # Fine-tuned Qwen2.5-1.5B (Ollama) serves the 2 trained sections
-        # (Financial Health, Risk Factors); Haiku keeps Recent Developments and
-        # SEC Filing Highlights. Requires `ollama serve` + the model loaded.
-        "label": "Local model (2 sec) + Haiku",
-        "env": {"RERANKING_ENABLED": "false", "BASELINE_TOP_K": "3", "USE_LOCAL_MODEL": "true"},
-    },
-}
+# Arms (env overrides per arm) live in eval/arms.py, importable by tests.
+from eval.arms import ARMS  # noqa: E402
+from eval.arms import apply_arm_env as _apply_arm_env  # noqa: E402
+from eval.arms import uses_local_model as _uses_local_model  # noqa: E402
+from eval.arms import slm_endpoint_name, uses_slm  # noqa: E402
 
-# Every arm explicitly sets the flags it depends on so values can't leak across
-# arms within one process. Fill in the ones an arm leaves unset with inert
-# defaults (e.g. a baseline arm still resets RERANKING_ENABLED / USE_LOCAL_MODEL).
-_ARM_ENV_DEFAULTS = {
-    "RERANKING_ENABLED": "false", "BASELINE_TOP_K": "3",
-    "RERANK_CANDIDATES": "20", "RERANK_TOP_N": "3", "USE_LOCAL_MODEL": "false",
-}
+# Ledger sites that are evaluation, not harness: never subject to an SLM
+# arm's endpoint check, and summarized separately.
+_EVAL_SITES = ("judge", "rag_judge")
+
+
+class EndpointMismatchError(RuntimeError):
+    """An SLM arm's agent call was served by something other than its endpoint."""
+
+
+# Failures no retry can fix: retrying would only re-spend or re-mask them.
+_NON_RETRYABLE = (BriefFormatError, _slm.SLMParseError, _slm.SLMConfigError,
+                  EndpointMismatchError)
+
+# Server-reported endpoint facts per SLM arm, checked once before any ticker.
+_SLM_PROVENANCE: dict[str, dict] = {}
 
 # Haiku 4.5 pricing (USD per million tokens) for the cost estimate. Update if
 # rates change; cost is reported as an estimate from char/4 token approximation.
@@ -119,10 +112,6 @@ _HAIKU_IN_PER_MTOK = 1.00
 _HAIKU_OUT_PER_MTOK = 5.00
 from agent.tools.local_model import LOCAL_SECTIONS as _LOCAL_SECTIONS  # canonical routing set
 from agent.tools.local_model import LocalChat, local_model_backend
-
-
-def _uses_local_model(arm: str) -> bool:
-    return ARMS[arm]["env"].get("USE_LOCAL_MODEL") == "true"
 
 
 def _local_model_provenance(arm: str) -> dict | None:
@@ -199,6 +188,8 @@ def _retry(fn, *args, _attempts=4, _base=3.0, **kwargs):
     for i in range(_attempts):
         try:
             return fn(*args, **kwargs)
+        except _NON_RETRYABLE:
+            raise
         except Exception as e:
             # Non-retryable: a credit-balance 400 raises SystemExit here —
             # fail the run loudly instead of burning retries into a silent
@@ -266,23 +257,61 @@ def fetch_base(ticker: str) -> dict:
 
 # ── Per-arm pipeline ────────────────────────────────────────────────────────────
 
-def _apply_arm_env(arm: str):
-    # Reset every controlled flag to its inert default, then apply this arm's
-    # overrides — so no flag leaks from the previously-run arm.
-    env = {**_ARM_ENV_DEFAULTS, **ARMS[arm]["env"]}
-    for k, v in env.items():
-        os.environ[k] = v
+def _judge_invoke(site: str, messages):
+    """The shared Sonnet judge, retry-wrapped, recorded under an eval site."""
+    t0 = time.perf_counter()
+    resp = _retry(get_judge_llm().invoke, messages)
+    llm_ledger.record_response(site, "anthropic", "claude-sonnet-4-6", resp, t0)
+    return resp
+
+
+def _check_slm_endpoint(arm: str, agent_records: list[dict]):
+    """An SLM arm proves its traffic: at least one agent call, and every agent
+    call served by the arm's endpoint — never a run quietly served by Anthropic."""
+    want = slm_endpoint_name(arm)
+    if not agent_records:
+        raise EndpointMismatchError(f"{arm}: no agent LLM calls recorded")
+    wrong = sorted({f"{r['site']}@{r['endpoint']}" for r in agent_records if r["endpoint"] != want})
+    if wrong:
+        raise EndpointMismatchError(f"{arm}: agent calls not served by {want}: {wrong}")
+
+
+def _rag_faithfulness(ticker: str, arm: str, answers: dict, sources: dict) -> dict:
+    """Judge each RAG answer against its own retrieved chunks (separate
+    metric, eval/rag_faithfulness.py); persists a .ragf.json per (ticker, arm)."""
+    out, record = {}, {"ticker": ticker, "arm": arm,
+                       "prompt_version": rag_faithfulness.RAG_JUDGE_PROMPT_VERSION, "answers": {}}
+    for which, answer in answers.items():
+        chunks = sources.get(which)
+        if not answer or not chunks:
+            out[which] = None  # RAG unavailable for this question: nothing to judge
+            continue
+        res = rag_faithfulness.grade(chunks, answer,
+                                     invoke=lambda m: _judge_invoke("rag_judge", m))
+        out[which] = {k: res[k] for k in ("supported", "unsupported", "total")}
+        record["answers"][which] = {"chunks": chunks, "answer": answer, **res}
+    try:
+        FINDINGS_DIR.mkdir(exist_ok=True)
+        (FINDINGS_DIR / f"{ticker}_{arm}.ragf.json").write_text(
+            json.dumps(record, indent=2), encoding="utf-8")
+    except Exception as e:
+        print(f"    (could not save RAG faithfulness for {ticker}/{arm}: {e})", flush=True)
+    return out
 
 
 def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
     _apply_arm_env(arm)
+    llm_ledger.drain()  # this (ticker, arm)'s calls only
     company = base["company"]
     context = base["context"]
+    slm_arm = uses_slm(arm)
 
     print(f"  [{ticker} | {arm}] RAG retrieval...", flush=True)
     t_rag = time.perf_counter()
     rag_highlights, rag_risks = _retry(_rag_contexts, ticker)
     retrieval_s = time.perf_counter() - t_rag
+    rag_sources = {"highlights": pop_sources(DEFAULT_HIGHLIGHTS_QUERY),
+                   "risks": pop_sources(DEFAULT_RISKS_QUERY)}
 
     section_contexts = {
         "### Financial Health":      context,
@@ -302,15 +331,19 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
         sections = [f.result() for f in futures]
     sections_s = time.perf_counter() - t_sec
 
+    # Same prompt and model as before (Sonnet; the SLM on SLM arms). guard:
+    # a brief without a non-empty Executive Summary + Outlook is retried once,
+    # then fails this ticker loudly (BriefFormatError) — never judged as 0
+    # claims. 0 of 370 committed findings files would have tripped it.
     t_syn = time.perf_counter()
-    brief = _retry(
-        _sonnet.invoke,
-        [HumanMessage(content=_synthesis_prompt(ticker, company, sections))],
-    ).content
+    currency_rule = _currency_rule(base["stock"])
+    brief = _retry(synthesize, ticker, company, sections, guard=True,
+                   currency_rule=currency_rule)
     synth_s = time.perf_counter() - t_syn
 
     pipeline_s = retrieval_s + sections_s + synth_s
-    haiku_cost = _brief_haiku_cost(arm, company, ticker, section_contexts, sections)
+    haiku_cost = 0.0 if slm_arm else _brief_haiku_cost(arm, company, ticker,
+                                                       section_contexts, sections)
 
     source_context = "\n\n".join([
         f"STOCK DATA:\n{json.dumps(base['stock'], indent=2)}",
@@ -322,30 +355,62 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
 
     exec_and_outlook = extract_exec_and_outlook(brief)
     section_block    = "\n\n".join(sections)
+    # Detection only (eval/stock_block.py): a failed stock fetch is not
+    # retried or skipped — the brief is written without stock data. Record
+    # it so the aggregate can count it; behaviour is unchanged.
+    stock_empty = stock_block_empty(source_context)
+    if stock_empty:
+        print(f"  [{ticker} | {arm}] NOTE: STOCK DATA block is empty — brief "
+              f"written without stock data (yfinance failure?)", flush=True)
 
     print(f"  [{ticker} | {arm}] judging...", flush=True)
-    # Shared judge; retry-wrap the LLM call so one transient error can't waste a
-    # long A/B run.
+    # Shared judge, unchanged inputs; retry-wrapped so one transient error
+    # can't waste a long A/B run.
+    t_judge = time.perf_counter()
     grade = grade_brief(
         source_context, section_block, exec_and_outlook,
-        invoker=lambda messages: _retry(get_judge_llm().invoke, messages),
+        invoker=lambda messages: _judge_invoke("judge", messages),
     )
+    judge_s = time.perf_counter() - t_judge
 
-    provenance = _local_model_provenance(arm)
+    ragf = None
+    if rag_faithfulness.enabled():
+        ragf = _rag_faithfulness(ticker, arm, {"highlights": rag_highlights, "risks": rag_risks},
+                                 rag_sources)
+
+    records = llm_ledger.drain()
+    agent_records = [r for r in records if r["site"] not in _EVAL_SITES]
+    eval_records = [r for r in records if r["site"] in _EVAL_SITES]
+    if slm_arm:
+        _check_slm_endpoint(arm, agent_records)
+    llm = llm_ledger.summarize(agent_records)
+
+    provenance = _local_model_provenance(arm) or _SLM_PROVENANCE.get(arm)
+    findings_meta = {**(provenance or {}),
+                     "llm_calls": llm["total"]["calls"],
+                     "llm_endpoints": ",".join(llm["endpoints"]),
+                     "llm_by_site": json.dumps(llm["by_site"], sort_keys=True)}
     _save_findings(ticker, arm, source_context, section_block, exec_and_outlook,
-                   grade.findings, provenance)
+                   grade.findings, findings_meta)
 
     # Estimated total spend for this (ticker, arm): Haiku sections (existing
     # estimate) + Sonnet synthesis + Sonnet judge, chars/4 tokens priced from
-    # scripts/model_prices.json. Excludes retried calls.
+    # scripts/model_prices.json. Excludes retried calls. SLM arms pay only the
+    # judge. The RAG-faithfulness judge is priced from its recorded usage.
     est_cost = haiku_cost
-    est_cost += _price_est("claude-sonnet-4-6",
-                           _est_tokens(_synthesis_prompt(ticker, company, sections)),
-                           _est_tokens(brief))
+    if not slm_arm:
+        est_cost += _price_est("claude-sonnet-4-6",
+                               _est_tokens(_synthesis_prompt(ticker, company, sections,
+                                                             currency_rule=currency_rule)),
+                               _est_tokens(brief))
     est_cost += _price_est("claude-sonnet-4-6",
                            _est_tokens(JUDGE_SYSTEM) + _est_tokens(
                                judge_user_prompt(source_context, section_block, exec_and_outlook)),
                            _est_tokens(grade.findings))
+    for r in eval_records:
+        if r["site"] == "rag_judge":
+            est_cost += _price_est("claude-sonnet-4-6", r["prompt_tokens"] or 0,
+                                   r["completion_tokens"] or 0)
 
     # Deduped recount from the findings text (eval.label): one label per
     # CLAIM block; a repeated identical label is suppressed, a different
@@ -359,9 +424,13 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
 
     s, u, i, t = (counts["supported"], counts["unsupported"],
                   counts["inference"], counts["total"])
+    tot = llm["total"]
     print(
         f"  [{ticker} | {arm}] {s} SUP  {u} UNSUP  {i} INF  ({t} claims)  "
-        f"retrieval={retrieval_s:.2f}s  pipeline={pipeline_s:.2f}s  haiku_cost=${haiku_cost:.5f}",
+        f"retrieval={retrieval_s:.2f}s  pipeline={pipeline_s:.2f}s  haiku_cost=${haiku_cost:.5f}  "
+        f"llm_calls={tot['calls']} ({','.join(llm['endpoints'])}) truncated={tot['truncated']} "
+        f"loops={tot['repeat_run']} parse_fail={tot['parse_failure']} "
+        f"format_fail={tot['format_failure']} retries={tot['retry']}",
         flush=True,
     )
     if verbose:
@@ -370,11 +439,20 @@ def run_arm(ticker: str, base: dict, arm: str, verbose: bool) -> dict:
     return {
         "ticker": ticker, "arm": arm,
         "judge_version": JUDGE_PROMPT_VERSION,
+        "attempt": _attempt_number(),
+        "numeric_claims": numeric_claim_counts(grade.findings),
         "retrieval_s": retrieval_s, "pipeline_s": pipeline_s, "haiku_cost": haiku_cost,
         "est_cost": round(est_cost, 5),
+        "stock_block_empty": stock_empty,
         "inference_claims": grade.inference_claims,
         **counts,
-        **({"local_model": provenance} if provenance else {}),
+        "timing_s": {"retrieval": round(retrieval_s, 3), "sections": round(sections_s, 3),
+                     "synthesis": round(synth_s, 3), "judge": round(judge_s, 3)},
+        "llm": llm,
+        "llm_eval": llm_ledger.summarize(eval_records),
+        **({"rag_faithfulness": ragf} if ragf is not None else {}),
+        **({"local_model": provenance} if _uses_local_model(arm) and provenance else {}),
+        **({"slm": provenance} if slm_arm and provenance else {}),
     }
 
 
@@ -475,6 +553,16 @@ def print_comparison(results: list[dict], arms: list[str]):
     print(flush=True)
 
 
+# ── Attempt record ──────────────────────────────────────────────────────────────
+# The workflow retries a failed eval pod once, and the aggregate step only
+# ever receives the final attempt's result. So every attempt reports itself
+# to its own pod log (eval/attempts.py): BEGIN in main(), one EVAL_LLM_CALL
+# line per LLM call as it returns (agent/llm_ledger.emit_calls), END on
+# every exit path Python still controls. A killed pod leaves BEGIN and its
+# calls but no END.
+_attempt_number = _attempts.attempt_number
+
+
 # ── Main ─────────────────────────────────────────────────────────────────────────
 
 def main():
@@ -495,6 +583,9 @@ def main():
     print(f"BYPASS_CACHE={os.getenv('BYPASS_CACHE')} — Redis exact-key cache disabled for this run.",
           flush=True)
     print(f"Arms: {', '.join(args.arms)}   Tickers: {', '.join(args.tickers)}\n", flush=True)
+    _attempts.write_line(_attempts.BEGIN_PREFIX, tickers=args.tickers, arms=args.arms)
+    llm_ledger.enable()
+    llm_ledger.emit_calls()
 
     # A local-model arm must measure the model it claims to: confirm the
     # server lists LOCAL_MODEL_NAME before any ticker runs (exits otherwise).
@@ -512,19 +603,47 @@ def main():
                   f"{prov['local_model_backend']} — /v1/models check applies to "
                   f"the openai backend only; not checked\n", flush=True)
 
+    # An SLM arm must measure the endpoint it names: the server must list
+    # SLM_MODEL_NAME and answer with the key; its own facts (build, model
+    # file, quant, context, slots) become provenance. Exits otherwise.
+    for arm in args.arms:
+        if uses_slm(arm):
+            _apply_arm_env(arm)
+            try:
+                _SLM_PROVENANCE[arm] = _slm.server_facts()
+            except _slm.SLMConfigError as e:
+                raise SystemExit(f"FATAL: {e}")
+            f = _SLM_PROVENANCE[arm]
+            print(f"SLM endpoint for {arm}: {f['slm_endpoint']} {f['slm_url']} serves "
+                  f"{f['slm_served_name']} ({f['slm_model_path']}, {f['slm_model_ftype']}, "
+                  f"n_ctx {f['slm_n_ctx']}, {f['slm_total_slots']} slots, build "
+                  f"{f['slm_build']}); thinking {f['slm_thinking']}\n", flush=True)
+
     results = []
     skipped = []
+    failures = []
     for ticker in args.tickers:
         print(f"\n{'='*72}\n  {ticker}\n{'='*72}", flush=True)
+        arm = None
         try:
             base = fetch_base(ticker)
             for arm in args.arms:
                 results.append(run_arm(ticker, base, arm, args.verbose))
         except Exception as e:
             # After retries, a ticker still failed — skip it so the rest of the
-            # run (and the comparison table) still completes.
-            print(f"  [{ticker}] SKIPPED after retries: {type(e).__name__}: {e}", flush=True)
+            # run (and the comparison table) still completes. The kind is
+            # recorded: a format/parse/endpoint failure is a measured outcome
+            # the aggregate counts, not just a missing row.
+            kind = ("format" if isinstance(e, BriefFormatError) else
+                    "parse" if isinstance(e, _slm.SLMParseError) else
+                    "endpoint_mismatch" if isinstance(e, EndpointMismatchError) else
+                    "endpoint_error" if isinstance(e, _slm.SLMRequestError) else "other")
+            print(f"  [{ticker}] SKIPPED after retries ({kind}): {type(e).__name__}: {e}", flush=True)
             skipped.append(ticker)
+            failures.append({"ticker": ticker, "arm": arm, "kind": kind,
+                             "attempt": _attempt_number(),
+                             "error": f"{type(e).__name__}: {str(e)[:300]}",
+                             "llm": llm_ledger.summarize(llm_ledger.drain())})
 
     print_comparison(results, args.arms)
     if skipped:
@@ -552,6 +671,7 @@ def main():
             "arms": args.arms,
             "tickers": args.tickers,
             "skipped": skipped,
+            "failures": failures,
             "results": results,
             "aggregate": {arm: _aggregate(results, arm, only=balanced) for arm in args.arms},
         }
@@ -560,4 +680,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    _attempts.run_recorded(main, llm_ledger.calls_emitted)

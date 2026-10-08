@@ -1,0 +1,75 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$466.8 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data lists revenue as $466,822,987,776, which rounds to $466.8 billion; also explicitly stated in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "$128.9 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data lists net income as $128,929,996,800, which rounds to $128.9 billion; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$4.87 trillion market cap"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap as $4,869,931,925,504, which rounds to $4.87 trillion; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "elevated P/E ratio of 38.31"
+LABEL: SUPPORTED
+REASON: Source data lists pe_ratio as 38.31114, which rounds to 38.31; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "smart home devices" (as a named product milestone)
+LABEL: SUPPORTED
+REASON: Bloomberg news article explicitly reports "Apple Is Launching New 'Smart Home' Products on October 13," and the milestone is referenced in the pre-written Recent Developments and Financial Health sections.
+
+---
+
+CLAIM: "iPhone Duo foldable" (as a named product milestone)
+LABEL: SUPPORTED
+REASON: Bloomberg news article explicitly references "iPhone duos" as a foldable product, and the pre-written Recent Developments section names "iPhone Duo foldable devices."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "production ramp and commercial launch of the iPhone Duo foldable" (as a forward-looking milestone)
+LABEL: SUPPORTED
+REASON: The Bloomberg article states Apple will sell 6 million iPhone Duo units in 2026 contingent on production ramp-up, and the pre-written Recent Developments section references this milestone explicitly.
+
+---
+
+CLAIM: "simultaneous entry into smart home devices and foldable smartphones" (as a forward-looking milestone)
+LABEL: SUPPORTED
+REASON: Both product categories are explicitly documented — smart home launch on October 13 (Bloomberg/pre-written sections) and iPhone Duo foldable (Bloomberg/pre-written sections) — making this a supported directional restatement of two present facts.
+
+---
+
+CLAIM: "Asia-concentrated supply chain" (as a qualifier for geopolitical risk)
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights pre-written section and RAG Risk Factors explicitly identify manufacturing concentration in Asia (China, Taiwan, Vietnam, India, Japan, South Korea).
+
+---
+
+CLAIM: "U.S.-China trade policy, given Apple's material supply chain exposure in the region"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights pre-written section explicitly names China as a concentration risk, and the RAG Risk Factors section references trade restrictions, tariffs, and geopolitical tensions as disclosed risks.
+
+---
+
+**NO ADDITIONAL QUANTITATIVE CLAIMS FOUND**
+
+The Outlook section contains no additional specific numerical figures, price targets, ratios, percentages, or quantified forward-looking numbers beyond those already audited above (e.g., no specific margin targets, no specific unit sales figures, no specific price levels are stated in the Outlook). All directional and qualitative statements (e.g., "cautiously constructive," "little room for missteps," "margins hold firm") are non-quantitative and therefore outside the scope of this audit per the defined claim types.

@@ -1,0 +1,43 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$44.5 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $44,487,999,488, which rounds to $44.5 billion; the Financial Health pre-written section also states "$44.5 billion in revenue."
+
+---
+
+CLAIM: "$22.4 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net income of $22,397,999,104, which rounds to $22.4 billion; confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "50.8% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 50.78, which rounds to 50.8%; confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "a forward P/E of 24.6x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 24.640268, which rounds to 24.6x; confirmed in the Financial Health pre-written section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "The $31.7 billion remaining in buyback authorization"
+LABEL: SUPPORTED
+REASON: The Recent Developments pre-written section states "$31.7 billion remaining in its repurchase authorization as of June 2026," which is itself derived from the 10-Q filing data showing "$31,682 [million]" remaining as of May 31, 2026 (the June figure is truncated in the raw data but the pre-written section rounds to $31.7 billion and the AI reproduces that figure).
+
+---
+
+*No other specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Executive Summary or Outlook sections beyond those evaluated above. All remaining claims in those sections are qualitative or directional in nature (e.g., "cautiously constructive," "broad and deepening," "more coordinated threat") and do not constitute quantitative or forward-looking numerical claims subject to this audit.*

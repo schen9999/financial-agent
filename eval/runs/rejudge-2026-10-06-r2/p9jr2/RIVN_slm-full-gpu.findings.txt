@@ -1,0 +1,51 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $20.7 billion"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap as $20,704,407,552, which rounds to approximately $20.7 billion.
+
+---
+
+CLAIM: "negative profit margin of -54.96%"
+LABEL: SUPPORTED
+REASON: Source data lists profit_margin as -0.54955; expressed as a percentage this is -54.955%, which rounds to -54.96% (within 0.15 pp), and the Financial Health section explicitly states -54.96%.
+
+---
+
+CLAIM: "negative forward P/E of -8.20"
+LABEL: SUPPORTED
+REASON: Source data lists forward_pe as -8.203445, which rounds to -8.20 (within 0.1x tolerance).
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "monetized services like 'Autonomy+'"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state that fees for Autonomy+ features are expected to begin in April 2026, confirming Autonomy+ as a named monetized service milestone present in the source data.
+
+---
+
+CLAIM: *(implicit forward-looking milestone)* R2 vehicle launch execution as a key variable
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "Customer deliveries for the R2 platform are expected to begin in the second quarter of 2026," confirming the R2 launch as a named near-term milestone in the source data.
+
+---
+
+CLAIM: *(implicit)* joint venture with Volkswagen for next-generation architecture
+LABEL: SUPPORTED
+REASON: Both the 10-K summary and RAG SEC Highlights explicitly describe an equally-owned joint venture between Rivian and Volkswagen Group focused on next-generation electrical architecture and software technology.
+
+---
+
+**SUMMARY NOTE**
+
+The Executive Summary and Outlook sections are notably sparse in specific quantitative claims beyond the three financial metrics (market cap, profit margin, forward P/E). All named product milestones (R2 launch, Autonomy+ monetization, VW JV) are grounded in the source data. No unsupported figures, fabricated price targets, invented thresholds, or period mismatches were detected. All three quantitative figures pass arithmetic verification against the raw source data.

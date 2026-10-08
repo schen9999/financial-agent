@@ -1,0 +1,129 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+### EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "founded in 2017"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "an early-stage biotech firm founded in January 2017."
+
+---
+
+CLAIM: "$156.0 million in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data shows revenue = $156,035,008, which rounds to $156.0 million; also confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$2.65 billion market capitalization"
+LABEL: SUPPORTED
+REASON: The raw source data shows market_cap = $2,651,394,304, which rounds to $2.65 billion.
+
+---
+
+CLAIM: "net loss of $86.5 million"
+LABEL: SUPPORTED
+REASON: The raw source data shows net_income = -$86,520,000, which rounds to -$86.5 million; also confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "accumulated deficit of $1.6 billion"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "accumulated deficit reached $1.6 billion as of December 31, 2025."
+
+---
+
+CLAIM: "declined 33% from its 52-week high"
+LABEL: SUPPORTED
+REASON: Computed as (38.26 − 25.67) / 38.26 = 12.59 / 38.26 ≈ 32.9%, which rounds to 33%; this matches the claim and is also stated in the Recent Developments pre-written section.
+
+---
+
+CLAIM: "52-week high of $38.26"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists week_52_high = 38.26.
+
+---
+
+CLAIM: "current price of $25.67" (implied by "to $25.67")
+LABEL: SUPPORTED
+REASON: The raw source data shows current_price = 25.67.
+
+---
+
+CLAIM: "$1.2 billion cash position"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "the company maintains $1.2 billion in cash, cash equivalents, and marketable securities."
+
+---
+
+CLAIM: "provides a meaningful but finite operational runway"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state the $1.2 billion "is expected to fund operations for at least the next 12 months," which supports the characterization of a finite runway; no specific duration beyond "at least 12 months" is claimed, so no overreach.
+
+---
+
+### OUTLOOK
+
+---
+
+CLAIM: "$1.2 billion cash position provides a meaningful buffer that reduces near-term financing risk"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state the company maintains $1.2 billion in cash equivalents and marketable securities expected to fund operations for at least 12 months.
+
+---
+
+CLAIM: "accumulated deficit of $1.6 billion"
+LABEL: SUPPORTED
+REASON: Explicitly stated in both RAG SEC Highlights and RAG Risk Factors as of December 31, 2025.
+
+---
+
+CLAIM: "has already undergone a strategic restructuring that paused or eliminated pipeline programs"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state: "In October 2023, the company announced a portfolio reprioritization and strategic restructuring…resulting in the pausing or elimination of certain pipeline programs."
+
+---
+
+CLAIM: "no approved products"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both state "the company has not completed any pivotal clinical trials and has no product candidates approved for commercialization."
+
+---
+
+CLAIM: "no committed funding sources beyond its existing credit facility"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "the company has no committed source of additional capital beyond its credit facility with Sixth Street Lending Partners."
+
+---
+
+CLAIM: "Any positive pivotal-stage clinical readouts or regulatory milestones would be the clearest signal to shift toward a more constructive view"
+LABEL: SUPPORTED
+REASON: This is a directional forward-looking statement consistent with the SEC filing context that the company has no completed pivotal trials; no specific numeric threshold or named milestone is asserted, so no unsupported quantitative claim is embedded.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Founded in 2017 | SUPPORTED |
+| 2 | $156.0 million in revenue | SUPPORTED |
+| 3 | $2.65 billion market cap | SUPPORTED |
+| 4 | Net loss of $86.5 million | SUPPORTED |
+| 5 | Accumulated deficit of $1.6 billion | SUPPORTED |
+| 6 | Declined 33% from 52-week high | SUPPORTED |
+| 7 | 52-week high of $38.26 | SUPPORTED |
+| 8 | Current price $25.67 | SUPPORTED |
+| 9 | $1.2 billion cash position (Exec Summary) | SUPPORTED |
+| 10 | $1.2 billion cash position (Outlook) | SUPPORTED |
+| 11 | Accumulated deficit $1.6 billion (Outlook) | SUPPORTED |
+| 12 | Strategic restructuring paused/eliminated programs | SUPPORTED |
+| 13 | No approved products | SUPPORTED |
+| 14 | No committed funding beyond credit facility | SUPPORTED |
+| 15 | Pivotal-stage readouts as catalyst | SUPPORTED |
+
+**All audited claims in the Executive Summary and Outlook are SUPPORTED by the source data.** No unsupported or inference-only quantitative claims were identified.

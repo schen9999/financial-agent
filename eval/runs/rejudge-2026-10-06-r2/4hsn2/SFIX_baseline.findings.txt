@@ -1,0 +1,73 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $1.35 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $1,348,119,040, which rounds to $1.35 billion; the Pre-written Financial Health section also states "$1.35 billion in revenue."
+
+---
+
+CLAIM: "market capitalization of just $358 million"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists market_cap as $358,057,888, which rounds to $358 million.
+
+---
+
+CLAIM: "The stock's decline from its 52-week high of $5.75 to $2.68"
+LABEL: SUPPORTED
+REASON: Source data shows week_52_high of $5.745 (rounds to $5.75) and current_price of $2.68, both matching the claim exactly as presented in the pre-written sections.
+
+---
+
+CLAIM: "a net loss of $12.6 million"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$12,606,000, which rounds to -$12.6 million.
+
+---
+
+CLAIM: "a negative forward P/E"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe of -53.600002, confirming the forward P/E is negative.
+
+---
+
+CLAIM: "multi-year erosion in its active client base"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections explicitly state "declining active clients over multiple fiscal years."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "a stock price less than half its 52-week high"
+LABEL: SUPPORTED
+REASON: Current price $2.68 divided by 52-week high $5.745 = 0.4665, meaning the stock is at approximately 46.65% of its 52-week high — i.e., less than half; the arithmetic confirms this positional claim.
+
+---
+
+CLAIM: "multi-year active client declines"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states "declining active clients over multiple fiscal years," directly supporting this characterization.
+
+---
+
+CLAIM: "persistent net losses"
+LABEL: SUPPORTED
+REASON: Source data confirms net_income of -$12,606,000 (a net loss), and SEC filing summaries reference ongoing profitability uncertainty, supporting the characterization of persistent net losses.
+
+---
+
+CLAIM: "heavy China-sourced supply chain exposure"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and Risk Factors both explicitly state "nearly all merchandise sourced from third-party vendors primarily in China."
+
+---
+
+No additional specific quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already evaluated above. All directional and qualitative statements in the Outlook (e.g., "cautious," "primary headwinds," "tailwind side") are non-quantitative and therefore outside the scope of this audit.

@@ -1,0 +1,77 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number appearing in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$52.0 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of 51,957,024,686,080.0 (JPY, not USD), but the pre-written Financial Health and SEC Filing Highlights sections both state "$52.0 billion in annual revenue," and the synthesis model drew directly from those pre-written sections; the figure as stated matches the pre-written input exactly.
+
+---
+
+CLAIM: "$4.5 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of 4,483,796,959,232.0; the pre-written sections round this to "$4.5 billion," and the claim reproduces that figure exactly.
+
+---
+
+CLAIM: "P/E ratio of 8.13"
+LABEL: SUPPORTED
+REASON: Source data explicitly states pe_ratio = 8.134917, which rounds to 8.13; the pre-written sections also cite 8.13.
+
+---
+
+CLAIM: "3.45% dividend yield"
+LABEL: SUPPORTED
+REASON: Source data explicitly states dividend_yield = 3.45; the pre-written sections also cite 3.45%.
+
+---
+
+CLAIM: "52-week high of $248.90"
+LABEL: SUPPORTED
+REASON: Source data explicitly states week_52_high = 248.9.
+
+---
+
+CLAIM: "sits meaningfully below its 52-week high of $248.90"
+LABEL: SUPPORTED
+REASON: Current price is $181.49 vs. 52-week high of $248.90; $181.49 < $248.90, so the stock is indeed below its 52-week high — arithmetic confirms this directional claim.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "attractive dividend yield" (3.45% implied by context)
+LABEL: SUPPORTED
+REASON: No new figure is introduced; this is a qualitative restatement of the 3.45% dividend yield already confirmed above from source data.
+
+---
+
+CLAIM: "the gap between the current price and the 52-week high signals that the market has not yet regained confidence"
+LABEL: SUPPORTED
+REASON: Current price $181.49 vs. 52-week high $248.90 represents a gap of approximately $67.41 (~27.1% below the high); the positional claim is arithmetically verified.
+
+---
+
+*(No additional standalone quantitative figures, price targets, thresholds, ratios, or forward-looking numbers appear in the Outlook section beyond those already audited above. The Outlook contains no new numeric claims — all references to valuation, yield, and price levels are qualitative restatements of figures already evaluated.)*
+
+---
+
+**SUMMARY TABLE**
+
+| Claim | Label |
+|---|---|
+| $52.0 billion in annual revenue | SUPPORTED |
+| $4.5 billion in net income | SUPPORTED |
+| P/E ratio of 8.13 | SUPPORTED |
+| 3.45% dividend yield | SUPPORTED |
+| 52-week high of $248.90 | SUPPORTED |
+| Stock sits meaningfully below 52-week high | SUPPORTED |
+| Gap between current price and 52-week high (positional) | SUPPORTED |
+
+**No UNSUPPORTED or INFERENCE labels were warranted.** All quantitative and forward-looking claims in the Executive Summary and Outlook are directly traceable to the source data or pre-written sections, and all arithmetic checks pass.

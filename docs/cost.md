@@ -28,9 +28,13 @@ What this means for the two nodes, with no assumptions added:
 
 - Each node is a **VM.GPU.A10.1**, which has one A10 GPU (`nvidia-smi` on
   both nodes lists one NVIDIA A10). The list price is **USD 2.00 per GPU
-  per hour** (part B95909, from the source above). The source does not
-  state whether that rate also covers the shape's 15 OCPUs and memory; the
-  tenancy's cost analysis shows how the instances are actually billed.
+  per hour** (part B95909, from the source above), and that rate covers
+  the whole VM: the OCI price list prices a GPU server as the GPU price ×
+  the number of GPUs, with no separate OCPU or memory SKU for GPU shapes
+  (confirmed against the price list 2026-10-05). A VM.GPU.A10.1 —
+  1 A10, 15 OCPUs, 240 GB — is therefore USD 2.00 per hour, boot volume
+  excluded. The tenancy's cost analysis remains the authority on what is
+  actually charged.
 - Each node has a **1 TiB boot volume** (`lsblk` on both nodes), billed at
   the Block Volume rates above. The boot-volume total depends on the
   volume's performance setting (performance units per GB), which is not
@@ -39,6 +43,36 @@ What this means for the two nodes, with no assumptions added:
   components, is set by OCI's billing rules for the shape. The nodes are
   stopped or terminated by the tenancy owner in the OCI console
   ([operations.md](operations.md), "Teardown").
+
+## OCI: the provided OKE cluster's E5 nodes, and the A10 re-read
+
+Source: the same public price-list API, read 2026-10-05T23:14:25Z; the
+response's `lastUpdated` is 2026-10-01T14:18:05Z. The three entries used
+here are saved unmodified in
+[`eval/runs/oci-price-list-2026-10-05.json`](../eval/runs/oci-price-list-2026-10-05.json).
+
+| Part | Product (`displayName`) | Metric (`metricName`) | Pay-as-you-go (USD) |
+|---|---|---|---|
+| B97384 | Compute - Standard - E5 - OCPU | OCPU Per Hour | 0.03 |
+| B97385 | Compute - Standard - E5 - Memory | Gigabytes Per Hour | 0.002 |
+| B95909 | Compute - GPU - A10 | GPU Per Hour | 2.00 (unchanged from 2026-09-24) |
+
+- The provided cluster's nodes are VM.Standard.E5.Flex at 16 vCPU = 8
+  OCPU; the CPU llama.cpp endpoint ran on a node with 62.79 GiB of
+  kernel-visible memory (`kubectl` capacity, 2026-10-05,
+  [`eval/runs/oke-node-capacity-2026-10-05.txt`](../eval/runs/oke-node-capacity-2026-10-05.txt)),
+  below the shape's configured memory, which the cluster does not show.
+- Memory is billed per "Gigabytes Per Hour". Per-brief figures bill each
+  GiB (a Kubernetes request, a shape's memory) as one GB of that metric:
+  OCI's memory GB is taken as binary, since a node showing 62.79 GiB fits
+  a 64 GiB shape — an inference, not a statement from the price list.
+  Converting GiB to 10^9-byte GB instead (× 1.0737) raises the memory term
+  by 7.4%; the per-brief figures give that as a sensitivity.
+- These are list prices for the cluster's compute. The cluster was
+  provided to the project, not created by it, so no node-hour total is
+  given here; per-brief serving cost is in
+  [numbers-of-record.md](numbers-of-record.md) (dated records, "Cost per
+  brief on image `1f51dad`").
 
 The OKE Terraform in [`terraform/oci/`](../terraform/oci/) has never been
 applied, so it costs nothing today.

@@ -1,0 +1,1719 @@
+{
+  "date": "2026-10-06",
+  "harness": "scripts/numeric_adjudicated.py --adjudication --runs",
+  "adjudication": "eval/numeric_check/adjudication-2026-10-06-9jzmj-8vpq6-p9jr2-fx.csv",
+  "runs": [
+    "9jzmj",
+    "8vpq6",
+    "p9jr2"
+  ],
+  "note": "Adjudicated numeric-check results, same-image runs. Not a number of record.",
+  "precision": {
+    "8vpq6": {
+      "rows": 11,
+      "TRUE_ERROR": 11,
+      "FALSE_POSITIVE": 0,
+      "OTHER_DEFECT": 0,
+      "other_defect_as_tp": {
+        "k": 11,
+        "n": 11,
+        "rate": 1.0,
+        "ci95": [
+          0.7412,
+          1.0
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "empty_draws": 44
+        }
+      },
+      "other_defect_excluded": {
+        "k": 11,
+        "n": 11,
+        "rate": 1.0,
+        "ci95": [
+          0.7412,
+          1.0
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "empty_draws": 44
+        }
+      }
+    },
+    "9jzmj": {
+      "rows": 24,
+      "TRUE_ERROR": 24,
+      "FALSE_POSITIVE": 0,
+      "OTHER_DEFECT": 0,
+      "other_defect_as_tp": {
+        "k": 24,
+        "n": 24,
+        "rate": 1.0,
+        "ci95": [
+          0.862,
+          1.0
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "empty_draws": 9
+        }
+      },
+      "other_defect_excluded": {
+        "k": 24,
+        "n": 24,
+        "rate": 1.0,
+        "ci95": [
+          0.862,
+          1.0
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "empty_draws": 9
+        }
+      }
+    },
+    "p9jr2": {
+      "rows": 14,
+      "TRUE_ERROR": 13,
+      "FALSE_POSITIVE": 1,
+      "OTHER_DEFECT": 0,
+      "other_defect_as_tp": {
+        "k": 13,
+        "n": 14,
+        "rate": 0.9286,
+        "ci95": [
+          0.6853,
+          0.9873
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            0.7143,
+            1.0
+          ],
+          "empty_draws": 13
+        }
+      },
+      "other_defect_excluded": {
+        "k": 13,
+        "n": 14,
+        "rate": 0.9286,
+        "ci95": [
+          0.6853,
+          0.9873
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            0.7143,
+            1.0
+          ],
+          "empty_draws": 13
+        }
+      }
+    }
+  },
+  "notes": {
+    "labelled": 49,
+    "doubt_notes": 0,
+    "notes": [
+      {
+        "id": "1",
+        "run": "8vpq6",
+        "ticker": "BABA",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "2",
+        "run": "8vpq6",
+        "ticker": "BABA",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "3",
+        "run": "8vpq6",
+        "ticker": "NVO",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "4",
+        "run": "8vpq6",
+        "ticker": "NVO",
+        "field": "net_income",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "5",
+        "run": "8vpq6",
+        "ticker": "NVO",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "6",
+        "run": "8vpq6",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "7",
+        "run": "8vpq6",
+        "ticker": "SAP",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "8",
+        "run": "8vpq6",
+        "ticker": "SAP",
+        "field": "net_income",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "9",
+        "run": "8vpq6",
+        "ticker": "SAP",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "10",
+        "run": "8vpq6",
+        "ticker": "TM",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "11",
+        "run": "8vpq6",
+        "ticker": "TM",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "12",
+        "run": "9jzmj",
+        "ticker": "BABA",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "13",
+        "run": "9jzmj",
+        "ticker": "BABA",
+        "field": "net_income",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "14",
+        "run": "9jzmj",
+        "ticker": "BABA",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "15",
+        "run": "9jzmj",
+        "ticker": "NVO",
+        "field": "net_income",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "16",
+        "run": "9jzmj",
+        "ticker": "NVO",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "17",
+        "run": "9jzmj",
+        "ticker": "NVO",
+        "field": "net_income",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "18",
+        "run": "9jzmj",
+        "ticker": "NVO",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "19",
+        "run": "9jzmj",
+        "ticker": "NVO",
+        "field": "net_income",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "20",
+        "run": "9jzmj",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "21",
+        "run": "9jzmj",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "22",
+        "run": "9jzmj",
+        "ticker": "SAP",
+        "field": "net_income",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "23",
+        "run": "9jzmj",
+        "ticker": "SAP",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "24",
+        "run": "9jzmj",
+        "ticker": "SAP",
+        "field": "net_income",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "25",
+        "run": "9jzmj",
+        "ticker": "SAP",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "26",
+        "run": "9jzmj",
+        "ticker": "SAP",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "27",
+        "run": "9jzmj",
+        "ticker": "TM",
+        "field": "net_income",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "28",
+        "run": "9jzmj",
+        "ticker": "TM",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "29",
+        "run": "9jzmj",
+        "ticker": "TM",
+        "field": "net_income",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "30",
+        "run": "9jzmj",
+        "ticker": "TM",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "31",
+        "run": "9jzmj",
+        "ticker": "TM",
+        "field": "net_income",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "32",
+        "run": "9jzmj",
+        "ticker": "TM",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "33",
+        "run": "9jzmj",
+        "ticker": "TSM",
+        "field": "net_income",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "34",
+        "run": "9jzmj",
+        "ticker": "TSM",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "35",
+        "run": "9jzmj",
+        "ticker": "TSM",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "36",
+        "run": "p9jr2",
+        "ticker": "BABA",
+        "field": "net_income",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "37",
+        "run": "p9jr2",
+        "ticker": "BABA",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "38",
+        "run": "p9jr2",
+        "ticker": "BABA",
+        "field": "net_income",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "39",
+        "run": "p9jr2",
+        "ticker": "BABA",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "40",
+        "run": "p9jr2",
+        "ticker": "LCID",
+        "field": "profit_margin",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "41",
+        "run": "p9jr2",
+        "ticker": "NVO",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "42",
+        "run": "p9jr2",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "43",
+        "run": "p9jr2",
+        "ticker": "OMER",
+        "field": "net_income",
+        "verdict": "FALSE_POSITIVE",
+        "doubt": false,
+        "note": "draft FALSE_POSITIVE accepted"
+      },
+      {
+        "id": "44",
+        "run": "p9jr2",
+        "ticker": "SAP",
+        "field": "net_income",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "45",
+        "run": "p9jr2",
+        "ticker": "SAP",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "46",
+        "run": "p9jr2",
+        "ticker": "SAP",
+        "field": "net_income",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "47",
+        "run": "p9jr2",
+        "ticker": "SAP",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "48",
+        "run": "p9jr2",
+        "ticker": "TM",
+        "field": "revenue",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      },
+      {
+        "id": "49",
+        "run": "p9jr2",
+        "ticker": "TM",
+        "field": "net_income",
+        "verdict": "TRUE_ERROR",
+        "doubt": false,
+        "note": "draft TRUE_ERROR accepted"
+      }
+    ]
+  },
+  "true_error_rates": {
+    "flags": {
+      "run": {
+        "9jzmj": {
+          "k": 2,
+          "n": 569,
+          "rate": 0.0035,
+          "ci95": [
+            0.001,
+            0.0127
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0112
+            ],
+            "empty_draws": 0
+          }
+        },
+        "8vpq6": {
+          "k": 1,
+          "n": 389,
+          "rate": 0.0026,
+          "ci95": [
+            0.0005,
+            0.0144
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0083
+            ],
+            "empty_draws": 0
+          }
+        },
+        "p9jr2": {
+          "k": 3,
+          "n": 423,
+          "rate": 0.0071,
+          "ci95": [
+            0.0024,
+            0.0206
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.019
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "differences": {
+        "8vpq6 - 9jzmj": {
+          "difference": -0.0009,
+          "ci95": [
+            -0.0032,
+            0.0
+          ],
+          "p_two_sided_bootstrap": 0.7218,
+          "excludes_zero": false,
+          "paired_by_ticker": true,
+          "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+        },
+        "p9jr2 - 9jzmj": {
+          "difference": 0.0036,
+          "ci95": [
+            0.0,
+            0.0095
+          ],
+          "p_two_sided_bootstrap": 0.2564,
+          "excludes_zero": false,
+          "paired_by_ticker": true,
+          "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+        },
+        "p9jr2 - 8vpq6": {
+          "difference": 0.0045,
+          "ci95": [
+            0.0,
+            0.0114
+          ],
+          "p_two_sided_bootstrap": 0.2564,
+          "excludes_zero": false,
+          "paired_by_ticker": true,
+          "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+        }
+      }
+    },
+    "true_error": {
+      "run": {
+        "9jzmj": {
+          "k": 2,
+          "n": 569,
+          "rate": 0.0035,
+          "ci95": [
+            0.001,
+            0.0127
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0112
+            ],
+            "empty_draws": 0
+          }
+        },
+        "8vpq6": {
+          "k": 1,
+          "n": 389,
+          "rate": 0.0026,
+          "ci95": [
+            0.0005,
+            0.0144
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0083
+            ],
+            "empty_draws": 0
+          }
+        },
+        "p9jr2": {
+          "k": 2,
+          "n": 423,
+          "rate": 0.0047,
+          "ci95": [
+            0.0013,
+            0.0171
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.012
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "differences": {
+        "8vpq6 - 9jzmj": {
+          "difference": -0.0009,
+          "ci95": [
+            -0.0032,
+            0.0
+          ],
+          "p_two_sided_bootstrap": 0.7218,
+          "excludes_zero": false,
+          "paired_by_ticker": true,
+          "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+        },
+        "p9jr2 - 9jzmj": {
+          "difference": 0.0012,
+          "ci95": [
+            -0.0032,
+            0.0072
+          ],
+          "p_two_sided_bootstrap": 0.855,
+          "excludes_zero": false,
+          "paired_by_ticker": true,
+          "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+        },
+        "p9jr2 - 8vpq6": {
+          "difference": 0.0022,
+          "ci95": [
+            -0.0006,
+            0.0074
+          ],
+          "p_two_sided_bootstrap": 0.7138,
+          "excludes_zero": false,
+          "paired_by_ticker": true,
+          "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+        }
+      }
+    },
+    "true_error_ex_upstream": {
+      "run": {
+        "9jzmj": {
+          "k": 0,
+          "n": 569,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0067
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "empty_draws": 0
+          }
+        },
+        "8vpq6": {
+          "k": 0,
+          "n": 389,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0098
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "empty_draws": 0
+          }
+        },
+        "p9jr2": {
+          "k": 0,
+          "n": 423,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.009
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "empty_draws": 0
+          }
+        }
+      },
+      "differences": {
+        "8vpq6 - 9jzmj": {
+          "difference": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "p_two_sided_bootstrap": 1.0,
+          "excludes_zero": false,
+          "paired_by_ticker": true,
+          "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+        },
+        "p9jr2 - 9jzmj": {
+          "difference": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "p_two_sided_bootstrap": 1.0,
+          "excludes_zero": false,
+          "paired_by_ticker": true,
+          "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+        },
+        "p9jr2 - 8vpq6": {
+          "difference": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "p_two_sided_bootstrap": 1.0,
+          "excludes_zero": false,
+          "paired_by_ticker": true,
+          "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+        }
+      }
+    }
+  },
+  "upstream": {
+    "by_group": {
+      "baseline": {
+        "true_errors": 24,
+        "true_error_mismatches": 2,
+        "currency": 0,
+        "margin_fraction": 2,
+        "upstream_total": 2,
+        "not_attributed_sap": 0,
+        "not_attributed_margin_other_scale": 0
+      },
+      "baseline:hosted": {
+        "true_errors": 24,
+        "true_error_mismatches": 2,
+        "currency": 0,
+        "margin_fraction": 2,
+        "upstream_total": 2,
+        "not_attributed_sap": 0,
+        "not_attributed_margin_other_scale": 0
+      },
+      "slm-full-cpu": {
+        "true_errors": 11,
+        "true_error_mismatches": 1,
+        "currency": 0,
+        "margin_fraction": 1,
+        "upstream_total": 1,
+        "not_attributed_sap": 0,
+        "not_attributed_margin_other_scale": 0
+      },
+      "slm-full-cpu:qwen3.6-35b-a3b-q4km": {
+        "true_errors": 11,
+        "true_error_mismatches": 1,
+        "currency": 0,
+        "margin_fraction": 1,
+        "upstream_total": 1,
+        "not_attributed_sap": 0,
+        "not_attributed_margin_other_scale": 0
+      },
+      "slm-full-gpu": {
+        "true_errors": 13,
+        "true_error_mismatches": 2,
+        "currency": 0,
+        "margin_fraction": 2,
+        "upstream_total": 2,
+        "not_attributed_sap": 0,
+        "not_attributed_margin_other_scale": 0
+      },
+      "slm-full-gpu:qwen3.6-35b-a3b-q4km": {
+        "true_errors": 13,
+        "true_error_mismatches": 2,
+        "currency": 0,
+        "margin_fraction": 2,
+        "upstream_total": 2,
+        "not_attributed_sap": 0,
+        "not_attributed_margin_other_scale": 0
+      }
+    },
+    "rows": [
+      {
+        "id": "6",
+        "run": "8vpq6",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "stated": "3.25%",
+        "ratio": "0.01",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "20",
+        "run": "9jzmj",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "stated": "3.25%",
+        "ratio": "0.01",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "21",
+        "run": "9jzmj",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "stated": "3.25%",
+        "ratio": "0.01",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "40",
+        "run": "p9jr2",
+        "ticker": "LCID",
+        "field": "profit_margin",
+        "stated": "-2.49%",
+        "ratio": "0.009991",
+        "cause": "margin_fraction"
+      },
+      {
+        "id": "42",
+        "run": "p9jr2",
+        "ticker": "OMER",
+        "field": "profit_margin",
+        "stated": "3.25%",
+        "ratio": "0.01",
+        "cause": "margin_fraction"
+      }
+    ]
+  },
+  "judge_on_same_figure": [
+    {
+      "id": "1",
+      "run": "8vpq6",
+      "ticker": "BABA",
+      "section": "Executive Summary",
+      "field": "revenue",
+      "stated": "$1.04 trillion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "generating annual revenue of $1.04 trillion",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "run": "8vpq6",
+      "ticker": "BABA",
+      "section": "Financial Health",
+      "field": "revenue",
+      "stated": "$1.04 trillion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "generating annual revenue of $1.04 trillion",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "run": "8vpq6",
+      "ticker": "NVO",
+      "section": "Executive Summary",
+      "field": "revenue",
+      "stated": "$329.4 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$329.4 billion in revenues",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "run": "8vpq6",
+      "ticker": "NVO",
+      "section": "Financial Health",
+      "field": "net_income",
+      "stated": "$116.4 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": []
+    },
+    {
+      "id": "5",
+      "run": "8vpq6",
+      "ticker": "NVO",
+      "section": "Financial Health",
+      "field": "revenue",
+      "stated": "$329.4 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$329.4 billion in revenues",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "run": "8vpq6",
+      "ticker": "OMER",
+      "section": "Financial Health",
+      "field": "profit_margin",
+      "stated": "3.25%",
+      "verdict": "TRUE_ERROR",
+      "judge": []
+    },
+    {
+      "id": "7",
+      "run": "8vpq6",
+      "ticker": "SAP",
+      "section": "Executive Summary",
+      "field": "revenue",
+      "stated": "$38.2 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$38.2 billion revenue base",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "8",
+      "run": "8vpq6",
+      "ticker": "SAP",
+      "section": "Financial Health",
+      "field": "net_income",
+      "stated": "$7.8 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": []
+    },
+    {
+      "id": "9",
+      "run": "8vpq6",
+      "ticker": "SAP",
+      "section": "Financial Health",
+      "field": "revenue",
+      "stated": "$38.2 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$38.2 billion revenue base",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "10",
+      "run": "8vpq6",
+      "ticker": "TM",
+      "section": "Executive Summary",
+      "field": "revenue",
+      "stated": "$51.96 trillion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$51.96 trillion in revenue",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "11",
+      "run": "8vpq6",
+      "ticker": "TM",
+      "section": "Financial Health",
+      "field": "revenue",
+      "stated": "$51.96 trillion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$51.96 trillion in revenue",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "12",
+      "run": "9jzmj",
+      "ticker": "BABA",
+      "section": "Executive Summary",
+      "field": "revenue",
+      "stated": "$1.04 trillion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "generating $1.04 trillion in annual revenue",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "13",
+      "run": "9jzmj",
+      "ticker": "BABA",
+      "section": "Financial Health",
+      "field": "net_income",
+      "stated": "$73.3 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": []
+    },
+    {
+      "id": "14",
+      "run": "9jzmj",
+      "ticker": "BABA",
+      "section": "Financial Health",
+      "field": "revenue",
+      "stated": "$1.04 trillion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "generating $1.04 trillion in annual revenue",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "15",
+      "run": "9jzmj",
+      "ticker": "NVO",
+      "section": "Executive Summary",
+      "field": "net_income",
+      "stated": "$116.4 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "net income of $116.4 billion",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "16",
+      "run": "9jzmj",
+      "ticker": "NVO",
+      "section": "Executive Summary",
+      "field": "revenue",
+      "stated": "$329.4 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "generating revenue of $329.4 billion",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "17",
+      "run": "9jzmj",
+      "ticker": "NVO",
+      "section": "Financial Health",
+      "field": "net_income",
+      "stated": "$116.4 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "net income of $116.4 billion",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "18",
+      "run": "9jzmj",
+      "ticker": "NVO",
+      "section": "Financial Health",
+      "field": "revenue",
+      "stated": "$329.4 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "generating revenue of $329.4 billion",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "19",
+      "run": "9jzmj",
+      "ticker": "NVO",
+      "section": "SEC Filing Highlights",
+      "field": "net_income",
+      "stated": "$116.4 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "net income of $116.4 billion",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "20",
+      "run": "9jzmj",
+      "ticker": "OMER",
+      "section": "Financial Health",
+      "field": "profit_margin",
+      "stated": "3.25%",
+      "verdict": "TRUE_ERROR",
+      "judge": []
+    },
+    {
+      "id": "21",
+      "run": "9jzmj",
+      "ticker": "OMER",
+      "section": "Recent Developments",
+      "field": "profit_margin",
+      "stated": "3.25%",
+      "verdict": "TRUE_ERROR",
+      "judge": []
+    },
+    {
+      "id": "22",
+      "run": "9jzmj",
+      "ticker": "SAP",
+      "section": "Executive Summary",
+      "field": "net_income",
+      "stated": "$7.8 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$7.8 billion in net income",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "23",
+      "run": "9jzmj",
+      "ticker": "SAP",
+      "section": "Executive Summary",
+      "field": "revenue",
+      "stated": "$38.2 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$38.2 billion in annual revenue",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "24",
+      "run": "9jzmj",
+      "ticker": "SAP",
+      "section": "Financial Health",
+      "field": "net_income",
+      "stated": "$7.8 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$7.8 billion in net income",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "25",
+      "run": "9jzmj",
+      "ticker": "SAP",
+      "section": "Financial Health",
+      "field": "revenue",
+      "stated": "$38.2 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$38.2 billion in annual revenue",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "26",
+      "run": "9jzmj",
+      "ticker": "SAP",
+      "section": "SEC Filing Highlights",
+      "field": "revenue",
+      "stated": "$38.2 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$38.2 billion in annual revenue",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "27",
+      "run": "9jzmj",
+      "ticker": "TM",
+      "section": "Executive Summary",
+      "field": "net_income",
+      "stated": "$4.5 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$4.5 billion in net income",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "28",
+      "run": "9jzmj",
+      "ticker": "TM",
+      "section": "Executive Summary",
+      "field": "revenue",
+      "stated": "$52.0 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$52.0 billion in annual revenue",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "29",
+      "run": "9jzmj",
+      "ticker": "TM",
+      "section": "Financial Health",
+      "field": "net_income",
+      "stated": "$4.5 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$4.5 billion in net income",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "30",
+      "run": "9jzmj",
+      "ticker": "TM",
+      "section": "Financial Health",
+      "field": "revenue",
+      "stated": "$52.0 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$52.0 billion in annual revenue",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "31",
+      "run": "9jzmj",
+      "ticker": "TM",
+      "section": "SEC Filing Highlights",
+      "field": "net_income",
+      "stated": "$4.5 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$4.5 billion in net income",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "32",
+      "run": "9jzmj",
+      "ticker": "TM",
+      "section": "SEC Filing Highlights",
+      "field": "revenue",
+      "stated": "$52.0 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$52.0 billion in annual revenue",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "33",
+      "run": "9jzmj",
+      "ticker": "TSM",
+      "section": "Financial Health",
+      "field": "net_income",
+      "stated": "$2.22 trillion",
+      "verdict": "TRUE_ERROR",
+      "judge": []
+    },
+    {
+      "id": "34",
+      "run": "9jzmj",
+      "ticker": "TSM",
+      "section": "Financial Health",
+      "field": "revenue",
+      "stated": "$4.44 trillion",
+      "verdict": "TRUE_ERROR",
+      "judge": []
+    },
+    {
+      "id": "35",
+      "run": "9jzmj",
+      "ticker": "TSM",
+      "section": "SEC Filing Highlights",
+      "field": "revenue",
+      "stated": "$4.44 trillion USD",
+      "verdict": "TRUE_ERROR",
+      "judge": []
+    },
+    {
+      "id": "36",
+      "run": "p9jr2",
+      "ticker": "BABA",
+      "section": "Executive Summary",
+      "field": "net_income",
+      "stated": "$73.3 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$73.3 billion net income",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "37",
+      "run": "p9jr2",
+      "ticker": "BABA",
+      "section": "Executive Summary",
+      "field": "revenue",
+      "stated": "$1.04 trillion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$1.04 trillion in annual revenue",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "38",
+      "run": "p9jr2",
+      "ticker": "BABA",
+      "section": "Financial Health",
+      "field": "net_income",
+      "stated": "$73.3 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$73.3 billion net income",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "39",
+      "run": "p9jr2",
+      "ticker": "BABA",
+      "section": "Financial Health",
+      "field": "revenue",
+      "stated": "$1.04 trillion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$1.04 trillion in annual revenue",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "40",
+      "run": "p9jr2",
+      "ticker": "LCID",
+      "section": "Recent Developments",
+      "field": "profit_margin",
+      "stated": "-2.49%",
+      "verdict": "TRUE_ERROR",
+      "judge": []
+    },
+    {
+      "id": "41",
+      "run": "p9jr2",
+      "ticker": "NVO",
+      "section": "Financial Health",
+      "field": "revenue",
+      "stated": "$329.4 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": []
+    },
+    {
+      "id": "42",
+      "run": "p9jr2",
+      "ticker": "OMER",
+      "section": "Financial Health",
+      "field": "profit_margin",
+      "stated": "3.25%",
+      "verdict": "TRUE_ERROR",
+      "judge": []
+    },
+    {
+      "id": "43",
+      "run": "p9jr2",
+      "ticker": "OMER",
+      "section": "SEC Filing Highlights",
+      "field": "net_income",
+      "stated": "$3.4 million",
+      "verdict": "FALSE_POSITIVE",
+      "judge": []
+    },
+    {
+      "id": "44",
+      "run": "p9jr2",
+      "ticker": "SAP",
+      "section": "Executive Summary",
+      "field": "net_income",
+      "stated": "$7.8 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "net income of $7.8 billion",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "45",
+      "run": "p9jr2",
+      "ticker": "SAP",
+      "section": "Executive Summary",
+      "field": "revenue",
+      "stated": "$38.2 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$38.2 billion in revenue",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "46",
+      "run": "p9jr2",
+      "ticker": "SAP",
+      "section": "Financial Health",
+      "field": "net_income",
+      "stated": "$7.8 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "net income of $7.8 billion",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "47",
+      "run": "p9jr2",
+      "ticker": "SAP",
+      "section": "Financial Health",
+      "field": "revenue",
+      "stated": "$38.2 billion",
+      "verdict": "TRUE_ERROR",
+      "judge": [
+        {
+          "claim": "$38.2 billion in revenue",
+          "judge_label": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "id": "48",
+      "run": "p9jr2",
+      "ticker": "TM",
+      "section": "Financial Health",
+      "field": "revenue",
+      "stated": "$51.96 trillion",
+      "verdict": "TRUE_ERROR",
+      "judge": []
+    },
+    {
+      "id": "49",
+      "run": "p9jr2",
+      "ticker": "TM",
+      "section": "Recent Developments",
+      "field": "net_income",
+      "stated": "$4.48 trillion",
+      "verdict": "TRUE_ERROR",
+      "judge": []
+    }
+  ],
+  "currency_label_true_errors": {
+    "run": {
+      "9jzmj": {
+        "k": 22,
+        "n": 569,
+        "rate": 0.0387,
+        "ci95": [
+          0.0257,
+          0.0578
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            0.0097,
+            0.0735
+          ],
+          "empty_draws": 0
+        }
+      },
+      "8vpq6": {
+        "k": 10,
+        "n": 389,
+        "rate": 0.0257,
+        "ci95": [
+          0.014,
+          0.0467
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            0.0051,
+            0.0528
+          ],
+          "empty_draws": 0
+        }
+      },
+      "p9jr2": {
+        "k": 11,
+        "n": 423,
+        "rate": 0.026,
+        "ci95": [
+          0.0146,
+          0.046
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            0.0025,
+            0.0545
+          ],
+          "empty_draws": 0
+        }
+      }
+    },
+    "differences": {
+      "8vpq6 - 9jzmj": {
+        "difference": -0.013,
+        "ci95": [
+          -0.028,
+          -0.0012
+        ],
+        "p_two_sided_bootstrap": 0.0104,
+        "excludes_zero": true,
+        "paired_by_ticker": true,
+        "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+      },
+      "p9jr2 - 9jzmj": {
+        "difference": -0.0127,
+        "ci95": [
+          -0.0341,
+          0.0056
+        ],
+        "p_two_sided_bootstrap": 0.2086,
+        "excludes_zero": false,
+        "paired_by_ticker": true,
+        "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+      },
+      "p9jr2 - 8vpq6": {
+        "difference": 0.0003,
+        "ci95": [
+          -0.0141,
+          0.0132
+        ],
+        "p_two_sided_bootstrap": 0.9732,
+        "excludes_zero": false,
+        "paired_by_ticker": true,
+        "method": "cluster bootstrap on briefs, 10000 draws, seed 42"
+      }
+    }
+  },
+  "financial_currency": {
+    "file": "eval\\runs\\financial-currency-2026-10-06.json",
+    "injected": {
+      "BABA": "CNY",
+      "NVO": "DKK",
+      "SAP": "EUR",
+      "TM": "JPY",
+      "TSM": "TWD"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+[gpu-p4 2026-10-07T22:47:57Z] start at c47ab4f Record the A10 capacity sweep at P=1, 2, 4
+Defaulted container "api" out of: api, wait-for-postgres (init)
+BALANCE CHECK: OK — API answered 8 in / 1 out
+kubectl -n financial-agent get workflow grounding-eval-extended-slm-gpu-nstp9 -o json | python3 scripts/run_time_projection.py --next argo/eval-run-extended-slm-gpu-p4.yaml
+run-time check for grounding-eval-extended-slm-gpu-nstp9 against argo/eval-run-extended-slm-gpu-p4.yaml
+  smoke: 40 tickers, parallelism 2, per ticker mean 0h01m, min 0h00m, max 0h02m; aggregate 0h00m
+  not Succeeded: none
+  projected 40 tickers (20 waves of 2): mean 0h36m, worst 0h51m
+  PASS  worst projection <= workflow deadline 8h00m
+  PASS  slowest smoke ticker 0h02m <= 75% of ticker deadline 1h00m
+  PASS  worst projection + 1 day capture < 7-day TTL
+RUN-TIME CHECK: PASS - ok to launch
+[gpu-p4 2026-10-07T23:10:29Z] done: make exit 2; TRAFFIC PROOF: FAIL

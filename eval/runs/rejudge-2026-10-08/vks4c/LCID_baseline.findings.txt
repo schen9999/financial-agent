@@ -1,0 +1,151 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "only two commercially available vehicles"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "Only two commercially available vehicles have been released."
+
+---
+
+CLAIM: "trading at $3.89 per share"
+LABEL: SUPPORTED
+REASON: The stock data field `current_price` is exactly $3.89.
+
+---
+
+CLAIM: "market capitalization of $1.53 billion"
+LABEL: SUPPORTED
+REASON: The stock data field `market_cap` is $1,532,932,992, which rounds to $1.53 billion.
+
+---
+
+CLAIM: "a fraction of its 52-week high of $22.42"
+LABEL: SUPPORTED
+REASON: The stock data field `week_52_high` is exactly $22.42; $3.89 is approximately 17.4% of $22.42, confirming it is a fraction of that high.
+
+---
+
+CLAIM: "generating $1.55 billion in revenue"
+LABEL: SUPPORTED
+REASON: The stock data field `revenue` is $1,547,122,048, which rounds to $1.55 billion; also confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "a net loss of $4.60 billion"
+LABEL: SUPPORTED
+REASON: The stock data field `net_income` is -$4,604,930,048, which rounds to -$4.60 billion; also confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "accumulated losses ($15.6 billion since inception)"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "Accumulated deficit reached $15.6 billion as of December 31, 2025," and this figure is repeated in the Risk Factors pre-written section.
+
+---
+
+CLAIM: "the Midsize platform"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly references "Ongoing development of new variants including the Midsize platform and robotaxis."
+
+---
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "a deeply negative profit margin"
+LABEL: SUPPORTED
+REASON: The stock data field `profit_margin_pct` is -249.21%, which is explicitly deeply negative; confirmed in the Financial Health section.
+
+---
+
+CLAIM: "an accumulated deficit of $15.6 billion"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors pre-written section both explicitly state the accumulated deficit is $15.6 billion as of December 31, 2025.
+
+---
+
+CLAIM: "continued dependence on single-source suppliers"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights states "Heavy dependence on single-source suppliers for critical components," and this is repeated in the Risk Factors pre-written section.
+
+---
+
+CLAIM: "the outsized influence of PIF and Ayar over strategic direction"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights states "PIF and Ayar maintain significant equity interests with substantial influence," and the SEC Filing Highlights pre-written section states "The company's strategic direction is significantly influenced by major shareholders PIF and Ayar."
+
+---
+
+CLAIM: "the Midsize platform launch, which represents the most credible near-term avenue for broadening the revenue base"
+LABEL: INFERENCE
+REASON: The Midsize platform is confirmed as an in-development product in the source data; characterizing it as "the most credible near-term avenue for broadening the revenue base" is a directional editorial inference from the fact that it is the named upcoming product, but no source data ranks it explicitly as the most credible near-term revenue avenue.
+
+---
+
+CLAIM: "dilutive or costly financing would further pressure minority shareholders"
+LABEL: INFERENCE
+REASON: The Risk Factors pre-written section confirms the need for "significant additional capital" with "no guarantee of obtaining financing on commercially reasonable terms," and the governance risk of limited minority stockholder protections is confirmed; the inference that dilutive financing would pressure minority shareholders follows directly from these two confirmed facts.
+
+---
+
+CLAIM: "supply chain stability, particularly around lithium-ion battery cell availability"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "Challenges in managing supply chain and component sourcing, particularly for lithium-ion battery cells," and this is repeated in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "Lucid's technology positioning in the premium EV space and its sovereign-backed financial relationships provide a degree of survival runway"
+LABEL: UNSUPPORTED
+REASON: Neither the raw source data nor any pre-written section explicitly characterizes Lucid's technology as providing a competitive advantage or quantifies/qualifies "survival runway"; the source data only notes PIF/Ayar's equity influence, not that it constitutes a financial lifeline or survival runway — this specific framing is absent from all source material.
+
+---
+
+CLAIM: "new vehicle variants launch on schedule"
+LABEL: INFERENCE
+REASON: The source data confirms new variants (Midsize platform, robotaxis) are in development and that delays are a named risk; the forward-looking condition of launching "on schedule" is a direct logical counterpart to the confirmed delay risk, making it a derivable inference rather than an unsupported fabrication.
+
+---
+
+CLAIM: "the rate of net losses begins to narrow in a sustained way"
+LABEL: INFERENCE
+REASON: The source data confirms substantial ongoing net losses are expected to continue; the condition of losses narrowing is the direct logical inverse of this confirmed fact and requires no additional source data to derive as a watch-item.
+
+---
+
+CLAIM: "intensifying competitive pressure from established automakers"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors explicitly states "Highly competitive automotive market" and "Highly competitive automotive industry with significant barriers to entry," and the Risk Factors pre-written section references "established automakers" and "new EV competitors" as competitive threats.
+
+---
+
+### Summary Table
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Only two commercially available vehicles | SUPPORTED |
+| 2 | $3.89 per share | SUPPORTED |
+| 3 | Market cap $1.53 billion | SUPPORTED |
+| 4 | 52-week high of $22.42 | SUPPORTED |
+| 5 | $1.55 billion in revenue | SUPPORTED |
+| 6 | Net loss of $4.60 billion | SUPPORTED |
+| 7 | Accumulated losses $15.6 billion since inception | SUPPORTED |
+| 8 | Midsize platform (named product) | SUPPORTED |
+| 9 | Deeply negative profit margin | SUPPORTED |
+| 10 | Accumulated deficit $15.6 billion (Outlook) | SUPPORTED |
+| 11 | Single-source supplier dependence | SUPPORTED |
+| 12 | PIF and Ayar outsized influence | SUPPORTED |
+| 13 | Midsize platform as most credible near-term revenue avenue | INFERENCE |
+| 14 | Dilutive financing pressuring minority shareholders | INFERENCE |
+| 15 | Lithium-ion battery cell supply chain | SUPPORTED |
+| 16 | Technology positioning + sovereign-backed relationships = survival runway | UNSUPPORTED |
+| 17 | New vehicle variants launching on schedule (as a positive condition) | INFERENCE |
+| 18 | Net losses narrowing in a sustained way (as a positive condition) | INFERENCE |
+| 19 | Intensifying competitive pressure from established automakers | SUPPORTED |

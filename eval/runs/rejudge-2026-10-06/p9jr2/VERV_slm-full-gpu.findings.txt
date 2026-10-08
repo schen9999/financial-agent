@@ -1,0 +1,57 @@
+I will now systematically audit every quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$524.3 million in cash and marketable securities"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and SEC Filing Highlights pre-written section both explicitly state "the firm holds $524.3 million in cash and marketable securities" as of December 31, 2024.
+
+---
+
+CLAIM: "$20.0 million milestone payment from Eli Lilly"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states "in February 2025, the company received a $20.0 million milestone payment from Eli Lilly and Company (Lilly) under the Lp(a) program," and this is echoed in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "management's projection that existing resources will fund operations into mid-2027"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights, RAG — Risk Factors, and SEC Filing Highlights pre-written section all explicitly state that "the company believes its existing resources will fund operating expenses and capital expenditure requirements into mid-2027."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "robust liquidity buffer that extends the runway into mid-2027"
+LABEL: SUPPORTED
+REASON: The mid-2027 funding runway is explicitly stated in both RAG sections and the SEC Filing Highlights pre-written section, making this a direct restatement of a sourced fact.
+
+---
+
+CLAIM: "Lp(a) and PCSK9 programs" (as the key clinical programs to monitor)
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly references "the Heart-2 Phase 1b trial of VERVE-102, the Pulse-1 Phase 1b trial of VERVE-201, and a planned Phase 2 clinical trial for the PCSK9 program," and the SEC Filing Highlights pre-written section references "ongoing clinical trials for its Lp(a) and PCSK9 programs."
+
+---
+
+**No additional quantitative figures, price targets, thresholds, ratios, percentages, or specific forward-looking numbers appear in the Outlook section beyond those already evaluated above.**
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $524.3 million in cash and marketable securities | SUPPORTED |
+| 2 | $20.0 million milestone payment from Eli Lilly | SUPPORTED |
+| 3 | Existing resources fund operations into mid-2027 | SUPPORTED |
+| 4 | Liquidity runway extends into mid-2027 | SUPPORTED |
+| 5 | Lp(a) and PCSK9 programs as key clinical variables | SUPPORTED |
+
+All audited claims in the Executive Summary and Outlook are **SUPPORTED** by the source data. No unsupported or inference-only claims were identified. The brief does not introduce any figures, periods, ratios, or named milestones that are absent from or contradicted by the source material.

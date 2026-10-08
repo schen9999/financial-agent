@@ -1,0 +1,88 @@
+# GPU endpoint on node 2 (vm-a10-inst-2, single-node k3s, one A10 24 GB,
+# driver 570 = CUDA 12.8): the CUDA 12.8.1 build of the SAME engine release
+# (b11347) and the SAME GGUF as the CPU endpoint. Replaces the financial-lora
+# vLLM on NodePort 30880 (scale vllm to 0 and delete its Service first —
+# runbook); keyed (LLAMA_API_KEY from the llamacpp-api-key Secret).
+#
+# All layers on the GPU by default: --n-gpu-layers=all, --n-cpu-moe=0. The
+# 19.0 GiB GGUF + ~0.6 GiB KV + compute buffers should fit the A10's
+# 22.49 GiB; `make vm-llamacpp` records llama-server's GPU memory from
+# nvidia-smi (b11347 logs no offload line at default verbosity; measured
+# 2026-10-03: 20,488 MiB of 23,028 MiB, all layers on the GPU). If it does
+# not fit, `make vm-llamacpp NCMOE=<n>` keeps the first n layers' MoE experts
+# in host RAM AND renames the served alias to ...-hybrid-ncmoe<n>, so a
+# hybrid run can never be reported as a GPU run (the eval checks the alias).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+
+images:
+  - name: llamacpp-backend
+    newName: ghcr.io/ggml-org/llama.cpp
+    digest: sha256:d87b02aafa74797a2d599b281c50468704bd0bcdc57bfcf31b570d593f1d285b # server-cuda12-b11347 (CUDA 12.8.1)
+
+patches:
+  # Weights on the host like the vLLM overlay (/home/ubuntu/models/<dir>);
+  # the init container downloads + verifies into it once.
+  - patch: |-
+      $patch: delete
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: llamacpp-models
+        namespace: financial-agent
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: llamacpp
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/volumes/0
+        value:
+          name: models
+          hostPath:
+            path: /home/ubuntu/models/qwen3.6-35b-a3b-gguf
+            type: DirectoryOrCreate
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: --n-gpu-layers
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: all
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: --n-cpu-moe
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: "0"
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: --threads
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: "8"
+      - op: add
+        path: /spec/template/spec/containers/0/resources
+        value:
+          requests:
+            cpu: "4"
+            memory: 24Gi
+            nvidia.com/gpu: "1"
+          limits:
+            cpu: "8"
+            memory: 32Gi
+            nvidia.com/gpu: "1"
+  - patch: |-
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: llamacpp
+        namespace: financial-agent
+      spec:
+        type: NodePort
+        ports:
+          - port: 8080
+            name: http
+            nodePort: 30880

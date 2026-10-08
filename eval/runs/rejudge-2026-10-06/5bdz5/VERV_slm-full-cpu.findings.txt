@@ -1,0 +1,52 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "accumulated to $743.0 million"
+LABEL: SUPPORTED
+REASON: The accumulated deficit of $743.0 million as of December 31, 2024 is explicitly stated in both the RAG — SEC Highlights and RAG — Risk Factors sections, as well as the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "cash runway through mid-2027"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states "the company estimates that its existing capital resources will fund operating expenses and capital expenditure requirements into mid-2027," which is also echoed in the SEC Filing Highlights pre-written section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "milestone payment from Eli Lilly"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and RAG — Risk Factors both explicitly state that "in February 2025, the company received a $20.0 million milestone payment from Eli Lilly and Company (Lilly) under the Lp(a) program," and the SEC Filing Highlights pre-written section confirms this.
+
+---
+
+CLAIM: "stated mid-2027 runway"
+LABEL: SUPPORTED
+REASON: The mid-2027 funding horizon is explicitly stated in the RAG — SEC Highlights section and the SEC Filing Highlights pre-written section, making this a directly supported reference.
+
+---
+
+**CLAIMS ABSENT FROM THE EXECUTIVE SUMMARY AND OUTLOOK (confirming exhaustiveness)**
+
+The following items appear in the source data but are **not claimed** in the audited sections, so no entry is needed: the specific $198.7 million net loss figure, the $524.3 million cash/securities figure as of December 31, 2024, the $20.0 million specific dollar amount of the Lilly payment, the $96.6 million cash equivalents figure, the $400.5 million marketable securities figure, the $497 million combined liquidity figure as of March 31, 2025, and the $743.0 million accumulated deficit (already audited above). No additional quantitative claims requiring audit entries are present in the Executive Summary or Outlook beyond those addressed above.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Accumulated deficit of $743.0 million | SUPPORTED |
+| 2 | Cash runway through mid-2027 | SUPPORTED |
+| 3 | Milestone payment from Eli Lilly | SUPPORTED |
+| 4 | Stated mid-2027 runway (Outlook reference) | SUPPORTED |
+
+All four auditable quantitative or forward-looking claims in the Executive Summary and Outlook are **SUPPORTED** by the source data. No claims are UNSUPPORTED or INFERENCE.

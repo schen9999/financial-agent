@@ -1,0 +1,61 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$4.86 trillion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 4,858,257,080,320, which equals approximately $4.858 trillion, rounding to $4.86 trillion as stated.
+
+---
+
+CLAIM: "27.62% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists profit_margin_pct = 27.62, matching exactly.
+
+---
+
+CLAIM: "$466.82 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 466,822,987,776, which equals approximately $466.82 billion, matching the claim.
+
+---
+
+CLAIM: "P/E ratio of 38.18"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 38.17546, which rounds to 38.18 as stated.
+
+---
+
+CLAIM: "upcoming smart home products"
+LABEL: SUPPORTED
+REASON: Bloomberg news article dated 2026-09-30 reports Apple launching new 'Smart Home' products on October 13, confirming this milestone exists in the source data.
+
+---
+
+CLAIM: "foldable iPhone ramp-up"
+LABEL: SUPPORTED
+REASON: Bloomberg news article dated 2026-09-30 references Counterpoint's forecast for 6 million iPhone duos in 2026, explicitly tied to Apple ramping up production of new foldable hardware, confirming this milestone is present in the source data.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "margin trajectory of the Services segment" [as a key variable to monitor]
+LABEL: SUPPORTED
+REASON: The 10-Q data shows Services revenue of $30,739M (Q3 2026) vs. $27,423M (Q3 2025) and cost of Services of $7,494M vs. $6,698M, confirming the Services segment is a real, quantified segment in the source data; monitoring its margin trajectory is a directional restatement grounded in present data.
+
+---
+
+CLAIM: "adoption rates of new hardware categories like foldables" [as a key variable to monitor]
+LABEL: SUPPORTED
+REASON: The Bloomberg article explicitly references Counterpoint's forecast of 6 million iPhone duos in 2026 contingent on production ramp-up speed, confirming foldables as a named, sourced hardware category with adoption uncertainty.
+
+---
+
+*No additional specific quantitative figures, price targets, thresholds, ratios, named metrics, percentages, or forward-looking numbers appear in the Outlook section beyond those addressed above. All directional and qualitative statements (e.g., "cautiously constructive," "premium valuation," "ecosystem stickiness," "geopolitical tensions on supply chain," "concentrated regions," "international markets") are qualitative characterizations or restatements of risk factors present in the SEC Filing Highlights and Risk Factors sections, and contain no standalone quantitative claims requiring arithmetic verification.*

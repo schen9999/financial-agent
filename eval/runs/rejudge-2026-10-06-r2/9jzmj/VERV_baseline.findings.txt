@@ -1,0 +1,61 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "VERVE-102 and VERVE-201 currently in Phase 1b trials"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights (RAG) explicitly states "Key pipeline programs include VERVE-102 and VERVE-201 in Phase 1b trials."
+
+---
+
+CLAIM: "a Phase 2 PCSK9 program in development"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "A planned Phase 2 clinical trial for the PCSK9 program is in development," and the pre-written SEC Filing Highlights section confirms "a Phase 2 PCSK9 program in development."
+
+---
+
+CLAIM: "a combined liquidity buffer of approximately $497 million"
+LABEL: SUPPORTED
+REASON: The Financial Health pre-written section states "combined liquidity buffer of approximately $497 million"; verified by arithmetic: $96,554K cash + $400,523K marketable securities = $497,077K ≈ $497 million as of March 31, 2025.
+
+---
+
+CLAIM: "a strategic partnership with Eli Lilly that delivered a $20.0 million milestone payment in February 2025"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "In February 2025, the company received a $20.0 million milestone payment from Eli Lilly under the Lp(a) program," confirmed in the pre-written SEC Filing Highlights section.
+
+---
+
+CLAIM: "cash and cash equivalents declining from $172.6 million to $96.6 million in a single quarter"
+LABEL: SUPPORTED
+REASON: The 10-Q source data shows cash and cash equivalents of $172,560K at December 31, 2024 and $96,554K at March 31, 2025, consistent with the figures cited; the quarter is Q1 2025 (one quarter), which matches the filing date of May 14, 2025 for the Q1 2025 10-Q.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "the estimated runway into mid-2027"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors pre-written section both explicitly state "the company estimates it can fund operations into mid-2027."
+
+---
+
+CLAIM: "the company has never completed a clinical trial"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors state "The company has not yet completed a clinical trial of any product candidate," confirmed in the pre-written Risk Factors section.
+
+---
+
+CLAIM: "Phase 1b data readouts from VERVE-102 and VERVE-201 as the primary signposts"
+LABEL: SUPPORTED
+REASON: Both VERVE-102 (Heart-2 Phase 1b) and VERVE-201 (Pulse-1 Phase 1b) are confirmed as ongoing Phase 1b trials in the RAG SEC Highlights.
+
+---
+
+*No price targets, specific percentage thresholds, valuation ratios, or other quantitative forward-looking figures beyond those audited above appear in the Executive Summary or Outlook sections. All identified claims are accounted for above.*

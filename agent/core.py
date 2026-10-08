@@ -10,6 +10,9 @@ from agent.tools.news import get_company_news
 from agent.tools.sec import get_sec_filings
 from agent.tools.rag import query_sec_filing
 from agent.tools.local_model import use_local_model, is_local_section, LocalChat
+from agent.tools.slm import SLMChatModel, slm_full_enabled, invoke_recorded
+from agent import llm_ledger
+from agent.grounding import missing_brief_sections
 from agent.numeric_check import apply_numeric_check, numeric_check_mode
 from agent.tracing import traceable
 from cache import get_cached_response, set_cached_response
@@ -44,9 +47,23 @@ _RAG_FAILURE_PREFIXES = ("RAG query failed", "Could not retrieve")
 def _trim_stock(data: dict) -> dict:
     keep = {"ticker", "company_name", "current_price", "currency", "market_cap",
             "pe_ratio", "forward_pe", "week_52_high", "week_52_low",
-            "revenue", "net_income", "profit_margin", "dividend_yield",
-            "sector", "industry"}
+            "financial_currency", "revenue", "net_income", "profit_margin",
+            "profit_margin_pct", "dividend_yield", "sector", "industry"}
     return {k: v for k, v in data.items() if k in keep and v is not None}
+
+
+def _currency_rule(stock: dict) -> str:
+    """The currency-labelling rule for a filer that reports in another
+    currency than its listing's; "" otherwise (and for stock dicts without
+    financial_currency), so a USD reporter's prompt is unchanged."""
+    fin = (stock.get("financial_currency") or "").upper()
+    listing = (stock.get("currency") or "USD").upper()
+    if not fin or fin == listing:
+        return ""
+    return (f"\nCurrency rule: revenue and net_income are in {fin} (financial_currency), "
+            f"not {listing}; price and market cap are in {listing}. State revenue and "
+            f"net income in {fin}, with the {fin} code or its symbol, never with a $ sign, "
+            f"and do not convert them.")
 
 
 def _trim_news(data: list) -> list:
@@ -74,7 +91,8 @@ def _trim_sec(data: dict) -> dict:
 
 
 def _data_context(stock: dict, news: list, sec: dict) -> str:
-    return f"Stock: {json.dumps(stock)}\nNews: {json.dumps(news)}\nSEC: {json.dumps(sec)}"
+    return (f"Stock: {json.dumps(stock)}{_currency_rule(stock)}\n"
+            f"News: {json.dumps(news)}\nSEC: {json.dumps(sec)}")
 
 
 # Default SEC RAG sub-questions for the two grounded sections. The multi-agent
@@ -94,14 +112,20 @@ def _rag_contexts(ticker: str, highlights_query: str | None = None,
         return None, None
     highlights_query = highlights_query or DEFAULT_HIGHLIGHTS_QUERY
     risks_query = risks_query or DEFAULT_RISKS_QUERY
+    def _query(site: str, q: str):
+        # Names the call site for the RAG answer LLM in this worker thread
+        # (ledger + per-query SLM routing in agent/tools/rag.py).
+        with llm_ledger.site(site):
+            return query_sec_filing.invoke(q)
+
     try:
         with ThreadPoolExecutor(max_workers=2) as executor:
             f_highlights = executor.submit(
-                query_sec_filing.invoke,
+                _query, "rag:highlights",
                 f"{ticker}: {highlights_query}"
             )
             f_risks = executor.submit(
-                query_sec_filing.invoke,
+                _query, "rag:risks",
                 f"{ticker}: {risks_query}"
             )
             highlights = f_highlights.result()
@@ -131,10 +155,17 @@ _SECTIONS = [
 ]
 
 
+def _section_site(heading: str) -> str:
+    return "section:" + heading.lstrip("# ").strip().lower().replace(" ", "_")
+
+
 def _section_llm(heading: str):
-    """Pick the generator for a section. When USE_LOCAL_MODEL is on, the three
-    trained sections route to the local fine-tuned model; Recent Developments
-    (and everything when the flag is off) stays with Haiku."""
+    """Pick the generator for a section. SLM_FULL routes every section to the
+    self-served SLM. Otherwise, when USE_LOCAL_MODEL is on, the two trained
+    sections route to the local fine-tuned model; Recent Developments (and
+    everything when both flags are off) stays with Haiku."""
+    if slm_full_enabled():
+        return SLMChatModel(site=_section_site(heading))
     if use_local_model() and is_local_section(heading):
         return LocalChat(temperature=0.1)
     return _haiku
@@ -146,7 +177,8 @@ def _haiku_section(heading: str, instruction: str, company: str, ticker: str, co
         f"Write ONLY the '{heading}' section for a {company} ({ticker}) investment brief.\n"
         f"{instruction}\nStart with the markdown heading. Be concise.\n\nData:\n{context}"
     )
-    return _section_llm(heading).invoke([HumanMessage(content=prompt)]).content
+    return invoke_recorded(_section_llm(heading), _section_site(heading),
+                           [HumanMessage(content=prompt)]).content
 
 
 @traceable(run_type="chain", name="parallel_sections", tags=["full_brief"])
@@ -176,8 +208,13 @@ def _parallel_sections(ticker: str, company: str, context: str) -> list[str]:
         return [f.result() for f in futures]
 
 
-def _synthesis_prompt(ticker: str, company: str, sections: list[str]) -> str:
+def _synthesis_prompt(ticker: str, company: str, sections: list[str], *,
+                      currency_rule: str = "") -> str:
+    """`currency_rule` is _currency_rule(stock): one more grounding rule for
+    a filer reporting in another currency than its listing's, "" (the
+    prompt unchanged) otherwise."""
     section_block = "\n\n".join(sections)
+    currency_line = f"\n- {currency_rule.strip()}" if currency_rule else ""
     return f"""Complete this investment brief for {company} ({ticker.upper()}) by writing the Executive Summary and Outlook. The four middle sections are already written below — include them verbatim.
 
 Pre-written sections:
@@ -186,7 +223,7 @@ Pre-written sections:
 GROUNDING RULES — follow strictly:
 - Cite a specific number ONLY if it appears explicitly in the pre-written sections above. Do NOT invent, estimate, or extrapolate any numeric figure.
 - Never fabricate price targets, future revenue or run-rate projections, P/E targets, or numeric valuation thresholds of any kind.
-- Write the Outlook as qualitative direction: name the key variables an investor should watch (e.g. "watch services-margin trend and China exposure") and describe what conditions would strengthen or weaken the thesis — without attaching invented numeric targets to any of them.
+- Write the Outlook as qualitative direction: name the key variables an investor should watch (e.g. "watch services-margin trend and China exposure") and describe what conditions would strengthen or weaken the thesis — without attaching invented numeric targets to any of them.{currency_line}
 
 ### Executive Summary  (2-3 sentences)
 Sentence 1: What the company does and its market position; you may reference financial figures that appear explicitly in the pre-written sections.
@@ -210,6 +247,48 @@ Write the full brief in this exact format:
 
 ---
 *This brief is for informational purposes only and does not constitute financial advice.*"""
+
+
+class BriefFormatError(RuntimeError):
+    """The synthesis returned a brief without a non-empty Executive Summary
+    and Outlook after one retry — the judge would audit nothing."""
+
+
+def synthesis_llm():
+    """Sonnet, or the SLM (synthesis profile) under SLM_FULL."""
+    if slm_full_enabled():
+        return SLMChatModel(site="synthesis")
+    return _synthesis_llm
+
+
+def synthesize(ticker: str, company: str, sections: list[str], feedback: str | None = None,
+               *, guard: bool | None = None, currency_rule: str = "") -> str:
+    """Write the brief from the four sections. With `guard` (default: on under
+    SLM_FULL; the eval harness turns it on for every arm) a brief missing its
+    Executive Summary or Outlook is retried once, then raises BriefFormatError
+    — never returned to be scored as 0 claims. Without it, one call exactly
+    as before."""
+    if guard is None:
+        guard = slm_full_enabled()
+    prompt = _synthesis_prompt(ticker, company, sections, currency_rule=currency_rule)
+    if feedback:
+        prompt = f"{feedback}\n\n{prompt}"
+    messages = [HumanMessage(content=prompt)]
+    llm = synthesis_llm()
+    brief = invoke_recorded(llm, "synthesis", messages).content
+    if not guard:
+        return brief
+    missing = missing_brief_sections(brief)
+    if not missing:
+        return brief
+    llm_ledger.flag_last("synthesis", format_failure=True)
+    print(f"[{ticker}] synthesis missing {missing} — retrying once")
+    brief = invoke_recorded(llm, "synthesis", messages, retry=True).content
+    missing = missing_brief_sections(brief)
+    if missing:
+        llm_ledger.flag_last("synthesis", format_failure=True)
+        raise BriefFormatError(f"{ticker}: brief missing {missing} after one retry")
+    return brief
 
 
 # --- Public API ---
@@ -262,8 +341,19 @@ def stream_synthesis(ticker: str, stock_data: dict, news_data, sec_data: dict):
     print(f"[timing:{ticker}] haiku_sections(parallel)={time.perf_counter() - t0:.2f}s")
 
     t1 = time.perf_counter()
+    if slm_full_enabled():
+        # SLM path: one non-streamed, format-guarded call (the client never
+        # streams — see agent/tools/slm.chat_completion), yielded whole.
+        checked, report = apply_numeric_check(synthesize(ticker, company, sections,
+                                                         currency_rule=_currency_rule(stock)),
+                                              stock_data, mode)
+        print(f"[timing:{ticker}] slm_synthesis={time.perf_counter() - t1:.2f}s")
+        yield checked
+        set_cached_response(ticker, checked, numeric_check=report)
+        return
     full_response = []
-    for chunk in _synthesis_llm.stream([HumanMessage(content=_synthesis_prompt(ticker, company, sections))]):
+    prompt = _synthesis_prompt(ticker, company, sections, currency_rule=_currency_rule(stock))
+    for chunk in _synthesis_llm.stream([HumanMessage(content=prompt)]):
         if chunk.content:
             full_response.append(chunk.content)
             # block mode may withhold sections, so it streams nothing until
@@ -335,10 +425,10 @@ def run_research_checked(ticker: str) -> dict:
     print(f"[timing:{ticker}] haiku_sections(parallel)={time.perf_counter() - t_sections:.2f}s")
 
     t_llm = time.perf_counter()
-    response = _synthesis_llm.invoke([HumanMessage(content=_synthesis_prompt(ticker, company, sections))])
+    brief_text = synthesize(ticker, company, sections, currency_rule=_currency_rule(stock))
     print(f"[timing:{ticker}] {_synthesis_label}_invoke={time.perf_counter() - t_llm:.2f}s")
 
-    brief, report = apply_numeric_check(response.content, stock_data, mode)
+    brief, report = apply_numeric_check(brief_text, stock_data, mode)
     set_cached_response(ticker, brief, numeric_check=report)
     print(f"[timing:{ticker}] total={time.perf_counter() - t_total:.2f}s")
     return {"brief": brief, "numeric_check": report}

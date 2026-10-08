@@ -1,0 +1,68 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "$6.0 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $6,043,752,960, which rounds to $6.0 billion; the pre-written Financial Health section also states "$6.0 billion in revenue."
+
+---
+
+CLAIM: "market capitalization of $47.1 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $47,081,697,280, which rounds to $47.1 billion; confirmed in the pre-written sections.
+
+---
+
+CLAIM: "net loss of $987.8 million"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$987,766,016, which rounds to -$987.8 million; confirmed in the pre-written sections.
+
+---
+
+CLAIM: "negative profit margin of -16.34%"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct of -16.34%; arithmetic check: -987,766,016 / 6,043,752,960 = -16.34%. Confirmed.
+
+---
+
+CLAIM: "forward P/E of 62.9x"
+LABEL: SUPPORTED
+REASON: Source data explicitly states forward_pe of 62.903835, which rounds to 62.9x; confirmed in pre-written sections.
+
+---
+
+CLAIM: "52-week price range of $139.11–$402.16"
+LABEL: SUPPORTED
+REASON: Source data explicitly states week_52_low of $139.11 and week_52_high of $402.16; confirmed in pre-written Financial Health section.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "approximately 45-46% of trading volume derived from Bitcoin and Ethereum transactions" (implied by "revenue base remains heavily concentrated in Bitcoin and Ethereum transaction activity")
+LABEL: N/A — NOTE
+REASON: The Outlook section does not explicitly quote the 45–46% figure; it only makes a qualitative directional claim about concentration. No specific quantitative figure appears in the Outlook text itself, so there is no quantitative claim to audit here.
+
+*(No other specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section. All remaining statements are qualitative or directional.)*
+
+---
+
+## SUMMARY TABLE
+
+| Claim | Label |
+|---|---|
+| $6.0 billion in revenue | SUPPORTED |
+| $47.1 billion market cap | SUPPORTED |
+| Net loss of $987.8 million | SUPPORTED |
+| Negative profit margin of -16.34% | SUPPORTED |
+| Forward P/E of 62.9x | SUPPORTED |
+| 52-week range of $139.11–$402.16 | SUPPORTED |
+
+**All quantitative claims in the Executive Summary are supported by the source data. The Outlook section contains no specific quantitative figures requiring audit.**

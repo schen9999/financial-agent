@@ -1,0 +1,6 @@
+eval/runs/capacity-sweep-2026-10-07/nvsmi.csv: 3014 samples, 2026-10-07 21:54:33 to 22:44:46 UTC
+  window                      start      end samples util mean median  p95  max       >0%  mem.used MiB
+  P1                       21:54:33 22:14:14    1181     90.9%    94% 100% 100% 1174 ( 99%)  20540-20540
+  P2                       22:14:44 22:29:56     912     86.6%    92% 100% 100% 909 (100%)  20540-20540
+  P4                       22:30:26 22:43:25     779     82.0%    89% 100% 100% 773 ( 99%)  20540-20540
+  outside every window: 142 samples, 1 above 0%, first 22:14:14, last 22:14:14

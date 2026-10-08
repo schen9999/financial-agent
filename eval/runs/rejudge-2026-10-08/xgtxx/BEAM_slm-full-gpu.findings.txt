@@ -1,0 +1,35 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $2.56 billion"
+LABEL: SUPPORTED
+REASON: The source data lists market_cap = 2,558,435,584.0 USD, which rounds to approximately $2.56 billion; the pre-written Financial Health section also states "approximately $2.56 billion."
+
+---
+
+CLAIM: "negative profit margin of -55.45%"
+LABEL: SUPPORTED
+REASON: The source data explicitly lists profit_margin_pct = -55.45, and the pre-written sections confirm this figure.
+
+---
+
+CLAIM: "cash reserves of $1.2 billion"
+LABEL: SUPPORTED
+REASON: The SEC Highlights section explicitly states "As of December 31, 2025, the company held $1.2 billion in cash, cash equivalents, and marketable securities," which is directly reflected in the pre-written SEC Filing Highlights section.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. It is composed entirely of qualitative, directional, and conditional statements (e.g., "cautiously constructive," "mitigates immediate dilution risk," "clear milestones," "further program cancellations," "remaining cash runway"). There are no numerical claims to audit in this section.
+
+---
+
+**SUMMARY**
+
+All three quantitative claims present in the Executive Summary are **SUPPORTED** by the source data. The Outlook section contains no auditable quantitative or forward-looking numerical claims.

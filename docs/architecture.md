@@ -1,7 +1,9 @@
 # Architecture
 
 Six services plus an eval plane, deployed as one topology on Kubernetes
-(kind locally; OKE is the Phase 2 target of the OCI migration). Per the
+(kind locally; on OCI, a provided OKE cluster plus an A10 node — see
+"Deployed topology (October 2026)" below; the Terraform OKE cluster is
+still the Phase 2 target of the OCI migration). Per the
 Phase 0 audit, K8s is the **first environment where the full designed
 topology runs** — the retired ECS deployment (infra/) was a single FastAPI
 container + RDS, with no Celery, Redis, Streamlit, or MCP in production.
@@ -73,12 +75,140 @@ flowchart LR
   the 5% gate on the two sections it owns** (same harness, same day;
   dated A/B in eval-methodology.md). `USE_LOCAL_MODEL` ships off as a
   measured negative result. OKE serving remains Phase 2.
+- **The SLM seam** (`agent/tools/slm.py`): with `SLM_FULL=true` every
+  agent LLM call — the four sections, the synthesis and the RAG answers —
+  goes to one OpenAI-compatible llama.cpp endpoint (`SLM_ENDPOINT=cpu` or
+  `gpu`), with no hosted fallback; the judge stays hosted. The eval's
+  `slm-full-cpu` and `slm-full-gpu` arms set it per run; the app ships
+  with it off. Measured against hosted on the same image: eval-methodology,
+  "GPU SLM extended run `p9jr2`".
 - **Default-off features**: cross-encoder reranking and the multi-agent
   supervisor ship default-off because evals showed no grounding gain at
   higher cost/latency (docs/PHASE0_AUDIT.md).
 - **Eval pods bypass the cache** (`BYPASS_CACHE=true`) and gate the
   workflow on the unsupported-claim rate — see
   [eval-methodology.md](eval-methodology.md).
+
+## Deployed topology (October 2026)
+
+This is where the system runs for the November demo. It is the single
+statement of the deployed topology; the README and CLAUDE.md point here.
+
+```mermaid
+flowchart LR
+    subgraph laptop ["Laptop (WSL)"]
+        ssh["ssh -L tunnels"]
+    end
+    bastion["oke-bastion"] --> operator["oke-operator<br/>(kubectl, helm)"]
+    ssh --> bastion
+
+    subgraph oke ["OKE, provided cluster: v1.34.1, 4x VM.Standard.E5.Flex (16 vCPU), cri-o"]
+        subgraph ns ["namespace financial-agent (every Service ClusterIP except streamlit)"]
+            app["api · worker · streamlit · mcp<br/>image ghcr.io/…:f3043751 (pinned by git sha)"]
+            redis[("redis<br/>no volume")]
+            pg[("postgres<br/>50Gi oci-bv PVC")]
+            argo["Argo v3.7.18: grounding-eval<br/>WorkflowTemplate, eval pods (parallelism 2),<br/>aggregate + gate; CronWorkflow suspended"]
+            cpu["llama.cpp CPU endpoint (slm-cpu)<br/>Qwen3.6-35B-A3B Q4_K_M, 8 CPU / 30Gi,<br/>GGUF on a 50Gi oci-bv PVC"]
+        end
+    end
+    operator --> oke
+    viewers["allowlisted IPs only"] -->|"HTTPS 443"| lb["OCI flexible LB, 10 Mbps<br/>TLS (self-signed), NSG allowlist"]
+    lb -->|"nginx sidecar: allowlist + basic auth"| app
+
+    subgraph node2 ["vm-a10-inst-2 (node 2): VM.GPU.A10.1, single-node k3s"]
+        gpu["llama.cpp GPU endpoint (slm-gpu)<br/>same GGUF, all layers on the A10,<br/>keyed, NodePort 30880"]
+        build["image build + push (make oke-images)"]
+    end
+    node1["vm-a10-inst-1: frozen first-demo box<br/>(k3s + fine-tuned vLLM), standby only"]
+
+    ext["Anthropic API (judge always; hosted arm)<br/>NewsAPI · SEC EDGAR · yfinance · Pinecone"]
+    argo -->|"slm-full-cpu"| cpu
+    argo -->|"slm-full-gpu, from egress 129.80.187.92 only"| gpu
+    argo --> ext
+    app --> ext
+    build -->|"GHCR"| app
+```
+
+**The provided OKE cluster** (provisioned for the project, not by
+`terraform/oci`; overlays `k8s/overlays/oke-provided`,
+`argo/overlays/oke-provided`, `k8s/llamacpp/overlays/oke-cpu`):
+
+- OKE v1.34.1, four VM.Standard.E5.Flex amd64 nodes at 16 vCPU (8 OCPU)
+  each, two with ~28 GiB and two with ~58 GiB allocatable; no GPUs; cri-o,
+  so every image comes from a registry; default StorageClass `oci-bv`.
+- The app plane: api, worker, streamlit and mcp from one image on GHCR,
+  pinned by git sha (`f3043751` since 2026-10-06; `1f51dad` for the runs
+  before it), Redis without a volume, Postgres on a 50Gi `oci-bv` PVC.
+- Argo Workflows v3.7.18 with the grounding-eval WorkflowTemplate: one eval
+  pod per ticker at parallelism 2, then the aggregate and its gate. The
+  nightly CronWorkflow is suspended; runs are submitted from the operator
+  (`make eval-run`, `make slm-eval-run` with the traffic proof). The
+  controller may create ConfigMaps in the namespace for oversized templates
+  (eval-methodology, "template offload").
+- The CPU SLM endpoint: llama.cpp b11347 serving Qwen3.6-35B-A3B Q4_K_M,
+  8 CPU / 30Gi requested and limited, so it lands on a ~58 GiB node; the
+  GGUF sits on a 50Gi `oci-bv` PVC. Keyed; reached only in-cluster.
+- Access: every Service is ClusterIP except Streamlit's public LB — no
+  NodePort,
+  and the API, Argo, MCP and the CPU endpoint are not public. The operator
+  host (kubectl, helm) is reached by ssh through `oke-bastion`; Argo and
+  anything else a person looks at is a `kubectl port-forward` behind
+  `ssh -L`.
+- **What is public** (requested by the tenancy owner; overlay
+  `k8s/overlays/oke-provided-public-ui`; **live since 2026-10-08**, runbook
+  "Public Streamlit UI"): the Streamlit UI only, through one
+  OCI flexible load balancer (10 Mbps) on subnet `pub_lb-tbhcuw`, HTTPS on
+  443 with a self-signed certificate. **To whom:** the IPv4 addresses on a
+  gitignored allowlist (the project owner's and the tenancy owner's network
+  today; reviewers are added on request). **How it is protected:** the
+  allowlist is enforced twice — in the LB subnet's security list, where the
+  cloud controller keeps one 443 rule per allowlist entry from
+  `loadBalancerSourceRanges` (security-list management mode All; the LB has
+  no NSG), and again in an nginx sidecar on the client address — then basic
+  auth in nginx (the password lives only on
+  the operator). Every uncached brief spends Anthropic credit; the hard cap
+  is the Anthropic workspace's monthly spend limit. Runbook: "Public
+  Streamlit UI".
+
+**vm-a10-inst-2 (node 2)**: VM.GPU.A10.1 (1× A10 24 GB, Ubuntu 22.04),
+single-node k3s.
+
+- The GPU SLM endpoint: llama.cpp b11347 (CUDA build) serving the same
+  GGUF with all layers on the A10 (alias `qwen3.6-35b-a3b-q4km`, never
+  hybrid), keyed, on NodePort 30880. The VCN security list admits 30880
+  from the OKE cluster's egress IP (129.80.187.92/32) only; ufw repeats
+  the rule. Without the key it answers 401.
+- The financial-lora vLLM deployment is scaled to 0 with no Service while
+  the GPU endpoint holds the A10 (`make vm-llamacpp`); `make vm-vllm`
+  swaps it back.
+- Node 2 also builds and pushes the app image (`make oke-images`). Its
+  September k3s app plane (NodePorts 30080/30501, no auth) was still
+  deployed as of 2026-10-03 and is not part of the demo path; port 22 is the only other
+  port the security list admits.
+
+**vm-a10-inst-1**: the frozen box from the first demo — single-node k3s
+with the fine-tuned model on vLLM. Standby and fallback only for the demo.
+
+**kind** (laptop): the local equivalence baseline every overlay change is
+proven against (`scripts/render_diff.py`, [verification.md](verification.md)).
+
+**External services**: the Anthropic API (the grounding judge on every
+arm; the hosted arm's sections, synthesis and RAG answers), NewsAPI, SEC
+EDGAR, yfinance (it has answered 429 from the OKE egress IP; every run's
+aggregate counts empty stock blocks), Pinecone (the SEC filing index), GHCR.
+
+**What does not exist**: the Terraform OKE cluster in `terraform/oci/`
+(never applied), OCIR, the Object Storage bucket, and any vLLM serving on
+OKE. The OKE Phase 2 plan (the Goal section of CLAUDE.md) is unchanged and
+still waits on a compartment.
+
+**Where the measured arms ran** (all on image `1f51dad`):
+
+| Arm | Model served from | Harness |
+|---|---|---|
+| hosted (`9jzmj`) | Anthropic API | OKE eval pods |
+| slm-full-cpu (`8vpq6`) | llama.cpp CPU endpoint, OKE | OKE eval pods |
+| slm-full-gpu (`p9jr2`) | llama.cpp GPU endpoint, node 2 | OKE eval pods, over 30880 |
 
 ## Deploy targets
 
@@ -87,3 +217,199 @@ overlays reproduce the single-node local cluster exactly (proof:
 [verification.md](verification.md)); the oke overlays add OCIR images,
 OCI LoadBalancers, Block Volume PVCs, and the A10 GPU scheduling for vLLM.
 See [deploy-runbook.md](deploy-runbook.md).
+
+## Pipeline and Kubernetes diagrams (moved from the README, 2026-10-08)
+
+
+#### Deployment topology (Kubernetes)
+
+Where it runs on OCI today (the provided OKE cluster, node 2's A10 endpoint,
+the standby VM) is in [docs/architecture.md, "Deployed topology"](architecture.md#deployed-topology-october-2026).
+The full designed topology runs on a single-node kind cluster locally and on
+single-node k3s on the OCI A10 VMs (see [k8s/README.md](../k8s/README.md),
+[docs/deploy-runbook.md](deploy-runbook.md), and the audit in
+[docs/PHASE0_AUDIT.md](PHASE0_AUDIT.md)). The diagram shows the kind
+layout; the k3s overlay adds vLLM on the node's A10:
+
+```mermaid
+flowchart LR
+    subgraph kind["kind cluster (WSL2, single node)"]
+        ST["Streamlit UI<br/>(runs the pipeline in-process,<br/>app.py unchanged)"]
+        API["FastAPI<br/>:30080"]
+        WK["Celery worker"]
+        RD[("Redis<br/>exact-key cache research:TICKER<br/>+ Celery broker/backend")]
+        PG[("PostgreSQL<br/>research_briefs (PVC)")]
+        MCP["MCP server<br/>streamable-HTTP :30800"]
+        subgraph argo["Argo Workflows"]
+            WF["nightly grounding eval<br/>fan-out per ticker → aggregate<br/>→ FAIL below threshold"]
+        end
+    end
+    EXT["Anthropic API · NewsAPI · SEC EDGAR<br/>· yfinance · Pinecone · LangSmith"]
+    LOCAL["Local model (default-off)<br/>OpenAI-compatible endpoint:<br/>vLLM on an A10 (k3s) / Ollama (dev laptop)"]
+
+    API -->|"cache + enqueue"| RD
+    API -->|"briefs"| PG
+    WK -->|"consume + cache"| RD
+    ST -->|"cache"| RD
+    API --> EXT
+    WK --> EXT
+    ST --> EXT
+    MCP --> EXT
+    WF --> EXT
+    API -.->|"USE_LOCAL_MODEL=true"| LOCAL
+    WK -.->|"USE_LOCAL_MODEL=true"| LOCAL
+```
+
+- **Celery vs. Argo:** request-time async stays on Celery; batch/eval runs on
+  Argo (reasoning in the [Celery vs. Argo section](#kubernetes-and-the-celery-vs-argo-split)).
+- **Eval pods** force `BYPASS_CACHE=true` and never touch the live cache.
+- **Feature flags** are restated at their audited defaults in the ConfigMap;
+  reranking, multi-agent, and the local model all ship off, each for a
+  measured reason.
+
+#### Brief pipeline
+
+```
+"Generate Brief"
+       │
+       ▼
+Redis cache (research:TICKER) ──hit──► cached brief
+       │ miss
+       ▼
+get_stock_data  (yfinance)
+       │
+       ▼
+┌──────────────────┐  ┌─────────────────┐
+│ get_company_news │  │ get_sec_filings  │  parallel
+└──────────────────┘  └─────────────────┘
+       │                       │
+       └───────────┬───────────┘
+                   │
+       ┌───────────▼───────────┐
+       │   Pinecone RAG (x2)   │  concurrent
+       └───────────┬───────────┘
+                   │
+   ┌───────────────┼───────────────────┐
+   ▼               ▼           ▼       ▼
+Haiku           Haiku       Haiku   Haiku    4 parallel calls
+Financial       Recent      SEC     Risk
+Health          Dev.        High.   Factors
+   └───────────────┴───────────┴───────┘
+                   │
+       ┌───────────▼───────────┐
+       │  Sonnet: Exec Summary │  streams to browser
+       │  + Outlook            │
+       └───────────────────────┘
+```
+
+#### Follow-up questions
+
+```
+"Ask" (free-form question)
+       │
+       ▼
+LangGraph ReAct agent (claude-sonnet-4-6)
+  ├─ get_stock_data
+  ├─ get_company_news
+  ├─ get_sec_filings
+  └─ query_sec_filing (Pinecone RAG)
+       │
+       ▼
+     answer
+```
+
+#### Multi-agent brief pipeline (optional, `MULTI_AGENT_ENABLED=true`)
+
+The single-agent brief pipeline can be swapped for a supervisor-orchestrated
+graph. It's off by default -- the single-agent path stays the production default
+and the A/B control -- and produces the **same brief schema and API response**, so
+nothing downstream changes. Toggle the flag to compare the two paths.
+
+```
+"Generate Brief"  (MULTI_AGENT_ENABLED=true)
+       │
+       ▼
+   ┌─────────┐  decomposes the ticker into a research plan: the SEC RAG
+   │ Planner │  sub-questions that ground the filing-based sections + coverage
+   └────┬────┘
+        ▼
+   ┌──────────┐ ◄──── revise (critic feedback prepended to the synthesis prompt)
+   │ Research │  reuses the EXISTING retrieval + model-routing + synthesis code;
+   └────┬─────┘  revision passes re-synthesise Exec Summary + Outlook only
+        ▼
+   ┌──────────────────┐  the existing LLM-as-judge, promoted to an inline node --
+   │ Grounding-critic │  scores the draft for source-grounding (one judge, shared
+   └────┬─────────────┘  with the offline eval; `agent/grounding.py`)
+        ▼
+   ┌────────────┐  unsupported% ≤ CRITIC_MAX_UNSUPPORTED_PCT → done; else send
+   │ Supervisor │  back to Research, bounded at MAX_REVISIONS passes
+   └────┬───────┘
+        ▼
+   final brief
+```
+
+- **One judge, two callers.** The inline critic and the offline grounding eval
+  both call `agent/grounding.py:grade_brief()` -- there's a single definition of
+  the judge prompt and scoring, not two copies that can drift.
+- **Schema-safe revisions.** Revision passes reuse the already-grounded middle
+  sections and only re-write the Executive Summary + Outlook through the same
+  `_synthesis_prompt`, so the brief format can't break.
+- **Bounded loop.** `MAX_REVISIONS` (default 2) caps the critic→research retries;
+  the supervisor accepts the best effort if the budget is exhausted.
+- **Tracing.** Each node (planner / research / critic / supervisor) is its own
+  LangSmith span.
+
+## Kubernetes, and the Celery vs. Argo split
+
+
+The full designed topology — FastAPI, Celery worker, Redis, Postgres, Streamlit,
+MCP server — runs on a single-node [kind](https://kind.sigs.k8s.io/) cluster
+(`make cluster-up && make deploy && make smoke-test`; see
+[`k8s/README.md`](../k8s/README.md)). Per the Phase 0 audit this is the first
+environment where that topology runs complete: the smoke test asserts an
+end-to-end brief, a Celery task finishing, and an exact-key cache hit plus a
+different-ticker miss.
+
+**Two schedulers, deliberately:**
+
+| | Celery (+ Redis) | Argo Workflows |
+|---|---|---|
+| Used for | Request-time async: `POST /research/async` | Batch/eval: nightly grounding eval, ad-hoc eval runs |
+| Unit of work | One function call (`research_task`) | A DAG of pods (fan-out per ticker → aggregate → gate) |
+| Latency profile | Seconds matter; job starts immediately off a live request | Minutes are fine; runs on a schedule or on demand |
+| Failure semantics | Retry/report per request | The *workflow* fails if the aggregate quality gate fails |
+| Why not the other one | An eval suite is a DAG with fan-out, per-step containers, and a pass/fail verdict — modeling that in Celery means hand-building orchestration Argo already provides | Spinning up a pod per API request would add cold-start latency and K8s API load to the hot path that a resident worker avoids |
+
+The eval workflow (`argo/base/eval-workflow.yaml`) fans out one pod per ticker
+(bounded parallelism — each pod carries the torch/embedding stack), aggregates
+grounding scores in a final step (`scripts/eval_aggregate.py`), and **fails the
+workflow** if the unsupported-claim rate breaches the threshold, any ticker was
+skipped, or too few claims were audited to be meaningful. A `CronWorkflow` runs
+it nightly at 03:30 America/New_York. Eval pods force `BYPASS_CACHE=true` — they
+never touch the live exact-key brief cache.
+
+**The gate fired on its first real run — and that was variance, measured.** The
+first full workflow run scored 5.62% unsupported (judge v1; gate: ≤5%), driven entirely by
+one NVDA draft with 5 flagged claims. Re-measuring NVDA immediately produced
+0 unsupported of 10 (and the same morning's full-suite run had scored 0/84,
+Wilson 95% CI 0.0–4.4%; judge v1, pre-retrieval-fix, local run with no workflow run ID).
+Single-draft scores fluctuate at temperature 0.2 — the same behaviour as the
+WMT flag in the multi-agent experiment. The threshold stays at 5% rather than
+being widened to make red nights rarer: the documented response to a red night
+is to re-run the flagged ticker(s) and compare drafts — one outlier draft that
+doesn't reproduce is variance; a repeated or multi-ticker breach is a real
+regression.
+
+**Cost measurement is re-runnable, not folklore:** `scripts/cost_report.py`
+runs the production pipeline with token accounting on every LLM call (exact
+API-reported usage for the LangChain calls; tokenizer-estimated for the RAG-
+internal calls, labeled as such) and prices them from
+`scripts/model_prices.json`. The cost of record is **$0.0366/brief**
+(2026-09-06, post-retrieval-fix)
+([docs/numbers-of-record.md](numbers-of-record.md), which also carries
+the dated run records, including an early 3-ticker run of this harness). Any
+cost number quoted for this project comes from re-running that harness — the
+earlier headline cost figure is historical (its harness was never committed;
+it matches the harness's exact-only portion almost to the cent, which
+suggests it never counted the RAG-internal calls either; the reconciliation
+is in `docs/PHASE0_AUDIT.md`).

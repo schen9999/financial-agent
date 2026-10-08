@@ -1,0 +1,67 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating revenue of 329.4 billion DKK"
+LABEL: SUPPORTED
+REASON: Source data lists revenue of 329,430,990,848 DKK, which rounds to 329.4 billion DKK; also confirmed in the pre-written Financial Health and SEC Filing Highlights sections.
+
+---
+
+CLAIM: "net income of 116.4 billion DKK"
+LABEL: SUPPORTED
+REASON: Source data lists net_income of 116,442,996,736 DKK, which rounds to 116.4 billion DKK; confirmed in multiple pre-written sections.
+
+---
+
+CLAIM: "shares have declined sharply from their 52-week high of $64.16"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists week_52_high as $64.16.
+
+---
+
+CLAIM: "to $37.54"
+LABEL: SUPPORTED
+REASON: Source data lists current_price as $37.54.
+
+---
+
+CLAIM: "compressing the market capitalization to $165.8 billion"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap as $165,760,876,544, which rounds to $165.8 billion; confirmed in the Financial Health section.
+
+---
+
+CLAIM: "pushing the P/E to 9.18x"
+LABEL: SUPPORTED
+REASON: Source data lists pe_ratio as 9.178484, which rounds to 9.18x; confirmed in the Financial Health section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "35.35% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists profit_margin_pct as 35.35.
+
+---
+
+CLAIM: "a dividend yield of 4.79%"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists dividend_yield as 4.79.
+
+---
+
+**Additional checks — figures present in pre-written sections but NOT repeated in the audited sections:**
+
+The forward P/E of 11.29x (or 11.285312 in source data) and the 52-week low of $35.12 appear in the pre-written sections but are **not** cited in the Executive Summary or Outlook, so no audit entry is required for them.
+
+---
+
+**Summary:** All quantitative claims in the Executive Summary and Outlook are **SUPPORTED** by the raw source data. No figures are unsupported or require inference labeling. No period-label mismatches, positional arithmetic failures, or derived-ratio errors were identified.

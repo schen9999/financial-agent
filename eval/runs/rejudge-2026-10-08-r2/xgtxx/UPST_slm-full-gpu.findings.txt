@@ -1,0 +1,48 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$1.29 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $1,285,890,048, which rounds to $1.29 billion; the pre-written sections also state "$1.29 billion."
+
+---
+
+CLAIM: "net profit margin of 4.69%"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists `profit_margin_pct: 4.69`, confirmed in the pre-written Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "forward P/E of 6.91"
+LABEL: SUPPORTED
+REASON: Source data lists `forward_pe: 6.910321`, which rounds to 6.91; also stated in the pre-written sections.
+
+---
+
+CLAIM: "trailing P/E of 48.04"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists `pe_ratio: 48.04`, confirmed in the pre-written sections.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no additional specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers beyond directional and qualitative statements. All quantitative claims are confined to the Executive Summary. The Outlook's references to "low forward valuation multiple," "rising rates," "credit-limited user base," "funding constraints," "institutional partners," "regulatory pressures," "AI models," "key lending partnerships," and "fixed-cost funding arrangements" are qualitative characterizations drawn from the pre-written sections and carry no specific numerical claims requiring verification.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $1.29 billion in annual revenue | SUPPORTED |
+| 2 | net profit margin of 4.69% | SUPPORTED |
+| 3 | forward P/E of 6.91 | SUPPORTED |
+| 4 | trailing P/E of 48.04 | SUPPORTED |
+
+No quantitative claims in the Outlook section require entries. All four auditable claims in the Executive Summary are **SUPPORTED**.

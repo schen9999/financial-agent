@@ -1,0 +1,81 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of $422.3 million"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap as 422,345,088.0 USD, which rounds to $422.3 million.
+
+---
+
+CLAIM: "currently generating $47.0 million in revenue"
+LABEL: SUPPORTED
+REASON: Source data lists revenue as 47,005,000.0 USD, which rounds to $47.0 million.
+
+---
+
+CLAIM: "sustaining a net loss of $73.9 million"
+LABEL: SUPPORTED
+REASON: Source data lists net_income as -73,949,000.0 USD, which rounds to a net loss of $73.9 million.
+
+---
+
+CLAIM: "$1.6 billion in accumulated operating losses"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and Risk Factors both explicitly state accumulated losses totaling $1.6 billion as of December 31, 2025.
+
+---
+
+CLAIM: "trades near the lower end of its 52-week range of $1.66–$4.33"
+LABEL: SUPPORTED
+REASON: Source data confirms 52-week low of $1.66 and high of $4.33; current price is $2.75. The midpoint of the range is ($1.66 + $4.33)/2 = $2.995, and $2.75 is below the midpoint, placing it in the lower half of the range — the positional claim holds arithmetically.
+
+---
+
+CLAIM: "cash reserves are projected to fund operations only through Q3 2027"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states "Existing cash and cash equivalents as of December 31, 2025 are expected to fund operations into the third quarter of 2027."
+
+---
+
+CLAIM: "EDIT-401 and other preclinical programs"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and the SEC Filing Highlights pre-written section both identify EDIT-401 as the lead/key program in preclinical development.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "Q3 2027 cash runway"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states cash is expected to fund operations into the third quarter of 2027.
+
+---
+
+CLAIM: "deepening its collaboration with Bristol Myers Squibb"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and the SEC Filing Highlights pre-written section both name Bristol Myers Squibb as a primary research collaboration partner; the claim references this named entity as an existing collaboration, which is supported.
+
+---
+
+CLAIM: "any transition of EDIT-401 or other programs from preclinical into clinical stages"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights confirms EDIT-401 is in preclinical stages with plans to prepare for clinical development, making the preclinical-to-clinical transition framing accurate.
+
+---
+
+CLAIM: "IND filings, trial initiations, or early safety and efficacy readouts would represent the most meaningful positive catalysts"
+LABEL: INFERENCE
+REASON: No IND filing dates, trial initiation timelines, or efficacy readout schedules are present in the source data; this is a forward-looking analytical judgment derived from the general fact that EDIT-401 is preclinical and must progress to clinical stages, making it an inferential outlook statement rather than a figure grounded in source data — however, since it names no specific quantitative figure or date, it is best characterized as an inference from the preclinical status disclosed in the source.
+
+---
+
+**SUMMARY OF FINDINGS**
+
+All quantitative figures in the Executive Summary (market cap, revenue, net loss, accumulated losses, 52-week range, cash runway) are SUPPORTED by the source data. The positional claim ("lower end of its 52-week range") is arithmetically verified and SUPPORTED. Named entities (EDIT-401, Bristol Myers Squibb) are present in the source. The forward-looking qualitative catalyst language in the Outlook is INFERENCE, derived from the preclinical status of programs. No claims were found to be UNSUPPORTED.

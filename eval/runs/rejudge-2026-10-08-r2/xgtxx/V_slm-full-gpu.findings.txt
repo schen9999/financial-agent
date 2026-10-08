@@ -1,0 +1,49 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "50.78% profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly states `"profit_margin_pct": 50.78`, and the Financial Health pre-written section confirms "profit margin of 50.78%."
+
+---
+
+CLAIM: "$44.49 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Raw source data shows `"revenue": 44487999488.0`; dividing by 1 billion gives ~$44.49 billion, matching the claim within rounding.
+
+---
+
+CLAIM: "trading near its 52-week high"
+LABEL: SUPPORTED
+REASON: Current price is $372.10 and the 52-week high is $385.57; $372.10 / $385.57 = ~96.5% of the 52-week high, arithmetically confirming the stock is near (within ~3.5% of) its 52-week high.
+
+---
+
+CLAIM: "forward P/E of 24.80"
+LABEL: SUPPORTED
+REASON: Raw source data explicitly states `"forward_pe": 24.799557`, which rounds to 24.80.
+
+---
+
+CLAIM: "signals expected earnings growth despite a higher trailing multiple"
+LABEL: SUPPORTED
+REASON: The trailing P/E is 31.67 (from source data `"pe_ratio": 31.668085`) and the forward P/E is 24.80; since 24.80 < 31.67, the forward multiple is lower than the trailing multiple, which is consistent with expected earnings growth — this is a direct arithmetic comparison of two present figures.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "50.78% net margin"
+LABEL: SUPPORTED
+REASON: Raw source data explicitly states `"profit_margin_pct": 50.78`, confirming the figure.
+
+---
+
+*No additional standalone quantitative figures, price targets, thresholds, ratios, specific percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond the repeated 50.78% net margin already evaluated above. All other statements in the Outlook are qualitative or directional in nature (e.g., "cautiously constructive," "entrenched network effects," "significant regulatory headwinds") and contain no specific quantitative claims requiring audit.*

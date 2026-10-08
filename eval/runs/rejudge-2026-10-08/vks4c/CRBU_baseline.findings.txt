@@ -1,0 +1,79 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of $66.2 million"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap as $66,189,916.0, which rounds to $66.2 million; the pre-written Financial Health section also states "$66.2 million."
+
+---
+
+CLAIM: "$596.5 million accumulated deficit"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and Risk Factors both explicitly state "accumulated deficit reached $596.5 million" as of December 31, 2025.
+
+---
+
+CLAIM: "fallen from a 52-week high of $3.54"
+LABEL: SUPPORTED
+REASON: Source data lists week_52_high as $3.535, which rounds to $3.54 (also confirmed in pre-written sections).
+
+---
+
+CLAIM: "to $0.62"
+LABEL: SUPPORTED
+REASON: Source data lists current_price as $0.6174, which rounds to $0.62; pre-written sections confirm "$0.62."
+
+---
+
+CLAIM: "$142.8 million cash position"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states "cash, cash equivalents, and marketable securities of $142.8 million" as of December 31, 2025.
+
+---
+
+CLAIM: "provides at least 12 months of runway"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states "Management expects these funds to be sufficient to support operations for at least the next 12 months from the filing date."
+
+---
+
+CLAIM: "pivotal trial for vispa-cel" (as a named product milestone)
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and Risk Factors both explicitly reference "the planned pivotal clinical trial for vispa-cel."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "vispa-cel and CB-011 represent concentrated bets in the allogeneic cell therapy space"
+LABEL: SUPPORTED
+REASON: Both vispa-cel and CB-011 are explicitly named in the RAG SEC Highlights as the company's product candidates requiring additional financing for development.
+
+---
+
+CLAIM: "multicenter trials expand" (as a forward-looking cost driver)
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states the vispa-cel pivotal trial "will involve large multicenter trials in the United States and foreign jurisdictions."
+
+---
+
+CLAIM: "absence of product revenue"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and Risk Factors both explicitly state "the company has never generated any revenue from product sales."
+
+---
+
+CLAIM: "12-month runway" (in the context of "deterioration of the cash position beyond the disclosed 12-month runway")
+LABEL: SUPPORTED
+REASON: The 12-month runway figure is explicitly disclosed in the RAG SEC Highlights and Risk Factors sections, and the pre-written SEC Filing Highlights section.
+
+---
+
+**Summary of findings:** All specific quantitative figures, named product milestones, and forward-looking thresholds in the Executive Summary and Outlook are SUPPORTED by the source data. No figures were found to be UNSUPPORTED or INFERENCE-only. The brief does not introduce any figures, ratios, percentages, or named milestones that are absent from or contradicted by the source material.

@@ -1,0 +1,79 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$44.5 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $44,487,999,488, which rounds to $44.5 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$22.4 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net income of $22,397,999,104, which rounds to $22.4 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "50.8% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 50.78%, which rounds to 50.8%; also confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "31.7x trailing P/E"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 31.668085, which rounds to 31.7x; also stated in the Financial Health pre-written section as 31.7x.
+
+---
+
+CLAIM: "24.8x forward P/E"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 24.799557, which rounds to 24.8x; also stated in the Financial Health pre-written section as 24.8x.
+
+---
+
+CLAIM: "the North Dakota debit interchange ruling: if upheld, it could structurally reset U.S. debit fee economics"
+LABEL: SUPPORTED
+REASON: The SEC Highlights pre-written section and RAG SEC Highlights explicitly reference the North Dakota District Court ruling in August 2025 that the Federal Reserve exceeded its authority on debit interchange fees, with the same forward-looking framing about potential impact if upheld on appeal.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "industry-leading profit margins"
+LABEL: SUPPORTED
+REASON: The 50.8% net profit margin is explicitly present in the source data and pre-written sections; the characterization as "industry-leading" is a qualitative restatement consistent with the Financial Health section's language ("exceptional 50.8% net profit margin").
+
+---
+
+CLAIM: "India's AI-driven financial services expansion"
+LABEL: SUPPORTED
+REASON: The Bloomberg news article explicitly references India's pivot toward AI-driven financial services at the Global Fintech Fest, and the Recent Developments pre-written section references this directly.
+
+---
+
+CLAIM: "$31.7 billion share repurchase authorization"
+LABEL: SUPPORTED
+REASON: The 10-Q filing summary shows $31,682 million (≈$31.7 billion) remaining authorization as of May 31, 2026, and the Recent Developments pre-written section states "$31.7 billion remaining authorization as of June 2026." The 10-Q data shows $31,682M as of May 31, 2026 and a partial June figure (truncated), but the pre-written section rounds this to $31.7 billion, which is consistent with the May figure; SUPPORTED as the figure appears explicitly in the pre-written section used as direct input.
+
+---
+
+CLAIM: "interchange fee regulation is no longer a single-jurisdiction risk but a cascading global phenomenon, with rulings and proposals spreading across the U.S., EU, UK, Australia, New Zealand, and Latin America"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section explicitly enumerate all of these jurisdictions (U.S., EU, UK, Australia, New Zealand, and multiple Latin American countries) as sites of interchange or network fee regulatory activity.
+
+---
+
+CLAIM: "the appellate trajectory of the North Dakota debit interchange ruling as the highest-priority near-term signal"
+LABEL: SUPPORTED
+REASON: The North Dakota ruling and its appellate significance are explicitly described in the RAG SEC Highlights and the SEC Filing Highlights pre-written section; the framing as highest-priority is a qualitative editorial judgment, not a quantitative claim requiring verification.
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, specific percentages, named product milestones, or forward-looking numbers appear in the Executive Summary or Outlook sections beyond those audited above. All quantitative claims in these sections are accounted for.*

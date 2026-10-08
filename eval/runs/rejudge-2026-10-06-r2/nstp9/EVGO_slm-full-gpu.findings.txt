@@ -1,0 +1,39 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$402.9 million in annual revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as $402,948,000, which rounds to $402.9 million, and the pre-written Financial Health section states "annual revenue of $402.9 million."
+
+---
+
+CLAIM: "trading near its 52-week low of $1.35"
+LABEL: UNSUPPORTED
+REASON: The 52-week low is $1.23 per the source data, not $1.35; $1.35 is the current price, not the 52-week low — the claim conflates the two figures, and the pre-written Recent Developments section correctly distinguishes them ("trading near its 52-week low of $1.23 at $1.35").
+
+---
+
+CLAIM: "negative forward P/E ratio"
+LABEL: SUPPORTED
+REASON: The source data lists forward_pe as -3.068182, which is explicitly negative, confirming this claim.
+
+---
+
+**OUTLOOK**
+
+*(The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers beyond qualitative directional statements. All claims are qualitative in nature — e.g., "cautiously constructive," "vital lifeline," "persistent operating losses," "negative cash flows," "dilutive capital raises," "narrowing losses," "stabilized liquidity." None of these constitute specific quantitative or named-milestone claims requiring numerical verification.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $402.9 million in annual revenue | SUPPORTED |
+| 2 | Trading near its 52-week low of $1.35 | UNSUPPORTED |
+| 3 | Negative forward P/E ratio | SUPPORTED |

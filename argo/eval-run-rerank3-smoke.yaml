@@ -1,0 +1,21 @@
+# rerank3 memory smoke: one ticker, the reranked arm, to measure the eval
+# pod's memory with the cross-encoder loaded before the A/B runs (limit 2Gi
+# in argo/base/eval-workflow.yaml). One ticker cannot pass the claims gate:
+# read the pod's memory and its exit, not the gate.
+#   make eval-run EVAL_RUN_FILE=argo/eval-run-rerank3-smoke.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: grounding-eval-rerank3-smoke-
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  workflowTemplateRef:
+    name: grounding-eval
+  arguments:
+    parameters:
+      - name: arms
+        value: rerank3
+      - name: tickers
+        value: '["AAPL"]'

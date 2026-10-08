@@ -1,0 +1,83 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the Executive Summary and Outlook sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "market capitalization of $2.71 trillion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 2,711,679,139,840.0 USD ≈ $2.71 trillion, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "annual revenue of $775.7 billion"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 775,680,032,768.0 USD ≈ $775.7 billion, matching the pre-written section.
+
+---
+
+CLAIM: "17.44% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 17.44.
+
+---
+
+CLAIM: "net income of $135.3 billion"
+LABEL: SUPPORTED
+REASON: Source data shows net_income = 135,281,000,448.0 USD ≈ $135.3 billion.
+
+---
+
+CLAIM: "current price of $251.40"
+LABEL: SUPPORTED
+REASON: Source data shows current_price = 251.4 USD.
+
+---
+
+CLAIM: "sits in the middle of its 52-week range"
+LABEL: UNSUPPORTED
+REASON: The 52-week range is $196.00–$287.20, giving a midpoint of $241.60; the current price of $251.40 is above the midpoint (by ~$9.80), placing it in the upper half of the range, not the middle — the positional claim fails the arithmetic check.
+
+---
+
+CLAIM: "an estimated $68 billion in competing data center projects across the US"
+LABEL: SUPPORTED
+REASON: The Bloomberg news article states "New data centres worth $68 billion disrupted in US," directly matching this figure.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "the forward P/E sits above the trailing P/E"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 23.998373 and pe_ratio (trailing) = 20.241545; 23.998 > 20.242, so the directional claim is arithmetically verified.
+
+---
+
+CLAIM: "regulatory moratoriums constraining competitor data center expansion"
+LABEL: SUPPORTED
+REASON: The Bloomberg article explicitly states "Communities across the country are now pushing through moratoriums on new construction" for data centers, supporting this characterization.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already evaluated above. All remaining Outlook content consists of qualitative directional statements, named risk categories, and conditional watch-items that do not constitute specific quantitative or factual claims subject to this audit.)*
+
+---
+
+### Summary Table
+
+| Claim | Label |
+|---|---|
+| Market cap $2.71 trillion | SUPPORTED |
+| Annual revenue $775.7 billion | SUPPORTED |
+| 17.44% profit margin | SUPPORTED |
+| Net income $135.3 billion | SUPPORTED |
+| Current price $251.40 | SUPPORTED |
+| Price "in the middle" of 52-week range | UNSUPPORTED |
+| $68 billion in disrupted US data center projects | SUPPORTED |
+| Forward P/E above trailing P/E | SUPPORTED |
+| Regulatory moratoriums constraining competitor data center expansion | SUPPORTED |

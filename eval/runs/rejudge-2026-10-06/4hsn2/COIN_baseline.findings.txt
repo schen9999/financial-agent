@@ -1,0 +1,100 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "generating $6.0 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $6,043,752,960, which rounds to $6.0 billion; the pre-written Financial Health section also states "$6.0 billion in revenue."
+
+---
+
+CLAIM: "a $49.7 billion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $49,659,387,904, which rounds to $49.7 billion; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "a net loss of $988 million"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$987,766,016, which rounds to -$988 million; confirmed in the pre-written Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "a negative profit margin of -16.34%"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct of -16.34; also confirmed in the pre-written Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "52-week high of $402.16"
+LABEL: SUPPORTED
+REASON: Source data explicitly states week_52_high: 402.16.
+
+---
+
+CLAIM: "a forward P/E of 66.3x"
+LABEL: SUPPORTED
+REASON: Source data states forward_pe: 66.34777, which rounds to 66.3x; confirmed in the pre-written Financial Health section (stated as 66.3x).
+
+---
+
+CLAIM: "Bitcoin has fallen below $80,000"
+LABEL: SUPPORTED
+REASON: The Bloomberg news article states "Bitcoin dropped as much as 3.5% after stronger-than-expected US jobs data… abruptly reversing the cryptocurrency's latest push above $80,000," confirming Bitcoin fell below $80,000.
+
+---
+
+CLAIM: "sits well below its 52-week high of $402.16"
+LABEL: SUPPORTED
+REASON: Current price is $188.22 vs. 52-week high of $402.16; $188.22 is 53.2% below the 52-week high, which arithmetically confirms "well below."
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: (no new quantitative figures introduced in the Outlook beyond those already audited above — the Outlook references "negative profit margin," "Bitcoin price," "Federal Reserve rate-hike expectations," "Bitcoin and Ethereum prices," "regulatory capital requirements flagged in the most recent 10-Q filing," and "Bitcoin and Ethereum transaction fees," all of which are directional/qualitative restatements of already-audited figures or facts present in the source data)
+
+For completeness, I audit each residual specific claim below:
+
+---
+
+CLAIM: "regulatory capital requirements flagged in the most recent 10-Q filing"
+LABEL: SUPPORTED
+REASON: The 10-Q filing summary (filed 2026-07-30) explicitly references minimum net capital requirements for CB Inc. and Coinbase Custody Trust Company, LLC under agreements with the New York State Department of Financial Services.
+
+---
+
+CLAIM: "concentrated dependence on Bitcoin and Ethereum transaction fees"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly states revenue is concentrated in "Transaction revenue from Bitcoin and Ethereum trading."
+
+---
+
+CLAIM: (the Outlook contains no additional standalone quantitative figures, price targets, thresholds, ratios, or percentages beyond those already evaluated above)
+LABEL: N/A
+REASON: All quantitative and forward-looking specifics in the Outlook are restatements of figures already audited; no new numerical claims requiring separate evaluation are present.
+
+---
+
+## SUMMARY TABLE
+
+| Claim | Label |
+|---|---|
+| $6.0 billion in revenue | SUPPORTED |
+| $49.7 billion market capitalization | SUPPORTED |
+| Net loss of $988 million | SUPPORTED |
+| Negative profit margin of -16.34% | SUPPORTED |
+| 52-week high of $402.16 | SUPPORTED |
+| Forward P/E of 66.3x | SUPPORTED |
+| Bitcoin fallen below $80,000 | SUPPORTED |
+| Stock "well below" 52-week high | SUPPORTED |
+| Regulatory capital requirements in most recent 10-Q | SUPPORTED |
+| Concentrated dependence on Bitcoin and Ethereum transaction fees | SUPPORTED |
+
+**All audited claims in the Executive Summary and Outlook are SUPPORTED by the source data.** No unsupported or inference-only claims were identified.

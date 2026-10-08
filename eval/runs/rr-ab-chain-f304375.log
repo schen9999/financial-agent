@@ -1,0 +1,7 @@
+[rr-ab 2026-10-08T03:24:06Z] start at 5068e57 Pre-register the reranking A/B and add its tooling
+Defaulted container "api" out of: api, wait-for-postgres (init)
+BALANCE CHECK: OK — API answered 8 in / 1 out
+grounding-eval-extended-rerank3-2mzdd      Running     60s     
+grounding-eval-extended-vks4c              Running     80s     
+[rr-ab 2026-10-08T03:54:15Z] baseline done: exit 0
+[rr-ab 2026-10-08T04:05:16Z] rerank3 done: exit 0

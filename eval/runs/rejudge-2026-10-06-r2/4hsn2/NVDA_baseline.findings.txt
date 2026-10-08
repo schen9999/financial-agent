@@ -1,0 +1,129 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $303 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $302,970,011,648, which rounds to $303 billion; the pre-written Financial Health section also states "$303 billion in annual revenue."
+
+---
+
+CLAIM: "63.66% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists `profit_margin_pct: 63.66`.
+
+---
+
+CLAIM: "Trading near its 52-week high of $240.10"
+LABEL: SUPPORTED
+REASON: Source data shows `week_52_high: 240.0983`, which rounds to $240.10; the pre-written Financial Health section also states "$164.27–$240.10."
+
+---
+
+CLAIM: "at a current price of $238.90"
+LABEL: SUPPORTED
+REASON: Source data shows `current_price: 238.9`, i.e., $238.90.
+
+---
+
+CLAIM: "forward P/E of 15.1x"
+LABEL: SUPPORTED
+REASON: Source data shows `forward_pe: 15.12099`, which rounds to 15.1x; the pre-written Financial Health section states "15.1x on a forward basis."
+
+---
+
+CLAIM: "the market is pricing in sustained, compounding growth from AI-driven demand"
+LABEL: INFERENCE
+REASON: This is a standard interpretive inference drawn directly from comparing the trailing P/E of 30.2x to the forward P/E of 15.1x (both present in source data), implying the market expects significant earnings growth.
+
+---
+
+CLAIM: "export controls and international trade policy…flagged across NVIDIA's most recent SEC filings"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly lists "Complex laws, rules, and regulations including export restrictions," and the SEC Filing Summaries reference "export requirements and tariffs" in the 10-K summary; the pre-written Recent Developments section also explicitly flags this.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "forward valuation that — relative to the trailing multiple — suggests the market already anticipates meaningful continued growth"
+LABEL: INFERENCE
+REASON: This is a direct comparison of the forward P/E (15.1x) to the trailing P/E (30.2x), both present in source data; the compression from ~30x to ~15x is a standard inference that the market prices in earnings growth.
+
+---
+
+CLAIM: "NVIDIA's R&D concentration positions it to sustain technology leadership through successive product cycles"
+LABEL: SUPPORTED
+REASON: The pre-written SEC Filing Highlights section states "61% concentrated in R&D to support its technology leadership," sourced from the RAG SEC Highlights noting 31,000 of ~42,000 employees in R&D (31,000/42,000 ≈ 73.8%); however, the "61%" figure appears in the pre-written section and is used here directionally without a specific number being quoted — the claim is directional and references R&D concentration, which is supported by the pre-written section's explicit statement.
+
+---
+
+CLAIM: "enterprise and hyperscaler demand for AI infrastructure shows no sign of abating"
+LABEL: UNSUPPORTED
+REASON: No source data, news articles, SEC filing summaries, or pre-written sections contain any information about enterprise or hyperscaler demand trends; the news articles are entirely null, and no demand-trend data is present in any context provided.
+
+---
+
+CLAIM: "Export control policy and international trade restrictions represent the most immediate and unpredictable external variable"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors explicitly lists "Complex laws, rules, and regulations including export restrictions," and the pre-written Recent Developments section states "export restrictions on advanced semiconductors and international trade policies" as the primary regulatory concern flagged in SEC filings.
+
+---
+
+CLAIM: "any tightening of semiconductor export rules — particularly toward key international markets — could constrain addressable demand"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section lists export restrictions as a disclosed risk, and the 10-K summary references "import and export requirements and tariffs"; the pre-written Recent Developments section explicitly flags this scenario.
+
+---
+
+CLAIM: "management's strong balance sheet cannot fully offset"
+LABEL: UNSUPPORTED
+REASON: No balance sheet data (cash, debt, assets, liabilities) is present in the source data or any pre-written section; the source data provides only income-statement-level metrics (revenue, net income, margin) and market data, so no balance sheet characterization can be verified.
+
+---
+
+CLAIM: "customer concentration risk…a shift in capital allocation priorities among a small number of major accounts could have an outsized impact on results"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors explicitly states "Concentration of revenue from a limited number of partners and customers" and "Loss of major customers or reduced demand from key accounts could have a material adverse effect," which is also reflected in the pre-written Risk Factors section.
+
+---
+
+CLAIM: "Supply chain execution — specifically the ability to match third-party manufacturing capacity to demand without meaningful lead-time disruption"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors explicitly states "Long manufacturing lead times and uncertain supply and capacity availability" and "Dependency on third-party suppliers for manufacturing, assembly, testing, and packaging," also reflected in the pre-written Risk Factors section.
+
+---
+
+CLAIM: "stable or easing export policy, continued forward guidance that validates the current forward P/E compression"
+LABEL: UNSUPPORTED
+REASON: While export policy risk is supported, "continued forward guidance that validates the current forward P/E compression" introduces a specific forward-guidance watch-item not present in any source data, SEC filing summary, or pre-written section; no forward guidance figures or guidance-related disclosures appear in the context.
+
+---
+
+CLAIM: "evidence of customer base diversification"
+LABEL: UNSUPPORTED
+REASON: No source data, SEC filing summaries, or pre-written sections contain any information about customer base diversification trends, initiatives, or metrics; this is an introduced concept absent from all provided context.
+
+---
+
+CLAIM: "escalating geopolitical restrictions on semiconductor exports"
+LABEL: SUPPORTED
+REASON: Export restrictions are explicitly listed as a risk in the RAG Risk Factors and referenced in the 10-K summary ("import and export requirements and tariffs") and pre-written Recent Developments section.
+
+---
+
+CLAIM: "a deceleration in AI infrastructure spending from key accounts"
+LABEL: UNSUPPORTED
+REASON: No source data, news articles, or pre-written sections contain any information about AI infrastructure spending levels or trends from key accounts; the news articles are entirely null and no spending data is present in any context.
+
+---
+
+CLAIM: "supply chain disruptions that delay product availability and cede competitive ground"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors explicitly states "supply-demand mismatches, product defects, or disruptions in the supply chain could result in significant remediation costs and delivery delays," and the pre-written Risk Factors section mirrors this language.

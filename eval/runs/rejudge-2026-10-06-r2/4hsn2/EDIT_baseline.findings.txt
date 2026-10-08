@@ -1,0 +1,73 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of $428.5 million"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 428,488,288.0, which rounds to $428.5 million; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "accumulated operating losses of $1.6 billion to date"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and Risk Factors sections both state "accumulated operating losses totaling $1.6 billion as of December 31, 2025"; also confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "trading at $2.79 per share"
+LABEL: SUPPORTED
+REASON: Source data shows current_price = 2.79 USD, confirmed in multiple pre-written sections.
+
+---
+
+CLAIM: "cash runway projected only through Q3 2027"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states "Current cash and equivalents are projected to fund operations through Q3 2027"; confirmed in SEC Filing Highlights pre-written section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "meaningful progress on EDIT-401 or any other pipeline program advancing toward clinical milestones would be a material positive catalyst"
+LABEL: SUPPORTED
+REASON: EDIT-401 is named explicitly in the RAG SEC Highlights ("most advanced research programs, including EDIT-401") and SEC Filing Highlights pre-written section; the characterization of clinical milestone progress as a catalyst is a reasonable directional inference from the preclinical status described in the source.
+
+---
+
+CLAIM: "the Q3 2027 funding horizon"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and SEC Filing Highlights pre-written section both explicitly state cash is projected to fund operations through Q3 2027.
+
+---
+
+CLAIM: "contingent payments from the BMS collaboration or the Vertex license agreement"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states "contingent payments from BMS collaboration and retained portions of payments from the Vertex license agreement" as primary external funding sources; confirmed verbatim in the SEC Filing Highlights pre-written section.
+
+---
+
+**ADDITIONAL CHECKS — Claims that are qualitative/directional but contain no additional quantitative figures:**
+
+The Outlook section contains no additional specific quantitative figures, price targets, ratios, percentages, or named numeric thresholds beyond those already audited above. The remaining content ("cautious" outlook, descriptions of headwinds/tailwinds, references to "pre-revenue gene-editing names," "dilutive impact," "non-dilutive funding arrangement," "positive clinical data readout," "adverse regulatory development") are qualitative editorial judgments or directional characterizations with no specific numbers to verify.
+
+---
+
+**SUMMARY TABLE**
+
+| Claim | Label |
+|---|---|
+| Market cap $428.5 million | SUPPORTED |
+| Accumulated operating losses $1.6 billion | SUPPORTED |
+| Trading at $2.79 per share | SUPPORTED |
+| Cash runway through Q3 2027 | SUPPORTED |
+| EDIT-401 named as pipeline program | SUPPORTED |
+| Q3 2027 funding horizon (Outlook) | SUPPORTED |
+| BMS collaboration / Vertex license agreement | SUPPORTED |
+
+All auditable quantitative and named-entity claims in the Executive Summary and Outlook are **SUPPORTED** by the source data. No unsupported or inference-only claims were identified among the verifiable figures.

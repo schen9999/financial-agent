@@ -145,6 +145,18 @@ def extract_exec_and_outlook(brief: str) -> str:
     return "\n\n".join(result)
 
 
+def missing_brief_sections(brief: str) -> list[str]:
+    """Which of the audited sections ("Executive Summary", "Outlook") are
+    missing or empty. Non-empty means the judge would audit nothing: a brief
+    with a mangled heading must fail loudly, never pass as 0 claims."""
+    found = {}
+    for block in extract_exec_and_outlook(brief).split("\n\n### "):
+        head, _, body = block.lstrip("#").strip().partition("\n")
+        if head.strip():
+            found[head.strip()] = bool(body.strip())
+    return [h for h in ("Executive Summary", "Outlook") if not found.get(h)]
+
+
 def count_labels(text: str) -> dict[str, int]:
     """Count SUPPORTED / UNSUPPORTED / INFERENCE labels in judge findings.
     Matches both plain "LABEL: X" and bold "**LABEL:** X" judge formatting."""

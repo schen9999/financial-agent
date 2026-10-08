@@ -1,0 +1,35 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "50.78% net profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `"profit_margin_pct": 50.78`, and the pre-written Financial Health section confirms "50.78% net profit margin."
+
+---
+
+CLAIM: "$44.49 billion in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists `"revenue": 44487999488.0`, which rounds to $44.49 billion; the pre-written Financial Health section also states "$44.49 billion in revenue."
+
+---
+
+CLAIM: "$694.1 billion market capitalization"
+LABEL: SUPPORTED
+REASON: The raw source data lists `"market_cap": 694077030400.0`, which equals approximately $694.1 billion, consistent with the pre-written Financial Health section.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All claims in the Outlook are qualitative or directional in nature (e.g., "cautiously constructive," "significant regulatory headwinds," "key jurisdictions like the U.S. and EU," "emerging digital payment ecosystems like India"). These do not constitute quantitative or forward-looking numerical claims subject to the audit criteria.
+
+---
+
+**SUMMARY**
+
+All three quantitative claims present in the Executive Summary are **SUPPORTED** by the raw source data. The Outlook section contains no auditable quantitative or forward-looking numerical claims.

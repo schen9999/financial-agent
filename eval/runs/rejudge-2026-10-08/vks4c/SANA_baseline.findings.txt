@@ -1,0 +1,49 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $814 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `market_cap: 814260928.0`, which rounds to approximately $814 million, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "net loss of $211.8 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `net_income: -211822000.0`, which equals approximately -$211.8 million, confirmed in the pre-written sections.
+
+---
+
+CLAIM: "52-week low of $2.61"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly states `week_52_low: 2.61`.
+
+---
+
+CLAIM: "Trading near its 52-week low of $2.61 at $2.72 per share"
+LABEL: SUPPORTED
+REASON: Current price is $2.72 (source data) and 52-week low is $2.61 (source data); $2.72 is $0.11 above the low, which is arithmetically near the low, and this characterization is also present in the pre-written Recent Developments section.
+
+---
+
+CLAIM: "52-week high of $6.55"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly states `week_52_high: 6.55`.
+
+---
+
+CLAIM: "well off its 52-week high of $6.55"
+LABEL: SUPPORTED
+REASON: Current price $2.72 vs. 52-week high $6.55 represents a drawdown of approximately 58.5% (($6.55 - $2.72) / $6.55), which arithmetically confirms the stock is well off its high.
+
+---
+
+**OUTLOOK**
+
+There are no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers in the Outlook section. All claims in the Outlook are qualitative or directional in nature (e.g., "cautious," "additional funding," "human clinical data," "non-dilutive or favorably structured capital," "going concern doubt," "sustained cash burn"). None of these constitute quantitative or specifically enumerable claims requiring arithmetic verification under the audit criteria.
+
+No entries are generated for the Outlook section as it contains no auditable quantitative or specific forward-looking figures as defined in the task instructions.

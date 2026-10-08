@@ -1,0 +1,1822 @@
+[
+ {
+  "failures": [],
+  "rebuilt_from": "pod log (scripts/results_from_pod_log.py)",
+  "results": [
+   {
+    "arm": "baseline",
+    "attempt": 0,
+    "inference": 0,
+    "judge_version": "v2",
+    "llm": {
+     "by_endpoint": {
+      "anthropic": {
+       "calls": 7,
+       "completion_tokens": 2689,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 18.84,
+       "latency_s_total": 37.725,
+       "parse_failure": 0,
+       "prompt_tokens": 9891,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "by_site": {
+      "rag:highlights": {
+       "calls": 1,
+       "completion_tokens": 332,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 4.656,
+       "latency_s_total": 4.656,
+       "parse_failure": 0,
+       "prompt_tokens": 2440,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "rag:risks": {
+       "calls": 1,
+       "completion_tokens": 350,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 4.59,
+       "latency_s_total": 4.59,
+       "parse_failure": 0,
+       "prompt_tokens": 2428,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:financial_health": {
+       "calls": 1,
+       "completion_tokens": 178,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.407,
+       "latency_s_total": 2.407,
+       "parse_failure": 0,
+       "prompt_tokens": 1142,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:recent_developments": {
+       "calls": 1,
+       "completion_tokens": 162,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.298,
+       "latency_s_total": 2.298,
+       "parse_failure": 0,
+       "prompt_tokens": 1135,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:risk_factors": {
+       "calls": 1,
+       "completion_tokens": 213,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.433,
+       "latency_s_total": 2.433,
+       "parse_failure": 0,
+       "prompt_tokens": 421,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:sec_filing_highlights": {
+       "calls": 1,
+       "completion_tokens": 204,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.501,
+       "latency_s_total": 2.501,
+       "parse_failure": 0,
+       "prompt_tokens": 411,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "synthesis": {
+       "calls": 1,
+       "completion_tokens": 1250,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 18.84,
+       "latency_s_total": 18.84,
+       "parse_failure": 0,
+       "prompt_tokens": 1914,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "endpoints": [
+      "anthropic"
+     ],
+     "total": {
+      "calls": 7,
+      "completion_tokens": 2689,
+      "completion_tokens_unrecorded": 0,
+      "errors": 0,
+      "format_failure": 0,
+      "latency_s_max": 18.84,
+      "latency_s_total": 37.725,
+      "parse_failure": 0,
+      "prompt_tokens": 9891,
+      "prompt_tokens_unrecorded": 0,
+      "repeat_run": 0,
+      "retry": 0,
+      "truncated": 0
+     }
+    },
+    "numeric_claims": {
+     "inference": 0,
+     "supported": 6,
+     "total": 6,
+     "unsupported": 0
+    },
+    "pipeline_s": 30.24,
+    "rag_faithfulness": {
+     "highlights": {
+      "supported": 11,
+      "total": 12,
+      "unsupported": 1
+     },
+     "risks": {
+      "supported": 14,
+      "total": 14,
+      "unsupported": 0
+     }
+    },
+    "retrieval_s": 8.87,
+    "stock_block_empty": false,
+    "supported": 11,
+    "ticker": "AAPL",
+    "total": 11,
+    "unsupported": 0
+   }
+  ],
+  "skipped": []
+ },
+ {
+  "failures": [],
+  "rebuilt_from": "pod log (scripts/results_from_pod_log.py)",
+  "results": [
+   {
+    "arm": "baseline",
+    "attempt": 0,
+    "inference": 0,
+    "judge_version": "v2",
+    "llm": {
+     "by_endpoint": {
+      "anthropic": {
+       "calls": 7,
+       "completion_tokens": 2366,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 17.84,
+       "latency_s_total": 34.134,
+       "parse_failure": 0,
+       "prompt_tokens": 9393,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "by_site": {
+      "rag:highlights": {
+       "calls": 1,
+       "completion_tokens": 194,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.436,
+       "latency_s_total": 2.436,
+       "parse_failure": 0,
+       "prompt_tokens": 2520,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "rag:risks": {
+       "calls": 1,
+       "completion_tokens": 373,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 5.083,
+       "latency_s_total": 5.083,
+       "parse_failure": 0,
+       "prompt_tokens": 2455,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:financial_health": {
+       "calls": 1,
+       "completion_tokens": 177,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.276,
+       "latency_s_total": 2.276,
+       "parse_failure": 0,
+       "prompt_tokens": 987,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:recent_developments": {
+       "calls": 1,
+       "completion_tokens": 189,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.763,
+       "latency_s_total": 2.763,
+       "parse_failure": 0,
+       "prompt_tokens": 980,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:risk_factors": {
+       "calls": 1,
+       "completion_tokens": 196,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.19,
+       "latency_s_total": 2.19,
+       "parse_failure": 0,
+       "prompt_tokens": 447,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:sec_filing_highlights": {
+       "calls": 1,
+       "completion_tokens": 99,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 1.546,
+       "latency_s_total": 1.546,
+       "parse_failure": 0,
+       "prompt_tokens": 276,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "synthesis": {
+       "calls": 1,
+       "completion_tokens": 1138,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 17.84,
+       "latency_s_total": 17.84,
+       "parse_failure": 0,
+       "prompt_tokens": 1728,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "endpoints": [
+      "anthropic"
+     ],
+     "total": {
+      "calls": 7,
+      "completion_tokens": 2366,
+      "completion_tokens_unrecorded": 0,
+      "errors": 0,
+      "format_failure": 0,
+      "latency_s_max": 17.84,
+      "latency_s_total": 34.134,
+      "parse_failure": 0,
+      "prompt_tokens": 9393,
+      "prompt_tokens_unrecorded": 0,
+      "repeat_run": 0,
+      "retry": 0,
+      "truncated": 0
+     }
+    },
+    "numeric_claims": {
+     "inference": 0,
+     "supported": 4,
+     "total": 4,
+     "unsupported": 0
+    },
+    "pipeline_s": 26.93,
+    "rag_faithfulness": {
+     "highlights": {
+      "supported": 0,
+      "total": 0,
+      "unsupported": 0
+     },
+     "risks": {
+      "supported": 17,
+      "total": 17,
+      "unsupported": 0
+     }
+    },
+    "retrieval_s": 6.3,
+    "stock_block_empty": false,
+    "supported": 4,
+    "ticker": "AMZN",
+    "total": 4,
+    "unsupported": 0
+   }
+  ],
+  "skipped": []
+ },
+ {
+  "failures": [],
+  "rebuilt_from": "pod log (scripts/results_from_pod_log.py)",
+  "results": [
+   {
+    "arm": "baseline",
+    "attempt": 0,
+    "inference": 0,
+    "judge_version": "v2",
+    "llm": {
+     "by_endpoint": {
+      "anthropic": {
+       "calls": 7,
+       "completion_tokens": 2440,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 16.46,
+       "latency_s_total": 33.288,
+       "parse_failure": 0,
+       "prompt_tokens": 9370,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "by_site": {
+      "rag:highlights": {
+       "calls": 1,
+       "completion_tokens": 321,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 3.9,
+       "latency_s_total": 3.9,
+       "parse_failure": 0,
+       "prompt_tokens": 2200,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "rag:risks": {
+       "calls": 1,
+       "completion_tokens": 357,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 3.976,
+       "latency_s_total": 3.976,
+       "parse_failure": 0,
+       "prompt_tokens": 2511,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:financial_health": {
+       "calls": 1,
+       "completion_tokens": 195,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.65,
+       "latency_s_total": 2.65,
+       "parse_failure": 0,
+       "prompt_tokens": 1080,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:recent_developments": {
+       "calls": 1,
+       "completion_tokens": 172,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.676,
+       "latency_s_total": 2.676,
+       "parse_failure": 0,
+       "prompt_tokens": 1073,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:risk_factors": {
+       "calls": 1,
+       "completion_tokens": 146,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 1.873,
+       "latency_s_total": 1.873,
+       "parse_failure": 0,
+       "prompt_tokens": 428,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:sec_filing_highlights": {
+       "calls": 1,
+       "completion_tokens": 126,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 1.753,
+       "latency_s_total": 1.753,
+       "parse_failure": 0,
+       "prompt_tokens": 400,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "synthesis": {
+       "calls": 1,
+       "completion_tokens": 1123,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 16.46,
+       "latency_s_total": 16.46,
+       "parse_failure": 0,
+       "prompt_tokens": 1678,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "endpoints": [
+      "anthropic"
+     ],
+     "total": {
+      "calls": 7,
+      "completion_tokens": 2440,
+      "completion_tokens_unrecorded": 0,
+      "errors": 0,
+      "format_failure": 0,
+      "latency_s_max": 16.46,
+      "latency_s_total": 33.288,
+      "parse_failure": 0,
+      "prompt_tokens": 9370,
+      "prompt_tokens_unrecorded": 0,
+      "repeat_run": 0,
+      "retry": 0,
+      "truncated": 0
+     }
+    },
+    "numeric_claims": {
+     "inference": 0,
+     "supported": 5,
+     "total": 5,
+     "unsupported": 0
+    },
+    "pipeline_s": 24.42,
+    "rag_faithfulness": {
+     "highlights": {
+      "supported": 16,
+      "total": 16,
+      "unsupported": 0
+     },
+     "risks": {
+      "supported": 15,
+      "total": 16,
+      "unsupported": 1
+     }
+    },
+    "retrieval_s": 5.26,
+    "stock_block_empty": false,
+    "supported": 8,
+    "ticker": "GOOGL",
+    "total": 8,
+    "unsupported": 0
+   }
+  ],
+  "skipped": []
+ },
+ {
+  "failures": [],
+  "rebuilt_from": "pod log (scripts/results_from_pod_log.py)",
+  "results": [
+   {
+    "arm": "baseline",
+    "attempt": 0,
+    "inference": 0,
+    "judge_version": "v2",
+    "llm": {
+     "by_endpoint": {
+      "anthropic": {
+       "calls": 7,
+       "completion_tokens": 2382,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 16.757,
+       "latency_s_total": 31.795,
+       "parse_failure": 0,
+       "prompt_tokens": 8926,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "by_site": {
+      "rag:highlights": {
+       "calls": 1,
+       "completion_tokens": 192,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.464,
+       "latency_s_total": 2.464,
+       "parse_failure": 0,
+       "prompt_tokens": 2511,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "rag:risks": {
+       "calls": 1,
+       "completion_tokens": 416,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 5.29,
+       "latency_s_total": 5.29,
+       "parse_failure": 0,
+       "prompt_tokens": 2492,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:financial_health": {
+       "calls": 1,
+       "completion_tokens": 195,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.062,
+       "latency_s_total": 2.062,
+       "parse_failure": 0,
+       "prompt_tokens": 730,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:recent_developments": {
+       "calls": 1,
+       "completion_tokens": 171,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.042,
+       "latency_s_total": 2.042,
+       "parse_failure": 0,
+       "prompt_tokens": 723,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:risk_factors": {
+       "calls": 1,
+       "completion_tokens": 179,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 1.904,
+       "latency_s_total": 1.904,
+       "parse_failure": 0,
+       "prompt_tokens": 490,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:sec_filing_highlights": {
+       "calls": 1,
+       "completion_tokens": 105,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 1.276,
+       "latency_s_total": 1.276,
+       "parse_failure": 0,
+       "prompt_tokens": 274,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "synthesis": {
+       "calls": 1,
+       "completion_tokens": 1124,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 16.757,
+       "latency_s_total": 16.757,
+       "parse_failure": 0,
+       "prompt_tokens": 1706,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "endpoints": [
+      "anthropic"
+     ],
+     "total": {
+      "calls": 7,
+      "completion_tokens": 2382,
+      "completion_tokens_unrecorded": 0,
+      "errors": 0,
+      "format_failure": 0,
+      "latency_s_max": 16.757,
+      "latency_s_total": 31.795,
+      "parse_failure": 0,
+      "prompt_tokens": 8926,
+      "prompt_tokens_unrecorded": 0,
+      "repeat_run": 0,
+      "retry": 0,
+      "truncated": 0
+     }
+    },
+    "numeric_claims": {
+     "inference": 0,
+     "supported": 7,
+     "total": 7,
+     "unsupported": 0
+    },
+    "pipeline_s": 25.33,
+    "rag_faithfulness": {
+     "highlights": {
+      "supported": 2,
+      "total": 2,
+      "unsupported": 0
+     },
+     "risks": {
+      "supported": 12,
+      "total": 12,
+      "unsupported": 0
+     }
+    },
+    "retrieval_s": 6.48,
+    "stock_block_empty": false,
+    "supported": 7,
+    "ticker": "JPM",
+    "total": 7,
+    "unsupported": 0
+   }
+  ],
+  "skipped": []
+ },
+ {
+  "failures": [],
+  "rebuilt_from": "pod log (scripts/results_from_pod_log.py)",
+  "results": [
+   {
+    "arm": "baseline",
+    "attempt": 0,
+    "inference": 0,
+    "judge_version": "v2",
+    "llm": {
+     "by_endpoint": {
+      "anthropic": {
+       "calls": 7,
+       "completion_tokens": 2541,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 17.016,
+       "latency_s_total": 33.568,
+       "parse_failure": 0,
+       "prompt_tokens": 10231,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "by_site": {
+      "rag:highlights": {
+       "calls": 1,
+       "completion_tokens": 324,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 4.071,
+       "latency_s_total": 4.071,
+       "parse_failure": 0,
+       "prompt_tokens": 3060,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "rag:risks": {
+       "calls": 1,
+       "completion_tokens": 356,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 4.136,
+       "latency_s_total": 4.136,
+       "parse_failure": 0,
+       "prompt_tokens": 2560,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:financial_health": {
+       "calls": 1,
+       "completion_tokens": 194,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.314,
+       "latency_s_total": 2.314,
+       "parse_failure": 0,
+       "prompt_tokens": 1006,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:recent_developments": {
+       "calls": 1,
+       "completion_tokens": 163,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 1.98,
+       "latency_s_total": 1.98,
+       "parse_failure": 0,
+       "prompt_tokens": 999,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:risk_factors": {
+       "calls": 1,
+       "completion_tokens": 189,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.237,
+       "latency_s_total": 2.237,
+       "parse_failure": 0,
+       "prompt_tokens": 427,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:sec_filing_highlights": {
+       "calls": 1,
+       "completion_tokens": 142,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 1.814,
+       "latency_s_total": 1.814,
+       "parse_failure": 0,
+       "prompt_tokens": 403,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "synthesis": {
+       "calls": 1,
+       "completion_tokens": 1173,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 17.016,
+       "latency_s_total": 17.016,
+       "parse_failure": 0,
+       "prompt_tokens": 1776,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "endpoints": [
+      "anthropic"
+     ],
+     "total": {
+      "calls": 7,
+      "completion_tokens": 2541,
+      "completion_tokens_unrecorded": 0,
+      "errors": 0,
+      "format_failure": 0,
+      "latency_s_max": 17.016,
+      "latency_s_total": 33.568,
+      "parse_failure": 0,
+      "prompt_tokens": 10231,
+      "prompt_tokens_unrecorded": 0,
+      "repeat_run": 0,
+      "retry": 0,
+      "truncated": 0
+     }
+    },
+    "numeric_claims": {
+     "inference": 0,
+     "supported": 7,
+     "total": 7,
+     "unsupported": 0
+    },
+    "pipeline_s": 26.54,
+    "rag_faithfulness": {
+     "highlights": {
+      "supported": 13,
+      "total": 13,
+      "unsupported": 0
+     },
+     "risks": {
+      "supported": 21,
+      "total": 21,
+      "unsupported": 0
+     }
+    },
+    "retrieval_s": 7.18,
+    "stock_block_empty": false,
+    "supported": 13,
+    "ticker": "META",
+    "total": 13,
+    "unsupported": 0
+   }
+  ],
+  "skipped": []
+ },
+ {
+  "failures": [],
+  "rebuilt_from": "pod log (scripts/results_from_pod_log.py)",
+  "results": [
+   {
+    "arm": "baseline",
+    "attempt": 0,
+    "inference": 5,
+    "judge_version": "v2",
+    "llm": {
+     "by_endpoint": {
+      "anthropic": {
+       "calls": 7,
+       "completion_tokens": 2498,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 19.206,
+       "latency_s_total": 34.667,
+       "parse_failure": 0,
+       "prompt_tokens": 8623,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "by_site": {
+      "rag:highlights": {
+       "calls": 1,
+       "completion_tokens": 199,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.472,
+       "latency_s_total": 2.472,
+       "parse_failure": 0,
+       "prompt_tokens": 2456,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "rag:risks": {
+       "calls": 1,
+       "completion_tokens": 365,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 4.395,
+       "latency_s_total": 4.395,
+       "parse_failure": 0,
+       "prompt_tokens": 2426,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:financial_health": {
+       "calls": 1,
+       "completion_tokens": 216,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.751,
+       "latency_s_total": 2.751,
+       "parse_failure": 0,
+       "prompt_tokens": 626,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:recent_developments": {
+       "calls": 1,
+       "completion_tokens": 179,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 1.959,
+       "latency_s_total": 1.959,
+       "parse_failure": 0,
+       "prompt_tokens": 619,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:risk_factors": {
+       "calls": 1,
+       "completion_tokens": 188,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.201,
+       "latency_s_total": 2.201,
+       "parse_failure": 0,
+       "prompt_tokens": 434,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:sec_filing_highlights": {
+       "calls": 1,
+       "completion_tokens": 112,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 1.683,
+       "latency_s_total": 1.683,
+       "parse_failure": 0,
+       "prompt_tokens": 276,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "synthesis": {
+       "calls": 1,
+       "completion_tokens": 1239,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 19.206,
+       "latency_s_total": 19.206,
+       "parse_failure": 0,
+       "prompt_tokens": 1786,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "endpoints": [
+      "anthropic"
+     ],
+     "total": {
+      "calls": 7,
+      "completion_tokens": 2498,
+      "completion_tokens_unrecorded": 0,
+      "errors": 0,
+      "format_failure": 0,
+      "latency_s_max": 19.206,
+      "latency_s_total": 34.667,
+      "parse_failure": 0,
+      "prompt_tokens": 8623,
+      "prompt_tokens_unrecorded": 0,
+      "repeat_run": 0,
+      "retry": 0,
+      "truncated": 0
+     }
+    },
+    "numeric_claims": {
+     "inference": 1,
+     "supported": 7,
+     "total": 8,
+     "unsupported": 0
+    },
+    "pipeline_s": 27.77,
+    "rag_faithfulness": {
+     "highlights": {
+      "supported": 0,
+      "total": 0,
+      "unsupported": 0
+     },
+     "risks": {
+      "supported": 14,
+      "total": 15,
+      "unsupported": 1
+     }
+    },
+    "retrieval_s": 5.78,
+    "stock_block_empty": false,
+    "supported": 9,
+    "ticker": "MSFT",
+    "total": 22,
+    "unsupported": 8
+   }
+  ],
+  "skipped": []
+ },
+ {
+  "failures": [],
+  "rebuilt_from": "pod log (scripts/results_from_pod_log.py)",
+  "results": [
+   {
+    "arm": "baseline",
+    "attempt": 0,
+    "inference": 0,
+    "judge_version": "v2",
+    "llm": {
+     "by_endpoint": {
+      "anthropic": {
+       "calls": 7,
+       "completion_tokens": 2577,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 17.481,
+       "latency_s_total": 35.548,
+       "parse_failure": 0,
+       "prompt_tokens": 9900,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "by_site": {
+      "rag:highlights": {
+       "calls": 1,
+       "completion_tokens": 302,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 3.923,
+       "latency_s_total": 3.923,
+       "parse_failure": 0,
+       "prompt_tokens": 3148,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "rag:risks": {
+       "calls": 1,
+       "completion_tokens": 350,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 4.716,
+       "latency_s_total": 4.716,
+       "parse_failure": 0,
+       "prompt_tokens": 2779,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:financial_health": {
+       "calls": 1,
+       "completion_tokens": 216,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.706,
+       "latency_s_total": 2.706,
+       "parse_failure": 0,
+       "prompt_tokens": 663,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:recent_developments": {
+       "calls": 1,
+       "completion_tokens": 151,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 1.929,
+       "latency_s_total": 1.929,
+       "parse_failure": 0,
+       "prompt_tokens": 656,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:risk_factors": {
+       "calls": 1,
+       "completion_tokens": 184,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.618,
+       "latency_s_total": 2.618,
+       "parse_failure": 0,
+       "prompt_tokens": 420,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:sec_filing_highlights": {
+       "calls": 1,
+       "completion_tokens": 177,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.175,
+       "latency_s_total": 2.175,
+       "parse_failure": 0,
+       "prompt_tokens": 380,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "synthesis": {
+       "calls": 1,
+       "completion_tokens": 1197,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 17.481,
+       "latency_s_total": 17.481,
+       "parse_failure": 0,
+       "prompt_tokens": 1854,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "endpoints": [
+      "anthropic"
+     ],
+     "total": {
+      "calls": 7,
+      "completion_tokens": 2577,
+      "completion_tokens_unrecorded": 0,
+      "errors": 0,
+      "format_failure": 0,
+      "latency_s_max": 17.481,
+      "latency_s_total": 35.548,
+      "parse_failure": 0,
+      "prompt_tokens": 9900,
+      "prompt_tokens_unrecorded": 0,
+      "repeat_run": 0,
+      "retry": 0,
+      "truncated": 0
+     }
+    },
+    "numeric_claims": {
+     "inference": 0,
+     "supported": 6,
+     "total": 6,
+     "unsupported": 0
+    },
+    "pipeline_s": 29.07,
+    "rag_faithfulness": {
+     "highlights": {
+      "supported": 12,
+      "total": 12,
+      "unsupported": 0
+     },
+     "risks": {
+      "supported": 23,
+      "total": 23,
+      "unsupported": 0
+     }
+    },
+    "retrieval_s": 8.86,
+    "stock_block_empty": false,
+    "supported": 6,
+    "ticker": "NVDA",
+    "total": 6,
+    "unsupported": 0
+   }
+  ],
+  "skipped": []
+ },
+ {
+  "failures": [],
+  "rebuilt_from": "pod log (scripts/results_from_pod_log.py)",
+  "results": [
+   {
+    "arm": "baseline",
+    "attempt": 0,
+    "inference": 0,
+    "judge_version": "v2",
+    "llm": {
+     "by_endpoint": {
+      "anthropic": {
+       "calls": 7,
+       "completion_tokens": 2686,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 17.9,
+       "latency_s_total": 37.833,
+       "parse_failure": 0,
+       "prompt_tokens": 8977,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "by_site": {
+      "rag:highlights": {
+       "calls": 1,
+       "completion_tokens": 366,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 4.95,
+       "latency_s_total": 4.95,
+       "parse_failure": 0,
+       "prompt_tokens": 2474,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "rag:risks": {
+       "calls": 1,
+       "completion_tokens": 416,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 5.652,
+       "latency_s_total": 5.652,
+       "parse_failure": 0,
+       "prompt_tokens": 2462,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:financial_health": {
+       "calls": 1,
+       "completion_tokens": 174,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.233,
+       "latency_s_total": 2.233,
+       "parse_failure": 0,
+       "prompt_tokens": 661,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:recent_developments": {
+       "calls": 1,
+       "completion_tokens": 142,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.153,
+       "latency_s_total": 2.153,
+       "parse_failure": 0,
+       "prompt_tokens": 654,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:risk_factors": {
+       "calls": 1,
+       "completion_tokens": 233,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 3.135,
+       "latency_s_total": 3.135,
+       "parse_failure": 0,
+       "prompt_tokens": 487,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:sec_filing_highlights": {
+       "calls": 1,
+       "completion_tokens": 148,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 1.81,
+       "latency_s_total": 1.81,
+       "parse_failure": 0,
+       "prompt_tokens": 445,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "synthesis": {
+       "calls": 1,
+       "completion_tokens": 1207,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 17.9,
+       "latency_s_total": 17.9,
+       "parse_failure": 0,
+       "prompt_tokens": 1794,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "endpoints": [
+      "anthropic"
+     ],
+     "total": {
+      "calls": 7,
+      "completion_tokens": 2686,
+      "completion_tokens_unrecorded": 0,
+      "errors": 0,
+      "format_failure": 0,
+      "latency_s_max": 17.9,
+      "latency_s_total": 37.833,
+      "parse_failure": 0,
+      "prompt_tokens": 8977,
+      "prompt_tokens_unrecorded": 0,
+      "repeat_run": 0,
+      "retry": 0,
+      "truncated": 0
+     }
+    },
+    "numeric_claims": {
+     "inference": 0,
+     "supported": 5,
+     "total": 5,
+     "unsupported": 0
+    },
+    "pipeline_s": 29.75,
+    "rag_faithfulness": {
+     "highlights": {
+      "supported": 14,
+      "total": 14,
+      "unsupported": 0
+     },
+     "risks": {
+      "supported": 16,
+      "total": 16,
+      "unsupported": 0
+     }
+    },
+    "retrieval_s": 8.68,
+    "stock_block_empty": false,
+    "supported": 11,
+    "ticker": "TSLA",
+    "total": 11,
+    "unsupported": 0
+   }
+  ],
+  "skipped": []
+ },
+ {
+  "failures": [],
+  "rebuilt_from": "pod log (scripts/results_from_pod_log.py)",
+  "results": [
+   {
+    "arm": "baseline",
+    "attempt": 0,
+    "inference": 1,
+    "judge_version": "v2",
+    "llm": {
+     "by_endpoint": {
+      "anthropic": {
+       "calls": 7,
+       "completion_tokens": 2740,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 19.081,
+       "latency_s_total": 38.255,
+       "parse_failure": 0,
+       "prompt_tokens": 9642,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "by_site": {
+      "rag:highlights": {
+       "calls": 1,
+       "completion_tokens": 346,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 4.362,
+       "latency_s_total": 4.362,
+       "parse_failure": 0,
+       "prompt_tokens": 2455,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "rag:risks": {
+       "calls": 1,
+       "completion_tokens": 361,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 5.388,
+       "latency_s_total": 5.388,
+       "parse_failure": 0,
+       "prompt_tokens": 2455,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:financial_health": {
+       "calls": 1,
+       "completion_tokens": 225,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.788,
+       "latency_s_total": 2.788,
+       "parse_failure": 0,
+       "prompt_tokens": 984,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:recent_developments": {
+       "calls": 1,
+       "completion_tokens": 165,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.368,
+       "latency_s_total": 2.368,
+       "parse_failure": 0,
+       "prompt_tokens": 977,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:risk_factors": {
+       "calls": 1,
+       "completion_tokens": 191,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 1.915,
+       "latency_s_total": 1.915,
+       "parse_failure": 0,
+       "prompt_tokens": 430,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:sec_filing_highlights": {
+       "calls": 1,
+       "completion_tokens": 180,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.353,
+       "latency_s_total": 2.353,
+       "parse_failure": 0,
+       "prompt_tokens": 423,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "synthesis": {
+       "calls": 1,
+       "completion_tokens": 1272,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 19.081,
+       "latency_s_total": 19.081,
+       "parse_failure": 0,
+       "prompt_tokens": 1918,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "endpoints": [
+      "anthropic"
+     ],
+     "total": {
+      "calls": 7,
+      "completion_tokens": 2740,
+      "completion_tokens_unrecorded": 0,
+      "errors": 0,
+      "format_failure": 0,
+      "latency_s_max": 19.081,
+      "latency_s_total": 38.255,
+      "parse_failure": 0,
+      "prompt_tokens": 9642,
+      "prompt_tokens_unrecorded": 0,
+      "repeat_run": 0,
+      "retry": 0,
+      "truncated": 0
+     }
+    },
+    "numeric_claims": {
+     "inference": 0,
+     "supported": 6,
+     "total": 6,
+     "unsupported": 0
+    },
+    "pipeline_s": 32.41,
+    "rag_faithfulness": {
+     "highlights": {
+      "supported": 12,
+      "total": 12,
+      "unsupported": 0
+     },
+     "risks": {
+      "supported": 14,
+      "total": 14,
+      "unsupported": 0
+     }
+    },
+    "retrieval_s": 10.51,
+    "stock_block_empty": false,
+    "supported": 10,
+    "ticker": "V",
+    "total": 11,
+    "unsupported": 0
+   }
+  ],
+  "skipped": []
+ },
+ {
+  "failures": [],
+  "rebuilt_from": "pod log (scripts/results_from_pod_log.py)",
+  "results": [
+   {
+    "arm": "baseline",
+    "attempt": 0,
+    "inference": 1,
+    "judge_version": "v2",
+    "llm": {
+     "by_endpoint": {
+      "anthropic": {
+       "calls": 7,
+       "completion_tokens": 2090,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 16.828,
+       "latency_s_total": 30.186,
+       "parse_failure": 0,
+       "prompt_tokens": 9848,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "by_site": {
+      "rag:highlights": {
+       "calls": 1,
+       "completion_tokens": 181,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.812,
+       "latency_s_total": 2.812,
+       "parse_failure": 0,
+       "prompt_tokens": 3304,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "rag:risks": {
+       "calls": 1,
+       "completion_tokens": 210,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 3.018,
+       "latency_s_total": 3.018,
+       "parse_failure": 0,
+       "prompt_tokens": 2784,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:financial_health": {
+       "calls": 1,
+       "completion_tokens": 195,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 2.484,
+       "latency_s_total": 2.484,
+       "parse_failure": 0,
+       "prompt_tokens": 805,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:recent_developments": {
+       "calls": 1,
+       "completion_tokens": 147,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 1.963,
+       "latency_s_total": 1.963,
+       "parse_failure": 0,
+       "prompt_tokens": 798,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:risk_factors": {
+       "calls": 1,
+       "completion_tokens": 139,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 1.554,
+       "latency_s_total": 1.554,
+       "parse_failure": 0,
+       "prompt_tokens": 281,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "section:sec_filing_highlights": {
+       "calls": 1,
+       "completion_tokens": 127,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 1.527,
+       "latency_s_total": 1.527,
+       "parse_failure": 0,
+       "prompt_tokens": 260,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      },
+      "synthesis": {
+       "calls": 1,
+       "completion_tokens": 1091,
+       "completion_tokens_unrecorded": 0,
+       "errors": 0,
+       "format_failure": 0,
+       "latency_s_max": 16.828,
+       "latency_s_total": 16.828,
+       "parse_failure": 0,
+       "prompt_tokens": 1616,
+       "prompt_tokens_unrecorded": 0,
+       "repeat_run": 0,
+       "retry": 0,
+       "truncated": 0
+      }
+     },
+     "endpoints": [
+      "anthropic"
+     ],
+     "total": {
+      "calls": 7,
+      "completion_tokens": 2090,
+      "completion_tokens_unrecorded": 0,
+      "errors": 0,
+      "format_failure": 0,
+      "latency_s_max": 16.828,
+      "latency_s_total": 30.186,
+      "parse_failure": 0,
+      "prompt_tokens": 9848,
+      "prompt_tokens_unrecorded": 0,
+      "repeat_run": 0,
+      "retry": 0,
+      "truncated": 0
+     }
+    },
+    "numeric_claims": {
+     "inference": 0,
+     "supported": 5,
+     "total": 5,
+     "unsupported": 0
+    },
+    "pipeline_s": 27.31,
+    "rag_faithfulness": {
+     "highlights": {
+      "supported": 0,
+      "total": 0,
+      "unsupported": 0
+     },
+     "risks": {
+      "supported": 4,
+      "total": 5,
+      "unsupported": 1
+     }
+    },
+    "retrieval_s": 7.97,
+    "stock_block_empty": false,
+    "supported": 7,
+    "ticker": "WMT",
+    "total": 8,
+    "unsupported": 0
+   }
+  ],
+  "skipped": []
+ }
+]

@@ -1,0 +1,81 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$674.35 billion market capitalization"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap as 674,353,577,984.0 USD, which rounds to $674.35 billion, and the pre-written Financial Health section states "approximately $674.35 billion."
+
+---
+
+CLAIM: "$361.06 billion in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as 361,060,007,936.0 USD, which rounds to $361.06 billion, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "9.07% profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly states profit_margin_pct as 9.07, and the pre-written Financial Health section confirms "a profit margin of 9.07%."
+
+---
+
+CLAIM: "$18.6 billion in combined dividends and buybacks"
+LABEL: UNSUPPORTED
+REASON: The source data states $8.6 billion in dividends and $10.0 billion in stock repurchases, which sum to $18.6 billion; however, the pre-written SEC Filing Highlights section lists these as two separate figures ($8.6 billion and $10.0 billion) and never presents a combined $18.6 billion total — while the arithmetic is correct, the combined figure does not appear in any pre-written section or source data as a stated figure, and more critically the pre-written section the AI was given does not present this sum, making it an AI-introduced derived aggregation not explicitly present in the source. (Note: arithmetic check: 8.6 + 10.0 = 18.6 ✓ — this is borderline INFERENCE, but because the pre-written sections never state the combined figure and the AI introduced it as a standalone claim, it qualifies as INFERENCE.)
+
+*Correction per definitions — re-evaluating:* The two component figures ($8.6B dividends, $10.0B buybacks) are both present in the source data and pre-written sections. The sum 8.6 + 10.0 = 18.6 is a direct arithmetic derivation from two explicitly present figures with no additional assumptions needed.
+
+LABEL: INFERENCE
+REASON: $18.6 billion is derived by adding $8.6 billion in dividends and $10.0 billion in buybacks, both explicitly stated in the SEC Filing Highlights and RAG data; the sum is straightforward arithmetic with no missing facts.
+
+---
+
+CLAIM: "slight decline in net production"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights confirm net oil-equivalent production decreased to 4,514 thousand barrels daily in Q2 2026 from 4,630 thousand in Q2 2025, and the pre-written SEC Filing Highlights section describes "a slight decline to 4,514 thousand barrels per day."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "strong upstream execution in the Permian and Guyana"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state that advantaged volume growth was "driven primarily by growth in Guyana and the Permian basin," and the pre-written SEC Filing Highlights section confirms this.
+
+---
+
+CLAIM: "elevated refining margins"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "Global industry refining margins were sharply above the 10-year historical range," and the pre-written SEC Filing Highlights section confirms "global refining margins remained sharply elevated above historical averages."
+
+---
+
+CLAIM: "Middle East disruptions"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly reference "Middle East disruption impacts" reducing earnings by $1.060 billion in Q2 and $1.280 billion year-to-date, and the pre-written Risk Factors and SEC Filing Highlights sections both reference Middle East disruptions.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Outlook section beyond those addressed above.)*
+
+---
+
+**SUMMARY TABLE**
+
+| Claim | Label |
+|---|---|
+| $674.35 billion market cap | SUPPORTED |
+| $361.06 billion in revenue | SUPPORTED |
+| 9.07% profit margin | SUPPORTED |
+| $18.6 billion in combined dividends and buybacks | INFERENCE |
+| Slight decline in net production | SUPPORTED |
+| Strong upstream execution in Permian and Guyana | SUPPORTED |
+| Elevated refining margins | SUPPORTED |
+| Middle East disruptions | SUPPORTED |

@@ -1,0 +1,95 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$1.35 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $1,348,119,040, which rounds to $1.35 billion; the pre-written Financial Health section also states "$1.35 billion," confirming the figure.
+
+---
+
+CLAIM: "negative net income of $12.6 million"
+LABEL: SUPPORTED
+REASON: Source data explicitly states net_income of -$12,606,000, which rounds to -$12.6 million.
+
+---
+
+CLAIM: "profit margin of -0.94%"
+LABEL: SUPPORTED
+REASON: Source data gives profit_margin of -0.00935; recomputed as -12,606,000 / 1,348,119,040 = -0.00935, or -0.935%, which rounds to -0.94% — within 0.15 percentage points.
+
+---
+
+CLAIM: "trading near its 52-week low of $2.10 at $2.61"
+LABEL: SUPPORTED
+REASON: Source data confirms week_52_low = $2.10 and current_price = $2.61; the positional claim that $2.61 is "near" the $2.10 low is arithmetically consistent (the stock is 24% above its low vs. 55% below its 52-week high of $5.745, placing it in the lower portion of its range).
+
+---
+
+CLAIM: "negative forward P/E ratio of -52.2"
+LABEL: SUPPORTED
+REASON: Source data explicitly states forward_pe = -52.199997, which rounds to -52.2.
+
+---
+
+CLAIM: "sustained decline in active clients" (as a near-term variable)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and pre-written SEC Filing Highlights section explicitly state active clients declined in fiscal years 2023, 2024, and 2025.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "reliance on third-party vendors in China" (as a supply chain vulnerability)
+LABEL: SUPPORTED
+REASON: Both the RAG SEC Highlights and the pre-written Risk Factors section explicitly state that nearly all merchandise is sourced from third-party vendors with the majority of manufacturing in China.
+
+---
+
+CLAIM: "substantial top-line sales" (as a characterization of the company's revenue position)
+LABEL: INFERENCE
+REASON: This is a qualitative restatement of the $1.35 billion revenue figure present in the source data; "substantial" is a directional descriptor derivable from the scale of that figure relative to the company's market cap of ~$348.7 million.
+
+---
+
+CLAIM: "persistent operational losses"
+LABEL: SUPPORTED
+REASON: Source data confirms negative net income of -$12,606,000 and a negative forward P/E of -52.2, and the pre-written sections explicitly reference ongoing operational losses.
+
+---
+
+CLAIM: "diminishing returns on increased marketing spend"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and pre-written SEC Filing Highlights explicitly state that "increased marketing spend has not guaranteed a favorable return on investment or stable growth," directly supporting this characterization.
+
+---
+
+CLAIM: "stabilized active client numbers and improved operating margins" (as conditions for a more constructive view)
+LABEL: INFERENCE
+REASON: This forward-looking threshold is directly derivable from the source data's identification of declining active clients and persistent operational losses as the primary headwinds; no specific numerical targets are cited, making this a logical directional inference rather than an unsupported fabricated figure.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $1.35 billion in annual revenue | SUPPORTED |
+| 2 | Negative net income of $12.6 million | SUPPORTED |
+| 3 | Profit margin of -0.94% | SUPPORTED |
+| 4 | 52-week low of $2.10 at $2.61 | SUPPORTED |
+| 5 | Negative forward P/E of -52.2 | SUPPORTED |
+| 6 | Sustained decline in active clients | SUPPORTED |
+| 7 | Reliance on third-party vendors in China | SUPPORTED |
+| 8 | Substantial top-line sales | INFERENCE |
+| 9 | Persistent operational losses | SUPPORTED |
+| 10 | Diminishing returns on increased marketing spend | SUPPORTED |
+| 11 | Stabilized active clients / improved operating margins as constructive threshold | INFERENCE |
+
+**No UNSUPPORTED claims were identified.** All quantitative figures checked arithmetically against source data and passed within stated tolerances.

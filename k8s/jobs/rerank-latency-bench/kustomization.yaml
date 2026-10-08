@@ -1,0 +1,24 @@
+# One-off Job: the reranking A/B's warm retrieval latency
+# (scripts/rerank_latency_bench.py), on the pinned app image with the script
+# mounted from a ConfigMap — no image change. CPU as an eval pod (1500m
+# limit) so the figure compares with the eval runs; memory above the eval
+# pod's 2Gi for the cross-encoder. Operator:
+# (the script lives in scripts/, outside this directory, so build with the
+# load restrictor off and apply the output; never a second copy of the script)
+#   kubectl kustomize --load-restrictor LoadRestrictionsNone k8s/jobs/rerank-latency-bench | kubectl apply -f -
+#   kubectl -n financial-agent wait --for=condition=complete job/rerank-latency-bench --timeout=60m
+#   kubectl -n financial-agent logs job/rerank-latency-bench | grep '^RERANK_LATENCY '
+#   kubectl kustomize --load-restrictor LoadRestrictionsNone k8s/jobs/rerank-latency-bench | kubectl delete -f -
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: financial-agent
+resources:
+  - job.yaml
+configMapGenerator:
+  - name: rerank-latency-bench
+    files:
+      - rerank_latency_bench.py=../../../scripts/rerank_latency_bench.py
+images:
+  - name: financial-agent-app
+    newName: ghcr.io/schen9999/financial-agent-app
+    newTag: f3043751eb51083b8c674d23ad4ff1da91cbdeac

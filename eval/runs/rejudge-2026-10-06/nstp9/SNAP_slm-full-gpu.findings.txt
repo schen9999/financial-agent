@@ -1,0 +1,57 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$6.35 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $6,351,084,032, which rounds to $6.35 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "market capitalization of approximately $9.49 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $9,487,619,072, which rounds to approximately $9.49 billion; also confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "near the lower end of its 52-week range"
+LABEL: SUPPORTED
+REASON: Current price is $5.61, 52-week low is $3.81, and 52-week high is $9.13; the midpoint of the range is ($9.13 + $3.81) / 2 = $6.47, and $5.61 is below that midpoint, confirming the stock is in the lower half of its 52-week range.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "daily active user growth"
+LABEL: SUPPORTED
+REASON: DAU figures and growth rate discussion are explicitly present in the RAG SEC Highlights and Risk Factors sections (474 million DAUs in Q4 2025, with noted declining growth rates).
+
+---
+
+CLAIM: "core 18–34 cohort"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections explicitly state that the majority of users are aged 18–34, and the pre-written SEC Filing Highlights section references "its core 18–34 demographic."
+
+---
+
+*No additional standalone quantitative figures, price targets, specific thresholds, ratios, or named product milestones appear in the Outlook section beyond those evaluated above.*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $6.35 billion in revenue | SUPPORTED |
+| 2 | Market cap ~$9.49 billion | SUPPORTED |
+| 3 | Near lower end of 52-week range | SUPPORTED |
+| 4 | Daily active user growth (as a named metric) | SUPPORTED |
+| 5 | Core 18–34 cohort | SUPPORTED |
+
+All quantitative and forward-looking claims in the Executive Summary and Outlook are supported by the source data. Notably, the Outlook section is largely qualitative and directional, avoiding specific numerical targets or thresholds not present in the source material, which limits the number of claims requiring arithmetic verification.

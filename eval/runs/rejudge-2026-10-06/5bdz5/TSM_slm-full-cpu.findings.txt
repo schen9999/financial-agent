@@ -1,0 +1,49 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "TWD 4.44 trillion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = TWD 4,440,492,343,296, which rounds to TWD 4.44 trillion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "net income of TWD 2.22 trillion"
+LABEL: SUPPORTED
+REASON: Source data shows net_income = TWD 2,216,808,415,232, which rounds to TWD 2.22 trillion; also confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "52-week high of $487.44"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists week_52_high = 487.44, and this figure appears in the Recent Developments pre-written section.
+
+---
+
+CLAIM: "premium valuation near a 52-week high of $487.44"
+LABEL: SUPPORTED
+REASON: Current price is $485.80 vs. 52-week high of $487.44; $485.80 is within $1.64 (≈0.34%) of the high, confirming the stock is trading near its 52-week high arithmetically.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "~50% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 49.92%, which rounds to ~50%; also stated in the Financial Health and Risk Factors pre-written sections.
+
+---
+
+CLAIM: "competitive pressures from Intel or Samsung"
+LABEL: SUPPORTED
+REASON: Intel and Samsung are explicitly named as competitors in the Risk Factors pre-written section ("competitors like Samsung and Intel").
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Outlook section beyond those audited above. All qualitative directional statements (e.g., "cautiously constructive," "entrenched market leadership") contain no specific quantitative claims requiring audit.*

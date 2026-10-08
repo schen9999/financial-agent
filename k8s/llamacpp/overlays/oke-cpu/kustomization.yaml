@@ -1,0 +1,71 @@
+# CPU endpoint on the provided OKE cluster (overlay oke-provided). Optional:
+# the harness deploy (make oke-up) never applies it; make oke-llamacpp does.
+# ClusterIP only — the eval and app pods reach it in-cluster; nothing exposed.
+#
+# Sizing (VM.Standard.E5.Flex, 16 vCPU = 8 cores, two ~58 GiB and two
+# ~28 GiB allocatable): 30Gi requested == limit, so it can only schedule on a
+# ~58 GiB node and leaves the other three nodes to the harness; the GGUF is
+# mmapped (19.0 GiB of page cache charged to this pod) + ~0.6 GiB KV for the
+# 32k shared context + compute buffers. CPU 8 == limit (Guaranteed QoS):
+# --threads 8 = one per physical core, decode is memory-bandwidth bound;
+# never more threads than the CFS quota. Recorded per run from the server
+# log's system_info line (runbook).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+
+images:
+  - name: llamacpp-backend
+    newName: ghcr.io/ggml-org/llama.cpp
+    digest: sha256:970168341efef973da5666ea5c362fa428ee66ba0dfa621b0f69bf3feb3320f7 # server-b11347 (CPU)
+
+patches:
+  - patch: |-
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: llamacpp-models
+        namespace: financial-agent
+      spec:
+        storageClassName: oci-bv
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: llamacpp
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: --threads
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: "8"
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: --threads-batch
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: "8"
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: --n-gpu-layers
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: "0"
+      # Same Secret the eval/app pods read SLM_CPU_API_KEY from: one key
+      # value per endpoint, created on the operator, never committed.
+      - op: replace
+        path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef
+        value:
+          name: slm-endpoints
+          key: SLM_CPU_API_KEY
+      - op: add
+        path: /spec/template/spec/containers/0/resources
+        value:
+          requests:
+            cpu: "8"
+            memory: 30Gi
+          limits:
+            cpu: "8"
+            memory: 30Gi

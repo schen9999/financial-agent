@@ -1,0 +1,57 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$674.4 billion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap = 674,394,669,056.0, which rounds to $674.4 billion; the pre-written Financial Health section also states "approximately $674.4 billion."
+
+---
+
+CLAIM: "$361.1 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data lists revenue = 361,060,007,936.0, which rounds to $361.1 billion; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "9.07% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data lists profit_margin = 0.09072, which rounds to 9.07%; confirmed in the pre-written Financial Health section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "strong upstream earnings growth"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly state upstream earnings rose from $5.402 billion (Q2 2025) to $7.927 billion (Q2 2026), confirming strong upstream earnings growth.
+
+---
+
+CLAIM: "volume growth in key assets like Guyana and the Permian Basin"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly name "Guyana and the Permian basin" as drivers of advantaged volume growth contributing $1.140 billion in Q2 2026 and $1.940 billion year-to-date.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Outlook section beyond the qualitative directional statements and the named assets already checked above.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $674.4 billion market cap | SUPPORTED |
+| 2 | $361.1 billion annual revenue | SUPPORTED |
+| 3 | 9.07% net profit margin | SUPPORTED |
+| 4 | Strong upstream earnings growth | SUPPORTED |
+| 5 | Volume growth in Guyana and Permian Basin | SUPPORTED |
+
+**Overall finding:** All five verifiable quantitative or specific factual claims in the Executive Summary and Outlook sections are directly supported by the source data or pre-written sections. No figures are unsupported or require inference beyond direct reading of the source. The Outlook section is notably qualitative and contains very few hard numbers, which limits the audit surface but also means there are no fabricated or misattributed figures to flag.

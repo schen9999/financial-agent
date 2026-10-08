@@ -1,0 +1,105 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$103.6 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $103,619,002,368, which rounds to $103.6 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$1.50 trillion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $1,495,812,145,152, which rounds to $1.50 trillion; also stated in the Financial Health section.
+
+---
+
+CLAIM: "3.67% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists profit_margin_pct as 3.67.
+
+---
+
+CLAIM: "trailing P/E of 350.68"
+LABEL: SUPPORTED
+REASON: Source data lists pe_ratio as 350.67593, which rounds to 350.68.
+
+---
+
+CLAIM: "forward P/E of 176.59"
+LABEL: SUPPORTED
+REASON: Source data lists forward_pe as 176.58551, which rounds to 176.59.
+
+---
+
+CLAIM: "pulled back 24% from its 52-week high"
+LABEL: SUPPORTED
+REASON: Computing the decline: (498.83 − 378.73) / 498.83 = 120.10 / 498.83 = 24.08%, which rounds to 24%; this matches the claim and is also stated in the Recent Developments pre-written section.
+
+---
+
+CLAIM: "autonomous driving systems and the Cybercab" (as named product milestones)
+LABEL: SUPPORTED
+REASON: Both autonomous driving systems and the Cybercab are explicitly named in the SEC Filing Highlights and Risk Factors pre-written sections, as well as the RAG SEC Highlights.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "single-source supplier dependencies" (as a named risk)
+LABEL: SUPPORTED
+REASON: Explicitly stated in the Risk Factors pre-written section and RAG SEC Highlights under Supply Chain Vulnerabilities.
+
+---
+
+CLAIM: "exposure to tariff-driven cost inflation" (as a named risk)
+LABEL: SUPPORTED
+REASON: The Risk Factors pre-written section explicitly references "trade policy changes, tariffs, material inflation" and the RAG data references "2025 tariff increases affecting supply chain costs."
+
+---
+
+CLAIM: "Cybercab" (as a named product milestone in the Outlook)
+LABEL: SUPPORTED
+REASON: The Cybercab is explicitly named in the SEC Filing Highlights, Risk Factors pre-written sections, and RAG SEC Highlights.
+
+---
+
+CLAIM: "autonomous driving services" (as a named product milestone in the Outlook)
+LABEL: SUPPORTED
+REASON: Autonomous driving systems/solutions are explicitly named across multiple pre-written sections and RAG data.
+
+---
+
+CLAIM: "critical battery material supply and internal cell production timelines" (as a named watch-item)
+LABEL: SUPPORTED
+REASON: Battery cell manufacturing timelines and critical materials (lithium, nickel) are explicitly discussed in the SEC Filing Highlights, Risk Factors, and RAG SEC Highlights sections.
+
+---
+
+CLAIM: "Tesla's acknowledged forecasting limitations" across "diverse global markets"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights pre-written section explicitly states "Tesla acknowledges limited historical accuracy in demand forecasting across diverse global markets," and the RAG data corroborates this.
+
+---
+
+CLAIM: "visible improvement in net profit margins" (as a forward-looking threshold for a constructive view)
+LABEL: INFERENCE
+REASON: No specific margin target or threshold figure is given; this is a directional/qualitative forward-looking condition derived from the context's emphasis on thin 3.67% margins, not a specific quantitative claim requiring verification against source data.
+
+---
+
+CLAIM: "on-time delivery of key new products with demonstrated consumer adoption" (as a forward-looking condition)
+LABEL: INFERENCE
+REASON: No specific delivery date or adoption metric is cited; this is a qualitative forward-looking condition derived from the execution risk themes in the pre-written sections, not a specific quantitative figure.
+
+---
+
+**SUMMARY OF FINDINGS**
+
+All specific quantitative figures in the Executive Summary and Outlook (revenue, market cap, profit margin, trailing P/E, forward P/E, and the 24% pullback from the 52-week high) are **SUPPORTED** by the source data. Named product milestones (Cybercab, autonomous driving) and named risk factors (single-source suppliers, tariffs, battery materials, demand forecasting) are likewise **SUPPORTED**. The two forward-looking conditions in the Outlook's bull/bear framework are qualitative directional statements labeled **INFERENCE**, as they derive logically from present context facts without introducing absent figures. No claims are **UNSUPPORTED**.

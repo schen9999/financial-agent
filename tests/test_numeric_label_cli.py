@@ -197,3 +197,56 @@ def test_backtest_regeneration_keeps_notes(tmp_path):
     assert _merge_verdicts([fresh], path) == 1
     assert fresh["verdict"] == "TRUE_ERROR"
     assert fresh["note"] == "checked the 10-K"
+
+
+def _drafts(path, rows):
+    fields = ["id", "run", "ticker", "stated", "draft_verdict", "rule", "rationale"]
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=fields, lineterminator="\n")
+        w.writeheader()
+        w.writerows(rows)
+
+
+def test_drafts_shown_enter_accepts_override_changes_undo_restores(tmp_path):
+    path = tmp_path / "adj.csv"
+    _write(path, [_row(1, "9jzmj", "full", "baseline"), _row(2, "9jzmj", "full", "baseline")])
+    drafts = tmp_path / "drafts.csv"
+    _drafts(drafts, [
+        {"id": "1", "run": "9jzmj", "ticker": "AAPL", "stated": "$1,000",
+         "draft_verdict": "TRUE_ERROR", "rule": "9", "rationale": "dollars for a JPY amount"},
+        {"id": "2", "run": "9jzmj", "ticker": "AAPL", "stated": "$1,000",
+         "draft_verdict": "TRUE_ERROR", "rule": "9", "rationale": "same"}])
+    out = io.StringIO()
+    # row 1: f overrides, u undoes it (verdict and tag), Enter accepts; row 2: Enter.
+    run(path, inp=_feed(["f", "u", "", ""]), out=out, drafts_path=drafts)
+    rows = _read(path)
+    assert "draft      : TRUE_ERROR (rule 9) — dollars for a JPY amount" in out.getvalue()
+    assert "[Enter] accept draft" in out.getvalue()
+    assert (rows["1"]["verdict"], rows["1"]["note"]) == ("TRUE_ERROR", "draft TRUE_ERROR accepted")
+    assert (rows["2"]["verdict"], rows["2"]["note"]) == ("TRUE_ERROR", "draft TRUE_ERROR accepted")
+    # the override was undone together with its note tag: no "changed" left behind
+    assert "changed" not in rows["1"]["note"]
+
+
+def test_override_is_recorded_and_mismatched_drafts_refused(tmp_path):
+    import pytest
+    path = tmp_path / "adj.csv"
+    _write(path, [_row(1, "9jzmj", "full", "baseline")])
+    drafts = tmp_path / "drafts.csv"
+    _drafts(drafts, [{"id": "1", "run": "9jzmj", "ticker": "AAPL", "stated": "$1,000",
+                      "draft_verdict": "TRUE_ERROR", "rule": "9", "rationale": "r"}])
+    run(path, inp=_feed(["f"]), out=io.StringIO(), drafts_path=drafts)
+    assert (_read(path)["1"]["verdict"], _read(path)["1"]["note"]) == (
+        "FALSE_POSITIVE", "draft TRUE_ERROR changed")
+    bad = tmp_path / "bad.csv"
+    _drafts(bad, [{"id": "1", "run": "8vpq6", "ticker": "AAPL", "stated": "$1,000",
+                   "draft_verdict": "TRUE_ERROR", "rule": "9", "rationale": "r"}])
+    _write(path, [_row(1, "9jzmj", "full", "baseline")])
+    with pytest.raises(SystemExit):
+        run(path, inp=_feed(["q"]), out=io.StringIO(), drafts_path=bad)
+
+
+def test_currency_label_rows_get_rule_9_not_rule_5():
+    from eval.numeric_check.label_cli import CURRENCY_LABEL_REMINDER
+    r = dict(_row(1, "9jzmj", "full", "baseline", ticker="TM", field="revenue"), kind="currency_label")
+    assert reminders(r) == [CURRENCY_LABEL_REMINDER]

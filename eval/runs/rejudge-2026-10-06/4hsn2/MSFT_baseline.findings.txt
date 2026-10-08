@@ -1,0 +1,79 @@
+I will now systematically audit every quantitative, positional, and forward-looking claim in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "generating $331.8 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = $331,839,012,864, which rounds to $331.8 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$133.7 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net_income = $133,748,998,144, which rounds to $133.7 billion; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "40.3% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 40.3; also confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "trades near the high end of its 52-week range at $525.18"
+LABEL: SUPPORTED
+REASON: Current price = $525.18; 52-week high = $553.72; 52-week low = $349.20. The range is $204.52 wide; $525.18 sits ($525.18 − $349.20) / ($553.72 − $349.20) = $175.98 / $204.52 ≈ 86.0% of the way from low to high, confirming it is near the high end. Arithmetic holds.
+
+---
+
+CLAIM: "forward P/E of 22.18x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 22.181002, which rounds to 22.18x; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "competitive pressures disclosed in the company's most recent 10-K and 10-Q filings"
+LABEL: SUPPORTED
+REASON: Both the 10-K (filed 2026-07-29) and 10-Q (filed 2026-04-29) summaries in the source data explicitly disclose competitive pressures in their Item 1A Risk Factors sections; the Recent Developments pre-written section also references both filings.
+
+---
+
+CLAIM: "substantial capital investments in AI model development and datacenter expansion"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly states "The company is making substantial investments in developing, training, and deploying AI models and cloud-based services, including datacenter expansion," mirrored in the Risk Factors pre-written section.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "40.3% profit margin demonstrates that the business can absorb investment pressure while remaining highly profitable"
+LABEL: SUPPORTED
+REASON: The 40.3% profit margin figure is explicitly present in the source data (profit_margin_pct = 40.3); the characterization as demonstrating ability to absorb investment pressure is a direct restatement of the Financial Health pre-written section's language about operational efficiency.
+
+---
+
+CLAIM: "energy pricing, component availability, and model inference costs are all variables outside management's full control"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly lists "energy costs," "component availability and pricing," and "model training and inference costs" as sources of cost structure uncertainty; the Risk Factors pre-written section mirrors this language.
+
+---
+
+CLAIM: "specialized competitors may prove more agile in capturing niche demand"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section states "small, specialized firms whose narrower product lines may let them be more effective in deploying technical, marketing, and financial resources," and the 10-Q summary contains identical language; this is a direct restatement.
+
+---
+
+CLAIM: "the pace at which platform ecosystem alternatives erode traditional software demand"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly states "competing platforms for smartphones and tablets have reduced demand for PC operating systems," and the Risk Factors pre-written section references "Platform Ecosystem Vulnerability" with the same substance.
+
+---
+
+**Summary of findings:** All quantitative figures (revenue, net income, profit margin, current price, forward P/E, 52-week range positioning) are SUPPORTED by the source data. All qualitative forward-looking characterizations in the Outlook are grounded in language explicitly present in the pre-written sections or RAG source material. No claims are UNSUPPORTED or require labeling as INFERENCE. No figures fail arithmetic recomputation checks.

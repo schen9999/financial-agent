@@ -1,0 +1,71 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "market capitalization of $2.45 trillion USD"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 2,449,053,057,024.0 USD ≈ $2.45 trillion; the pre-written Financial Health section also states "$2.45 trillion USD."
+
+---
+
+CLAIM: "revenue of 4.44 trillion TWD"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 4,440,492,343,296.0 TWD ≈ 4.44 trillion TWD, confirmed in the pre-written sections.
+
+---
+
+CLAIM: "49.92% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 49.92; verified: net_income / revenue = 2,216,808,415,232 / 4,440,492,343,296 ≈ 49.92%.
+
+---
+
+CLAIM: "trailing P/E of 35.06x"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 35.05568, which rounds to 35.06x.
+
+---
+
+CLAIM: "forward P/E of 21.54x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 21.53696, which rounds to 21.54x.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "Samsung or Intel" (as competitors in advanced node manufacturing)
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section explicitly names "Samsung and Intel in advanced node manufacturing" as competitors.
+
+---
+
+CLAIM: "49.92% profit margin" (second mention, in Outlook)
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 49.92; same figure verified above.
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, specific percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already audited above. All qualitative directional statements (e.g., "cautiously constructive," "durable competitive advantages," "meaningful multiple compression") contain no specific quantitative claims requiring audit.*
+
+---
+
+### Summary Table
+
+| Claim | Label |
+|---|---|
+| Market cap $2.45 trillion USD | SUPPORTED |
+| Revenue 4.44 trillion TWD | SUPPORTED |
+| Profit margin 49.92% | SUPPORTED |
+| Trailing P/E 35.06x | SUPPORTED |
+| Forward P/E 21.54x | SUPPORTED |
+| Samsung or Intel as competitors | SUPPORTED |
+| Profit margin 49.92% (Outlook) | SUPPORTED |
+
+**All auditable quantitative and factual claims in the Executive Summary and Outlook are SUPPORTED by the source data.** No unsupported or inference-only claims were identified. Notably, the brief appropriately avoids introducing any figures (e.g., specific price targets, growth rate projections, customer revenue concentrations, capex figures) that are absent from the source data.

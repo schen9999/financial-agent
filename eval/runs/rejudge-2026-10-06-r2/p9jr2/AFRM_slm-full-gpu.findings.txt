@@ -1,0 +1,67 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "a $23.88 billion market capitalization"
+LABEL: SUPPORTED
+REASON: The source data lists market_cap = 23,879,301,120.0, which rounds to $23.88 billion, and the same figure appears in the Financial Health pre-written section.
+
+---
+
+CLAIM: "a robust 45.29% profit margin"
+LABEL: SUPPORTED
+REASON: The source data lists profit_margin = 0.45289, which equals 45.289%, rounding to 45.29%; this figure also appears explicitly in the Financial Health section.
+
+---
+
+CLAIM: "a 52-week low of $42.10"
+LABEL: SUPPORTED
+REASON: The source data lists week_52_low = 42.095, which rounds to $42.10, consistent with the Recent Developments pre-written section.
+
+---
+
+CLAIM: "to $70.77"
+LABEL: SUPPORTED
+REASON: The source data lists current_price = 70.77, explicitly matching the claim.
+
+---
+
+CLAIM: "a trailing P/E ratio of 12.80"
+LABEL: SUPPORTED
+REASON: The source data lists pe_ratio = 12.797467, which rounds to 12.80, and the same figure appears in the Financial Health section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "strong current profitability"
+LABEL: SUPPORTED
+REASON: This is a directional restatement of the 45.29% profit margin and $1.93 billion net income present in the source data; no specific number is asserted beyond what is confirmed.
+
+---
+
+CLAIM: "a valuation that appears reasonable relative to earnings power"
+LABEL: INFERENCE
+REASON: This is a qualitative directional restatement derived from the trailing P/E of 12.80 noted in the source data and echoed in the Financial Health section, requiring only the obvious interpretive step that a sub-13x P/E is "reasonable."
+
+---
+
+CLAIM: "reliance on a limited set of funding partners"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights and Risk Factors sections explicitly state reliance on a small number of originating bank partners (Celtic Bank and Lead Bank) and card-issuing bank partners.
+
+---
+
+CLAIM: "the critical regulatory risk regarding the bank partner model"
+LABEL: SUPPORTED
+REASON: Both the SEC Filing Highlights and Risk Factors sections explicitly identify the risk that the originating bank partner model could be deemed impermissible, leading to penalties or operational restrictions.
+
+---
+
+**NOTE — Claims not present in the Outlook that require no entry:** The Outlook contains no additional specific quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers beyond those audited above. The phrase "trajectory of services margins" is qualitative and references no specific figure, so no separate entry is required. All quantitative and forward-looking claims have been covered.

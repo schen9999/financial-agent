@@ -1,0 +1,104 @@
+STOCK DATA:
+{
+  "ticker": "CALM",
+  "company_name": "Cal-Maine Foods, Inc.",
+  "current_price": 66.67,
+  "currency": "USD",
+  "market_cap": 3114196480.0,
+  "pe_ratio": 53.336,
+  "forward_pe": 65.68473,
+  "week_52_high": 95.57,
+  "week_52_low": 63.5,
+  "revenue": 2528636928.0,
+  "net_income": 58727000.0,
+  "profit_margin": 0.02322,
+  "dividend_yield": 7.2,
+  "sector": "Consumer Defensive",
+  "industry": "Farm Products"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-07-22",
+    "summary": "Item 1A. Risk Factors and elsewhere in this report as well as those included in other reports we file from time to time with the Securities and Exchange Commission (the \u201cSEC\u201d) (including our Quarterly Reports on Form 10-Q and Current Reports on Form 8-K), (ii) changes in wholesale shell egg market prices, (iii) changes in the demand for shell eggs and our prepared foods offerings, (iv) increases in feed costs for our shell egg operations as well as increases in input costs for prepared foods, (v) our ability to predict and meet demand for cage -free and other specialty eggs, (vi) the risks and hazards inherent in shell egg, egg products and prepared foods operations (including, as applicable, disease, pests, weather conditions, and potential for product recall), including but not limited t"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-09-30",
+    "summary": "Item 1A Risk Factors of our 202 6 Annual Report, as well as those included in other reports we file from time to time with the Securities and Exchange Commission (the \u201cSEC\u201d) (including our Quarterly Reports on Form 10-Q and Current Reports on Form 8-K). The actual timing, number and value of shares repurchased under our share repurchase program will be determined by management in its discretion and will depend on a number of factors, including but not limited to, the market price of our Common Stock and general market and economic conditions. The share repurchase program may be suspended, modified or discontinued at any time without prior notice. Readers are cautioned not to place undue reliance on forward -looking statements because, while we believe the assumptions on which the forward -"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from Cal-Maine Foods' Recent SEC Filings
+
+## Company Overview
+Cal-Maine Foods is the largest egg company in the United States and a leading player in the egg-based food industry. Founded in 1957 and headquartered in Ridgeland, Mississippi, the company operates a comprehensive portfolio spanning conventional to specialty eggs (cage-free, organic, pasture-raised, etc.) and prepared foods products.
+
+## Strategic Growth Initiatives
+The company is pursuing several key growth strategies:
+- Increasing the proportion of specialty shell eggs in its sales mix
+- Expanding prepared foods and egg products businesses
+- Strengthening its portfolio of branded offerings (including Eggland's Best®, Land O'Lakes®, and Van's®)
+- Pursuing strategic acquisitions and organic investments
+
+## Recent Acquisitions
+Cal-Maine has been actively acquiring complementary businesses, including:
+- **Echo Lake Foods** (June 2025) for $289.5 million - expanding prepared foods capabilities
+- **Creighton Brothers** (March 2026) for $129.3 million - adding shell egg production and egg products capacity
+- **Van's Foods assets** (May 2026) for $24.8 million - supporting prepared foods diversification
+- **Clean Egg** (October 2025) for $23.7 million - adding cage-free and free-range production
+- **ISE America** (Q1 fiscal 2025) - expanding Northeast and Mid-Atlantic market presence
+
+## Prepared Foods Expansion
+Multiple capacity expansion projects are underway expected to grow prepared foods production by more than 30% from mid-2027 through 2028, including scrambled egg production, pancake lines, and equipment installations through joint ventures.
+
+## Risk Factors
+Key risks include HPAI outbreaks, feed cost volatility, market price fluctuations, integration challenges from acquisitions, and competitive pressures.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses several significant risk factors affecting its business:
+
+**Market and Operational Risks:**
+- Fluctuations in wholesale shell egg market prices
+- Changes in demand for shell eggs and prepared foods offerings
+- Increases in feed costs and input costs for prepared foods
+- Ability to predict and meet demand for cage-free and specialty eggs
+
+**Disease and Environmental Hazards:**
+- Risks inherent in shell egg, egg products, and prepared foods operations including disease, pests, weather conditions, and product recall potential
+- Current outbreak of Highly Pathogenic Avian Influenza (HPAI) affecting poultry in the U.S., Canada, and other countries, which impacted operations in fiscal 2024 and March 2026
+
+**Acquisition and Integration Risks:**
+- Risks and obligations from recent or future acquisitions, such as the Echo Lake Foods acquisition completed in June 2025
+- Risks that conditions for completing pending acquisitions may not be met
+- Ability to successfully integrate recently acquired businesses and realize expected benefits including synergies, cost savings, and margin expansion
+
+**Competitive and Operational Challenges:**
+- Ability to produce, supply, and distribute products efficiently and reliably
+- Competition with existing competitors and new market entrants
+- Ability to retain existing customers and acquire new customers
+
+**Regulatory and Economic Risks:**
+- Government, customer, and consumer reactions to high egg market prices
+- Potential new or expanded government regulations
+- Changes in inflation, interest rates, and trade and tariff policies
+- Global instability from geopolitical conflicts
+
+**Other Risks:**
+- Loss or expiration of registered trademarks or intellectual property
+- Adverse results in pending litigation and legal matters

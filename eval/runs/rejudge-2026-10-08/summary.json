@@ -1,0 +1,38 @@
+{
+  "xgtxx": {
+    "supported": 244,
+    "unsupported": 4,
+    "inference": 11,
+    "claims": 258,
+    "numeric": 165,
+    "unsupported_numeric": 1,
+    "unsupported_outlook": 2,
+    "total": 259,
+    "qualitative": 94,
+    "unsupported_qualitative": 3
+  },
+  "vks4c": {
+    "supported": 371,
+    "unsupported": 11,
+    "inference": 26,
+    "claims": 407,
+    "numeric": 275,
+    "unsupported_numeric": 4,
+    "unsupported_outlook": 4,
+    "total": 408,
+    "qualitative": 133,
+    "unsupported_qualitative": 7
+  },
+  "2mzdd": {
+    "supported": 375,
+    "unsupported": 14,
+    "inference": 24,
+    "claims": 413,
+    "numeric": 264,
+    "unsupported_numeric": 4,
+    "unsupported_outlook": 10,
+    "total": 413,
+    "qualitative": 149,
+    "unsupported_qualitative": 10
+  }
+}

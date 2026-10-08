@@ -1,0 +1,67 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections, then evaluate each.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "45.29% profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly states `"profit_margin": 0.45289`, which equals 45.29% (rounded to two decimal places), and the pre-written Financial Health section confirms "profit margin of 45.29%."
+
+---
+
+CLAIM: "trailing P/E ratio of 12.80"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly states `"pe_ratio": 12.797467`, which rounds to 12.80, and the pre-written Financial Health section confirms "trailing P/E ratio of 12.80."
+
+---
+
+CLAIM: "recent 10-K and 10-Q filings"
+LABEL: SUPPORTED
+REASON: The SEC Filing Summaries confirm a 10-K filed 2026-08-27 and a 10-Q filed 2026-05-07, both explicitly present in the source data.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "exceptional current profitability"
+LABEL: INFERENCE
+REASON: This is a qualitative directional restatement of the 45.29% profit margin and 12.80 P/E ratio, both present in the source data, requiring no additional facts beyond those already confirmed.
+
+---
+
+CLAIM: "intensifying competition from incumbents"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states "The pay-over-time industry faces intensifying competition due to low barriers to entry, emerging technologies, and innovation by large financial incumbents," and this is echoed in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "high-margin profile"
+LABEL: INFERENCE
+REASON: This is a directional restatement of the confirmed 45.29% profit margin present in the source data, requiring no additional facts.
+
+---
+
+CLAIM: "current valuation metrics suggest room for appreciation"
+LABEL: UNSUPPORTED
+REASON: No source data, filing, or pre-written section contains any price target, intrinsic value estimate, or explicit statement that current valuation metrics suggest room for price appreciation; this is an evaluative conclusion absent from the context.
+
+---
+
+CLAIM: "speculative nature of the business"
+LABEL: SUPPORTED
+REASON: The 10-K filing summary explicitly states the filing describes "an investment in our Company speculative or risky," and the Recent Developments pre-written section directly references "the stock's speculative nature."
+
+---
+
+CLAIM: "sustainability of growth rates in a fluctuating interest rate environment"
+LABEL: SUPPORTED
+REASON: The RAG — Risk Factors and SEC Highlights both explicitly identify risks to sustaining GMV and revenue growth rates, and adverse effects from "further increases or prolonged periods of elevated market interest rates," making both components present in the source data.
+
+---
+
+**SUMMARY NOTE:** The Outlook section contains no specific numerical figures (no price targets, specific percentages, ratios, or thresholds) beyond qualitative references to metrics already confirmed in the Executive Summary. The one forward-looking evaluative claim ("room for appreciation") is UNSUPPORTED as it introduces a conclusion not grounded in any source figure or statement.

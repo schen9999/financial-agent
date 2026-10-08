@@ -1,0 +1,90 @@
+STOCK DATA:
+{
+  "ticker": "WMT",
+  "company_name": "Walmart Inc.",
+  "current_price": 104.26,
+  "currency": "USD",
+  "market_cap": 829709352960.0,
+  "pe_ratio": 37.775364,
+  "forward_pe": 32.324173,
+  "week_52_high": 135.16,
+  "week_52_low": 98.88,
+  "revenue": 735839977472.0,
+  "net_income": 22076000256.0,
+  "profit_margin": 0.03,
+  "dividend_yield": 0.95,
+  "sector": "Consumer Defensive",
+  "industry": "Discount Stores"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": "India launches trade portal to help exporters reach US buyers",
+    "source": "Bloomberg",
+    "published_at": "2026-09-10T07:27:01Z",
+    "description": "India launches an online platform to connect exporters with US buyers as New Delhi steps up efforts to boost bilateral trade to $500 billion by 2030."
+  },
+  {
+    "title": "Paytm expands into agentic AI with new enterprise service Pi",
+    "source": "Bloomberg",
+    "published_at": "2026-09-09T01:35:00Z",
+    "description": "Paytm is entering enterprise AI with Paytm Intelligence, offering AI agents for sales, customer service and operations to financial institutions in India and UAE."
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-03-13",
+    "summary": "Item 1A. Risk Factors \" under the sub-caption \"Legal, Tax, Regulatory, Compliance, Reputational and Other Risks.\" Our Shared Value Priorities As part of our purpose to help people save money and live better, we seek to operate our business in a way that creates shared value. We believe we maximize long-term value and competitive advantage by delivering for stakeholders, customers, associates, shareholders, suppliers, partners and communities. Addressing their needs strengthens our business by building trust, creating opportunity, managing cost and risk, developing future capabilities and reinforcing the systems on which we rely. We prioritize stakeholder issues with the greatest potential to create long-term shared value \u2013 those most relevant to our business, important to stakeholder trust"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-28",
+    "summary": "Item 1A. Risk Factors \" and \" Item 5. Other Information .\" The Company engaged in the process established by the U.S. Customs and Border Protection (\"CBP\") for refunds of tariffs that the Company paid as the importer of record under the International Emergency Economic Powers Act. During the quarter ended July 31, 2026, the Company received approximately $2.9 billion in tariff refunds pursuant to the CBP process, which were recorded as a reduction to cost of sales and represent substantially all of the refunds requested by the Company. A significant portion of these refunds was invested into customer-focused initiatives during the current quarter, primarily through price investment and other cost mitigation strategies, with continued prioritization of price investment expected through fisc"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] Based on the provided context from Walmart’s Annual Report on Form 10-K, the key takeaways regarding executive leadership, corporate governance, and human capital management are as follows:
+
+**Executive Leadership Changes**
+Several executive officers have assumed new roles effective February 2026, reflecting a significant leadership transition:
+*   **John Furner** becomes President and Chief Executive Officer.
+*   **David Guggina** becomes Executive Vice President, President and Chief Executive Officer, Walmart U.S.
+*   **Christopher Nicholas** becomes Executive Vice President, President and Chief Executive Officer, Walmart International.
+*   **Seth Dallaire** becomes Executive Vice President and Chief Growth Officer.
+*   **Daniel Danker** becomes Executive Vice President, AI Acceleration, Product and Design (effective August 2025).
+*   **Dwayne Milum** becomes Senior Vice President and Controller.
+
+Other notable executives include Daniel J. Bartlett (Executive Vice President, Corporate Affairs), Suresh Kumar (Global Chief Technology Officer and Chief Development Officer), Donna Morris (Global People and Chief People Officer), and John David Rainey (Chief Financial Officer).
+
+**Corporate Governance and Transparency**
+*   Walmart discloses substantive amendments or waivers to its Reporting Protocols for Senior Financial Officers or Code of Conduct for its CEO, CFO, and Controller on its website (www.stock.walmart.com) under the Corporate Governance section. These disclosures remain available for 12 months.
+*   SEC filings, including Forms 10-K, 10-Q, and 8-K, are available free of charge on the company’s website and through the SEC’s website (www.sec.gov).
+
+**Human Capital and Shared Value Priorities**
+Walmart employs approximately 2.1 million associates globally (1.6 million in the U.S. and 0.5 million internationally). The company focuses on creating shared value through four main priorities:
+1.  **Opportunity:** Expanding economic opportunities for associates, suppliers, and communities through workforce strategy and supplier development programs.
+2.  **Sustainability:** Enhancing operational resilience, reducing greenhouse gas emissions, regenerating natural resources, and reducing waste.
+3.  **Community:** Contributing to community vitality through quality jobs, local supplier investment, and crisis assistance.
+4.  **Ethics and Integrity:** Promoting compliance, strong governance, responsible data use, and human rights respect.
+
+**Workforce Strategy and Development**
+*   **Digital and AI Focus:** The workforce strategy aims to create a digitally skilled, AI-enabled workforce by reshaping roles to emphasize human strengths like creativity and leadership while using AI to automate repetitive tasks.
+*   **Development Programs:** Initiatives include Walmart Academy for retail skills and leadership, and Live Better U, which offers eligible associates access to high school diplomas, certificates, and college degrees. Company-wide AI learning pathways and certifications are also provided.
+*   **Career Mobility:** Approximately 75% of U.S. salaried store, club, and supply chain management associates began their careers in hourly positions, highlighting internal advancement opportunities.
+*   **Associate Experience:** Walmart prioritizes financial, physical, and mental well-being through competitive wages and benefits such as 401(k) matches, stock purchase plan matches, predictable scheduling, paid time off, and comprehensive medical and behavioral health coverage. The culture is grounded in the core value of "Respect the Individual."
+
+RAG — RISK FACTORS:
+[From Pinecone cache] The primary risk factors disclosed are those that could materially and adversely affect the business, results of operations, financial position, and liquidity. Specifically, the text highlights **Strategic Risks**, noting that the failure to successfully execute the omnichannel strategy and the costs associated with investments in eCommerce and technology may have a material adverse effect.
+
+Additionally, the document references a broader category of risks under "Legal, Tax, Regulatory, Compliance, Reputational and Other Risks," which includes priorities such as:
+*   **Opportunity:** Expanding economic opportunity for associates, suppliers, and communities.
+*   **Sustainability:** Enhancing operational resilience, reducing greenhouse gas emissions, regenerating natural resources, and reducing waste.
+*   **Community:** Contributing to community vitality through job creation, local supplier investment, and crisis assistance.
+*   **Ethics and Integrity:** Promoting compliance, strong governance, responsible public policy engagement, and respecting human rights.
+
+The disclosure notes that these risk factors do not identify all potential risks and that past events are provided only as examples, not as representations of future likelihood.

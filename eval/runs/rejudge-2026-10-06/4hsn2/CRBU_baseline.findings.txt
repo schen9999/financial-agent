@@ -1,0 +1,99 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of $127.6 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap as 127,576,944.0 USD, which rounds to $127.6 million; also confirmed in the pre-written Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "accumulated losses of $596.5 million"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both explicitly state "accumulated deficit reached $596.5 million as of December 31, 2025," and the SEC Filing Highlights pre-written section confirms this figure.
+
+---
+
+CLAIM: "no product revenue to date"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "No revenue has been generated from product sales to date," confirmed across multiple pre-written sections.
+
+---
+
+CLAIM: "The stock trades near the bottom of its 52-week range at $1.19"
+LABEL: SUPPORTED
+REASON: Current price is $1.19 (source data), 52-week low is $1.17, and 52-week high is $3.535; $1.19 is arithmetically near the low end of the $1.17–$3.535 range, confirmed by positional check.
+
+---
+
+CLAIM: "close to its 52-week low of $1.17"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists week_52_low as 1.17, and the pre-written Recent Developments section confirms the 52-week range of $1.17–$3.54; $1.19 vs. $1.17 low is arithmetically close.
+
+---
+
+CLAIM: "secure the additional capital required to sustain operations beyond the next 12 months"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both state that current cash of $142.8 million is expected to fund operations for "at least the next 12 months," and the SEC Filing Highlights pre-written section confirms this language.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "cash runway limited to approximately 12 months"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states management expects funds "sufficient to support current operating plans for at least the next 12 months from the filing date," confirmed in the Risk Factors pre-written section as "~12 months."
+
+---
+
+CLAIM: "a deeply negative net income trajectory"
+LABEL: SUPPORTED
+REASON: Net income is reported as -$103,403,000 in the stock data, and the RAG sections report net losses of $148.1 million (2025) and $149.1 million (2024), confirming a deeply negative and sustained loss trajectory.
+
+---
+
+CLAIM: "a stock price near its 52-week low"
+LABEL: SUPPORTED
+REASON: Current price $1.19 vs. 52-week low $1.17 and 52-week high $3.535; $1.19 is arithmetically 0.02 above the low and 66% below the high, confirming the stock is near its 52-week low.
+
+---
+
+CLAIM: "the $142.8 million on hand"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "cash, cash equivalents, and marketable securities of $142.8 million as of December 31, 2025," confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "vispa-cel pivotal trial" (as a named product milestone)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly names "the planned pivotal clinical trial for vispa-cel," confirmed in the SEC Filing Highlights and Risk Factors pre-written sections.
+
+---
+
+CLAIM: "The advancement of CB-011 represents a secondary catalyst"
+LABEL: SUPPORTED
+REASON: CB-011 is explicitly named in the RAG SEC Highlights ("vispa-cel and CB-011 product candidates") and the SEC Filing Highlights pre-written section as a pipeline asset requiring additional financing to advance.
+
+---
+
+CLAIM: "any regulatory signals from the FDA regarding the cell therapy competitive landscape" (as a forward-looking watch item)
+LABEL: UNSUPPORTED
+REASON: Neither the raw source data, the RAG sections, nor any pre-written section mentions the FDA by name or references the cell therapy competitive landscape as a specific watch variable; this is an addition not grounded in the provided context.
+
+---
+
+CLAIM: "the cautious stance would shift toward constructive if vispa-cel delivers compelling clinical data and the company secures non-dilutive or favorably structured financing"
+LABEL: UNSUPPORTED
+REASON: The specific qualifier "non-dilutive or favorably structured financing" as a threshold condition for shifting the investment stance does not appear in any source data, RAG section, or pre-written section; the source only notes risk of dilution from future raises, not this specific financing structure as a pivot condition.
+
+---
+
+CLAIM: "it would deepen further if trial results disappoint, capital markets tighten, or the cash runway shortens without a clear funding solution in place"
+LABEL: INFERENCE
+REASON: This is a directional restatement directly derivable from the pre-written Risk Factors section's explicit warnings about trial failures, inability to raise capital, and the 12-month cash runway constraint, with no new facts introduced beyond those present in the source.

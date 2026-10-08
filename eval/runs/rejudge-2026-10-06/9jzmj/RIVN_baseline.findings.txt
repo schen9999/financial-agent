@@ -1,0 +1,109 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$5.9 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $5,882,999,808, which rounds to $5.9 billion; also explicitly stated in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "$20.7 billion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $20,704,407,552, which rounds to $20.7 billion; also confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "net loss of $3.2 billion"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$3,232,999,936, which rounds to -$3.2 billion; also confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "Trading near its 52-week low of $12.39"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists week_52_low as $12.39, confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "current price of $14.30"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists current_price as $14.30, confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "planned April 2026 launch of Autonomy+ subscription fees"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section explicitly state "the company plans to begin charging fees for Autonomy+ advanced driver assistance features starting April 2026."
+
+---
+
+CLAIM: "R2 launch and begin Q2 2026 customer deliveries on schedule"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section explicitly state "The company expects to begin customer deliveries of the R2 model in Q2 2026."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "Autonomy+ subscriptions" (as a recurring revenue stream)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly references Autonomy+ as a planned subscription fee service beginning April 2026, and the SEC Filing Highlights pre-written section confirms this.
+
+---
+
+CLAIM: "FleetOS" (as a recurring revenue stream)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "FleetOS, the proprietary fleet management platform, is offered as a subscription service for commercial vehicles," confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "expansion of Universal Hands Free to a meaningful road network"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights states Rivian launched Universal Hands Free in December 2025, expanding from fewer than 150,000 miles to over 3.5 million miles of road availability; confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "planned R2 launch" (as a tangible milestone)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section explicitly reference R2 customer deliveries expected in Q2 2026.
+
+---
+
+CLAIM: "on-time execution of R2 deliveries beginning Q2 2026"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section explicitly state customer deliveries of the R2 model are expected to begin in Q2 2026.
+
+---
+
+CLAIM: "Autonomy+ once fees begin in April 2026"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section explicitly state Autonomy+ subscription fees are planned to begin in April 2026.
+
+---
+
+CLAIM: "progress toward positive unit economics at the Normal facility"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section confirm Rivian's manufacturing facility is located in Normal, Illinois; no specific unit economics figures are claimed, making this a qualitative directional statement grounded in the source.
+
+---
+
+CLAIM: "post-tax-credit demand environment" / "post-tax-credit adjustment period"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors pre-written section explicitly state the federal EV tax credits expired on September 30, 2025, causing demand fluctuations, confirming the factual basis for this characterization.
+
+---
+
+CLAIM: "VW partnership" / "Volkswagen joint venture"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights, 10-K filing summary, and Financial Health pre-written section all explicitly reference the equally-owned Rivian-Volkswagen Group joint venture for next-generation electrical architecture and software technology.
+
+---
+
+**SUMMARY NOTE:** No quantitative claims appear in the Outlook section beyond those already audited above (all of which are grounded in the source data). All forward-looking figures cited (April 2026 Autonomy+ fees, Q2 2026 R2 deliveries) are explicitly present in the source material. No claims were found to be UNSUPPORTED or INFERENCE.

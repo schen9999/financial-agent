@@ -1,0 +1,29 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "net profit margin of 50.78%"
+LABEL: SUPPORTED
+REASON: The raw source data lists `profit_margin: 0.50782`, which equals 50.782%, rounding to 50.78% as stated.
+
+---
+
+CLAIM: "$44.49 billion in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists `revenue: 44487999488.0`, which equals approximately $44.49 billion; the Pre-written Financial Health section also states "$44.49 billion in revenue."
+
+---
+
+**OUTLOOK**
+
+No specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section. All claims in the Outlook are qualitative or directional in nature (e.g., "cautiously constructive," "entrenched network effects," "hostile regulatory backdrop," "directly threaten," "the thesis strengthens if," "the view weakens if"). There are no numerical claims to audit in this section.
+
+---
+
+**SUMMARY**
+
+The Executive Summary contains only two quantitative claims, both of which are fully supported by the raw source data. The Outlook section contains no quantitative or forward-looking numerical claims requiring verification.

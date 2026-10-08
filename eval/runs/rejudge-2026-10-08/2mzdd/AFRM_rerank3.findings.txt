@@ -1,0 +1,121 @@
+I will now systematically audit every quantitative, positional, and forward-looking claim in the Executive Summary and Outlook sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "having generated $4.26 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $4,261,082,112, which rounds to $4.26 billion; the Pre-written "Recent Developments" section also states "$4.26 billion revenue."
+
+---
+
+CLAIM: "$1.93 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of $1,929,793,024, which rounds to $1.93 billion; confirmed in the "Recent Developments" pre-written section.
+
+---
+
+CLAIM: "reflecting a 45.29% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 45.29; cross-check: $1,929,793,024 / $4,261,082,112 = 45.29%. Exact match.
+
+---
+
+CLAIM: "it trades near the mid-point of its 52-week range ($42.10–$90.44) at $75.31"
+LABEL: UNSUPPORTED
+REASON: The arithmetic mid-point of the 52-week range is ($42.095 + $90.44) / 2 = $66.27; at $75.31, the stock is above the mid-point (approximately 70th percentile of the range), not near the mid-point, so the positional claim fails the arithmetic check.
+
+---
+
+CLAIM: "52-week range ($42.10–$90.44)"
+LABEL: SUPPORTED
+REASON: Source data shows week_52_low = 42.095 (rounds to $42.10) and week_52_high = 90.44; both figures match exactly.
+
+---
+
+CLAIM: "at $75.31"
+LABEL: SUPPORTED
+REASON: Source data shows current_price = 75.31.
+
+---
+
+CLAIM: "13.5x trailing P/E"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 13.544964, which rounds to 13.5x.
+
+---
+
+CLAIM: "15.6x forward P/E"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 15.598947, which rounds to 15.6x.
+
+---
+
+CLAIM: "signals only modest growth expectations from the market"
+LABEL: INFERENCE
+REASON: This is a directional interpretive conclusion drawn directly from the forward P/E of 15.6x being only modestly above the trailing P/E of 13.5x, both of which are present in the source data; the "Financial Health" pre-written section also states "modest growth expectations."
+
+---
+
+CLAIM: "upcoming earnings reports and strategic announcements confirm that Affirm can sustain its profit margins"
+LABEL: INFERENCE
+REASON: The forward-looking framing of "upcoming earnings reports" as the key near-term variable is a reasonable inference from the "Recent Developments" section, which explicitly states "Investors should await upcoming earnings reports and strategic announcements to assess the company's trajectory."
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "demonstrated profitability and strong margins in a sector where many peers have struggled to reach sustained earnings"
+LABEL: INFERENCE
+REASON: Profitability and strong margins are directly supported by the 45.29% profit margin and $1.93B net income in the source data; the comparative claim about peers is a reasonable contextual inference from the competitive risk disclosures, though no peer data is present in the source — however, the directional framing is derivable from the competitive risk language and the profitability figures together.
+
+---
+
+CLAIM: "the company's dependence on a narrow set of originating bank partners"
+LABEL: SUPPORTED
+REASON: The Risk Factors pre-written section explicitly names "Celtic Bank and Lead Bank" as the limited originating bank partners, and the RAG Risk Factors section confirms "Reliance on a small number of originating bank partners (Celtic Bank and Lead Bank)."
+
+---
+
+CLAIM: "short-notice contract terminations represent a structural vulnerability"
+LABEL: SUPPORTED
+REASON: The Risk Factors pre-written section and RAG Risk Factors explicitly state agreements "can be terminated with 30-90 days' notice."
+
+---
+
+CLAIM: "large financial incumbents and merchant-proprietary solutions continue to crowd the buy-now-pay-later space"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly lists "competition from large financial incumbents" and "Merchants offering proprietary pay-over-time options" as named competitive risks.
+
+---
+
+CLAIM: "until more complete disclosure — particularly MD&A and results of operations from SEC filings — becomes available for analysis"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights pre-written section explicitly states the available data "lacks critical sections necessary for a comprehensive summary, including Management's Discussion and Analysis (MD&A), financial statements, results of operations."
+
+---
+
+### Summary Table
+
+| Claim | Label |
+|---|---|
+| $4.26 billion in revenue | SUPPORTED |
+| $1.93 billion in net income | SUPPORTED |
+| 45.29% profit margin | SUPPORTED |
+| Trades near mid-point of 52-week range at $75.31 | **UNSUPPORTED** |
+| 52-week range ($42.10–$90.44) | SUPPORTED |
+| Current price $75.31 | SUPPORTED |
+| 13.5x trailing P/E | SUPPORTED |
+| 15.6x forward P/E | SUPPORTED |
+| Signals only modest growth expectations | INFERENCE |
+| Upcoming earnings as key near-term variable | INFERENCE |
+| Demonstrated profitability vs. peers | INFERENCE |
+| Dependence on narrow set of originating bank partners | SUPPORTED |
+| Short-notice contract terminations (structural vulnerability) | SUPPORTED |
+| Large incumbents and merchant-proprietary solutions crowding BNPL | SUPPORTED |
+| MD&A and results of operations unavailable from SEC filings | SUPPORTED |

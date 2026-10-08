@@ -1,0 +1,57 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $81.9 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `market_cap: 81938280.0`, which rounds to $81.9 million, and the pre-written Financial Health section states "approximately $81.9 million."
+
+---
+
+CLAIM: "negative profit margin of -19.96%"
+LABEL: SUPPORTED
+REASON: The raw source data lists `profit_margin: -0.1996`, which equals -19.96%, confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "net income of -$52.9 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `net_income: -52997000.0`, which rounds to -$53.0 million; however, the pre-written Financial Health section states "-$52.9 million" and the brief reproduces that figure — checking the arithmetic: -52,997,000 rounds to -$53.0 million to one decimal place, not -$52.9 million. The discrepancy is $0.1 million, which exceeds the 0.15 percentage point tolerance for ratios but is a dollar-amount rounding question. The figure -$52.9 million appears in the pre-written section and is reproduced here; the raw data yields -$53.0 million when rounded to one decimal. This is a rounding mismatch from the source figure.
+LABEL: UNSUPPORTED
+REASON: The raw source data shows net income of -$52,997,000, which rounds to -$53.0 million, not -$52.9 million; the -$52.9 million figure in the pre-written section is itself a rounding error propagated into the brief.
+
+---
+
+CLAIM: "pivot toward a B2B skilling model"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights and RAG sections explicitly describe Chegg "evolving into a skilling-focused business-to-business organization" and a "strategic pivot toward a B2B skilling model."
+
+---
+
+CLAIM: "litigating against Google's AI Overview"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section confirms Chegg filed a lawsuit against Google LLC and Alphabet Inc. on February 24, 2025, asserting antitrust and unjust enrichment claims regarding Google's AI Overview expansion.
+
+---
+
+**OUTLOOK**
+
+---
+
+*(The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers — it is composed entirely of qualitative directional statements and named strategic themes already evaluated above. No additional quantitative claims require separate entries.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap ~$81.9 million | SUPPORTED |
+| 2 | Profit margin -19.96% | SUPPORTED |
+| 3 | Net income -$52.9 million | UNSUPPORTED |
+| 4 | B2B skilling pivot | SUPPORTED |
+| 5 | Litigating against Google's AI Overview | SUPPORTED |

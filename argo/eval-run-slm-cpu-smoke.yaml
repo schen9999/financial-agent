@@ -1,0 +1,25 @@
+# slm-full-cpu: every agent LLM call on the CPU llama.cpp endpoint on OKE
+# (k8s/llamacpp/overlays/oke-cpu, Qwen3.6-35B-A3B Q4_K_M); the judge stays
+# Sonnet v2. Provided OKE cluster only (overlay oke-provided). Submit with
+# the traffic proof, never bare:
+#   make slm-eval-run ENDPOINT=cpu EVAL_RUN_FILE=argo/eval-run-slm-cpu-smoke.yaml
+# Deadlines are generous on purpose: per-ticker CPU time is not measured yet.
+# 10-ticker smoke (the template's default tickers).
+# Judge spend: ~$0.06/ticker (grounding judge + RAG-faithfulness judge).
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: grounding-eval-slm-cpu-
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  workflowTemplateRef:
+    name: grounding-eval
+  activeDeadlineSeconds: 21600
+  arguments:
+    parameters:
+      - name: arms
+        value: slm-full-cpu
+      - name: ticker-deadline-seconds
+        value: "5400"

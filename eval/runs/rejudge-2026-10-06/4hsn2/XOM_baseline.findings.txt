@@ -1,0 +1,85 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$361.1 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $361,060,007,936, which rounds to $361.1 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$32.8 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net income of $32,757,000,192, which rounds to $32.8 billion; also confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "$674.4 billion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $674,353,577,984, which rounds to $674.4 billion; confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "trailing P/E of 21.1x"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio of 21.106821, which rounds to 21.1x; confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "forward P/E of 14.5x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe of 14.451936, which rounds to 14.5x; confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "upstream earnings up 46% year-over-year in Q2 2026"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states Q2 2026 upstream earnings of $7.9 billion vs. Q2 2025 of $5.4 billion; computed YoY change = (7.9 − 5.4) / 5.4 = 46.3%, which is within 0.15 percentage points of 46%; also stated in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "returned $18.6 billion to shareholders in a single period"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states $8.6 billion in dividends plus $10.0 billion in share repurchases = $18.6 billion; confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "advantaged production growth in Guyana and the Permian"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly names "advantaged volume growth (Guyana and Permian)" as a positive earnings factor; confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "forward valuation that appears more reasonable than the trailing multiple suggests"
+LABEL: SUPPORTED
+REASON: This is a directional comparison of the two present figures (forward P/E 14.5x vs. trailing P/E 21.1x); the arithmetic confirms forward P/E is lower, and this characterization is consistent with the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "elevated crude oil price environment shaped by Middle East supply constraints"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states "Market conditions were influenced by Middle East supply disruptions" and "crude oil prices remaining within historical ranges," and the SEC Filing Highlights pre-written section references Middle East supply constraints shaping the market.
+
+---
+
+CLAIM: "year-over-year upstream surge in Q2 2026"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights confirms Q2 2026 upstream earnings of $7.9 billion vs. Q2 2025 of $5.4 billion, a 46.3% increase; the directional characterization of a "surge" is arithmetically grounded.
+
+---
+
+CLAIM: "production drag from divestments and regional disruptions"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states production "Declined to 4,514 thousand barrels daily in Q2 2026 from 4,630 in Q2 2025, primarily due to divestments and Middle East disruptions"; confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+*No additional standalone quantitative figures, price targets, specific thresholds, named ratios, or forward-looking numbers appear in the Outlook section beyond those already audited above. All qualitative directional statements (e.g., "cautiously constructive," "would strengthen if," "would weaken if") do not constitute quantitative or forward-looking numerical claims subject to this audit.*

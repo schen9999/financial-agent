@@ -1,0 +1,50 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections, then evaluate each.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $66.2 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap as $66,189,916.0, which rounds to approximately $66.2 million, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "trading near its 52-week low"
+LABEL: SUPPORTED
+REASON: The current price is $0.6174 and the 52-week low is $0.546; $0.6174 is 13.1% above the low and 82.5% below the 52-week high of $3.535, confirming the stock is arithmetically far closer to its 52-week low than its high.
+
+---
+
+CLAIM: "current cash runway is insufficient to complete the pivotal clinical trial for vispa-cel"
+LABEL: SUPPORTED
+REASON: The SEC Highlights explicitly state "The company currently does not have sufficient funds to conduct the planned pivotal clinical trial for vispa-cel," and the pre-written SEC Filing Highlights section repeats this directly.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "vispa-cel and CB-011 clinical programs"
+LABEL: SUPPORTED
+REASON: Both vispa-cel and CB-011 are explicitly named as product candidates in the RAG SEC Highlights, RAG Risk Factors, and the pre-written SEC Filing Highlights and Risk Factors sections.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, or forward-looking numbers appear in the Outlook section beyond the named product milestones already evaluated above. The remaining language — "cautiously cautious," "tension," "liquidity constraints," "funding gap," "excessive dilution," "adverse safety signals," "timeline to commercialization," "operational failure" — is qualitative and directional, not a specific quantitative or named-milestone claim subject to audit under the defined criteria.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap ~$66.2 million | SUPPORTED |
+| 2 | Trading near its 52-week low | SUPPORTED |
+| 3 | Cash runway insufficient to complete pivotal trial for vispa-cel | SUPPORTED |
+| 4 | vispa-cel and CB-011 clinical programs as named milestones | SUPPORTED |
+
+All auditable claims in the Executive Summary and Outlook are **SUPPORTED** by the source data. No unsupported or inference-only claims were identified. Notably, the brief avoids introducing figures (such as the $148.1 million net loss, $142.8 million cash balance, or $596.5 million accumulated deficit) that appear in the pre-written sections but were not carried forward into the Executive Summary or Outlook — a conservative and accurate editorial choice.

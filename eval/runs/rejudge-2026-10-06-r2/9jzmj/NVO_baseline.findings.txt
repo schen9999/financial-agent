@@ -1,0 +1,128 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating revenue of $329.4 billion"
+LABEL: SUPPORTED
+REASON: Source data lists revenue of $329,430,990,848, which rounds to $329.4 billion, matching the pre-written Financial Health section exactly.
+
+---
+
+CLAIM: "net income of $116.4 billion"
+LABEL: SUPPORTED
+REASON: Source data lists net income of $116,442,996,736, which rounds to $116.4 billion, consistent with the pre-written sections.
+
+---
+
+CLAIM: "35.3% profit margin"
+LABEL: SUPPORTED
+REASON: Source data gives profit_margin = 0.35347, which rounds to 35.3%; recomputed: 116,442,996,736 / 329,430,990,848 = 35.35%, within 0.15 pp of 35.3%.
+
+---
+
+CLAIM: "trades at $37.32"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists current_price as $37.32.
+
+---
+
+CLAIM: "roughly 42% below its 52-week high of $64.16"
+LABEL: SUPPORTED
+REASON: Recomputed: (64.16 − 37.32) / 64.16 = 26.84 / 64.16 = 41.84%, which rounds to ~42%; 52-week high of $64.16 is present in source data. Both figures check out.
+
+---
+
+CLAIM: "9.4x P/E"
+LABEL: SUPPORTED
+REASON: Source data lists pe_ratio = 9.400503, which rounds to 9.4x.
+
+---
+
+CLAIM: "4.81% dividend yield"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists dividend_yield = 4.81.
+
+---
+
+CLAIM: "blockbuster GLP-1 products Wegovy and Ozempic anchoring its market position"
+LABEL: SUPPORTED
+REASON: Wegovy is named in the news article and pre-written sections; Ozempic is named in the Risk Factors pre-written section, both as GLP-1 products of Novo Nordisk.
+
+---
+
+CLAIM: "The single most important near-term variable is whether Novo Nordisk can defend and grow its GLP-1 market share against Eli Lilly as competition in that segment intensifies."
+LABEL: INFERENCE
+REASON: This is a directional editorial judgment derived directly from the Risk Factors section's explicit identification of GLP-1 competition with Eli Lilly as the primary risk; no new facts are introduced beyond what is in the source.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "35.3% profit margin that demonstrates genuine pricing power"
+LABEL: SUPPORTED
+REASON: Profit margin of 35.3% is confirmed by source data (0.35347), as verified above.
+
+---
+
+CLAIM: "dividend yield of 4.81% that rewards patient shareholders"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists dividend_yield = 4.81.
+
+---
+
+CLAIM: "pipeline disclosures and clinical data that could expand or diversify the company's revenue base beyond its current GLP-1 concentration"
+LABEL: UNSUPPORTED
+REASON: No pipeline data, clinical trial information, or revenue concentration breakdown is present anywhere in the source data or pre-written sections; the claim about "current GLP-1 concentration" as a specific characterization of revenue mix is not grounded in any provided figure or filing.
+
+---
+
+CLAIM: "upcoming SEC filings and guidance updates, given the current absence of recent 10-K or 10-Q data"
+LABEL: SUPPORTED
+REASON: SEC Filing Highlights pre-written section and raw source data both explicitly confirm "No 10-K found" and "No 10-Q found."
+
+---
+
+CLAIM: "the rebranding and competitive repositioning are gaining traction"
+LABEL: UNSUPPORTED
+REASON: The source data contains only a single news article announcing the rebranding; there is no data on traction, consumer response, market share movement, or any metric that would allow assessment of whether repositioning is gaining traction — the claim introduces a forward-looking milestone with no grounding in the source.
+
+---
+
+CLAIM: "if margin compression accelerates"
+LABEL: INFERENCE
+REASON: This is a conditional watch-item derived directly from the Risk Factors section's explicit warning about competitive pressure on margins; no new ungrounded fact is introduced.
+
+---
+
+CLAIM: "or Eli Lilly meaningfully captures GLP-1 leadership"
+LABEL: INFERENCE
+REASON: This is a directional restatement of the GLP-1 competition risk explicitly named in the Risk Factors pre-written section; no new or absent fact is introduced.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Revenue $329.4 billion | SUPPORTED |
+| 2 | Net income $116.4 billion | SUPPORTED |
+| 3 | 35.3% profit margin | SUPPORTED |
+| 4 | Trades at $37.32 | SUPPORTED |
+| 5 | ~42% below 52-week high of $64.16 | SUPPORTED |
+| 6 | 9.4x P/E | SUPPORTED |
+| 7 | 4.81% dividend yield | SUPPORTED |
+| 8 | Wegovy and Ozempic as GLP-1 products | SUPPORTED |
+| 9 | GLP-1 market share vs. Eli Lilly as key variable | INFERENCE |
+| 10 | 35.3% margin (Outlook) | SUPPORTED |
+| 11 | 4.81% dividend yield (Outlook) | SUPPORTED |
+| 12 | Pipeline/clinical data diversifying beyond GLP-1 concentration | UNSUPPORTED |
+| 13 | Absence of recent 10-K or 10-Q | SUPPORTED |
+| 14 | Rebranding gaining traction as a watch-item milestone | UNSUPPORTED |
+| 15 | Margin compression risk | INFERENCE |
+| 16 | Eli Lilly capturing GLP-1 leadership | INFERENCE |

@@ -1,0 +1,99 @@
+# Public Streamlit UI on the PROVIDED OKE cluster: oke-provided plus one
+# OCI load balancer for Streamlit only (not the API, Argo or llama.cpp).
+# Runbook: docs/deploy-runbook.md "Public Streamlit UI"; topology:
+# docs/architecture.md "Deployed topology (October 2026)".
+#
+#   - Flexible LB, 10 Mbps (the Always Free allowance covers one), on the
+#     pub_lb-tbhcuw subnet, TLS on 443 with a self-signed certificate
+#     (Secret streamlit-tls), HTTP to the backends so the LB adds
+#     X-Forwarded-For.
+#   - Source restriction twice: loadBalancerSourceRanges as 443 rules in the
+#     LB subnet's security list, kept by the cloud controller
+#     (security-list management mode All, no NSG — the controller may not
+#     create NSGs here), and the same allowlist in nginx.
+#   - nginx sidecar: allowlist, then basic auth (Secret streamlit-basic-auth),
+#     then Streamlit on the pod's loopback.
+#
+# Nothing identifying is committed: the allowlist (allowlist.txt) and the
+# rendered files (generated/: the Service patch with the subnet and NSG
+# OCIDs, and nginx's allow.conf) are gitignored and made on the operator by
+# scripts/public_ui_render.py. Without them this overlay does not build.
+# While the public UI is up, re-apply THIS overlay, not oke-provided (that
+# would turn the Service back into ClusterIP and release the LB).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../oke-provided
+
+configMapGenerator:
+  - name: streamlit-nginx
+    namespace: financial-agent
+    files:
+      - nginx.conf
+  - name: streamlit-nginx-allow
+    namespace: financial-agent
+    files:
+      - allow.conf=generated/allow.conf
+
+patches:
+  - target:
+      version: v1
+      kind: Service
+      name: streamlit
+    path: generated/service-patch.yaml
+
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: streamlit
+        namespace: financial-agent
+      spec:
+        template:
+          metadata:
+            annotations:
+              kubectl.kubernetes.io/default-container: streamlit
+          spec:
+            containers:
+              - name: nginx
+                image: docker.io/nginxinc/nginx-unprivileged:1.28-alpine@sha256:7377697a821c131a924a7105fafbe7414db4e9fcc77a6f08f776f33f141ec3f8
+                ports:
+                  - containerPort: 8080
+                    name: proxy
+                volumeMounts:
+                  - name: nginx-conf
+                    mountPath: /etc/nginx/nginx.conf
+                    subPath: nginx.conf
+                    readOnly: true
+                  - name: nginx-allow
+                    mountPath: /etc/nginx/allow
+                    readOnly: true
+                  - name: nginx-auth
+                    mountPath: /etc/nginx/auth
+                    readOnly: true
+                readinessProbe:
+                  httpGet:
+                    path: /healthz
+                    port: proxy
+                  periodSeconds: 10
+                resources:
+                  requests:
+                    cpu: 20m
+                    memory: 32Mi
+                  limits:
+                    cpu: 200m
+                    memory: 64Mi
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  runAsNonRoot: true
+            volumes:
+              - name: nginx-conf
+                configMap:
+                  name: streamlit-nginx
+              - name: nginx-allow
+                configMap:
+                  name: streamlit-nginx-allow
+              - name: nginx-auth
+                secret:
+                  secretName: streamlit-basic-auth
+                  defaultMode: 0444 # nginx runs as uid 101; the hashes stay inside the pod

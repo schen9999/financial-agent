@@ -1,0 +1,71 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $5.2 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $5,209,110,016, which rounds to $5.2 billion; the Financial Health section also states "$5.2 billion in revenue."
+
+---
+
+CLAIM: "$355 million in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of $355,204,992, which rounds to $355 million; confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "market capitalization of $22.8 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $22,783,016,960, which rounds to $22.8 billion; confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "65.3x trailing P/E"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio of 65.28085, which rounds to 65.3x; confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "38.8x forward P/E"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe of 38.8194, which rounds to 38.8x; confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "thin 6.82% profit margins"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct of 6.82; confirmed in the Financial Health pre-written section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "intensifying competition from better-capitalized rivals such as Amazon, Apple, and Google"
+LABEL: SUPPORTED
+REASON: The Risk Factors pre-written section explicitly names "Amazon, Apple, Google" as competing larger tech companies threatening Roku's market share.
+
+---
+
+*(No additional quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section. All directional and qualitative statements — "cautiously neutral," "secular shift toward streaming," "traditional linear TV budgets migrate," "compounding pressure," "primary signal," etc. — are qualitative characterizations or directional inferences with no specific numeric claims to audit.)*
+
+---
+
+**SUMMARY TABLE**
+
+| Claim | Label |
+|---|---|
+| $5.2 billion in revenue | SUPPORTED |
+| $355 million in net income | SUPPORTED |
+| Market cap of $22.8 billion | SUPPORTED |
+| 65.3x trailing P/E | SUPPORTED |
+| 38.8x forward P/E | SUPPORTED |
+| 6.82% profit margins | SUPPORTED |
+| Amazon, Apple, and Google as rivals | SUPPORTED |
+
+All auditable quantitative and factual claims in the Executive Summary and Outlook are supported by the source data. No unsupported or inference-only claims were identified.

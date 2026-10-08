@@ -1,0 +1,67 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "operating primarily across ten major U.S. metropolitan markets"
+LABEL: SUPPORTED
+REASON: The source data explicitly states the company's real estate services revenue is concentrated in "ten major metropolitan markets" in both the RAG SEC Highlights and Risk Factors sections.
+
+---
+
+CLAIM: "2024 10-K and May 2025 10-Q filings"
+LABEL: SUPPORTED
+REASON: The SEC Filing Summaries confirm a 10-K filed 2025-02-27 (for year ended December 31, 2024) and a 10-Q filed 2025-05-06, consistent with "2024 10-K" and "May 2025 10-Q."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "geographic revenue concentration that amplifies exposure to regional shocks"
+LABEL: SUPPORTED
+REASON: The source data explicitly states geographic concentration in ten major metropolitan markets and notes that "any significant downturn in these markets…could disproportionately impact overall financial performance," including the Los Angeles fires example.
+
+---
+
+CLAIM: "an unresolved profitability trajectory that has persisted across multiple filing cycles"
+LABEL: INFERENCE
+REASON: The source data references "an extension of our history of losses" in the 10-K and "continued profitability pressures" across both the 10-K (filed Feb 2025) and 10-Q (filed May 2025), making the multi-cycle characterization directly derivable from the two filing references present in the context.
+
+---
+
+CLAIM: "well-capitalized rivals"
+LABEL: SUPPORTED
+REASON: The source data explicitly references "well-established competitors with greater resources" in both the RAG SEC Highlights and Risk Factors sections.
+
+---
+
+CLAIM: "quarter-over-quarter revenue consistency relative to guidance"
+LABEL: INFERENCE
+REASON: The source data references "quarterly revenue volatility" and "not achieving the revenue and net income (loss) guidance that we provide" as disclosed risks, making this a direct restatement of those disclosed concerns.
+
+---
+
+CLAIM: "AI platform is driving measurable market share gains — particularly in its core metropolitan markets"
+LABEL: INFERENCE
+REASON: The source data confirms AI integration across the platform and geographic concentration in core metropolitan markets; the forward-looking framing of AI driving market share gains is a directional restatement of the competitive differentiation thesis described in the pre-written sections, derivable from the context without introducing absent facts.
+
+---
+
+CLAIM: "sustained guidance achievement, narrowing losses, and evidence that its AI platform is driving measurable market share gains"
+LABEL: INFERENCE
+REASON: Each component (guidance achievement, loss trajectory, AI platform, market share) is individually grounded in the source data; the combination as a threshold for a constructive shift is a logical synthesis of present facts rather than an introduced figure.
+
+---
+
+CLAIM: "material AI-related regulatory or operational setbacks"
+LABEL: SUPPORTED
+REASON: The source data explicitly discloses AI regulatory compliance challenges, operational risks, and reputational risks in both the RAG SEC Highlights and Risk Factors sections.
+
+---
+
+**SUMMARY NOTE:** The Executive Summary and Outlook contain no specific quantitative figures (e.g., price targets, percentages, ratios, dollar amounts, or numerical thresholds) beyond the count of "ten major U.S. metropolitan markets" and the filing dates/periods. All other claims are qualitative or directional. No claims were found to be UNSUPPORTED. The absence of hard numerical metrics in these sections means there are no arithmetic checks to fail.

@@ -1,0 +1,43 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "operating across ten major metropolitan markets in the U.S."
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights, RAG — Risk Factors, and the pre-written SEC Filing Highlights and Risk Factors sections all explicitly state the real estate services segment is concentrated in "ten major metropolitan markets."
+
+---
+
+CLAIM: "a 2024 10-K filed February 27, 2025"
+LABEL: SUPPORTED
+REASON: The SEC Filing Summaries source data explicitly lists the 10-K with filing_date "2025-02-27."
+
+---
+
+CLAIM: "a 10-Q filed May 6, 2025"
+LABEL: SUPPORTED
+REASON: The SEC Filing Summaries source data explicitly lists the 10-Q with filing_date "2025-05-06."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "Geographic concentration in ten major metropolitan markets"
+LABEL: SUPPORTED
+REASON: Explicitly stated in multiple source sections (RAG — SEC Highlights, RAG — Risk Factors, pre-written SEC Filing Highlights, and Risk Factors).
+
+---
+
+CLAIM: "as illustrated by the Los Angeles fires"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states: "Recent events like the Los Angeles fires exemplify how local conditions can disproportionately affect specific markets," and the pre-written SEC Filing Highlights repeats this reference.
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or specific forward-looking numbers appear in the Executive Summary or Outlook sections beyond those evaluated above. All remaining claims in those sections are qualitative or directional in nature (e.g., "cautious," "elevated mortgage rates," "low inventory," "reduced consumer confidence," "better-resourced rivals") and do not constitute specific quantitative or enumerable claims subject to this audit's scope.*

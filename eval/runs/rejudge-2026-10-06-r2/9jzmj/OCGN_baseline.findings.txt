@@ -1,0 +1,71 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "minimal commercial revenue of $4.6 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue of $4,581,000, and the pre-written Financial Health section rounds this to $4.6 million, matching the claim.
+
+---
+
+CLAIM: "net loss of $81.8 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists net_income of -$81,811,000, which rounds to -$81.8 million, consistent with the claim.
+
+---
+
+CLAIM: "market capitalization of $346 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap of $345,892,608, which rounds to $346 million.
+
+---
+
+CLAIM: "only $18.6 million in cash estimated to fund operations only through Q4 2026"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "cash reserves stood at $18.6 million" and "Current cash is estimated to fund operations only into the fourth quarter of 2026."
+
+---
+
+CLAIM: "accumulated deficit of $408.1 million"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "an accumulated deficit of $408.1 million."
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "cash estimated to last only through Q4 2026"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "Current cash is estimated to fund operations only into the fourth quarter of 2026."
+
+---
+
+CLAIM: "operating expenses expected to rise"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "Expenses are expected to increase in 2026 compared to 2025."
+
+---
+
+*(No other specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section. All remaining claims in the Outlook are qualitative directional statements — e.g., "cautious," "meaningful downside risk," "high probability of shareholder dilution," "compress the stock toward the lower end of its already-depressed trading range" — that do not constitute specific quantitative or named-milestone claims subject to this audit.)*
+
+---
+
+### Summary Table
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Revenue of $4.6 million | SUPPORTED |
+| 2 | Net loss of $81.8 million | SUPPORTED |
+| 3 | Market cap of $346 million | SUPPORTED |
+| 4 | $18.6 million cash / through Q4 2026 | SUPPORTED |
+| 5 | Accumulated deficit of $408.1 million | SUPPORTED |
+| 6 | Cash lasts only through Q4 2026 (Outlook) | SUPPORTED |
+| 7 | Operating expenses expected to rise | SUPPORTED |
+
+All auditable quantitative and forward-looking claims in the Executive Summary and Outlook are **SUPPORTED** by the source data. No unsupported or inference-only claims were identified.

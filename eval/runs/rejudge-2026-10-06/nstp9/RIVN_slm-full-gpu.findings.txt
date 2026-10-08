@@ -1,0 +1,67 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $21.14 billion"
+LABEL: SUPPORTED
+REASON: The source data lists `market_cap: 21138765824.0`, which equals approximately $21.14 billion, and the same figure appears in the Financial Health pre-written section.
+
+---
+
+CLAIM: "negative profit margin of -54.95%"
+LABEL: SUPPORTED
+REASON: The source data explicitly states `profit_margin_pct: -54.95`, confirmed also in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "joint venture with Volkswagen"
+LABEL: SUPPORTED
+REASON: The SEC filing summaries and RAG highlights explicitly describe an equally-owned joint venture between Rivian and Volkswagen Group for next-generation electrical architecture and software.
+
+---
+
+CLAIM: "imminent launch of its R2 platform"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "Customer deliveries for the R2 platform are expected to begin in the second quarter of 2026," and the SEC Filing Highlights pre-written section confirms "customer deliveries scheduled to begin in Q2 2026," making the characterization of "imminent" a reasonable directional restatement of a present fact.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "upcoming R2 platform"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and the SEC Filing Highlights pre-written section both confirm R2 platform deliveries are expected to begin in Q2 2026.
+
+---
+
+CLAIM: "diversification of revenue via software and services partnerships"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section describe the Volkswagen joint venture, Autonomy+ monetization, FleetOS, and other software/services as recurring revenue streams, supporting this directional characterization.
+
+---
+
+CLAIM: "execution speed of the R2 launch"
+LABEL: SUPPORTED
+REASON: The R2 platform and its Q2 2026 delivery timeline are explicitly present in the source data; monitoring execution speed is a direct inference from that stated milestone.
+
+---
+
+CLAIM: "scalability of the Volkswagen joint venture"
+LABEL: SUPPORTED
+REASON: The Volkswagen joint venture is explicitly described in the SEC filings and RAG highlights as a key strategic initiative; characterizing its scalability as a watch-item is a direct restatement of a present fact.
+
+---
+
+CLAIM: "planned monetization of Autonomy+ features starting in April 2026" (implied by reference to "software and services partnerships" and recurring revenue)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "Rivian expects to begin charging for these features in consumer vehicles starting in April 2026," and this is confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+**SUMMARY NOTE:** The Outlook section contains no standalone quantitative figures (no price targets, specific ratios, percentages, or numerical thresholds) beyond the qualitative directional claims and named milestones evaluated above. All auditable claims in both sections are SUPPORTED by the source data.

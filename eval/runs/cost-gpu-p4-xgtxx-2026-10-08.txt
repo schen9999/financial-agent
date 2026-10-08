@@ -1,0 +1,10 @@
+gpu-p4-xgtxx: grounding-eval-extended-slm-gpu-p4-xgtxx-workflow.json (Succeeded)
+  window            : 2026-10-08T01:44:20Z .. 2026-10-08T02:08:09Z = 1429 s
+  briefs            : 40  ->  35.7 s per brief, 100.8 briefs/hour at the run's parallelism
+  price             : $2.00/h, whole resource
+  cost per brief    : $0.0198  (serving only; excludes harness pods, storage, judge)
+  per brief, ledger : 6.75 calls, 8830 prompt + 2444 completion tokens, 110.8 endpoint s; pipeline 61.8 s
+eval/runs/gpu-nvsmi-p4b-f304375.csv: 303 samples, 2026-10-08 01:44:09 to 02:09:19 UTC
+  window                      start      end samples util mean median  p95  max       >0%  mem.used MiB
+  xgtxx                    01:44:20 02:08:09     285     45.0%    19% 100% 100% 156 ( 55%)  20540-20540
+  outside every window: 18 samples, 0 above 0%

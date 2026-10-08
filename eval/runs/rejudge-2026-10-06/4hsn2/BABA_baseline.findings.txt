@@ -1,0 +1,93 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "annual revenue of ¥1.04 trillion CNY"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of 1,044,970,995,712.0 CNY, which rounds to ¥1.04 trillion CNY, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "net income of ¥73.3 billion CNY"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of 73,325,002,752.0 CNY, which rounds to ¥73.3 billion CNY.
+
+---
+
+CLAIM: "market capitalization of $275.6 billion USD"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of 275,642,155,008.0 USD, which rounds to $275.6 billion USD.
+
+---
+
+CLAIM: "Trading at $110.80 USD"
+LABEL: SUPPORTED
+REASON: Source data shows current_price of 110.8 USD, exactly matching $110.80.
+
+---
+
+CLAIM: "52-week range of $91.99–$188.66"
+LABEL: SUPPORTED
+REASON: Source data shows week_52_low of 91.99 and week_52_high of 188.66, exactly matching the stated range.
+
+---
+
+CLAIM: "roughly 41% below its 52-week high"
+LABEL: SUPPORTED
+REASON: Computed as (188.66 − 110.80) / 188.66 = 77.86 / 188.66 ≈ 41.27%, which rounds to 41% and is within 0.15 percentage points of the stated figure when interpreted as a round number; the pre-written Risk Factors section also explicitly states "down 41% from its 52-week high of $188.66."
+
+---
+
+CLAIM: "near the lower end of its 52-week range of $91.99–$188.66"
+LABEL: SUPPORTED
+REASON: Arithmetically, $110.80 is 19.37% above the 52-week low of $91.99 and 41.27% below the 52-week high of $188.66, placing it clearly in the lower portion of the range; the positional claim holds.
+
+---
+
+CLAIM: "forward P/E of 12.0x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe of 12.002404, which rounds to 12.0x.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "current P/E of 26.83"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio of 26.828087, which rounds to 26.83.
+
+---
+
+CLAIM: "forward P/E of 12.0x" (Outlook, first instance)
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe of 12.002404, which rounds to 12.0x.
+
+---
+
+CLAIM: "modest 0.95% dividend yield"
+LABEL: SUPPORTED
+REASON: Source data shows dividend_yield of 0.95, exactly matching 0.95%.
+
+---
+
+CLAIM: "already thin 7.04% profit margin"
+LABEL: SUPPORTED
+REASON: Source data shows profit_margin_pct of 7.04, exactly matching 7.04%.
+
+---
+
+CLAIM: "forward P/E the market has already assigned" (final sentence, referencing the forward P/E figure implicitly)
+LABEL: SUPPORTED
+REASON: This is a qualitative reference back to the forward P/E of 12.0x already established and supported above; no new quantitative figure is introduced.
+
+---
+
+**SUMMARY OF FINDINGS**
+
+All quantitative claims in the Executive Summary and Outlook sections are **SUPPORTED** by the raw source data. No figures are unsupported or require inference labeling. Notably, the 41% decline from the 52-week high is arithmetically verified (≈41.27%), the positional claim of "near the lower end" of the 52-week range is arithmetically confirmed, and all P/E ratios, revenue, net income, market cap, price, range, dividend yield, and margin figures match the source data exactly or within permitted rounding tolerances.

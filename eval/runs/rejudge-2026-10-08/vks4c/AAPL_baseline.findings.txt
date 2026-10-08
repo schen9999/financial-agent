@@ -1,0 +1,91 @@
+I will now systematically audit every quantitative, named-milestone, and forward-looking claim in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "$467 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $466,822,987,776, which rounds to $467 billion; the pre-written sections also state "$467 billion in annual revenue."
+
+---
+
+CLAIM: "$129 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net income of $128,929,996,800, which rounds to $129 billion; consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "$4.9 trillion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $4,913,422,663,680, which rounds to $4.9 trillion; confirmed in the pre-written sections.
+
+---
+
+CLAIM: "38.26x P/E multiple"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio of 38.257954, which rounds to 38.26x; the pre-written sections also cite 38.26.
+
+---
+
+CLAIM: "launching new smart home devices"
+LABEL: SUPPORTED
+REASON: Bloomberg news article dated 2026-09-30 reports Gurman's report of Apple launching new 'Smart Home' products on October 13.
+
+---
+
+CLAIM: "ramping production of the iPhone Duo foldable"
+LABEL: SUPPORTED
+REASON: Bloomberg news article dated 2026-09-30 references Apple's foldable hardware (iPhone Duo) and production ramp, as cited in the pre-written Recent Developments section.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "smart home device launch"
+LABEL: SUPPORTED
+REASON: Directly supported by the Bloomberg article reporting Apple's smart home product launch on October 13.
+
+---
+
+CLAIM: "iPhone Duo foldable ramp"
+LABEL: SUPPORTED
+REASON: Supported by the Bloomberg article referencing Apple's foldable hardware production ramp and the pre-written Recent Developments section.
+
+---
+
+CLAIM: "supply chain concentration risk — particularly geopolitical tensions affecting manufacturing hubs in China, Taiwan, and South Korea"
+LABEL: SUPPORTED
+REASON: The 10-K risk factors and RAG sections explicitly name China, Taiwan, and South Korea (along with India, Japan, and Vietnam) as concentrated manufacturing regions.
+
+---
+
+CLAIM: "October smart home launch"
+LABEL: SUPPORTED
+REASON: The Bloomberg article (published 2026-09-30) explicitly states the smart home product launch is scheduled for October 13, making "October" a supported period qualifier.
+
+---
+
+CLAIM: "pace and smoothness of the iPhone Duo production ramp"
+LABEL: SUPPORTED
+REASON: The Bloomberg article notes the 6 million unit figure "hinges on how quickly Apple ramps up production," confirming production ramp as a key variable; the pre-written sections also reference this.
+
+---
+
+CLAIM: "gross margins, which face structural pressure from aggressive low-cost competitors across every major hardware category"
+LABEL: SUPPORTED
+REASON: The RAG risk factors and pre-written Risk Factors section explicitly state competitors employ aggressive pricing strategies creating "downward pressure on gross margins" across smartphones, PCs, tablets, and wearables.
+
+---
+
+CLAIM: "trade restrictions or tariffs affecting Apple's geographically concentrated supply chain"
+LABEL: SUPPORTED
+REASON: The 10-K risk factors and RAG sections explicitly identify trade restrictions, tariffs, and geopolitical tensions as risks to Apple's geographically concentrated supply chain.
+
+---
+
+**No additional quantitative figures, price targets, specific thresholds, ratios, or named product milestones appear in the Executive Summary or Outlook sections beyond those audited above.** All claims in these sections are either directly supported by the source data or the pre-written sections derived from it. No unsupported or inference-only claims were identified.

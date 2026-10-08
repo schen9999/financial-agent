@@ -1,0 +1,55 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $1.36 billion"
+LABEL: SUPPORTED
+REASON: The source data lists market_cap as $1,357,281,024, which rounds to approximately $1.36 billion; the Financial Health pre-written section also states "approximately $1.36 billion."
+
+---
+
+CLAIM: "net income of $116.53 million"
+LABEL: SUPPORTED
+REASON: The source data explicitly lists net_income as $116,533,000 = $116.53 million, and the Financial Health section confirms this figure.
+
+---
+
+CLAIM: "revenue of $38.42 million"
+LABEL: SUPPORTED
+REASON: The source data lists revenue as $38,422,000 = $38.42 million, confirmed in the Financial Health section.
+
+---
+
+CLAIM: "YARTEMLEA, the company's sole FDA-approved product"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights and RAG sections explicitly state YARTEMLEA is "its only FDA-approved product" and "its only commercialized product."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "$70.8 million debt obligation"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and the SEC Filing Highlights pre-written section both explicitly state "$70.8 million in 2029 Notes" outstanding as of December 31, 2025.
+
+---
+
+CLAIM: "the zaltenibart partnership" (with Novo Nordisk, described as "binary")
+LABEL: SUPPORTED
+REASON: The RAG sections and SEC Filing Highlights explicitly reference the Novo Nordisk partnership for zaltenibart and its contingent, variable milestone and royalty structure, supporting the characterization of this as a key binary dependency.
+
+---
+
+CLAIM: "the company's reliance on external capital to fund ongoing operations"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "The company may need to raise additional capital through debt, equity, or partnerships" and that cash used in operations was $116.1 million, directly supporting this characterization.
+
+---
+
+*No additional specific quantitative figures, price targets, thresholds, ratios, percentages, named product milestones, or forward-looking numbers appear in the Executive Summary or Outlook sections beyond those evaluated above.*

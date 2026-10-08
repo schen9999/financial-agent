@@ -1,0 +1,123 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the Executive Summary and Outlook sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "market capitalization of $339.1 million"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 339,110,400.0, which rounds to $339.1 million.
+
+---
+
+CLAIM: "generating only $4.6 million in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 4,581,000.0, which rounds to $4.6 million.
+
+---
+
+CLAIM: "posting a net loss of $81.8 million"
+LABEL: SUPPORTED
+REASON: Source data shows net_income = -81,811,000.0, which rounds to -$81.8 million.
+
+---
+
+CLAIM: "trading near its 52-week low of $0.97"
+LABEL: SUPPORTED
+REASON: Source data confirms week_52_low = 0.97 and current_price = 1.00, so the stock is $0.03 above its 52-week low — arithmetically "near" is supported.
+
+---
+
+CLAIM: "accumulated deficit of $408.1 million"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights explicitly states "accumulated deficit of $408.1 million as of December 31, 2025."
+
+---
+
+CLAIM: "holding only $18.6 million in cash"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights explicitly states "Current cash reserves of $18.6 million."
+
+---
+
+CLAIM: "projected to last only through Q4 2026"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights explicitly states "cash will sustain operations only into the fourth quarter of 2026."
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "cash reserves projected to sustain operations only through Q4 2026"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights explicitly states "cash will sustain operations only into the fourth quarter of 2026."
+
+---
+
+CLAIM: "operating expenses expected to rise as clinical programs advance"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights explicitly states "Expenses are expected to increase in 2026 as the company continues clinical trials, expands headcount, and develops infrastructure."
+
+---
+
+CLAIM: "the company must secure additional financing under conditions that are likely to be dilutive or restrictive to existing shareholders"
+LABEL: INFERENCE
+REASON: The RAG — Risk Factors section explicitly states that raising capital through debt or equity financing creates "risks of shareholder dilution and potential restrictions on financial flexibility," making this a direct restatement of disclosed risks applied to the confirmed funding need.
+
+---
+
+CLAIM: "clinical trial progress and patient enrollment velocity within the modifier gene therapy platform"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights and Risk Factors both explicitly identify patient enrollment challenges in clinical trials and the modifier gene therapy platform as key risk/monitoring areas.
+
+---
+
+CLAIM: "any regulatory clarity or feedback that reduces uncertainty around the novel technology's approval pathway"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights and Risk Factors explicitly cite "uncertain regulatory pathways" for the novel modifier gene therapy platform as a key risk.
+
+---
+
+CLAIM: "whether the company can announce meaningful partnership, licensing, or grant arrangements that would extend its runway without purely dilutive equity issuance"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights explicitly states the company has "historically relying on equity sales, warrant issuances, convertible notes, debt, and grant proceeds," and the Risk Factors section references these funding mechanisms; grant proceeds and partnerships are named in the source context.
+
+---
+
+CLAIM: "a positive clinical data readout or a strategic partnership with an established pharmaceutical company could meaningfully shift sentiment"
+LABEL: INFERENCE
+REASON: No specific clinical readout or named pharmaceutical partner appears in the source data; this is a forward-looking inference derived from the general pipeline risk disclosures, but the derivation relies on no absent specific facts — it is a directional restatement of the inverse of disclosed risks (clinical failure risk implies clinical success as upside), making it a valid inference rather than an unsupported specific claim.
+
+---
+
+CLAIM: "a failed financing, further clinical setbacks, or continued silence on the pipeline would likely accelerate the stock's decline toward and potentially below its 52-week low"
+LABEL: INFERENCE
+REASON: The 52-week low of $0.97 is confirmed in source data (week_52_low = 0.97), and the going-concern risk and funding cliff are explicitly documented; the directional claim that failure to resolve these risks could push the stock below $0.97 is a logical inference from those confirmed facts, with no absent specific figures required.
+
+---
+
+### Summary Table
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap $339.1 million | SUPPORTED |
+| 2 | Revenue $4.6 million | SUPPORTED |
+| 3 | Net loss $81.8 million | SUPPORTED |
+| 4 | 52-week low of $0.97 / trading near it | SUPPORTED |
+| 5 | Accumulated deficit $408.1 million | SUPPORTED |
+| 6 | Cash $18.6 million | SUPPORTED |
+| 7 | Cash lasts only through Q4 2026 | SUPPORTED |
+| 8 | Cash through Q4 2026 (Outlook repeat) | SUPPORTED |
+| 9 | Operating expenses expected to rise | SUPPORTED |
+| 10 | Financing likely dilutive or restrictive | INFERENCE |
+| 11 | Clinical trial / enrollment velocity as key variable | SUPPORTED |
+| 12 | Regulatory clarity as key variable | SUPPORTED |
+| 13 | Partnership/licensing/grant as runway extension | SUPPORTED |
+| 14 | Positive clinical data or pharma partnership as upside | INFERENCE |
+| 15 | Failed financing/setbacks → decline toward/below 52-week low | INFERENCE |
+
+**No UNSUPPORTED claims were identified.** All quantitative figures checked arithmetically against source data pass within stated tolerances.

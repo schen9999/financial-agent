@@ -1,0 +1,55 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $25.4 billion"
+LABEL: SUPPORTED
+REASON: The source data lists market_cap as $25,411,192,832, which rounds to approximately $25.4 billion, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "profit margin of 45.29%"
+LABEL: SUPPORTED
+REASON: The source data explicitly states profit_margin_pct = 45.29, and this figure appears verbatim in the pre-written sections.
+
+---
+
+CLAIM: "trailing P/E ratio of 13.62"
+LABEL: SUPPORTED
+REASON: The source data lists pe_ratio = 13.6184435, which rounds to 13.62; this figure also appears in the pre-written sections.
+
+---
+
+CLAIM: "modest expected growth" (in context of forward P/E)
+LABEL: INFERENCE
+REASON: The forward P/E of 15.60 (from source: forward_pe = 15.598947) is higher than the trailing P/E of 13.62, which directionally implies the market prices in modest growth; this is a standard interpretive step from two present figures.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "banking partner relationships with Celtic and Lead Bank"
+LABEL: SUPPORTED
+REASON: Both Celtic Bank and Lead Bank are explicitly named in the RAG SEC Highlights, RAG Risk Factors, and the pre-written SEC Filing Highlights and Risk Factors sections as the company's originating bank partners.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Outlook section beyond the qualitative directional statements and the named entities already evaluated above.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap ~$25.4 billion | SUPPORTED |
+| 2 | Profit margin of 45.29% | SUPPORTED |
+| 3 | Trailing P/E of 13.62 | SUPPORTED |
+| 4 | "Modest expected growth" (forward P/E context) | INFERENCE |
+| 5 | Celtic and Lead Bank named as banking partners | SUPPORTED |

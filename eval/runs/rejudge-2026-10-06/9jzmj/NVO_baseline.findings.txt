@@ -1,0 +1,129 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating revenue of $329.4 billion"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $329,430,990,848, which rounds to $329.4 billion, matching the pre-written Financial Health section exactly.
+
+---
+
+CLAIM: "net income of $116.4 billion"
+LABEL: SUPPORTED
+REASON: Source data shows net income of $116,442,996,736, which rounds to $116.4 billion, consistent with the pre-written sections.
+
+---
+
+CLAIM: "35.3% profit margin"
+LABEL: SUPPORTED
+REASON: Source data shows profit_margin of 0.35347, which equals 35.347%, rounding to 35.3%; within 0.15 percentage points of the stated figure.
+
+---
+
+CLAIM: "trades at $37.32"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists current_price as $37.32.
+
+---
+
+CLAIM: "roughly 42% below its 52-week high of $64.16"
+LABEL: SUPPORTED
+REASON: The 52-week high of $64.16 is present in source data; computed decline = (64.16 − 37.32) / 64.16 = 26.84 / 64.16 ≈ 41.84%, which rounds to ~42%; within acceptable rounding and consistent with the pre-written Risk Factors section's "~42%" figure.
+
+---
+
+CLAIM: "9.4x P/E"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio of 9.400503, which rounds to 9.4x.
+
+---
+
+CLAIM: "4.81% dividend yield"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists dividend_yield as 4.81.
+
+---
+
+CLAIM: "52-week high of $64.16"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists week_52_high as 64.16.
+
+---
+
+CLAIM: "blockbuster GLP-1 products Wegovy and Ozempic anchoring its market position"
+LABEL: SUPPORTED
+REASON: Wegovy is named in the news article and pre-written sections; Ozempic is named in the Risk Factors pre-written section; both are identified as GLP-1 products belonging to Novo Nordisk.
+
+---
+
+CLAIM: "competition in that segment intensifies" (referring to Eli Lilly in GLP-1)
+LABEL: SUPPORTED
+REASON: The news article and all pre-written sections explicitly reference intensifying competition from Eli Lilly in the GLP-1 market.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "35.3% profit margin that demonstrates genuine pricing power"
+LABEL: SUPPORTED
+REASON: Profit margin of 0.35347 (35.347%) is in source data, rounds to 35.3%; consistent with pre-written sections.
+
+---
+
+CLAIM: "dividend yield of 4.81%"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists dividend_yield as 4.81.
+
+---
+
+CLAIM: "35.3% profit margin as competitive intensity grows" (second mention, sustainability watch-item)
+LABEL: SUPPORTED
+REASON: Same figure as above; 35.347% rounds to 35.3%, present in source data.
+
+---
+
+CLAIM: "upcoming SEC filings and guidance updates, given the current absence of recent 10-K or 10-Q data"
+LABEL: SUPPORTED
+REASON: SEC Filing Summaries in source data explicitly state "No 10-K found" and "No 10-Q found," and the pre-written SEC Filing Highlights section confirms this absence.
+
+---
+
+CLAIM: "the rebranding and competitive repositioning are gaining traction" (referring to the name change to "Novo")
+LABEL: SUPPORTED
+REASON: The rebranding to "Novo" is explicitly reported in the Wall Street Journal news article and described in the pre-written Recent Developments section; the claim is a forward-looking conditional framing of a confirmed event, not an assertion of an unverified fact.
+
+---
+
+CLAIM: "pipeline disclosures and clinical data that could expand or diversify the company's revenue base beyond its current GLP-1 concentration" (watch-item #3)
+LABEL: UNSUPPORTED
+REASON: No pipeline data, clinical trial information, or specific pipeline milestones appear anywhere in the source data or pre-written sections; this claim introduces pipeline detail as a watch-item that has no grounding in the provided context.
+
+---
+
+CLAIM: "if margin compression accelerates" (as a thesis-weakening condition)
+LABEL: INFERENCE
+REASON: This is a directional restatement derivable from the confirmed 35.3% margin figure and the confirmed competitive pressure from Eli Lilly; no new unverified fact is introduced.
+
+---
+
+CLAIM: "if Eli Lilly meaningfully captures GLP-1 leadership" (as a thesis-weakening condition)
+LABEL: SUPPORTED
+REASON: Eli Lilly's competitive presence in the GLP-1 market is explicitly confirmed in the news article and all pre-written sections; this is a conditional framing of a confirmed competitive dynamic.
+
+---
+
+**SUMMARY OF FLAGS**
+
+| Label | Count |
+|---|---|
+| SUPPORTED | 15 |
+| INFERENCE | 1 |
+| UNSUPPORTED | 1 |
+
+The one materially unsupported claim is the reference to **pipeline disclosures and clinical data** as a watch-item: no pipeline, clinical trial, or R&D data of any kind exists in the source material, making this an introduced assertion with no evidentiary grounding.

@@ -1,0 +1,64 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "a liquidity pool of $524.3 million"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section both explicitly state the company held "$524.3 million in cash, cash equivalents, and marketable securities as of December 31, 2024."
+
+---
+
+CLAIM: "fund operations through mid-2027"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "Management estimates that existing resources will fund operating expenses and capital expenditures into mid-2027," and this is echoed in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "an accumulated deficit of $743.0 million"
+LABEL: SUPPORTED
+REASON: Both the RAG SEC Highlights and RAG Risk Factors explicitly state "As of December 31, 2024, the accumulated deficit was $743.0 million."
+
+---
+
+CLAIM: "the drop in cash equivalents to $96.6 million"
+LABEL: SUPPORTED
+REASON: The 10-Q filing summary shows cash and cash equivalents of $96,554 thousand (≈$96.6 million) as of March 31, 2025, and the Financial Health and Recent Developments pre-written sections confirm this figure.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "substantial cash and securities reserves that provide a runway through mid-2027"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section both explicitly state management estimates current resources will fund operations into mid-2027.
+
+---
+
+CLAIM: "no approved products"
+LABEL: SUPPORTED
+REASON: Both the RAG SEC Highlights and RAG Risk Factors explicitly state "The company has no approved products and has not generated any revenue from product sales."
+
+---
+
+*(No additional quantitative figures, price targets, thresholds, ratios, percentages, named product milestones, or other forward-looking numbers appear in the Outlook section beyond those already evaluated above.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Liquidity pool of $524.3 million | SUPPORTED |
+| 2 | Fund operations through mid-2027 | SUPPORTED |
+| 3 | Accumulated deficit of $743.0 million | SUPPORTED |
+| 4 | Drop in cash equivalents to $96.6 million | SUPPORTED |
+| 5 | Runway through mid-2027 (Outlook) | SUPPORTED |
+| 6 | No approved products | SUPPORTED |
+
+All quantitative and forward-looking claims in the Executive Summary and Outlook are supported by the source data. No unsupported or inference-only claims were identified.

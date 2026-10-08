@@ -1,0 +1,50 @@
+=== 2026-10-04T00:55:47Z context kind-financial-agent; Argo controller image:
+quay.io/argoproj/workflow-controller:v3.7.18
+
+=== 1. WITHOUT the Role
+role present: no
+can the controller create configmaps in financial-agent: no
+workflow template-offload-probe-9852w: phase=Error
+  status.message: error in entry template execution: configmaps is forbidden: User "system:serviceaccount:argo:argo" cannot create resource "configmaps" in API group "" in the namespace "financial-agent"
+  node template-offload-probe-9852w type=Pod phase=Error message=configmaps is forbidden: User "system:serviceaccount:argo:argo" cannot create resource "configmaps" in API group "" in the namespace "financial-agent"
+  configmaps for this workflow: 0
+  controller log:
+    time="2026-10-04T00:55:49.293Z" level=error msg="Mark error node" error="configmaps is forbidden: User \"system:serviceaccount:argo:argo\" cannot create resource \"configmaps\" in API group \"\" in the namespace \"financial-agent\"" namespace=financial-agent nodeName=template-offload-probe-9852w workflow=template-offload-probe-9852w
+    time="2026-10-04T00:55:49.293Z" level=info msg="node template-offload-probe-9852w message: configmaps is forbidden: User \"system:serviceaccount:argo:argo\" cannot create resource \"configmaps\" in API group \"\" in the namespace \"financial-agent\"" namespace=financial-agent workflow=template-offload-probe-9852w
+
+=== 2. WITH the Role (kubectl apply -f argo/base/rbac.yaml)
+  serviceaccount/argo-workflow unchanged
+  role.rbac.authorization.k8s.io/argo-workflow-executor unchanged
+  rolebinding.rbac.authorization.k8s.io/argo-workflow-executor unchanged
+  role.rbac.authorization.k8s.io/argo-controller-template-offload created
+  rolebinding.rbac.authorization.k8s.io/argo-controller-template-offload created
+can the controller create configmaps in financial-agent: yes
+can it delete / update them: no / no
+workflow template-offload-probe-2vgtx: phase=Succeeded
+  status.message: None
+  node template-offload-probe-2vgtx type=Pod phase=Succeeded message=None
+  pod: template-offload-probe-2vgtx
+  pod log: PROBE payload_bytes=150014
+  configmaps for this workflow:
+    template-offload-probe-2vgtx keys=['ARGO_TEMPLATE'] bytes=[150343] owner=Workflow/template-offload-probe-2vgtx controller=True
+  init container env + mount:
+    ARGO_TEMPLATE = ['offloaded']
+    mounts: [('argo-env-config', '/argo/config')]
+    volume: [{'configMap': {'defaultMode': 420, 'name': 'template-offload-probe-2vgtx'}, 'name': 'argo-env-config'}]
+  controller log:
+    time="2026-10-04T00:55:52.896Z" level=info msg="Created configmap: template-offload-probe-2vgtx" namespace=financial-agent workflow=template-offload-probe-2vgtx
+
+=== 3. Below the limit: no ConfigMap
+workflow template-offload-probe-hppkt: phase=Succeeded
+  status.message: None
+  node template-offload-probe-hppkt type=Pod phase=Succeeded message=None
+  configmaps for this workflow: 0
+
+=== 4. Garbage collection: delete the workflow, the ConfigMap goes with it
+  before: configmap/template-offload-probe-2vgtx
+  workflow.argoproj.io "template-offload-probe-2vgtx" deleted from financial-agent namespace
+  after (2s at most): configmaps left for template-offload-probe-2vgtx: 0
+  workflow.argoproj.io "template-offload-probe-9852w" deleted from financial-agent namespace
+  workflow.argoproj.io "template-offload-probe-hppkt" deleted from financial-agent namespace
+
+=== end state on kind: role role.rbac.authorization.k8s.io/argo-controller-template-offload, rolebinding rolebinding.rbac.authorization.k8s.io/argo-controller-template-offload

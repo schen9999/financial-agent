@@ -1,0 +1,57 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$445.9 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $445,865,984,000, which rounds to $445.9 billion; the pre-written Financial Health section also states "$445.9 billion in annual revenue."
+
+---
+
+CLAIM: "54.8% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data lists profit_margin_pct as 54.77%, which rounds to 54.8%; the pre-written sections also state 54.8%.
+
+---
+
+CLAIM: "trades at $350.50"
+LABEL: SUPPORTED
+REASON: Source data lists current_price as 350.5 (USD), matching $350.50 exactly.
+
+---
+
+CLAIM: "below its 52-week high of $408.61"
+LABEL: SUPPORTED
+REASON: Source data lists week_52_high as 408.61; $350.50 < $408.61, so the positional claim holds arithmetically.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "over-70% revenue concentration"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly states "Over 70% of total revenues come from online advertising," and the pre-written Risk Factors section repeats "Over 70% of revenues derive from online advertising."
+
+---
+
+*(No additional standalone quantitative figures, price targets, thresholds, ratios, or named product milestones appear in the Outlook section beyond the "over-70%" reference already evaluated. The Outlook is written in qualitative/directional language — "cautiously constructive," "durable funding advantage," "most competitors," "accelerating," "structural vs. cyclical" — without introducing new numerical claims not already covered above.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $445.9 billion in annual revenue | SUPPORTED |
+| 2 | 54.8% net profit margin | SUPPORTED |
+| 3 | Trades at $350.50 | SUPPORTED |
+| 4 | Below its 52-week high of $408.61 | SUPPORTED |
+| 5 | Over-70% revenue concentration (Outlook) | SUPPORTED |
+
+All five quantitative or threshold claims in the Executive Summary and Outlook are supported by the source data. No unsupported or inference-only claims were identified.

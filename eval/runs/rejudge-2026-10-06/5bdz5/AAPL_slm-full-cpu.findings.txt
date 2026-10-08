@@ -1,0 +1,62 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "a substantial market capitalization of approximately $4.86 trillion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 4,858,257,080,320, which equals approximately $4.86 trillion (4,858,257,080,320 / 1,000,000,000,000 = 4.858…, rounds to $4.86T).
+
+---
+
+CLAIM: "a net profit margin of 27.62%"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 27.62.
+
+---
+
+CLAIM: "annual revenues of $466.82 billion"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 466,822,987,776, which equals approximately $466.82 billion.
+
+---
+
+CLAIM: "a P/E ratio of 38.18"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 38.17546, which rounds to 38.18.
+
+---
+
+CLAIM: "holding only a minority market share in key hardware segments"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights and RAG sections explicitly state the company "holds only a minority market share in key hardware segments" (smartphones, personal computers, tablets, wearables).
+
+---
+
+CLAIM: "Services revenue growth, which reached $30.7 billion in the latest quarter"
+LABEL: SUPPORTED
+REASON: The 10-Q data shows Services net sales of $30,739 million for the three months ended June 27, 2026, which equals approximately $30.7 billion; this is also confirmed in the Recent Developments pre-written section ("Services revenue expanded to $30.7 billion").
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional (e.g., "cautiously constructive," "stable recurring revenue base," "significant margin erosion," "sustained declines," "costly operational modifications"). There are therefore no quantitative or forward-looking numerical claims to audit in this section.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap ~$4.86 trillion | SUPPORTED |
+| 2 | Net profit margin 27.62% | SUPPORTED |
+| 3 | Annual revenues $466.82 billion | SUPPORTED |
+| 4 | P/E ratio 38.18 | SUPPORTED |
+| 5 | Minority market share in key hardware segments | SUPPORTED |
+| 6 | Services revenue $30.7 billion in latest quarter | SUPPORTED |
+
+All auditable quantitative claims in the Executive Summary are **SUPPORTED**. The Outlook section contains no auditable quantitative or forward-looking numerical claims.

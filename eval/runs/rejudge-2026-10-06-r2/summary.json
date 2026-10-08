@@ -1,0 +1,62 @@
+{
+  "9jzmj": {
+    "supported": 370,
+    "unsupported": 10,
+    "inference": 31,
+    "claims": 411,
+    "numeric": 278,
+    "unsupported_numeric": 3,
+    "unsupported_outlook": 4,
+    "total": 411,
+    "qualitative": 133,
+    "unsupported_qualitative": 7
+  },
+  "8vpq6": {
+    "supported": 217,
+    "unsupported": 5,
+    "inference": 13,
+    "claims": 234,
+    "numeric": 158,
+    "unsupported_numeric": 1,
+    "unsupported_outlook": 3,
+    "total": 235,
+    "qualitative": 77,
+    "unsupported_qualitative": 4
+  },
+  "p9jr2": {
+    "supported": 223,
+    "unsupported": 4,
+    "inference": 9,
+    "claims": 235,
+    "numeric": 155,
+    "unsupported_numeric": 3,
+    "unsupported_outlook": 0,
+    "total": 236,
+    "qualitative": 81,
+    "unsupported_qualitative": 1
+  },
+  "4hsn2": {
+    "supported": 377,
+    "unsupported": 10,
+    "inference": 28,
+    "claims": 415,
+    "numeric": 274,
+    "unsupported_numeric": 2,
+    "unsupported_outlook": 6,
+    "total": 415,
+    "qualitative": 141,
+    "unsupported_qualitative": 8
+  },
+  "nstp9": {
+    "supported": 217,
+    "unsupported": 9,
+    "inference": 17,
+    "claims": 242,
+    "numeric": 162,
+    "unsupported_numeric": 4,
+    "unsupported_outlook": 4,
+    "total": 243,
+    "qualitative": 81,
+    "unsupported_qualitative": 5
+  }
+}

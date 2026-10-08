@@ -1,0 +1,41 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "currently trading at $2.89"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `"current_price": 2.89` for ticker SANA.
+
+---
+
+CLAIM: "market capitalization of approximately $865.2 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `"market_cap": 865152256.0`, which rounds to approximately $865.2 million.
+
+---
+
+CLAIM: "net income loss of $211.8 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `"net_income": -211822000.0`, which rounds to a loss of $211.8 million.
+
+---
+
+CLAIM: "substantial doubt regarding its ability to continue as a going concern without additional capital"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and RAG — Risk Factors both explicitly state "There is substantial doubt as to the company's ability to continue as a going concern" and the need for additional funding is directly cited in the pre-written SEC Filing Highlights section.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional (e.g., "cash runway," "capital raises," "platform validation," "preclinical or early-stage clinical data"). There are no numerical claims to audit in this section.
+
+---
+
+**SUMMARY**
+
+All four auditable quantitative claims in the Executive Summary are **SUPPORTED**. The Outlook section contains no quantitative or specifically enumerable forward-looking figures requiring audit entries.

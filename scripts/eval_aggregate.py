@@ -77,6 +77,101 @@ def local_models(results):
     return seen
 
 
+_FLAGS = ("truncated", "repeat_run", "retry", "parse_failure", "format_failure", "errors")
+
+
+def _merge(into, a):
+    t = into or {"calls": 0, "prompt_tokens": 0, "completion_tokens": 0, "tokens_unrecorded": 0,
+                 "latency_s_total": 0.0, "latency_s_max": 0.0, **{f: 0 for f in _FLAGS}}
+    t["calls"] += a["calls"]
+    t["prompt_tokens"] += a["prompt_tokens"]
+    t["completion_tokens"] += a["completion_tokens"]
+    t["tokens_unrecorded"] += max(a["prompt_tokens_unrecorded"], a["completion_tokens_unrecorded"])
+    t["latency_s_total"] = round(t["latency_s_total"] + a["latency_s_total"], 3)
+    t["latency_s_max"] = max(t["latency_s_max"], a["latency_s_max"] or 0.0)
+    for f in _FLAGS:
+        t[f] += a.get(f, 0)
+    return t
+
+
+def llm_totals(summaries):
+    """Merge per-ticker ledger summaries (agent/llm_ledger.summarize) into
+    per-site, per-endpoint and overall totals. Rows from images before the
+    ledger carry none and are simply absent here (counted by the caller)."""
+    by_site, by_endpoint = {}, {}
+    for s in summaries:
+        for site, a in s.get("by_site", {}).items():
+            by_site[site] = _merge(by_site.get(site), a)
+        for ep, a in s.get("by_endpoint", {}).items():
+            by_endpoint[ep] = _merge(by_endpoint.get(ep), a)
+    total = {k: sum(t[k] for t in by_site.values())
+             for k in ("calls", "prompt_tokens", "completion_tokens", "tokens_unrecorded", *_FLAGS)}
+    return {"by_site": by_site, "by_endpoint": by_endpoint, "total": total,
+            "endpoints": sorted(by_endpoint)}
+
+
+def slm_provenance(results):
+    seen = []
+    for r in results:
+        p = r.get("slm")
+        if p and p not in seen:
+            seen.append(p)
+    return seen
+
+
+def rag_faithfulness_totals(results):
+    """Summed over both RAG answers of every row that ran the metric."""
+    sup = uns = tot = answers = 0
+    for r in results:
+        for v in (r.get("rag_faithfulness") or {}).values():
+            if v:
+                answers += 1
+                sup += v["supported"]
+                uns += v["unsupported"]
+                tot += v["total"]
+    return {"answers": answers, "supported": sup, "unsupported": uns, "claims": tot}
+
+
+def claim_density(results):
+    """Claims per completed ticker, and the numeric claims among them (the
+    judged claims that quote a figure — eval.label.numeric_claim_counts):
+    mean, min and the tickers at the min; for numeric claims also their own
+    unsupported count. Reported beside the unsupported rate because the rate
+    alone rewards an arm that states fewer checkable facts. Numeric claims
+    are the co-primary: how many qualitative phrases the judge lists varies
+    from run to run. Rows from images before the field carry no
+    `numeric_claims` and are counted as unrecorded, not as zero."""
+    def per_ticker(vals):
+        low = min(v for v, _ in vals) if vals else 0
+        return {"mean": round(sum(v for v, _ in vals) / len(vals), 2) if vals else 0.0,
+                "min": low, "min_tickers": sorted(t for v, t in vals if v == low)}
+    rec = [r for r in results if r.get("numeric_claims") is not None]
+    numeric = per_ticker([(r["numeric_claims"]["total"], r["ticker"]) for r in rec])
+    numeric.update(total=sum(r["numeric_claims"]["total"] for r in rec),
+                   unsupported=sum(r["numeric_claims"]["unsupported"] for r in rec),
+                   unrecorded=len(results) - len(rec))
+    return {"claims": per_ticker([(r["total"], r["ticker"]) for r in results]),
+            "numeric": numeric}
+
+
+def retried_tickers(rows):
+    """(tickers whose reported result or failure came from a retry attempt,
+    rows that do not record their attempt). Argo retries a failed eval pod
+    once and hands this step only the final attempt."""
+    retried = sorted({r["ticker"] for r in rows if (r.get("attempt") or 0) > 0})
+    unrecorded = sum(1 for r in rows if r.get("attempt") is None)
+    return retried, unrecorded
+
+
+def stock_block_counts(results):
+    """(tickers whose brief saw an empty STOCK DATA block, rows that don't
+    record it). Detection only — never a gate failure (eval/stock_block.py).
+    Rows from images before the check carry no field: unrecorded, not clean."""
+    empty = sorted(r["ticker"] for r in results if r.get("stock_block_empty") is True)
+    unrecorded = sum(1 for r in results if r.get("stock_block_empty") is None)
+    return empty, unrecorded
+
+
 def main():
     parser = argparse.ArgumentParser(description="Aggregate fanned-out grounding results.")
     parser.add_argument("--input", required=True,
@@ -90,11 +185,12 @@ def main():
     with open(args.input, encoding="utf-8") as f:
         elements = json.load(f)
 
-    results, skipped = [], []
+    results, skipped, failures = [], [], []
     for el in elements:
         payload = json.loads(el) if isinstance(el, str) else el
         results.extend(payload.get("results", []))
         skipped.extend(payload.get("skipped", []))
+        failures.extend(payload.get("failures", []))
 
     sup = sum(r["supported"] for r in results)
     uns = sum(r["unsupported"] for r in results)
@@ -119,6 +215,23 @@ def main():
     if len(models) > 1:
         print("  WARNING: rows served by more than one local model — this run "
               "mixes models and is not a single-model measurement")
+    slm_provs = slm_provenance(results)
+    for p in slm_provs:
+        print(f"  slm endpoint      : {p.get('slm_endpoint')} {p.get('slm_url')} — "
+              f"{p.get('slm_served_name')} ({p.get('slm_artifact')})")
+        print(f"  slm server        : build {p.get('slm_build')}, {p.get('slm_model_path')} "
+              f"{p.get('slm_model_ftype')}, n_ctx {p.get('slm_n_ctx')}, "
+              f"{p.get('slm_total_slots')} slots, thinking {p.get('slm_thinking')}")
+        print(f"  slm sampling      : {p.get('slm_sampling')}")
+        if "-hybrid-" in (p.get("slm_served_name") or ""):
+            print("  slm layout        : HYBRID — MoE expert weights partly in host RAM "
+                  "(--n-cpu-moe); label this run 'hybrid' in every table, never 'GPU'")
+        elif p.get("slm_endpoint") == "slm-gpu":
+            print("  slm layout        : all layers on GPU per the served alias — record "
+                  "llama-server's GPU memory from nvidia-smi (make vm-llamacpp prints it)")
+    if len(slm_provs) > 1:
+        print("  WARNING: rows served by more than one SLM endpoint/config — this run "
+              "is not a single-endpoint measurement")
     print(f"  {'Ticker':<8} {'Sup':>4} {'Uns':>4} {'Inf':>4} {'Tot':>4} {'Retr(s)':>8} {'Pipe(s)':>8}")
     print(f"  {'-'*44}")
     for r in sorted(results, key=lambda r: r["ticker"]):
@@ -129,9 +242,90 @@ def main():
     print()
     print(f"  tickers completed : {n}")
     print(f"  tickers skipped   : {len(skipped)}{' (' + ', '.join(skipped) + ')' if skipped else ''}")
+    stock_empty, stock_unrecorded = stock_block_counts(results)
+    print(f"  stock block empty : {len(stock_empty)}/{n}"
+          f"{' (' + ', '.join(stock_empty) + ')' if stock_empty else ''}"
+          f"{f'   ({stock_unrecorded} row(s) unrecorded)' if stock_unrecorded else ''}")
+    if stock_empty:
+        print("  WARNING: briefs above were written WITHOUT stock data (failed stock "
+              "fetch, e.g. a yfinance 429) — the gate does not catch this")
     print(f"  unsupported rate  : {unsupported_pct:.2f}%   (gate: <= {args.max_unsupported_pct}%)")
     print(f"  95% CI (Wilson)   : {format_rate_ci(uns, tot)}")
     print(f"  total claims      : {tot}   (gate: >= {args.min_claims})")
+    density = claim_density(results)
+    if results:
+        c, nm = density["claims"], density["numeric"]
+        print(f"  claims per ticker : mean {c['mean']:.1f}, min {c['min']} "
+              f"({', '.join(c['min_tickers'])})   — read the rate with this: fewer "
+              f"checkable claims lowers it for free")
+        if nm["unrecorded"] < len(results):
+            missing = f"   ({nm['unrecorded']} row(s) unrecorded)" if nm["unrecorded"] else ""
+            print(f"  numeric claims    : {nm['total']} = mean {nm['mean']:.1f}/ticker, min "
+                  f"{nm['min']} ({', '.join(nm['min_tickers'])})   — co-primary: claims that "
+                  f"quote a figure (the judge's listing of qualitative phrases varies run to "
+                  f"run){missing}")
+            print(f"  numeric unsupported: {nm['unsupported']}/{nm['total']} = "
+                  f"{format_rate_ci(nm['unsupported'], nm['total'])}")
+        else:
+            print("  numeric claims    : unrecorded (rows from an image before the field)")
+    retried, attempt_unrecorded = retried_tickers(results + failures)
+    print(f"  Argo retries      : {len(retried)}"
+          f"{' (' + ', '.join(retried) + ')' if retried else ''}"
+          f"{f'   ({attempt_unrecorded} row(s) from an image that does not record attempts)' if attempt_unrecorded else ''}")
+    if retried:
+        print("  WARNING: the rows above are the FINAL attempts only. The failed attempts' "
+              "LLM calls, tokens and Trunc/Parse/Fmt/Err counts are NOT in this output — "
+              "the run report lists them from the pod logs (eval/attempts.py; make eval-run "
+              "prints it), and the SLM traffic proof counts them")
+    if failures:
+        kinds = {}
+        for f_ in failures:
+            kinds.setdefault(f_["kind"], []).append(f_["ticker"])
+        print("  failures by kind  : " + "; ".join(
+            f"{k} {len(v)} ({', '.join(sorted(v))})" for k, v in sorted(kinds.items())))
+
+    # LLM calls (agent calls only; judge calls are eval) — failed tickers'
+    # calls count too: they reached the endpoint.
+    llm_rows = [r["llm"] for r in results if r.get("llm")]
+    llm = llm_totals(llm_rows + [f_["llm"] for f_ in failures if f_.get("llm")])
+    if llm["by_site"]:
+        n_ok = len(llm_rows)
+        print()
+        print(f"  LLM calls (agent) : {llm['total']['calls']} over {n_ok} completed ticker(s)"
+              f"{f' + {len(failures)} failed' if failures else ''}"
+              f" = {llm['total']['calls'] / max(n_ok + len(failures), 1):.1f}/ticker;"
+              f" endpoints {', '.join(llm['endpoints'])}")
+        print(f"  {'Site':<28} {'Calls':>5} {'Prompt':>8} {'Compl':>7} {'Lat(s)':>8} {'Max(s)':>7}"
+              f" {'Trunc':>5} {'Loop':>4} {'Parse':>5} {'Fmt':>3} {'Retry':>5} {'Err':>3}")
+        for site, t in sorted(llm["by_site"].items()):
+            mean = t["latency_s_total"] / t["calls"] if t["calls"] else 0.0
+            print(f"  {site:<28} {t['calls']:>5} {t['prompt_tokens']:>8} {t['completion_tokens']:>7}"
+                  f" {mean:>8.2f} {t['latency_s_max']:>7.2f} {t['truncated']:>5} {t['repeat_run']:>4}"
+                  f" {t['parse_failure']:>5} {t['format_failure']:>3} {t['retry']:>5} {t['errors']:>3}")
+        if llm["total"]["tokens_unrecorded"]:
+            print(f"  ({llm['total']['tokens_unrecorded']} call(s) without provider usage — "
+                  f"token sums exclude them)")
+        unrec = len(results) - n_ok
+        if unrec:
+            print(f"  ({unrec} row(s) from an image without the LLM ledger — not counted)")
+    for ep, t in sorted(llm["by_endpoint"].items()):
+        if ep.startswith("slm-"):
+            # Machine-readable, one line per SLM endpoint, for
+            # scripts/slm_traffic_proof.py: these must reconcile with the
+            # endpoint's own /metrics counters over the run.
+            print("  SLM_TRAFFIC " + json.dumps({
+                "endpoint": ep, "calls": t["calls"], "prompt_tokens": t["prompt_tokens"],
+                "completion_tokens": t["completion_tokens"],
+                "calls_without_usage": t["tokens_unrecorded"], "errored_calls": t["errors"]},
+                sort_keys=True))
+
+    ragf = rag_faithfulness_totals(results)
+    if ragf["answers"]:
+        print(f"  RAG faithfulness  : {ragf['unsupported']}/{ragf['claims']} RAG-answer claims "
+              f"unsupported by their own chunks, {format_rate_ci(ragf['unsupported'], ragf['claims'])} "
+              f"over {ragf['answers']} answers — judge rf-v1, UNVALIDATED, separate from the "
+              f"grounding rate above")
+
     est_costs = [r["est_cost"] for r in results if "est_cost" in r]
     if est_costs:
         print(f"  est. run cost     : ${sum(est_costs):.4f}   "
@@ -150,12 +344,22 @@ def main():
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "judge_version": judge_versions or None,
         "local_model": models or None,
+        "slm": slm_provs or None,
+        "llm": llm,
+        "failures": failures,
+        "rag_faithfulness": ragf if ragf["answers"] else None,
         "totals": {
             "supported": sup, "unsupported": uns, "inference": inf, "claims": tot,
             "unsupported_pct": round(unsupported_pct, 2),
             "unsupported_ci_95": [round(x * 100, 2) for x in wilson_interval(uns, tot)],
             "mean_retrieval_s": round(mean_retr, 2), "mean_pipeline_s": round(mean_pipe, 2),
             "tickers_completed": n, "tickers_skipped": len(skipped),
+            "stock_block_empty": len(stock_empty),
+            "stock_block_empty_tickers": stock_empty,
+            "stock_block_unrecorded": stock_unrecorded,
+            "claims_per_ticker": density["claims"],
+            "numeric_claims": density["numeric"],
+            "retried_tickers": retried,
         },
         "gate": {
             "max_unsupported_pct": args.max_unsupported_pct,

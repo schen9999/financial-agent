@@ -1,0 +1,60 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $22.68 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 22,681,288,704.0 USD, which rounds to approximately $22.68 billion.
+
+---
+
+CLAIM: "net profit margin of 6.82%"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 6.82.
+
+---
+
+CLAIM: "$5.21 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 5,209,110,016.0 USD, which rounds to $5.21 billion.
+
+---
+
+CLAIM: "trading near its 52-week high of $159.89"
+LABEL: SUPPORTED
+REASON: Source data confirms week_52_high = 159.89, and current_price = 152.725; arithmetic check: 152.725 / 159.89 = 95.5%, confirming the stock is near (but below) its 52-week high.
+
+---
+
+CLAIM: "forward P/E of 38.65"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 38.64607, which rounds to 38.65.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: (No specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section.)
+LABEL: N/A
+REASON: The Outlook section contains only qualitative directional statements and named competitors (Amazon, Apple, Google), all of which are present in the source data (RAG — SEC Highlights). There are no quantitative claims to audit in this section.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap ~$22.68 billion | SUPPORTED |
+| 2 | Net profit margin 6.82% | SUPPORTED |
+| 3 | $5.21 billion annual revenue | SUPPORTED |
+| 4 | 52-week high of $159.89 | SUPPORTED |
+| 5 | Forward P/E of 38.65 | SUPPORTED |
+| 6 | Outlook section (no quantitative claims) | N/A |
+
+All quantitative claims in the Executive Summary are fully supported by the raw source data. The Outlook section contains no quantitative or forward-looking numerical claims requiring audit.

@@ -1,0 +1,41 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "exceptional 40.3% profit margin"
+LABEL: SUPPORTED
+REASON: The source data explicitly states `"profit_margin_pct": 40.3`, and the pre-written Financial Health and Recent Developments sections both confirm "40.3% profit margin."
+
+---
+
+CLAIM: "robust annual revenue of $331.8 billion"
+LABEL: SUPPORTED
+REASON: Source data shows `"revenue": 331839012864.0`; dividing by 1 billion gives ~$331.84 billion, which rounds to $331.8 billion — within acceptable rounding tolerance.
+
+---
+
+CLAIM: "substantial $3.9 trillion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows `"market_cap": 3899747991552.0`, which is approximately $3.9 trillion, consistent with the pre-written sections' characterization of "approximately $3.9 trillion."
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All claims in the Outlook are qualitative and directional in nature (e.g., "cautiously constructive," "entrenched ecosystem," "strong cash generation," "execution risks," "margin compression," "price wars," "capital spending outpaces revenue realization," "asset impairments"). None of these constitute quantitative or specifically enumerable claims requiring arithmetic verification against source data.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | 40.3% profit margin | SUPPORTED |
+| 2 | $331.8 billion annual revenue | SUPPORTED |
+| 3 | $3.9 trillion market capitalization | SUPPORTED |
+
+No quantitative claims in the Outlook section required evaluation. All three auditable quantitative claims in the Executive Summary are **SUPPORTED** by the raw source data.

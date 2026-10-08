@@ -1,0 +1,43 @@
+I will now systematically audit every quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, and forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "online advertising — accounts for over 70% of its $445.9 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: The "over 70%" figure appears explicitly in both the RAG SEC Highlights and Risk Factors sections, and the $445.9 billion revenue figure rounds correctly from the source data value of $445,865,984,000 (≈$445.9B).
+
+---
+
+CLAIM: "$4.3 trillion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = $4,286,592,319,488, which rounds to approximately $4.3 trillion as stated.
+
+---
+
+CLAIM: "trades at $350.50"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists current_price = 350.5 USD.
+
+---
+
+CLAIM: "meaningfully below its 52-week high of $408.61"
+LABEL: SUPPORTED
+REASON: Source data lists week_52_high = 408.61; $350.50 is approximately 14.2% below that figure, confirming the directional claim arithmetically.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "54.8% profit margin"
+LABEL: SUPPORTED
+REASON: Source data lists profit_margin_pct = 54.77%, which rounds to 54.8% as stated; within the 0.15 percentage point tolerance.
+
+---
+
+No other specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already audited above. All remaining claims in the Outlook are qualitative or directional in nature (e.g., "cautiously constructive," "existential test," "emerging variable") and do not constitute quantitative or forward-looking numerical claims subject to this audit.

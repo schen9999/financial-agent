@@ -1,0 +1,2 @@
+id,run,scope,arm,model,ticker,section,kind,field,sentence,stated,source,ratio,occurrences,verdict,note
+1,xgtxx,full,slm-full-gpu,qwen3.6-35b-a3b-q4km,OMER,SEC Filing Highlights,mismatch,net_income,"Omeros reported $171.8 million in cash and short-term investments as of December 31, 2025, while incurring a net loss of $3.4 million and using $116.1 million in operating cash.",$3.4 million,116533000.0,-0.02918,1,FALSE_POSITIVE,draft FALSE_POSITIVE accepted

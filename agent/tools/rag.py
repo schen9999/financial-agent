@@ -1,5 +1,6 @@
 import os
 import re
+import threading
 import time
 import requests
 import hashlib
@@ -25,9 +26,69 @@ from agent.tools.reranker import (
     query_engine_kwargs,
 )
 
+from agent import llm_ledger
+from agent.tools.slm import RAG_MAX_TOKENS, llama_index_llm, slm_full_enabled
+
 load_dotenv()
 
 _settings_configured = False
+# The two RAG queries of a brief run in two threads and both arrive here
+# before the embedding model has loaded; without the lock each registered
+# its own usage handler (every hosted RAG call recorded twice) and loaded
+# the embedding model a second time.
+_settings_lock = threading.Lock()
+
+# Retrieved chunk texts per question, for the eval's RAG-faithfulness metric
+# (the answer judged against exactly what it was written from). Kept only
+# while the ledger is enabled (eval), keyed by question — the harness pops
+# both entries right after each ticker's retrieval.
+_sources_lock = threading.Lock()
+_sources: dict[str, list[str]] = {}
+
+
+def pop_sources(question: str) -> list[str] | None:
+    with _sources_lock:
+        return _sources.pop(question, None)
+
+
+class _HostedRagUsage:
+    """llama_index event handler: records the hosted (Anthropic) RAG answer
+    call's token usage in the ledger. Observation only; skips the SLM
+    adapter's own responses (it records itself)."""
+
+    def __init__(self):
+        from llama_index.core.instrumentation.event_handlers import BaseEventHandler
+        from llama_index.core.instrumentation.events.llm import (LLMChatEndEvent,
+                                                                  LLMChatStartEvent)
+
+        starts: dict[str, float] = {}
+
+        class _Handler(BaseEventHandler):
+            @classmethod
+            def class_name(cls) -> str:
+                return "HostedRagUsage"
+
+            def handle(self, event, **kwargs):
+                if not llm_ledger.enabled():
+                    return
+                if isinstance(event, LLMChatStartEvent):
+                    starts[event.span_id] = time.perf_counter()
+                elif isinstance(event, LLMChatEndEvent) and event.response is not None:
+                    raw = event.response.raw or {}
+                    t0 = starts.pop(event.span_id, None)
+                    if raw.get("slm"):
+                        return
+                    usage = raw.get("usage")
+                    stop = raw.get("stop_reason")
+                    llm_ledger.record(
+                        llm_ledger.current_site("rag"), "anthropic", raw.get("model"),
+                        prompt_tokens=getattr(usage, "input_tokens", None),
+                        completion_tokens=getattr(usage, "output_tokens", None),
+                        latency_s=(time.perf_counter() - t0) if t0 else None,
+                        finish_reason="length" if stop == "max_tokens" else stop,
+                        text=event.response.message.content)
+
+        self.handler = _Handler()
 
 
 def _ensure_settings():
@@ -40,14 +101,22 @@ def _ensure_settings():
     global _settings_configured
     if _settings_configured:
         return
-    Settings.llm = Anthropic(
-        model="claude-haiku-4-5-20251001",
-        api_key=os.getenv("ANTHROPIC_API_KEY"),
-    )
-    Settings.embed_model = HuggingFaceEmbedding(
-        model_name="BAAI/bge-small-en-v1.5"
-    )
-    _settings_configured = True
+    with _settings_lock:
+        if _settings_configured:
+            return
+        Settings.llm = Anthropic(
+            model="claude-haiku-4-5-20251001",
+            api_key=os.getenv("ANTHROPIC_API_KEY"),
+            # The SLM arm's RAG budget (agent/tools/slm.py), not llama_index's
+            # Anthropic default of 512: both arms answer under one cap.
+            max_tokens=RAG_MAX_TOKENS,
+        )
+        Settings.embed_model = HuggingFaceEmbedding(
+            model_name="BAAI/bge-small-en-v1.5"
+        )
+        from llama_index.core.instrumentation import get_dispatcher
+        get_dispatcher().add_event_handler(_HostedRagUsage().handler)
+        _settings_configured = True
 
 
 def _get_pinecone_index(index_name: str):
@@ -153,11 +222,17 @@ def _run_rag_query(index, question: str):
     kwargs = query_engine_kwargs()
     kwargs["node_postprocessors"] = (
         [_DropTocListings()] + kwargs.get("node_postprocessors", []))
+    if slm_full_enabled():
+        # Per query, never via the process-global Settings.llm (hosted Haiku).
+        kwargs["llm"] = llama_index_llm(llm_ledger.current_site("rag"))
     query_engine = index.as_query_engine(**kwargs)
 
     t0 = time.perf_counter()
     response = query_engine.query(question)
     elapsed = time.perf_counter() - t0
+    if llm_ledger.enabled():
+        with _sources_lock:
+            _sources[question] = [n.node.get_content() for n in (response.source_nodes or [])]
 
     if enabled:
         print(

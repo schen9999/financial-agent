@@ -1,0 +1,42 @@
+{
+  "about": "Adjudicated type of every judge-UNSUPPORTED numeric claim (claim text contains a digit) in the three same-image 40-ticker runs, 2026-10-05. Read by eval/error_types.py, which checks the list is complete against the claims files. Model errors = wrong value + wrong label + not in context. Evidence: docs/eval-methodology.md, 'GPU SLM extended run p9jr2'.",
+  "types": {
+    "wrong value": "the figure is not the context's value (model error)",
+    "wrong label": "the figure is in the context but attached to the wrong quantity (model error)",
+    "source conflict": "the figure is quoted correctly from one context source; another context source disagrees and the judge held the claim against it",
+    "judge error": "the claim is correct against the context; the verdict is wrong",
+    "not in context": "the claim asserts something the context does not contain, with no figure misquoted (model error)"
+  },
+  "runs": {
+    "hosted-9jzmj": "eval/runs/9jzmj-claims.jsonl",
+    "slm-cpu-8vpq6": "eval/runs/8vpq6-claims.jsonl",
+    "slm-gpu-p9jr2": "eval/runs/p9jr2-claims.jsonl"
+  },
+  "classified": [
+    {"run": "hosted-9jzmj", "ticker": "AFRM", "type": "not in context",
+     "claim": "P/E of 12.8x and forward P/E of 14.7x sit below historical averages for fintech peers",
+     "note": "peer averages are not in the context"},
+    {"run": "hosted-9jzmj", "ticker": "NVO", "type": "not in context",
+     "claim": "pipeline disclosures and clinical data that could expand or diversify the company's revenue base beyond its current GLP-1 concentration",
+     "note": "qualitative pipeline statement; numeric only through 'GLP-1'"},
+    {"run": "slm-cpu-8vpq6", "ticker": "CHGG", "type": "wrong value",
+     "claim": "net income of -$52.9 million",
+     "note": "context -52997000.0 = -$53.0M; truncated, from the SLM's Financial Health section"},
+    {"run": "slm-cpu-8vpq6", "ticker": "BEAM", "type": "source conflict",
+     "claim": "reporting a net loss of $86.52 million",
+     "note": "yfinance -86.52M vs the filing's RAG answer -80.0M"},
+    {"run": "slm-cpu-8vpq6", "ticker": "META", "type": "judge error",
+     "claim": "strong market sentiment near 52-week highs",
+     "note": "price at 80% of the range, 6.6% below the high; SUPPORTED in 9jzmj"},
+    {"run": "slm-gpu-p9jr2", "ticker": "SFIX", "type": "wrong label",
+     "claim": "near its recent low of $2.61",
+     "note": "$2.61 is current_price; the only low in the context is week_52_low 2.1"},
+    {"run": "slm-gpu-p9jr2", "ticker": "CRBU", "type": "wrong label",
+     "claim": "market capitalization near its 52-week low of $1.22",
+     "note": "$1.22 is the per-share low (1.215 rounded) attached to 'market capitalization'",
+     "judge_reason_incorrect": "the judge's stated reason ('the 52-week low is $1.215, not $1.22') rejects a correct rounding; the verdict stands on the label"},
+    {"run": "slm-gpu-p9jr2", "ticker": "OMER", "type": "source conflict",
+     "claim": "a notable net income of $116.53 million",
+     "note": "yfinance net_income 116533000.0 vs the filing's RAG answer, net loss $3.4M for FY2025"}
+  ]
+}

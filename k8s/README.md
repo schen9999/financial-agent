@@ -29,7 +29,9 @@ k8s/
     33-mcp.yaml           # MCP streamable-HTTP (endpoint /mcp)
   overlays/
     kind/                 # imagePullPolicy Never + NodePorts 30080/30501/30800
-    oke/                  # OCIR image, LoadBalancers, Block Volume PVC @ 50Gi
+    k3s/                  # single-VM: imported image, NodePorts behind ssh -L, local-path PVC
+    oke-provided/         # provided OKE cluster: GHCR image pinned by sha, oci-bv PVC @ 50Gi, ClusterIP only
+    oke/                  # Terraform OKE cluster: OCIR image, LoadBalancers, Block Volume PVC @ 50Gi
   vllm/                   # separate deploy unit (default-off feature) — same pattern
     base/
     overlays/kind-cpu/    # today's committed CPU mode (WSL2, no GPU)
@@ -37,7 +39,7 @@ k8s/
 argo/                     # eval DAG: same pattern; eval-run.yaml stays outside
   install/                #   controller+server install, version-pinned (apply -k)
   base/                   #   kustomize (one-shot Workflow, references the template)
-  overlays/{kind,oke}/
+  overlays/{kind,k3s,oke-provided,oke}/
 Dockerfile.k8s            # one app image for api/worker/streamlit/mcp (CPU torch)
 Makefile                  # cluster-up / deploy / smoke-test / cluster-down
 scripts/k8s_smoke_test.sh

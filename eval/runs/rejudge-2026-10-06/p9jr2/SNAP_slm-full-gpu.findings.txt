@@ -1,0 +1,61 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "$6.35 billion in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as $6,351,084,032, which rounds to $6.35 billion, and the pre-written Financial Health section states "generated $6.35 billion in revenue."
+
+---
+
+CLAIM: "currently trading at $5.58"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists current_price as 5.58 USD.
+
+---
+
+CLAIM: "market capitalization of approximately $9.44 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap as $9,436,882,944, which rounds to approximately $9.44 billion.
+
+---
+
+CLAIM: "trades near its 52-week low of $3.81"
+LABEL: SUPPORTED
+REASON: The raw source data confirms week_52_low = 3.81; the current price of $5.58 is above but relatively close to this low, and the pre-written sections use identical language.
+
+---
+
+CLAIM: "forward P/E ratio of 7.20"
+LABEL: SUPPORTED
+REASON: The raw source data lists forward_pe as 7.195729, which rounds to 7.20.
+
+---
+
+CLAIM: "negative profit margin" (implied by "path to sustained profitability")
+LABEL: SUPPORTED
+REASON: The raw source data lists profit_margin as -0.04901 (approximately -4.9%), confirming the company is unprofitable.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "daily active user growth" (as a key variable to monitor)
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights pre-written section and RAG data explicitly state DAUs of 474 million for Q4 2025 and note that "DAU growth rates have declined," making this a directly sourced watch-item.
+
+---
+
+CLAIM: "474 million daily active users" (implicitly referenced via "sustainability of daily active user growth")
+LABEL: INFERENCE
+REASON: The Outlook does not quote the 474 million figure explicitly, but the directional reference to DAU growth sustainability is fully derivable from the pre-written SEC Filing Highlights section, which states "474 million daily active users for the quarter ended December 31, 2025."
+
+---
+
+*Note: The Outlook section contains no additional standalone quantitative figures, price targets, specific thresholds, ratios, or named product milestones beyond those already evaluated above. All remaining language ("cautiously neutral," "entrenched position," "ad-tech fragmentation," "margin expansion," "advertiser spending volatility," "privacy restrictions") is qualitative and directional, with no specific numbers or measurable claims requiring arithmetic verification.*

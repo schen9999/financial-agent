@@ -1,0 +1,95 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections, then evaluate each.
+
+---
+
+**Scanning the Executive Summary and Outlook for auditable claims:**
+
+After a careful read, the Executive Summary and Outlook are notably qualitative. I will identify every claim that is specific enough to audit — including named entities, named filing dates, named market lists, and any directional/positional quantitative assertions.
+
+---
+
+**CLAIM 1:**
+CLAIM: "submission of recent 10-K and 10-Q filings"
+LABEL: SUPPORTED
+REASON: The pre-written "Recent Developments" section explicitly states the company submitted its 10-K annual report on February 27, 2025, and its 10-Q quarterly report on May 6, 2025, confirming both filings exist.
+
+---
+
+**CLAIM 2:**
+CLAIM: "explicitly warn of revenue stagnation, market share fluctuations, and material adverse effects on its financial condition"
+LABEL: SUPPORTED
+REASON: The 10-K and 10-Q SEC Filing Summaries in the source data explicitly reference "not growing our revenue or market share," "revenue and market share fluctuating on a quarterly and annual basis," and "material and adversely affect our business, operating results, financial condition," directly matching these characterizations.
+
+---
+
+**CLAIM 3:**
+CLAIM: "rising mortgage rates and low housing inventory"
+LABEL: SUPPORTED
+REASON: Both the RAG — SEC Highlights and RAG — Risk Factors sections explicitly list "increased mortgage rates" and "low home inventory levels" as disclosed risk factors, and the SEC Filing Highlights pre-written section repeats "rising mortgage rates and low housing inventory."
+
+---
+
+**CLAIM 4:**
+CLAIM: "early-stage AI integration"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and RAG — Risk Factors sections both explicitly state "AI is in the early stages of business use," and the SEC Filing Highlights pre-written section references "early-stage AI integration."
+
+---
+
+**CLAIM 5:**
+CLAIM: "top-10 metropolitan markets"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly names the "top-10 markets" (Boston, Chicago, Denver, Los Angeles, Maryland, Northern Virginia, Portland, San Diego, San Francisco, and Seattle) for the year ended December 31, 2024, and this figure is repeated in the pre-written SEC Filing Highlights and Risk Factors sections.
+
+---
+
+**CLAIM 6:**
+CLAIM: "geographic concentration amplifies the impact of local economic shifts or net migration changes"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and RAG — Risk Factors sections explicitly disclose that "long-term net migration to cities outside these top markets could shift residential housing transactions away from its primary revenue sources" and that geographic concentration creates disproportionate impact from local conditions.
+
+---
+
+**CLAIM 7:**
+CLAIM: "regulatory compliance and reputational risks associated with AI bias and hallucinations"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and RAG — Risk Factors sections explicitly identify "hallucinatory results," "bias," "discriminatory" outputs, and "regulatory compliance" as specific AI-related risks disclosed in the filings.
+
+---
+
+**CLAIM 8:**
+CLAIM: "continued history of losses"
+LABEL: SUPPORTED
+REASON: The 10-K SEC Filing Summary explicitly references "an extension of our history of losses and a failure to become profitable," and the pre-written Financial Health section states "a history of losses and uncertainty regarding future profitability."
+
+---
+
+**CLAIM 9:**
+CLAIM: "lack of transparent performance data" / "financial health is currently obscured by a lack of transparent performance data"
+LABEL: SUPPORTED
+REASON: The pre-written Financial Health section explicitly states "Specific financial metrics such as price, market capitalization, P/E ratio, revenue, and profit margin are not available in the provided data" and "a quantitative assessment of the company's current financial health cannot be performed."
+
+---
+
+**CLAIM 10:**
+CLAIM: "competing for market share in an environment defined by low housing inventory and rising mortgage rates"
+LABEL: SUPPORTED
+REASON: Both "low housing inventory" and "rising mortgage rates" are explicitly named risk factors in the RAG sections and pre-written SEC Filing Highlights; "intense competition" is also explicitly named in the RAG — Risk Factors and SEC Filing Highlights sections.
+
+---
+
+**CLAIM 11:**
+CLAIM: "clear evidence of stabilized revenue growth and successful mitigation of these technological and macroeconomic vulnerabilities"
+LABEL: INFERENCE
+REASON: This is a forward-looking conditional framed as a watch-item; it is fully derivable from the disclosed risks of revenue stagnation and AI/macroeconomic headwinds present in the source data, representing a logical directional restatement of those risks rather than a new unsupported fact.
+
+---
+
+**CLAIM 12:**
+CLAIM: "continued revenue stagnation or adverse regulatory developments would reinforce the current risk profile"
+LABEL: INFERENCE
+REASON: This is a directional restatement directly derivable from the explicitly disclosed risks of revenue stagnation and regulatory non-compliance in the source filings, with no new facts introduced.
+
+---
+
+**Summary of findings:** No specific quantitative figures (prices, percentages, ratios, price targets, or numeric thresholds) appear in the Executive Summary or Outlook sections. All auditable claims are either qualitative characterizations directly supported by the source data or logical inferences from it. No claims are UNSUPPORTED.

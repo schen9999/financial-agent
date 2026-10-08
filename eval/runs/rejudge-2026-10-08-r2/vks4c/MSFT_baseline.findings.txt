@@ -1,0 +1,64 @@
+I will now systematically audit every quantitative, positional, and forward-looking claim in the **Executive Summary** and **Outlook** sections against the raw source data and pre-written sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "market capitalization of $3.93 trillion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 3,933,757,243,392.0 USD ≈ $3.93 trillion, matching the claim exactly.
+
+---
+
+CLAIM: "annual revenue of $331.8 billion"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 331,839,012,864.0 USD ≈ $331.8 billion, matching the claim exactly.
+
+---
+
+CLAIM: "40.3% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 40.3, matching the claim exactly.
+
+---
+
+CLAIM: "trades near the top of its 52-week range at $529.76"
+LABEL: SUPPORTED
+REASON: Current price = $529.76; 52-week high = $553.72; 52-week low = $349.20. The range spans $204.52; $529.76 sits ($553.72 − $529.76) = $23.96 below the high, placing it at ($529.76 − $349.20) / ($553.72 − $349.20) = $180.56 / $204.52 ≈ 88.3% of the range — arithmetically near the top, and the current price figure is confirmed in source data.
+
+---
+
+CLAIM: "commanding a premium 29.5x P/E"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 29.513092, which rounds to 29.5x, matching the claim exactly.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "the gap between the current 29.5x P/E and the forward 22.4x P/E"
+LABEL: SUPPORTED
+REASON: Source data confirms pe_ratio = 29.513092 ≈ 29.5x and forward_pe = 22.374153 ≈ 22.4x; both figures are present and correctly rounded.
+
+---
+
+*No additional standalone quantitative figures, price targets, thresholds, named product milestones, or other specific metrics appear in the Outlook section beyond those already evaluated above. All directional and qualitative forward-looking statements (e.g., "cautiously constructive," "accelerating capital expenditure," "volatile energy costs," "competitive displacement risk") are qualitative characterizations drawn from the Risk Factors pre-written section and carry no auditable numerical claims.*
+
+---
+
+## SUMMARY TABLE
+
+| Claim | Label |
+|---|---|
+| Market cap $3.93 trillion | SUPPORTED |
+| Annual revenue $331.8 billion | SUPPORTED |
+| 40.3% profit margin | SUPPORTED |
+| Trades near top of 52-week range at $529.76 | SUPPORTED |
+| 29.5x P/E (Executive Summary) | SUPPORTED |
+| 29.5x P/E vs. forward 22.4x P/E (Outlook) | SUPPORTED |
+
+**All auditable quantitative claims in the Executive Summary and Outlook are SUPPORTED.** No figures were found to be unsupported or requiring inference labeling. The brief contains no price targets, revenue growth rates, margin forecasts, or other forward-looking numerical projections beyond the valuation multiples already present in the source data.

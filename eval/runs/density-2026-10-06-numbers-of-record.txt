@@ -1,0 +1,27 @@
+Judge-independent: numbers stated in the audited text
+  4hsn2    mean  6.45 per brief (40 briefs)
+  nstp9    mean  3.90 per brief (40 briefs)
+  8vpq6    mean  3.70 per brief (40 briefs)
+  p9jr2    mean  3.42 per brief (40 briefs)
+  4hsn2 - nstp9: +2.55 (95% bootstrap CI +1.77 to +3.38); 4hsn2 more on 31, equal 4, nstp9 more 5; sign p = 1.3e-05
+  4hsn2 - 8vpq6: +2.75 (95% bootstrap CI +2.02 to +3.50); 4hsn2 more on 31, equal 6, 8vpq6 more 3; sign p = 7.7e-07
+  nstp9 - 8vpq6: +0.20 (95% bootstrap CI -0.33 to +0.70); nstp9 more on 20, equal 7, 8vpq6 more 13; sign p = 0.2962
+  8vpq6 - p9jr2: +0.28 (95% bootstrap CI -0.23 to +0.78); 8vpq6 more on 18, equal 9, p9jr2 more 13; sign p = 0.4731
+Judge-independent, conservative: figures bound to a stock-data field
+  4hsn2    mean  4.47 per brief (40 briefs)
+  nstp9    mean  3.05 per brief (40 briefs)
+  8vpq6    mean  3.00 per brief (40 briefs)
+  p9jr2    mean  2.83 per brief (40 briefs)
+  4hsn2 - nstp9: +1.43 (95% bootstrap CI +0.93 to +1.93); 4hsn2 more on 27, equal 8, nstp9 more 5; sign p = 0.0001
+  4hsn2 - 8vpq6: +1.48 (95% bootstrap CI +0.97 to +2.00); 4hsn2 more on 26, equal 9, 8vpq6 more 5; sign p = 0.0002
+  nstp9 - 8vpq6: +0.05 (95% bootstrap CI -0.40 to +0.53); nstp9 more on 17, equal 10, 8vpq6 more 13; sign p = 0.5847
+  8vpq6 - p9jr2: +0.17 (95% bootstrap CI -0.28 to +0.62); 8vpq6 more on 18, equal 10, p9jr2 more 12; sign p = 0.3616
+Judge-based: numeric claims per brief (rejudge-2026-10-06-r2)
+  4hsn2    mean  6.85 per brief (40 briefs)
+  nstp9    mean  4.05 per brief (40 briefs)
+  8vpq6    mean  3.95 per brief (40 briefs)
+  p9jr2    mean  3.88 per brief (40 briefs)
+  4hsn2 - nstp9: +2.80 (95% bootstrap CI +2.05 to +3.52); 4hsn2 more on 32, equal 4, nstp9 more 4; sign p = 1.9e-06
+  4hsn2 - 8vpq6: +2.90 (95% bootstrap CI +2.17 to +3.65); 4hsn2 more on 33, equal 4, 8vpq6 more 3; sign p = 2.3e-07
+  nstp9 - 8vpq6: +0.10 (95% bootstrap CI -0.40 to +0.57); nstp9 more on 17, equal 12, 8vpq6 more 11; sign p = 0.3449
+  8vpq6 - p9jr2: +0.07 (95% bootstrap CI -0.42 to +0.57); 8vpq6 more on 16, equal 9, p9jr2 more 15; sign p = 1.0000

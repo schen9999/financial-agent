@@ -1,0 +1,43 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number appearing in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "a liquidity pool of $524.3 million"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and RAG — Risk Factors both explicitly state "the company held $524.3 million in cash, cash equivalents, and marketable securities as of December 31, 2024," and the SEC Filing Highlights pre-written section repeats this figure verbatim.
+
+---
+
+CLAIM: "fund operations through mid-2027"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states "Management estimates that existing resources will fund operating expenses and capital expenditures into mid-2027," and the SEC Filing Highlights pre-written section repeats this projection.
+
+---
+
+CLAIM: "an accumulated deficit of $743.0 million"
+LABEL: SUPPORTED
+REASON: Both RAG sections and the SEC Filing Highlights pre-written section explicitly state the accumulated deficit was $743.0 million as of December 31, 2024.
+
+---
+
+CLAIM: "the drop in cash equivalents to $96.6 million"
+LABEL: SUPPORTED
+REASON: The 10-Q summary in the raw source data shows cash and cash equivalents of $96,554 thousand (≈$96.6 million) as of March 31, 2025, and the Recent Developments pre-written section confirms this figure.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "substantial cash and securities reserves that provide a runway through mid-2027"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states management estimates existing resources will fund operations into mid-2027, and the SEC Filing Highlights pre-written section corroborates this.
+
+---
+
+*No additional specific quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Outlook section beyond the mid-2027 runway already evaluated above. All remaining language in the Outlook is qualitative and directional (e.g., "cautiously constructive," "pre-revenue," "no approved products," "positive clinical data," "dilutive capital raises") and does not constitute a specific quantitative or named-milestone claim subject to audit under the defined criteria.*

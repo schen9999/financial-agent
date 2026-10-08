@@ -1,0 +1,65 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of $2.8 trillion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 2,803,578,699,776.0 USD ≈ $2.8 trillion, and the pre-written Financial Health section states the same figure.
+
+---
+
+CLAIM: "annual revenue of $775.7 billion"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 775,680,032,768 USD ≈ $775.7 billion, consistent with the pre-written Financial Health section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "EQT announced a $50 billion India investment heavily weighted toward data centers" (implicit in the reference to "sustained investor appetite for data center financing" and the broader data center narrative)
+LABEL: SUPPORTED
+REASON: The news article explicitly states "EQT plans $50 billion India investment" with ~$30 billion in data centers, and the pre-written Recent Developments section references this directly; the Outlook's reference to "sustained investor appetite for data center financing" is grounded in this and the Meta-tied junk bond article.
+
+---
+
+CLAIM: "broad market confidence in long-term cloud demand as evidenced by sustained investor appetite for data center financing"
+LABEL: INFERENCE
+REASON: This is a directional restatement derived from two present source facts — the Meta-tied data center bond drawing $10 billion in demand and EQT's $50 billion commitment — making it a directly derivable inference from context figures without requiring any absent fact.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already addressed above and the qualitative/directional language, which falls outside the scope of quantitative claim auditing.)*
+
+---
+
+**ADDITIONAL QUANTITATIVE CLAIMS — CHECKING FOR ANY MISSED ITEMS**
+
+Re-reading both sections carefully for any remaining specific figures:
+
+---
+
+CLAIM: "one of the most scaled enterprises in the world" (qualitative, no specific figure)
+LABEL: N/A — no quantitative claim to audit.
+
+---
+
+CLAIM: (Outlook references "high-margin cloud segment," "lower-margin retail segment," "services-margin trend across AWS and advertising")
+LABEL: UNSUPPORTED
+REASON: No specific margin figures for AWS, advertising, or retail segments are present anywhere in the source data or pre-written sections; the source data provides only a blended company-wide profit margin of 17.44%, and no segment-level margin data exists in the context to support or ground these comparative margin characterizations.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap of $2.8 trillion | SUPPORTED |
+| 2 | Annual revenue of $775.7 billion | SUPPORTED |
+| 3 | Investor appetite for data center financing (grounded in $10B bond demand + $50B EQT) | INFERENCE |
+| 4 | AWS as "high-margin" vs. retail as "lower-margin" (segment-level margin comparison) | UNSUPPORTED |

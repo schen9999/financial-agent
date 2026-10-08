@@ -1,0 +1,70 @@
+STOCK DATA:
+{
+  "ticker": "AAPL",
+  "company_name": "Apple Inc.",
+  "current_price": 333.69,
+  "currency": "USD",
+  "market_cap": 4869931925504.0,
+  "pe_ratio": 38.31114,
+  "forward_pe": 34.821583,
+  "week_52_high": 345.34,
+  "week_52_low": 243.42,
+  "revenue": 466822987776.0,
+  "net_income": 128929996800.0,
+  "profit_margin": 0.27618998,
+  "dividend_yield": 0.32,
+  "sector": "Technology",
+  "industry": "Consumer Electronics"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2025-10-31",
+    "summary": "Item 1A. Risk Factors The following summarizes factors that could have a material adverse effect on the Company\u2019s business, reputation, results of operations, financial condition and stock price. The Company may not be able to accurately predict, control or mitigate these risks. Statements in this section are based on the Company\u2019s beliefs and opinions regarding matters that could materially adversely affect the Company in the future and are not representations as to whether such matters have or have not occurred previously. The risks and uncertainties described below are not exhaustive and should not be considered a complete statement of all potential risks or uncertainties that the Company faces or may face in the future. This section should be read in conjunction with Part II, Item 7, \u201c"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-07-31",
+    "summary": "Item 1A. Risk Factors 21 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 24 Item 3. Defaults Upon Senior Securities 24 Item 4. Mine Safety Disclosures 24 Item 5. Other Information 25 Item 6. Exhibits 25 PART I \u2014 FINANCIAL INFORMATION Item 1. Financial Statements Apple Inc. CONDENSED CONSOLIDATED STATEMENTS OF OPERATIONS (Unaudited) (In millions, except number of shares, which are reflected in thousands, and per-share amounts) Three Months Ended Nine Months Ended June 27, 2026 June 28, 2025 June 27, 2026 June 28, 2025 Net sales: Products $ 78,678 $ 66,613 $ 272,629 $ 233,287 Services 30,739 27,423 91,728 80,408 Total net sales 109,417 94,036 364,357 313,695 Cost of sales: Products 47,153 43,620 163,810 147,097 Services 7,494 6,698 21,765 19,738 Total cost of sales 54,647"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] Based on the provided text from Apple Inc.'s 2025 Form 10-K, the key risk factors that could materially adversely affect the company’s business, results of operations, financial condition, and stock price include:
+
+**Public Health and Business Interruptions**
+Major public health issues, such as pandemics, can disrupt the global economy, demand for consumer products, and the company’s supply chain and sales channels. Because the company relies on single or limited sources for many critical components, interruptions at these sources can exacerbate negative consequences. The company may face substantial recovery times, significant expenditures, and lost sales following any business interruption, and its insurance coverage may be insufficient to cover all potential losses.
+
+**Competitive Pressures**
+The global markets for the company’s products and services are highly competitive, characterized by aggressive price competition, downward pressure on gross margins, and rapid technological change. Competitors often imitate the company’s products, infringe on intellectual property, and possess resources to offer products at little or no profit. The company holds a minority market share in global smartphone, personal computer, tablet, and wearables markets, some of which have experienced little to no growth or contraction. Failure to compete successfully could materially harm the company.
+
+**Intellectual Property and Innovation**
+The company’s competitive advantage depends on the timely introduction of innovative products and the effective protection of its intellectual property rights. Regulatory requirements, government investigations, and litigation may force the company to modify or withdraw products, limit its ability to enforce intellectual property rights, or share innovations with competitors. If the company cannot develop innovative products with attractive margins or if competitors infringe on its intellectual property, its competitive advantage could be adversely affected.
+
+**Macroeconomic and Geopolitical Risks**
+The company’s performance depends significantly on global and regional economic conditions, as the majority of its net sales are international. Adverse macroeconomic conditions, such as recession, inflation, high unemployment, and currency fluctuations, can reduce consumer confidence and spending. Additionally, political events, trade disputes, tariffs, and geopolitical tensions can disrupt the supply chain, increase costs, and require expensive and disruptive changes to business operations. A significant majority of the company’s manufacturing is outsourced to partners in countries such as China, India, Japan, South Korea, Taiwan, and Vietnam, making it vulnerable to restrictions on international trade.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] The primary risk factors disclosed include:
+
+**Macroeconomic and Industry Risks**
+*   **Economic Conditions:** Adverse global and regional economic conditions, such as slow growth, recession, high unemployment, inflation, tighter credit, higher interest rates, and currency fluctuations, can negatively impact consumer confidence, spending, and demand for products. These conditions can also cause financial instability, insolvency, or credit issues for suppliers, manufacturers, and other partners.
+*   **Political and Geopolitical Events:** Political events, trade disputes, geopolitical tensions, conflict, terrorism, natural disasters, public health issues, and industrial accidents can disrupt operations, supply chains, and sales channels.
+*   **Trade Restrictions:** Restrictions on international trade, such as tariffs and controls on imports or exports, can increase costs, limit the availability of products and raw materials, and force expensive and disruptive changes to the supply chain and business operations.
+
+**Operational and Supply Chain Risks**
+*   **Public Health Issues:** Major public health issues, including pandemics, can adversely affect the global economy, demand for consumer products, and operations through protective measures like travel restrictions and freight limitations.
+*   **Supply Chain Disruptions:** The company relies on single or limited sources for many critical components. Business interruptions at these sources can exacerbate negative consequences, leading to significant recovery time, expenditures, and lost sales.
+*   **Insurance Limitations:** Existing insurance coverage may be insufficient to cover all potential losses arising from business interruptions.
+
+**Competitive and Market Risks**
+*   **Intense Competition:** The company operates in highly competitive global markets characterized by aggressive price competition, downward pressure on gross margins, rapid technological change, and short product life cycles.
+*   **Competitor Strategies:** Competitors may imitate products, infringe on intellectual property, or offer products at little or no profit due to lower cost structures. Some competitors have broad product lines, large installed bases, and significant resources.
+*   **Market Share and Growth:** The company holds a minority market share in global smartphone, personal computer, tablet, and wearables markets. Some of these markets have experienced little to no growth or have contracted.
+*   **Innovation and R&D:** Success depends on the timely introduction of innovative products and services. Significant investments in R&D may not achieve expected returns, and failure to develop or market new products successfully can harm competitive advantage.
+*   **Intellectual Property:** Effective protection of intellectual property rights is crucial. Regulatory requirements, government investigations, or litigation may force product modifications, withdrawals, or the sharing of innovations with competitors. Intellectual property protection is not consistently available in every country.

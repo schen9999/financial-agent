@@ -1,0 +1,85 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $402.9 million in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $402,948,000, which rounds to $402.9 million; the Financial Health and Recent Developments pre-written sections also state this figure explicitly.
+
+---
+
+CLAIM: "market capitalization of $424.6 million"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $424,596,224, which rounds to $424.6 million; confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "a valuation that offers little premium above a single year of top-line sales"
+LABEL: INFERENCE
+REASON: Market cap ($424.6M) divided by revenue ($402.9M) yields a price-to-sales ratio of approximately 1.05x, directly derivable from the two present figures, confirming the claim that market cap is barely above one year of revenue.
+
+---
+
+CLAIM: "The stock's steep decline from its 52-week high of $5.15 to $1.35"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists week_52_high as 5.15 and current_price as 1.35; both figures are confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "$5.15" (52-week high)
+LABEL: SUPPORTED
+REASON: Source data field week_52_high = 5.15.
+
+---
+
+CLAIM: "$1.35" (current price / implied low end of decline)
+LABEL: SUPPORTED
+REASON: Source data field current_price = 1.35.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "$210.7 million cash position"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights pre-written section states "it maintains a solid cash position of $210.7 million as of December 31, 2025," which is sourced from the RAG — SEC Highlights section stating "As of December 31, 2025, the company had $210.7 million in cash, cash equivalents, and restricted cash."
+
+---
+
+CLAIM: "operating losses are expected to continue"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights explicitly states "the company has a history of operating losses and expects to continue incurring significant expenses and losses in the near to medium term"; also confirmed in the Risk Factors pre-written section.
+
+---
+
+CLAIM: "the DOE loan drawdown remains conditional and uncertain"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights and Risk Factors both explicitly state the company is "substantially dependent on the ability to fully draw down a Department of Energy loan, which has multiple conditions precedent."
+
+---
+
+*(No additional standalone quantitative figures, price targets, specific thresholds, ratios, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already audited above.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $402.9 million in revenue | SUPPORTED |
+| 2 | Market cap of $424.6 million | SUPPORTED |
+| 3 | Valuation offers little premium above a single year of top-line sales | INFERENCE |
+| 4 | Decline from 52-week high of $5.15 to $1.35 | SUPPORTED |
+| 5 | $5.15 (52-week high) | SUPPORTED |
+| 6 | $1.35 (current price) | SUPPORTED |
+| 7 | $210.7 million cash position | SUPPORTED |
+| 8 | Operating losses expected to continue | SUPPORTED |
+| 9 | DOE loan drawdown conditional and uncertain | SUPPORTED |
+
+**No UNSUPPORTED claims were identified.** All quantitative and forward-looking claims in the Executive Summary and Outlook are either directly present in the source data/pre-written sections or are a single-step arithmetic inference from two explicitly present figures.

@@ -1,0 +1,55 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $402.4 million"
+LABEL: SUPPORTED
+REASON: The source data lists market_cap as $402,379,680.0, which rounds to $402.4 million; this figure also appears explicitly in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "net loss of $73.9 million"
+LABEL: SUPPORTED
+REASON: The source data lists net_income as -$73,949,000, which rounds to -$73.9 million; this figure is also confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "negative profit margin of -157.3%"
+LABEL: SUPPORTED
+REASON: Source data gives profit_margin as -1.57322, i.e., -157.322%, which rounds to -157.3%; this is also stated explicitly in the Financial Health pre-written section.
+
+---
+
+CLAIM: "existing cash reserves are projected to sustain operations only through the third quarter of 2027"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights pre-written section and the RAG SEC Highlights both explicitly state that existing cash and cash equivalents are expected to fund operating expenses and capital expenditures only through the third quarter of 2027.
+
+---
+
+CLAIM: "lead candidate EDIT-401"
+LABEL: SUPPORTED
+REASON: EDIT-401 is explicitly named as the primary candidate in the RAG SEC Highlights and SEC Filing Highlights pre-written section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "imminent need for capital before Q3 2027"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and pre-written SEC Filing Highlights section both state that existing cash is expected to fund operations only through the third quarter of 2027, making the need for capital before that date a direct restatement of the source.
+
+---
+
+CLAIM: "external funding from BMS or Vertex collaborations"
+LABEL: SUPPORTED
+REASON: Both BMS (Bristol Myers Squibb) and Vertex are explicitly named as the only significant committed potential external funding sources in the RAG SEC Highlights, RAG Risk Factors, and the pre-written SEC Filing Highlights and Risk Factors sections.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, named metrics, percentages, or forward-looking numbers appear in the Outlook section beyond those already evaluated above. Qualitative directional statements such as "cautiously cautious," "primary headwind," "tailwinds," "binary execution risks," and monitoring recommendations contain no auditable quantitative claims.)*

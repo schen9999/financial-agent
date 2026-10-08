@@ -1,0 +1,109 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$467 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $466,822,987,776, which rounds to $467 billion; the pre-written sections also state "$467 billion in annual revenue."
+
+---
+
+CLAIM: "$129 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net income of $128,929,996,800, which rounds to $129 billion; confirmed in the Financial Health section.
+
+---
+
+CLAIM: "$4.9 trillion market cap"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $4,913,422,663,680, which rounds to $4.9 trillion; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "38.3x P/E"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio of 38.257954, which rounds to 38.3x; confirmed in the pre-written sections.
+
+---
+
+CLAIM: "new smart home devices … entering the market"
+LABEL: SUPPORTED
+REASON: Bloomberg news article dated 2026-09-30 reports Gurman's report of Apple launching new 'Smart Home' products on October 13; confirmed in the Recent Developments section.
+
+---
+
+CLAIM: "iPhone Duo foldable entering the market"
+LABEL: SUPPORTED
+REASON: Bloomberg news article dated 2026-09-30 references "Apple will sell 6 million iPhone duos in 2026"; the product name "iPhone Duo" and its foldable nature are confirmed in the source data and pre-written sections.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "year-over-year revenue acceleration visible in the 9M 2026 figures"
+LABEL: SUPPORTED
+REASON: The 10-Q data shows nine-month total net sales of $364,357M (2026) vs. $313,695M (2025), confirming year-over-year revenue acceleration in the 9M 2026 period; the period label "9M 2026" matches the column header "Nine Months Ended June 27, 2026."
+
+---
+
+CLAIM: "new smart home devices" (as a near-term catalyst)
+LABEL: SUPPORTED
+REASON: Bloomberg article (2026-09-30) confirms Apple is launching new Smart Home products on October 13, as also stated in the Recent Developments section.
+
+---
+
+CLAIM: "iPhone Duo foldable" (as a near-term catalyst)
+LABEL: SUPPORTED
+REASON: Bloomberg article (2026-09-30) and the pre-written Recent Developments section both reference the iPhone Duo foldable and the 6 million unit projection for 2026.
+
+---
+
+CLAIM: "international markets — which represent the majority of revenue"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "international sales representing the majority of total net sales," directly sourced from Apple's 2025 Form 10-K risk factors.
+
+---
+
+CLAIM: "current P/E multiple" (implicitly the 38.3x figure referenced in the Executive Summary and carried forward)
+LABEL: SUPPORTED
+REASON: Source data confirms pe_ratio of 38.257954 ≈ 38.3x, which is the P/E multiple referenced throughout both sections.
+
+---
+
+CLAIM: "current valuation multiples" / "limited room for execution missteps" (qualitative framing tied to the elevated P/E)
+LABEL: INFERENCE
+REASON: This is a directional qualitative judgment derived from the explicitly stated elevated 38.3x P/E ratio (present in source data) — the inference that a high P/E leaves limited room for missteps is a standard, directly derivable logical step from that single present figure, requiring no absent facts.
+
+---
+
+CLAIM: "tariff escalation materially raises production costs" (as a headwind scenario)
+LABEL: SUPPORTED
+REASON: The RAG — Risk Factors section explicitly identifies "Recent tariffs announced on imports to the U.S. from multiple countries including China, India, Japan, South Korea, Taiwan, Vietnam, and the EU" and potential for escalation, directly supporting this as a disclosed risk.
+
+---
+
+CLAIM: "Asia-concentrated supply chain exposure"
+LABEL: SUPPORTED
+REASON: Both the RAG — SEC Highlights and RAG — Risk Factors sections explicitly identify manufacturing concentration in China, India, Japan, South Korea, Taiwan, and Vietnam as a disclosed material risk.
+
+---
+
+CLAIM: "geopolitical trade tensions" (as a headwind)
+LABEL: SUPPORTED
+REASON: The RAG — Risk Factors section explicitly lists "Geopolitical and Trade Tensions" including tariffs and retaliatory measures as a primary risk factor.
+
+---
+
+CLAIM: "macroeconomic sensitivity of international markets"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and Risk Factors sections both explicitly identify adverse global economic conditions (recession, inflation, currency fluctuations) affecting international sales as a material risk.
+
+---
+
+**No additional quantitative figures, price targets, specific thresholds, named ratios beyond those already audited, or other forward-looking numbers appear in the Executive Summary or Outlook sections.** All claims have been evaluated above.

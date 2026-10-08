@@ -1,0 +1,45 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of $3.93 trillion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 3,933,757,243,392.0 USD, which rounds to $3.93 trillion; the pre-written Financial Health section also states "$3.93 trillion."
+
+---
+
+CLAIM: "annual revenue of $331.8 billion"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 331,839,012,864.0 USD, which rounds to $331.8 billion; confirmed in the pre-written sections.
+
+---
+
+CLAIM: "40.3% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 40.3.
+
+---
+
+CLAIM: "trades near the top of its 52-week range at $529.76"
+LABEL: SUPPORTED
+REASON: Current price = $529.76; 52-week high = $553.72; 52-week low = $349.20. The range is $204.52 wide; $529.76 sits ($529.76 − $349.20) / ($553.72 − $349.20) = $180.56 / $204.52 ≈ 88.3% of the way from low to high, confirming it is near the top of the range. The pre-written section also states "the stock remains near highs."
+
+---
+
+CLAIM: "commanding a premium 29.5x P/E"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 29.513092, which rounds to 29.5x; confirmed in pre-written sections.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "the gap between the current 29.5x P/E and the forward 22.4x P/E"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 29.513092 (≈ 29.5x) and forward_pe = 22.374153 (≈ 22.4x); both figures are present and correctly rounded.

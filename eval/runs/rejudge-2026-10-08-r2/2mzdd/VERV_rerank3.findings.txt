@@ -1,0 +1,79 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "a meaningful asset base of $614.2 million in total assets"
+LABEL: SUPPORTED
+REASON: The 10-Q summary states total assets of $614,163 thousand as of March 31, 2025, and the Financial Health pre-written section confirms "$614.2 million in total assets," matching the claim exactly.
+
+---
+
+CLAIM: "$400.5 million in marketable securities"
+LABEL: SUPPORTED
+REASON: The 10-Q source data lists marketable securities of $400,523 thousand as of March 31, 2025, which rounds to $400.5 million, directly matching the claim.
+
+---
+
+CLAIM: "cash declining from $172.6 million to $96.6 million in a single quarter"
+LABEL: SUPPORTED
+REASON: The 10-Q source data shows cash and cash equivalents of $172,560 thousand at December 31, 2024, and $96,554 thousand at March 31, 2025; both figures round to the claimed values, and the period (Q1 2025, a single quarter) is consistent with the column headers present.
+
+---
+
+CLAIM: "its Eli Lilly partnership"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section both explicitly reference a Research and Collaboration Agreement with Eli Lilly and Company, effective July 2023.
+
+---
+
+CLAIM: "dual pipeline candidates (VERVE-102 and VERVE-201)"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly names both VERVE-102 (Heart-2 Phase 1b) and VERVE-201 (Pulse-1 Phase 1b) as ongoing clinical candidates.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "pre-revenue, high-burn clinical-stage company with no approved products"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both confirm no approved products, no product revenue, and net losses of $198.7 million in 2024, establishing the pre-revenue, high-burn characterization.
+
+---
+
+CLAIM: "the Eli Lilly research collaboration, which provides both validation and a potential non-dilutive funding avenue"
+LABEL: INFERENCE
+REASON: The Eli Lilly collaboration is confirmed in the source data; characterizing it as a "non-dilutive funding avenue" is a reasonable inference from the nature of collaboration agreements (as opposed to equity offerings), but the source data does not explicitly describe it as non-dilutive or as a funding avenue — it is derivable from the distinction between collaboration revenue and equity financing described in the source.
+
+---
+
+CLAIM: "the accelerating quarterly cash burn raises near-term financing risk"
+LABEL: INFERENCE
+REASON: The cash decline from $172.6 million to $96.6 million in Q1 2025 is confirmed in the source data; characterizing this as "accelerating" burn is an inference — the source data provides only one quarter of sequential cash data and does not supply a prior-quarter burn figure for comparison, making "accelerating" strictly an inference from the single data point rather than a verified trend, though the directional claim about near-term financing risk is consistent with the Risk Factors section.
+
+---
+
+CLAIM: "the trajectory of quarterly cash consumption relative to the marketable securities buffer"
+LABEL: SUPPORTED
+REASON: Both the quarterly cash figure ($96.6 million) and the marketable securities balance ($400.5 million) are present in the source data, making this a factually grounded watch-item referencing confirmed figures.
+
+---
+
+CLAIM: "any expansion or deepening of the Eli Lilly partnership"
+LABEL: SUPPORTED
+REASON: The Eli Lilly collaboration is confirmed in the source data; this is a forward-looking watch-item referencing a named entity that is present in the context.
+
+---
+
+CLAIM: "clinical data from VERVE-102 and VERVE-201"
+LABEL: SUPPORTED
+REASON: Both VERVE-102 and VERVE-201 are explicitly named in the RAG SEC Highlights as ongoing Phase 1b clinical candidates, confirming the entities referenced.
+
+---
+
+**Summary of findings:** All quantitative figures in the Executive Summary are SUPPORTED by the source data. The Outlook section contains two INFERENCE-labeled claims (the "non-dilutive" characterization of the Lilly collaboration and the "accelerating" characterization of cash burn), both of which are reasonable but go modestly beyond what is explicitly stated in the source. No claims are UNSUPPORTED.
