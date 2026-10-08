@@ -1907,6 +1907,16 @@ python3 scripts/traffic_proof_tasks.py --endpoint slm-gpu     --server-log eval/
    (`proof-tasks.json`), findings, claims, `eval/runs/three-judging-2026-10-08-xgtxx.txt`,
    `eval/runs/cost-gpu-p4-xgtxx-2026-10-08.txt`, `eval/runs/gpu-nvsmi-p4b-f304375.csv`.
 
+## CPU core-scaling benchmark (2026-10-08)
+
+**[EXECUTED 2026-10-08]** `bash scripts/llama_bench_cpu.sh 4 8 15`
+(operator, tmux; 05:04–06:01Z, endpoint scaled to 0 and restored). Prompt
+2,048 tokens 61.1 / 109.8 / 103.6 tok/s, generation 12.9 / 13.3 / 12.8
+tok/s at 4 / 8 / 15 vCPU (16 not schedulable). The endpoint was killed once
+during its cold reload (exit 137 at 06:17Z) and came up on the second
+start; `/health` ok. Results: [gpu-inference.md](gpu-inference.md), "CPU
+core scaling".
+
 ## Reranking A/B (2026-10-08)
 
 **[EXECUTED 2026-10-08 — decision DON'T SHIP]** Pre-registered in

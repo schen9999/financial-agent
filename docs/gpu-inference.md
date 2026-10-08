@@ -130,6 +130,39 @@ node) and the A10 on node 2. Both measured as 40-ticker eval runs on image
 - The harness on OKE reaches the A10 over node 2's public address on one
   port, so the A10 timings include that network path.
 
+## CPU core scaling (2026-10-08, llama-bench, no judge)
+
+`scripts/llama_bench_cpu.sh` on the OKE CPU endpoint's node (VM.Standard.E5.Flex,
+AMD EPYC 9J14): llama-bench from the same llama.cpp build (b11347, `full`
+image), the endpoint's own Q4_K_M GGUF, one Job per level with guaranteed
+CPU and `-t` equal to the level, the endpoint scaled to 0 meanwhile. 16
+vCPU was not schedulable (node allocatable 15,783m), so the top level is
+**15 vCPU**. Three repetitions each; results in
+`eval/runs/llama-bench-cpu-2026-10-08/`.
+
+| vCPU | Prompt, 2,048 tokens (tok/s) | Generation, 128 tokens (tok/s) |
+|---|---|---|
+| 4 | 61.1 (±0.03) | 12.9 (±0.02) |
+| 8 (the endpoint's size) | 109.8 (±0.09) | 13.3 (±0.01) |
+| 15 | 103.6 (±0.26) | 12.8 (±0.02) |
+
+- **Prompt processing scales 1.8× from 4 to 8 vCPU and not beyond**: 15
+  vCPU is slightly slower than 8.
+- **Generation does not scale at all** (12.8–13.3 tok/s at every level).
+  It is bound by something other than cores — memory bandwidth is the usual
+  limit for token generation, but this run does not measure it.
+- **So 8 vCPU is the right size for this endpoint**; more cores on one
+  node do not make it faster. The eval's CPU arm spends most of its time
+  generating, which is why it is about 10× slower than the A10.
+- The 512-token prompt figures (45.7, 79.6, 75.2) are not quoted: their
+  spread across the three repetitions (±27 to ±56 tok/s) shows a cold first
+  repetition.
+- **Operational finding:** loading the 20.4 GB GGUF cold from the block
+  volume took about 15 minutes per Job. On restore, the endpoint was killed
+  once at 06:17Z (exit 137, not OOM) before its cold load finished, then
+  came up from page cache and reports healthy. A cold restart of the CPU
+  endpoint can therefore take two attempts; no manifest was changed.
+
 ## Capacity at higher parallelism
 
 **Replay sweep, 2026-10-07** (`scripts/capacity_replay.py`, outputs in
