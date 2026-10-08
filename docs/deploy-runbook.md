@@ -999,6 +999,21 @@ scripts only** (for Streamlit, `k8s/overlays/oke-provided-public-ui` via
 `scripts/public_ui_up.sh`); nothing is applied there by hand or from other
 manifests.
 
+**Security-list mode, first apply (2026-10-08 02:4xZ): stopped, another
+actor in the namespace.** `scripts/public_ui_up.sh` (security-list mode)
+passed its pre-apply guard (the LB subnet's list admitted nothing on 443)
+and applied at about 02:41Z. The controller's `CreateLoadBalancer` (POST
+/20170115/loadBalancers) returned 409 Conflict at 02:44:25 GMT; then the
+`streamlit` Service was **deleted by someone else** at about 02:46:48Z
+(the controller logged "Deleted load balancer" and could not remove its
+finalizer: "services streamlit not found"), and the script stopped on the
+missing Service before its revert. No load balancer was left and the
+security list stayed empty. `kubectl apply -k k8s/overlays/oke-provided`
+restored Streamlit to ClusterIP without the sidecar, and found a ClusterIP
+`streamlit` Service only seconds old that it had not created: another actor
+was applying in the namespace at the same time. Nothing more is applied
+until the namespace has a single operator.
+
 **Fallback: join the owner's LB NSG** (security-rule management `None`,
 which makes the controller ignore `loadBalancerSourceRanges`; the LB is
 attached to the existing NSG `pub_lb-tbhcuw` with
