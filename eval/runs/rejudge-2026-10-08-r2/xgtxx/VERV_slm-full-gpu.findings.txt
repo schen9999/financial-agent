@@ -1,0 +1,55 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "a liquidity position of $524.3 million in cash and marketable securities as of early 2025"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections explicitly state "As of December 31, 2024, the company held $524.3 million in cash, cash equivalents, and marketable securities," and the SEC Filing Highlights pre-written section repeats this figure; "early 2025" is a loose but defensible characterization of the December 31, 2024 balance sheet date given the February 2025 filing context, though it is worth noting the figure is technically year-end 2024, not a March 2025 figure.
+
+---
+
+CLAIM: "a $20.0 million milestone payment from Eli Lilly"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "in February 2025, the company received a $20.0 million milestone payment from Eli Lilly and Company (Lilly) under the Lp(a) program," and this is repeated in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "current Phase 1b trial progress"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights confirms "ongoing Phase 1b clinical trials for VERVE-102 (Heart-2) and VERVE-201 (Pulse-1)," directly supporting the characterization of current Phase 1b trial progress.
+
+---
+
+CLAIM: "a $198.7 million net loss in 2024"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "net losses of $198.7 million… for the year ended December 31, 2024," and the SEC Filing Highlights pre-written section repeats this figure.
+
+---
+
+CLAIM: "bridge the gap to mid-2027"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights states "Management estimates that existing resources will fund operating expenses and capital requirements into mid-2027," and this is repeated in the SEC Filing Highlights pre-written section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "a defined cash runway extending into mid-2027"
+LABEL: SUPPORTED
+REASON: Directly supported by the RAG SEC Highlights: "Management estimates that existing resources will fund operating expenses and capital requirements into mid-2027."
+
+---
+
+CLAIM: "the Phase 1b trials for VERVE-102 and VERVE-201"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly confirms "ongoing Phase 1b clinical trials for VERVE-102 (Heart-2) and VERVE-201 (Pulse-1)."
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, percentages, or named product milestones appear in the Outlook section beyond those already evaluated above.*

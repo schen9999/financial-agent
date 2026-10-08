@@ -1,0 +1,12 @@
+Judge-independent: numbers stated in the audited text
+  xgtxx    mean  3.70 per brief (40 briefs)
+  nstp9    mean  3.90 per brief (40 briefs)
+  4hsn2    mean  6.45 per brief (40 briefs)
+  nstp9 - xgtxx: +0.20 (95% bootstrap CI -0.35 to +0.72); nstp9 more on 16, equal 14, xgtxx more 10; sign p = 0.3269
+  4hsn2 - xgtxx: +2.75 (95% bootstrap CI +2.08 to +3.45); 4hsn2 more on 34, equal 4, xgtxx more 2; sign p = 1.9e-08
+Judge-independent, conservative: figures bound to a stock-data field
+  xgtxx    mean  3.10 per brief (40 briefs)
+  nstp9    mean  3.05 per brief (40 briefs)
+  4hsn2    mean  4.47 per brief (40 briefs)
+  nstp9 - xgtxx: -0.05 (95% bootstrap CI -0.42 to +0.33); nstp9 more on 12, equal 15, xgtxx more 13; sign p = 1.0000
+  4hsn2 - xgtxx: +1.38 (95% bootstrap CI +0.97 to +1.77); 4hsn2 more on 27, equal 11, xgtxx more 2; sign p = 1.6e-06

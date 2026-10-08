@@ -23,3 +23,8 @@ def test_pair_lines_label_fisher_per_judging():
     js = {r: [tj.judging_counts(r, s) for s in SOURCES] for r in ("4hsn2", "nstp9")}
     L = tj.pair_lines("4hsn2", "nstp9", js["4hsn2"], js["nstp9"])
     assert "over 40 tickers" in L[1] and "continuity only" in L[3]
+
+
+def test_per_run_judgings_override_the_default_sources():
+    L = tj.report(["4hsn2", "nstp9"], SOURCES, [], {"nstp9": SOURCES})
+    assert any(l.startswith("  nstp9: raw") for l in L) and any(l.strip() == "nstp9" for l in L)

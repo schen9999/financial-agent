@@ -23,6 +23,7 @@ judging; the three judgings are never pooled into one test.
   python eval/three_judging_stats.py --runs 9jzmj 8vpq6 p9jr2 4hsn2 nstp9 \\
       --judgings raw eval/runs/rejudge-2026-10-06 eval/runs/rejudge-2026-10-06-r2 \\
       --pairs 4hsn2:nstp9 4hsn2:8vpq6 nstp9:8vpq6 8vpq6:p9jr2 9jzmj:4hsn2 p9jr2:nstp9
+  A run re-judged into other folders: --run-judgings xgtxx raw eval/runs/rejudge-2026-10-08 eval/runs/rejudge-2026-10-08-r2
 """
 import argparse
 import sys
@@ -105,9 +106,14 @@ def pair_lines(a: str, b: str, ja: list[dict], jb: list[dict]) -> list[str]:
     return L
 
 
-def report(runs: list[str], sources: list[str], pairs: list[tuple[str, str]]) -> list[str]:
-    js = {r: [judging_counts(r, s) for s in sources] for r in runs}
-    L = [f"Three judgings per run: {', '.join(sources)}", "Per run (judge v2; j1 = original judging)"]
+def report(runs: list[str], sources: list[str], pairs: list[tuple[str, str]],
+           per_run: dict | None = None) -> list[str]:
+    """per_run: {run: [three sources]} for runs re-judged into other folders."""
+    per_run = per_run or {}
+    js = {r: [judging_counts(r, s) for s in per_run.get(r, sources)] for r in runs}
+    L = [f"Three judgings per run: {', '.join(sources)}"]
+    L += [f"  {r}: {', '.join(v)}" for r, v in per_run.items()]
+    L.append("Per run (judge v2; j1 = original judging)")
     for r in runs:
         L += run_lines(r, js[r])
         tt = totals(js[r][0])
@@ -123,8 +129,12 @@ def main(argv=None) -> int:
     ap.add_argument("--runs", nargs="+", required=True)
     ap.add_argument("--judgings", nargs=3, required=True)
     ap.add_argument("--pairs", nargs="+", default=[], metavar="A:B")
+    ap.add_argument("--run-judgings", nargs=4, action="append", default=[], metavar=("RUN", "J1", "J2", "J3"),
+                    help="this run's three judgings, where they differ from --judgings")
     args = ap.parse_args(argv)
-    lines = report(args.runs, args.judgings, [tuple(p.split(":")) for p in args.pairs])
+    per_run = {r[0]: r[1:] for r in args.run_judgings}
+    runs = args.runs + [r for r in per_run if r not in args.runs]
+    lines = report(runs, args.judgings, [tuple(p.split(":")) for p in args.pairs], per_run)
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     print("\n".join(lines))
     return 0

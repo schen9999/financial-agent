@@ -1,0 +1,49 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$466.82 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as $466,822,987,776, which rounds to $466.82 billion, and the same figure appears explicitly in the Financial Health pre-written section.
+
+---
+
+CLAIM: "27.62% profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly states `"profit_margin_pct": 27.62`, and the Financial Health section confirms "profit margin of 27.62%."
+
+---
+
+CLAIM: "$4.91 trillion market capitalization"
+LABEL: SUPPORTED
+REASON: The raw source data lists `"market_cap": 4,913,422,663,680`, which equals approximately $4.91 trillion, consistent with the Financial Health section's "approximately $4.91 trillion."
+
+---
+
+CLAIM: "new smart home products"
+LABEL: SUPPORTED
+REASON: The Bloomberg news article titled "Gurman Reports Apple Is Launching New 'Smart Home' Products on October 13" directly supports this milestone.
+
+---
+
+CLAIM: "potential foldable iPhone hardware"
+LABEL: SUPPORTED
+REASON: The Bloomberg news article "Apple will sell 6 million iPhone duos in 2026, Counterpoint says" references Apple's upcoming foldable hardware, supporting this as a named product milestone.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "smart home and foldable iPhone initiatives"
+LABEL: SUPPORTED
+REASON: Both are directly sourced from the Bloomberg news articles: the October 13 smart home launch (Gurman/Bloomberg) and the foldable iPhone (Counterpoint/Bloomberg), and both appear in the Recent Developments pre-written section.
+
+---
+
+**Summary of findings:** All quantitative figures and named product milestones in the Executive Summary and Outlook sections are supported by the raw source data or pre-written sections. No figures appear in the Outlook section that require arithmetic verification beyond what is already confirmed above. The Outlook contains no additional standalone quantitative claims (no price targets, specific ratios, percentages, or numerical thresholds) beyond the product milestones already evaluated. All directional and qualitative statements (e.g., "cautiously constructive," "intense competition," "macroeconomic sensitivity") are characterizations drawn from the Risk Factors and SEC Filing Highlights sections and do not constitute auditable quantitative claims.

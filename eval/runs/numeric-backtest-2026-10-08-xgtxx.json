@@ -1,0 +1,450 @@
+{
+  "date": "2026-10-08",
+  "harness": "scripts/numeric_backtest.py --runs",
+  "check": "agent/numeric_check.py",
+  "rel_tol": 0.02,
+  "runs": [
+    "xgtxx"
+  ],
+  "financial_currency": null,
+  "note": "Flags are unadjudicated; a flag is an error only once a human verdict says so. Stock-field numbers only. Not a number of record.",
+  "files": 830,
+  "briefs": 40,
+  "skipped": [],
+  "summary": {
+    "run": {
+      "xgtxx": {
+        "runs": [
+          "xgtxx"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 1,
+        "briefs_flagged_mismatch": 1,
+        "briefs_flagged_placeholder": 0,
+        "checked": 437,
+        "checked_distinct": 437,
+        "unchecked": 143,
+        "unchecked_reasons": {
+          "bound": 4,
+          "form": 5,
+          "period": 9,
+          "subline": 2
+        },
+        "findings": 1,
+        "distinct_findings": 1,
+        "distinct_mismatches": 1,
+        "by_kind": {
+          "mismatch": 1
+        },
+        "by_field": {
+          "net_income": 1
+        },
+        "by_section": {
+          "sec-filing-highlights": 1
+        },
+        "coverage": 0.7534,
+        "briefs_flagged_rate": {
+          "k": 1,
+          "n": 40,
+          "rate": 0.025,
+          "ci95": [
+            0.0044,
+            0.1288
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 1,
+          "n": 437,
+          "rate": 0.0023,
+          "ci95": [
+            0.0004,
+            0.0128
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0074
+            ],
+            "empty_draws": 0
+          }
+        },
+        "arm": "slm-full-gpu",
+        "model": "qwen3.6-35b-a3b-q4km",
+        "label": "",
+        "scope": "full"
+      }
+    },
+    "arm": {
+      "slm-full-gpu": {
+        "runs": [
+          "xgtxx"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 1,
+        "briefs_flagged_mismatch": 1,
+        "briefs_flagged_placeholder": 0,
+        "checked": 437,
+        "checked_distinct": 437,
+        "unchecked": 143,
+        "unchecked_reasons": {
+          "bound": 4,
+          "form": 5,
+          "period": 9,
+          "subline": 2
+        },
+        "findings": 1,
+        "distinct_findings": 1,
+        "distinct_mismatches": 1,
+        "by_kind": {
+          "mismatch": 1
+        },
+        "by_field": {
+          "net_income": 1
+        },
+        "by_section": {
+          "sec-filing-highlights": 1
+        },
+        "coverage": 0.7534,
+        "briefs_flagged_rate": {
+          "k": 1,
+          "n": 40,
+          "rate": 0.025,
+          "ci95": [
+            0.0044,
+            0.1288
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 1,
+          "n": 437,
+          "rate": 0.0023,
+          "ci95": [
+            0.0004,
+            0.0128
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0074
+            ],
+            "empty_draws": 0
+          }
+        }
+      }
+    },
+    "arm_model": {
+      "slm-full-gpu:qwen3.6-35b-a3b-q4km": {
+        "runs": [
+          "xgtxx"
+        ],
+        "briefs": 40,
+        "briefs_flagged": 1,
+        "briefs_flagged_mismatch": 1,
+        "briefs_flagged_placeholder": 0,
+        "checked": 437,
+        "checked_distinct": 437,
+        "unchecked": 143,
+        "unchecked_reasons": {
+          "bound": 4,
+          "form": 5,
+          "period": 9,
+          "subline": 2
+        },
+        "findings": 1,
+        "distinct_findings": 1,
+        "distinct_mismatches": 1,
+        "by_kind": {
+          "mismatch": 1
+        },
+        "by_field": {
+          "net_income": 1
+        },
+        "by_section": {
+          "sec-filing-highlights": 1
+        },
+        "coverage": 0.7534,
+        "briefs_flagged_rate": {
+          "k": 1,
+          "n": 40,
+          "rate": 0.025,
+          "ci95": [
+            0.0044,
+            0.1288
+          ]
+        },
+        "mismatches_per_checked": {
+          "k": 1,
+          "n": 437,
+          "rate": 0.0023,
+          "ci95": [
+            0.0004,
+            0.0128
+          ],
+          "cluster_bootstrap": {
+            "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+            "ci95": [
+              0.0,
+              0.0074
+            ],
+            "empty_draws": 0
+          }
+        }
+      }
+    },
+    "partial_runs": [],
+    "all_full": {
+      "runs": [
+        "xgtxx"
+      ],
+      "briefs": 40,
+      "briefs_flagged": 1,
+      "briefs_flagged_mismatch": 1,
+      "briefs_flagged_placeholder": 0,
+      "checked": 437,
+      "checked_distinct": 437,
+      "unchecked": 143,
+      "unchecked_reasons": {
+        "bound": 4,
+        "form": 5,
+        "period": 9,
+        "subline": 2
+      },
+      "findings": 1,
+      "distinct_findings": 1,
+      "distinct_mismatches": 1,
+      "by_kind": {
+        "mismatch": 1
+      },
+      "by_field": {
+        "net_income": 1
+      },
+      "by_section": {
+        "sec-filing-highlights": 1
+      },
+      "coverage": 0.7534,
+      "briefs_flagged_rate": {
+        "k": 1,
+        "n": 40,
+        "rate": 0.025,
+        "ci95": [
+          0.0044,
+          0.1288
+        ]
+      },
+      "mismatches_per_checked": {
+        "k": 1,
+        "n": 437,
+        "rate": 0.0023,
+        "ci95": [
+          0.0004,
+          0.0128
+        ],
+        "cluster_bootstrap": {
+          "method": "brief-level cluster bootstrap, 10000 draws, seed 42",
+          "ci95": [
+            0.0,
+            0.0074
+          ],
+          "empty_draws": 0
+        }
+      }
+    }
+  },
+  "crbu_assertion": {
+    "market_cap_ratio": 99.81,
+    "market_cap_stated": "$16.8 billion",
+    "placeholder": "[City Name]",
+    "passed": true
+  },
+  "injection": {
+    "seed": 42,
+    "clean_briefs": 39,
+    "by_type": {
+      "x10": {
+        "n": 37,
+        "detected": 37,
+        "recall": 1.0,
+        "ci95": [
+          0.9059,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "x100": {
+        "n": 37,
+        "detected": 37,
+        "recall": 1.0,
+        "ci95": [
+          0.9059,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "x0.01": {
+        "n": 37,
+        "detected": 37,
+        "recall": 1.0,
+        "ci95": [
+          0.9059,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "sign_flip": {
+        "n": 37,
+        "detected": 37,
+        "recall": 1.0,
+        "ci95": [
+          0.9059,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "swap_fields": {
+        "n": 36,
+        "detected": 36,
+        "recall": 1.0,
+        "ci95": [
+          0.9036,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "unit_down": {
+        "n": 29,
+        "detected": 29,
+        "recall": 1.0,
+        "ci95": [
+          0.883,
+          1.0
+        ],
+        "example_misses": []
+      },
+      "placeholder": {
+        "n": 37,
+        "detected": 23,
+        "recall": 0.6216,
+        "ci95": [
+          0.461,
+          0.7594
+        ],
+        "example_misses": [
+          "xgtxx AMZN: revenue: $775.68 billion -> TBD",
+          "xgtxx BABA: week_52_high: $182.50 -> TBD",
+          "xgtxx BEAM: net_income: $86.52 million -> XX",
+          "xgtxx BYND: current_price: $7.66 -> [\u25cf]",
+          "xgtxx CALM: revenue: $2.53 billion -> XX",
+          "xgtxx EVGO: net_income: $54.1 million -> XX",
+          "xgtxx META: revenue: $228.25 billion -> [\u25cf]",
+          "xgtxx NTLA: week_52_high: $28.25 -> XX",
+          "xgtxx RIVN: revenue: $5.88 billion -> XX",
+          "xgtxx ROKU: profit_margin: 6.82% -> TBD"
+        ]
+      }
+    },
+    "placeholder_by_token": {
+      "$X": {
+        "n": 4,
+        "detected": 4,
+        "recall": 1.0,
+        "ci95": [
+          0.5101,
+          1.0
+        ]
+      },
+      "N/A": {
+        "n": 2,
+        "detected": 2,
+        "recall": 1.0,
+        "ci95": [
+          0.3424,
+          1.0
+        ]
+      },
+      "TBD": {
+        "n": 3,
+        "detected": 0,
+        "recall": 0.0,
+        "ci95": [
+          0.0,
+          0.5615
+        ]
+      },
+      "XX": {
+        "n": 7,
+        "detected": 0,
+        "recall": 0.0,
+        "ci95": [
+          0.0,
+          0.3543
+        ]
+      },
+      "[City Name]": {
+        "n": 2,
+        "detected": 2,
+        "recall": 1.0,
+        "ci95": [
+          0.3424,
+          1.0
+        ]
+      },
+      "[Company]": {
+        "n": 4,
+        "detected": 4,
+        "recall": 1.0,
+        "ci95": [
+          0.5101,
+          1.0
+        ]
+      },
+      "[X]": {
+        "n": 3,
+        "detected": 3,
+        "recall": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "[insert date]": {
+        "n": 3,
+        "detected": 3,
+        "recall": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "[\u25cf]": {
+        "n": 4,
+        "detected": 0,
+        "recall": 0.0,
+        "ci95": [
+          0.0,
+          0.4899
+        ]
+      },
+      "{market_cap}": {
+        "n": 5,
+        "detected": 5,
+        "recall": 1.0,
+        "ci95": [
+          0.5655,
+          1.0
+        ]
+      }
+    }
+  },
+  "adjudication": {
+    "path": "eval/numeric_check/adjudication-2026-10-08-xgtxx.csv",
+    "verdicts": [
+      "TRUE_ERROR",
+      "FALSE_POSITIVE",
+      "OTHER_DEFECT"
+    ],
+    "rows": 1,
+    "verdicts_kept": 0
+  }
+}

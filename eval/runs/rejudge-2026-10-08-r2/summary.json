@@ -1,0 +1,14 @@
+{
+  "xgtxx": {
+    "supported": 250,
+    "unsupported": 5,
+    "inference": 16,
+    "claims": 271,
+    "numeric": 163,
+    "unsupported_numeric": 0,
+    "unsupported_outlook": 3,
+    "total": 271,
+    "qualitative": 108,
+    "unsupported_qualitative": 5
+  }
+}

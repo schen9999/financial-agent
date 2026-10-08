@@ -1,0 +1,82 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $20.76 billion"
+LABEL: SUPPORTED
+REASON: The source data lists market_cap as $20,762,320,896.0, which rounds to approximately $20.76 billion, consistent with the pre-written Financial Health section.
+
+---
+
+CLAIM: "net loss of $3.23 billion"
+LABEL: SUPPORTED
+REASON: The source data lists net_income as -$3,232,999,936.0, which rounds to -$3.23 billion, matching the pre-written sections.
+
+---
+
+CLAIM: "R2 platform launch" (as a named near-term milestone)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section both explicitly reference the R2 platform launch with customer deliveries scheduled for Q2 2026.
+
+---
+
+CLAIM: "Volkswagen joint venture" (as a named strategic element)
+LABEL: SUPPORTED
+REASON: The 10-K summary, RAG SEC Highlights, and pre-written Recent Developments section all explicitly describe an equally-owned joint venture between Rivian and Volkswagen Group.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "Volkswagen joint venture" (referenced again as aiming to reduce costs and enhance recurring revenue)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states the Joint Venture focuses on next-generation electrical architecture and software technology, and the pre-written sections describe it as aimed at recurring revenue and margin improvement; cost reduction is a reasonable restatement of the architectural/software efficiency goal, but the source does not explicitly say "reduce costs" — however, the recurring revenue and long-term brand loyalty framing is directly present. The "reduce costs" qualifier is not explicitly stated in any source section.
+LABEL: INFERENCE
+REASON: The source data confirms the JV aims to create recurring revenue and next-generation architecture; "reduce costs" is a reasonable inference from developing shared electrical architecture but is not explicitly stated in any source document or pre-written section.
+
+---
+
+CLAIM: "R2 platform launch" (execution timeline as a key variable)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and pre-written SEC Filing Highlights section explicitly state customer deliveries for the R2 platform are expected to begin in Q2 2026.
+
+---
+
+CLAIM: "monetized software features like Autonomy+"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "Fees for these [Autonomy+] features are expected to begin in April 2026," and the pre-written SEC Filing Highlights section references "the upcoming monetization of its Autonomy+ features in April 2026."
+
+---
+
+CLAIM: "successful scaling of the Adventure Network"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and pre-written SEC Filing Highlights section both reference the Rivian Adventure Network, noting over 95% of its DC fast chargers are open to non-Rivian EVs, establishing it as a named, sourced entity with scaling context.
+
+---
+
+CLAIM: "over 95% of its DC fast chargers now open to non-Rivian EVs" (implied in the Outlook's reference to the Adventure Network)
+LABEL: N/A — this specific figure does not appear in the Outlook section itself; it appears only in the pre-written section. No quantitative figure for the Adventure Network is stated in the Outlook.
+
+---
+
+**SUMMARY OF FINDINGS**
+
+| Claim | Label |
+|---|---|
+| Market cap ~$20.76 billion | SUPPORTED |
+| Net loss of $3.23 billion | SUPPORTED |
+| R2 platform launch (named milestone) | SUPPORTED |
+| Volkswagen joint venture (named entity) | SUPPORTED |
+| JV aims to "reduce costs" | INFERENCE |
+| JV aims to "enhance recurring revenue" | SUPPORTED |
+| R2 platform launch execution timeline | SUPPORTED |
+| Autonomy+ monetized software features | SUPPORTED |
+| Adventure Network scaling | SUPPORTED |
+
+No claims in the Executive Summary or Outlook are UNSUPPORTED. One claim — that the Volkswagen JV aims to "reduce costs" — is labeled INFERENCE, as cost reduction is derivable from the shared-architecture rationale but is not explicitly stated in any source document.

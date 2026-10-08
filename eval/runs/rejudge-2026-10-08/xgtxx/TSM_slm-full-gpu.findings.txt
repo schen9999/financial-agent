@@ -1,0 +1,71 @@
+I will now systematically audit every quantitative, positional, and forward-looking claim in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "robust 49.92% profit margin"
+LABEL: SUPPORTED
+REASON: The source data explicitly states `"profit_margin_pct": 49.92`, and the pre-written Financial Health and Recent Developments sections both confirm this figure.
+
+---
+
+CLAIM: "TWD 4.44 trillion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows `"revenue": 4440492343296.0` TWD, which equals approximately TWD 4.44 trillion, consistent with the pre-written sections.
+
+---
+
+CLAIM: "TWD 2.22 trillion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows `"net_income": 2216808415232.0` TWD, which equals approximately TWD 2.22 trillion, consistent with the pre-written sections.
+
+---
+
+CLAIM: "reasonable forward valuation of 21.54"
+LABEL: SUPPORTED
+REASON: Source data explicitly states `"forward_pe": 21.53696`, which rounds to 21.54 as used in the pre-written sections.
+
+---
+
+CLAIM: "positioning it near its 52-week high"
+LABEL: SUPPORTED
+REASON: The current price is $472.20 and the 52-week high is $487.47; $472.20 is approximately 3.1% below the 52-week high, which arithmetically supports the characterization of being "near" the 52-week high. The 52-week low is $266.82, placing the current price in the upper portion of the range, confirming the positional claim.
+
+---
+
+CLAIM: "a higher trailing multiple"
+LABEL: SUPPORTED
+REASON: The trailing P/E is 34.32 (source: `"pe_ratio": 34.31686`) versus the forward P/E of 21.54; 34.32 > 21.54, so the trailing multiple is arithmetically higher than the forward multiple.
+
+---
+
+CLAIM: "key customers like Apple and NVIDIA"
+LABEL: UNSUPPORTED
+REASON: Neither Apple nor NVIDIA is named in the raw source data (stock data, news articles, or SEC filings); they appear only in the pre-written Risk Factors section as illustrative examples ("e.g., Apple, NVIDIA, AMD"), which is editorial commentary rather than sourced factual data, and no SEC filing or news article in the context confirms these as verified key customers.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: (No specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section.)
+LABEL: N/A
+REASON: The Outlook section is composed entirely of qualitative directional statements (e.g., "cautiously constructive," "tailwinds," "headwinds," "sustained demand growth," "next-generation node rollouts") without any specific quantitative claims, price targets, ratios, percentages, or named product milestones that require numerical verification. No auditable quantitative or forward-looking numerical claims are present to evaluate.
+
+---
+
+## SUMMARY TABLE
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | 49.92% profit margin | SUPPORTED |
+| 2 | TWD 4.44 trillion in revenue | SUPPORTED |
+| 3 | TWD 2.22 trillion in net income | SUPPORTED |
+| 4 | Forward valuation of 21.54 | SUPPORTED |
+| 5 | Positioning near 52-week high | SUPPORTED |
+| 6 | Higher trailing multiple | SUPPORTED |
+| 7 | Key customers Apple and NVIDIA | UNSUPPORTED |

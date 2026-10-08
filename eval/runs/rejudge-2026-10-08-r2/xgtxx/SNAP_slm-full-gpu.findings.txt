@@ -1,0 +1,55 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$6.35 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $6,351,084,032, which rounds to $6.35 billion; also explicitly stated in the pre-written Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "market capitalization of approximately $9.83 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $9,825,858,560, which rounds to approximately $9.83 billion; also stated in the pre-written Financial Health section.
+
+---
+
+CLAIM: "net income of -$311 million"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$311,243,008, which rounds to -$311 million; also stated in the pre-written Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "forward P/E ratio of 7.49"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe of 7.492327, which rounds to 7.49; also stated in the pre-written Financial Health and Recent Developments sections.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "low forward P/E ratio suggests market optimism for a turnaround"
+LABEL: SUPPORTED
+REASON: This is a directional restatement of the pre-written Financial Health section's language ("suggesting market expectations for future earnings growth… pricing in potential turnaround"), grounded in the forward P/E of 7.49 present in the source data.
+
+---
+
+CLAIM: "heavy reliance on advertising revenue"
+LABEL: SUPPORTED
+REASON: Source data (RAG SEC Highlights and Risk Factors) explicitly states advertising constitutes approximately 87% of total revenue in 2025, confirming heavy reliance; also restated in the pre-written SEC Filing Highlights section.
+
+---
+
+CLAIM: "upcoming 10-K and 10-Q filings"
+LABEL: SUPPORTED
+REASON: SEC Filing Summaries in the source data explicitly list a 10-K (filing date 2026-02-05) and a 10-Q (filing date 2026-08-04); also referenced in the pre-written Recent Developments section.
+
+---
+
+**No additional quantitative figures, price targets, thresholds, ratios, specific percentages, named product milestones, or forward-looking numbers appear in the Executive Summary or Outlook sections beyond those evaluated above.** The remaining language in both sections is qualitative or directional and does not constitute specific quantitative or forward-looking claims subject to audit under the defined criteria.

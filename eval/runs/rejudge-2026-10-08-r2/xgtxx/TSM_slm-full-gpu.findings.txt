@@ -1,0 +1,135 @@
+I will now systematically audit every quantitative, positional, and forward-looking claim in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+**CLAIM:** "robust 49.92% profit margin"
+**LABEL:** SUPPORTED
+**REASON:** The source data explicitly states `"profit_margin_pct": 49.92`, and the pre-written Financial Health and Recent Developments sections both confirm this figure.
+
+---
+
+**CLAIM:** "TWD 4.44 trillion in revenue"
+**LABEL:** SUPPORTED
+**REASON:** Source data shows `"revenue": 4440492343296.0` TWD, which equals approximately TWD 4.44 trillion, consistent with the pre-written sections.
+
+---
+
+**CLAIM:** "TWD 2.22 trillion in net income"
+**LABEL:** SUPPORTED
+**REASON:** Source data shows `"net_income": 2216808415232.0` TWD, which equals approximately TWD 2.22 trillion, consistent with the pre-written sections.
+
+---
+
+**CLAIM:** "forward valuation of 21.54"
+**LABEL:** SUPPORTED
+**REASON:** Source data explicitly states `"forward_pe": 21.53696`, which rounds to 21.54 as used in the pre-written sections.
+
+---
+
+**CLAIM:** "positioning it near its 52-week high"
+**LABEL:** SUPPORTED
+**REASON:** The current price is $472.20 and the 52-week high is $487.47; $472.20 is approximately 3.1% below the high, which arithmetically supports the characterization of being "near" the 52-week high.
+
+---
+
+**CLAIM:** "a higher trailing multiple" (implying trailing P/E is higher than forward P/E)
+**LABEL:** SUPPORTED
+**REASON:** Trailing P/E is 34.32 and forward P/E is 21.54 per source data; 34.32 > 21.54 confirms the trailing multiple is higher.
+
+---
+
+**CLAIM:** "key customers like Apple and NVIDIA"
+**LABEL:** SUPPORTED
+**REASON:** The pre-written Risk Factors section explicitly names "Apple, NVIDIA, AMD" as major clients, which is the direct input to the synthesis model.
+
+---
+
+## OUTLOOK
+
+---
+
+**CLAIM:** "AI and high-performance computing" as structural demand tailwinds
+**LABEL:** INFERENCE
+**REASON:** The pre-written sections reference "next-generation nodes" and "advanced chip manufacturing" demand but do not explicitly name AI or high-performance computing; this is a reasonable and commonly understood inference from the semiconductor context, but no source text explicitly states it.
+
+---
+
+**CLAIM:** "concentration of revenue among a few major clients"
+**LABEL:** SUPPORTED
+**REASON:** The pre-written Risk Factors section explicitly states "revenue is heavily concentrated among a small number of major clients."
+
+---
+
+**CLAIM:** "successful execution on next-generation node rollouts" as a thesis-strengthening condition
+**LABEL:** SUPPORTED
+**REASON:** The pre-written Risk Factors section references "technological roadmaps" and "advanced node development," and the Recent Developments section references "next-generation nodes" as a key capital expenditure focus.
+
+---
+
+**CLAIM:** "pace of competitor qualification" as a monitoring item
+**LABEL:** SUPPORTED
+**REASON:** The pre-written Risk Factors section explicitly states "the successful qualification of competitors could materially impact financial performance."
+
+---
+
+**CLAIM:** "shifts in regulatory environments affecting cross-border technology trade"
+**LABEL:** SUPPORTED
+**REASON:** The pre-written Risk Factors section explicitly references "export controls, trade restrictions" and geopolitical risks as material concerns.
+
+---
+
+**CLAIM:** "prolonged geopolitical disruptions" as a thesis-weakening condition
+**LABEL:** SUPPORTED
+**REASON:** The pre-written Risk Factors section explicitly identifies geopolitical tensions and political instability in Taiwan as significant risks.
+
+---
+
+**CLAIM:** "sharp deceleration in end-market spending" as a thesis-weakening condition
+**LABEL:** INFERENCE
+**REASON:** The pre-written Risk Factors section references "reduced spending by these customers" as a risk, making this a direct restatement of a present source fact with minor rewording.
+
+---
+
+**CLAIM:** "unrivaled technological leadership"
+**LABEL:** INFERENCE
+**REASON:** The pre-written sections describe TSMC as "dominant" in the global semiconductor supply chain and reference its "competitive moat," supporting this characterization as a reasonable directional restatement, though the word "unrivaled" is not explicitly used in the source.
+
+---
+
+**CLAIM:** "exceptional profitability metrics"
+**LABEL:** INFERENCE
+**REASON:** The 49.92% profit margin is explicitly present in the source data, and the pre-written sections describe it as "impressive" and "robust," making "exceptional" a reasonable directional restatement of present facts.
+
+---
+
+**CLAIM:** "customer capex cycles" as a monitoring item
+**LABEL:** UNSUPPORTED
+**REASON:** Neither the raw source data nor any of the four pre-written sections mention customer capital expenditure cycles; this specific monitoring variable is absent from all provided context.
+
+---
+
+### Summary Table
+
+| Claim | Label |
+|---|---|
+| 49.92% profit margin | SUPPORTED |
+| TWD 4.44 trillion revenue | SUPPORTED |
+| TWD 2.22 trillion net income | SUPPORTED |
+| Forward valuation of 21.54 | SUPPORTED |
+| Near 52-week high | SUPPORTED |
+| Trailing multiple higher than forward | SUPPORTED |
+| Apple and NVIDIA as key customers | SUPPORTED |
+| AI and HPC as tailwinds | INFERENCE |
+| Revenue concentration among few clients | SUPPORTED |
+| Next-generation node execution | SUPPORTED |
+| Competitor qualification pace | SUPPORTED |
+| Regulatory/cross-border trade shifts | SUPPORTED |
+| Prolonged geopolitical disruptions | SUPPORTED |
+| Sharp deceleration in end-market spending | INFERENCE |
+| Unrivaled technological leadership | INFERENCE |
+| Exceptional profitability metrics | INFERENCE |
+| Customer capex cycles | **UNSUPPORTED** |

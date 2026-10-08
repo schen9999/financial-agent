@@ -1,0 +1,95 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "€38.19 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: The source data lists revenue of €38,192,001,024, which rounds to €38.19 billion, and the pre-written Financial Health section states the same figure.
+
+---
+
+CLAIM: "€7.80 billion in net income"
+LABEL: SUPPORTED
+REASON: The source data lists net income of €7,795,999,744, which rounds to €7.80 billion, consistent with the pre-written sections.
+
+---
+
+CLAIM: "trailing P/E of 26.97"
+LABEL: SUPPORTED
+REASON: The source data explicitly lists pe_ratio as 26.974327, which rounds to 26.97.
+
+---
+
+CLAIM: "below its 52-week high"
+LABEL: SUPPORTED
+REASON: The current price of $210.13 is arithmetically below the 52-week high of $281.37 recorded in the source data ($210.13 < $281.37).
+
+---
+
+CLAIM: "SAP Business Technology Platform" (as the named product milestone/transition target)
+LABEL: SUPPORTED
+REASON: The SAP Business Technology Platform (BTP) is explicitly named in the pre-written Risk Factors section as the destination platform for the cloud transition.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "SAP Business Technology Platform" (pace of migration)
+LABEL: SUPPORTED
+REASON: Explicitly named in the pre-written Risk Factors section as the cloud platform driving the transition.
+
+---
+
+CLAIM: "stability of the EUR/USD exchange rate" (as a key variable)
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section explicitly identifies EUR/USD exchange rate fluctuations as a significant currency translation risk for SAP.
+
+---
+
+CLAIM: "broader macroeconomic conditions affecting discretionary IT spending"
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section explicitly states that enterprise software spending is discretionary and sensitive to global economic conditions.
+
+---
+
+CLAIM: "accelerating cloud adoption and sustained margin expansion" (as thesis-strengthening evidence)
+LABEL: INFERENCE
+REASON: Cloud adoption acceleration is derivable from the transition risk discussion in the pre-written sections, but "sustained margin expansion" as a specific forward-looking metric is not explicitly stated in the source data or pre-written sections — it is a directional inference from the existing 20.41% profit margin and cloud transition narrative; however, since no specific margin figure or expansion target is cited, this remains a qualitative directional inference rather than an unsupported quantitative claim.
+
+---
+
+CLAIM: "customer churn, slower-than-expected transition rates" (as thesis-weakening factors)
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section explicitly names "potential customer churn, slower-than-expected migration rates" as execution risks associated with the cloud transition.
+
+---
+
+CLAIM: "significant global economic downturn that compresses enterprise software budgets"
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section explicitly states that a prolonged economic slowdown or recession could lead to reduced IT budgets and lower renewal rates.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | €38.19 billion annual revenue | SUPPORTED |
+| 2 | €7.80 billion net income | SUPPORTED |
+| 3 | Trailing P/E of 26.97 | SUPPORTED |
+| 4 | Below its 52-week high | SUPPORTED |
+| 5 | SAP Business Technology Platform (Exec Summary) | SUPPORTED |
+| 6 | SAP Business Technology Platform (Outlook) | SUPPORTED |
+| 7 | EUR/USD exchange rate stability | SUPPORTED |
+| 8 | Macroeconomic conditions / discretionary IT spending | SUPPORTED |
+| 9 | Accelerating cloud adoption and sustained margin expansion | INFERENCE |
+| 10 | Customer churn / slower-than-expected transition rates | SUPPORTED |
+| 11 | Global economic downturn compressing enterprise software budgets | SUPPORTED |
+
+**No claims were found to be UNSUPPORTED.** The AI brief is well-grounded in the source data, with one inference (margin expansion) that is directionally reasonable but not explicitly quantified in the source.

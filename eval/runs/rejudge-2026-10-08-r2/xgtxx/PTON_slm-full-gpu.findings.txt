@@ -1,0 +1,91 @@
+I will now systematically audit every quantitative, positional, and forward-looking claim in the Executive Summary and Outlook sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "market capitalization of approximately $2.13 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 2,128,528,256.0 USD, which rounds to approximately $2.13 billion.
+
+---
+
+CLAIM: "net income of $63.2 million"
+LABEL: SUPPORTED
+REASON: Source data explicitly states net_income = 63,200,000.0 USD = $63.2 million.
+
+---
+
+CLAIM: "2.58% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 2.58, and cross-check: 63,200,000 / 2,446,000,128 = 2.584%, which rounds to 2.58% — within 0.15 pp.
+
+---
+
+CLAIM: "trading near its 52-week low of $3.65 at $4.85"
+LABEL: SUPPORTED
+REASON: Source data confirms week_52_low = 3.65 and current_price = 4.85; $4.85 is 32.9% above the 52-week low, and the pre-written "Recent Developments" section uses identical language, which is itself grounded in the source figures.
+
+---
+
+CLAIM: "forward P/E of 20.49"
+LABEL: SUPPORTED
+REASON: Source data explicitly states forward_pe = 20.492668, which rounds to 20.49.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "sustainability of the 2.58% profit margin as the company scales"
+LABEL: SUPPORTED
+REASON: The 2.58% profit margin figure is explicitly present in the source data (profit_margin_pct = 2.58) and is used here as a reference point for a forward-looking watch-item, not as a new quantitative assertion.
+
+---
+
+CLAIM: "effectiveness of the Precor integration in the commercial market"
+LABEL: SUPPORTED
+REASON: The Precor integration and commercial market expansion are explicitly discussed in the SEC Filing Highlights and RAG — SEC Highlights sections as a named strategic initiative and risk factor.
+
+---
+
+CLAIM: "macroeconomic headwinds such as inflation and tariffs"
+LABEL: SUPPORTED
+REASON: Both inflation and tariffs are explicitly named in the RAG — Risk Factors and RAG — SEC Highlights sections as macroeconomic risk factors.
+
+---
+
+CLAIM: "triggering inventory write-downs"
+LABEL: SUPPORTED
+REASON: Inventory write-downs are explicitly named in both RAG sections as a specific operational risk tied to demand forecasting errors.
+
+---
+
+CLAIM: "revenue growth outpacing operating expenses"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and Risk Factors sections explicitly state that "Profitability depends on revenue growing faster than operating expenses," making this a direct restatement of a sourced fact.
+
+---
+
+CLAIM: "stable subscriber engagement"
+LABEL: SUPPORTED
+REASON: Subscription retention and subscriber engagement are explicitly and repeatedly identified as key business risks in the SEC Filing Highlights and both RAG sections.
+
+---
+
+CLAIM: "resurgence in operating losses"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states the company "has incurred significant operating losses in prior periods and may not sustain profitability," making operating loss resurgence a sourced risk.
+
+---
+
+CLAIM: "failure to retain subscribers against lower-cost competitors"
+LABEL: SUPPORTED
+REASON: Both RAG sections explicitly name competitive pressure from lower-cost alternatives and subscription retention as key risks.
+
+---
+
+**SUMMARY:** All quantitative figures and named forward-looking variables in the Executive Summary and Outlook are either directly present in the source data or are direct restatements of explicitly sourced risk factors. No unsupported or inference-only claims were identified.

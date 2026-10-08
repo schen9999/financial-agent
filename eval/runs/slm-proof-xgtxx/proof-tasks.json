@@ -1,0 +1,18 @@
+{
+  "verdict": "TASK-EXACT",
+  "server_tasks": 270,
+  "incomplete_tasks": [],
+  "harness_calls": 270,
+  "errored_calls": 0,
+  "unmatched_server": [],
+  "unmatched_harness": [],
+  "prompt_tokens": 353205,
+  "completion_tokens": 97762,
+  "server_cached_prefix_tokens": 2032,
+  "counter": {
+    "counter_prompt": 353202.0,
+    "counter_completion": 97762.0,
+    "counter_minus_harness_prompt": -3.0,
+    "counter_minus_harness_completion": 0.0
+  }
+}

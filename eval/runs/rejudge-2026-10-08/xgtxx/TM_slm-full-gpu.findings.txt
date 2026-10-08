@@ -1,0 +1,55 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $216.6 billion"
+LABEL: SUPPORTED
+REASON: Source data shows `market_cap: 216598986752.0` USD, which rounds to approximately $216.6 billion; also explicitly stated in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "revenue of ¥51.96 trillion"
+LABEL: SUPPORTED
+REASON: Source data shows `revenue: 51957024686080.0` JPY, which equals approximately ¥51.96 trillion; confirmed in all pre-written sections.
+
+---
+
+CLAIM: "profit margin of 8.63%"
+LABEL: SUPPORTED
+REASON: Source data explicitly states `profit_margin_pct: 8.63`; also present in all pre-written sections.
+
+---
+
+CLAIM: "trailing P/E ratio of 8.04"
+LABEL: SUPPORTED
+REASON: Source data shows `pe_ratio: 8.036468`, which rounds to 8.04; confirmed in all pre-written sections.
+
+---
+
+CLAIM: "significantly lower than its forward P/E of 11.59"
+LABEL: SUPPORTED
+REASON: Source data shows `forward_pe: 11.591255`, which rounds to 11.59; the directional claim that 8.04 is significantly lower than 11.59 is arithmetically verified (difference of ~3.55 P/E points); confirmed in pre-written sections.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers. All statements are qualitative and directional (e.g., "cautiously constructive," "materially impact," "compressing margins"). There are no numerical claims to audit in this section.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Market cap ~$216.6 billion | SUPPORTED |
+| 2 | Revenue ¥51.96 trillion | SUPPORTED |
+| 3 | Profit margin 8.63% | SUPPORTED |
+| 4 | Trailing P/E 8.04 | SUPPORTED |
+| 5 | Forward P/E 11.59 (and trailing "significantly lower") | SUPPORTED |
+
+All five auditable quantitative claims in the Executive Summary are **SUPPORTED**. The Outlook section contains **no quantitative claims** requiring audit.

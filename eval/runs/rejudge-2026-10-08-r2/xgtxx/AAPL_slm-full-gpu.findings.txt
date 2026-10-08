@@ -1,0 +1,51 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$466.82 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as $466,822,987,776, which rounds to $466.82 billion, and the Financial Health pre-written section states "Annual revenue stands at $466.82 billion."
+
+---
+
+CLAIM: "27.62% profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `"profit_margin_pct": 27.62`, and the Financial Health section confirms "a profit margin of 27.62%."
+
+---
+
+CLAIM: "$4.91 trillion market capitalization"
+LABEL: SUPPORTED
+REASON: The raw source data lists `"market_cap": 4,913,422,663,680`, which equals approximately $4.91 trillion, consistent with the Financial Health section's "approximately $4.91 trillion."
+
+---
+
+CLAIM: "new smart home products"
+LABEL: SUPPORTED
+REASON: The Bloomberg news article titled "Gurman Reports Apple Is Launching New 'Smart Home' Products on October 13" and the Recent Developments pre-written section both reference new smart home products launching October 13.
+
+---
+
+CLAIM: "potential foldable iPhone hardware"
+LABEL: SUPPORTED
+REASON: The Bloomberg news article "Apple will sell 6 million iPhone duos in 2026, Counterpoint says" references Apple's upcoming foldable hardware, and the Recent Developments section references "foldable iPhone hardware."
+
+---
+
+**OUTLOOK**
+
+---
+
+*(The Outlook section contains no specific quantitative figures, price targets, thresholds, ratios, metrics, or percentages. It contains only qualitative directional statements and named product milestones already evaluated above — specifically "smart home and foldable iPhone initiatives," which are covered by the claims above.)*
+
+CLAIM: "smart home and foldable iPhone initiatives"
+LABEL: SUPPORTED
+REASON: Both initiatives are sourced from the Bloomberg news articles (smart home launch October 13; foldable iPhone with 6 million unit forecast) and are reflected in the Recent Developments pre-written section.
+
+---
+
+**SUMMARY NOTE:** The Executive Summary and Outlook sections are notably sparse in specific quantitative claims beyond the three core financial metrics (revenue, profit margin, market cap) and two named product milestones. All identified claims are supported by the source data. No unsupported or inference-only quantitative claims were found. Notably, the 16.3% year-over-year revenue growth figure that appears in the pre-written Recent Developments section was **not carried into** the Executive Summary or Outlook, so it requires no audit entry here.

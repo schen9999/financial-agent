@@ -1807,6 +1807,19 @@ python3 scripts/traffic_proof_tasks.py --endpoint slm-gpu     --server-log eval/
    harness. Every call matched the server's own log; only the counter
    drifted (`eval/runs/slm-proof-6z5xz/INVESTIGATION.md`). No re-judges; no
    figure from it is quoted.
+3. **[EXECUTED 2026-10-08 — CITABLE, per-request proof TASK-EXACT]** The
+   one re-run of the P=4 GPU eval, the first run judged by the per-request
+   proof: `grounding-eval-extended-slm-gpu-p4-xgtxx` (01:44–02:08Z, balance
+   check and run-time check PASS). 40/40 first attempt, 0 retries, stock
+   block empty 0/40, gate passed. Proof: 270 server tasks matched the 270
+   calls one for one (353,205 prompt + 97,762 completion tokens; 2,032 from
+   a cached prefix), none incomplete; the counter (reported, not deciding)
+   was 3 prompt tokens low and the old counter proof printed FAIL. Three
+   judgings: 2.12% mean (1.54–2.97%: 8/269, 4/259, 5/271), numeric 0.41%
+   (1/163, 1/165, 0/163). 100.8 briefs an hour, $0.0198 per brief (a
+   ceiling), A10 mean 45.0%. Files: `eval/runs/slm-proof-xgtxx/`
+   (`proof-tasks.json`), findings, claims, `eval/runs/three-judging-2026-10-08-xgtxx.txt`,
+   `eval/runs/cost-gpu-p4-xgtxx-2026-10-08.txt`, `eval/runs/gpu-nvsmi-p4b-f304375.csv`.
 
 ## Terraform: the provided cluster (import and plan only)
 

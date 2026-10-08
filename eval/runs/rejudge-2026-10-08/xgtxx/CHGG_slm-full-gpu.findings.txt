@@ -1,0 +1,81 @@
+I will now systematically audit every quantitative, positional, and forward-looking claim in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "a $265.51 million annual revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue of $265,512,000, and the Financial Health pre-written section states "$265.51 million," matching the claim exactly.
+
+---
+
+CLAIM: "a negative profit margin of -19.96%"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly states "profit_margin_pct": -19.96, confirming this figure exactly.
+
+---
+
+CLAIM: "trading near its 52-week low of $0.45"
+LABEL: SUPPORTED
+REASON: The raw source data lists "week_52_low": 0.45, and the current price of $0.739 is closer to the 52-week low ($0.739 − $0.45 = $0.289) than to the 52-week high ($1.56 − $0.739 = $0.821), so "near its 52-week low" holds arithmetically.
+
+---
+
+CLAIM: "a market capitalization of roughly $82 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists "market_cap": 82,049,312.0, which rounds to approximately $82 million.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "the antitrust lawsuit against Google"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states Chegg filed a federal antitrust complaint against Google LLC and Alphabet Inc. on February 24, 2025.
+
+---
+
+CLAIM: "strategic pivot from a B2C academic model to a B2B skilling focus"
+LABEL: INFERENCE
+REASON: The source data and pre-written sections confirm the B2B skilling pivot and the existence of an Academic Services segment, making the characterization of the prior model as "B2C academic" a direct and obvious restatement of those facts combined.
+
+---
+
+CLAIM: "the erosion of search traffic via AI overviews"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly describes Google's AI Overview (AIO) diverting search traffic away from Chegg's platforms as a material headwind.
+
+---
+
+CLAIM: "the threat of free, AI-generated content"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and Risk Factors sections both explicitly identify the growing availability of free, AI-generated educational content as a threat to subscriber retention.
+
+---
+
+CLAIM: "the success of the B2B transition, specifically regarding talent acquisition and the stabilization of customer retention rates in the Academic Services segment"
+LABEL: SUPPORTED
+REASON: Both talent acquisition risks and customer retention in the Academic Services segment are explicitly identified as key risk factors in the RAG — Risk Factors and SEC Highlights sections.
+
+---
+
+CLAIM: "the thesis would strengthen if the company demonstrates clear progress in reducing customer churn and securing meaningful B2B contracts"
+LABEL: INFERENCE
+REASON: This is a forward-looking conditional derived directly from the disclosed risks of high customer turnover and the B2B strategic pivot, both of which are explicitly present in the source data; no external facts are required.
+
+---
+
+CLAIM: "continued revenue volatility or failure to differentiate its AI capabilities from broad providers would further weaken the investment case"
+LABEL: INFERENCE
+REASON: This is a directional restatement of the explicitly disclosed risks of revenue decline and competition from broad AI providers (Google, OpenAI, Microsoft, Meta, Anthropic), all of which are present in the source data.
+
+---
+
+**SUMMARY OF FLAGS**
+
+No claims were found to be UNSUPPORTED. All quantitative figures checked out against the source data, the positional claim ("near its 52-week low") was verified arithmetically, and forward-looking statements were either directly supported or clearly inferable from disclosed facts.

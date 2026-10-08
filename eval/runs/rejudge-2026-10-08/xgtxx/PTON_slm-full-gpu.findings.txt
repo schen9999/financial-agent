@@ -1,0 +1,116 @@
+I will now systematically audit every quantitative, positional, and forward-looking claim in the Executive Summary and Outlook sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "market capitalization of approximately $2.13 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 2,128,528,256.0 USD, which rounds to approximately $2.13 billion.
+
+---
+
+CLAIM: "net income of $63.2 million"
+LABEL: SUPPORTED
+REASON: Source data explicitly states net_income = 63,200,000.0 USD = $63.2 million.
+
+---
+
+CLAIM: "2.58% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 2.58, and cross-check: 63,200,000 / 2,446,000,128 ≈ 2.584%, which rounds to 2.58% — within 0.15 pp.
+
+---
+
+CLAIM: "trading near its 52-week low of $3.65 at $4.85"
+LABEL: SUPPORTED
+REASON: Source data confirms week_52_low = 3.65 and current_price = 4.85; $4.85 is 32.9% above the 52-week low of $3.65, and the pre-written "Recent Developments" section uses identical language, confirming the positional characterization is sourced directly from the input.
+
+---
+
+CLAIM: "forward P/E of 20.49"
+LABEL: SUPPORTED
+REASON: Source data states forward_pe = 20.492668, which rounds to 20.49.
+
+---
+
+CLAIM: "market expectations for future growth"
+LABEL: INFERENCE
+REASON: This is a standard directional inference drawn from the forward P/E (20.49) being lower than the trailing P/E (34.64), implying the market expects earnings to grow — a derivation explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "subscription retention risks highlighted in its recent filings"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights and Risk Factors pre-written sections explicitly identify subscription retention as a key risk disclosed in recent filings.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "successful transition to profitability"
+LABEL: SUPPORTED
+REASON: Source data shows net_income = $63.2 million (positive), and the SEC Highlights confirm "the company reported net income in fiscal year 2026," corroborating the transition to profitability.
+
+---
+
+CLAIM: "sustainability of the 2.58% profit margin as the company scales"
+LABEL: SUPPORTED
+REASON: The 2.58% profit margin figure is explicitly present in the source data (profit_margin_pct = 2.58), and the SEC Highlights warn that profitability depends on revenue outpacing rising expenses — making this a supported watch-item grounded in source figures.
+
+---
+
+CLAIM: "effectiveness of the Precor integration in the commercial market"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors pre-written sections explicitly reference the Precor integration and commercial market expansion as a strategic uncertainty that "may not yield anticipated results."
+
+---
+
+CLAIM: "macroeconomic headwinds such as inflation and tariffs"
+LABEL: SUPPORTED
+REASON: Both the RAG SEC Highlights and the Risk Factors pre-written section explicitly name inflation and tariffs as macroeconomic risk factors.
+
+---
+
+CLAIM: "triggering inventory write-downs"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "Decreases in consumer demand have resulted in inventory write-downs, write-offs, and discounted sales," and the SEC Filing Highlights pre-written section references "potential inventory write-downs."
+
+---
+
+CLAIM: "revenue growth outpacing operating expenses"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights pre-written section explicitly states "profitability depends on revenue outpacing rising operational expenses," directly sourced from the RAG SEC content.
+
+---
+
+CLAIM: "stable subscriber engagement"
+LABEL: SUPPORTED
+REASON: Subscription retention and subscriber engagement are explicitly identified as key risks in both the RAG SEC Highlights and the Risk Factors pre-written section.
+
+---
+
+CLAIM: "resurgence in operating losses"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state the company "has incurred significant operating losses in prior periods and may not sustain profitability," making a potential resurgence in operating losses a grounded risk.
+
+---
+
+CLAIM: "failure to retain subscribers against lower-cost competitors"
+LABEL: SUPPORTED
+REASON: The Risk Factors pre-written section explicitly states competitors "may introduce appealing alternatives faster or at lower costs," and subscription retention is identified as a primary risk throughout the source material.
+
+---
+
+### Summary of Labels
+| Label | Count |
+|---|---|
+| SUPPORTED | 14 |
+| INFERENCE | 1 |
+| UNSUPPORTED | 0 |
+
+**No unsupported claims were identified.** The one inference (market expectations for future growth) is fully derivable from two figures present in the source data (trailing P/E = 34.64, forward P/E = 20.49) by a standard and obvious interpretive step that is also explicitly stated in the pre-written Financial Health section.

@@ -1,0 +1,95 @@
+STOCK DATA:
+{
+  "ticker": "AFRM",
+  "company_name": "Affirm Holdings, Inc.",
+  "current_price": 75.31,
+  "currency": "USD",
+  "market_cap": 25411192832.0,
+  "pe_ratio": 13.6184435,
+  "forward_pe": 15.598947,
+  "week_52_high": 90.44,
+  "week_52_low": 42.095,
+  "financial_currency": "USD",
+  "revenue": 4261082112.0,
+  "net_income": 1929793024.0,
+  "profit_margin_pct": 45.29,
+  "dividend_yield": 0.0,
+  "sector": "Financial Services",
+  "industry": "Credit Services"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-08-27",
+    "summary": "Item 1A. Risk Factors Investing in our Class A common stock involves a high degree of risk. You should consider carefully the material factors, risks and uncertainties described below that make an investment in our Company speculative or risky, together with all of the other information in this Form 10-K, including the section titled \u201cManagement\u2019s Discussion and Analysis of Financial Condition and Results of Operations\u201d and our consolidated financial statements and the accompanying notes included elsewhere in this Form 10-K, before deciding whether to invest in shares of our Class A common stock. The risks and uncertainties described below are not the only ones we face. Additional risks and uncertainties of which we are currently unaware or that we currently deem immaterial may also become"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-05-07",
+    "summary": "Item 1A. Risk Factors The risks described under the heading \u201cRisk Factors\u201d in our Annual Report on Form 10-K for the fiscal year ended June 30, 2025 could materially and adversely affect our business, financial condition, results of operations, cash flows, future prospects, and the trading price of our Class A common stock. The risks and uncertainties described therein are not the only ones we face. Additional risks and uncertainties that we are unaware of or that we currently deem immaterial may also become important factors that adversely affect our business. You should carefully read and consider such risks, together with all of the other information in our Annual Report on Form 10-K for the fiscal year ended June 30, 2025, in this Quarterly Report on Form 10-Q (including the disclosure"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] Based on the provided text from the SEC EDGAR filings for ticker AFRM, the key takeaways regarding the company's risk factors and business environment include:
+
+**Competitive Landscape**
+*   **Intensifying Competition:** The pay-over-time industry has low barriers to entry, leading to increased competition from emerging technologies and large financial incumbents.
+*   **Merchant Alternatives:** Merchants are increasingly offering proprietary pay-over-time options, which are presented alongside the company’s offerings at checkout.
+*   **Disadvantages vs. Incumbents:** Competitors, particularly credit card issuing banks, are substantially larger with longer operating histories. They possess advantages such as more diversified products, broader consumer and merchant bases, greater brand recognition, cross-selling capabilities, operational efficiencies, and the ability to cross-subsidize offerings.
+
+**Operational and Partnership Risks**
+*   **Commercial Partner Dependency:** The business relies on attracting and retaining commercial partners (merchants, e-commerce, and payment platforms). Many agreements are non-exclusive and lack transaction volume commitments, meaning partners may work with competitors.
+*   **Banking Partners:** The company relies on a small number of originating bank partners (specifically Celtic Bank and Lead Bank) to facilitate loans and card-issuing banks for the Affirm Card. The termination of these agreements without replacement would materially adversely affect the business.
+*   **Key Personnel:** The loss of the Founder and CEO, or the inability to attract and retain highly skilled employees, poses a significant risk.
+
+**Financial and Economic Risks**
+*   **Growth and Profitability:** There is no guarantee that the company can sustain revenue, Gross Merchandise Volume (GMV), or key operating metric growth rates, nor can it sustain profitability. Quarterly results may fluctuate significantly.
+*   **Funding and Credit Risk:** The business relies on various funding sources; if these are not renewed or replaced on acceptable terms, it could have a material adverse effect. Additionally, if loans do not perform or underperform, the company may incur financial losses.
+*   **Economic Sensitivity:** Revenue is significantly impacted by the general economy, U.S. consumer creditworthiness, and the financial performance of commercial partners.
+*   **Interest Rates:** Further increases or prolonged periods of elevated market interest rates could adversely affect the business.
+
+**Regulatory, Legal, and Technological Risks**
+*   **Regulation and Compliance:** The business is subject to extensive and changing federal, state, and local regulations. Changes in laws, enforcement policies, or the political landscape could negatively impact operations. There is a risk that the originating bank partner model could be challenged as impermissible, leading to violations of licensing or lending laws.
+*   **Litigation:** Legal actions, regulatory enforcement, and compliance issues could result in fines, penalties, judgments, and reputational harm.
+*   **Cybersecurity and Platform Disruption:** The company faces risks from cyber-attacks, internal misconduct, and service disruptions that could prevent transaction processing or data protection.
+*   **International Expansion:** Expanding into new international geographies presents various challenges and risks.
+
+**Corporate Structure**
+*   **Dual Class Stock:** The dual class structure concentrates voting control with Class B common stockholders (including executives and directors), which may depress the trading price of the Class A common stock.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] The primary risk factors disclosed include:
+
+*   **Commercial Partner Relationships:** Inability to attract, retain, or grow relationships with commercial partners, including the loss of significant relationships and the non-exclusive nature of many agreements which may allow partners to work with competitors.
+*   **Consumer Base:** Failure to attract new consumers or retain and grow relationships with existing consumers.
+*   **Competition:** Operating in a highly competitive industry with low barriers to entry, facing competition from legacy payment methods, mobile wallets, other pay-over-time solutions, and merchants’ proprietary options.
+*   **Banking Partners:** Reliance on a small number of originating bank partners (specifically Celtic Bank and Lead Bank) and card issuing bank partners; termination of these agreements without replacement could adversely affect the business.
+*   **Growth Sustainability:** Inability to sustain revenue, Gross Merchandise Volume (GMV), and key operating metric growth rates.
+*   **Funding:** Reliance on various funding sources; if these are not renewed, replaced, or provided on acceptable terms, it could materially adversely affect the business.
+*   **Loan Performance:** Financial losses from loans that do not perform or underperform, which could impact financial condition and lose the confidence of funding sources.
+*   **Strategic Transactions:** Inability to achieve strategic objectives or operational disruption from acquisitions, investments, alliances, or divestitures.
+*   **International Expansion:** Challenges and risks associated with expanding into new international geographies.
+*   **Key Personnel:** Loss of the Founder and CEO or inability to attract and retain highly skilled employees.
+*   **Profitability:** Inability to sustain profitability.
+*   **Financial Results:** Significant fluctuation in quarterly results that may not reflect underlying business performance.
+*   **Legal and Regulatory:** Litigation, regulatory actions, compliance issues, fines, penalties, and reputational harm.
+*   **Interest Rates:** Adverse effects from further increases or prolonged periods of elevated market interest rates.
+*   **Economic Factors:** Revenue impact from the general economy, U.S. consumer creditworthiness, and the financial performance of commercial partners.
+*   **Collections:** Ineffective or unsuccessful collection efforts on delinquent loans.
+*   **Operational Disruptions:** Service disruptions or errors on the platform or related to vendors that prevent transaction processing or payment posting.
+*   **Cybersecurity:** Risks to confidential, proprietary, or sensitive information from cyber-attacks, internal misconduct, viruses, or break-ins.
+*   **Regulatory Environment:** Extensive regulation and oversight subject to change, including potential violations of licensing, interest rate limit, lending, or brokering laws if the originating bank partner model is challenged.
+*   **Stock Structure:** The dual class structure concentrating voting control with Class B common stockholders, which may depress the trading price of Class A common stock.

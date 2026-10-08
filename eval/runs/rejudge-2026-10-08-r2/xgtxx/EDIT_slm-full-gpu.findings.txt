@@ -1,0 +1,50 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "a $1.6 billion accumulated deficit"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "As of December 31, 2025, the accumulated deficit stands at $1.6 billion," and the pre-written SEC Filing Highlights section repeats this figure.
+
+---
+
+CLAIM: "a cash runway extending only through the third quarter of 2027"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly states "Existing cash and cash equivalents as of December 31, 2025, are expected to fund operating expenses and capital expenditures into the third quarter of 2027," confirmed in both the Risk Factors RAG and the pre-written SEC Filing Highlights section.
+
+---
+
+CLAIM: "collaborations with partners like BMS and Vertex"
+LABEL: SUPPORTED
+REASON: Both the RAG SEC Highlights and the pre-written Risk Factors section explicitly name Bristol Myers Squibb (BMS) and Vertex Pharmaceuticals as collaboration/license partners providing contingent payments.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "contingent payments from BMS and Vertex"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly identifies "contingent payments under collaboration agreements with BMS and retained portions of contingent upfront payments and other amounts under a license agreement with Vertex" as the primary committed external funding sources.
+
+---
+
+*No additional specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already evaluated above.*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $1.6 billion accumulated deficit | SUPPORTED |
+| 2 | Cash runway through Q3 2027 | SUPPORTED |
+| 3 | Collaborations with BMS and Vertex | SUPPORTED |
+| 4 | Contingent payments from BMS and Vertex | SUPPORTED |
+
+**Overall assessment:** The Executive Summary and Outlook are notably sparse in specific quantitative claims. The four verifiable claims present are all directly and explicitly supported by the source data. No figures were fabricated, miscalculated, or drawn from absent sources. The brief appropriately avoids introducing figures (e.g., specific net loss amounts, revenue figures, stock price levels, or 52-week range data) that appear in the pre-written sections but were not carried into these two sections.

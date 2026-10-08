@@ -178,7 +178,19 @@ server's own per-request timings.
   eval-measured ceiling ($0.0303, `nstp9` at parallelism 2) would approach
   only if the GPU were kept as busy as in the replay
   (`capacity_replay.py summary --plan … --hourly-usd 2.00`).
-- **No eval-measured figure at higher parallelism.** These are model-only figures from a replay. The
+- **Eval-measured at parallelism 4: `xgtxx` (2026-10-08, image
+  `f3043751`, per-request traffic proof TASK-EXACT).** 40 briefs in 1,429 s:
+  **100.8 briefs an hour** against `nstp9`'s 66.0 at parallelism 2;
+  **$0.0198 per brief**, still a ceiling (the A10 averaged 45.0%, median
+  19%, against 35.7% in `nstp9`); pipeline time per brief 61.8 s against
+  34.6 s, as calls queue for the 4 slots. What it writes did not change:
+  figures bound to stock data 3.10 vs `nstp9`'s 3.05 per brief (CI on the
+  difference −0.42 to +0.33); judge-flagged unsupported, three judgings,
+  2.12% (1.54–2.97%) vs 3.57%, paired difference +1.75 points for `nstp9`
+  (CI −1.07 to +4.73), not separated; numeric check: one flag, the same
+  OMER filing-vs-yfinance sentence as before (draft FALSE_POSITIVE, for
+  review).
+- These are model-only figures from a replay. The
   40-ticker GPU eval at parallelism 4 (`6z5xz`, 2026-10-07) failed its
   traffic proof — the prompt counter 8 above the server's own per-task log,
   every request matched (`eval/runs/slm-proof-6z5xz/INVESTIGATION.md`) —
@@ -207,6 +219,4 @@ python scripts/nvsmi_summary.py eval/runs/capacity-sweep-2026-10-07/nvsmi.csv   
   (`terraform/oci/`) has never been applied.
 - vLLM serving Qwen3.6-35B-A3B on one A10 (computed infeasible above,
   not booted).
-- A citable whole eval on the A10 at any parallelism above 2 (the replay
-  sweep above measured the server alone; the P=4 eval `6z5xz` failed its
-  traffic proof).
+- A whole eval on the A10 above parallelism 4.

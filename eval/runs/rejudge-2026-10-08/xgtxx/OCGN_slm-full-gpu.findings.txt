@@ -1,0 +1,67 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "currently trading at $1.00 USD"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `"current_price": 1.0` in USD.
+
+---
+
+CLAIM: "market capitalization of approximately $339.1 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `"market_cap": 339110400.0`, which rounds to $339.1 million.
+
+---
+
+CLAIM: "minimal revenue of $4.58 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `"revenue": 4581000.0`, which equals $4.581 million, consistent with $4.58 million when rounded to two decimal places.
+
+---
+
+CLAIM: "negative net income of $81.81 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `"net_income": -81811000.0`, which equals -$81.811 million, consistent with -$81.81 million.
+
+---
+
+CLAIM: "substantial doubt regarding its ability to continue as a going concern"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and the SEC Filing Highlights pre-written section both explicitly state "substantial doubt about its ability to continue as a going concern."
+
+---
+
+CLAIM: "current liquidity is exhausted in the fourth quarter of 2026"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states "Management estimates that current cash and cash equivalents will only fund operations into the fourth quarter of 2026," and this is echoed in the SEC Filing Highlights pre-written section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "bridge the gap until the fourth quarter of 2026"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states management estimates current cash will fund operations only into the fourth quarter of 2026.
+
+---
+
+CLAIM: "high risk of dilutive capital raises or the relinquishment of key technology rights"
+LABEL: SUPPORTED
+REASON: The RAG — Risk Factors and the Risk Factors pre-written section explicitly state that "raising capital may cause dilution to stockholders or require relinquishing rights to technologies."
+
+---
+
+CLAIM: "progress of clinical trials for its modifier gene therapy candidates"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and Risk Factors sections confirm the company's product candidates are based on a "novel modifier gene therapy platform/technology" and that clinical activities are ongoing.
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, specific percentages, named product milestones, or other forward-looking numbers appear in the Outlook section beyond those already audited above.*

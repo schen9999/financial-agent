@@ -1,0 +1,45 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "DKK 329.4 billion in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data shows revenue of 329,430,990,848 DKK, which rounds to DKK 329.4 billion, and this figure is explicitly repeated in all pre-written sections.
+
+---
+
+CLAIM: "DKK 116.4 billion in net income"
+LABEL: SUPPORTED
+REASON: The raw source data shows net income of 116,442,996,736 DKK, which rounds to DKK 116.4 billion, confirmed in all pre-written sections.
+
+---
+
+CLAIM: "exceptional 35.35% profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly states profit_margin_pct = 35.35, and this figure is repeated across all pre-written sections.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "sustainability of its 35.35% profit margin against competitive pricing pressures"
+LABEL: SUPPORTED
+REASON: The 35.35% profit margin is explicitly present in the raw source data (profit_margin_pct: 35.35) and is repeated in the pre-written sections; its use here as a reference benchmark is directly grounded in that figure.
+
+---
+
+**COMPLETENESS CHECK — figures present in source data but not claimed in the audited sections:**
+
+The following source figures do not appear as claims in the Executive Summary or Outlook and therefore require no audit entry: current price ($38.26), market cap (~$168.9B), P/E ratio (9.35), forward P/E (11.50), 52-week high ($64.16), 52-week low ($35.12), dividend yield (4.79%). No claims about these figures appear in the two audited sections, so no entries are needed.
+
+---
+
+**SUMMARY**
+
+All four quantitative claims found in the Executive Summary and Outlook sections are **SUPPORTED** by the raw source data. No unsupported or inference-only quantitative claims were identified. Notably, the Outlook introduces qualitative forward-looking themes (capacity expansion pace, rebranding execution, regulatory headwinds, patent challenges, margin compression) that are directional and non-quantitative, and therefore fall outside the scope of this audit's quantitative/metric-specific mandate.

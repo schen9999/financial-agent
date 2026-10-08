@@ -1,0 +1,57 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$6.35 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data lists revenue as $6,351,084,032, which rounds to $6.35 billion; the pre-written Financial Health and Recent Developments sections also state "$6.35 billion in revenue."
+
+---
+
+CLAIM: "market capitalization of approximately $9.83 billion"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap as $9,825,858,560, which rounds to approximately $9.83 billion; confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "net income of -$311 million"
+LABEL: SUPPORTED
+REASON: Source data lists net_income as -$311,243,008, which rounds to -$311 million; confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "forward P/E ratio of 7.49"
+LABEL: SUPPORTED
+REASON: Source data lists forward_pe as 7.492327, which rounds to 7.49; confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "low forward P/E ratio suggests market optimism for a turnaround"
+LABEL: SUPPORTED
+REASON: The forward P/E of 7.49 is explicitly present in the source data, and the Financial Health pre-written section characterizes it as suggesting "market expectations for future earnings growth" / a "potential turnaround," making this a direct restatement of that characterization.
+
+---
+
+CLAIM: "heavy reliance on advertising revenue"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights and Risk Factors pre-written sections explicitly state advertising comprises approximately 87% of total revenue in 2025, confirming heavy reliance on advertising revenue.
+
+---
+
+CLAIM: "upcoming 10-K and 10-Q filings"
+LABEL: SUPPORTED
+REASON: SEC filing data explicitly lists a 10-K filed/due 2026-02-05 and a 10-Q filed/due 2026-08-04; the Recent Developments pre-written section also references both filings.
+
+---
+
+**NO ADDITIONAL QUANTITATIVE OR FORWARD-LOOKING CLAIMS IDENTIFIED**
+
+The Outlook section contains no additional specific quantitative figures, price targets, thresholds, ratios, percentages, or named product milestones beyond those already evaluated above. All directional and qualitative statements (e.g., "cautiously constructive," "fragile thesis," "continued declines") are non-quantitative characterizations and fall outside the scope of this audit's labeling criteria.

@@ -1,0 +1,37 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of approximately $1.36 billion"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap = $1,357,281,024, which rounds to approximately $1.36 billion; the pre-written Financial Health section also states "approximately $1.36 billion."
+
+---
+
+CLAIM: "net income of $116.53 million"
+LABEL: SUPPORTED
+REASON: Source data lists net_income = $116,533,000 = $116.53 million, exactly matching the claim.
+
+---
+
+CLAIM: "revenue of $38.42 million"
+LABEL: SUPPORTED
+REASON: Source data lists revenue = $38,422,000 = $38.42 million, exactly matching the claim.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "$70.8 million debt obligation"
+LABEL: SUPPORTED
+REASON: RAG — SEC Highlights and the pre-written SEC Filing Highlights section both explicitly state "$70.8 million in 2029 Notes" outstanding as of December 31, 2025.
+
+---
+
+*No other specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Executive Summary or Outlook sections beyond those audited above. All remaining content in those sections consists of qualitative directional statements (e.g., "cautiously constructive," "strong commercial uptake," "binary nature") that contain no auditable quantitative claims.*
