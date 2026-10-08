@@ -9,17 +9,17 @@ the dates, and use it as evidence rather than as current instructions).
 
 | Question | Where to look | Type |
 |---|---|---|
-| What is this, and what does it do? | [README](../README.md): "Summary" and "What It Does" | reference |
+| What is this, and what does it do? | [README](../README.md): "What it does" and "Conclusions" | reference |
 | How is it deployed on OCI? | [architecture.md](architecture.md), "Deployed topology (October 2026)"; [README](../README.md): "Deployed on OCI"; the current procedure in [operations.md](operations.md); OKE steps in [deploy-runbook.md](deploy-runbook.md), "OKE (OCI)" | reference |
 | How do I configure it? | [configuration.md](configuration.md): every environment variable, its default, and where it is set | reference |
 | What does the API look like? | [api.md](api.md): all routes with request/response shapes and examples | reference |
 | Something broke. What do I check? | [operations.md](operations.md), "Troubleshooting" (incidents that actually happened) | reference |
 | What does the OKE Terraform create? | [terraform/oci/README.md](../terraform/oci/README.md) (written and validated, never applied) | reference |
 | How do I run it locally? | [README](../README.md): "Running Locally"; [k8s/README.md](../k8s/README.md) for the kind cluster | reference |
-| What is the architecture? | [architecture.md](architecture.md); diagrams in the [README](../README.md) "Architecture" section | reference |
+| What is the architecture? | [architecture.md](architecture.md), including the pipeline and Kubernetes diagrams and the Celery vs Argo split (moved from the README, 2026-10-08) | reference |
 | What are the results, and which numbers can I quote? | [numbers-of-record.md](numbers-of-record.md): [current](numbers-of-record.md#current), [dated run records](numbers-of-record.md#dated-run-records), [retired](numbers-of-record.md#retired); summary table in the [README](../README.md) "Key results" | reference |
 | How is grounding measured, and how reliable is the judge? | [eval-methodology.md](eval-methodology.md): "What is measured", "Rigor rules", the judge-validation sections; a guided version in [system-tour.md](system-tour.md), section 5 | dated log |
-| Can a self-served open-weight model write the whole brief, and at what cost? | [eval-methodology.md](eval-methodology.md): "GPU SLM extended run `p9jr2`" (the same-image three-way, cost per brief, numeric check); summary in the [README](../README.md) | dated log |
+| Can a self-served open-weight model write the whole brief, and at what cost? | [eval-methodology.md](eval-methodology.md): "GPU SLM extended run `p9jr2`" (the same-image three-way, cost per brief, numeric check); the full experiment records in [experiments.md](experiments.md); summary in the [README](../README.md) | dated log |
 | How was a real error traced, end to end? | [debugging-story.md](debugging-story.md): a currency error the judge accepted and the numeric check caught, traced to the stock data; three shorter cases | dated log |
 | What has run on the A10, how fast, at what cost? | [gpu-inference.md](gpu-inference.md): vLLM on the fine-tune (BF16 vs W4A16), why llama.cpp for Qwen3.6, CPU vs A10 | reference |
 | What happens when a component fails, and how are eval runs kept honest? | [reliability.md](reliability.md): app-plane failure behaviour (tested or not), eval-plane safeguards | reference |
@@ -30,17 +30,21 @@ the dates, and use it as evidence rather than as current instructions).
 | What are the known limitations? | [system-tour.md](system-tour.md): [known limitations and next steps](system-tour.md#known-limitations-and-next-steps) | reference |
 | What does it cost? | Infrastructure list prices (OCI A10, AWS): [cost.md](cost.md); per-brief API cost: [numbers-of-record.md](numbers-of-record.md#current) | reference |
 | How do I tear it down? | [operations.md](operations.md), "Teardown": kind, a k3s node, the A10 VMs (tenancy owner, OCI console), ECS, OKE | reference |
-| How is the AWS deployment built? | [README](../README.md): "AWS Deployment (secondary)"; [infra/README.md](../infra/README.md) | reference |
+| How is the AWS deployment built? | [aws.md](aws.md) (moved from the README, 2026-10-08); [infra/README.md](../infra/README.md) | reference |
 | How were the vLLM nodes brought up, and what broke? | [deploy-runbook.md](deploy-runbook.md): the dated notes in "Single-VM path (k3s)", including "Rebuild on fresh nodes, 2026-09-23" | dated log |
 | What did the codebase look like before the Kubernetes work? | [PHASE0_AUDIT.md](PHASE0_AUDIT.md) (2026-08-24) | dated log |
 | How were the older benchmarks run? | [benchmarks.md](../benchmarks.md) (Aug 2026, pre-retrieval-fix) | dated log |
-| How do I use the MCP server? | [README](../README.md): "MCP Server" | reference |
+| How do I use the MCP server? | [mcp.md](mcp.md) (moved from the README, 2026-10-08) | reference |
+| What were the experiments, in full? | [experiments.md](experiments.md): the grounding eval, the self-served comparison, reranking (June), the QLoRA fine-tune, the multi-agent supervisor, the old benchmark summary (moved verbatim from the README, 2026-10-08) | dated log |
 
 ## All documents
 
 | Document | What it is | Type |
 |---|---|---|
-| [README.md](../README.md) | Overview, OCI deployment, key results, how to run and test | reference |
+| [README.md](../README.md) | Overview, conclusions, OCI deployment, key results, decisions, how to run and test | reference |
+| [experiments.md](experiments.md) | The experiment records moved from the README (2026-10-08) | dated log |
+| [aws.md](aws.md) | The AWS ECS deployment (secondary) | reference |
+| [mcp.md](mcp.md) | The MCP server: tools, running it, Claude Desktop | reference |
 | [architecture.md](architecture.md) | Topology diagram, the deployed topology (October 2026) and deploy targets | reference |
 | [debugging-story.md](debugging-story.md) | One error traced end to end (Toyota's currency), the limits of each eval layer, three shorter cases | dated log |
 | [gpu-inference.md](gpu-inference.md) | A10 serving: what ran, serving speed, CPU vs GPU for Qwen3.6, what has not run | reference |

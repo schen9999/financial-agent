@@ -26,6 +26,11 @@ run IDs and links lead to the full record.
   against its sources, fails the run above 5% unsupported, and proves
   from the model server's own counters that the self-served model, and
   nothing else, produced the run.
+- **CPU serving is sized right at 8 vCPU.** On the OKE node, prompt
+  processing speeds up 1.8× from 4 to 8 vCPU and then not at all;
+  generation runs at about 13 tok/s at every level (llama-bench,
+  2026-10-08). More throughput would come from more replicas on separate
+  nodes — an inference, not measured.
 - **Cost per brief, model only:** hosted $0.0357, A10 at most $0.0303
   (image `f3043751`); CPU $0.0107 (previous image). The CPU is cheapest but
   takes about 6 minutes a brief, so it suits batch work. The A10 takes 35 s

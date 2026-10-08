@@ -217,3 +217,199 @@ overlays reproduce the single-node local cluster exactly (proof:
 [verification.md](verification.md)); the oke overlays add OCIR images,
 OCI LoadBalancers, Block Volume PVCs, and the A10 GPU scheduling for vLLM.
 See [deploy-runbook.md](deploy-runbook.md).
+
+## Pipeline and Kubernetes diagrams (moved from the README, 2026-10-08)
+
+
+#### Deployment topology (Kubernetes)
+
+Where it runs on OCI today (the provided OKE cluster, node 2's A10 endpoint,
+the standby VM) is in [docs/architecture.md, "Deployed topology"](architecture.md#deployed-topology-october-2026).
+The full designed topology runs on a single-node kind cluster locally and on
+single-node k3s on the OCI A10 VMs (see [k8s/README.md](../k8s/README.md),
+[docs/deploy-runbook.md](deploy-runbook.md), and the audit in
+[docs/PHASE0_AUDIT.md](PHASE0_AUDIT.md)). The diagram shows the kind
+layout; the k3s overlay adds vLLM on the node's A10:
+
+```mermaid
+flowchart LR
+    subgraph kind["kind cluster (WSL2, single node)"]
+        ST["Streamlit UI<br/>(runs the pipeline in-process,<br/>app.py unchanged)"]
+        API["FastAPI<br/>:30080"]
+        WK["Celery worker"]
+        RD[("Redis<br/>exact-key cache research:TICKER<br/>+ Celery broker/backend")]
+        PG[("PostgreSQL<br/>research_briefs (PVC)")]
+        MCP["MCP server<br/>streamable-HTTP :30800"]
+        subgraph argo["Argo Workflows"]
+            WF["nightly grounding eval<br/>fan-out per ticker → aggregate<br/>→ FAIL below threshold"]
+        end
+    end
+    EXT["Anthropic API · NewsAPI · SEC EDGAR<br/>· yfinance · Pinecone · LangSmith"]
+    LOCAL["Local model (default-off)<br/>OpenAI-compatible endpoint:<br/>vLLM on an A10 (k3s) / Ollama (dev laptop)"]
+
+    API -->|"cache + enqueue"| RD
+    API -->|"briefs"| PG
+    WK -->|"consume + cache"| RD
+    ST -->|"cache"| RD
+    API --> EXT
+    WK --> EXT
+    ST --> EXT
+    MCP --> EXT
+    WF --> EXT
+    API -.->|"USE_LOCAL_MODEL=true"| LOCAL
+    WK -.->|"USE_LOCAL_MODEL=true"| LOCAL
+```
+
+- **Celery vs. Argo:** request-time async stays on Celery; batch/eval runs on
+  Argo (reasoning in the [Celery vs. Argo section](#kubernetes-and-the-celery-vs-argo-split)).
+- **Eval pods** force `BYPASS_CACHE=true` and never touch the live cache.
+- **Feature flags** are restated at their audited defaults in the ConfigMap;
+  reranking, multi-agent, and the local model all ship off, each for a
+  measured reason.
+
+#### Brief pipeline
+
+```
+"Generate Brief"
+       │
+       ▼
+Redis cache (research:TICKER) ──hit──► cached brief
+       │ miss
+       ▼
+get_stock_data  (yfinance)
+       │
+       ▼
+┌──────────────────┐  ┌─────────────────┐
+│ get_company_news │  │ get_sec_filings  │  parallel
+└──────────────────┘  └─────────────────┘
+       │                       │
+       └───────────┬───────────┘
+                   │
+       ┌───────────▼───────────┐
+       │   Pinecone RAG (x2)   │  concurrent
+       └───────────┬───────────┘
+                   │
+   ┌───────────────┼───────────────────┐
+   ▼               ▼           ▼       ▼
+Haiku           Haiku       Haiku   Haiku    4 parallel calls
+Financial       Recent      SEC     Risk
+Health          Dev.        High.   Factors
+   └───────────────┴───────────┴───────┘
+                   │
+       ┌───────────▼───────────┐
+       │  Sonnet: Exec Summary │  streams to browser
+       │  + Outlook            │
+       └───────────────────────┘
+```
+
+#### Follow-up questions
+
+```
+"Ask" (free-form question)
+       │
+       ▼
+LangGraph ReAct agent (claude-sonnet-4-6)
+  ├─ get_stock_data
+  ├─ get_company_news
+  ├─ get_sec_filings
+  └─ query_sec_filing (Pinecone RAG)
+       │
+       ▼
+     answer
+```
+
+#### Multi-agent brief pipeline (optional, `MULTI_AGENT_ENABLED=true`)
+
+The single-agent brief pipeline can be swapped for a supervisor-orchestrated
+graph. It's off by default -- the single-agent path stays the production default
+and the A/B control -- and produces the **same brief schema and API response**, so
+nothing downstream changes. Toggle the flag to compare the two paths.
+
+```
+"Generate Brief"  (MULTI_AGENT_ENABLED=true)
+       │
+       ▼
+   ┌─────────┐  decomposes the ticker into a research plan: the SEC RAG
+   │ Planner │  sub-questions that ground the filing-based sections + coverage
+   └────┬────┘
+        ▼
+   ┌──────────┐ ◄──── revise (critic feedback prepended to the synthesis prompt)
+   │ Research │  reuses the EXISTING retrieval + model-routing + synthesis code;
+   └────┬─────┘  revision passes re-synthesise Exec Summary + Outlook only
+        ▼
+   ┌──────────────────┐  the existing LLM-as-judge, promoted to an inline node --
+   │ Grounding-critic │  scores the draft for source-grounding (one judge, shared
+   └────┬─────────────┘  with the offline eval; `agent/grounding.py`)
+        ▼
+   ┌────────────┐  unsupported% ≤ CRITIC_MAX_UNSUPPORTED_PCT → done; else send
+   │ Supervisor │  back to Research, bounded at MAX_REVISIONS passes
+   └────┬───────┘
+        ▼
+   final brief
+```
+
+- **One judge, two callers.** The inline critic and the offline grounding eval
+  both call `agent/grounding.py:grade_brief()` -- there's a single definition of
+  the judge prompt and scoring, not two copies that can drift.
+- **Schema-safe revisions.** Revision passes reuse the already-grounded middle
+  sections and only re-write the Executive Summary + Outlook through the same
+  `_synthesis_prompt`, so the brief format can't break.
+- **Bounded loop.** `MAX_REVISIONS` (default 2) caps the critic→research retries;
+  the supervisor accepts the best effort if the budget is exhausted.
+- **Tracing.** Each node (planner / research / critic / supervisor) is its own
+  LangSmith span.
+
+## Kubernetes, and the Celery vs. Argo split
+
+
+The full designed topology — FastAPI, Celery worker, Redis, Postgres, Streamlit,
+MCP server — runs on a single-node [kind](https://kind.sigs.k8s.io/) cluster
+(`make cluster-up && make deploy && make smoke-test`; see
+[`k8s/README.md`](../k8s/README.md)). Per the Phase 0 audit this is the first
+environment where that topology runs complete: the smoke test asserts an
+end-to-end brief, a Celery task finishing, and an exact-key cache hit plus a
+different-ticker miss.
+
+**Two schedulers, deliberately:**
+
+| | Celery (+ Redis) | Argo Workflows |
+|---|---|---|
+| Used for | Request-time async: `POST /research/async` | Batch/eval: nightly grounding eval, ad-hoc eval runs |
+| Unit of work | One function call (`research_task`) | A DAG of pods (fan-out per ticker → aggregate → gate) |
+| Latency profile | Seconds matter; job starts immediately off a live request | Minutes are fine; runs on a schedule or on demand |
+| Failure semantics | Retry/report per request | The *workflow* fails if the aggregate quality gate fails |
+| Why not the other one | An eval suite is a DAG with fan-out, per-step containers, and a pass/fail verdict — modeling that in Celery means hand-building orchestration Argo already provides | Spinning up a pod per API request would add cold-start latency and K8s API load to the hot path that a resident worker avoids |
+
+The eval workflow (`argo/base/eval-workflow.yaml`) fans out one pod per ticker
+(bounded parallelism — each pod carries the torch/embedding stack), aggregates
+grounding scores in a final step (`scripts/eval_aggregate.py`), and **fails the
+workflow** if the unsupported-claim rate breaches the threshold, any ticker was
+skipped, or too few claims were audited to be meaningful. A `CronWorkflow` runs
+it nightly at 03:30 America/New_York. Eval pods force `BYPASS_CACHE=true` — they
+never touch the live exact-key brief cache.
+
+**The gate fired on its first real run — and that was variance, measured.** The
+first full workflow run scored 5.62% unsupported (judge v1; gate: ≤5%), driven entirely by
+one NVDA draft with 5 flagged claims. Re-measuring NVDA immediately produced
+0 unsupported of 10 (and the same morning's full-suite run had scored 0/84,
+Wilson 95% CI 0.0–4.4%; judge v1, pre-retrieval-fix, local run with no workflow run ID).
+Single-draft scores fluctuate at temperature 0.2 — the same behaviour as the
+WMT flag in the multi-agent experiment. The threshold stays at 5% rather than
+being widened to make red nights rarer: the documented response to a red night
+is to re-run the flagged ticker(s) and compare drafts — one outlier draft that
+doesn't reproduce is variance; a repeated or multi-ticker breach is a real
+regression.
+
+**Cost measurement is re-runnable, not folklore:** `scripts/cost_report.py`
+runs the production pipeline with token accounting on every LLM call (exact
+API-reported usage for the LangChain calls; tokenizer-estimated for the RAG-
+internal calls, labeled as such) and prices them from
+`scripts/model_prices.json`. The cost of record is **$0.0366/brief**
+(2026-09-06, post-retrieval-fix)
+([docs/numbers-of-record.md](numbers-of-record.md), which also carries
+the dated run records, including an early 3-ticker run of this harness). Any
+cost number quoted for this project comes from re-running that harness — the
+earlier headline cost figure is historical (its harness was never committed;
+it matches the harness's exact-only portion almost to the cent, which
+suggests it never counted the RAG-internal calls either; the reconciliation
+is in `docs/PHASE0_AUDIT.md`).
