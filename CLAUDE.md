@@ -122,7 +122,11 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
    therefore ships off and hosted models remain the production path; Ollama
    stays the fallback for local serving demos. State it as
    measured-and-declined, not unfinished.
-6. Work on branch `oci-migration`. Small commits, imperative messages.
+6. Branches: work on `slm-harness` until it is merged into `main` (PR, merged
+   by the owner on GitHub); after that, short-lived branches into `main`
+   via PR. The tag `demo-freeze-2026-10` goes on the final commit at the
+   2026-10-25 freeze, after the rehearsal; post-demo work branches from
+   that tag. Small commits, imperative messages.
 7. Judge-calling tests spend Anthropic credits: they run ONLY under an
    explicit env flag (CRITIC_INJECTION=1 today; the same pattern for any
    future one), never in the default pytest suite, and never on push, PR or
