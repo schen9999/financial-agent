@@ -2316,6 +2316,48 @@ python scripts/slm_traffic_proof.py verify \
   --workflow eval/runs/slm-proof-p9jr2/grounding-eval-extended-slm-gpu-p9jr2-workflow.json   # EXACT
 ```
 
+### Reranking A/B, pre-registered (2026-10-08, before any run)
+
+**Question:** should cross-encoder reranking (20 cosine candidates reranked
+to 3 by `BAAI/bge-reranker-base`) replace plain top-3 retrieval? It shipped
+default-off after the June A/B (judge v1, pre-retrieval-fix) showed no
+grounding gain at 4–5× the retrieval latency. The judge is too weak a
+measure on these runs (calibration of record: recall about 11%), so the
+decision rests on measures that need no judge.
+
+**Design.** Two fresh 40-ticker hosted runs on image `f3043751`, submitted
+in one window: `argo/eval-run-extended.yaml` (arm baseline) and
+`argo/eval-run-extended-rerank3.yaml` (arm rerank3), each judged three
+times. A one-ticker memory smoke first (`argo/eval-run-rerank3-smoke.yaml`):
+if the eval pod's memory is tight with the cross-encoder loaded, the rerank
+arm's pod limit is raised in the WorkflowTemplate, never the image.
+Latency comes from a separate warm benchmark
+(`scripts/rerank_latency_bench.py` as the Job
+`k8s/jobs/rerank-latency-bench`): every eval pod is fresh and loads the
+model inside its first timed retrieval, which an app process does once.
+
+**Reranking ships only if all four hold** (`scripts/rerank_ab_decide.py`):
+
+1. **Refusals** (`eval/rag_refusals.py`, the rule fixed 2026-10-07):
+   paired by ticker over the tickers with a highlights answer, b = baseline
+   refused and rerank3 did not, c = the reverse; **b − c ≥ 3 and exact
+   two-sided McNemar p < 0.05**. Refusals of the SEC-highlights answer are
+   what better retrieval could fix (limitation 2).
+2. **Numeric errors**: TRUE_ERROR per checked number (numeric check,
+   adjudicated): **the upper end of the 95% CI of rerank3 − baseline ≤ +0.5
+   percentage points**.
+3. **Specificity**: figures bound to a stock-data field per brief
+   (judge-independent): **the lower end of the 95% CI of rerank3 −
+   baseline ≥ −0.5**.
+4. **Latency**: the per-ticker time reranking adds, warm (2 × the paired
+   median per-query difference, two RAG queries per ticker), **≤ 20% of the
+   baseline run's mean pipeline time per ticker**.
+
+Reported, not deciding: judge-flagged grounding over three judgings. It
+blocks shipping only if rerank3 is worse with the paired CI excluding zero.
+Cost per brief is unchanged by reranking (the same LLM calls; the
+cross-encoder runs in the pod) and is not a criterion.
+
 ### Traffic proof by per-request match (declared 2026-10-07)
 
 The traffic proof shows that the self-served model, and nothing else,

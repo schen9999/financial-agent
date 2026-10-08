@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: rerank-latency-bench
+  labels:
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 604800
+  template:
+    spec:
+      restartPolicy: Never
+      imagePullSecrets:
+        - name: ghcr-pull-secret
+      containers:
+        - name: bench
+          image: financial-agent-app
+          workingDir: /app
+          command: ["python", "/bench/rerank_latency_bench.py", "--repeats", "3", "--tickers",
+                    "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA", "JPM", "V", "WMT",
+                    "XOM", "UNH", "UPST", "AFRM", "RIVN", "LCID", "SNAP", "PTON", "ROKU", "COIN",
+                    "CALM", "SFIX", "RDFN", "BYND", "CHGG", "BLNK", "OMER", "EVGO", "OCGN", "EDIT",
+                    "SANA", "CRBU", "VERV", "BEAM", "NTLA"]
+          env:
+            - name: PYTHONPATH
+              value: /app
+            - name: RERANK_CANDIDATES
+              value: "20"
+            - name: RERANK_TOP_N
+              value: "3"
+            - name: BASELINE_TOP_K
+              value: "3"
+          envFrom:
+            - secretRef:
+                name: app-secrets
+            - secretRef:
+                name: infra-secrets
+            - configMapRef:
+                name: app-config
+          volumeMounts:
+            - name: bench
+              mountPath: /bench
+          resources:
+            requests:
+              cpu: 300m
+              memory: 900Mi
+            limits:
+              cpu: 1500m
+              memory: 4Gi
+      volumes:
+        - name: bench
+          configMap:
+            name: rerank-latency-bench
