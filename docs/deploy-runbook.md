@@ -1768,6 +1768,34 @@ then, stop and keep the current numbers of record.
    drifted (`eval/runs/slm-proof-6z5xz/INVESTIGATION.md`). No re-judges; no
    figure from it is quoted.
 
+## Terraform: the provided cluster (import and plan only)
+
+**[EXECUTED 2026-10-07 — zero diff]** Under the owner's exception
+(CLAUDE.md): import and plan only, in `terraform/oci-provided/`, local
+gitignored state, never apply; every command through
+`scripts/tf_provided.sh`. Operator, repo root, Terraform 1.9.8 in `~/bin`
+(release zip checked against HashiCorp's SHA256SUMS), instance-principal
+auth:
+
+```bash
+python3 scripts/tf_provided_imports.py          # 94 import blocks (read-only oci lists)
+bash scripts/tf_provided.sh init -input=false
+bash scripts/tf_provided.sh plan -input=false -generate-config-out=generated-config.tf
+python3 scripts/tf_provided_fixup.py            # plan then: 94 to import, 0 to add/change/destroy
+python3 - <<'PY' | while read -r to id; do bash scripts/tf_provided.sh import -input=false "$to" "$id" < /dev/null; done
+import re
+t = open("terraform/oci-provided/generated-imports.tf").read()
+for to, i in re.findall(r'to = (\S+)
+  id = "([^"]+)"', t): print(to, i)
+PY
+bash scripts/tf_provided.sh plan -input=false -detailed-exitcode   # exit 0: "No changes"
+```
+
+94 imported, 0 failed; the final plan: "No changes. Your infrastructure
+matches the configuration." What is codified and what is not:
+`terraform/oci-provided/README.md`. The generated configuration and state
+stay on the operator (OCIDs).
+
 ## OKE (OCI) — Phase 2
 
 All OCI infrastructure is authored in `terraform/oci/` (fmt + validate
