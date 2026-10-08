@@ -76,11 +76,55 @@ def test_fallback_joins_an_existing_nsg_with_rule_management_off():
     assert ann["oci.oraclecloud.com/security-rule-management-mode"] == "None"
     assert ann["oci.oraclecloud.com/oci-network-security-groups"] == "ocid1.nsg.lb"
     assert "oci.oraclecloud.com/oci-backend-network-security-group" not in ann
-    for kw in ({}, {"backend_nsg": "ocid1.a", "attach_nsg": "ocid1.b"}):
+    for kw in ({}, {"backend_nsg": "ocid1.a", "attach_nsg": "ocid1.b"},
+               {"backend_nsg": "ocid1.a", "security_list": True}):
         with pytest.raises(SystemExit, match="exactly one"):
             pr.service_patch(["192.0.2.7/32"], "ocid1.subnet.x", **kw)
 
 
-def test_up_script_refuses_an_open_nsg_in_fallback():
+def test_up_script_guards_each_mode_and_reverts_on_failure():
     src = (pr.ROOT / "scripts" / "public_ui_up.sh").read_text(encoding="utf-8")
-    assert "source=='0.0.0.0/0'" in src and "refusing:" in src
+    assert "source=='0.0.0.0/0'" in src and "refusing:" in src          # attach mode
+    assert 'MODE=${PUBLIC_UI_MODE:-sl}' in src                           # security-list mode by default
+    assert "public_ui_guard.py sl --port 443 \
+" in src or "public_ui_guard.py sl --port 443 \\" in src
+    assert "--require" in src and "public_ui_guard.py lb --port 443" in src
+    assert src.count("|| revert ") == 2 and 'revert "no external IP' in src
+
+
+def test_security_list_mode_sets_no_nsg_and_keeps_the_ranges():
+    ops = {o["path"]: o["value"] for o in pr.service_patch(["192.0.2.7/32"], "ocid1.subnet.x", security_list=True)}
+    ann = ops["/metadata/annotations"]
+    assert ann["service.beta.kubernetes.io/oci-load-balancer-security-list-management-mode"] == "All"
+    assert not any("network-security-group" in k or "security-rule-management" in k for k in ann)
+    assert ops["/spec/loadBalancerSourceRanges"] == ["192.0.2.7/32"]
+    assert [p["port"] for p in ops["/spec/ports"]] == [443]
+
+
+from scripts import public_ui_guard as pg  # noqa: E402
+
+
+def _rule(src, proto="6", lo=None, hi=None):
+    r = {"source": src, "protocol": proto}
+    if lo is not None:
+        r["tcp-options"] = {"destination-port-range": {"min": lo, "max": hi}}
+    return r
+
+
+def test_security_list_guard_refuses_anything_wider_than_the_allowlist():
+    allow = ["99.164.75.62/32"]
+    ok = {"data": {"ingress-security-rules": [_rule("99.164.75.62/32", lo=443, hi=443),
+                                              _rule("0.0.0.0/0", lo=22, hi=22)]}}
+    assert pg.sl_violations(ok, allow, 443, require=True) == []
+    for bad in (_rule("0.0.0.0/0", lo=443, hi=443), _rule("0.0.0.0/0", lo=1, hi=65535),
+                _rule("0.0.0.0/0"), _rule("10.0.0.0/8", proto="all"), _rule("99.164.75.0/24", lo=443, hi=443)):
+        assert pg.sl_violations({"ingress-security-rules": [bad]}, allow, 443)
+    assert pg.sl_violations({"ingress-security-rules": []}, allow, 443, require=True) == \
+        ["no ingress rule for allowlist entry 99.164.75.62/32 on port 443"]
+
+
+def test_lb_guard_wants_no_nsg_and_only_a_tls_listener_on_443():
+    good = {"data": {"network-security-group-ids": [], "listeners": {"TCP-443": {"port": 443, "ssl-configuration": {"x": 1}}}}}
+    assert pg.lb_violations(good, 443) == []
+    bad = {"network-security-group-ids": ["ocid1.nsg"], "listeners": {"TCP-8501": {"port": 8501}}}
+    assert len(pg.lb_violations(bad, 443)) == 2

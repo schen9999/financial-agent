@@ -88,9 +88,12 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
   on node 2's k3s); remote one-liners need bash -ic, bash -lc fails.
   Every Service ClusterIP; the public Streamlit UI (one OCI flexible LB,
   allowlist + basic auth, k8s/overlays/oke-provided-public-ui; runbook
-  "Public Streamlit UI") is NOT LIVE: NSG mode was refused 2026-10-07
-  (the controller may not create NSGs), the fallback waits on the tenancy
-  owner's three NSG changes. Access by port-forward behind
+  "Public Streamlit UI"), security-list management mode since 2026-10-08
+  (the controller may not create NSGs); its status is in the runbook.
+  Every change in the financial-agent namespace goes through the repo's
+  overlays and scripts only (an outside change exposed Streamlit without
+  auth on 2026-10-08, about 02:05–02:19 and 02:22–02:31Z). Access by
+  port-forward behind
   ssh -L; nightly CronWorkflow suspended. Runbook "OKE (provided
   cluster)". Yahoo has returned 429 from its egress IP: check the
   aggregate's "stock block empty" count on every run there.
@@ -102,7 +105,7 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (7401 lines, 600 tests collected: 599 passed + 1 skipped,
+3. The pytest suite (7445 lines, 602 tests collected: 601 passed + 1 skipped,
    the credit-gated judge test, as of 2026-10-06) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).

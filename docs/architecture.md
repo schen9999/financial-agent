@@ -162,9 +162,11 @@ flowchart LR
   443 with a self-signed certificate. **To whom:** the IPv4 addresses on a
   gitignored allowlist (the project owner's and the tenancy owner's network
   today; reviewers are added on request). **How it is protected:** the
-  allowlist is enforced twice — in a front-end NSG the cloud controller
-  manages from `loadBalancerSourceRanges`, and again in an nginx sidecar on
-  the client address — then basic auth in nginx (the password lives only on
+  allowlist is enforced twice — in the LB subnet's security list, where the
+  cloud controller keeps one 443 rule per allowlist entry from
+  `loadBalancerSourceRanges` (security-list management mode All; the LB has
+  no NSG), and again in an nginx sidecar on the client address — then basic
+  auth in nginx (the password lives only on
   the operator). Every uncached brief spends Anthropic credit; the hard cap
   is the Anthropic workspace's monthly spend limit. Runbook: "Public
   Streamlit UI".

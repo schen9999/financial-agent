@@ -7,10 +7,10 @@
 #     pub_lb-tbhcuw subnet, TLS on 443 with a self-signed certificate
 #     (Secret streamlit-tls), HTTP to the backends so the LB adds
 #     X-Forwarded-For.
-#   - Source restriction twice: loadBalancerSourceRanges in a front-end NSG
-#     that the cloud controller creates and manages (security-rule
-#     management mode NSG, backend NSG workers-tbhcuw), and the same
-#     allowlist in nginx.
+#   - Source restriction twice: loadBalancerSourceRanges as 443 rules in the
+#     LB subnet's security list, kept by the cloud controller
+#     (security-list management mode All, no NSG — the controller may not
+#     create NSGs here), and the same allowlist in nginx.
 #   - nginx sidecar: allowlist, then basic auth (Secret streamlit-basic-auth),
 #     then Streamlit on the pod's loopback.
 #

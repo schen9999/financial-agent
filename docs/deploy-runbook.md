@@ -904,12 +904,20 @@ and an nginx sidecar); scripts `scripts/public_ui_secrets.sh`,
   them, then accept the browser warning).
 - **Source restriction, twice, from one gitignored list**
   (`k8s/overlays/oke-provided-public-ui/allowlist.txt`):
-  `loadBalancerSourceRanges` becomes ingress rules in a front-end NSG that
-  the cloud controller creates (`security-rule-management-mode: NSG`; with
-  `workers-tbhcuw` as the backend NSG it also adds, and on deletion
-  removes, the matching worker rules); nginx repeats the allowlist on the
-  `X-Forwarded-For` client address. The LB is deliberately **not** in the
-  `pub_lb-tbhcuw` NSG, which admits 443 and 80 from anywhere.
+  `loadBalancerSourceRanges` becomes an ingress rule on 443 for each
+  allowlist CIDR in the LB subnet's security list, added and removed by the
+  cloud controller (**security-list management mode All**, since
+  2026-10-08: the controller may manage security lists, may not create
+  NSGs; All also adds the LB-to-node-port and health-check rules, needed
+  because the workers' NSG admits only members of `pub_lb-tbhcuw`); nginx
+  repeats the allowlist on the `X-Forwarded-For` client address. The LB is
+  attached to **no NSG** — in particular not to `pub_lb-tbhcuw`, which
+  admits 443 and 80 from anywhere. `scripts/public_ui_up.sh` refuses to
+  apply if the security list already admits 443 from anything wider than
+  the allowlist, and after the apply checks that it holds exactly the
+  allowlist on 443, that the LB has no NSG and only a TLS listener on 443,
+  and puts the Service back to ClusterIP if not
+  (`scripts/public_ui_guard.py`).
 - **Basic auth** in nginx: user `reviewer`, a random password, hash in the
   Secret `streamlit-basic-auth`. The password lives only in
   `~/public-ui/credentials` (0600) on the operator; read it in your own
@@ -985,8 +993,11 @@ security-list rule admitting 0.0.0.0/0 on 8501 — deleted and recreated at
 auth): the UI was **reachable from anywhere without authentication from
 about 02:05 to 02:19Z and 02:22 to 02:31Z**, until the retry moved the
 Service to 443 → 30443. Who made those changes is not recorded (the apply
-overwrote the field managers). Do not expose Streamlit through any
-manifest but `k8s/overlays/oke-provided-public-ui`.
+overwrote the field managers). **Rule from 2026-10-08: every change in the
+`financial-agent` namespace goes through this repository's overlays and
+scripts only** (for Streamlit, `k8s/overlays/oke-provided-public-ui` via
+`scripts/public_ui_up.sh`); nothing is applied there by hand or from other
+manifests.
 
 **Fallback: join the owner's LB NSG** (security-rule management `None`,
 which makes the controller ignore `loadBalancerSourceRanges`; the LB is
