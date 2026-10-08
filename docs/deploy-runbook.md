@@ -1014,6 +1014,18 @@ restored Streamlit to ClusterIP without the sidecar, and found a ClusterIP
 was applying in the namespace at the same time. Nothing more is applied
 until the namespace has a single operator.
 
+**Third outside exposure (2026-10-08) and closure.** After the 02:47Z
+restore, the `streamlit` Service was recreated outside the project's
+scripts (02:47:28Z) and made a LoadBalancer again (02:48:41Z): TCP
+listener on 8501, the `pub_lb-tbhcuw` security list admitting 0.0.0.0/0 on
+8501, Streamlit answering 200 without authentication at 129.159.168.142.
+Closed by `kubectl apply -k k8s/overlays/oke-provided` at 02:52:04Z; the
+LB was deleted at 02:52:24Z and the rule removed. Exposure about
+02:48:41–02:52:24Z; no brief was cached in it. The tenancy owner then
+confirmed he had stopped; a five-minute watch of the namespace (every
+object's resourceVersion, every event, 02:53:53–02:58:56Z) showed no
+change before the next apply.
+
 **Fallback: join the owner's LB NSG** (security-rule management `None`,
 which makes the controller ignore `loadBalancerSourceRanges`; the LB is
 attached to the existing NSG `pub_lb-tbhcuw` with

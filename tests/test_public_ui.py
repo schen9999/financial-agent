@@ -89,7 +89,8 @@ def test_up_script_guards_each_mode_and_reverts_on_failure():
     assert "public_ui_guard.py sl --port 443 \
 " in src or "public_ui_guard.py sl --port 443 \\" in src
     assert "--require" in src and "public_ui_guard.py lb --port 443" in src
-    assert src.count("|| revert ") == 2 and 'revert "no external IP' in src
+    assert src.count("|| revert ") == 3 and 'revert "no external IP' in src
+    assert 'revert "Service streamlit disappeared while waiting for its IP"' in src
 
 
 def test_security_list_mode_sets_no_nsg_and_keeps_the_ranges():

@@ -68,7 +68,7 @@ kubectl apply -k "$OV"
 kubectl -n "$NS" rollout status deploy/streamlit --timeout=300s
 ip=""
 for i in $(seq 1 60); do
-  ip=$(kubectl -n "$NS" get svc streamlit -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+  ip=$(kubectl -n "$NS" get svc streamlit -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null)     || revert "Service streamlit disappeared while waiting for its IP"
   [ -n "$ip" ] && break
   sleep 10
 done
