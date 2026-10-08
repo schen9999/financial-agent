@@ -1785,8 +1785,7 @@ python3 scripts/tf_provided_fixup.py            # plan then: 94 to import, 0 to 
 python3 - <<'PY' | while read -r to id; do bash scripts/tf_provided.sh import -input=false "$to" "$id" < /dev/null; done
 import re
 t = open("terraform/oci-provided/generated-imports.tf").read()
-for to, i in re.findall(r'to = (\S+)
-  id = "([^"]+)"', t): print(to, i)
+for to, i in re.findall(r'to = (\S+)\n  id = "([^"]+)"', t): print(to, i)
 PY
 bash scripts/tf_provided.sh plan -input=false -detailed-exitcode   # exit 0: "No changes"
 ```

@@ -63,8 +63,11 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
   terraform/oci-provided/, local gitignored state, apply/destroy NEVER;
   every Terraform command there goes through scripts/tf_provided.sh, which
   refuses anything but init, fmt, validate, plan, show, providers,
-  import (local state only) and state list/show. Goal a zero-diff plan, timeboxed to one day; if not
-  reached, document what is codified and stop. OKE v1.34.1, 4x VM.Standard.E5.Flex amd64 at 16 vCPU (two ~28 GiB,
+  import (local state only) and state list/show. Zero-diff plan REACHED
+  2026-10-07: 94 resources (VCN networking, the cluster, 2 node pools)
+  imported into local state, plan "No changes"; config and state stay on
+  the operator (OCIDs); terraform/oci-provided/README.md. OKE v1.34.1,
+  4x VM.Standard.E5.Flex amd64 at 16 vCPU (two ~28 GiB,
   two ~58 GiB allocatable), no GPUs, cri-o (no image import), default
   StorageClass oci-bv. CPU-only harness: no vLLM or GPU resources,
   USE_LOCAL_MODEL=false; hosted models unless SLM_FULL. Its optional CPU
