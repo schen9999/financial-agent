@@ -1749,6 +1749,25 @@ then, stop and keep the current numbers of record.
    nvidia-smi sampler on node 2 during the GPU runs; an Anthropic balance
    check first.
 
+## A10 capacity check (2026-10-07)
+
+1. **[EXECUTED 2026-10-07]** Replay sweep on node 2, P = 1, 2, 4
+   (`scripts/capacity_replay.py`, `nstp9`'s 270 calls length-matched, from
+   node 2 itself, nvidia-smi every second): 0 errors, lengths exact, no
+   cache reuse; output 83.6 / 108.2 / 126.6 tok/s. P=8 not run (4 server
+   slots; 8 × 4,215 tokens exceeds the shared 32,768). The prompt counter
+   missed by 1, 2, 2 tokens against exact per-request timings. Results:
+   [gpu-inference.md](gpu-inference.md), "Capacity at higher parallelism";
+   files `eval/runs/capacity-sweep-2026-10-07/`.
+2. **[EXECUTED 2026-10-07 — TRAFFIC PROOF FAIL, not citable]** GPU
+   extended eval at parallelism 4, `grounding-eval-extended-slm-gpu-p4-6z5xz`
+   (`argo/eval-run-extended-slm-gpu-p4.yaml`, behind the balance check and
+   `make run-time-check` against `nstp9`, both PASS): 40/40 first attempt,
+   gate passed, but the server counted 8 prompt tokens more than the
+   harness. Every call matched the server's own log; only the counter
+   drifted (`eval/runs/slm-proof-6z5xz/INVESTIGATION.md`). No re-judges; no
+   figure from it is quoted.
+
 ## OKE (OCI) — Phase 2
 
 All OCI infrastructure is authored in `terraform/oci/` (fmt + validate
