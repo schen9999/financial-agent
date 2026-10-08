@@ -36,7 +36,8 @@ Subcommands:
   run   (node 2)   python3 scripts/capacity_replay.py run --plan capacity-plan-nstp9.json \\
                        --url http://127.0.0.1:30880 --key-file ~/.llama-key --levels 1 2 4 \\
                        --out capacity-sweep
-  summary          python scripts/capacity_replay.py summary --dir eval/runs/capacity-sweep-<date>
+  summary          python scripts/capacity_replay.py summary --dir eval/runs/capacity-sweep-<date> \
+                       --plan eval/runs/capacity-plan-nstp9.json --hourly-usd 2.00
 
 Stdlib only (node 2 runs it with the system python3).
 """
@@ -271,6 +272,20 @@ def recompute(d: Path) -> dict:
     return s
 
 
+def projection(s: dict, briefs: int, hourly_usd: float) -> list[str]:
+    """Capacity-derived serving cost per brief: a PROJECTION. Each level
+    replayed `briefs` briefs' worth of LLM calls (the plan's eval pods) back
+    to back; briefs per hour = briefs / wall, cost = the hourly price over
+    that. Model serving only, at sustained load, with none of the eval's
+    non-model time (data fetch, retrieval, judge) — a floor, not a run's cost."""
+    L = [f"Projection (not a run's cost): {briefs} briefs of LLM calls per level at ${hourly_usd:.2f}/h, "
+         f"{s['calls'] / briefs:.2f} calls per brief"]
+    for lv in s["levels"]:
+        bph = briefs / lv["wall_s"] * 3600
+        L.append(f"  P={lv['P']}: {bph:.1f} briefs/hour -> ${hourly_usd / bph:.4f} per brief")
+    return L
+
+
 def cmd_summary(args) -> int:
     s = recompute(Path(args.dir))
     (Path(args.dir) / "summary-recomputed.json").write_text(json.dumps(s, indent=2) + "\n", encoding="utf-8")
@@ -279,6 +294,9 @@ def cmd_summary(args) -> int:
     for lv in s["levels"]:
         print(f"P={lv['P']}: window {lv['date_utc']} {lv['window_utc'][0]}-{lv['window_utc'][1]} UTC; "
               f"length mismatches {lv['length_mismatches']}")
+    if args.plan and args.hourly_usd:
+        plan = json.loads(Path(args.plan).read_text(encoding="utf-8"))
+        print("\n".join(projection(s, len({c["pod"] for c in plan["calls"]}), args.hourly_usd)))
     return 0
 
 
@@ -300,6 +318,8 @@ def main(argv=None) -> int:
     b.add_argument("--pause", type=float, default=30.0, help="idle seconds between levels")
     c = sub.add_parser("summary")
     c.add_argument("--dir", required=True)
+    c.add_argument("--plan", help="the replayed plan, for briefs per level")
+    c.add_argument("--hourly-usd", type=float, help="the resource's hourly price, for the cost projection")
     args = ap.parse_args(argv)
     if args.cmd == "plan":
         ctx = args.contexts or args.log.parents[1] / f"{args.run}-contexts"

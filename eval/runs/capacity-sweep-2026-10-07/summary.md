@@ -6,3 +6,7 @@
 P=1: window 2026-10-07 21:54:33-22:14:14 UTC; length mismatches 0
 P=2: window 2026-10-07 22:14:44-22:29:56 UTC; length mismatches 0
 P=4: window 2026-10-07 22:30:26-22:43:25 UTC; length mismatches 0
+Projection (not a run's cost): 40 briefs of LLM calls per level at $2.00/h, 6.75 calls per brief
+  P=1: 122.0 briefs/hour -> $0.0164 per brief
+  P=2: 157.9 briefs/hour -> $0.0127 per brief
+  P=4: 184.8 briefs/hour -> $0.0108 per brief

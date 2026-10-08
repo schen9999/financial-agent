@@ -155,10 +155,11 @@ server's own per-request timings.
   about 3× (p95 29.5 s vs 9.8 s; synthesis calls median 27.3 s vs 9.3 s).
   Every level ran the whole of `nstp9`'s call mix, which is 40 briefs of
   model work: 13.0 minutes at P=4 against 19.7 at P=1.
-- **Why the eval run idled the GPU:** in `nstp9` the A10 averaged 36%
-  because each eval pod spends most of its time outside the model
-  (fetching data, retrieval, the judge). With the model calls alone, back
-  to back, it stays at 82–91%.
+- **Eval-time idle is harness wait, not a GPU limit.** Under direct
+  replay the A10 is busy 82–91% of the time at every P; during the eval
+  runs it averaged about 36% (`nstp9` 35.7%, `p9jr2` 38%), because each
+  eval pod spends most of its time outside the model — fetching data,
+  retrieval, the judge — and two pods leave long gaps between calls.
 - VRAM does not move with P: llama.cpp allocates the 32,768-token KV cache
   at start (`--kv-unified`, shared by the 4 slots).
 - **P=8 was not run.** The endpoint serves 4 slots (`--parallel 4`), so
@@ -168,7 +169,16 @@ server's own per-request timings.
   8 × 4,215 = 33,720 exceeds the 32,768 tokens the 4 slots share now. That
   is an endpoint restart with a new context size on the demo's GPU node,
   which this sweep was approved without.
-- **Not a cost floor.** These are model-only figures from a replay. The
+- **Capacity-derived cost per brief: a PROJECTION, not a run's cost.**
+  Each level replayed 40 briefs' worth of LLM calls (6.75 calls per brief,
+  from `nstp9`'s ledger) back to back. At $2.00 per hour for the whole
+  VM.GPU.A10.1: P=1 122.0 briefs an hour, $0.0164 per brief; P=2 157.9,
+  $0.0127; **P=4 184.8, $0.0108**. That is model serving only, at
+  sustained load, with none of the eval's non-model time — a floor the
+  eval-measured ceiling ($0.0303, `nstp9` at parallelism 2) would approach
+  only if the GPU were kept as busy as in the replay
+  (`capacity_replay.py summary --plan … --hourly-usd 2.00`).
+- **No eval-measured figure at higher parallelism.** These are model-only figures from a replay. The
   40-ticker GPU eval at parallelism 4 (`6z5xz`, 2026-10-07) failed its
   traffic proof — the prompt counter 8 above the server's own per-task log,
   every request matched (`eval/runs/slm-proof-6z5xz/INVESTIGATION.md`) —
@@ -187,7 +197,7 @@ server's own per-request timings.
 ```bash
 python scripts/capacity_replay.py plan --run nstp9   --log eval/runs/slm-proof-nstp9/grounding-eval-extended-slm-gpu-nstp9.log   --out eval/runs/capacity-plan-nstp9.json
 python3 scripts/capacity_replay.py run --plan eval/runs/capacity-plan-nstp9.json   --url http://127.0.0.1:30880 --key-file ~/.llama-key --levels 1 2 4 --out ~/capacity-sweep-<date>   # node 2
-python scripts/capacity_replay.py summary --dir eval/runs/capacity-sweep-2026-10-07
+python scripts/capacity_replay.py summary --dir eval/runs/capacity-sweep-2026-10-07 \n  --plan eval/runs/capacity-plan-nstp9.json --hourly-usd 2.00
 python scripts/nvsmi_summary.py eval/runs/capacity-sweep-2026-10-07/nvsmi.csv   --window P1 2026-10-07T21:54:33Z 2026-10-07T22:14:14Z   --window P2 2026-10-07T22:14:44Z 2026-10-07T22:29:56Z   --window P4 2026-10-07T22:30:26Z 2026-10-07T22:43:25Z
 ```
 

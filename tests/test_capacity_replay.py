@@ -45,3 +45,10 @@ def test_level_stats_counts_server_side_and_reads_the_counter_gap():
     assert "| 1 | 2 (0) | 1.0 min | 2.0 | 0.1 | 0.5 | 3.0 s / 3.9 s | 1 | -1, +0 |" in cr.table({"levels": [lv]})
     assert cr.percentile([1, 2, 3, 4], 0.5) == 2.5
     json.dumps(lv)
+
+
+def test_projection_is_briefs_over_wall_time():
+    s = {"calls": 270, "levels": [{"P": 4, "wall_s": 779.1}]}
+    L = cr.projection(s, 40, 2.00)
+    assert "6.75 calls per brief" in L[0] and "Projection" in L[0]
+    assert L[1] == "  P=4: 184.8 briefs/hour -> $0.0108 per brief"
