@@ -1,0 +1,74 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 14539.71it/s]
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights: 100%|██████████| 201/201 [00:00<00:00, 13652.05it/s]
+AAPL   Summarize the key takeaw off 0.154s  on 3.654s
+AAPL   What are the primary ris off 0.154s  on 3.699s
+MSFT   Summarize the key takeaw off 0.115s  on 5.207s
+MSFT   What are the primary ris off 0.101s  on 5.134s
+GOOGL  Summarize the key takeaw off 0.100s  on 3.802s
+GOOGL  What are the primary ris off 0.116s  on 4.313s
+AMZN   Summarize the key takeaw off 0.154s  on 5.839s
+AMZN   What are the primary ris off 0.114s  on 5.908s
+NVDA   Summarize the key takeaw off 0.105s  on 5.803s
+NVDA   What are the primary ris off 0.146s  on 5.905s
+META   Summarize the key takeaw off 0.107s  on 10.799s
+META   What are the primary ris off 0.096s  on 10.197s
+TSLA   Summarize the key takeaw off 0.118s  on 5.388s
+TSLA   What are the primary ris off 0.098s  on 5.494s
+JPM    Summarize the key takeaw off 0.149s  on 5.685s
+JPM    What are the primary ris off 0.118s  on 5.782s
+V      Summarize the key takeaw off 0.098s  on 5.757s
+V      What are the primary ris off 0.133s  on 5.693s
+WMT    Summarize the key takeaw off 0.185s  on 5.724s
+WMT    What are the primary ris off 0.183s  on 5.613s
+XOM    Summarize the key takeaw off 0.139s  on 7.004s
+XOM    What are the primary ris off 0.102s  on 7.007s
+UNH    Summarize the key takeaw off 0.181s  on 5.578s
+UNH    What are the primary ris off 0.114s  on 5.602s
+UPST   Summarize the key takeaw off 0.113s  on 4.988s
+UPST   What are the primary ris off 0.118s  on 4.942s
+AFRM   Summarize the key takeaw off 0.113s  on 4.981s
+AFRM   What are the primary ris off 0.115s  on 4.900s
+RIVN   Summarize the key takeaw off 0.119s  on 4.980s
+RIVN   What are the primary ris off 0.100s  on 5.703s
+LCID   Summarize the key takeaw off 0.073s  on 5.767s
+LCID   What are the primary ris off 0.113s  on 5.476s
+SNAP   Summarize the key takeaw off 0.118s  on 5.578s
+SNAP   What are the primary ris off 0.114s  on 5.505s
+PTON   Summarize the key takeaw off 0.146s  on 5.314s
+PTON   What are the primary ris off 0.109s  on 5.815s
+ROKU   Summarize the key takeaw off 0.141s  on 14.127s
+ROKU   What are the primary ris off 0.099s  on 14.178s
+COIN   Summarize the key takeaw off 0.115s  on 3.587s
+COIN   What are the primary ris off 0.120s  on 3.587s
+CALM   Summarize the key takeaw off 0.138s  on 3.556s
+CALM   What are the primary ris off 0.097s  on 3.596s
+SFIX   Summarize the key takeaw off 0.140s  on 5.738s
+SFIX   What are the primary ris off 0.109s  on 5.367s
+RDFN   Summarize the key takeaw off 0.149s  on 5.305s
+RDFN   What are the primary ris off 0.151s  on 5.313s
+BYND   Summarize the key takeaw off 0.134s  on 7.647s
+BYND   What are the primary ris off 0.112s  on 7.676s
+CHGG   Summarize the key takeaw off 0.109s  on 8.192s
+CHGG   What are the primary ris off 0.096s  on 5.713s
+BLNK   Summarize the key takeaw off 0.095s  on 4.387s
+BLNK   What are the primary ris off 0.097s  on 3.596s
+OMER   Summarize the key takeaw off 0.114s  on 5.291s
+OMER   What are the primary ris off 0.098s  on 5.396s
+EVGO   Summarize the key takeaw off 0.140s  on 14.467s
+EVGO   What are the primary ris off 0.111s  on 15.409s
+OCGN   Summarize the key takeaw off 0.097s  on 5.580s
+OCGN   What are the primary ris off 0.113s  on 5.610s
+EDIT   Summarize the key takeaw off 0.117s  on 5.593s
+EDIT   What are the primary ris off 0.114s  on 5.507s
+SANA   Summarize the key takeaw off 0.118s  on 8.382s
+SANA   What are the primary ris off 0.114s  on 5.599s
+CRBU   Summarize the key takeaw off 0.116s  on 9.398s
+CRBU   What are the primary ris off 0.099s  on 7.397s
+VERV   Summarize the key takeaw off 0.182s  on 5.279s
+VERV   What are the primary ris off 0.116s  on 5.400s
+BEAM   Summarize the key takeaw off 0.113s  on 5.676s
+BEAM   What are the primary ris off 0.150s  on 5.514s
+NTLA   Summarize the key takeaw off 0.145s  on 8.209s
+NTLA   What are the primary ris off 0.033s  on 7.981s
+RERANK_LATENCY {"queries": 70, "repeats": 3, "reranker": "BAAI/bge-reranker-base", "reranker_load_s": 12.37, "candidates": 20, "top_n": 3, "baseline_top_k": 3, "off_median_s": 0.1145983824681025, "off_p95_s": 0.18131342402193695, "on_median_s": 5.596050293475855, "on_p95_s": 14.126897448964883, "paired_median_diff_s": 5.48016508098226, "per_ticker_added_s_median": 10.96033016196452, "skipped": [], "rows": [{"ticker": "AAPL", "question": "Summarize the key ta", "off_s": 0.15416172496043146, "on_s": 3.653721490991302}, {"ticker": "AAPL", "question": "What are the primary", "off_s": 0.15425404399866238, "on_s": 3.699009292991832}, {"ticker": "MSFT", "question": "Summarize the key ta", "off_s": 0.1152499970048666, "on_s": 5.206642560020555}, {"ticker": "MSFT", "question": "What are the primary", "off_s": 0.10084711504168808, "on_s": 5.134021895006299}, {"ticker": "GOOGL", "question": "Summarize the key ta", "off_s": 0.1001218759920448, "on_s": 3.8018674069899134}, {"ticker": "GOOGL", "question": "What are the primary", "off_s": 0.11583098204573616, "on_s": 4.313019017979968}, {"ticker": "AMZN", "question": "Summarize the key ta", "off_s": 0.15423951897537336, "on_s": 5.839153001958039}, {"ticker": "AMZN", "question": "What are the primary", "off_s": 0.11413712502690032, "on_s": 5.907662027981132}, {"ticker": "NVDA", "question": "Summarize the key ta", "off_s": 0.10508137801662087, "on_s": 5.8030770950135775}, {"ticker": "NVDA", "question": "What are the primary", "off_s": 0.1459084459929727, "on_s": 5.904521449992899}, {"ticker": "META", "question": "Summarize the key ta", "off_s": 0.10727162001421675, "on_s": 10.798719256010372}, {"ticker": "META", "question": "What are the primary", "off_s": 0.09627026302041486, "on_s": 10.197476013971027}, {"ticker": "TSLA", "question": "Summarize the key ta", "off_s": 0.11829761398257688, "on_s": 5.38776269502705}, {"ticker": "TSLA", "question": "What are the primary", "off_s": 0.09810248902067542, "on_s": 5.493998360005207}, {"ticker": "JPM", "question": "Summarize the key ta", "off_s": 0.14936289499746636, "on_s": 5.685405931959394}, {"ticker": "JPM", "question": "What are the primary", "off_s": 0.11830499500501901, "on_s": 5.781986197980586}, {"ticker": "V", "question": "Summarize the key ta", "off_s": 0.09839071799069643, "on_s": 5.757019104959909}, {"ticker": "V", "question": "What are the primary", "off_s": 0.13311589800287038, "on_s": 5.692905456002336}, {"ticker": "WMT", "question": "Summarize the key ta", "off_s": 0.18547094496898353, "on_s": 5.723898593976628}, {"ticker": "WMT", "question": "What are the primary", "off_s": 0.18281225499231368, "on_s": 5.612915878999047}, {"ticker": "XOM", "question": "Summarize the key ta", "off_s": 0.13889292697422206, "on_s": 7.004494136024732}, {"ticker": "XOM", "question": "What are the primary", "off_s": 0.1020881409640424, "on_s": 7.0069964900030755}, {"ticker": "UNH", "question": "Summarize the key ta", "off_s": 0.18131342402193695, "on_s": 5.577703787013888}, {"ticker": "UNH", "question": "What are the primary", "off_s": 0.11409220000496134, "on_s": 5.601737843011506}, {"ticker": "UPST", "question": "Summarize the key ta", "off_s": 0.11267561500426382, "on_s": 4.987907404021826}, {"ticker": "UPST", "question": "What are the primary", "off_s": 0.11785027600126341, "on_s": 4.942253176996019}, {"ticker": "AFRM", "question": "Summarize the key ta", "off_s": 0.1131434699636884, "on_s": 4.9810545580112375}, {"ticker": "AFRM", "question": "What are the primary", "off_s": 0.11477854498662055, "on_s": 4.900290138961282}, {"ticker": "RIVN", "question": "Summarize the key ta", "off_s": 0.11896551901008934, "on_s": 4.980493676965125}, {"ticker": "RIVN", "question": "What are the primary", "off_s": 0.0999450070085004, "on_s": 5.702977995038964}, {"ticker": "LCID", "question": "Summarize the key ta", "off_s": 0.07297339604701847, "on_s": 5.766975871985778}, {"ticker": "LCID", "question": "What are the primary", "off_s": 0.11275715898955241, "on_s": 5.476473121030722}, {"ticker": "SNAP", "question": "Summarize the key ta", "off_s": 0.11834618099965155, "on_s": 5.577754014986567}, {"ticker": "SNAP", "question": "What are the primary", "off_s": 0.11409880599239841, "on_s": 5.505387248995248}, {"ticker": "PTON", "question": "Summarize the key ta", "off_s": 0.14601383404806256, "on_s": 5.31367013102863}, {"ticker": "PTON", "question": "What are the primary", "off_s": 0.10851772397290915, "on_s": 5.815434957970865}, {"ticker": "ROKU", "question": "Summarize the key ta", "off_s": 0.14136847999179736, "on_s": 14.126897448964883}, {"ticker": "ROKU", "question": "What are the primary", "off_s": 0.09928769094403833, "on_s": 14.177741438965313}, {"ticker": "COIN", "question": "Summarize the key ta", "off_s": 0.1154335819883272, "on_s": 3.5874887559912167}, {"ticker": "COIN", "question": "What are the primary", "off_s": 0.12033015000633895, "on_s": 3.5872949850163423}, {"ticker": "CALM", "question": "Summarize the key ta", "off_s": 0.13793273398187011, "on_s": 3.555569235002622}, {"ticker": "CALM", "question": "What are the primary", "off_s": 0.09749489498790354, "on_s": 3.5959246860002168}, {"ticker": "SFIX", "question": "Summarize the key ta", "off_s": 0.14015709998784587, "on_s": 5.738185236987192}, {"ticker": "SFIX", "question": "What are the primary", "off_s": 0.10864245402626693, "on_s": 5.367270623974036}, {"ticker": "RDFN", "question": "Summarize the key ta", "off_s": 0.14903349097585306, "on_s": 5.304685265989974}, {"ticker": "RDFN", "question": "What are the primary", "off_s": 0.15104223799426109, "on_s": 5.312799528008327}, {"ticker": "BYND", "question": "Summarize the key ta", "off_s": 0.13393058202927932, "on_s": 7.647110320976935}, {"ticker": "BYND", "question": "What are the primary", "off_s": 0.11183765099849552, "on_s": 7.675613227009308}, {"ticker": "CHGG", "question": "Summarize the key ta", "off_s": 0.10862319299485534, "on_s": 8.191921295016073}, {"ticker": "CHGG", "question": "What are the primary", "off_s": 0.0958797560306266, "on_s": 5.713369117002003}, {"ticker": "BLNK", "question": "Summarize the key ta", "off_s": 0.09529723698506132, "on_s": 4.387014505977277}, {"ticker": "BLNK", "question": "What are the primary", "off_s": 0.09710135101340711, "on_s": 3.596199057996273}, {"ticker": "OMER", "question": "Summarize the key ta", "off_s": 0.1136956779519096, "on_s": 5.2910122370230965}, {"ticker": "OMER", "question": "What are the primary", "off_s": 0.09754650195827708, "on_s": 5.396317888982594}, {"ticker": "EVGO", "question": "Summarize the key ta", "off_s": 0.13951537798857316, "on_s": 14.466949399968144}, {"ticker": "EVGO", "question": "What are the primary", "off_s": 0.11129747499944642, "on_s": 15.409219742985442}, {"ticker": "OCGN", "question": "Summarize the key ta", "off_s": 0.09688771498622373, "on_s": 5.580397878948133}, {"ticker": "OCGN", "question": "What are the primary", "off_s": 0.11261733999708667, "on_s": 5.610112229012884}, {"ticker": "EDIT", "question": "Summarize the key ta", "off_s": 0.11651525198249146, "on_s": 5.593335249985103}, {"ticker": "EDIT", "question": "What are the primary", "off_s": 0.11441821994958445, "on_s": 5.507162242021877}, {"ticker": "SANA", "question": "Summarize the key ta", "off_s": 0.11792741599492729, "on_s": 8.382255634991452}, {"ticker": "SANA", "question": "What are the primary", "off_s": 0.11403350305045024, "on_s": 5.598765336966608}, {"ticker": "CRBU", "question": "Summarize the key ta", "off_s": 0.1159708600025624, "on_s": 9.397758255014196}, {"ticker": "CRBU", "question": "What are the primary", "off_s": 0.09884081600466743, "on_s": 7.396961149002891}, {"ticker": "VERV", "question": "Summarize the key ta", "off_s": 0.18211655801860616, "on_s": 5.279432508046739}, {"ticker": "VERV", "question": "What are the primary", "off_s": 0.1157964330050163, "on_s": 5.400458643969614}, {"ticker": "BEAM", "question": "Summarize the key ta", "off_s": 0.11259697802597657, "on_s": 5.675734238990117}, {"ticker": "BEAM", "question": "What are the primary", "off_s": 0.15030019194819033, "on_s": 5.513647868996486}, {"ticker": "NTLA", "question": "Summarize the key ta", "off_s": 0.1446582769858651, "on_s": 8.209474686998874}, {"ticker": "NTLA", "question": "What are the primary", "off_s": 0.033488849992863834, "on_s": 7.981116898008622}]}

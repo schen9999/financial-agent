@@ -1,0 +1,73 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $1.35 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $1,348,119,040, which rounds to $1.35 billion; the pre-written Financial Health section also states "$1.35 billion in revenue."
+
+---
+
+CLAIM: "market capitalization of just $365 million"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $364,738,080, which rounds to $365 million; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "52-week low of $2.10"
+LABEL: SUPPORTED
+REASON: Source data explicitly states week_52_low: 2.1, i.e., $2.10.
+
+---
+
+CLAIM: "against a high of $5.75"
+LABEL: SUPPORTED
+REASON: Source data states week_52_high: 5.745, which rounds to $5.75; the pre-written sections also use $5.75.
+
+---
+
+CLAIM: "The stock's position near its 52-week low of $2.10"
+LABEL: SUPPORTED
+REASON: Current price is $2.73; 52-week low is $2.10 and high is $5.745. The range is $3.645 wide; $2.73 is $0.63 above the low, placing it in the lower ~17% of the 52-week range, which arithmetically confirms "near its 52-week low."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "persistent client attrition"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and pre-written SEC Filing Highlights explicitly state declining active clients across fiscal 2023, 2024, and 2025.
+
+---
+
+CLAIM: "operational losses"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$12,606,000 (a net loss), confirmed in pre-written sections.
+
+---
+
+CLAIM: "supply chain concentration in China"
+LABEL: SUPPORTED
+REASON: RAG Risk Factors and SEC Highlights explicitly state nearly all merchandise is sourced from third-party vendors, primarily in China.
+
+---
+
+CLAIM: "an absence of positive catalysts in recent SEC filings"
+LABEL: SUPPORTED
+REASON: The pre-written Recent Developments section states "The lack of positive news catalysts and continued emphasis on business risks in SEC filings," and the SEC filing summaries provided contain only risk factor summaries with no positive catalysts mentioned.
+
+---
+
+CLAIM: "a narrowing of its net loss"
+LABEL: SUPPORTED
+REASON: The net loss of -$12,606,000 is present in the source data; the claim uses this as a forward-looking benchmark to watch, which is a directional restatement of the existing loss figure — the figure itself is grounded in source data.
+
+---
+
+*(No other specific quantitative figures, price targets, thresholds, ratios, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already evaluated above. Qualitative directional statements such as "cautious," "consecutive periods," and "cost-effective client acquisition" contain no auditable quantitative claims.)*

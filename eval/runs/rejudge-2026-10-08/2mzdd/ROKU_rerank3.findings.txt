@@ -1,0 +1,73 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$5.2 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $5,209,110,016, which rounds to $5.2 billion; the pre-written Financial Health section also states "$5.2 billion in annual revenue."
+
+---
+
+CLAIM: "$22.7 billion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $22,681,288,704, which rounds to $22.7 billion; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "trades near its 52-week high of $159.89"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists week_52_high as $159.89; current price of $152.725 is within ~4.5% of that high, making "near its 52-week high" arithmetically valid (check 5: $152.725 vs. $159.89 — the stock is below the high, and "near" is directionally accurate).
+
+---
+
+CLAIM: "elevated P/E of 64.99"
+LABEL: SUPPORTED
+REASON: Source data lists pe_ratio as 64.989365, which rounds to 64.99; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "6.82% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists profit_margin_pct as 6.82; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "history of operating losses"
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section explicitly states "Roku has a history of operating losses," drawn from the RAG Risk Factors disclosure.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "forward P/E that — while still elevated — reflects some compression from the trailing multiple"
+LABEL: SUPPORTED
+REASON: Source data shows trailing P/E of 64.989365 and forward P/E of 38.64607; 38.65 < 64.99, so the forward P/E is arithmetically lower (compressed) relative to the trailing multiple — this directional comparison is verified.
+
+---
+
+CLAIM: "the modest 6.82% profit margin is expanding or contracting quarter over quarter"
+LABEL: SUPPORTED
+REASON: The 6.82% figure is explicitly present in the source data (profit_margin_pct: 6.82); the framing as a watch-item does not introduce any new figure requiring verification.
+
+---
+
+CLAIM: "a stock price near its 52-week high"
+LABEL: SUPPORTED
+REASON: Current price of $152.725 vs. 52-week high of $159.89 — the stock is approximately 4.5% below its 52-week high, which is arithmetically consistent with "near its 52-week high" (check 5 satisfied).
+
+---
+
+CLAIM: "the volatility already embedded in the trading history"
+LABEL: SUPPORTED
+REASON: The 52-week range of $78.53–$159.89 (a spread of ~$81.36, or roughly 104% from low to high) is present in the source data and the pre-written Financial Health section explicitly notes "considerable volatility"; no specific numeric claim is made here beyond what is grounded in the range data.
+
+---
+
+**Summary of findings:** All quantitative and forward-looking claims in the Executive Summary and Outlook are **SUPPORTED** by the source data or pre-written sections. No figures were fabricated, miscalculated, or drawn from absent sources. The one area of note is that the Outlook's qualitative directional claims (advertising cyclicality, competition, cybersecurity risks) are grounded in the RAG Risk Factors and pre-written Risk Factors section rather than in any unverified external data, which is appropriate.

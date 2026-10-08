@@ -1,0 +1,119 @@
+STOCK DATA:
+{
+  "ticker": "META",
+  "company_name": "Meta Platforms, Inc.",
+  "current_price": 721.31,
+  "currency": "USD",
+  "market_cap": 1837541621760.0,
+  "pe_ratio": 27.17822,
+  "forward_pe": 20.664398,
+  "week_52_high": 779.82,
+  "week_52_low": 520.26,
+  "financial_currency": "USD",
+  "revenue": 228246994944.0,
+  "net_income": 68097998848.0,
+  "profit_margin_pct": 29.83,
+  "dividend_yield": 0.28,
+  "sector": "Communication Services",
+  "industry": "Internet Content & Information"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": "Moonshot said to eye early 2027 IPO after value hits $50 billion",
+    "source": "Bloomberg",
+    "published_at": "2026-10-06T03:24:46Z",
+    "description": "The Chinese AI champion has also begun laying the groundwork to start gauging investor sentiment through early-look meetings starting as early as this month"
+  },
+  {
+    "title": "Regarding the Provenance of Charm Within Meta",
+    "source": "Bloomberg",
+    "published_at": "2026-09-25T17:07:33Z",
+    "description": null
+  },
+  {
+    "title": "Meta stock jumps 36% in September as Muse AI fuels rally",
+    "source": "Bloomberg",
+    "published_at": "2026-09-25T03:24:54Z",
+    "description": "Meta shares have surged 36% in September as its Muse AI assistant boosts investor optimism and eases concerns over the company\u2019s heavy AI spending."
+  },
+  {
+    "title": "New data centres worth $68 billion disrupted in US, data show",
+    "source": "Bloomberg",
+    "published_at": "2026-09-21T06:22:45Z",
+    "description": "Communities across the country are now pushing through moratoriums on new construction, often before developers can apply for permissions"
+  },
+  {
+    "title": "Meta-tied data centre draws blowout demand for debut junk bond",
+    "source": "Bloomberg",
+    "published_at": "2026-09-19T07:07:32Z",
+    "description": "CleanSpark's debut junk bond offering for a Meta-tied data center saw $10 billion in demand, highlighting strong investor interest."
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-01-29",
+    "summary": "Item 1A. Risk Factors Certain factors may have a material adverse effect on our business, financial condition, and results of operations. You should consider carefully the risks and uncertainties described below, in addition to other information contained in this Annual Report on Form 10-K, including our consolidated financial statements and related notes. The risks and uncertainties described below are not the only ones we face. Additional risks and uncertainties that we are unaware of, or that we currently believe are not material, may also become important factors that adversely affect our business. If any of the following risks actually occurs, our business, financial condition, results of operations, and future prospects could be materially and adversely affected. In that event, the t"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-07-30",
+    "summary": "Item 1A. Risk Factors Certain factors may have a material adverse effect on our business, financial condition, and results of operations. You should consider carefully the risks and uncertainties described below, in addition to other information contained in this Quarterly Report on Form 10-Q, including our condensed consolidated financial statements and related notes. The risks and uncertainties described below are not the only ones we face. Additional risks and uncertainties that we are unaware of, or that we currently believe are not material, may also become important factors that adversely affect our business. If any of the following risks actually occurs, our business, financial condition, results of operations, and future prospects could be materially and adversely affected. In that"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I cannot provide a summary of the latest 10-K and 10-Q based on the context provided. The information available consists only of risk factor disclosures from a 10-K filing, which represents just one section of these comprehensive financial documents.
+
+To properly summarize the key takeaways from the latest 10-K and 10-Q, I would need access to additional sections such as:
+
+- Management's Discussion and Analysis (MD&A)
+- Financial statements and results of operations
+- Liquidity and capital resources
+- Business overview and strategy
+- Executive compensation
+- Selected financial data
+
+The risk factors section alone does not provide sufficient information to characterize the overall financial performance, strategic direction, or operational highlights that would constitute a meaningful summary of these filings.
+
+If you have specific questions about the risk factors disclosed or other particular aspects of the filings, I'd be happy to help with those.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company faces several categories of significant risks:
+
+## Risks Related to Product Offerings
+- Inability to add and retain users or maintain user engagement levels
+- Loss of or reduced spending by advertisers
+- Reduced availability of data signals for ad targeting and measurement
+- Operational issues with mobile operating systems or changes in relationships with mobile OS partners
+- Failure of new products or changes to existing products to attract users or generate revenue
+
+## Risks Related to Business Operations and Financial Results
+- Competitive pressures and inability to compete effectively
+- Fluctuations in financial results
+- Unfavorable media coverage affecting brand reputation
+- Challenges in building, maintaining, and scaling technical infrastructure
+- Service disruptions, catastrophic events, and crises
+- Complexities of operating in multiple countries
+- Litigation and class action lawsuits
+- Challenges in successfully integrating acquisitions
+
+## Risks Related to Government Regulation and Enforcement
+- Government restrictions on product access or advertising delivery
+- Complex and evolving privacy, data protection, content moderation, and competition regulations across multiple jurisdictions
+- Government investigations and enforcement actions by privacy, consumer protection, and competition authorities
+- Compliance challenges with privacy requirements and regulatory consent orders
+
+## Risks Related to Data, Security, and Intellectual Property
+- Security breaches and improper access to company or user data
+- Cyber incidents and intentional misuse of services
+- Challenges in obtaining, maintaining, and enforcing intellectual property rights
+
+## Risks Related to Stock Ownership
+- Limited influence by Class A common stock holders due to dual class structure and founder control

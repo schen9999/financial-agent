@@ -1,0 +1,86 @@
+STOCK DATA:
+{
+  "ticker": "RIVN",
+  "company_name": "Rivian Automotive, Inc.",
+  "current_price": 14.34,
+  "currency": "USD",
+  "market_cap": 20762320896.0,
+  "forward_pe": -8.241758,
+  "week_52_high": 22.69,
+  "week_52_low": 12.39,
+  "financial_currency": "USD",
+  "revenue": 5882999808.0,
+  "net_income": -3232999936.0,
+  "profit_margin_pct": -54.95,
+  "dividend_yield": 0.0,
+  "sector": "Consumer Cyclical",
+  "industry": "Auto Manufacturers"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-12",
+    "summary": "Item 1A. Risk Factors. Software and Services Segment Complementing our vehicles, we provide a suite of value-added software and services which we expect to continue to generate long-term brand loyalty while also creating a recurring revenue stream across the vehicle lifecycle. These services include vehicle electrical architecture and software development services provided by the Joint Venture, Autonomy+, remarketing, vehicle repair and maintenance, charging, software subscriptions, vehicle accessories, financing, insurance, and more, as described below. \u2022 Joint Venture. Rivian and Volkswagen Group have formed an equally-owned joint venture as a separate legal entity to create next-generation electrical architecture and best-in-class software technology. The Joint Venture focuses on softwa"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-07-30",
+    "summary": "Item 1A. Risk Factors Our business is subject to various risks and uncertainties, including those described below, that may cause actual results to differ materially from historical performance or projected future performance expressed in forward-looking statements made by us. We encourage you to consider carefully the risk factors described below in evaluating the information in this Form 10-Q as the outcome of one or more of these risks and uncertainties could have a material adverse effect on our financial condition, results of operations, and cash flows as well as on our reputation, business, growth, future prospects, and ability to accomplish our strategic objectives. Risks Related to Our Business We are a growth stage company with limited operating history and a history of losses. We"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from Rivian's SEC Filings
+
+## Software and Services Segment
+Rivian is building a comprehensive software and services ecosystem to generate recurring revenue and long-term brand loyalty:
+
+- **Joint Venture with Volkswagen**: An equally-owned venture focused on next-generation electrical architecture and software technology, with Volkswagen planning to adopt Rivian's zonal ECU architecture across multiple brands
+- **Autonomy+ Features**: Advanced driver assistance capabilities expanded significantly in December 2025, with paid subscription services launching in April 2026
+- **Charging Network**: Over 95% of the Rivian Adventure Network is open to non-Rivian EVs to maximize utilization
+- **Software Subscriptions**: Offerings include Connect+ for consumers and FleetOS for commercial fleet management
+- **Additional Services**: Insurance, financing, remarketing, repair and maintenance, and accessories
+
+## Manufacturing and Production
+- Current production at the Normal Factory in Illinois with capacity for 215,000 vehicles annually
+- Expected capacity split: 155,000 R2 vehicles, 85,000 R1 vehicles, and 65,000 Rivian Commercial Vans
+- R2 customer deliveries expected in Q2 2026
+
+## Regulatory Compliance
+- All current vehicle models (R1T, R1S, EDV, and Rivian Commercial Van) are fully compliant with NHTSA safety standards and federal regulations
+- Compliance systems in place for all reporting obligations
+
+## Market Dynamics
+- Seasonality affects quarterly revenues, with notable impact from federal EV tax credit expiration in September 2025
+- Competition spans traditional ICE vehicles, EVs, and downstream service providers across the automotive value chain
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+Based on the SEC filings, the primary risk factors disclosed include:
+
+## Operational and Market Risks
+
+**Seasonality**: The automotive industry experiences higher revenue in spring and summer months. Commercial vehicle sales are typically lower in the final months of the year as customers focus on holiday deliveries. Additionally, the timing of new product launches and changes in government incentives can significantly influence quarterly revenues. For example, the expiration of federal EV tax credits in September 2025 caused a pull-forward of deliveries into the third quarter with a corresponding decline in the fourth quarter.
+
+**Competition**: The company faces competition from millions of traditional internal combustion engine vehicles and EVs sold annually in consumer and commercial markets. Competition extends across the entire automotive value chain, including vehicle remarketers, repair and maintenance providers, charging companies, software developers, and fleet management companies.
+
+## Regulatory and Compliance Risks
+
+**Environmental, Health and Safety Compliance**: Operations are subject to stringent federal, state, and local laws governing product safety, environmental protection, occupational health and safety, and material discharge. Non-compliance can result in administrative, civil, and criminal penalties, investigatory and remedial obligations, and operational restrictions.
+
+**NHTSA and Safety Standards**: Vehicles must comply with numerous regulatory requirements including Federal Motor Vehicle Safety Standards, CAFE standards, Theft Prevention Act requirements, consumer information labeling, and Early Warning Reporting requirements regarding warranty claims and recalls.
+
+**EPA Compliance**: Manufacturers must obtain EPA Certificates of Conformity under the Clean Air Act.

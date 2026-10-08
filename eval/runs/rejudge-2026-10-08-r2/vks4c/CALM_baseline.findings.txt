@@ -1,0 +1,78 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "the largest U.S. egg producer"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "Cal-Maine Foods is the largest egg company in the United States."
+
+---
+
+CLAIM: "$2.53 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $2,528,636,928, which rounds to $2.53 billion; the pre-written Financial Health section also states "$2.53 billion in annual revenue."
+
+---
+
+CLAIM: "market capitalization of $2.93 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $2,928,755,456, which rounds to $2.93 billion; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "a P/E of 51.4x"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio of 51.39344, which rounds to 51.4x; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "forward P/E of 61.8x"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe of 61.7734, which rounds to 61.8x; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "2.32% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct of 2.32; confirmed in the pre-written Financial Health section.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "HPAI remains an unpredictable biological risk that has already disrupted operations in fiscal 2024 and March 2026"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly states "The current outbreak of Highly Pathogenic Avian Influenza (HPAI) affecting poultry in the U.S., Canada, and other countries, which impacted the company's flocks in fiscal 2024 and again in March 2026"; the pre-written Risk Factors section mirrors this.
+
+---
+
+CLAIM: "the Echo Lake Foods and Creighton Brothers integrations"
+LABEL: SUPPORTED
+REASON: Both acquisitions are explicitly named in the RAG SEC Highlights (Echo Lake Foods at $289.5M, Creighton Brothers LLC at $129.3M) and in the pre-written SEC Filing Highlights section.
+
+---
+
+*(No additional standalone quantitative figures, price targets, thresholds, ratios, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already audited above. The Outlook is written in qualitative/directional language — "cautious," "meaningful margin expansion," "premium valuation," "thin margins" — without introducing new specific numeric claims not already covered.)*
+
+---
+
+## SUMMARY TABLE
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | "largest U.S. egg producer" | SUPPORTED |
+| 2 | "$2.53 billion in annual revenue" | SUPPORTED |
+| 3 | "market capitalization of $2.93 billion" | SUPPORTED |
+| 4 | "P/E of 51.4x" | SUPPORTED |
+| 5 | "forward P/E of 61.8x" | SUPPORTED |
+| 6 | "2.32% net profit margin" | SUPPORTED |
+| 7 | "disrupted operations in fiscal 2024 and March 2026" | SUPPORTED |
+| 8 | "Echo Lake Foods and Creighton Brothers integrations" | SUPPORTED |
+
+**All auditable claims in the Executive Summary and Outlook are SUPPORTED by the source data.** No unsupported or inference-only claims were identified. Notably, the AI did not introduce figures from the source data that it misquoted (e.g., the 3.86% dividend yield, the $289.5M Echo Lake price, the 30% capacity growth figure, the 52-week high/low) into these two sections, avoiding potential errors of commission.

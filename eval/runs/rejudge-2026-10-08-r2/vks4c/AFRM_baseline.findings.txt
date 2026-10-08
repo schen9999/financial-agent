@@ -1,0 +1,80 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "having generated $4.3 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $4,261,082,112, which rounds to $4.3 billion; the pre-written Financial Health section also states "$4.3 billion in revenue."
+
+---
+
+CLAIM: "a 45.3% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 45.29%, which rounds to 45.3%.
+
+---
+
+CLAIM: "a market capitalization of $25.4 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = $25,411,192,832, which rounds to $25.4 billion.
+
+---
+
+CLAIM: "its 52-week low of $42.10"
+LABEL: SUPPORTED
+REASON: Source data shows week_52_low = 42.095, which rounds to $42.10.
+
+---
+
+CLAIM: "to trade at $75.31"
+LABEL: SUPPORTED
+REASON: Source data shows current_price = 75.31.
+
+---
+
+CLAIM: "it remains well below its 52-week high of $90.44"
+LABEL: SUPPORTED
+REASON: Source data shows week_52_high = 90.44, and $75.31 is indeed below $90.44 (approximately 16.7% below), confirming both the figure and the directional claim arithmetically.
+
+---
+
+## OUTLOOK
+
+*(The Outlook section is largely qualitative/directional. I will identify every specific quantitative or named-entity claim that is checkable.)*
+
+---
+
+CLAIM: "well-capitalized rivals such as PayPal and Klarna"
+LABEL: SUPPORTED
+REASON: Both PayPal and Klarna are explicitly named as competitors in the pre-written Risk Factors section ("well-funded pay-over-time competitors (PayPal, Klarna)") and in the RAG Risk Factors.
+
+---
+
+CLAIM: "the stability of relationships with Celtic Bank and Lead Bank"
+LABEL: SUPPORTED
+REASON: Celtic Bank and Lead Bank are explicitly named as originating bank partners in the RAG SEC Highlights, RAG Risk Factors, and the pre-written SEC Filing Highlights and Risk Factors sections.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already audited above. All remaining Outlook content is qualitative directional language — "cautiously constructive," "higher-for-longer interest rate environment," "binary risk," "coming quarters" — which contains no specific quantitative claims subject to audit under the defined criteria.)*
+
+---
+
+## SUMMARY TABLE
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $4.3 billion in revenue | SUPPORTED |
+| 2 | 45.3% profit margin | SUPPORTED |
+| 3 | $25.4 billion market cap | SUPPORTED |
+| 4 | 52-week low of $42.10 | SUPPORTED |
+| 5 | Current price $75.31 | SUPPORTED |
+| 6 | Well below 52-week high of $90.44 | SUPPORTED |
+| 7 | PayPal and Klarna as rivals | SUPPORTED |
+| 8 | Celtic Bank and Lead Bank relationships | SUPPORTED |
+
+**All auditable claims in the Executive Summary and Outlook are SUPPORTED by the source data.** No unsupported or inference-only claims were identified.

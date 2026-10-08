@@ -1,0 +1,128 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+### EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "474 million daily active users"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "474 million daily active users (DAUs) as of Q4 2025," and the Pre-Written SEC Filing Highlights section repeats this figure.
+
+---
+
+CLAIM: "predominantly the 18-34 demographic"
+LABEL: SUPPORTED
+REASON: The RAG sections explicitly state "The majority of users being 18-34 years old" and "user base is concentrated among 18-34 year-olds," which is directly restated in the pre-written sections.
+
+---
+
+CLAIM: "$6.35 billion in revenue"
+LABEL: SUPPORTED
+REASON: The raw stock data shows revenue of $6,351,084,032, which rounds to $6.35 billion; the Financial Health pre-written section also states "$6.35 billion in revenue."
+
+---
+
+CLAIM: "advertising comprising 87% of that total"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "Advertising accounted for approximately 87% of total revenue in 2025," confirmed in both RAG sections and the pre-written sections.
+
+---
+
+CLAIM: "trades near the lower end of its 52-week range at $5.81"
+LABEL: SUPPORTED
+REASON: The 52-week low is $3.81 and the 52-week high is $9.13 per the raw stock data; $5.81 is arithmetically closer to the low end ($5.81 − $3.81 = $2.00 from the low vs. $9.13 − $5.81 = $3.32 from the high), confirming it is in the lower portion of the range. The current price of $5.81 is confirmed in the raw stock data.
+
+---
+
+CLAIM: "forward P/E of 7.49"
+LABEL: SUPPORTED
+REASON: The raw stock data lists forward_pe as 7.492327, which rounds to 7.49; the pre-written Financial Health section also states "forward P/E ratio of 7.49."
+
+---
+
+CLAIM: "continues to post net losses"
+LABEL: SUPPORTED
+REASON: The raw stock data shows net_income of −$311,243,008, confirming ongoing net losses.
+
+---
+
+### OUTLOOK
+
+---
+
+CLAIM: "-4.9% margin"
+LABEL: SUPPORTED
+REASON: The raw stock data explicitly lists profit_margin_pct as −4.9, and the pre-written Financial Health and Recent Developments sections both state "negative profit margin of -4.9%."
+
+---
+
+CLAIM: "stagnant DAU growth" (directional/qualitative claim about DAU growth rates)
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "DAU growth rates have declined and may continue to do so," and the Risk Factors section references "Declining or stagnant daily active user (DAU) growth rates," directly supporting this characterization.
+
+---
+
+CLAIM: "heavy dependence on advertising revenue from advertisers with no long-term commitments"
+LABEL: SUPPORTED
+REASON: The RAG sections explicitly state advertising was ~87% of revenue and "Most advertisers lack long-term commitments," both confirmed in the pre-written sections.
+
+---
+
+CLAIM: "ongoing platform privacy changes from Apple and potentially Google"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors explicitly name Apple's iOS privacy updates as materially impactful and cite "Similar changes from Google, Firefox, Safari, and Chrome" as potential future threats; the pre-written sections repeat this.
+
+---
+
+CLAIM: "core 18-34 demographic" (as the boundary for DAU expansion watch)
+LABEL: SUPPORTED
+REASON: The RAG sections explicitly identify the 18-34 age group as the core demographic and note difficulty penetrating other demographics, confirmed in the pre-written sections.
+
+---
+
+CLAIM: "trend in net losses and profit margin: any sustained narrowing of the -4.9% margin"
+LABEL: SUPPORTED
+REASON: The −4.9% profit margin figure is directly present in the raw stock data (profit_margin_pct: −4.9) and the pre-written sections; the forward-looking framing of watching for narrowing is an analytical inference from that stated figure, but the figure itself is supported.
+
+---
+
+CLAIM: "widening losses would further erode confidence in the forward earnings assumptions embedded in the current valuation"
+LABEL: INFERENCE
+REASON: This is a directional logical inference from the combination of the stated net loss (−$311M), the −4.9% margin, and the forward P/E of 7.49 — all present in the source data — without requiring any additional external fact.
+
+---
+
+CLAIM: "growth in long-term advertiser commitments or non-advertising revenue streams would reduce volatility risk"
+LABEL: INFERENCE
+REASON: This is a logical inference directly derivable from the stated source fact that most advertisers lack long-term commitments and advertising comprises 87% of revenue, making diversification a straightforward risk-reduction step; no external fact is required.
+
+---
+
+CLAIM: "further restrictions on targeted advertising or teen-focused platforms could disproportionately harm Snap given its demographic profile"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors explicitly state "Restrictions on advertising to teens and requirements for parental consent" and note the core demographic is 18-34 (including teens), and the pre-written Risk Factors section references "restrictions on teen advertising" as a specific headwind — all present in the source data.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | 474 million daily active users | SUPPORTED |
+| 2 | Predominantly 18-34 demographic | SUPPORTED |
+| 3 | $6.35 billion in revenue | SUPPORTED |
+| 4 | Advertising comprising 87% of total | SUPPORTED |
+| 5 | Trades near lower end of 52-week range at $5.81 | SUPPORTED |
+| 6 | Forward P/E of 7.49 | SUPPORTED |
+| 7 | Continues to post net losses | SUPPORTED |
+| 8 | −4.9% margin | SUPPORTED |
+| 9 | Stagnant DAU growth | SUPPORTED |
+| 10 | Heavy ad dependence / no long-term commitments | SUPPORTED |
+| 11 | Apple privacy changes / potentially Google | SUPPORTED |
+| 12 | Core 18-34 demographic expansion watch | SUPPORTED |
+| 13 | Narrowing of −4.9% margin as signal | SUPPORTED |
+| 14 | Widening losses erode confidence in forward earnings | INFERENCE |
+| 15 | Long-term commitments / non-ad revenue reduce volatility | INFERENCE |
+| 16 | Teen advertising restrictions disproportionately harm Snap | SUPPORTED |

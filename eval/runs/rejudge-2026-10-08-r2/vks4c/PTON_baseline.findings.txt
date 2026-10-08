@@ -1,0 +1,79 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$2.45 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $2,446,000,128, which rounds to $2.45 billion; the Pre-written Financial Health section also states "$2.45 billion in revenue."
+
+---
+
+CLAIM: "market capitalization of $2.13 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $2,128,528,256, which rounds to $2.13 billion.
+
+---
+
+CLAIM: "current share price of $4.85"
+LABEL: SUPPORTED
+REASON: Source data explicitly states current_price: 4.85.
+
+---
+
+CLAIM: "nearly 41% below its 52-week high of $8.19"
+LABEL: SUPPORTED
+REASON: The 52-week high of $8.19 is present in source data; the decline from $8.19 to $4.85 is ($8.19 − $4.85) / $8.19 = $3.34 / $8.19 = 40.78%, which rounds to "nearly 41%" — within 0.15 pp of the stated figure.
+
+---
+
+CLAIM: "$63.2 million in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of $63,200,000, which equals $63.2 million exactly.
+
+---
+
+CLAIM: "elevated trailing P/E of 34.64"
+LABEL: SUPPORTED
+REASON: Source data explicitly states pe_ratio: 34.642857, which rounds to 34.64.
+
+---
+
+CLAIM: "thin 2.58% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct: 2.58.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "forward P/E of 20.49"
+LABEL: SUPPORTED
+REASON: Source data explicitly states forward_pe: 20.492668, which rounds to 20.49.
+
+---
+
+CLAIM: "restructuring initiatives gain traction"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections explicitly reference restructuring initiatives announced in 2022, 2024, and 2025; this is a qualitative directional restatement of disclosed facts, not a quantitative claim requiring arithmetic verification.
+
+---
+
+CLAIM: "restructuring efforts since 2022"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "Restructuring initiatives announced in 2022, 2024, and 2025," confirming restructuring efforts beginning in 2022.
+
+---
+
+CLAIM: "consecutive quarters demonstrate stable or growing membership, meaningful margin expansion, and evidence that restructuring costs are declining"
+LABEL: INFERENCE
+REASON: This is a forward-looking conditional watch-item derived directly from the disclosed risks around subscription retention, margin compression, and restructuring outcomes present in the source data; no specific numeric thresholds are asserted, so it is a directional restatement rather than a quantitative claim requiring arithmetic verification — however, it is fully grounded in the disclosed risk factors and pre-written sections without requiring any absent facts.
+
+---
+
+**Summary of findings:** All quantitative figures in the Executive Summary and Outlook are supported by the source data. The "nearly 41% below its 52-week high" claim was verified arithmetically (40.78% ≈ 41%). No quantitative claims were found to be UNSUPPORTED. The sole forward-looking conditional watch-item is labeled INFERENCE as it is a directional synthesis of explicitly disclosed risk factors without introducing absent facts or specific numeric thresholds.

@@ -1,0 +1,55 @@
+STOCK DATA:
+{
+  "ticker": "BLNK",
+  "company_name": "Blink Charging Co.",
+  "current_price": 0.5104,
+  "currency": "USD",
+  "market_cap": 73976720.0,
+  "forward_pe": -2.2095237,
+  "week_52_high": 2.63,
+  "week_52_low": 0.45,
+  "financial_currency": "USD",
+  "revenue": 96550000.0,
+  "net_income": -50667000.0,
+  "profit_margin_pct": -52.48,
+  "dividend_yield": 0.0,
+  "sector": "Industrials",
+  "industry": "Engineering & Construction"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-03-31",
+    "summary": "Item 1A \u2013 Risk Factors\u201d below. In this Annual Report, unless otherwise indicated or the context otherwise requires, the \u201cCompany,\u201d \u201cBlink,\u201d \u201cBlink Charging,\u201d \u201cwe,\u201d \u201cus\u201d or \u201cour\u201d refer to Blink Charging Co., a Nevada corporation, and its consolidated subsidiaries. The mark \u201cBlink\u201d is our registered trademark in the United States and, regarding the name of Ecotality, Inc. (whose assets we acquired in October 2013), in Australia, China, Hong Kong, Indonesia, Japan, South Korea, Malaysia, Mexico, New Zealand, Philippines, South Africa, Singapore, Switzerland, Taiwan, and is a trademark registered in the European Union under the Madrid Protocol. We have registered other trademarks and use certain trademarks, trade names, and logos that have not been registered. We claim common law rights to the"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-07",
+    "summary": "Item 1A - Risk Factors. Any one or more of these uncertainties, risks and other influences, could materially affect our results of operations and whether forward-looking statements made by us ultimately prove to be accurate. Our actual results, performance and achievements could differ materially from those expressed or implied in these forward-looking statements. Except as required by federal securities laws, we undertake no obligation to publicly update or revise any forward-looking statements, whether from new information, future events or otherwise. U.S. dollars are reported in thousands, except for share and per share amounts. Overview We are a leading owner, operator, and provider of EV charging equipment and networked EV charging services in the rapidly growing U.S. and internationa"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from Blink Charging's Latest Filings
+
+## Industry Growth and Market Conditions
+The EV charging sector experienced significant expansion in 2025, with 18,041 new DC fast charging ports added in the United States—a 30% year-over-year increase. The U.S. now has 70,007 public DC fast charging ports. Network reliability improved substantially, with most states achieving average reliability in the low 90% range. Charging technology advanced toward higher-power equipment, with 51% of new non-Tesla deployments in Q4 2025 being 250 kW or higher. Pricing remained stable, averaging $0.45-$0.53 per kilowatt-hour nationwide.
+
+## Strategic Restructuring and Operational Changes
+Blink announced the BlinkForward Initiative in May 2025, a comprehensive restructuring aimed at accelerating profitability and operational efficiency. This included reducing the global workforce from 513 to approximately 320 employees, cutting operating expenses, and transitioning to contract manufacturing (completed in January 2026). The company also completed a $20 million funding round in December 2025.
+
+## Business Expansion and Acquisitions
+In July 2025, Blink acquired Zemetric Inc., filling product gaps in software-driven fleet management and energy management services, while adding a lower-cost Level 2 charger lineup. As of year-end 2025, approximately 66,350 chargers were connected to the Blink Network, with roughly 8,250 owned by Blink.
+
+## Product and Service Portfolio
+Blink offers Level 2 chargers, international products, and DCFC equipment ranging from 30kW to 600kW. The company operates through multiple business models—Blink-owned turnkey, Blink-owned hybrid, and host-owned—with partnerships across diverse locations including airports, retail centers, workplaces, and municipalities.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] I cannot provide a comprehensive answer to your question based on the context information provided. While the context mentions that risk factors are discussed in "Item 1A – Risk Factors" of the Annual Report, the actual details of those risk factors are not included in the provided materials.
+
+The context only references that risk factors exist and directs readers to that section, but does not disclose what those specific risk factors are. To answer your question accurately, I would need access to the complete Item 1A section of the SEC filing, which contains the detailed risk factor disclosures.

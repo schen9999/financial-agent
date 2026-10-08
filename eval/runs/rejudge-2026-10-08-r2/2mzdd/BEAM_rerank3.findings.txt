@@ -1,0 +1,73 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the Executive Summary and Outlook sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "generating $156 million in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue of $156,035,008, and the pre-written Financial Health section states "$156 million in revenue," confirming this figure.
+
+---
+
+CLAIM: "market capitalization of $2.56 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap of $2,558,435,584, which rounds to $2.56 billion.
+
+---
+
+CLAIM: "accumulated losses of $1.6 billion"
+LABEL: SUPPORTED
+REASON: The SEC Highlights and Risk Factors sections both explicitly state "accumulated deficit of $1.6 billion as of December 31, 2025."
+
+---
+
+CLAIM: "retreated meaningfully from its 52-week high of $38.26 to $24.77"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists week_52_high as $38.26 and current_price as $24.77.
+
+---
+
+CLAIM: "the company has yet to complete any pivotal clinical trials or secure marketing approval for any product candidate"
+LABEL: SUPPORTED
+REASON: The SEC Highlights section explicitly states "No pivotal clinical trials have been completed and no product candidates have received marketing approval."
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "the company's $1.2 billion cash position"
+LABEL: SUPPORTED
+REASON: The SEC Highlights section explicitly states "the company had $1.2 billion in cash, cash equivalents, and marketable securities as of December 31, 2025."
+
+---
+
+CLAIM: "provides at least 12 months of operational runway"
+LABEL: SUPPORTED
+REASON: The SEC Highlights section explicitly states "Management believes existing capital will fund operations for at least the next 12 months."
+
+---
+
+CLAIM: "a stock already in retreat from its 52-week high"
+LABEL: SUPPORTED
+REASON: Arithmetically verified: current price $24.77 is below the 52-week high of $38.26, confirming the stock is in retreat from its high.
+
+---
+
+CLAIM: "a development timeline that structurally spans a decade or more"
+LABEL: SUPPORTED
+REASON: The SEC Highlights and Risk Factors sections both state "development timelines typically span 10-15 years from discovery to market availability," which is a decade or more.
+
+---
+
+CLAIM: "the absence of any completed pivotal trials or approved products"
+LABEL: SUPPORTED
+REASON: The SEC Highlights section explicitly states "No pivotal clinical trials have been completed and no product candidates have received marketing approval."
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, named product milestones, or other specific forward-looking numbers appear in the Executive Summary or Outlook sections beyond those audited above.*

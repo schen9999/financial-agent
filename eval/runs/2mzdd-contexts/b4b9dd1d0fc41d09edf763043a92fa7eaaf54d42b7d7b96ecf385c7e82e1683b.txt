@@ -1,0 +1,93 @@
+STOCK DATA:
+{
+  "ticker": "CALM",
+  "company_name": "Cal-Maine Foods, Inc.",
+  "current_price": 62.7,
+  "currency": "USD",
+  "market_cap": 2928755456.0,
+  "pe_ratio": 51.39344,
+  "forward_pe": 61.7734,
+  "week_52_high": 95.57,
+  "week_52_low": 61.88,
+  "financial_currency": "USD",
+  "revenue": 2528636928.0,
+  "net_income": 58727000.0,
+  "profit_margin_pct": 2.32,
+  "dividend_yield": 3.86,
+  "sector": "Consumer Defensive",
+  "industry": "Farm Products"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-07-22",
+    "summary": "Item 1A. Risk Factors and elsewhere in this report as well as those included in other reports we file from time to time with the Securities and Exchange Commission (the \u201cSEC\u201d) (including our Quarterly Reports on Form 10-Q and Current Reports on Form 8-K), (ii) changes in wholesale shell egg market prices, (iii) changes in the demand for shell eggs and our prepared foods offerings, (iv) increases in feed costs for our shell egg operations as well as increases in input costs for prepared foods, (v) our ability to predict and meet demand for cage -free and other specialty eggs, (vi) the risks and hazards inherent in shell egg, egg products and prepared foods operations (including, as applicable, disease, pests, weather conditions, and potential for product recall), including but not limited t"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-09-30",
+    "summary": "Item 1A Risk Factors of our 202 6 Annual Report, as well as those included in other reports we file from time to time with the Securities and Exchange Commission (the \u201cSEC\u201d) (including our Quarterly Reports on Form 10-Q and Current Reports on Form 8-K). The actual timing, number and value of shares repurchased under our share repurchase program will be determined by management in its discretion and will depend on a number of factors, including but not limited to, the market price of our Common Stock and general market and economic conditions. The share repurchase program may be suspended, modified or discontinued at any time without prior notice. Readers are cautioned not to place undue reliance on forward -looking statements because, while we believe the assumptions on which the forward -"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from Cal-Maine Foods' Recent SEC Filings
+
+## Company Overview
+Cal-Maine Foods is the largest egg company in the United States and a leading player in the egg-based food industry. Founded in 1957 and headquartered in Ridgeland, Mississippi, the company operates a comprehensive portfolio spanning conventional to specialty eggs (cage-free, organic, pasture-raised, etc.) and prepared foods products.
+
+## Strategic Growth Initiatives
+
+**Prepared Foods Expansion:**
+- Multiple capacity expansion projects underway expected to grow prepared foods production by more than 30% from mid-2027 through 2028
+- Echo Lake Foods facilities projects include 17 million pounds of additional scrambled egg production and a high-speed pancake line adding 12 million pounds
+- Crepini Foods joint venture investing in equipment to add 18 million pounds of capacity over 12-18 months
+
+**Acquisitions:**
+- Acquired Echo Lake Foods (June 2025) for $289.5 million, expanding prepared foods capabilities
+- Acquired ISE America assets (Q1 FY2025) adding 4.7 million laying hens capacity across Northeast and Mid-Atlantic
+- Acquired Creighton Brothers (March 2026) for $129.3 million, adding 3.2 million layers and egg products capacity
+- Acquired Van's Foods assets (May 2026) for $24.8 million to support prepared foods retail strategy
+
+## Risk Factors
+- HPAI (Highly Pathogenic Avian Influenza) outbreak impacting operations in Q3-Q4 FY2024 and March 2026
+- Volatility in wholesale egg prices and feed costs
+- Integration challenges from recent acquisitions
+- Market competition and regulatory pressures
+
+## Business Strategy
+The company aims to leverage its market position, vertical integration, and strong balance sheet to pursue sustainable growth, expand margins, and diversify revenue streams through specialty eggs, prepared foods expansion, and strategic acquisitions.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses the following primary risk factors:
+
+1. **Market Price Volatility** - Changes in wholesale shell egg market prices and demand for shell eggs and prepared foods offerings
+
+2. **Input Cost Increases** - Rising feed costs for shell egg operations and increased input costs for prepared foods
+
+3. **Specialty Product Demand** - Ability to predict and meet demand for cage-free and other specialty eggs
+
+4. **Operational Hazards** - Risks inherent in shell egg, egg products, and prepared foods operations including disease, pests, weather conditions, and product recall potential. Notably, this includes the current outbreak of Highly Pathogenic Avian Influenza (HPAI) affecting poultry in the U.S., Canada and other countries, which impacted the company's flocks in fiscal 2024 and again in March 2026
+
+5. **Acquisition Integration** - Risks related to acquiring new flocks or businesses and the ability to successfully integrate and manage recently acquired businesses while realizing expected benefits such as synergies, cost savings, and margin expansion
+
+6. **Operational Efficiency** - Ability to produce, supply, and distribute products efficiently and reliably
+
+7. **Competition** - Ability to compete effectively with existing competitors and new market entrants, retain customers, and acquire new customers
+
+8. **Regulatory and Market Reactions** - Government, customer, and consumer reactions to high market prices for eggs, including potential new regulations
+
+9. **Macroeconomic Factors** - Changes in inflation, interest rates, and trade and tariff policies
+
+10. **Intellectual Property** - Loss or expiration of registered trademarks or other intellectual property
+
+11. **Legal Matters** - Adverse results in pending litigation
+
+12. **Geopolitical Risks** - Global instability from geopolitical conflicts and other uncertainties

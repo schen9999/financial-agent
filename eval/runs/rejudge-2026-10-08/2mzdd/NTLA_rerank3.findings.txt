@@ -1,0 +1,135 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "Trading at $11.71"
+LABEL: SUPPORTED
+REASON: The source data explicitly lists `current_price: 11.71`.
+
+---
+
+CLAIM: "down 59% from its 52-week high of $28.25"
+LABEL: SUPPORTED
+REASON: Source data confirms `week_52_high: 28.25`; the decline is (28.25 − 11.71) / 28.25 = 58.55%, which rounds to 59% and is within 0.15 percentage points of the stated figure when rounded to the nearest whole percent.
+
+---
+
+CLAIM: "52-week high of $28.25"
+LABEL: SUPPORTED
+REASON: Source data explicitly states `week_52_high: 28.25`.
+
+---
+
+CLAIM: "a $400 million net loss"
+LABEL: SUPPORTED
+REASON: Source data lists `net_income: -399,975,008`, which rounds to $400 million.
+
+---
+
+CLAIM: "just $59.5 million in revenue"
+LABEL: SUPPORTED
+REASON: Source data lists `revenue: 59,506,000`, which rounds to $59.5 million.
+
+---
+
+CLAIM: "lead programs nexiguran ziclumeran (NTLA-2001) and lonvoguran ziclumeran (NTLA-2002) representing the company's primary near-term value drivers"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights (RAG) explicitly names both nexiguran ziclumeran (NTLA-2001) and lonvoguran ziclumeran (NTLA-2002) as the company's lead clinical-stage programs.
+
+---
+
+CLAIM: "no in vivo genome editing therapy has yet received regulatory approval in major jurisdictions"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "no in vivo genome editing therapy approved in the U.S., EU, or other major jurisdictions to date."
+
+---
+
+CLAIM: "the resolution of the existing clinical hold"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly states "The company faces a clinical hold on the IND for the MAGNITUDE trial for one of its lead candidates," confirming an existing clinical hold.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "an active clinical hold on a lead program"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly references a clinical hold on a lead candidate trial.
+
+---
+
+CLAIM: "a regulatory environment with limited precedent for CRISPR-based therapies"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "regulatory agencies have limited experience with CRISPR technology," directly supporting this characterization.
+
+---
+
+CLAIM: "persistent cash burn against minimal revenue"
+LABEL: SUPPORTED
+REASON: Source data shows net income of −$399,975,008 against revenue of $59,506,000, directly supporting the characterization of persistent cash burn against minimal revenue.
+
+---
+
+CLAIM: "a stock already deeply discounted from recent highs"
+LABEL: SUPPORTED
+REASON: The stock at $11.71 is 58.55% below its 52-week high of $28.25, arithmetically confirming a deep discount from recent highs.
+
+---
+
+CLAIM: "resolution of the clinical hold on the lead candidate trial and the nature of any conditions imposed"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors and SEC Highlights both confirm the existence of a clinical hold on a lead candidate trial, making this a grounded watch-item.
+
+---
+
+CLAIM: "safety and efficacy data readouts from NTLA-2001 and NTLA-2002"
+LABEL: SUPPORTED
+REASON: Both NTLA-2001 and NTLA-2002 are named as clinical-stage programs in the RAG SEC Highlights, making data readouts from these programs a grounded forward-looking watch-item.
+
+---
+
+CLAIM: "the pace and terms of any partnership, licensing, or financing activity that could extend the cash runway"
+LABEL: INFERENCE
+REASON: No specific partnership, licensing deal, or financing activity is mentioned in the source data; however, this is a standard inference from the documented cash-burn profile (−$400M net loss vs. $59.5M revenue) that a company in this position would need external capital or partnerships, making it a derivable directional statement rather than a specific unsupported fact.
+
+---
+
+CLAIM: "evolving regulatory guidance from the FDA and EMA on CRISPR-based therapies more broadly"
+LABEL: UNSUPPORTED
+REASON: The source data references regulatory uncertainty and mentions the U.S. and EU generically, but neither "FDA" nor "EMA" is named anywhere in the raw source data or pre-written sections; these specific agency names are absent from the context.
+
+---
+
+CLAIM: "a safety signal in either lead program, a prolonged or expanded clinical hold, or an equity raise at a significant discount to current levels would further weaken an already fragile investment case"
+LABEL: INFERENCE
+REASON: No specific safety signal, expanded hold, or equity raise terms are present in the source data; these are directional inferences derivable from the documented clinical hold, cash-burn profile, and risk factor disclosures, but no specific figures or thresholds are asserted, making this a qualitative inference rather than an unsupported specific claim.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Trading at $11.71 | SUPPORTED |
+| 2 | Down 59% from 52-week high | SUPPORTED |
+| 3 | 52-week high of $28.25 | SUPPORTED |
+| 4 | $400 million net loss | SUPPORTED |
+| 5 | $59.5 million in revenue | SUPPORTED |
+| 6 | NTLA-2001 and NTLA-2002 as lead programs | SUPPORTED |
+| 7 | No in vivo genome editing therapy approved in major jurisdictions | SUPPORTED |
+| 8 | Existing clinical hold | SUPPORTED |
+| 9 | Active clinical hold on a lead program (Outlook) | SUPPORTED |
+| 10 | Regulatory environment with limited precedent | SUPPORTED |
+| 11 | Persistent cash burn against minimal revenue | SUPPORTED |
+| 12 | Stock deeply discounted from recent highs | SUPPORTED |
+| 13 | Clinical hold resolution as watch-item | SUPPORTED |
+| 14 | Data readouts from NTLA-2001 and NTLA-2002 | SUPPORTED |
+| 15 | Partnership/licensing/financing to extend cash runway | INFERENCE |
+| 16 | FDA and EMA named specifically | UNSUPPORTED |
+| 17 | Safety signal / prolonged hold / equity raise scenarios | INFERENCE |

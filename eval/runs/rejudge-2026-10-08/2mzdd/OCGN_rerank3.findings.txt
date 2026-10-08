@@ -1,0 +1,55 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of $339.1 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap as 339,110,400.0 USD, which rounds to $339.1 million.
+
+---
+
+CLAIM: "generating only $4.6 million in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue as 4,581,000.0 USD, which rounds to $4.6 million.
+
+---
+
+CLAIM: "accumulated deficit of $408.1 million"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "accumulated deficit of $408.1 million as of December 31, 2025."
+
+---
+
+CLAIM: "trading near its 52-week low of $0.97"
+LABEL: SUPPORTED
+REASON: The raw source data lists week_52_low as 0.97 and current_price as 1.00; at $1.00 the stock is $0.03 above its 52-week low of $0.97, confirming it is trading near that low.
+
+---
+
+CLAIM: "cash reserves of $18.6 million projected to sustain operations only through Q4 2026"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "Current cash reserves of $18.6 million are insufficient to meet capital requirements, with estimates suggesting cash will sustain operations only into the fourth quarter of 2026."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "a funding runway projected to expire by Q4 2026"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section states cash "will sustain operations only into the fourth quarter of 2026," directly supporting this claim.
+
+---
+
+CLAIM: "Operating expenses are expected to rise as clinical programs expand"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "Expenses are expected to increase in 2026 due to ongoing clinical trials, expanded headcount, and infrastructure development."
+
+---
+
+No additional quantitative figures, price targets, thresholds, ratios, specific percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already evaluated above. The remaining content in the Outlook consists of qualitative directional statements, scenario descriptions, and watch-item characterizations that contain no specific quantitative claims requiring audit.

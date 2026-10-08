@@ -1,0 +1,85 @@
+I will now systematically audit every quantitative, named-milestone, and forward-looking claim in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "a connected network of 66,350 chargers"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "approximately 66,350 chargers were connected to the Blink Network" as of year-end 2025, and the SEC Filing Highlights pre-written section repeats this figure.
+
+---
+
+CLAIM: "generating $96.6 million in revenue"
+LABEL: SUPPORTED
+REASON: Raw source data shows revenue = $96,550,000, which rounds to $96.6 million; the Financial Health pre-written section also states "$96.6 million in revenue."
+
+---
+
+CLAIM: "a market capitalization of $74.0 million"
+LABEL: SUPPORTED
+REASON: Raw source data shows market_cap = $73,976,720, which rounds to $74.0 million; confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "an 81% decline from its 52-week high"
+LABEL: SUPPORTED
+REASON: Current price = $0.5104, 52-week high = $2.63; decline = ($2.63 − $0.5104) / $2.63 = $2.1196 / $2.63 ≈ 80.6%, which rounds to 81%; the Financial Health pre-written section also states "declined 81% from its 52-week high of $2.63."
+
+---
+
+CLAIM: "a net loss of $50.7 million"
+LABEL: SUPPORTED
+REASON: Raw source data shows net_income = −$50,667,000, which rounds to −$50.7 million; confirmed in multiple pre-written sections.
+
+---
+
+CLAIM: "a negative forward P/E ratio"
+LABEL: SUPPORTED
+REASON: Raw source data shows forward_pe = −2.2095237, which is negative; confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "the 37% workforce reduction"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights state workforce reduced from 513 to approximately 320 employees; (513 − 320) / 513 ≈ 37.6%, which rounds to 37%; the SEC Filing Highlights pre-written section also states "reduced workforce by 37% to ~320 employees."
+
+---
+
+CLAIM: "transition to contract manufacturing"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly state "transitioning to contract manufacturing (completed in January 2026)"; confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "U.S. DC fast charging infrastructure is expanding meaningfully"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights state 18,041 new DC fast charging ports were added in the U.S. in 2025, a 30% year-over-year increase, directly supporting this directional claim.
+
+---
+
+CLAIM: "the BlinkForward Initiative represents a credible — if unproven — attempt to right-size the cost structure"
+LABEL: SUPPORTED
+REASON: The BlinkForward Initiative is explicitly named and described in the RAG SEC Highlights and SEC Filing Highlights pre-written section; the characterization "unproven" is a qualitative editorial judgment, not a quantitative claim requiring verification.
+
+---
+
+CLAIM: "The Zemetric acquisition also adds software-driven revenue potential that could improve margin quality over time"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights confirm the July 2025 acquisition of Zemetric Inc. and describe it as "filling product gaps in software-driven fleet management and energy management services"; the forward-looking improvement framing is editorial inference, but the underlying factual basis (Zemetric acquisition, software capabilities) is present in the source data.
+
+---
+
+CLAIM: "the company is burning cash against a loss margin that exceeds half of revenue"
+LABEL: SUPPORTED
+REASON: Raw source data shows profit_margin_pct = −52.48%, which exceeds 50% (half) of revenue in absolute terms; recomputed: net loss $50,667,000 / revenue $96,550,000 = 52.48%, confirming the loss margin exceeds half of revenue.
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Outlook section beyond those audited above.*

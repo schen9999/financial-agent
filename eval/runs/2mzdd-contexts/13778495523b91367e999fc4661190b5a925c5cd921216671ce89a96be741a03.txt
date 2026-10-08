@@ -1,0 +1,91 @@
+STOCK DATA:
+{
+  "ticker": "OMER",
+  "company_name": "Omeros Corporation",
+  "current_price": 18.75,
+  "currency": "USD",
+  "market_cap": 1357281024.0,
+  "pe_ratio": 15.368852,
+  "forward_pe": 15.243902,
+  "week_52_high": 21.24,
+  "week_52_low": 4.06,
+  "financial_currency": "USD",
+  "revenue": 38422000.0,
+  "net_income": 116533000.0,
+  "profit_margin_pct": 324.88,
+  "dividend_yield": 0.0,
+  "sector": "Healthcare",
+  "industry": "Biotechnology"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-03-31",
+    "summary": "ITEM 1A. RISK FACTORS The risks and uncertainties described below may have a material adverse effect on our business, prospects, financial condition or operating results. In addition, we may be adversely affected by risks that we currently deem immaterial or by other risks that are not currently known to us. You should carefully consider these risks before making an investment decision. The trading price of our common stock could decline due to any of these risks and you may lose all or part of your investment. In assessing the risks described below, you should also refer to the other information contained in this Annual Report on Form 10-K. Risks Related to Our Products, Product Candidates, Programs and Operations Our ability to achieve profitability is highly dependent on the commercial "
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-12",
+    "summary": "ITEM 1A. RISK FACTORS We operate in an environment that involves a number of risks and uncertainties. Before making an investment decision you should carefully consider the risks described in Part I, Item 1A, \u201cRisk Factors\u201d of our Annual Report on Form 10-K for the year ended December 31, 2025, as filed with the SEC on March 31, 2026. In assessing the risk factors set forth in our Annual Report on Form 10-K for the year ended December 31, 2025, you should also refer to the other information included therein and in this Quarterly Report on Form 10-Q, including the supplemental risk factor below. In addition, we may be adversely affected by risks that we currently deem to be immaterial or by other risks that are not currently known to us. Due to these risks and uncertainties, known and unkno"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from the Latest SEC Filings
+
+## Financial Position
+- As of December 31, 2025, the company held $171.8 million in cash, cash equivalents, and short-term investments
+- Cash used in operations for 2025 was $116.1 million
+- Net loss for 2025 was $3.4 million
+- Outstanding debt includes $70.8 million in convertible senior notes due June 15, 2029, and approximately $1.2 million in finance lease obligations
+- The company has repaid $17.1 million in convertible senior notes that matured in February 2026
+
+## Product Commercialization
+- YARTEMLEA is the company's only commercialized product, approved by the FDA in December 2025
+- The company's near-term prospects and profitability are heavily dependent on YARTEMLEA's commercial success
+- Significant challenges to commercialization include physician and patient acceptance, reimbursement coverage, manufacturing capacity, and competition from alternative treatments
+
+## Strategic Partnerships
+- The company has an agreement with Novo Nordisk involving zaltenibart, which provides potential milestone and royalty payments contingent on successful development and commercialization
+- Revenue from this partnership is uncertain and dependent on factors outside the company's control
+
+## Operational Outlook
+- The company expects to continue substantial spending on clinical trials, commercialization, R&D, and debt service
+- Additional capital will likely be needed to fund operations until YARTEMLEA generates sufficient revenue or other partnerships materialize
+- The company faces risks related to reimbursement policies, regulatory compliance, and manufacturing constraints
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses several significant risk factors affecting its business:
+
+## Product Commercialization Risks
+The company's profitability is heavily dependent on the commercial success of YARTEMLEA, its only commercialized product approved by the FDA in December 2025. Commercialization could fail due to:
+- Lack of acceptance by physicians, patients, and payers
+- Limited experience in marketing and distribution
+- Reliance on a limited number of manufacturers and suppliers
+- Unknown safety risks
+- Failure to obtain regulatory approval in foreign territories
+- Inability to establish or maintain acceptable partnerships outside the U.S.
+
+## Reimbursement and Pricing Risks
+The success of YARTEMLEA depends on adequate coverage and reimbursement from government and private payers. Challenges include:
+- Significant delays in obtaining coverage or reimbursement
+- Limited reimbursement rates that may not cover costs or generate profit
+- Increasing pressure from payers for predetermined discounts from list prices
+
+## Financial and Capital Risks
+The company faces substantial financial challenges:
+- Cumulative operating losses since inception
+- Cash used in operations of $116.1 million for the year ended December 31, 2025
+- Outstanding indebtedness of $70.8 million in convertible senior notes due 2029, plus $1.2 million in finance lease obligations
+- Uncertainty about generating sufficient revenue to achieve profitability
+- Potential inability to raise additional capital when needed
+
+## Partnership Dependency Risk
+The company's future value depends on milestone and royalty payments from partnerships, such as the Novo Nordisk arrangement for zaltenibart, which are contingent on successful development and commercialization outside the company's direct control.

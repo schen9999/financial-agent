@@ -1,0 +1,73 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $2.45 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $2,446,000,128, which rounds to $2.45 billion; the Financial Health section also states "$2.45 billion in revenue."
+
+---
+
+CLAIM: "market capitalization of $2.13 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $2,128,528,256, which rounds to $2.13 billion; confirmed in the Financial Health section.
+
+---
+
+CLAIM: "stock's current price of $4.85"
+LABEL: SUPPORTED
+REASON: Source data explicitly states current_price = 4.85.
+
+---
+
+CLAIM: "sitting well below its 52-week high of $8.19"
+LABEL: SUPPORTED
+REASON: Source data confirms week_52_high = 8.19, and $4.85 < $8.19, so the positional claim holds arithmetically.
+
+---
+
+CLAIM: "$63.2 million in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net_income = $63,200,000 = $63.2 million.
+
+---
+
+CLAIM: "2.58% margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 2.58; also verified: $63.2M / $2,446M ≈ 2.58%.
+
+---
+
+CLAIM: "trades at a still-elevated P/E of 34.6x"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 34.642857, which rounds to 34.6x.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "restructuring cycles (2022, 2024, 2025)"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights pre-written section and RAG SEC Highlights explicitly state "Restructuring initiatives announced in 2022, 2024, and 2025."
+
+---
+
+CLAIM: "the compression between the current P/E of 34.6x and the forward P/E of 20.5x"
+LABEL: SUPPORTED
+REASON: Source data confirms pe_ratio = 34.642857 (≈34.6x) and forward_pe = 20.492668 (≈20.5x); both figures are present and the directional compression claim holds arithmetically (20.5x < 34.6x).
+
+---
+
+CLAIM: "fragile profitability achieved in fiscal 2026"
+LABEL: SUPPORTED
+REASON: The Risk Factors pre-written section explicitly references "net income in fiscal 2026," and the 10-K filing date of 2026-08-06 corroborates the fiscal year label.
+
+---
+
+No additional quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Executive Summary or Outlook sections beyond those audited above. All qualitative directional claims (e.g., "cautious," "low barriers to entry," "consumer cyclical sensitivity") are non-quantitative and fall outside the audit scope per the instructions.

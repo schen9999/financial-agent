@@ -1,0 +1,79 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $6.0 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $6,043,752,960, which rounds to $6.0 billion; the pre-written Financial Health section also states "$6.0 billion in revenue."
+
+---
+
+CLAIM: "market capitalization of $47.1 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $47,081,697,280, which rounds to $47.1 billion; confirmed in pre-written sections.
+
+---
+
+CLAIM: "net loss of $987.8 million"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$987,766,016, which rounds to -$987.8 million; confirmed in pre-written Financial Health section.
+
+---
+
+CLAIM: "negative profit margin of -16.34%"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct of -16.34%; arithmetic check: -987,766,016 / 6,043,752,960 = -16.34%. Confirmed.
+
+---
+
+CLAIM: "sits well below its 52-week high of $402.16"
+LABEL: SUPPORTED
+REASON: Source data confirms week_52_high of $402.16 and current_price of $178.45; $178.45 is 55.6% below $402.16, so "well below" is arithmetically verified.
+
+---
+
+CLAIM: "forward P/E of 62.9x"
+LABEL: SUPPORTED
+REASON: Source data explicitly states forward_pe of 62.903835, which rounds to 62.9x; confirmed in pre-written Financial Health section.
+
+---
+
+CLAIM: "a valuation that embeds a meaningful earnings recovery that has not yet materialized"
+LABEL: INFERENCE
+REASON: This is a directional interpretive statement derivable from the combination of the 62.9x forward P/E and the current net loss of -$987.8 million both present in the source data, requiring no external facts.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "higher Bitcoin and Ethereum prices and elevated trading volumes — would directly benefit transaction fee revenue"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections explicitly state that revenue is substantially dependent on crypto asset prices and trading volumes, and that Bitcoin and Ethereum transactions drive the majority of trading activity.
+
+---
+
+CLAIM: "Bitcoin and Ethereum transactions… approximately 45-46% of total trading volume"
+LABEL: SUPPORTED
+REASON: Both the RAG SEC Highlights and the pre-written SEC Filing Highlights sections explicitly state "approximately 45-46% of total trading volume" for Bitcoin and Ethereum transactions.
+
+---
+
+CLAIM: "heightened regulatory scrutiny from New York State and other jurisdictions"
+LABEL: SUPPORTED
+REASON: The 10-Q filing summary and the pre-written Recent Developments section explicitly reference the New York State Department of Financial Services and "other regulators" imposing capital requirements on Coinbase's subsidiaries.
+
+---
+
+CLAIM: "stablecoin-related subscription and services revenue can diversify and stabilize the revenue mix"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and pre-written SEC Filing Highlights explicitly state that stablecoin revenue represents a material portion of subscription and services revenue, grounding this watch-item in source data.
+
+---
+
+**Summary of findings:** All quantitative figures in the Executive Summary and Outlook are either directly present in the source data or arithmetically derivable from figures that are present. No claims are UNSUPPORTED. The one forward-looking interpretive statement is appropriately labeled INFERENCE. The brief is well-grounded in its source material.

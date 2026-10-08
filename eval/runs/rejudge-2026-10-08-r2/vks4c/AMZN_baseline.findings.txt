@@ -1,0 +1,50 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$775.7 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $775,680,032,768, which rounds to $775.7 billion; the pre-written Financial Health section also states "$775.7 billion."
+
+---
+
+CLAIM: "$2.8 trillion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $2,803,578,699,776, which rounds to $2.8 trillion; confirmed in the pre-written Financial Health section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "strong profit margins"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct of 17.44%, and the pre-written Financial Health section characterizes this as "solid operational efficiency," supporting the characterization of strong profit margins.
+
+---
+
+CLAIM: "data center supply constraints emerging from local regulatory moratoriums"
+LABEL: SUPPORTED
+REASON: The Bloomberg news article dated 2026-09-21 explicitly states "Communities across the country are now pushing through moratoriums on new construction," and this is reflected in the pre-written Recent Developments section.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already evaluated above. All other claims in the Outlook are qualitative or directional in nature — e.g., "cautiously constructive," "entrenched position," "competitive moat," "pace and geographic spread," "trajectory of margins," "degree to which international regulatory friction limits revenue" — and contain no specific quantitative or enumerable claims subject to audit under the defined criteria.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $775.7 billion in annual revenue | SUPPORTED |
+| 2 | $2.8 trillion market capitalization | SUPPORTED |
+| 3 | Strong profit margins (implicit: 17.44%) | SUPPORTED |
+| 4 | Data center regulatory moratoriums constraining supply | SUPPORTED |
+
+**No unsupported or inference-labeled quantitative claims were identified.** The Executive Summary and Outlook are notably sparse in specific quantitative figures beyond revenue and market cap, and the qualitative forward-looking statements (AWS pricing power, competitor disadvantage, write-down risk, China/India friction) are drawn directly from the pre-written sections and risk factor disclosures without introducing new unverifiable numbers.

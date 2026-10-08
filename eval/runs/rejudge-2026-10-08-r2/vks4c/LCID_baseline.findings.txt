@@ -1,0 +1,109 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "only two commercially available vehicles"
+LABEL: SUPPORTED
+REASON: The SEC Highlights and Risk Factors pre-written sections both explicitly state "only two commercially available vehicles have been released."
+
+---
+
+CLAIM: "trading at $3.89 per share"
+LABEL: SUPPORTED
+REASON: The raw source data lists `current_price: 3.89` USD.
+
+---
+
+CLAIM: "market capitalization of $1.53 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists `market_cap: 1,532,932,992`, which rounds to $1.53 billion; the Financial Health section also states "$1.53 billion."
+
+---
+
+CLAIM: "a fraction of its 52-week high of $22.42"
+LABEL: SUPPORTED
+REASON: The raw source data lists `week_52_high: 22.42`; $3.89 is arithmetically a fraction (~17.4%) of $22.42, so the positional claim holds.
+
+---
+
+CLAIM: "generating $1.55 billion in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists `revenue: 1,547,122,048`, which rounds to $1.55 billion; the Financial Health section also states "$1.55 billion in revenue."
+
+---
+
+CLAIM: "a net loss of $4.60 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists `net_income: -4,604,930,048`, which rounds to -$4.60 billion; the Financial Health and Recent Developments sections confirm "$4.60 billion" and "$4.6 billion" respectively.
+
+---
+
+CLAIM: "accumulated losses ($15.6 billion since inception)"
+LABEL: SUPPORTED
+REASON: The SEC Highlights section states "Accumulated deficit reached $15.6 billion as of December 31, 2025," and the Risk Factors section confirms "accumulated a $15.6 billion deficit since inception."
+
+---
+
+CLAIM: "the Midsize platform" (as a named product milestone)
+LABEL: SUPPORTED
+REASON: The SEC Highlights section explicitly names "the Midsize platform" as an ongoing product development item.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "a deeply negative profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data lists `profit_margin_pct: -249.21%`, which is explicitly deeply negative; the Financial Health section confirms "-249.21%."
+
+---
+
+CLAIM: "an accumulated deficit of $15.6 billion"
+LABEL: SUPPORTED
+REASON: Explicitly stated in the SEC Highlights and Risk Factors pre-written sections as "$15.6 billion as of December 31, 2025."
+
+---
+
+CLAIM: "continued dependence on single-source suppliers"
+LABEL: SUPPORTED
+REASON: The SEC Highlights, Risk Factors (pre-written), and RAG Risk Factors all explicitly state "heavy dependence on single-source suppliers for critical components."
+
+---
+
+CLAIM: "the outsized influence of PIF and Ayar over strategic direction"
+LABEL: SUPPORTED
+REASON: The SEC Highlights section states "PIF and Ayar maintain significant equity interests with substantial influence," and the Risk Factors section states "Significant equity ownership and influence by PIF and Ayar."
+
+---
+
+CLAIM: "the Midsize platform launch" (as the key near-term revenue-broadening milestone)
+LABEL: SUPPORTED
+REASON: The SEC Highlights section explicitly names "the Midsize platform" as a new variant under development whose delays "could materially harm business prospects."
+
+---
+
+CLAIM: "supply chain stability, particularly around lithium-ion battery cell availability"
+LABEL: SUPPORTED
+REASON: The SEC Highlights and RAG Risk Factors both explicitly identify "lithium-ion battery cells" as a specific supply chain challenge.
+
+---
+
+CLAIM: "robotaxis" (implicitly referenced via "new vehicle variants")
+LABEL: SUPPORTED
+REASON: The Outlook references "new vehicle variants launch on schedule" generally, not robotaxis by name — no specific robotaxis claim is made in the Outlook section itself, so no audit entry is required for that term specifically.
+
+---
+
+CLAIM: "sovereign-backed financial relationships" (as a tailwind providing survival runway)
+LABEL: INFERENCE
+REASON: PIF (Saudi Arabia's Public Investment Fund) is a sovereign wealth fund, and its significant equity interest in Lucid is confirmed in the source data; the characterization of this as "sovereign-backed" is a direct, obvious inference from PIF's nature as a sovereign wealth fund, derivable from the stated fact of PIF's ownership.
+
+---
+
+**SUMMARY NOTE:** No specific price targets, forward earnings estimates, explicit percentage thresholds for improvement, or named future capital raise figures appear in the Executive Summary or Outlook sections beyond those audited above. All quantitative and named-milestone claims are either directly supported by the source data or are close inferences from it. No claims were found to be UNSUPPORTED.

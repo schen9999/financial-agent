@@ -1,0 +1,38 @@
+{
+  "refusals": {
+    "tickers": 35,
+    "baseline_refusals": 5,
+    "rerank_refusals": 7,
+    "b": 2,
+    "c": 4,
+    "p": 0.6875,
+    "pass": false
+  },
+  "numeric": {
+    "pass": null,
+    "note": "adjudication pending"
+  },
+  "density": {
+    "rerank_minus_baseline": -0.025,
+    "ci": [
+      -0.4,
+      0.35
+    ],
+    "pass": true
+  },
+  "latency": {
+    "added_s_per_ticker": 10.96033016196452,
+    "baseline_pipeline_s": 26.40332409573457,
+    "share": 0.41511175343771023,
+    "pass": false
+  },
+  "grounding": {
+    "rerank_minus_baseline_pts": -0.20545131468119082,
+    "ci_pts": [
+      -2.3172890741582695,
+      1.877087434266227
+    ],
+    "blocks": false
+  },
+  "decision": "DON'T SHIP"
+}

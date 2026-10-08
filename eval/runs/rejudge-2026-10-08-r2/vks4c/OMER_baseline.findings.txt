@@ -1,0 +1,97 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "YARTEMLA, its sole FDA-approved product (approved December 2025)"
+LABEL: UNSUPPORTED
+REASON: The source data and pre-written sections consistently spell the product name as "YARTEMLEA" (not "YARTEMLA"); the misspelling constitutes a factual mismatch on the named entity, and the SEC Highlights explicitly state "YARTEMLEA is the company's only commercialized product, approved by the FDA in December 2025."
+
+---
+
+CLAIM: "$171.8 million in cash and short-term investments as of December 31, 2025"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "As of December 31, 2025, the company held $171.8 million in cash, cash equivalents, and short-term investments."
+
+---
+
+CLAIM: "52-week low of $4.06"
+LABEL: SUPPORTED
+REASON: The stock data explicitly lists "week_52_low": 4.06.
+
+---
+
+CLAIM: "[current price of] $18.75"
+LABEL: SUPPORTED
+REASON: The stock data explicitly lists "current_price": 18.75.
+
+---
+
+CLAIM: "$116.5 million in net income"
+LABEL: SUPPORTED
+REASON: The stock data lists "net_income": 116,533,000, which rounds to $116.5 million; the pre-written Financial Health section also states "net income of $116.5 million."
+
+---
+
+CLAIM: "$38.4 million in revenue"
+LABEL: SUPPORTED
+REASON: The stock data lists "revenue": 38,422,000, which rounds to $38.4 million; the pre-written sections confirm this figure.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "operating cash burn of $116.1 million in 2025"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "Cash used in operations for 2025 was $116.1 million."
+
+---
+
+CLAIM: "a cash position of $171.8 million"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "As of December 31, 2025, the company held $171.8 million in cash, cash equivalents, and short-term investments."
+
+---
+
+CLAIM: "the convertible senior notes due 2029"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "$70.8 million outstanding in convertible senior notes due June 15, 2029."
+
+---
+
+CLAIM: "[operating cash burn of $116.1 million] against a cash position of $171.8 million creates a narrow runway"
+LABEL: INFERENCE
+REASON: This is a direct comparison of two figures both present in the source data ($171.8M cash vs. $116.1M annual burn), yielding an implied runway of roughly 1.5 years, which supports the characterization of "narrow runway" as a straightforward derivation.
+
+---
+
+CLAIM: "the Novo Nordisk partnership for zaltenibart, which could provide non-dilutive milestone and royalty income"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both confirm "Agreement with Novo Nordisk involving zaltenibart with potential milestone and royalty payments contingent on successful development and commercialization."
+
+---
+
+*No price targets, specific forward-looking numerical thresholds, P/E ratios, profit margin percentages, or other quantitative forward-looking figures appear in the Outlook section beyond those audited above.*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | "YARTEMLA" (product name spelling) | UNSUPPORTED |
+| 2 | $171.8M cash/short-term investments as of Dec 31, 2025 | SUPPORTED |
+| 3 | 52-week low of $4.06 | SUPPORTED |
+| 4 | Current price $18.75 | SUPPORTED |
+| 5 | $116.5M net income | SUPPORTED |
+| 6 | $38.4M revenue | SUPPORTED |
+| 7 | Operating cash burn $116.1M in 2025 | SUPPORTED |
+| 8 | Cash position $171.8M (Outlook) | SUPPORTED |
+| 9 | Convertible senior notes due 2029 | SUPPORTED |
+| 10 | "Narrow runway" ($171.8M vs. $116.1M burn) | INFERENCE |
+| 11 | Novo Nordisk / zaltenibart milestone & royalty income | SUPPORTED |

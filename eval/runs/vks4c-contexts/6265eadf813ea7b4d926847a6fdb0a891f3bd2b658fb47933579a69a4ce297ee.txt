@@ -1,0 +1,81 @@
+STOCK DATA:
+{
+  "ticker": "CRBU",
+  "company_name": "Caribou Biosciences, Inc.",
+  "current_price": 0.6174,
+  "currency": "USD",
+  "market_cap": 66189916.0,
+  "forward_pe": -0.4887084,
+  "week_52_high": 3.535,
+  "week_52_low": 0.546,
+  "financial_currency": "USD",
+  "revenue": 10035000.0,
+  "net_income": -103403000.0,
+  "profit_margin_pct": 0.0,
+  "dividend_yield": 0.0,
+  "sector": "Healthcare",
+  "industry": "Biotechnology"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-03-05",
+    "summary": "Item 1A. Risk Factors. Investing in shares of our common stock involves a high degree of risk. You should carefully consider the following risks and uncertainties, together with all of the other information contained in this Annual Report on Form 10-K, including our financial statements and related notes, before making an investment decision. These disclosures reflect our beliefs and opinions as to factors that could materially and adversely affect our company and its securities in the future. References to past events are provided by way of example only and are not intended to be a complete listing or a representation as to whether or not such factors have occurred in the past or their likelihood of occurring in the future. Furthermore, the risks described below are not the only ones faci"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-13",
+    "summary": "Item 1A. Risk Factors. There have been no material changes to the Risk Factors previously disclosed in Item 1A. to Part I of our Form 10-K. The risks described in our Form 10-K are not the only risks facing our company. Additional risks and uncertainties not currently known to us or that we currently deem to be immaterial also may materially adversely affect our business, financial condition, and/or operating results. Item 2. Unregistered Sales of Equity Securities, Use of Proceeds, and Issuer Purchases of Equity Securities. Unregistered Sales of Equity Securities during the Three Months Ended June 30, 2026 There were no unregistered sales of equity securities during the three months ended June 30, 2026. Item 5. Other Information. During the quarter ended June 30, 2026, none of our directo"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from the Latest SEC Filings
+
+## Financial Position and Losses
+
+The company has incurred substantial operating losses since inception, with net losses of $148.1 million in 2025 and $149.1 million in 2024. As of December 31, 2025, the accumulated deficit reached $596.5 million. Notably, the company has never generated any revenue from product sales and has not commercialized any products.
+
+## Cash Position and Runway
+
+As of December 31, 2025, the company had cash, cash equivalents, and marketable securities of $142.8 million. Management expects these funds to be sufficient to support operations for at least the next 12 months from the filing date, though this projection is based on assumptions that may change.
+
+## Capital Requirements and Financing Needs
+
+The company requires substantial additional financing to conduct its planned pivotal clinical trial for vispa-cel and implement its operating plans. Without securing additional capital, the company will be unable to complete development and commercialization of its vispa-cel and CB-011 product candidates.
+
+## Primary Focus Areas
+
+Nearly all financial resources have been devoted to research and development, including preclinical and clinical development activities. The company anticipates significant expense increases as it advances product candidates through clinical phases, particularly the vispa-cel pivotal trial, which will involve large multicenter trials in the United States and foreign jurisdictions.
+
+## Risk Factors
+
+Key risks include uncertainty regarding profitability timeline, inability to predict future losses, potential clinical trial failures, regulatory challenges, and the company's dependence on successful capital raises to continue operations.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses several primary risk factors related to its financial position and capital needs:
+
+## Operating Losses and Profitability Concerns
+- The company has incurred significant operating losses since inception, with net losses of $148.1 million in 2025 and $149.1 million in 2024
+- An accumulated deficit of $596.5 million exists as of December 31, 2025
+- No products have been commercialized and no revenue from product sales has been generated
+- The company anticipates continued substantial operating losses for the foreseeable future
+- Profitability cannot be predicted, and even if achieved, may not be sustainable
+
+## Capital Requirements and Financing Needs
+- Substantial additional financing is required to conduct the planned pivotal clinical trial for vispa-cel and implement operating plans
+- Current cash, cash equivalents, and marketable securities of $142.8 million are expected to fund operations for only the next 12 months
+- Failure to obtain additional financing would prevent completion of product development and commercialization
+- Capital requirements are subject to numerous uncertainties including clinical trial progress, regulatory delays, workforce expansion, and manufacturing costs
+
+## Development and Commercialization Challenges
+- Costs increase substantially as product candidates advance through successive clinical phases with greater numbers of patients
+- Significant expenses are anticipated for regulatory approvals, manufacturing expansion, and establishing sales and marketing infrastructure
+- Risks include clinical trial failures, safety issues, regulatory challenges, and delays in receiving approvals

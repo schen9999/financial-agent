@@ -1,0 +1,73 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "generating revenue of 329.4 billion DKK"
+LABEL: SUPPORTED
+REASON: Source data lists revenue of 329,430,990,848 DKK (financial currency: DKK), which rounds to 329.4 billion DKK; the pre-written Financial Health section also states this figure explicitly.
+
+---
+
+CLAIM: "net income of 116.4 billion DKK"
+LABEL: SUPPORTED
+REASON: Source data lists net_income of 116,442,996,736 DKK, which rounds to 116.4 billion DKK; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "35.35% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 35.35; also present in the pre-written Financial Health and Risk Factors sections.
+
+---
+
+CLAIM: "52-week high of $64.16"
+LABEL: SUPPORTED
+REASON: Source data explicitly states week_52_high = 64.16 USD.
+
+---
+
+CLAIM: "to $38.26"
+LABEL: SUPPORTED
+REASON: Source data explicitly states current_price = 38.26 USD.
+
+---
+
+CLAIM: "a P/E of 9.35x"
+LABEL: SUPPORTED
+REASON: Source data states pe_ratio = 9.354523, which rounds to 9.35x; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "forward P/E of 11.50x"
+LABEL: SUPPORTED
+REASON: Source data states forward_pe = 11.501758, which rounds to 11.50x; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "a 4.7% dividend yield"
+LABEL: SUPPORTED
+REASON: Source data explicitly states dividend_yield = 4.7 (percent); confirmed in the pre-written Financial Health section.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "35.35% profit margin" (second instance, in Outlook)
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 35.35; also present in the pre-written Risk Factors section.
+
+---
+
+CLAIM: "the sharp decline from the 52-week high" (positional/directional claim)
+LABEL: SUPPORTED
+REASON: Arithmetic check: current price $38.26 vs. 52-week high $64.16 represents a decline of approximately 40.4%, which is unambiguously a sharp decline; both figures are present in the source data.
+
+---
+
+*No additional specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already evaluated above. All qualitative directional statements (e.g., "cautiously constructive," "secular expansion," "broaden the addressable patient population") are non-quantitative and fall outside the scope of this audit.*

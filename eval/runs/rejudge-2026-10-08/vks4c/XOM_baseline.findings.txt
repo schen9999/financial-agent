@@ -1,0 +1,79 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$361.1 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data lists revenue as $361,060,007,936, which rounds to $361.1 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$32.8 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data lists net income as $32,757,000,192, which rounds to $32.8 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "market capitalization of $674.6 billion"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap as $674,559,164,416, which rounds to $674.6 billion; confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "current P/E of 21.1x"
+LABEL: SUPPORTED
+REASON: Source data lists pe_ratio as 21.113256, which rounds to 21.1x; confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "forward P/E of 14.4x"
+LABEL: SUPPORTED
+REASON: Source data lists forward_pe as 14.400975, which rounds to 14.4x; confirmed in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "Q2 2026 upstream earnings surged 46% year-over-year"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states upstream earnings were $7.9 billion in Q2 2026 vs. $5.4 billion in Q2 2025; computing: (7.9 − 5.4) / 5.4 = 2.5 / 5.4 ≈ 46.3%, which rounds to 46% — within 0.15 pp; also stated explicitly in the SEC Filing Highlights pre-written section.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "above-historical refining margins"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states "Global refining margins were sharply above historical ranges due to unprecedented capacity reductions," which directly supports this directional claim.
+
+---
+
+CLAIM: "growing production contributions from advantaged low-cost assets in Guyana and the Permian"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states "advantaged volume growth contributed $1.14 billion, mainly from Guyana and Permian expansion," and the Strategic Focus section confirms these as advantaged assets driving growth.
+
+---
+
+CLAIM: "2030 emissions targets"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly references "2030 greenhouse gas reduction targets," and the 10-Q summary references "ExxonMobil's 2030 greenhouse gas emission-reductions plans."
+
+---
+
+CLAIM: "Q2 results depended on price rather than volume"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states price increases added $4.65 billion in Q2 earnings while advantaged volume growth contributed only $1.14 billion, and production actually declined to 4,514 thousand barrels daily from 4,630 — supporting the directional claim that price dominated over volume.
+
+---
+
+CLAIM: "$1.06 billion headwind from Middle East volume disruptions" (implied in "Production recovery in the Middle East…will determine whether volume headwinds ease or persist")
+LABEL: INFERENCE
+REASON: The Outlook does not quote the $1.06 billion figure directly but references Middle East volume headwinds, which is a directional restatement of the RAG-stated $1.06 billion Middle East disruption figure already cited in the SEC Filing Highlights pre-written section; no new unverifiable figure is introduced.
+
+---
+
+**SUMMARY NOTE:** No price targets, specific thresholds, named product milestones, or additional forward-looking numerical figures appear in the Outlook section beyond those audited above. All quantitative claims in the Executive Summary are supported by the source data, and all directional/qualitative forward-looking statements in the Outlook are grounded in identifiable source facts.

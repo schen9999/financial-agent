@@ -1,0 +1,87 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating 4.44 trillion TWD in revenue"
+LABEL: SUPPORTED
+REASON: Source data lists revenue of 4,440,492,343,296 TWD, which rounds to 4.44 trillion TWD; the pre-written Financial Health section also states "4.44 trillion TWD" in revenue.
+
+---
+
+CLAIM: "2.22 trillion TWD in net income"
+LABEL: SUPPORTED
+REASON: Source data lists net income of 2,216,808,415,232 TWD, which rounds to 2.22 trillion TWD; the pre-written Financial Health section confirms "2.22 trillion TWD."
+
+---
+
+CLAIM: "49.92% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 49.92; the pre-written sections also cite this figure directly.
+
+---
+
+CLAIM: "Trading at $472.20 USD"
+LABEL: SUPPORTED
+REASON: Source data lists current_price = 472.2 USD, matching exactly.
+
+---
+
+CLAIM: "$2.45 trillion USD market capitalization"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap = 2,449,053,057,024 USD, which rounds to $2.45 trillion; the pre-written Financial Health section confirms "$2.45 trillion USD."
+
+---
+
+CLAIM: "current P/E of 35.06x"
+LABEL: SUPPORTED
+REASON: Source data lists pe_ratio = 35.05568, which rounds to 35.06x; the pre-written Financial Health section also states "35.06x."
+
+---
+
+CLAIM: "forward P/E of 21.54x"
+LABEL: SUPPORTED
+REASON: Source data lists forward_pe = 21.53696, which rounds to 21.54x; the pre-written Financial Health section also states "21.54x."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: (Samsung and Intel named as competitors in advanced nodes)
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section explicitly names "Samsung and Intel in advanced chip manufacturing" as competitors TSM faces.
+
+---
+
+CLAIM: (gap between current P/E of 35.06x and forward P/E of 21.54x referenced implicitly as "gap between current and forward valuation multiples")
+LABEL: SUPPORTED
+REASON: Both the current P/E (35.06x) and forward P/E (21.54x) are present in the source data and pre-written sections; the directional claim that a gap exists is arithmetically verified (35.06 − 21.54 = 13.52 points).
+
+---
+
+**Additional checks — claims that are qualitative/directional but contain no additional standalone quantitative figures:**
+
+The Outlook section contains no additional standalone quantitative figures, price targets, specific thresholds, ratios, or named product milestones beyond those already audited above. All remaining content is qualitative narrative (e.g., "cautiously constructive," "secular tailwinds," "geographic diversification," "cross-strait geopolitical tensions," "AI infrastructure," "hyperscaler customers") and does not introduce new auditable quantitative claims.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | 4.44 trillion TWD in revenue | SUPPORTED |
+| 2 | 2.22 trillion TWD in net income | SUPPORTED |
+| 3 | 49.92% profit margin | SUPPORTED |
+| 4 | Trading at $472.20 USD | SUPPORTED |
+| 5 | $2.45 trillion USD market cap | SUPPORTED |
+| 6 | Current P/E of 35.06x | SUPPORTED |
+| 7 | Forward P/E of 21.54x | SUPPORTED |
+| 8 | Samsung and Intel as competitors | SUPPORTED |
+| 9 | Gap between current and forward multiples | SUPPORTED |
+
+All auditable quantitative and forward-looking claims in the Executive Summary and Outlook are **SUPPORTED** by the source data or pre-written sections. No unsupported or inference-only claims were identified. Notably, no figures appear to have been fabricated or miscalculated; the AI faithfully reproduced the figures from the pre-written sections, which themselves accurately reflect the raw source data.

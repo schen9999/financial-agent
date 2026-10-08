@@ -1,0 +1,15 @@
+Three judgings per run: raw, eval/runs/rejudge-2026-10-08, eval/runs/rejudge-2026-10-08-r2
+Per run (judge v2; j1 = original judging)
+  vks4c
+    all claims: mean 2.59% (range 2.26%–2.83%); j1 9/399 = 2.26%; j2 11/408 = 2.70%; j3 11/389 = 2.83%
+    numeric   : mean 1.48% (range 1.09%–1.89%); j1 3/274 = 1.09%; j2 4/275 = 1.45%; j3 5/264 = 1.89%
+    j1 Wilson: 2.26% (95% CI 1.2–4.2%)
+  2mzdd
+    all claims: mean 2.52% (range 1.71%–3.39%); j1 7/410 = 1.71%; j2 14/413 = 3.39%; j3 10/407 = 2.46%
+    numeric   : mean 1.26% (range 1.13%–1.52%); j1 3/265 = 1.13%; j2 4/264 = 1.52%; j3 3/266 = 1.13%
+    j1 Wilson: 1.71% (95% CI 0.8–3.5%)
+Between runs: paired ticker-level bootstrap on per-ticker rates averaged over the three judgings
+  vks4c - 2mzdd
+    rate        : ticker-averaged 2.19% vs 1.98%, diff +0.21 pts (95% bootstrap CI -1.88 to +2.32) over 40 tickers; vks4c higher on 12, equal 19, 2mzdd higher 9; sign p = 0.6636
+    numeric_rate: ticker-averaged 1.45% vs 1.20%, diff +0.25 pts (95% bootstrap CI -1.97 to +2.36) over 40 tickers; vks4c higher on 7, equal 30, 2mzdd higher 3; sign p = 0.3438
+    per-judging Fisher, all claims (continuity only): j1 p = 0.6214; j2 p = 0.6856; j3 p = 0.8266

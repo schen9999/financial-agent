@@ -1,0 +1,107 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "Phase 1b trials for VERVE-102 and VERVE-201"
+LABEL: SUPPORTED
+REASON: The SEC Filing Highlights (RAG) explicitly states "Phase 1b trials for VERVE-102 and VERVE-201" (Heart-2 and Pulse-1 trials respectively).
+
+---
+
+CLAIM: "total assets of $614.2 million"
+LABEL: SUPPORTED
+REASON: The 10-Q source data shows total assets of $614,163 thousand as of March 31, 2025, which rounds to $614.2 million; also confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "accumulated deficit of $743.0 million"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both explicitly state "accumulated losses totaling $743.0 million as of December 31, 2024."
+
+---
+
+CLAIM: "burning cash at an accelerating pace"
+LABEL: INFERENCE
+REASON: The Financial Health and Recent Developments sections both note a $76 million sequential decline in cash from December 2024 to March 2025 and characterize it as "accelerated cash burn," making this a direct restatement of those pre-written sections; however, no multi-period burn rate comparison is provided to confirm acceleration versus prior quarters, so this is an inference from the single-quarter observation.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "$20.0 million milestone payment received in February 2025"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "In February 2025, the company received a $20.0 million milestone payment from Eli Lilly under the Lp(a) program," and this is repeated in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "projected mid-2027 runway"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections both state "Management believes existing capital will fund operations into mid-2027."
+
+---
+
+CLAIM: "no approved products or product revenue"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "The company has no approved products and has generated no revenue from product sales," confirmed in multiple pre-written sections.
+
+---
+
+CLAIM: "substantial additional funding beyond its projected mid-2027 runway"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "Substantial additional funding will be needed to continue operations and advance clinical development," and the SEC Filing Highlights pre-written section repeats this; the mid-2027 runway figure is also sourced (see above).
+
+---
+
+CLAIM: "VERVE-102 and VERVE-201 Phase 1b trials"
+LABEL: SUPPORTED
+REASON: Explicitly named as Phase 1b trials in the RAG SEC Highlights (Heart-2 and Pulse-1 respectively) and the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "accelerated advancement to Phase 2"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights reference "a planned Phase 2 clinical trial for the PCSK9 program," confirming Phase 2 advancement is a named milestone in the source data; the claim is a forward-looking restatement of this existing plan.
+
+---
+
+CLAIM: "cash burn is accelerating"
+LABEL: INFERENCE
+REASON: The pre-written Financial Health and Recent Developments sections characterize the Q1 2025 cash decline as "accelerated cash burn," making this a restatement of those sections; however, no prior-quarter burn rate is provided in the source data to arithmetically confirm acceleration, so this remains an inference from a single data point.
+
+---
+
+CLAIM: "Eli Lilly relationship bears watching as a potential source of additional milestone payments"
+LABEL: INFERENCE
+REASON: The source data confirms the Eli Lilly partnership and one $20.0 million milestone payment already received; the claim that additional milestone payments could follow is a forward-looking inference not explicitly stated in the source data, though it is a reasonable derivation from the existence of a milestone-based collaboration agreement.
+
+---
+
+CLAIM: "could extend the runway without dilutive equity issuance"
+LABEL: UNSUPPORTED
+REASON: No source data or pre-written section characterizes potential future Eli Lilly milestone payments as non-dilutive or discusses their specific impact on the runway; this qualifier is absent from the context entirely.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Phase 1b trials for VERVE-102 and VERVE-201 | SUPPORTED |
+| 2 | Total assets of $614.2 million | SUPPORTED |
+| 3 | Accumulated deficit of $743.0 million | SUPPORTED |
+| 4 | Burning cash at an accelerating pace | INFERENCE |
+| 5 | $20.0 million milestone payment received in February 2025 | SUPPORTED |
+| 6 | Projected mid-2027 runway | SUPPORTED |
+| 7 | No approved products or product revenue | SUPPORTED |
+| 8 | Substantial additional funding beyond mid-2027 runway | SUPPORTED |
+| 9 | VERVE-102 and VERVE-201 Phase 1b trials (Outlook) | SUPPORTED |
+| 10 | Accelerated advancement to Phase 2 | SUPPORTED |
+| 11 | Cash burn is accelerating (Outlook) | INFERENCE |
+| 12 | Eli Lilly as potential source of additional milestone payments | INFERENCE |
+| 13 | Could extend runway without dilutive equity issuance | UNSUPPORTED |

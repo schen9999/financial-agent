@@ -547,6 +547,11 @@ Phase 3 — demo polish:
   either.
 - Cross-encoder reranking and the multi-agent supervisor shipped default-off
   because evals showed no grounding gain at higher cost/latency. State it that way.
+  Reranking was re-tested 2026-10-08 on pre-registered criteria (vks4c vs
+  2mzdd, 40 tickers, f3043751): DON'T SHIP — refusals 5 vs 7 of 35 (no
+  drop), +11.0 s per ticker warm (41.5%, limit 20%); bound figures and
+  judge-flagged grounding unchanged. The critic A/B was dropped before the
+  demo (README decisions).
 - Judge noise (2026-10-06, eval-methodology "the judge's run-to-run noise
   on identical inputs"): the same briefs re-judged with the same inputs,
   prompt and temperature-0 judge moved by up to ~2x (4hsn2 15/399 ->

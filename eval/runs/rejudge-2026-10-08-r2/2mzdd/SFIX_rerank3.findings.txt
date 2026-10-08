@@ -1,0 +1,114 @@
+I will now systematically audit every quantitative, positional, and forward-looking claim in the Executive Summary and Outlook sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "generated $1.35 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $1,348,119,040, which rounds to $1.35 billion; the pre-written sections also state "$1.35 billion in revenue."
+
+---
+
+CLAIM: "market capitalization of just $365 million"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $364,738,080, which rounds to $365 million; confirmed in the Financial Health section.
+
+---
+
+CLAIM: "trades near its 52-week low of $2.10"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists week_52_low as $2.10, and current_price is $2.73, which is near (but above) that low; the $2.10 figure is directly present in the source data.
+
+---
+
+CLAIM: "down sharply from a high of $5.75"
+LABEL: SUPPORTED
+REASON: Source data lists week_52_high as $5.745, which rounds to $5.75 as stated; the pre-written sections also reference "$5.75 high."
+
+---
+
+CLAIM: "negative forward P/E of -54.6"
+LABEL: SUPPORTED
+REASON: Source data explicitly states forward_pe of -54.6.
+
+---
+
+CLAIM: "persistent net losses"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$12,606,000, confirming a net loss; the pre-written sections corroborate this.
+
+---
+
+CLAIM: "three consecutive fiscal years of decline have been the primary engine of revenue pressure"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "the company has experienced declining active clients over the past three fiscal years, which has negatively impacted revenue."
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "active client trajectory quarter over quarter" (as a monitoring variable)
+LABEL: INFERENCE
+REASON: The source data and SEC highlights confirm multi-year active client decline as the key business driver; recommending quarter-over-quarter monitoring is a direct logical extension of that disclosed risk, requiring no additional facts.
+
+---
+
+CLAIM: "per-client engagement and repeat purchase rates" (as monitoring variables)
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and Risk Factors sections explicitly identify "client retention and repeat purchase engagement" as critical vulnerabilities central to the business model.
+
+---
+
+CLAIM: "gross margin trends as indicators of whether supply chain and sourcing pressures — particularly China-linked tariff exposure — are being absorbed or passed through"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and Risk Factors sections explicitly disclose tariff exposure from China-based manufacturing and supply chain cost pressures as key risks; gross margin as the relevant indicator is a direct and obvious derivation requiring no absent facts.
+
+---
+
+CLAIM: "continued client declines, deteriorating marketing efficiency, and any escalation in trade policy uncertainty would deepen the bear case"
+LABEL: SUPPORTED
+REASON: All three named headwinds — client declines, marketing efficiency, and trade policy uncertainty — are explicitly disclosed in the SEC Filing Highlights and Risk Factors pre-written sections.
+
+---
+
+CLAIM: "a stock trading near multi-year lows"
+LABEL: UNSUPPORTED
+REASON: The source data provides only a 52-week low ($2.10) and 52-week high ($5.745); no multi-year price history is present in the source data, so "multi-year lows" cannot be verified and goes beyond what the context supports.
+
+---
+
+CLAIM: "persistent losses" (in the Outlook section)
+LABEL: SUPPORTED
+REASON: Source data confirms net_income of -$12,606,000 and a negative profit margin of -0.94%, directly supporting the characterization of persistent losses.
+
+---
+
+CLAIM: "supply chain concentration risk" (as a named risk factor in the Outlook)
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states "nearly all merchandise sourced from third-party vendors primarily in China," and the Risk Factors section identifies heavy reliance on third-party vendors as a disclosed risk.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $1.35 billion in revenue | SUPPORTED |
+| 2 | Market cap of $365 million | SUPPORTED |
+| 3 | 52-week low of $2.10 | SUPPORTED |
+| 4 | High of $5.75 | SUPPORTED |
+| 5 | Negative forward P/E of -54.6 | SUPPORTED |
+| 6 | Persistent net losses | SUPPORTED |
+| 7 | Three consecutive fiscal years of client decline | SUPPORTED |
+| 8 | Active client trajectory QoQ as monitoring variable | INFERENCE |
+| 9 | Per-client engagement and repeat purchase rates | SUPPORTED |
+| 10 | China-linked tariff exposure / gross margin indicator | SUPPORTED |
+| 11 | Client declines, marketing efficiency, trade policy as headwinds | SUPPORTED |
+| 12 | Stock trading near multi-year lows | UNSUPPORTED |
+| 13 | Persistent losses (Outlook) | SUPPORTED |
+| 14 | Supply chain concentration risk | SUPPORTED |

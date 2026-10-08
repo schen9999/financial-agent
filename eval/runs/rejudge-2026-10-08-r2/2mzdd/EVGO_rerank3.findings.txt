@@ -1,0 +1,52 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $403 million in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $402,948,000, which rounds to $403 million; the pre-written sections also state "$403 million in revenue."
+
+---
+
+CLAIM: "carrying a net loss of $54.1 million"
+LABEL: SUPPORTED
+REASON: Source data explicitly states net_income of -$54,125,000, which rounds to -$54.1 million.
+
+---
+
+CLAIM: "market capitalization of approximately $406 million"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $405,725,248, which rounds to approximately $406 million.
+
+---
+
+CLAIM: "trades near its 52-week low of $1.23"
+LABEL: SUPPORTED
+REASON: Source data explicitly states week_52_low of $1.23, and current_price of $1.29 is arithmetically near that level.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: (no specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section)
+LABEL: N/A
+REASON: The Outlook section contains only qualitative and directional statements (e.g., "cautious," "long-term secular growth," "restrictive covenants," "NACS transition," "unfavorable conditions") with no specific quantitative claims to audit. All named entities (DOE loan, NACS transition, rideshare/commercial fleet, federal/state incentives) are present in the source data and pre-written sections, but none are paired with a specific number, percentage, ratio, or measurable threshold that requires verification.
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $403 million in revenue | SUPPORTED |
+| 2 | Net loss of $54.1 million | SUPPORTED |
+| 3 | Market cap ~$406 million | SUPPORTED |
+| 4 | 52-week low of $1.23 | SUPPORTED |
+
+No quantitative claims in the Outlook section required evaluation. All four auditable claims in the Executive Summary are **SUPPORTED** by the raw source data.

@@ -1,0 +1,69 @@
+I will now systematically audit every quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "currently generating $266 million in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $265,512,000, which rounds to $266 million; the pre-written Financial Health section also states "$266 million."
+
+---
+
+CLAIM: "sustaining a net loss of $53 million"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$52,997,000, which rounds to -$53 million; confirmed in pre-written sections.
+
+---
+
+CLAIM: "trading at $0.74"
+LABEL: SUPPORTED
+REASON: Source data shows current_price of $0.739, which rounds to $0.74; confirmed in pre-written Financial Health section.
+
+---
+
+CLAIM: "near its 52-week low"
+LABEL: SUPPORTED
+REASON: Source data shows 52-week low of $0.45 and current price of $0.739; $0.739 is closer to the low ($0.45) than to the high ($1.56), so "near its 52-week low" holds arithmetically (the price sits 26% above the low vs. 53% below the high).
+
+---
+
+CLAIM: "a fraction of its 52-week high of $1.56"
+LABEL: SUPPORTED
+REASON: Source data explicitly states week_52_high of $1.56; $0.739 / $1.56 ≈ 0.47, confirming it is a fraction of the high.
+
+---
+
+CLAIM: "a market capitalization of just $82 million"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $82,049,312, which rounds to $82 million; confirmed in pre-written Financial Health section.
+
+---
+
+**OUTLOOK**
+
+The Outlook section is largely qualitative and directional. I will identify every specific quantitative or forward-looking figure embedded within it.
+
+---
+
+CLAIM: (No specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, named product milestones, or forward-looking numbers appear in the Outlook section.)
+LABEL: N/A
+REASON: The Outlook section contains only qualitative directional statements, named risk categories (AI disruption, B2B pivot, enterprise customer acquisition, talent retention), and watch-item descriptions — none of which constitute specific quantitative or forward-looking numerical claims requiring arithmetic verification. All qualitative characterizations (e.g., "headwinds meaningfully outweighing tailwinds," "execution risk is high," "unproven") are grounded in risk factors explicitly present in the source data and pre-written sections.
+
+---
+
+**SUMMARY TABLE**
+
+| Claim | Label |
+|---|---|
+| $266 million in revenue | SUPPORTED |
+| Net loss of $53 million | SUPPORTED |
+| Trading at $0.74 | SUPPORTED |
+| Near its 52-week low | SUPPORTED |
+| 52-week high of $1.56 | SUPPORTED |
+| Market capitalization of $82 million | SUPPORTED |
+| Outlook section — no quantitative claims found | N/A |
+
+All six auditable quantitative claims in the Executive Summary are **SUPPORTED** by the raw source data. The Outlook section contains no specific quantitative figures, price targets, ratios, or forward-looking numbers requiring verification.

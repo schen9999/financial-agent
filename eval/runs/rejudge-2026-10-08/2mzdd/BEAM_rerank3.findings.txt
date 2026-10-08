@@ -1,0 +1,73 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "generating $156 million in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data lists revenue of $156,035,008, and the pre-written Financial Health and Recent Developments sections both state "$156 million in revenue."
+
+---
+
+CLAIM: "market capitalization of $2.56 billion"
+LABEL: SUPPORTED
+REASON: The raw source data lists market_cap of $2,558,435,584, which rounds to $2.56 billion; the pre-written Financial Health section also states "$2.56 billion."
+
+---
+
+CLAIM: "accumulated losses of $1.6 billion"
+LABEL: SUPPORTED
+REASON: The SEC Highlights and Risk Factors sections both explicitly state "accumulated deficit of $1.6 billion as of December 31, 2025."
+
+---
+
+CLAIM: "52-week high of $38.26"
+LABEL: SUPPORTED
+REASON: The raw source data lists week_52_high as $38.26, confirmed in multiple pre-written sections.
+
+---
+
+CLAIM: "to $24.77"
+LABEL: SUPPORTED
+REASON: The raw source data lists current_price as $24.77, confirmed in the pre-written Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "the company has yet to complete any pivotal clinical trials or secure marketing approval for any product candidate"
+LABEL: SUPPORTED
+REASON: The SEC Highlights explicitly state "No pivotal clinical trials have been completed and no product candidates have received marketing approval," confirmed in the pre-written SEC Filing Highlights and Risk Factors sections.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "$1.2 billion cash position"
+LABEL: SUPPORTED
+REASON: The SEC Highlights explicitly state "the company had $1.2 billion in cash, cash equivalents, and marketable securities as of December 31, 2025," confirmed in the pre-written SEC Filing Highlights section.
+
+---
+
+CLAIM: "at least 12 months of operational runway"
+LABEL: SUPPORTED
+REASON: The SEC Highlights state "Management believes existing capital will fund operations for at least the next 12 months," confirmed in the pre-written SEC Filing Highlights section.
+
+---
+
+CLAIM: "a development timeline that structurally spans a decade or more"
+LABEL: SUPPORTED
+REASON: The SEC Highlights and Risk Factors both state "development timelines typically span 10-15 years from discovery to market availability," and "a decade or more" is a conservative restatement of the lower bound of that range (10 years).
+
+---
+
+CLAIM: "a stock already in retreat from its 52-week high"
+LABEL: SUPPORTED
+REASON: Current price of $24.77 is arithmetically below the 52-week high of $38.26 (a decline of approximately 35.3%), confirming the stock is in retreat from its 52-week high.
+
+---
+
+*No additional quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Executive Summary or Outlook sections beyond those audited above.*

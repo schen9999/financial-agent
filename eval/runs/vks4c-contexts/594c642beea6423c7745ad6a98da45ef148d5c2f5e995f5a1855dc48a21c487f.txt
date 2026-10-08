@@ -1,0 +1,94 @@
+STOCK DATA:
+{
+  "ticker": "EVGO",
+  "company_name": "EVgo, Inc.",
+  "current_price": 1.29,
+  "currency": "USD",
+  "market_cap": 405725248.0,
+  "forward_pe": -2.931818,
+  "week_52_high": 4.82,
+  "week_52_low": 1.23,
+  "financial_currency": "USD",
+  "revenue": 402948000.0,
+  "net_income": -54125000.0,
+  "profit_margin_pct": -13.5,
+  "dividend_yield": 0.0,
+  "sector": "Consumer Cyclical",
+  "industry": "Specialty Retail"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-03-09",
+    "summary": "Item 1A. Risk Factors . In the course of conducting our business operations, we are exposed to a variety of risks, any of which have affected or could materially and adversely affect our business, financial condition and results of operations. Before you make a decision to buy our securities, in addition to the risks and uncertainties discussed above under \u201cCautionary Statement Regarding Forward-Looking Statements,\u201d you should carefully consider the specific risks set forth herein. If any of these risks actually occur, our business, financial condition, liquidity and results of operations may be harmed. As a result, the market price of our securities could decline, possibly significantly or permanently, and you could lose all or part of your investment. Additionally, the risks and uncertai"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-06",
+    "summary": "Item 1A. Risk Factors In the course of conducting our business operations, we are exposed to a variety of risks, any of which have affected or could materially adversely affect our business, financial condition, and results of operations. The market price of our securities could decline, possibly significantly or permanently, if one or more of these risks and uncertainties occur. Before you make a decision to buy our securities, in addition to the risks and uncertainties discussed above under \u201cCautionary Statement Regarding Forward-Looking Statements,\u201d you should carefully consider the specific risk factors set forth in the \u201cRisk Factors\u201d section in the Annual Report. There have been no material changes to the risk factors disclosed in Part I, Item 1A of the Annual Report. See the \u201cItem 5 "
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from EVGO's SEC Filings
+
+## Business Stage and Financial Position
+EVGO is an early-stage growth company with a history of operating losses and expects to continue incurring significant expenses and losses in the near and medium term. The company has experienced rapid growth recently, though this presents management challenges.
+
+## Growth Dependencies
+The company's success is heavily dependent on:
+- Continued adoption and demand for electric vehicles
+- OEMs' ability to supply EVs to the market
+- Relationships with automotive OEM and fleet partners
+- The ability to fully draw down on a Department of Energy (DOE) Loan, which is critical to business growth
+
+## Competitive and Market Landscape
+EVGO faces competition from multiple companies in the developing EV charging market. The company's market opportunity estimates and growth forecasts may prove inaccurate, and changes to fuel economy standards or alternative fuel success could negatively impact demand.
+
+## Operational Challenges
+Key operational risks include:
+- Dependence on a limited number of vendors for charging equipment
+- Reliance on a limited number of customers and OEM partners
+- Construction risks, cost overruns, and installation delays
+- Supply chain disruptions
+- Political uncertainty at federal and state levels affecting the EV sector
+
+## Financing and Debt Constraints
+The DOE Loan, which secures a substantial portion of consolidated assets, imposes significant restrictions on operations and cash distributions from subsidiaries. The company may need to raise additional capital, which may not be available on favorable terms.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The primary risk factors fall into three main categories:
+
+## Risks Related to Business Operations
+
+- Operating as an early-stage growth company with a history of losses and expectations of continuing losses in the near and medium term
+- Heavy dependence on EV adoption rates and OEM supply capabilities
+- Challenges in managing rapid growth effectively
+- Political and regulatory uncertainty at federal and state levels affecting the EV sector
+- Potential inaccuracy in market opportunity estimates and growth forecasts
+- Increasing competition in the EV charging market
+- Reliance on a limited number of vendors for charging equipment and support services
+- Dependence on a limited number of customers and OEM partners
+- Construction risks, cost overruns, and installation delays
+- Supply chain disruptions
+- Need for additional funding that may not be available on favorable terms
+
+## Risks Related to the DOE Loan
+
+- Substantial dependence on the ability to fully draw down the DOE Loan, which has multiple conditions precedent
+- Risk of default if loan covenants and terms are not maintained
+- Significant assets pledged as collateral, limiting capacity for additional secured debt
+- Operational restrictions imposed through the loan agreement
+- Limitations on cash distributions from subsidiaries needed to fund operations
+
+## Risks Related to the EV Market
+
+- Potential negative impacts from changes to fuel economy standards or alternative fuel success
+- Uncertainty regarding the pace of electrification in rideshare and commercial fleet sectors and their reliance on public fast charging networks

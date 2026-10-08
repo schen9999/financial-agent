@@ -1,0 +1,75 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "a connected network of 66,350 chargers"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights state "approximately 66,350 chargers were connected to the Blink Network" as of year-end 2025.
+
+---
+
+CLAIM: "generating $96.6 million in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = $96,550,000, which rounds to $96.6 million; also confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "a market capitalization of $74.0 million"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = $73,976,720, which rounds to $74.0 million.
+
+---
+
+CLAIM: "an 81% decline from its 52-week high"
+LABEL: SUPPORTED
+REASON: Computed as (2.63 − 0.5104) / 2.63 = 2.1196 / 2.63 ≈ 80.6%, which rounds to 81%; consistent with the pre-written Financial Health section's stated 81% figure and within acceptable rounding tolerance.
+
+---
+
+CLAIM: "a net loss of $50.7 million"
+LABEL: SUPPORTED
+REASON: Source data shows net_income = −$50,667,000, which rounds to −$50.7 million.
+
+---
+
+CLAIM: "a negative forward P/E ratio"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = −2.2095237, confirming a negative forward P/E ratio.
+
+---
+
+CLAIM: "the 37% workforce reduction"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights state the workforce was reduced from 513 to approximately 320 employees; (513 − 320) / 513 ≈ 37.6%, consistent with the 37% figure stated in the pre-written SEC Filing Highlights section.
+
+---
+
+CLAIM: "transition to contract manufacturing"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly state "transitioning to contract manufacturing (completed in January 2026)."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "U.S. DC fast charging infrastructure is expanding meaningfully"
+LABEL: INFERENCE
+REASON: The RAG SEC Highlights report a 30% year-over-year increase in DC fast charging ports to 70,007, from which "expanding meaningfully" is a direct qualitative restatement.
+
+---
+
+CLAIM: "the loss margin that exceeds half of revenue"
+LABEL: SUPPORTED
+REASON: Source data shows profit_margin_pct = −52.48%, meaning the net loss is 52.48% of revenue, which exceeds 50% (half); the pre-written sections also state −52.5%.
+
+---
+
+CLAIM: "The Zemetric acquisition also adds software-driven revenue potential"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights confirm the July 2025 acquisition of Zemetric Inc. "filling product gaps in software-driven fleet management and energy management services."

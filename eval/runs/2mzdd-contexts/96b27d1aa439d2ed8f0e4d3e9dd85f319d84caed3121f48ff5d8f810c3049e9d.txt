@@ -1,0 +1,106 @@
+STOCK DATA:
+{
+  "ticker": "JPM",
+  "company_name": "JPMorgan Chase & Co.",
+  "current_price": 329.58,
+  "currency": "USD",
+  "market_cap": 876084985856.0,
+  "pe_ratio": 14.193798,
+  "forward_pe": 13.167646,
+  "week_52_high": 366.5,
+  "week_52_low": 279.1,
+  "financial_currency": "USD",
+  "revenue": 186328006656.0,
+  "net_income": 63634001920.0,
+  "profit_margin_pct": 34.92,
+  "dividend_yield": 1.99,
+  "sector": "Financial Services",
+  "industry": "Banks - Diversified"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-02-13",
+    "summary": "Item 1A. Risk Factors. The following discussion sets forth the material risk factors that could affect JPMorganChase\u2019s financial condition and operations. Readers should not consider any descriptions of these factors to be a complete set of all potential risks that could affect the Firm. Any of the risk factors discussed below could by itself, or combined with other factors, materially and adversely affect JPMorganChase\u2019s business, results of operations, financial condition, capital position, liquidity, competitive position or reputation, including by materially increasing expenses or decreasing revenues, which could result in material losses or a decrease in earnings. Summary The principal risk factors include: \u2022 Legal and Regulatory risks, including the impact of extensive supervision an"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-06",
+    "summary": "Item 1A: Risk Factors on pages 9\u201331 of JPMorganChase\u2019s 2025 Form 10-K for information on the financial consequences to holders of the Firm\u2019s debt and equity securities in a resolution scenario. Refer to Other capital requirements on page 98 of JPMorganChase\u2019s 2025 Form 10-K for additional information on TLAC. 50 U.S. broker-dealer regulatory capital J.P. Morgan Securities JPMorganChase\u2019s principal U.S. broker-dealer subsidiary is J.P. Morgan Securities. J.P. Morgan Securities is subject to the regulatory capital requirements of Rule 15c3-1 under the Securities Exchange Act of 1934 (the \u201cNet Capital Rule\u201d). J.P. Morgan Securities is also registered as a futures commission merchant and is subject to regulatory capital requirements, including those imposed by the SEC, the Commodity Futures Tr"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I cannot provide a summary of the latest 10-K and 10-Q based on the information provided. The context materials only contain excerpts from JPMorgan Chase's risk factors disclosure, specifically focusing on legal, regulatory, and operational risks.
+
+To provide a comprehensive summary of the latest 10-K and 10-Q filings, I would need access to additional sections of those documents, including:
+
+- Management's Discussion and Analysis (MD&A)
+- Financial statements and results of operations
+- Liquidity and capital resources
+- Business segment performance
+- Balance sheet and income statement highlights
+- Cash flow information
+- Management's assessment of financial condition
+
+The risk factors section alone does not capture the overall financial performance, strategic initiatives, or key business developments that would typically be highlighted in a 10-K or 10-Q summary. If you have specific questions about the risk factors disclosed or other particular aspects of JPMorgan Chase's filings, I'd be happy to help with those.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+JPMorganChase identifies the following principal risk factors that could materially and adversely affect its business, results of operations, financial condition, capital position, liquidity, competitive position, or reputation:
+
+## Legal and Regulatory Risks
+- Extensive supervision and regulation affecting business operations
+- Changes in the application, interpretation, or enforcement of applicable law
+- Executive branch actions that regulate financial services businesses
+- Differences in regulatory implementation across jurisdictions creating competitive disadvantages
+- Penalties and repercussions from resolving litigation and governmental investigations
+- Less predictable legal frameworks in certain jurisdictions
+- Potential losses for security holders if the firm enters resolution
+
+## Political and Market Risks
+- Economic uncertainty from political developments
+- Unfavorable economic and market events and conditions
+- Changes in interest rates and credit spreads
+- Market fluctuations affecting investments and market-making positions
+
+## Credit and Liquidity Risks
+- Adverse changes in financial condition of clients, customers, and counterparties
+- Declines in collateral value
+- Concentrations of credit risk
+- Constrained liquidity impairing operations
+- Dependence on subsidiaries for funding
+- Adverse effects from credit rating downgrades
+
+## Capital and Operational Risks
+- Inability to satisfy regulatory capital requirements
+- Dependence on operational systems and employees
+- Cyber attacks and extraordinary events
+- Risks from new products, services, and technologies
+- Data management and personal information safeguarding risks
+- Vendor and service provider oversight risks
+
+## Strategic, Conduct, and Reputation Risks
+- Ineffective business strategies and significant competition
+- Climate change impacts
+- Employee misconduct
+- Damage from client and business activity decisions
+- Failure to manage conflicts of interest or fiduciary obligations
+
+## Country and People Risks
+- Hostilities between countries or within regions
+- Local economic, political, regulatory, and social factors
+- Criticality of attracting and retaining qualified employees

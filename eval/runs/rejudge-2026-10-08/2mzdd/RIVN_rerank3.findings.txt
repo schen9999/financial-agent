@@ -1,0 +1,79 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $5.9 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $5,882,999,808, which rounds to $5.9 billion as stated in the pre-written sections and confirmed in the raw data.
+
+---
+
+CLAIM: "net loss of $3.2 billion"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$3,232,999,936, which rounds to -$3.2 billion, consistent with the pre-written sections.
+
+---
+
+CLAIM: "market capitalization of $20.8 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $20,762,320,896, which rounds to $20.8 billion.
+
+---
+
+CLAIM: "Trading near its 52-week low of $12.39 at $14.34 per share"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists week_52_low as $12.39 and current_price as $14.34; the positional claim that $14.34 is "near" the 52-week low of $12.39 is arithmetically consistent ($14.34 is only $1.95 above the low, well within proximity).
+
+---
+
+CLAIM: "the R2 ramp at its Illinois facility"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and SEC Filing Highlights pre-written section both confirm production at the Normal Factory in Illinois and the R2 platform ramp.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "targeted Illinois production capacity expansion"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states current production at the Normal Factory in Illinois with capacity for 215,000 vehicles annually, confirming an Illinois facility capacity figure exists in the source.
+
+---
+
+CLAIM: "autonomy subscriptions" (as a named product/service milestone)
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly names "Autonomy+ Features" with "paid subscription services launching in April 2026," and the pre-written SEC Filing Highlights section references "paid autonomy subscriptions launching in April 2026."
+
+---
+
+CLAIM: "FleetOS" (as a named product)
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly names "FleetOS for commercial fleet management" and the pre-written SEC Filing Highlights section also references it.
+
+---
+
+CLAIM: "charging, and insurance" (as named services in the software/services layer)
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and the pre-written sections explicitly list charging and insurance among Rivian's software and services offerings.
+
+---
+
+CLAIM: "the stock's proximity to its 52-week low signals that the market is demanding proof rather than promise"
+LABEL: SUPPORTED
+REASON: This is a qualitative/directional interpretation, but the underlying positional fact — that $14.34 is near the 52-week low of $12.39 — is arithmetically verified; $14.34 is approximately 15.7% above the 52-week low of $12.39, which is consistent with "proximity to its 52-week low."
+
+---
+
+CLAIM: "on-time R2 deliveries" (implying a specific delivery timeline exists)
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states "R2 customer deliveries expected in Q2 2026," providing the specific timeline the brief implicitly references.
+
+---
+
+**No additional standalone quantitative figures, price targets, specific thresholds, ratios, or named forward-looking numbers appear in the Executive Summary or Outlook sections beyond those audited above.** The remaining content in the Outlook is qualitative directional language (e.g., "cautious," "conditional path to constructive," "substantial headwinds") with no specific numerical claims requiring verification.

@@ -1,0 +1,97 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "its only FDA-approved product (approved December 2025)"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "YARTEMLEA is the company's only commercialized product, approved by the FDA in December 2025."
+
+---
+
+CLAIM: "52-week low of $4.06"
+LABEL: SUPPORTED
+REASON: The stock data explicitly lists `"week_52_low": 4.06`.
+
+---
+
+CLAIM: "to $18.75"
+LABEL: SUPPORTED
+REASON: The stock data explicitly lists `"current_price": 18.75`.
+
+---
+
+CLAIM: "324.88% profit margin"
+LABEL: SUPPORTED
+REASON: The stock data explicitly lists `"profit_margin_pct": 324.88`, and the pre-written Financial Health section confirms this figure.
+
+---
+
+CLAIM: "$38.4 million in revenue"
+LABEL: SUPPORTED
+REASON: The stock data lists `"revenue": 38422000.0`, which rounds to $38.4 million.
+
+---
+
+CLAIM: "$1.36 billion market capitalization"
+LABEL: SUPPORTED
+REASON: The stock data lists `"market_cap": 1357281024.0`, which rounds to $1.36 billion.
+
+---
+
+CLAIM: "$171.8 million liquidity position"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights explicitly state "the company held $171.8 million in cash, cash equivalents, and short-term investments" as of December 31, 2025.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "YARTEMLEA's recent FDA approval" [as a tailwind]
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights confirm YARTEMLEA was approved by the FDA in December 2025, establishing it as a recent approval.
+
+---
+
+CLAIM: "the Novo Nordisk partnership for zaltenibart provides a potential secondary value driver"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly describe the Novo Nordisk agreement involving zaltenibart and its potential milestone and royalty payments.
+
+---
+
+CLAIM: "the company's cash burn rate relative to its available liquidity leaves limited margin for a slow commercial launch"
+LABEL: INFERENCE
+REASON: This is a directional comparison derivable from the two present figures — $116.1 million cash used in operations for 2025 versus $171.8 million in available liquidity — which implies roughly 1.5 years of runway, supporting the characterization of "limited margin."
+
+---
+
+CLAIM: "reimbursement decisions from government and private payers remain pending"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors and SEC Highlights both explicitly state that reimbursement coverage is uncertain and that significant delays in obtaining coverage are a disclosed risk, consistent with decisions being unresolved.
+
+---
+
+*(No additional standalone quantitative figures, price targets, specific thresholds, ratios, or named milestones with numeric values appear in the Outlook section beyond those already evaluated above. The remaining Outlook content is qualitative/directional language without specific quantitative claims requiring arithmetic verification.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | YARTEMLEA approved December 2025 | SUPPORTED |
+| 2 | 52-week low of $4.06 | SUPPORTED |
+| 3 | Current price $18.75 | SUPPORTED |
+| 4 | 324.88% profit margin | SUPPORTED |
+| 5 | $38.4 million in revenue | SUPPORTED |
+| 6 | $1.36 billion market capitalization | SUPPORTED |
+| 7 | $171.8 million liquidity position | SUPPORTED |
+| 8 | YARTEMLEA's recent FDA approval (Outlook) | SUPPORTED |
+| 9 | Novo Nordisk / zaltenibart secondary value driver | SUPPORTED |
+| 10 | Cash burn vs. liquidity → limited margin | INFERENCE |
+| 11 | Reimbursement decisions remain pending | SUPPORTED |

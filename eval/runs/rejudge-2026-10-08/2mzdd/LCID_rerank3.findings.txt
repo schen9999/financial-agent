@@ -1,0 +1,65 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "only two commercially available vehicles"
+LABEL: SUPPORTED
+REASON: The RAG — Risk Factors section explicitly states "limited operating history with only two commercially available vehicles," and the SEC Filing Highlights pre-written section repeats this fact.
+
+---
+
+CLAIM: "generating $1.55 billion in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data shows revenue of $1,547,122,048, which rounds to $1.55 billion; the Financial Health pre-written section also states "$1.55 billion in revenue."
+
+---
+
+CLAIM: "a net loss of $4.60 billion"
+LABEL: SUPPORTED
+REASON: The raw source data shows net_income of -$4,604,930,048, which rounds to -$4.60 billion; confirmed in the Financial Health section as "net loss of $4.60 billion."
+
+---
+
+CLAIM: "an accumulated deficit of $15.6 billion"
+LABEL: SUPPORTED
+REASON: The RAG — Risk Factors section explicitly states "accumulated deficit of $15.6 billion as of December 31, 2025," and the Risk Factors pre-written section repeats this figure.
+
+---
+
+CLAIM: "The stock's sharp decline from its 52-week high of $22.42 to $3.89"
+LABEL: SUPPORTED
+REASON: The raw source data confirms week_52_high of $22.42 and current_price of $3.89; the Financial Health and Recent Developments pre-written sections also state these exact figures.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "a deeply negative profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data shows profit_margin_pct of -249.21%, which is explicitly described as "severely negative" in the Financial Health section; the directional characterization is fully supported.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Outlook section. All other statements in the Outlook are qualitative directional assessments — e.g., "cautious," "structural headwinds," "watch production volume trends" — and contain no specific quantitative claims subject to audit under the defined criteria.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | Only two commercially available vehicles | SUPPORTED |
+| 2 | $1.55 billion in revenue | SUPPORTED |
+| 3 | Net loss of $4.60 billion | SUPPORTED |
+| 4 | Accumulated deficit of $15.6 billion | SUPPORTED |
+| 5 | 52-week high of $22.42 | SUPPORTED |
+| 6 | Current price of $3.89 | SUPPORTED |
+| 7 | Deeply negative profit margin | SUPPORTED |
+
+All auditable quantitative claims in the Executive Summary and Outlook are **SUPPORTED** by the source data. No figures were found to be UNSUPPORTED or INFERENCE.

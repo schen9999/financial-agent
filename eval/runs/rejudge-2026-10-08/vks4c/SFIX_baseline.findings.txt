@@ -1,0 +1,67 @@
+I will now systematically identify every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections, then evaluate each one.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $1.35 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $1,348,119,040, which rounds to $1.35 billion; the pre-written Financial Health section also states "$1.35 billion in revenue."
+
+---
+
+CLAIM: "market capitalization of just $365 million"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $364,738,080, which rounds to $365 million; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "52-week low of $2.10"
+LABEL: SUPPORTED
+REASON: Source data explicitly states week_52_low: 2.1, i.e., $2.10.
+
+---
+
+CLAIM: "against a high of $5.75"
+LABEL: SUPPORTED
+REASON: Source data states week_52_high: 5.745, which rounds to $5.75; the pre-written sections also use $5.75.
+
+---
+
+CLAIM: "The stock's position near its 52-week low of $2.10"
+LABEL: SUPPORTED
+REASON: Current price is $2.73 vs. 52-week low of $2.10 and high of $5.745; $2.73 is closer to the low end of the range (arithmetic: $2.73 − $2.10 = $0.63 from low; $5.745 − $2.73 = $3.015 from high), so "near its 52-week low" holds arithmetically.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "persistent client attrition"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and pre-written SEC Filing Highlights explicitly state declining active clients across fiscal 2023, 2024, and 2025.
+
+---
+
+CLAIM: "operational losses"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of −$12,606,000 (a net loss), confirming operational losses.
+
+---
+
+CLAIM: "supply chain concentration in China"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and Risk Factors sections explicitly state nearly all merchandise is sourced from third-party vendors, primarily in China.
+
+---
+
+CLAIM: "an absence of positive catalysts in recent SEC filings"
+LABEL: SUPPORTED
+REASON: The news articles array is empty and both SEC filing summaries contain only risk factor language; the pre-written Recent Developments section explicitly states "The lack of positive news catalysts."
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already evaluated above. The remaining Outlook content consists of qualitative directional statements and watch-item descriptions without specific numerical claims.)*

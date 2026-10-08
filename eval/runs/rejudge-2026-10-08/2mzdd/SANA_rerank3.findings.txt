@@ -1,0 +1,73 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "trading at $2.72 per share"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists `"current_price": 2.72` for SANA.
+
+---
+
+CLAIM: "market capitalization of approximately $814 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `"market_cap": 814260928.0`, which rounds to approximately $814 million.
+
+---
+
+CLAIM: "net loss of $211.8 million"
+LABEL: SUPPORTED
+REASON: The raw source data lists `"net_income": -211822000.0`, which equals approximately -$211.8 million.
+
+---
+
+CLAIM: "it sits near its 52-week low"
+LABEL: SUPPORTED
+REASON: The 52-week low is $2.61 and the current price is $2.72; $2.72 is $0.11 above the 52-week low, confirming the stock is near its 52-week low arithmetically.
+
+---
+
+**OUTLOOK**
+
+*(The Outlook section is largely qualitative/directional. The quantitative and forward-looking specific claims are identified below.)*
+
+---
+
+CLAIM: "heightened FDA scrutiny of CAR T cell therapies"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "The FDA has recently imposed new requirements for CAR T cell therapies, including a class-wide boxed warning for T cell malignancies," confirming heightened FDA scrutiny of CAR T cell therapies.
+
+---
+
+CLAIM: "absence of product revenue"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights section explicitly states "The company has not yet generated revenue from product sales," and the Financial Health section confirms zero profit margin and pre-revenue status.
+
+---
+
+CLAIM: "going concern designation"
+LABEL: SUPPORTED
+REASON: Both the RAG — SEC Highlights and RAG — Risk Factors sections explicitly state "Substantial doubt exists regarding the company's ability to continue as a going concern."
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those addressed above. All remaining content in the Outlook is qualitative directional language — "cautious," "could shift materially," "well-structured financing," etc. — which contains no auditable quantitative claims.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $2.72 per share | SUPPORTED |
+| 2 | ~$814 million market cap | SUPPORTED |
+| 3 | Net loss of $211.8 million | SUPPORTED |
+| 4 | Near 52-week low | SUPPORTED |
+| 5 | Heightened FDA scrutiny of CAR T cell therapies | SUPPORTED |
+| 6 | Absence of product revenue | SUPPORTED |
+| 7 | Going concern designation | SUPPORTED |
+
+All auditable claims in the Executive Summary and Outlook are **SUPPORTED** by the source data. No unsupported or inference-only quantitative claims were identified.

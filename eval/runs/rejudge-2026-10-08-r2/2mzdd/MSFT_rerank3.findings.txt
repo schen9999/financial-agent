@@ -1,0 +1,57 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "$331.8 billion in annual revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $331,839,012,864, which rounds to $331.8 billion; also explicitly stated in the pre-written Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "$133.7 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net income of $133,748,998,144, which rounds to $133.7 billion; also explicitly stated in the pre-written Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "40.3% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists profit_margin_pct as 40.3; also confirmed in pre-written sections.
+
+---
+
+CLAIM: "trades near the upper end of its 52-week range at $529.76"
+LABEL: SUPPORTED
+REASON: Current price is $529.76, 52-week low is $349.20, 52-week high is $553.72; $529.76 is approximately 88.5% of the way through the range (($529.76 − $349.20) / ($553.72 − $349.20) = $180.56 / $204.52 ≈ 88.3%), which arithmetically places it in the upper portion of the range, consistent with "near the upper end."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "model training, inference, and energy expenses"
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section and RAG Risk Factors explicitly list "model training and inference, component availability and pricing, and energy costs" as cost pressures.
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, named product milestones with attached numbers, or forward-looking numerical claims appear in the Outlook section. All remaining content in the Outlook is qualitative directional language — "cautiously constructive," "structural advantages," "widening gap," "accelerates meaningfully" — with no specific numbers, percentages, ratios, or quantified thresholds attached that require verification.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $331.8 billion in annual revenue | SUPPORTED |
+| 2 | $133.7 billion in net income | SUPPORTED |
+| 3 | 40.3% profit margin | SUPPORTED |
+| 4 | Trades near the upper end of its 52-week range at $529.76 | SUPPORTED |
+| 5 | Model training, inference, and energy expenses (as cost pressures) | SUPPORTED |
+
+All five verifiable quantitative or factual claims in the Executive Summary and Outlook are supported by the source data. No unsupported or inference-only claims were identified. The Outlook section is predominantly qualitative and contains no additional quantified figures requiring audit.

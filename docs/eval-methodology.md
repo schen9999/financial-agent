@@ -2358,6 +2358,49 @@ blocks shipping only if rerank3 is worse with the paired CI excluding zero.
 Cost per brief is unchanged by reranking (the same LLM calls; the
 cross-encoder runs in the pod) and is not a criterion.
 
+**Result (2026-10-08): DON'T SHIP** — two of the four criteria fail
+(`scripts/rerank_ab_decide.py`, output `eval/runs/rerank-ab-decision-2026-10-08.json`).
+Runs on image `f3043751`, 40 tickers each, submitted together at 03:24Z:
+baseline `grounding-eval-extended-vks4c` and rerank3
+`grounding-eval-extended-rerank3-2mzdd`; both 40/40 on the first attempt,
+0 retries, stock block empty 0/40, gates passed. The one-ticker memory smoke
+(`grounding-eval-rerank3-smoke-262mz`) peaked at 1,487 MiB of the eval pod's
+2,048 MiB with the cross-encoder loaded and the pod at its 1.5-CPU limit; the
+limit was kept, and no eval pod of the A/B was killed or retried.
+
+| Criterion | Baseline `vks4c` | Rerank3 `2mzdd` | Result |
+|---|---|---|---|
+| 1. Highlights refusals (35 tickers with a RAG answer) | 5 | 7 | b = 2, c = 4, McNemar p = 0.69: **fails** (reranking refused more) |
+| 2. Numeric TRUE_ERROR per checked number | 1 flag (BLNK, current price as the 52-week low, draft TRUE_ERROR) | 0 flags | pending adjudication; does not change the decision |
+| 3. Figures bound to stock data per brief | 4.33 | 4.30 | −0.03 (CI −0.40 to +0.35): passes |
+| 4. Warm latency added per ticker | — | +11.0 s | 41.5% of the baseline's 26.4 s, limit 20%: **fails** |
+
+- **Latency** (`scripts/rerank_latency_bench.py`, Job `k8s/jobs/rerank-latency-bench`,
+  70 queries × 3 repeats, model loaded once in 12.4 s): retrieval alone
+  median 0.11 s without reranking, 5.60 s with it (p95 0.18 s vs 14.1 s);
+  paired median difference 5.48 s per query, two queries per ticker. The
+  cross-encoder on 1.5 CPUs is the cost; in the eval pods, which also load
+  it, each reranked retrieval took about 22 s.
+- **Judge-flagged grounding, reported** (three judgings): baseline 2.59%
+  (2.26–2.83%), rerank3 2.52% (1.71–3.39%); paired baseline − rerank3
+  +0.21 points (CI −1.88 to +2.32): no difference, no block.
+- Reranking stays default-off. Which tickers refuse varies between runs
+  (4hsn2 and 9jzmj each refused 9, this baseline 5), so the refusal count is
+  noisy at 35 tickers; the pre-stated test still required a drop, and the
+  reranked arm moved the other way.
+
+```bash
+python eval/rag_refusals.py --runs vks4c 2mzdd
+python eval/density_check.py --runs vks4c 2mzdd --pairs 2mzdd:vks4c      # eval/runs/density-2026-10-08-rerank-ab.txt
+python eval/three_judging_stats.py --runs vks4c 2mzdd \
+  --judgings raw eval/runs/rejudge-2026-10-08 eval/runs/rejudge-2026-10-08-r2 --pairs vks4c:2mzdd
+python scripts/rerank_ab_decide.py --baseline vks4c --rerank 2mzdd \
+  --adjudication eval/numeric_check/adjudication-2026-10-08-vks4c-2mzdd.csv \
+  --latency eval/runs/rerank-latency-2026-10-08.json \
+  --judgings-baseline raw eval/runs/rejudge-2026-10-08 eval/runs/rejudge-2026-10-08-r2 \
+  --judgings-rerank raw eval/runs/rejudge-2026-10-08 eval/runs/rejudge-2026-10-08-r2
+```
+
 ### Traffic proof by per-request match (declared 2026-10-07)
 
 The traffic proof shows that the self-served model, and nothing else,

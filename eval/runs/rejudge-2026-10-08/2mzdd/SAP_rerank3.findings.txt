@@ -1,0 +1,71 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "€38.2 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of €38,192,001,024, which rounds to €38.2 billion; the pre-written Financial Health section also states "€38.2 billion in revenue."
+
+---
+
+CLAIM: "€7.8 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of €7,795,999,744, which rounds to €7.8 billion; the pre-written Financial Health section also states "€7.8 billion in net income."
+
+---
+
+CLAIM: "20.41% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 20.41, matching the claim exactly.
+
+---
+
+CLAIM: "a forward P/E of 21.69x"
+LABEL: SUPPORTED
+REASON: Source data explicitly states forward_pe = 21.691198, which rounds to 21.69x.
+
+---
+
+CLAIM: "a 52-week range of $144.97–$281.37"
+LABEL: SUPPORTED
+REASON: Source data explicitly states week_52_low = 144.97 and week_52_high = 281.37, matching both figures exactly.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "competitive pressure from Salesforce and Oracle"
+LABEL: SUPPORTED
+REASON: The pre-written Recent Developments section explicitly names "rivals like Salesforce and Oracle" as competitive references.
+
+---
+
+CLAIM: "euro strength could weigh on reported results given SAP's EUR-denominated financials"
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section explicitly states "a stronger euro relative to major currencies could pressure reported results," and the source data confirms financial_currency = EUR.
+
+---
+
+*(No additional standalone quantitative figures, price targets, thresholds, ratios, or named product milestones appear in the Outlook section beyond those already covered above or qualitative directional statements. The references to "cloud customer adoption," "margin profile," "EUR trajectory," "competitive win rates," and "customer migration timelines" are qualitative watch-items with no specific numbers attached, and therefore fall outside the scope of quantitative claim auditing.)*
+
+---
+
+### Summary Table
+
+| Claim | Label |
+|---|---|
+| €38.2 billion in revenue | SUPPORTED |
+| €7.8 billion in net income | SUPPORTED |
+| 20.41% profit margin | SUPPORTED |
+| Forward P/E of 21.69x | SUPPORTED |
+| 52-week range of $144.97–$281.37 | SUPPORTED |
+| Competitive pressure from Salesforce and Oracle | SUPPORTED |
+| Euro strength weighing on EUR-denominated results | SUPPORTED |
+
+**All auditable quantitative and factual claims in the Executive Summary and Outlook are SUPPORTED by the source data.** No figures were found to be unsupported or requiring inference labeling. The brief is notably conservative in its claims, closely mirroring the pre-written sections and raw source data without introducing extraneous figures.

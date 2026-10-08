@@ -1,0 +1,71 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "€38.2 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of €38,192,001,024, which rounds to €38.2 billion; the pre-written Financial Health section also states "€38.2 billion in revenue."
+
+---
+
+CLAIM: "€7.8 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net income of €7,795,999,744, which rounds to €7.8 billion; the pre-written Financial Health section also states "€7.8 billion in net income."
+
+---
+
+CLAIM: "20.41% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists `profit_margin_pct: 20.41`, and the pre-written Financial Health section confirms "20.41% profit margin."
+
+---
+
+CLAIM: "a forward P/E of 21.69x"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists `forward_pe: 21.691198`, which rounds to 21.69x; the pre-written Financial Health section also states "forward P/E of 21.69x."
+
+---
+
+CLAIM: "a 52-week range of $144.97–$281.37"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists `week_52_low: 144.97` and `week_52_high: 281.37`, matching both figures exactly.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "competitive pressure from Salesforce and Oracle"
+LABEL: SUPPORTED
+REASON: The pre-written Recent Developments section explicitly names "rivals like Salesforce and Oracle" as competitive references.
+
+---
+
+CLAIM: "euro strength could weigh on reported results given SAP's EUR-denominated financials"
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section explicitly states "a stronger euro relative to major currencies could pressure reported results," and source data confirms `financial_currency: EUR`.
+
+---
+
+*(No additional standalone quantitative figures, price targets, thresholds, ratios, percentages, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already audited above or qualitative directional statements not subject to numerical verification.)*
+
+---
+
+## SUMMARY TABLE
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | €38.2 billion in revenue | SUPPORTED |
+| 2 | €7.8 billion in net income | SUPPORTED |
+| 3 | 20.41% profit margin | SUPPORTED |
+| 4 | Forward P/E of 21.69x | SUPPORTED |
+| 5 | 52-week range of $144.97–$281.37 | SUPPORTED |
+| 6 | Competitive pressure from Salesforce and Oracle | SUPPORTED |
+| 7 | Euro strength weighing on EUR-denominated results | SUPPORTED |
+
+**All audited claims are SUPPORTED.** No figures in the Executive Summary or Outlook sections were found to be unsupported or improperly derived. The AI brief accurately reproduced and did not embellish the quantitative content available in the source data and pre-written sections.

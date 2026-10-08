@@ -1,0 +1,91 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "market capitalization of $1.49 trillion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 1,492,178,567,168.0 USD, which rounds to $1.49 trillion.
+
+---
+
+CLAIM: "revenue of $103.6 billion"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 103,619,002,368.0 USD, which rounds to $103.6 billion.
+
+---
+
+CLAIM: "3.67% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 3.67.
+
+---
+
+CLAIM: "P/E ratio of 349.82"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 349.82407, which rounds to 349.82.
+
+---
+
+CLAIM: "forward P/E of 176.16"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 176.15654, which rounds to 176.16.
+
+---
+
+CLAIM: "SEC filings are flagging active risks around manufacturing cost control, supply chain constraints, and competitive pressure"
+LABEL: SUPPORTED
+REASON: The 10-K summary references manufacturing cost control risks and the 10-Q summary explicitly references supply chain constraints and competition; the Risk Factors section corroborates all three themes.
+
+---
+
+CLAIM: "new product ramps, particularly the Cybercab and Semi"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly names "Cybercab (Robotaxi)" and "Semi" as products with manufacturing/ramp risks, and the Risk Factors pre-written section names both.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "forward P/E of 176.16"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 176.15654, which rounds to 176.16; consistent with prior check.
+
+---
+
+CLAIM: "Tesla's addressable opportunity — spanning EVs, autonomous vehicles, energy storage, and proprietary battery technology"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section references Cybercab (Robotaxi/autonomous), energy storage products, Solar Roof, and proprietary battery cells, supporting all four named categories as part of Tesla's disclosed business scope.
+
+---
+
+CLAIM: "successful ramps of new vehicle programs such as the Cybercab and Semi"
+LABEL: SUPPORTED
+REASON: Both Cybercab and Semi are explicitly named in the RAG Risk Factors section as products subject to manufacturing and ramp risks.
+
+---
+
+CLAIM: "supply chain fragility tied to single-source suppliers"
+LABEL: SUPPORTED
+REASON: RAG Risk Factors explicitly states "reliance on hundreds of global suppliers, including single-source suppliers."
+
+---
+
+CLAIM: "raw material volatility in lithium and nickel"
+LABEL: SUPPORTED
+REASON: RAG Risk Factors explicitly states "Volatility in prices and availability of raw materials like lithium and nickel."
+
+---
+
+CLAIM: "competitive pressure intensifying across global EV markets"
+LABEL: SUPPORTED
+REASON: The 10-Q summary references "competition" and "competitive pressures affecting future operations" as disclosed in the pre-written Recent Developments section, which is itself drawn from the 10-Q filing summary.
+
+---
+
+*No additional quantitative figures, price targets, specific thresholds, named ratios, or forward-looking numerical claims appear in the Outlook section beyond those already evaluated above.*

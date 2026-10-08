@@ -1,0 +1,106 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $44.5 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $44,487,999,488, which rounds to $44.5 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$22.4 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net income of $22,397,999,104, which rounds to $22.4 billion; also explicitly stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "50.8% net profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists profit_margin_pct as 50.78%, which rounds to 50.8%; also stated in the Financial Health and Recent Developments pre-written sections.
+
+---
+
+CLAIM: "31.7x trailing P/E"
+LABEL: SUPPORTED
+REASON: Source data lists pe_ratio as 31.668085, which rounds to 31.7x; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "24.8x forward P/E"
+LABEL: SUPPORTED
+REASON: Source data lists forward_pe as 24.799557, which rounds to 24.8x; also stated in the Financial Health pre-written section.
+
+---
+
+CLAIM: "the North Dakota debit interchange ruling"
+LABEL: SUPPORTED
+REASON: The SEC Highlights pre-written section and RAG data explicitly reference a North Dakota District Court ruling in August 2025 regarding debit card interchange fees.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "industry-leading profit margins"
+LABEL: SUPPORTED
+REASON: The 50.78% net profit margin is explicitly present in the source data and described as "exceptional" in the Financial Health section; this is a directional restatement of a present figure.
+
+---
+
+CLAIM: "India's AI-driven financial services expansion"
+LABEL: SUPPORTED
+REASON: The Bloomberg news article explicitly references India's AI-driven financial revolution at the Global Fintech Fest, and the Recent Developments pre-written section references "India's pivot toward AI-driven financial services."
+
+---
+
+CLAIM: "The $31.7 billion share repurchase authorization"
+LABEL: SUPPORTED
+REASON: The 10-Q filing summary shows "$33,230" million remaining as of April 2026, then "$31,682" million as of May 2026; the Recent Developments pre-written section explicitly states "$31.7 billion remaining authorization as of June 2026," and the 10-Q references June 30, 2026 as the period end. The June figure is truncated in the raw data ("June 1 – 30, 2026 10 $ 3..."), so the $31.7 billion figure is taken directly from the pre-written section, which is an explicit input to the model. SUPPORTED as it appears verbatim in the pre-written Recent Developments section.
+
+---
+
+CLAIM: "interchange fee regulation is no longer a single-jurisdiction risk but a cascading global phenomenon, with rulings and proposals spreading across the U.S., EU, UK, Australia, New Zealand, and Latin America"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors sections explicitly name all of these jurisdictions (U.S., EU, UK, Australia, New Zealand, and Latin American countries including Argentina, Brazil, Chile, Costa Rica) as locations of interchange or network fee regulatory activity.
+
+---
+
+CLAIM: "the appellate trajectory of the North Dakota debit interchange ruling as the highest-priority near-term signal"
+LABEL: SUPPORTED
+REASON: The SEC Highlights pre-written section explicitly states the ruling could open the door to "substantially lower fees if upheld on appeal," and the RAG data references the same appellate risk; this is a directional restatement of a present fact, not a new quantitative claim.
+
+---
+
+CLAIM: "consumer spending trends as interest rate policy evolves"
+LABEL: SUPPORTED
+REASON: The news article from Fortune (2026-09-17) references rate hike concerns and CFO expectations, and the Recent Developments section explicitly mentions "broader economic uncertainty around interest rate policy may influence consumer spending patterns and transaction volumes."
+
+---
+
+*(No additional standalone quantitative figures, price targets, thresholds, or named product milestones appear in the Outlook section beyond those already evaluated above.)*
+
+---
+
+**SUMMARY TABLE**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $44.5 billion in revenue | SUPPORTED |
+| 2 | $22.4 billion in net income | SUPPORTED |
+| 3 | 50.8% net profit margin | SUPPORTED |
+| 4 | 31.7x trailing P/E | SUPPORTED |
+| 5 | 24.8x forward P/E | SUPPORTED |
+| 6 | North Dakota debit interchange ruling | SUPPORTED |
+| 7 | Industry-leading profit margins | SUPPORTED |
+| 8 | India's AI-driven financial services expansion | SUPPORTED |
+| 9 | $31.7 billion share repurchase authorization | SUPPORTED |
+| 10 | Cascading regulation across U.S., EU, UK, Australia, New Zealand, Latin America | SUPPORTED |
+| 11 | Appellate trajectory of North Dakota ruling as highest-priority signal | SUPPORTED |
+| 12 | Consumer spending trends / interest rate policy | SUPPORTED |
+
+**No UNSUPPORTED or INFERENCE labels were warranted.** All quantitative and forward-looking claims in the Executive Summary and Outlook are grounded in the source data or pre-written sections provided to the model.

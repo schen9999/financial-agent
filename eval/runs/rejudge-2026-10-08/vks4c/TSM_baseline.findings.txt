@@ -1,0 +1,90 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating 4.44 trillion TWD in revenue"
+LABEL: SUPPORTED
+REASON: The source data shows revenue of 4,440,492,343,296 TWD, which rounds to 4.44 trillion TWD, and the pre-written Financial Health section states "revenue of 4.44 trillion TWD."
+
+---
+
+CLAIM: "2.22 trillion TWD in net income"
+LABEL: SUPPORTED
+REASON: The source data shows net income of 2,216,808,415,232 TWD, which rounds to 2.22 trillion TWD, consistent with the pre-written section's "net income of 2.22 trillion TWD."
+
+---
+
+CLAIM: "49.92% profit margin"
+LABEL: SUPPORTED
+REASON: The source data explicitly lists profit_margin_pct as 49.92, and the pre-written sections confirm "49.92% profit margin."
+
+---
+
+CLAIM: "Trading at $472.20 USD"
+LABEL: SUPPORTED
+REASON: The source data lists current_price as 472.2 USD, matching the stated figure exactly.
+
+---
+
+CLAIM: "$2.45 trillion USD market capitalization"
+LABEL: SUPPORTED
+REASON: The source data shows market_cap of 2,449,053,057,024 USD, which rounds to $2.45 trillion USD, consistent with the pre-written section.
+
+---
+
+CLAIM: "current P/E of 35.06x"
+LABEL: SUPPORTED
+REASON: The source data lists pe_ratio as 35.05568, which rounds to 35.06x as stated.
+
+---
+
+CLAIM: "forward P/E of 21.54x"
+LABEL: SUPPORTED
+REASON: The source data lists forward_pe as 21.53696, which rounds to 21.54x as stated.
+
+---
+
+CLAIM: "the market is pricing in substantial earnings growth"
+LABEL: INFERENCE
+REASON: This is a direct qualitative inference from the observable gap between the current P/E of 35.06x and the forward P/E of 21.54x, both of which are present in the source data; the directional conclusion follows straightforwardly from comparing the two figures.
+
+---
+
+**OUTLOOK**
+
+The Outlook section contains no additional specific quantitative figures, price targets, thresholds, ratios, metrics, or percentages beyond those already audited above. It references the following qualitative or previously-audited items:
+
+---
+
+CLAIM: (implicit reference to) "the gap between current and forward valuation multiples" (as a forward-looking investment variable)
+LABEL: INFERENCE
+REASON: This is a restatement of the relationship between the current P/E of 35.06x and forward P/E of 21.54x, both present in the source data, requiring no additional facts.
+
+---
+
+CLAIM: (competitive reference to) "Samsung and Intel in advanced nodes"
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section explicitly names "Samsung and Intel in advanced chip manufacturing" as competitors, providing direct sourcing for this claim.
+
+---
+
+**SUMMARY OF FINDINGS**
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | 4.44 trillion TWD in revenue | SUPPORTED |
+| 2 | 2.22 trillion TWD in net income | SUPPORTED |
+| 3 | 49.92% profit margin | SUPPORTED |
+| 4 | $472.20 USD current price | SUPPORTED |
+| 5 | $2.45 trillion USD market cap | SUPPORTED |
+| 6 | Current P/E of 35.06x | SUPPORTED |
+| 7 | Forward P/E of 21.54x | SUPPORTED |
+| 8 | Market pricing in substantial earnings growth | INFERENCE |
+| 9 | Gap between current and forward multiples as investment variable | INFERENCE |
+| 10 | Samsung and Intel as competitors in advanced nodes | SUPPORTED |
+
+**No claims were found to be UNSUPPORTED.** All quantitative figures in the Executive Summary and Outlook are either directly present in the source data or derivable from it, and all arithmetic checks pass within the specified tolerances.

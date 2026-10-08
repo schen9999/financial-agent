@@ -1,0 +1,116 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "474 million daily active users as of Q4 2025"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states "Snapchat reported 474 million daily active users (DAUs) as of Q4 2025," and the SEC Filing Highlights pre-written section repeats this figure verbatim.
+
+---
+
+CLAIM: "$6.35 billion in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data shows revenue of $6,351,084,032, which rounds to $6.35 billion; the Financial Health pre-written section also states "$6.35 billion in revenue."
+
+---
+
+CLAIM: "market capitalization of $9.8 billion"
+LABEL: SUPPORTED
+REASON: The raw source data shows market_cap of $9,825,858,560, which rounds to $9.8 billion; the Financial Health pre-written section also states "a market capitalization of $9.8 billion."
+
+---
+
+CLAIM: "52-week high of $9.13"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists week_52_high as 9.13, and the Financial Health pre-written section states "52-week range of $3.81 to $9.13."
+
+---
+
+CLAIM: "at $5.81"
+LABEL: SUPPORTED
+REASON: The raw source data lists current_price as 5.81, and the Financial Health pre-written section states "Snap Inc. trades at $5.81."
+
+---
+
+CLAIM: "sits well below its 52-week high of $9.13 at $5.81"
+LABEL: SUPPORTED
+REASON: Arithmetic check: $5.81 is 36.4% below the 52-week high of $9.13 ($9.13 − $5.81 = $3.32), confirming the stock is indeed well below its 52-week high.
+
+---
+
+CLAIM: "forward P/E of 7.49"
+LABEL: SUPPORTED
+REASON: The raw source data lists forward_pe as 7.492327, which rounds to 7.49; the Financial Health pre-written section states "forward P/E ratio of 7.49."
+
+---
+
+CLAIM: "the company continues to report net losses"
+LABEL: SUPPORTED
+REASON: The raw source data shows net_income of −$311,243,008 (a net loss), confirmed by the Financial Health pre-written section's "net loss of $311 million."
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "474 million daily active users" (second mention)
+LABEL: SUPPORTED
+REASON: Same as above — explicitly stated in RAG — SEC Highlights as of Q4 2025 and repeated in the SEC Filing Highlights pre-written section.
+
+---
+
+CLAIM: "advertising revenue concentration" (implying 87% or 87–96% dependence)
+LABEL: INFERENCE
+REASON: The Outlook does not state a specific percentage but references "advertising revenue concentration" as a structural headwind; the 87% figure (and 87–96% range) is present in the source data and pre-written sections, making this a directional restatement of a documented fact without citing the specific number.
+
+---
+
+CLAIM: "Apple's iOS privacy restrictions continue to erode targeting precision and pricing power with no clear resolution in sight"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights and RAG — Risk Factors both explicitly describe Apple's iOS privacy updates as materially impairing ad targeting, measurement, and pricing power, with "uncertainty about long-term ecosystem impacts" — consistent with "no clear resolution in sight."
+
+---
+
+CLAIM: "low switching costs of its primary demographic"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights states "The low barrier to entry and minimal switching costs create intense competition," and the Risk Factors pre-written section explicitly lists "Low switching costs and intense competition from rivals" as a risk for the 18-34 demographic.
+
+---
+
+CLAIM: "expanding engagement beyond the 18-34 demographic"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights states "Future growth will increasingly need to come from older demographics," and the Risk Factors pre-written section notes "limited penetration in other demographics" for the 18-34-skewed user base.
+
+---
+
+CLAIM: "the pace of DAU growth in developing markets"
+LABEL: SUPPORTED
+REASON: The RAG — SEC Highlights explicitly states "Future growth will increasingly need to come from older demographics and developing markets," making this a direct restatement of a sourced fact.
+
+---
+
+CLAIM: "management's demonstrated ability to reduce net losses quarter over quarter"
+LABEL: UNSUPPORTED
+REASON: No quarter-over-quarter net loss trajectory data is present in the source data or any pre-written section; the source only provides a single annual net loss figure of −$311 million, so the specific "quarter over quarter" framing cannot be verified or grounded.
+
+---
+
+CLAIM: "continued net losses without a clear timeline to breakeven"
+LABEL: INFERENCE
+REASON: The existence of net losses is supported (net_income = −$311M), and the absence of a breakeven timeline is inferable from the fact that no such timeline appears anywhere in the source data or SEC filing summaries; this is a directional restatement derivable from present facts.
+
+---
+
+**Summary of Labels:**
+| Label | Count |
+|---|---|
+| SUPPORTED | 12 |
+| INFERENCE | 2 |
+| UNSUPPORTED | 1 |
+
+The one UNSUPPORTED claim is the "quarter over quarter" net loss reduction framing, which implies comparative quarterly data not present in the source. All specific quantitative figures (DAU count, revenue, market cap, 52-week high, current price, forward P/E) are fully supported by the raw source data.

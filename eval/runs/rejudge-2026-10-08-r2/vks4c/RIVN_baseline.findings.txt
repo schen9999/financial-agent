@@ -1,0 +1,97 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating $5.9 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of $5,882,999,808, which rounds to $5.9 billion; the Pre-written Financial Health section also states "$5.9 billion in revenue."
+
+---
+
+CLAIM: "net loss of $3.2 billion"
+LABEL: SUPPORTED
+REASON: Source data shows net_income of -$3,232,999,936, which rounds to -$3.2 billion; confirmed in pre-written sections.
+
+---
+
+CLAIM: "market capitalization of $20.8 billion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $20,762,320,896, which rounds to $20.8 billion.
+
+---
+
+CLAIM: "negative forward P/E"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe of -8.241758, which is explicitly negative.
+
+---
+
+CLAIM: "federal EV tax credit expiration" [as a demand shock being absorbed]
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights and Risk Factors both explicitly state the federal EV tax credit expired on September 30, 2025, causing a pull-forward of deliveries into Q3 and a Q4 decline.
+
+---
+
+CLAIM: "ramping toward its R2 launch"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states "The company expects to begin customer deliveries of the R2 model in the second quarter of 2026."
+
+---
+
+CLAIM: "equally-owned Volkswagen joint venture"
+LABEL: SUPPORTED
+REASON: The 10-K summary and RAG SEC Highlights both state Rivian and Volkswagen Group formed an "equally-owned joint venture."
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "R2 launch expected in Q2 2026"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states "The company expects to begin customer deliveries of the R2 model in the second quarter of 2026."
+
+---
+
+CLAIM: "Normal facility's production capacity provides room to scale without immediate capital expenditure for new plants"
+LABEL: INFERENCE
+REASON: The RAG SEC Highlights states the Normal, Illinois facility has annual capacity of up to 215,000 vehicles; the directional conclusion that this provides scaling room without new plant capex is a reasonable inference from that stated capacity figure, though no capex figure is provided in the source data.
+
+---
+
+CLAIM: "monetization of advanced autonomy features beginning April 2026"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states "The company plans to begin charging fees for Autonomy+ advanced driver assistance features starting in April 2026."
+
+---
+
+CLAIM: "opening of the Adventure Network to non-Rivian vehicles"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states "Over 95% of the Rivian Adventure Network charging infrastructure is open to non-Rivian EVs."
+
+---
+
+CLAIM: "ongoing cash burn at a -54.95% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists profit_margin_pct as -54.95; confirmed in pre-written Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "post-tax-credit demand hangover"
+LABEL: SUPPORTED
+REASON: RAG Risk Factors and SEC Highlights both explicitly describe the Q4 demand decline following the September 30, 2025 federal EV tax credit expiration.
+
+---
+
+CLAIM: "the company's demonstrated sensitivity to policy shifts outside its control" [in context of the tax credit expiration causing a pull-forward into Q3 and Q4 decline]
+LABEL: SUPPORTED
+REASON: RAG Risk Factors explicitly states the expiration of tax credits in September 2025 caused a significant pull-forward of deliveries into Q3 with a sharp decline in Q4, and the Risk Factors section names this as a disclosed risk.
+
+---
+
+**Summary of findings:** All quantitative and forward-looking claims in the Executive Summary and Outlook are either directly supported by the source data/pre-written sections or are a single-step inference from an explicitly stated figure. No claims were found to be UNSUPPORTED. The brief does not introduce any figures, periods, entities, or thresholds absent from the source material.

@@ -1,0 +1,78 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "market capitalization of $1.49 trillion"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap = 1,492,178,567,168.0 USD ≈ $1.49 trillion; the pre-written Financial Health section also states "$1.49 trillion."
+
+---
+
+CLAIM: "annual revenue of $103.6 billion"
+LABEL: SUPPORTED
+REASON: Source data shows revenue = 103,619,002,368.0 USD ≈ $103.6 billion; confirmed in the Financial Health section.
+
+---
+
+CLAIM: "net profit margin of 3.67%"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 3.67; present in both raw data and pre-written sections.
+
+---
+
+CLAIM: "P/E ratio of 349.82"
+LABEL: SUPPORTED
+REASON: Source data shows pe_ratio = 349.82407, which rounds to 349.82; present in the Financial Health section as well.
+
+---
+
+CLAIM: "trading well below its 52-week high of $498.83"
+LABEL: SUPPORTED
+REASON: Source data confirms week_52_high = 498.83 and current_price = 377.81; $377.81 is $121.02 below $498.83, so "well below" holds arithmetically (approximately 24.3% below the high).
+
+---
+
+CLAIM: "forward P/E of 176.16"
+LABEL: SUPPORTED
+REASON: Source data shows forward_pe = 176.15654, which rounds to 176.16; confirmed in the Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "Cybercab and Robotaxi" (as named product milestones)
+LABEL: SUPPORTED
+REASON: Both "Cybercab" and "Robotaxi" are explicitly named in the RAG — SEC Highlights and RAG — Risk Factors sections as products under development.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "Cybercab and Robotaxi" (as named regulatory/milestone watch-items)
+LABEL: SUPPORTED
+REASON: Both products are explicitly named in the SEC Filing Highlights and Risk Factors pre-written sections as key development programs with uncertain consumer adoption timelines.
+
+---
+
+*No additional specific quantitative figures, price targets, thresholds, ratios, metrics, percentages, or forward-looking numbers appear in the Outlook section beyond the named product milestones already evaluated above. All other claims in the Outlook are qualitative directional statements (e.g., "cautiously constructive," "intensifying global competition," "persistent supply chain fragility") that do not constitute specific quantitative or named-figure claims subject to this audit.*
+
+---
+
+## SUMMARY TABLE
+
+| Claim | Label |
+|---|---|
+| Market cap $1.49 trillion | SUPPORTED |
+| Annual revenue $103.6 billion | SUPPORTED |
+| Net profit margin 3.67% | SUPPORTED |
+| P/E ratio 349.82 | SUPPORTED |
+| 52-week high $498.83 / trading well below | SUPPORTED |
+| Forward P/E 176.16 | SUPPORTED |
+| Cybercab and Robotaxi (Executive Summary) | SUPPORTED |
+| Cybercab and Robotaxi (Outlook) | SUPPORTED |
+
+**All auditable claims in the Executive Summary and Outlook are SUPPORTED by the source data.**

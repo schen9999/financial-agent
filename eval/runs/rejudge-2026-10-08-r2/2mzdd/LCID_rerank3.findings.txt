@@ -1,0 +1,67 @@
+I will now systematically audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "only two commercially available vehicles"
+LABEL: SUPPORTED
+REASON: The RAG — Risk Factors section explicitly states "limited operating history with only two commercially available vehicles," and the SEC Filing Highlights section repeats this fact.
+
+---
+
+CLAIM: "$1.55 billion in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data shows revenue of $1,547,122,048, which rounds to $1.55 billion, consistent with the Financial Health pre-written section's "$1.55 billion in revenue."
+
+---
+
+CLAIM: "net loss of $4.60 billion"
+LABEL: SUPPORTED
+REASON: The raw source data shows net_income of -$4,604,930,048, which rounds to -$4.60 billion, matching the pre-written Financial Health section.
+
+---
+
+CLAIM: "accumulated deficit of $15.6 billion"
+LABEL: SUPPORTED
+REASON: The RAG — Risk Factors section explicitly states "accumulated deficit of $15.6 billion as of December 31, 2025," and the Risk Factors pre-written section repeats this figure.
+
+---
+
+CLAIM: "52-week high of $22.42"
+LABEL: SUPPORTED
+REASON: The raw source data explicitly lists week_52_high as 22.42.
+
+---
+
+CLAIM: "[stock declined] to $3.89"
+LABEL: SUPPORTED
+REASON: The raw source data lists current_price as 3.89.
+
+---
+
+CLAIM: "sharp decline from its 52-week high of $22.42 to $3.89"
+LABEL: SUPPORTED
+REASON: Both figures are present in the raw source data (week_52_high: 22.42, current_price: 3.89), and 3.89 is arithmetically below 22.42, confirming the directional claim.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "deeply negative profit margin"
+LABEL: SUPPORTED
+REASON: The raw source data shows profit_margin_pct of -249.21%, which is explicitly described as "severely negative" in the Financial Health section; the directional characterization is fully supported.
+
+---
+
+CLAIM: "reliance on single-source suppliers"
+LABEL: SUPPORTED
+REASON: The RAG — Risk Factors and SEC Filing Highlights sections both explicitly state "heavy dependence on single-source suppliers for critical components."
+
+---
+
+*(No additional specific quantitative figures, price targets, thresholds, ratios, named product milestones, or forward-looking numbers appear in the Outlook section beyond those already audited above or qualitative directional statements. All remaining Outlook language is qualitative/directional and contains no auditable quantitative claims.)*

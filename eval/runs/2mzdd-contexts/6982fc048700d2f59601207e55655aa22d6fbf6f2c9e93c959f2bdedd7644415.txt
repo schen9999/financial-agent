@@ -1,0 +1,82 @@
+STOCK DATA:
+{
+  "ticker": "XOM",
+  "company_name": "ExxonMobil Holdings Corporation",
+  "current_price": 164.05,
+  "currency": "USD",
+  "market_cap": 674559164416.0,
+  "pe_ratio": 21.113256,
+  "forward_pe": 14.400975,
+  "week_52_high": 176.41,
+  "week_52_low": 110.39,
+  "financial_currency": "USD",
+  "revenue": 361060007936.0,
+  "net_income": 32757000192.0,
+  "profit_margin_pct": 9.07,
+  "dividend_yield": 2.5,
+  "sector": "Energy",
+  "industry": "Oil & Gas Integrated"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": null,
+    "source": null,
+    "published_at": null,
+    "description": null
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "message": "No 10-K found"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-03",
+    "summary": "Item 1A. Risk Factors\" of ExxonMobil\u2019s 2025 Form 10-K. Forward-looking and other statements regarding environmental and other sustainability efforts and aspirations are not an indication that these statements are material to investors or require disclosure in our filing with the SEC or any other regulatory authority. In addition, historical, current, and forward-looking environmental and other sustainability-related statements may be based on standards for measuring progress that are still developing, internal controls and processes that continue to evolve, and assumptions that are subject to change in the future, including future rule-making. Actions needed to advance ExxonMobil\u2019s 2030 greenhouse gas emission-reductions plans are incorporated into its medium term business plans, which are"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from ExxonMobil's Latest Filings
+
+## Financial Performance
+- **Upstream earnings** reached $13.7 billion for the first half of 2026, up from $12.2 billion in the same period of 2025
+- The company distributed $8.6 billion in dividends and repurchased $10.0 billion of common stock
+- Cash capital expenditures totaled $13.0 billion for the first six months of 2026
+
+## Market Conditions
+- Crude oil prices remained within the 10-year historical range despite Middle East supply disruptions
+- Natural gas prices stayed elevated above the 10-year average
+- Global refining margins were significantly above historical ranges due to unprecedented capacity reductions
+- Chemical margins improved but remained below the 10-year range
+
+## Operational Highlights
+- **Advantaged Volume Growth** contributed $1.9 billion in earnings year-to-date, primarily from Guyana and Permian expansion
+- Oil-equivalent production averaged 4,554 thousand barrels daily for the first half of 2026
+- Structural Cost Savings reached $16.3 billion cumulatively relative to 2019 levels, with an additional $1.2 billion achieved in the first six months of 2026
+
+## Strategic Focus
+- Capital investments are concentrated in advantaged assets including Permian, Guyana, and LNG
+- The company is advancing lower-emission fuel initiatives and performance products
+- Future business plans will be updated as new policies and technologies emerge, though current trends are not yet aligned with net-zero 2050 targets
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+Based on the provided SEC filing information, the primary risk factors disclosed by ExxonMobil include:
+
+1. **Environmental and Sustainability-Related Risks**: The company acknowledges that environmental and sustainability efforts are subject to evolving standards for measuring progress, internal controls that continue to evolve, and assumptions that may change. Future rule-making could impact these initiatives.
+
+2. **Policy and Technology Uncertainty**: Current trends in policy stringency and development of lower-emission solutions are not yet on a pathway to achieve net-zero by 2050. The company's business plans depend on future policy advancements and technological improvements that may or may not materialize as expected.
+
+3. **Project Execution Risks**: Individual projects and opportunities may advance based on multiple factors including availability of stable and supportive policy, permitting, technological advancement for cost-effective abatement, and alignment with partners and stakeholders. These dependencies create uncertainty around project realization.
+
+4. **Capital Investment Risks**: Actual investment levels in lower-emission investments are subject to the availability of the opportunity set and public policy support, and are focused on returns. This means investment guidance may not materialize if conditions change.
+
+5. **Market and Supply Disruptions**: The filing references supply disruptions in the Middle East and global refining capacity reductions that have impacted market conditions and earnings.
+
+The company notes that forward-looking sustainability statements are not necessarily material disclosures and may be based on developing standards and evolving internal processes.

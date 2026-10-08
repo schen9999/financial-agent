@@ -1,0 +1,103 @@
+I will now systematically evaluate every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "474 million daily active users"
+LABEL: SUPPORTED
+REASON: The RAG SEC Highlights and Risk Factors both explicitly state "474 million daily active users (DAUs) as of Q4 2025," and the Pre-Written SEC Filing Highlights section repeats this figure.
+
+---
+
+CLAIM: "predominantly the 18-34 demographic"
+LABEL: SUPPORTED
+REASON: Both RAG sections and the Pre-Written Risk Factors section explicitly identify the core user base as "18-34 year-olds."
+
+---
+
+CLAIM: "$6.35 billion in revenue"
+LABEL: SUPPORTED
+REASON: The raw source data shows revenue of $6,351,084,032, which rounds to $6.35 billion; the Pre-Written Financial Health section also states "$6.35 billion in revenue."
+
+---
+
+CLAIM: "advertising comprising 87% of that total"
+LABEL: SUPPORTED
+REASON: Both RAG sections explicitly state "advertising accounted for approximately 87% of total revenue in 2025," and the Pre-Written sections repeat this figure. Arithmetic check: 87% × $6.35B ≈ $5.52B, consistent with the described revenue mix.
+
+---
+
+CLAIM: "trades near the lower end of its 52-week range at $5.81"
+LABEL: SUPPORTED
+REASON: The 52-week low is $3.81 and the 52-week high is $9.13 (source data); the midpoint is ($3.81 + $9.13) / 2 = $6.47, so $5.81 is below the midpoint and arithmetically in the lower half of the range, confirming "near the lower end."
+
+---
+
+CLAIM: "forward P/E of 7.49"
+LABEL: SUPPORTED
+REASON: The raw source data lists forward_pe as 7.492327, which rounds to 7.49; the Pre-Written Financial Health section also states "forward P/E ratio of 7.49."
+
+---
+
+CLAIM: "continues to post net losses"
+LABEL: SUPPORTED
+REASON: The raw source data shows net_income of -$311,243,008 (a net loss), confirmed by the Pre-Written sections.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "stagnant DAU growth"
+LABEL: SUPPORTED
+REASON: Both RAG sections explicitly state "DAU growth rates have declined and may continue to do so" and reference "declining or stagnant daily active user (DAU) growth rates."
+
+---
+
+CLAIM: "heavy dependence on advertising revenue from advertisers with no long-term commitments"
+LABEL: SUPPORTED
+REASON: Both RAG sections and Pre-Written sections explicitly state advertising is ~87% of revenue and "most advertisers lack long-term commitments."
+
+---
+
+CLAIM: "ongoing platform privacy changes from Apple and potentially Google"
+LABEL: SUPPORTED
+REASON: Both RAG sections and Pre-Written sections explicitly reference Apple's iOS privacy updates and potential similar changes from Google as ongoing threats.
+
+---
+
+CLAIM: "expand meaningfully beyond its core 18-34 demographic"
+LABEL: SUPPORTED
+REASON: Both RAG sections explicitly state "future growth will increasingly depend on penetrating older demographics" and "difficulty penetrating other demographics beyond the core user base."
+
+---
+
+CLAIM: "trend in net losses and profit margin: any sustained narrowing of the -4.9% margin"
+LABEL: SUPPORTED
+REASON: The raw source data lists profit_margin_pct as -4.9%, confirmed in the Pre-Written Financial Health and Recent Developments sections.
+
+---
+
+CLAIM: "widening losses would further erode confidence in the forward earnings assumptions embedded in the current valuation"
+LABEL: INFERENCE
+REASON: This is a directional forward-looking statement fully derivable from the combination of the documented net loss (-$311M), negative margin (-4.9%), and forward P/E (7.49) present in the source data — no additional external facts are required.
+
+---
+
+CLAIM: "growth in long-term advertiser commitments or non-advertising revenue streams would reduce volatility risk"
+LABEL: SUPPORTED
+REASON: The RAG and Pre-Written Risk Factors sections explicitly identify the absence of long-term advertiser commitments and advertising revenue concentration (~87%) as the primary sources of revenue volatility risk, making this a direct restatement of the source material's implication.
+
+---
+
+CLAIM: "further restrictions on targeted advertising or teen-focused platforms could disproportionately harm Snap given its demographic profile"
+LABEL: SUPPORTED
+REASON: The RAG Risk Factors section explicitly states "restrictions on advertising to teens and requirements for parental consent" and notes the core demographic is 18-34 (including teens), and the Pre-Written Risk Factors section references "restrictions on teen advertising" as a specific headwind.
+
+---
+
+**Summary of findings:** All quantitative figures in the Executive Summary and Outlook are supported by the source data. No figures are unsupported. Two directional/qualitative forward-looking claims are labeled INFERENCE where they are fully derivable from documented source figures without requiring any external facts.

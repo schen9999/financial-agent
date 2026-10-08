@@ -1,0 +1,135 @@
+I will now systematically audit every quantitative, forward-looking, and specific factual claim in the **Executive Summary** and **Outlook** sections.
+
+---
+
+## EXECUTIVE SUMMARY
+
+---
+
+CLAIM: "$361.1 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data lists revenue as $361,060,007,936, which rounds to $361.1 billion; also confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "$32.8 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data lists net income as $32,757,000,192, which rounds to $32.8 billion; also confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "market capitalization of $674.6 billion"
+LABEL: SUPPORTED
+REASON: Source data lists market_cap as $674,559,164,416, which rounds to $674.6 billion; confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "current P/E of 21.1x"
+LABEL: SUPPORTED
+REASON: Source data lists pe_ratio as 21.113256, which rounds to 21.1x; confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "forward P/E of 14.4x"
+LABEL: SUPPORTED
+REASON: Source data lists forward_pe as 14.400975, which rounds to 14.4x; confirmed in the Financial Health pre-written section.
+
+---
+
+CLAIM: "first-half 2026 upstream earnings growth"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states upstream earnings reached $13.7 billion for the first half of 2026, up from $12.2 billion in the same period of 2025, confirming year-over-year growth in H1 2026.
+
+---
+
+CLAIM: "cumulative structural cost savings of $16.3 billion relative to 2019 levels"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states "Structural Cost Savings reached $16.3 billion cumulatively relative to 2019 levels"; confirmed in the SEC Filing Highlights pre-written section.
+
+---
+
+## OUTLOOK
+
+---
+
+CLAIM: "continued volume growth from high-return assets in Guyana and the Permian"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states advantaged volume growth contributed $1.9 billion in earnings year-to-date, "primarily from Guyana and Permian expansion," and the Strategic Focus section confirms capital investments are concentrated in these assets.
+
+---
+
+CLAIM: "a demonstrated track record of structural cost reduction"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights confirms $16.3 billion in cumulative structural cost savings relative to 2019, with an additional $1.2 billion in H1 2026, directly supporting this characterization.
+
+---
+
+CLAIM: "a capital return program that signals management confidence in cash generation"
+LABEL: INFERENCE
+REASON: The RAG SEC Highlights confirms $8.6 billion in dividends and $10.0 billion in share repurchases for H1 2026; the characterization of this as signaling "management confidence" is a standard interpretive inference from those disclosed figures.
+
+---
+
+CLAIM: "natural gas prices and refining margins — as these have been meaningful near-term earnings drivers"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states "Natural gas prices stayed elevated above the 10-year average" and "Global refining margins were significantly above historical ranges," confirming both as material near-term earnings contributors.
+
+---
+
+CLAIM: "Geopolitical developments in the Middle East and their effect on global supply conditions… disruptions have already shown the capacity to move market conditions and segment earnings"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights states "Crude oil prices remained within the 10-year historical range despite Middle East supply disruptions," and the Risk Factors section explicitly references Middle East supply disruptions impacting market conditions and earnings.
+
+---
+
+CLAIM: "the acknowledged misalignment between current business trends and net-zero 2050 pathways"
+LABEL: SUPPORTED
+REASON: RAG SEC Highlights explicitly states "current trends are not yet aligned with net-zero 2050 targets," and the SEC Filing Highlights pre-written section repeats this language verbatim.
+
+---
+
+CLAIM: "Guyana and Permian expansion proceeds on schedule"
+LABEL: UNSUPPORTED
+REASON: No source data, SEC filing summary, or RAG content provides any schedule, timeline, or milestone against which "on schedule" could be verified; the phrase implies a specific schedule that is absent from the context.
+
+---
+
+CLAIM: "the gap between current and forward earnings closes as implied"
+LABEL: INFERENCE
+REASON: This is a direct logical inference from the two present figures — current P/E of 21.1x and forward P/E of 14.4x — which together imply expected earnings growth; no additional absent fact is required to derive this directional statement.
+
+---
+
+CLAIM: "regulatory or environmental compliance costs accelerate faster than structural savings"
+LABEL: UNSUPPORTED
+REASON: While evolving environmental standards are mentioned as a risk factor, no specific compliance cost figures, growth rates, or quantitative thresholds are present in the source data to ground this as a verifiable comparative claim rather than a generic risk statement.
+
+---
+
+CLAIM: "geopolitical disruptions impair operations in key producing regions"
+LABEL: UNSUPPORTED
+REASON: While Middle East supply disruptions are referenced in the source data, no specific producing regions for ExxonMobil's own operations are identified in the context, and no operational impairment figures or thresholds are provided against which this forward-looking condition could be grounded.
+
+---
+
+### Summary Table
+
+| # | Claim | Label |
+|---|-------|-------|
+| 1 | $361.1B revenue | SUPPORTED |
+| 2 | $32.8B net income | SUPPORTED |
+| 3 | $674.6B market cap | SUPPORTED |
+| 4 | Current P/E 21.1x | SUPPORTED |
+| 5 | Forward P/E 14.4x | SUPPORTED |
+| 6 | H1 2026 upstream earnings growth | SUPPORTED |
+| 7 | $16.3B cumulative structural cost savings vs. 2019 | SUPPORTED |
+| 8 | Volume growth from Guyana and Permian | SUPPORTED |
+| 9 | Demonstrated structural cost reduction track record | SUPPORTED |
+| 10 | Capital return program signals management confidence | INFERENCE |
+| 11 | Natural gas prices and refining margins as near-term earnings drivers | SUPPORTED |
+| 12 | Middle East disruptions already moved market conditions/earnings | SUPPORTED |
+| 13 | Acknowledged misalignment with net-zero 2050 | SUPPORTED |
+| 14 | Guyana and Permian expansion "on schedule" | UNSUPPORTED |
+| 15 | Forward/current earnings gap closes as implied | INFERENCE |
+| 16 | Compliance costs accelerating faster than structural savings | UNSUPPORTED |
+| 17 | Geopolitical disruptions impair operations in key producing regions | UNSUPPORTED |

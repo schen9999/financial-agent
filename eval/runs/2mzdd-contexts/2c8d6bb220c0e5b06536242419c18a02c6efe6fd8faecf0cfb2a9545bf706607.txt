@@ -1,0 +1,100 @@
+STOCK DATA:
+{
+  "ticker": "BYND",
+  "company_name": "Beyond Meat, Inc.",
+  "current_price": 7.66,
+  "currency": "USD",
+  "market_cap": 131705760.0,
+  "forward_pe": -0.73481447,
+  "week_52_high": 230.7,
+  "week_52_low": 7.56,
+  "financial_currency": "USD",
+  "revenue": 258844992.0,
+  "net_income": 258864992.0,
+  "profit_margin_pct": 115.85,
+  "dividend_yield": 0.0,
+  "sector": "Consumer Defensive",
+  "industry": "Packaged Foods"
+}
+
+NEWS ARTICLES:
+[]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2026-04-09",
+    "summary": "ITEM 1A. RISK FACTORS. Risk Factor Summary We are providing the following summary of the risk factors to enhance the readability and accessibility of our risk factor disclosures. We encourage you to carefully review the full risk factors immediately following this summary as well as the other information in this report, including Item 7 , Management\u2019s Discussion and Analysis of Financial Condition and Results of Operations , Note Regarding Forward-Looking Statements , and our consolidated financial statements and related notes, before deciding whether to invest in shares of our common stock. The risks and uncertainties described in this report may not be the only ones we face. If any of the risks actually occurs, our business, financial condition, operating results, cash flows and prospect"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-08-06",
+    "summary": "ITEM 1A. RISK FACTORS. In addition to the other information set forth in this report, you should carefully consider the factors discussed in Part I, Item 1A, Risk Factors, in our 2025 10-K, as updated and supplemented below and in our subsequent filings. These risks could materially harm our business, operating results and financial condition. Additional factors and uncertainties not currently known to us or that we currently consider immaterial also may materially adversely affect our business, financial condition or future results. Risk Factors Risks Related to Our Business Our strategic repositioning to \u201cBeyond The Plant Protein Company\u201d may not be successful, and our failure to effectively execute or realize the anticipated benefits of this strategy could have a material adverse effect"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] # Key Takeaways from Beyond Meat's SEC Filings
+
+Based on the risk factor disclosures, the following are the primary concerns highlighted:
+
+## Economic and Trade Challenges
+- Economic disruptions, including recession risks, inflation, and trade policy uncertainty, pose significant threats to business operations
+- Tariff environments—particularly on imports from China, Canada, and the EU—create pricing pressures and supply chain complications
+- The company sources majority pea protein volume and manufactures products in Canada, making them vulnerable to import tariffs
+- Inability to fully pass cost increases to customers could materially impact revenue and gross margins
+
+## Geopolitical Risks
+- Military conflicts in Europe and the Middle East create supply chain vulnerabilities and ingredient scarcity
+- Export controls and sanctions related to international conflicts may restrict market access
+- Potential escalation of geopolitical tensions could destabilize broader markets and capital availability
+
+## Operational and Financial Challenges
+- History of losses and negative cash flows from operations
+- Weakness in the plant-based meat category with persistent demand declines
+- Need to execute cost-reduction initiatives, workforce reductions, and operational optimization
+- Challenges in accurately forecasting demand and managing inventory levels
+- Reliance on limited third-party suppliers and co-manufacturers creates supply chain concentration risk
+
+## Strategic Priorities
+- Focus on gross margin expansion and cash generation
+- Narrowing commercial focus to specific growth opportunities
+- Potential exit or discontinuation of select product lines and geographic operations
+- Risk of non-cash charges including inventory provisions and asset impairments
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses three main categories of risk factors:
+
+## Risks Related to Our Business
+This is the most extensive category, encompassing:
+- Adverse and uncertain economic and political conditions, including inflation concerns and potential government disruptions
+- Trade policy uncertainties and tariffs on raw materials, ingredients, and finished goods
+- History of losses and negative cash flows, with challenges in achieving profitability
+- Reduced consumer confidence and spending patterns
+- Weakness in the plant-based meat category with persistent demand declines
+- Operational optimization and cost-reduction initiatives, including workforce reductions
+- Supply chain disruptions and reliance on limited third-party suppliers
+- Customer consolidation and loss of significant customers
+- Capacity utilization and inventory management challenges
+- Difficulty attracting and retaining senior management and employees
+- Risks from acquisitions and investments
+- ESG practices and reporting matters
+- Technological changes and workplace safety incidents
+
+## Risks Related to Our Products
+- Food safety incidents and food-borne illnesses
+- Product misbranding or advertising issues
+- Reduction in sales of specific products
+- Changing consumer preferences and trends
+- Failure to successfully develop or improve products
+- Price increases and volatility in ingredient and packaging costs
+
+## Risks Related to Our Industry and Brand
+- Increased competition and industry consolidation
+- New market entrants
+- Consumer reaction to product changes
+- Brand reputation damage from quality or health concerns
+- Challenges in brand development and maintenance

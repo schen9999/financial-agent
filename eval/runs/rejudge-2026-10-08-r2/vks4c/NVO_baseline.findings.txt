@@ -1,0 +1,141 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number in the Executive Summary and Outlook sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "generating revenue of 329.4 billion DKK"
+LABEL: SUPPORTED
+REASON: Source data lists revenue of 329,430,990,848 DKK, which rounds to 329.4 billion DKK; the pre-written Financial Health section also states this figure explicitly.
+
+---
+
+CLAIM: "net income of 116.4 billion DKK"
+LABEL: SUPPORTED
+REASON: Source data lists net_income of 116,442,996,736 DKK, which rounds to 116.4 billion DKK; confirmed in the pre-written Financial Health section.
+
+---
+
+CLAIM: "35.35% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly states profit_margin_pct = 35.35; also present in the pre-written sections.
+
+---
+
+CLAIM: "trades at $38.26"
+LABEL: SUPPORTED
+REASON: Source data lists current_price = 38.26 USD.
+
+---
+
+CLAIM: "a steep discount to its 52-week high of $64.16"
+LABEL: SUPPORTED
+REASON: Source data lists week_52_high = 64.16; $38.26 is approximately 40.4% below $64.16, confirming it is a steep discount arithmetically ((64.16 − 38.26) / 64.16 ≈ 40.4%).
+
+---
+
+CLAIM: "a low P/E of 9.35x"
+LABEL: SUPPORTED
+REASON: Source data lists pe_ratio = 9.354523, which rounds to 9.35x.
+
+---
+
+CLAIM: "a forward P/E of 11.50x"
+LABEL: SUPPORTED
+REASON: Source data lists forward_pe = 11.501758, which rounds to 11.50x.
+
+---
+
+CLAIM: "a 4.7% dividend yield"
+LABEL: SUPPORTED
+REASON: Source data lists dividend_yield = 4.7.
+
+---
+
+CLAIM: "competition against Eli Lilly, Roche, and emerging entrants"
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section explicitly names Eli Lilly and Roche as competitors in the GLP-1 market.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "industry-leading profit margins" (directional/positional claim)
+LABEL: INFERENCE
+REASON: The 35.35% profit margin is present in the source data; characterizing it as "industry-leading" is a direct comparative inference from the pre-written section's language ("exceptional… pricing power and operational excellence in the pharmaceutical sector"), though no explicit industry benchmark figure is provided in the source data.
+
+---
+
+CLAIM: "continued broad-based patient adoption of Ozempic and Wegovy"
+LABEL: UNSUPPORTED
+REASON: No source data, news articles, or SEC filings provide any figures, metrics, or factual basis regarding patient adoption levels or trends for Ozempic or Wegovy; this is a forward-looking watch-item referencing facts absent from the context.
+
+---
+
+CLAIM: "successful resolution of manufacturing capacity constraints"
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section explicitly identifies manufacturing bottlenecks and production constraints as a known risk, making this a direct restatement of a sourced risk factor as a tailwind to watch.
+
+---
+
+CLAIM: "favorable reimbursement decisions from major payers and health systems globally"
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section explicitly identifies reimbursement restrictions and healthcare policy changes as a risk, making this a direct restatement of a sourced risk factor as a tailwind to watch.
+
+---
+
+CLAIM: "intensifying competition from Eli Lilly, Roche, and a growing field of GLP-1 entrants that could erode pricing power"
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section explicitly names Eli Lilly and Roche and describes competitive pressure on pricing power and market share.
+
+---
+
+CLAIM: "evolving drug pricing regulations across key markets that threaten to compress the company's exceptional margins"
+LABEL: SUPPORTED
+REASON: The pre-written Risk Factors section explicitly identifies evolving drug pricing regulations and reimbursement restrictions as margin risks, referencing the 35.35% margin level.
+
+---
+
+CLAIM: "the absence of recent financial disclosures that leaves investors without a current read on business momentum"
+LABEL: SUPPORTED
+REASON: Source data confirms SEC filings return "No 10-K found" and "No 10-Q found," and the pre-written SEC Filing Highlights section explicitly states no recent filings were available for review.
+
+---
+
+CLAIM: "if upcoming earnings reports confirm that market share and margins are holding despite competitive pressure"
+LABEL: UNSUPPORTED
+REASON: No source data provides any scheduled earnings date, earnings estimate, or forward margin/market-share figure; this forward-looking conditional references facts entirely absent from the context.
+
+---
+
+CLAIM: "if manufacturing bottlenecks are demonstrably easing"
+LABEL: SUPPORTED
+REASON: Manufacturing bottlenecks are explicitly identified in the pre-written Risk Factors section; this is a direct restatement of a sourced risk as a conditional thesis-strengthening factor, with no new unverifiable figure introduced.
+
+---
+
+CLAIM: "if pipeline developments broaden the company's product moat beyond its current GLP-1 concentration"
+LABEL: UNSUPPORTED
+REASON: No source data, news articles, or SEC filings provide any information about pipeline products, development stages, or timelines; this forward-looking conditional references facts entirely absent from the context.
+
+---
+
+CLAIM: "if competitive dynamics accelerate price erosion"
+LABEL: SUPPORTED
+REASON: Competitive pricing pressure is explicitly identified in the pre-written Risk Factors section; this is a direct restatement of a sourced risk as a conditional thesis-weakening factor.
+
+---
+
+CLAIM: "if reimbursement restrictions tighten in major markets"
+LABEL: SUPPORTED
+REASON: Reimbursement restrictions are explicitly identified in the pre-written Risk Factors section as a risk factor.
+
+---
+
+CLAIM: "if supply constraints persist and cede ground to rivals during a period of peak demand"
+LABEL: SUPPORTED
+REASON: Supply chain and manufacturing constraints during peak demand are explicitly identified in the pre-written Risk Factors section.

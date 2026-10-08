@@ -1,0 +1,67 @@
+I will now audit every specific quantitative figure, price target, threshold, ratio, metric, percentage, named product milestone, or forward-looking number appearing in the **Executive Summary** and **Outlook** sections.
+
+---
+
+**EXECUTIVE SUMMARY**
+
+---
+
+CLAIM: "€38.2 billion in revenue"
+LABEL: SUPPORTED
+REASON: Source data shows revenue of €38,192,001,024, which rounds to €38.2 billion; the pre-written Financial Health section states the same figure.
+
+---
+
+CLAIM: "€7.8 billion in net income"
+LABEL: SUPPORTED
+REASON: Source data shows net income of €7,795,999,744, which rounds to €7.8 billion; the pre-written Financial Health section states the same figure.
+
+---
+
+CLAIM: "$242.5 billion market capitalization"
+LABEL: SUPPORTED
+REASON: Source data shows market_cap of $242,532,958,208, which rounds to $242.5 billion; the pre-written Financial Health section states the same figure.
+
+---
+
+CLAIM: "forward P/E of 21.69x"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists forward_pe as 21.691198, which rounds to 21.69x.
+
+---
+
+CLAIM: "trailing P/E of 26.97x"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists pe_ratio as 26.974327, which rounds to 26.97x.
+
+---
+
+CLAIM: "moderate positioning within its 52-week range"
+LABEL: INFERENCE
+REASON: The 52-week range is $144.97–$281.37 (spread of $136.40); the current price of $210.13 sits at ($210.13 − $144.97) / ($281.37 − $144.97) = $65.16 / $136.40 ≈ 47.8% of the range, which is near the midpoint, making "moderate positioning" a direct arithmetic derivation from the two present figures.
+
+---
+
+**OUTLOOK**
+
+---
+
+CLAIM: "20.41% profit margin"
+LABEL: SUPPORTED
+REASON: Source data explicitly lists profit_margin_pct as 20.41, and the pre-written Financial Health section states the same figure.
+
+---
+
+CLAIM: "competitive dynamics against Salesforce and Oracle"
+LABEL: SUPPORTED
+REASON: The pre-written Recent Developments section explicitly names "rivals like Salesforce and Oracle" as competitors to monitor.
+
+---
+
+CLAIM: "narrowing of the gap between the trailing and forward P/E"
+LABEL: SUPPORTED
+REASON: Both the trailing P/E (26.97x) and forward P/E (21.69x) are present in the source data; the gap between them (~5.28 points) is directly computable, and the directional claim about narrowing is a restatement of the relationship between two explicitly present figures.
+
+---
+
+**Summary of findings:** All quantitative claims in the Executive Summary and Outlook are either directly supported by the source data or are valid inferences derivable from figures explicitly present in the source. No claims are UNSUPPORTED. The brief is notably careful to avoid introducing figures, periods, or entities not present in the source data, which is consistent with the sparse underlying data (no news articles, no SEC filings).

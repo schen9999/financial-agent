@@ -1,0 +1,117 @@
+STOCK DATA:
+{
+  "ticker": "AAPL",
+  "company_name": "Apple Inc.",
+  "current_price": 336.67,
+  "currency": "USD",
+  "market_cap": 4913422663680.0,
+  "pe_ratio": 38.257954,
+  "forward_pe": 35.132553,
+  "week_52_high": 345.34,
+  "week_52_low": 243.42,
+  "financial_currency": "USD",
+  "revenue": 466822987776.0,
+  "net_income": 128929996800.0,
+  "profit_margin_pct": 27.62,
+  "dividend_yield": 0.32,
+  "sector": "Technology",
+  "industry": "Consumer Electronics"
+}
+
+NEWS ARTICLES:
+[
+  {
+    "title": "Gurman Reports Apple Is Launching New \u2018Smart Home\u2019 Products on October 13",
+    "source": "Bloomberg",
+    "published_at": "2026-09-30T20:14:31Z",
+    "description": null
+  },
+  {
+    "title": "Apple will sell 6 million iPhone duos in 2026, Counterpoint says",
+    "source": "Bloomberg",
+    "published_at": "2026-09-30T06:20:00Z",
+    "description": "The figure hinges on how quickly Apple ramps up production of the new foldable hardware, says Counterpoint senior analyst Ivan Lam"
+  },
+  {
+    "title": "Nothing debuts $399 \u2018Pro\u2019\u00a0headphones with\u00a0glass, metal design",
+    "source": "Bloomberg",
+    "published_at": "2026-09-29T04:17:37Z",
+    "description": "Aimed at audio enthusiasts who want the most detailed and customizable listening experience, the new product\u2019s biggest enhancements\u00a0are performance-related"
+  },
+  {
+    "title": "Regarding the Provenance of Charm Within Meta",
+    "source": "Bloomberg",
+    "published_at": "2026-09-25T17:07:33Z",
+    "description": null
+  },
+  {
+    "title": "Dixon Technologies sets sights on global top five as it expands beyond smartphones",
+    "source": "Bloomberg",
+    "published_at": "2026-09-23T02:29:42Z",
+    "description": "Dixon Technologies aims to enter the global top 10 EMS rankings in five years and top five in 10 years by expanding beyond smartphones."
+  }
+]
+
+SEC FILING SUMMARIES:
+{
+  "10-K": {
+    "form_type": "10-K",
+    "filing_date": "2025-10-31",
+    "summary": "Item 1A. Risk Factors The following summarizes factors that could have a material adverse effect on the Company\u2019s business, reputation, results of operations, financial condition and stock price. The Company may not be able to accurately predict, control or mitigate these risks. Statements in this section are based on the Company\u2019s beliefs and opinions regarding matters that could materially adversely affect the Company in the future and are not representations as to whether such matters have or have not occurred previously. The risks and uncertainties described below are not exhaustive and should not be considered a complete statement of all potential risks or uncertainties that the Company faces or may face in the future. This section should be read in conjunction with Part II, Item 7, \u201c"
+  },
+  "10-Q": {
+    "form_type": "10-Q",
+    "filing_date": "2026-07-31",
+    "summary": "Item 1A. Risk Factors 21 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 24 Item 3. Defaults Upon Senior Securities 24 Item 4. Mine Safety Disclosures 24 Item 5. Other Information 25 Item 6. Exhibits 25 PART I \u2014 FINANCIAL INFORMATION Item 1. Financial Statements Apple Inc. CONDENSED CONSOLIDATED STATEMENTS OF OPERATIONS (Unaudited) (In millions, except number of shares, which are reflected in thousands, and per-share amounts) Three Months Ended Nine Months Ended June 27, 2026 June 28, 2025 June 27, 2026 June 28, 2025 Net sales: Products $ 78,678 $ 66,613 $ 272,629 $ 233,287 Services 30,739 27,423 91,728 80,408 Total net sales 109,417 94,036 364,357 313,695 Cost of sales: Products 47,153 43,620 163,810 147,097 Services 7,494 6,698 21,765 19,738 Total cost of sales 54,647"
+  }
+}
+
+RAG — SEC HIGHLIGHTS:
+[From Pinecone cache] I can only provide information based on the context given, which contains excerpts from Apple's 2025 Form 10-K focusing on risk factors. Based on these excerpts, here are the key takeaways:
+
+**Macroeconomic and Global Risks:**
+- Apple's operations are heavily dependent on global economic conditions, with international sales representing the majority of total net sales
+- Adverse economic conditions such as recession, inflation, and currency fluctuations can materially impact demand for products and services
+- The company's large, complex global supply chain—with significant manufacturing in China, India, Japan, South Korea, Taiwan, and Vietnam—creates vulnerability to geopolitical disruptions and trade restrictions
+
+**Public Health and Business Continuity:**
+- Pandemics and major public health crises can disrupt operations, supply chains, and sales channels
+- The company's reliance on single or limited sources for critical components amplifies the impact of any business interruptions
+- Recovery from interruptions can require substantial time and expenditures
+
+**Competitive Pressures:**
+- Apple faces intense competition in highly competitive global markets characterized by aggressive pricing and rapid technological change
+- Competitors with low-cost structures and large installed bases pose significant threats
+- The company holds only a minority market share in key categories like smartphones, personal computers, tablets, and wearables
+- Intellectual property protection and continuous innovation are critical to maintaining competitive advantage
+
+The context provided does not include information from a 10-Q filing.
+
+RAG — RISK FACTORS:
+[From Pinecone cache] # Primary Risk Factors Disclosed
+
+The company discloses several major categories of risk factors:
+
+## Macroeconomic and Industry Risks
+- Global and regional economic conditions significantly impact operations, including risks from slow growth, recession, high unemployment, inflation, and currency fluctuations
+- Adverse economic conditions can reduce consumer confidence and spending, materially affecting demand for products and services
+- Financial instability among suppliers, contract manufacturers, and other business partners
+
+## Trade and Geopolitical Risks
+- International trade restrictions, including tariffs and controls on imports/exports of goods, technology, and data
+- Political events, geopolitical tensions, conflicts, and terrorism can disrupt operations
+- Recent tariffs announced on imports to the U.S. from multiple countries including China, India, Japan, South Korea, Taiwan, Vietnam, and the EU
+- Potential for reciprocal tariffs and retaliatory measures from other countries
+- Possible escalation of disputes and conflicts leading to more severe government actions
+
+## Operational and Supply Chain Risks
+- Natural disasters, earthquakes, extreme weather, fires, power shortages, and industrial accidents
+- Public health issues and pandemics that disrupt operations, supply chains, and sales channels
+- Cybersecurity attacks, ransomware, and labor disputes
+- Concentration of manufacturing in specific geographic regions, particularly Asia
+
+## Competitive Risks
+- Intense competition from competitors with broad product lines, low-priced offerings, and large customer bases
+- Competitors operating at little or no profit or at a loss
+- Minority market share in key markets like smartphones, personal computers, tablets, and wearables
+- Need to continuously introduce new products and services to remain competitive

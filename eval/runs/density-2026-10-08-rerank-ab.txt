@@ -1,0 +1,8 @@
+Judge-independent: numbers stated in the audited text
+  vks4c    mean  6.42 per brief (40 briefs)
+  2mzdd    mean  6.28 per brief (40 briefs)
+  2mzdd - vks4c: -0.15 (95% bootstrap CI -0.78 to +0.50); 2mzdd more on 13, equal 10, vks4c more 17; sign p = 0.5847
+Judge-independent, conservative: figures bound to a stock-data field
+  vks4c    mean  4.33 per brief (40 briefs)
+  2mzdd    mean  4.30 per brief (40 briefs)
+  2mzdd - vks4c: -0.03 (95% bootstrap CI -0.40 to +0.35); 2mzdd more on 10, equal 18, vks4c more 12; sign p = 0.8318

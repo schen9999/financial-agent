@@ -1907,6 +1907,26 @@ python3 scripts/traffic_proof_tasks.py --endpoint slm-gpu     --server-log eval/
    (`proof-tasks.json`), findings, claims, `eval/runs/three-judging-2026-10-08-xgtxx.txt`,
    `eval/runs/cost-gpu-p4-xgtxx-2026-10-08.txt`, `eval/runs/gpu-nvsmi-p4b-f304375.csv`.
 
+## Reranking A/B (2026-10-08)
+
+**[EXECUTED 2026-10-08 — decision DON'T SHIP]** Pre-registered in
+eval-methodology before any run.
+
+1. Memory smoke `grounding-eval-rerank3-smoke-262mz` (AAPL, rerank3): peak
+   1,487 MiB of 2,048 MiB, CPU at the 1.5 limit, exit 0; limit kept.
+2. Balance check OK; `make eval-run` with `argo/eval-run-extended.yaml` and
+   `argo/eval-run-extended-rerank3.yaml` in two tmux sessions, 20 s apart:
+   `grounding-eval-extended-vks4c` (done 03:54Z) and
+   `grounding-eval-extended-rerank3-2mzdd` (04:05Z); both 40/40 first
+   attempt, 0 retries.
+3. Re-judges 1 and 2 of both (`eval/runs/rejudge-2026-10-08{,-r2}/`).
+4. Warm latency Job (`k8s/jobs/rerank-latency-bench`, built with the load
+   restrictor off), then deleted.
+5. `scripts/rerank_ab_decide.py`: DON'T SHIP (refusals and latency fail).
+   Files: findings, claims and contexts of both runs, workflow objects,
+   attempts records, `eval/runs/rr-ab-*-f304375.log`,
+   `eval/runs/rerank-latency-*`, `eval/runs/rerank-ab-decision-2026-10-08.json`.
+
 ## Terraform: the provided cluster (import and plan only)
 
 **[EXECUTED 2026-10-07 — zero diff]** Under the owner's exception
