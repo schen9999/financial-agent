@@ -148,16 +148,15 @@ flowchart LR
 - The CPU SLM endpoint: llama.cpp b11347 serving Qwen3.6-35B-A3B Q4_K_M,
   8 CPU / 30Gi requested and limited, so it lands on a ~58 GiB node; the
   GGUF sits on a 50Gi `oci-bv` PVC. Keyed; reached only in-cluster.
-- Access: every Service is ClusterIP (Streamlit's becomes the public LB
-  once that is live) — no NodePort,
+- Access: every Service is ClusterIP except Streamlit's public LB — no
+  NodePort,
   and the API, Argo, MCP and the CPU endpoint are not public. The operator
   host (kubectl, helm) is reached by ssh through `oke-bastion`; Argo and
   anything else a person looks at is a `kubectl port-forward` behind
   `ssh -L`.
 - **What is public** (requested by the tenancy owner; overlay
-  `k8s/overlays/oke-provided-public-ui`; **not live as of 2026-10-07**,
-  waiting on the tenancy owner's NSG change, runbook "Public Streamlit
-  UI"): the Streamlit UI only, through one
+  `k8s/overlays/oke-provided-public-ui`; **live since 2026-10-08**, runbook
+  "Public Streamlit UI"): the Streamlit UI only, through one
   OCI flexible load balancer (10 Mbps) on subnet `pub_lb-tbhcuw`, HTTPS on
   443 with a self-signed certificate. **To whom:** the IPv4 addresses on a
   gitignored allowlist (the project owner's and the tenancy owner's network

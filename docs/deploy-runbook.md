@@ -1026,6 +1026,32 @@ confirmed he had stopped; a five-minute watch of the namespace (every
 object's resourceVersion, every event, 02:53:53–02:58:56Z) showed no
 change before the next apply.
 
+**LIVE (2026-10-08 03:12Z), security-list mode, verified.** First attempt
+after the quiet watch: `CreateLoadBalancer` returned 409 Conflict for ten
+minutes ("Token Collision: For token: <compartment>~createLoadBalancer~<Service
+UID>") and the script reverted to ClusterIP. The controller's idempotency
+token is the compartment plus the Service's UID, and that Service (created
+outside the project's scripts at 02:47:28Z) had already had a load balancer
+created and deleted under it with different settings; OCI refuses a reused
+token with a different request. **Fix: a Service with a fresh UID** —
+`kubectl -n financial-agent delete svc streamlit`, then
+`scripts/public_ui_up.sh`. With Service `758cef09` (03:12:50Z) every guard
+passed and the checks gave:
+
+- security list `pub_lb-tbhcuw`: exactly one ingress rule, TCP 443 from
+  99.164.75.62/32;
+- load balancer: flexible 10 Mbps, no NSG, one listener, 443 with TLS;
+- from 99.164.75.62: 401 without credentials and with a wrong password, 200
+  with them; `/_stcore/health` 200; the websocket upgrade answers 101;
+  ports 80 and 8501 do not answer; certificate SHA-256 fingerprint
+  90:5B:E5:28:…:6A:7C, as issued;
+- from the operator (egress not on the allowlist): timeout;
+- generating a cached ticker in the page needs a browser (no headless
+  browser on the laptop): done by the project owner.
+
+URL: https://129.80.19.30/ (user `reviewer`; the password stays on the
+operator).
+
 **Fallback: join the owner's LB NSG** (security-rule management `None`,
 which makes the controller ignore `loadBalancerSourceRanges`; the LB is
 attached to the existing NSG `pub_lb-tbhcuw` with

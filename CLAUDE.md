@@ -89,7 +89,8 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
   Every Service ClusterIP; the public Streamlit UI (one OCI flexible LB,
   allowlist + basic auth, k8s/overlays/oke-provided-public-ui; runbook
   "Public Streamlit UI"), security-list management mode since 2026-10-08
-  (the controller may not create NSGs); its status is in the runbook.
+  (the controller may not create NSGs); LIVE and verified 2026-10-08
+  03:12Z, allowlist 99.164.75.62/32 only, status in the runbook.
   Every change in the financial-agent namespace goes through the repo's
   overlays and scripts only (an outside change exposed Streamlit without
   auth on 2026-10-08, about 02:05–02:19 and 02:22–02:31Z). Access by
