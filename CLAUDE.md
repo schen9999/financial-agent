@@ -102,7 +102,7 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (7343 lines, 595 tests collected: 594 passed + 1 skipped,
+3. The pytest suite (7389 lines, 598 tests collected: 597 passed + 1 skipped,
    the credit-gated judge test, as of 2026-10-06) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
@@ -344,7 +344,17 @@ Phase 3 — demo polish:
   calls, eval/attempts.py reports retries with cause and counts labelled
   as from failed attempts (printed under the aggregate by make eval-run
   and written to ~/<workflow>-attempts.json; no RBAC for the aggregate
-  pod, by decision), and the proof counts every attempt. Numeric claims
+  pod, by decision), and the proof counts every attempt. PROOF METHOD
+  CHANGED 2026-10-07, declared before any run it judges: an SLM run is
+  citable only if scripts/traffic_proof_tasks.py gives TASK-EXACT — every
+  task in the endpoint's own llama-server log, from the workflow's
+  creation to the capture right after the run, matches a harness call on
+  (prompt, completion) tokens and vice versa, none incomplete. The
+  /metrics counter proof still runs and is reported, never deciding (it
+  drifted 1, 2, 2 tokens in the controlled replay with per-request counts
+  exact). Runs judged under the counter method keep their verdicts:
+  5bdz5, 4kkgm, 6z5xz stay NOT CITABLE, never re-scored; the CPU arm stays
+  8vpq6 on 1f51dad. Numeric claims
   are co-primary with the rate: every SLM-vs-hosted all-claims rate goes
   with numeric claims per ticker and the numeric-claim unsupported rate
   (hm527 6.1/ticker, 0/61; 9jddz 3.1/ticker, 0/31), plus claims per

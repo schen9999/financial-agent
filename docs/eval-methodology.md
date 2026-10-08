@@ -2316,6 +2316,34 @@ python scripts/slm_traffic_proof.py verify \
   --workflow eval/runs/slm-proof-p9jr2/grounding-eval-extended-slm-gpu-p9jr2-workflow.json   # EXACT
 ```
 
+### Traffic proof by per-request match (declared 2026-10-07)
+
+The traffic proof shows that the self-served model, and nothing else,
+produced an SLM run. Until 2026-10-07 it compared the harness's token sums
+with the movement of llama-server's process-wide `/metrics` counters. **From
+2026-10-07, declared before any run it judges, it matches the server's own
+per-request log against the harness's calls one for one**
+(`scripts/traffic_proof_tasks.py`): every task in the endpoint's log window
+complete, the multisets of (prompt, completion) tokens equal, nothing
+unmatched on either side — verdict TASK-EXACT, otherwise FAIL. The counter
+difference is reported beside it and does not decide.
+
+**Evidence for the change.** The A10 capacity replay
+(`eval/runs/capacity-sweep-2026-10-07/`) sent the same 352,522 prompt and
+98,665 completion tokens three times to the GPU endpoint, with nothing else
+on it and the prompt cache off. Each time the server's per-request timings
+summed exactly to what was sent; the prompt counter moved 352,521, 352,520
+and 352,520 — 1, 2 and 2 short — while the completion counter was exact. The
+counter method had failed three runs on the same kind of drift while every
+request matched the server's log: CPU `5bdz5` (+1), CPU `4kkgm` (−4), GPU
+`6z5xz` (+8) (`eval/runs/slm-proof-4kkgm/INVESTIGATION.md`,
+`eval/runs/slm-proof-6z5xz/INVESTIGATION.md`).
+
+**Not retroactive.** `5bdz5`, `4kkgm` and `6z5xz` were judged under the
+counter rule and stay not citable; they are not re-scored. The CPU arm of
+record stays `8vpq6` (image `1f51dad`, counter proof EXACT). Runs before
+2026-10-07 with an EXACT counter proof keep it.
+
 ### Dated finding: the judge's run-to-run noise on identical inputs, and density without the judge (2026-10-06)
 
 **Why it was measured.** On the stock-data-fix image (`f3043751`) the

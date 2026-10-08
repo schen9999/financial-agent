@@ -1749,6 +1749,46 @@ then, stop and keep the current numbers of record.
    nvidia-smi sampler on node 2 during the GPU runs; an Anthropic balance
    check first.
 
+## Traffic proof by per-request match (declared 2026-10-07)
+
+**From 2026-10-07, before any run it judges, the traffic proof of an SLM
+run is the per-request match** (`scripts/traffic_proof_tasks.py`), not the
+`/metrics` counter. A run is citable only if it gives **TASK-EXACT**:
+
+- every task in the endpoint's own llama-server log, from the workflow's
+  creation to the capture taken right after the run, is complete (prompt
+  eval, eval and release lines);
+- the server's tasks and the harness's calls (every eval pod, every
+  attempt; `EVAL_LLM_CALL` lines) match one for one on (prompt tokens,
+  completion tokens), nothing unmatched on either side. A task's prompt
+  tokens are release `n_tokens` − generated + 1, which includes a cached
+  prefix, as the API's usage does.
+
+Any other traffic in the window, or between the run's end and the capture,
+leaves an unmatched task: FAIL. The counter proof (`make slm-eval-run`,
+`scripts/slm_traffic_proof.py`) still runs and its difference is reported
+beside the verdict; it no longer decides.
+
+**Why.** In the 2026-10-07 replay on the GPU endpoint (A10 capacity check
+below), 352,522 prompt tokens were sent three times, the server's own
+per-request timings summed to exactly that each time, and the counter moved
+1, 2 and 2 tokens less, with nothing else on the endpoint and no cache. The
+counter proof had failed `5bdz5` (+1), `4kkgm` (−4) and `6z5xz` (+8) on the
+same drift while every request matched. **Those three stay not citable**:
+they were judged under the rule in force when they ran and are not
+re-scored. The CPU arm stays `8vpq6` on image `1f51dad`.
+
+**Procedure, after `make slm-eval-run`:**
+
+```bash
+# operator: the workflow's creation time (window start)
+kubectl -n financial-agent get workflow <wf> -o jsonpath='{.metadata.creationTimestamp}'
+# GPU endpoint, from the laptop, right after the run (node 2 runs it):
+ssh oci2 "kubectl -n financial-agent logs deploy/llamacpp --since-time=<creationTimestamp>" > eval/runs/slm-proof-<run>/llamacpp-server-window.log
+# CPU endpoint: the same command on the operator
+python3 scripts/traffic_proof_tasks.py --endpoint slm-gpu     --server-log eval/runs/slm-proof-<run>/llamacpp-server-window.log     --log eval/runs/slm-proof-<run>/<wf>.log     --before eval/runs/slm-proof-<run>/<wf>-before.json --after eval/runs/slm-proof-<run>/<wf>-after.json     --json-out eval/runs/slm-proof-<run>/proof-tasks.json
+```
+
 ## A10 capacity check (2026-10-07)
 
 1. **[EXECUTED 2026-10-07]** Replay sweep on node 2, P = 1, 2, 4
