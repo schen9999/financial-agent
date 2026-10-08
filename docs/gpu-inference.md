@@ -168,9 +168,11 @@ server's own per-request timings.
   8 × 4,215 = 33,720 exceeds the 32,768 tokens the 4 slots share now. That
   is an endpoint restart with a new context size on the demo's GPU node,
   which this sweep was approved without.
-- **Not a cost floor yet.** These are model-only figures from a replay;
-  the briefs-per-hour of a whole eval at P=4 come from the 40-ticker GPU
-  eval at parallelism 4 (below, when it has run).
+- **Not a cost floor.** These are model-only figures from a replay. The
+  40-ticker GPU eval at parallelism 4 (`6z5xz`, 2026-10-07) failed its
+  traffic proof — the prompt counter 8 above the server's own per-task log,
+  every request matched (`eval/runs/slm-proof-6z5xz/INVESTIGATION.md`) —
+  so none of its figures, timings included, are quoted.
 - **The counter drift reproduced, under control.** At every level the
   requests' own timings sum exactly to the tokens sent (352,522 prompt,
   98,665 generated), with no cache reuse, while the server's `/metrics`
@@ -195,5 +197,6 @@ python scripts/nvsmi_summary.py eval/runs/capacity-sweep-2026-10-07/nvsmi.csv   
   (`terraform/oci/`) has never been applied.
 - vLLM serving Qwen3.6-35B-A3B on one A10 (computed infeasible above,
   not booted).
-- A whole eval on the A10 at any parallelism above 2 (the replay sweep
-  above measured the server alone).
+- A citable whole eval on the A10 at any parallelism above 2 (the replay
+  sweep above measured the server alone; the P=4 eval `6z5xz` failed its
+  traffic proof).

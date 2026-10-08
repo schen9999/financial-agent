@@ -1,0 +1,163 @@
+Defaulted container "api" out of: api, wait-for-postgres (init)
+submitted workflow: grounding-eval-extended-slm-gpu-p4-6z5xz
+polling up to 29400 s (activeDeadlineSeconds=28800 + 600s margin)
+  [22:48:04] phase=Running progress=0/4
+  [22:48:25] phase=Running progress=0/4
+  [22:48:47] phase=Running progress=0/4
+  [22:49:08] phase=Running progress=0/4
+  [22:49:29] phase=Running progress=0/4
+  [22:49:51] phase=Running progress=0/4
+  [22:50:12] phase=Running progress=0/4
+  [22:50:34] phase=Running progress=1/5
+  [22:50:55] phase=Running progress=4/8
+  [22:51:16] phase=Running progress=4/8
+  [22:51:38] phase=Running progress=4/8
+  [22:51:59] phase=Running progress=4/8
+  [22:52:21] phase=Running progress=4/8
+  [22:52:42] phase=Running progress=4/8
+  [22:53:03] phase=Running progress=5/9
+  [22:53:25] phase=Running progress=8/12
+  [22:53:46] phase=Running progress=8/12
+  [22:54:07] phase=Running progress=8/12
+  [22:54:29] phase=Running progress=8/12
+  [22:54:50] phase=Running progress=8/12
+  [22:55:11] phase=Running progress=8/12
+  [22:55:33] phase=Running progress=11/15
+  [22:55:54] phase=Running progress=11/15
+  [22:56:15] phase=Running progress=12/16
+  [22:56:37] phase=Running progress=12/16
+  [22:56:58] phase=Running progress=12/16
+  [22:57:19] phase=Running progress=12/16
+  [22:57:41] phase=Running progress=12/16
+  [22:58:02] phase=Running progress=14/18
+  [22:58:23] phase=Running progress=16/20
+  [22:58:45] phase=Running progress=16/20
+  [22:59:06] phase=Running progress=16/20
+  [22:59:28] phase=Running progress=16/20
+  [22:59:49] phase=Running progress=16/20
+  [23:00:10] phase=Running progress=18/22
+  [23:00:32] phase=Running progress=19/23
+  [23:00:53] phase=Running progress=20/24
+  [23:01:15] phase=Running progress=20/24
+  [23:01:36] phase=Running progress=20/24
+  [23:01:57] phase=Running progress=20/24
+  [23:02:19] phase=Running progress=21/25
+  [23:02:40] phase=Running progress=21/25
+  [23:03:02] phase=Running progress=22/26
+  [23:03:23] phase=Running progress=24/28
+  [23:03:44] phase=Running progress=24/28
+  [23:04:06] phase=Running progress=25/29
+  [23:04:27] phase=Running progress=25/29
+  [23:04:49] phase=Running progress=26/30
+  [23:05:10] phase=Running progress=26/30
+  [23:05:31] phase=Running progress=27/31
+  [23:05:53] phase=Running progress=27/31
+  [23:06:14] phase=Running progress=30/34
+  [23:06:36] phase=Running progress=30/34
+  [23:06:57] phase=Running progress=31/35
+  [23:07:18] phase=Running progress=31/35
+  [23:07:40] phase=Running progress=31/35
+  [23:08:01] phase=Running progress=31/35
+  [23:08:23] phase=Running progress=34/38
+  [23:08:44] phase=Running progress=34/38
+  [23:09:05] phase=Running progress=36/40
+  [23:09:27] phase=Running progress=38/40
+  [23:09:48] phase=Running progress=40/41
+  [23:10:09] phase=Succeeded progress=41/41
+
+=== aggregate step output ===
+  slm sampling      : {"planner": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 1024, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.0, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}, "rag": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 2048, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.1, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}, "react": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 1024, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.0, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}, "section": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 768, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.1, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}, "synthesis": {"chat_template_kwargs": {"enable_thinking": false}, "dry_multiplier": 0.0, "frequency_penalty": 0.0, "max_tokens": 4096, "min_p": 0.0, "presence_penalty": 0.0, "repeat_penalty": 1.0, "temperature": 0.2, "top_k": 20, "top_n_sigma": -1.0, "top_p": 0.8, "typical_p": 1.0, "xtc_probability": 0.0}}
+  slm layout        : all layers on GPU per the served alias — record llama-server's GPU memory from nvidia-smi (make vm-llamacpp prints it)
+  Ticker    Sup  Uns  Inf  Tot  Retr(s)  Pipe(s)
+  --------------------------------------------
+  AAPL        8    0    0    8    37.21    74.02
+  AFRM        3    0    0    3    22.18    67.12
+  AMZN        9    1    0   10    20.72    75.29
+  BABA        5    0    0    5     1.18    22.88
+  BEAM        8    0    0    8    32.02    65.23
+  BLNK        9    0    0    9    14.86    42.12
+  BYND       10    1    0   11    27.94    51.54
+  CALM        5    1    0    6    19.46    57.38
+  CHGG        4    0    0    4    13.30    28.58
+  COIN        3    0    0    3    26.13    52.40
+  CRBU        5    0    1    6    22.20    63.62
+  EDIT        8    0    0    8    12.35    28.99
+  EVGO        4    1    2    7    37.47    68.37
+  GOOGL       3    0    0    3    40.92    76.82
+  JPM         3    0    0    3    23.89    60.78
+  LCID       11    0    0   11    26.72    54.03
+  META        4    0    0    4    20.12    69.79
+  MSFT        1    0    0    1    31.33    75.06
+  NTLA        7    0    0    7    21.17    37.33
+  NVDA        3    0    0    3    21.52    80.11
+  NVO         4    0    1    5     1.30    22.99
+  OCGN        8    0    2   10    19.61    37.73
+  OMER        8    1    0    9    20.74    56.02
+  PTON        3    0    0    3    30.94    70.36
+  RDFN        5    0    1    6    33.99    69.65
+  RIVN       10    0    1   11    38.81    76.68
+  ROKU       11    0    4   15    17.20    56.39
+  SANA        4    0    0    4    10.00    24.47
+  SAP        13    0    0   13     1.07    14.83
+  SFIX        7    0    0    7    32.37    77.95
+  SNAP        6    0    0    6    15.18    52.77
+  TM          7    0    0    7     1.29    19.74
+  TSLA        9    0    1   10    32.88    71.70
+  TSM         4    0    0    4     1.26    20.70
+  UNH         5    0    0    5    35.37    70.81
+  UPST        7    0    1    8    31.34    73.48
+  V           4    0    0    4    27.02    80.20
+  VERV        7    2    0    9    25.08    73.69
+  WMT         4    0    0    4    26.78    69.05
+  XOM         5    0    0    5    32.02    70.99
+  --------------------------------------------
+  TOTAL     244    7   14  265    22.67    56.54
+
+  tickers completed : 40
+  tickers skipped   : 0
+  stock block empty : 0/40
+  unsupported rate  : 2.64%   (gate: <= 5.0%)
+  95% CI (Wilson)   : 2.64% (95% CI 1.3–5.4%)
+  total claims      : 265   (gate: >= 30)
+  claims per ticker : mean 6.6, min 1 (MSFT)   — read the rate with this: fewer checkable claims lowers it for free
+  numeric claims    : 169 = mean 4.2/ticker, min 1 (MSFT, RDFN)   — co-primary: claims that quote a figure (the judge's listing of qualitative phrases varies run to run)
+  numeric unsupported: 2/169 = 1.18% (95% CI 0.3–4.2%)
+  Argo retries      : 0
+
+  LLM calls (agent) : 270 over 40 completed ticker(s) = 6.8/ticker; endpoints slm-gpu
+  Site                         Calls   Prompt   Compl   Lat(s)  Max(s) Trunc Loop Parse Fmt Retry Err
+  rag:highlights                  35    94507   24212    22.76   37.72     0    0     0   0     0   0
+  rag:risks                       35    91277   17418    17.32   32.86     0    0     0   0     0   0
+  section:financial_health        40    28209    5496     9.24   22.22     0    0     0   0     0   0
+  section:recent_developments     40    27969    5846    10.82   22.73     0    0     0   0     0   0
+  section:risk_factors            40    21897    6423    12.03   25.60     0    0     0   0     0   0
+  section:sec_filing_highlights    40    29011    5104    11.58   24.60     0    0     0   0     0   0
+  synthesis                       40    61113   34830    20.51   32.96     0    0     0   0     0   0
+  SLM_TRAFFIC {"calls": 270, "calls_without_usage": 0, "completion_tokens": 99329, "endpoint": "slm-gpu", "errored_calls": 0, "prompt_tokens": 353983}
+  RAG faithfulness  : 15/1445 RAG-answer claims unsupported by their own chunks, 1.04% (95% CI 0.6–1.7%) over 70 answers — judge rf-v1, UNVALIDATED, separate from the grounding rate above
+  est. run cost     : $3.3230   (chars/4 tokens priced from scripts/model_prices.json; excludes retries — cost of record stays scripts/cost_report.py)
+
+  GATE PASSED
+==============================================================================
+===EVAL_FINDINGS_TGZ_BEGIN pod=grounding-eval-extended-slm-gpu-p4-6z5xz-aggregate-2425275239===
+H4sIAAAAAAAAA+3OSwrCMBQF0CwlOzApjVmOFPxQkBba6votnelAR3V0zuQ+uHfwLs/ufrr2w7kfbvMh7CKtaq1brj5zu3NpjrmU1NY2pNy0KYdY9nnn3WNeuinGMI3j8m33qwcAAAAAAAAAAIA/egEWCXycACgAAA==
+===EVAL_FINDINGS_TGZ_END===
+time="2026-10-07T23:09:50.870Z" level=info msg="sub-process exited" argo=true error="<nil>"
+
+=== attempts: retries and failed attempts, from the workflow object and every pod's log (NOT in the aggregate above) ===
+workflow_nodes: 83 node(s) (read from status.compressedNodes)
+attempts of grounding-eval-extended-slm-gpu-p4-6z5xz (Succeeded): 40 eval pod(s) for 40 ticker(s)
+  Argo retries      : 0
+  failed attempts   : 0 - every eval pod succeeded on its first attempt
+  attempts record written: /home/ubuntu/grounding-eval-extended-slm-gpu-p4-6z5xz-attempts.json
+workflow_nodes: 83 node(s) (read from status.compressedNodes)
+Defaulted container "api" out of: api, wait-for-postgres (init)
+=== traffic proof for grounding-eval-extended-slm-gpu-p4-6z5xz (files in /home/ubuntu/slm-proof) ===
+  harness, final attempts : 270 calls, 353983 prompt + 99329 completion tokens (0 errored)
+  harness, failed attempts: 0 attempt(s), 0 calls, 0 prompt + 0 completion tokens (0 errored)
+  harness, all attempts   : 353983 prompt + 99329 completion tokens
+  server                  : 353991 prompt + 99329 completion tokens over the window (b11347-5fc4f3c8c, /models/Qwen3.6-35B-A3B-Q4_K_M.gguf)
+  FAIL: server saw 8 prompt + 0 completion tokens MORE than the run sent over all attempts, with no failed calls - other traffic hit the endpoint during the run
+TRAFFIC PROOF: FAIL
+eval-run exit 0, traffic proof exit 1
+make: *** [Makefile:336: slm-eval-run] Error 1

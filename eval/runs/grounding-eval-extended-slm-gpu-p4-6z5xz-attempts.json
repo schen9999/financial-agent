@@ -1,0 +1,11 @@
+{
+ "eval_pods": 40,
+ "failed_attempts": [],
+ "failed_by_endpoint": {},
+ "phase": "Succeeded",
+ "retried_tickers": [],
+ "retries": 0,
+ "tickers": 40,
+ "unrecorded": [],
+ "workflow": "grounding-eval-extended-slm-gpu-p4-6z5xz"
+}

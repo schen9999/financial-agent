@@ -26,4 +26,5 @@ if [ "$cmd" = "plan" ]; then
     case "$a" in -out|-out=*) echo "refused: plan -out (a saved plan exists only to be applied)"; exit 3;; esac
   done
 fi
-exec terraform -chdir="$DIR" "$@"
+TF="${TERRAFORM:-$(command -v terraform || echo "$HOME/bin/terraform")}"   # the operator installs it in ~/bin
+exec "$TF" -chdir="$DIR" "$@"
