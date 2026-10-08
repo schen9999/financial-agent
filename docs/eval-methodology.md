@@ -2327,6 +2327,42 @@ python scripts/slm_traffic_proof.py verify \
   --workflow eval/runs/slm-proof-p9jr2/grounding-eval-extended-slm-gpu-p9jr2-workflow.json   # EXACT
 ```
 
+### Dated finding: hosted run-to-run variance, from two existing runs (2026-10-08)
+
+Two hosted runs on the same image (`f3043751`), the same 40 tickers and the
+same pipeline, a day apart, each judged three times: `4hsn2` (2026-10-06)
+and `vks4c` (2026-10-08, the reranking A/B's baseline arm). Same image and
+inputs except the live data each fetched.
+
+| Measure | `4hsn2` | `vks4c` | Paired difference (4hsn2 − vks4c) |
+|---|---|---|---|
+| Judge-flagged unsupported, mean of three judgings (range) | 2.55% (1.47–3.76%) | 2.59% (2.26–2.83%) | −0.03 points (CI −1.92 to +2.03) |
+| Numeric claims unsupported, mean (range) | 0.86% (0.73–1.11%) | 1.48% (1.09–1.89%) | −0.39 points (CI −2.46 to +1.67) |
+| Numeric check TRUE_ERROR (adjudicated) | 1/565 (UPST) | 1/548 (BLNK) | — (one each, the same kind: limitation 9) |
+| All numbers stated per brief (no judge) | 6.45 | 6.42 | +0.03 (CI −0.57 to +0.65) |
+| Figures bound to stock data per brief (no judge) | 4.47 | 4.33 | +0.15 (CI −0.38 to +0.68) |
+| Highlights refusals (35 tickers) | 9 | 5 | — (JPM, MSFT, NVDA, UNH, UPST in both) |
+
+**Reading.** Between two runs of the same hosted pipeline, the
+deterministic measures barely move, and the judge-flagged rate moves less
+than it does between judgings of one run: the six single judgings span
+1.47–3.76%, the two runs' means differ by 0.04 points. The one measure
+that moves is the refusal count (9 vs 5; five tickers refuse in both, the
+rest vary), so a refusal difference between two runs needs a paired test
+— as the reranking A/B's criterion was.
+
+**The planned extra hosted variance runs are dropped.** Their purpose was
+to size run-to-run variance before comparing arms. These two runs already
+give it on every measure the comparisons use, and the judge's own noise
+(three judgings per run) is the larger term; more hosted runs would spend
+about $4 each to re-measure the same thing.
+
+```bash
+python eval/three_judging_stats.py --runs 4hsn2   --judgings raw eval/runs/rejudge-2026-10-06 eval/runs/rejudge-2026-10-06-r2   --run-judgings vks4c raw eval/runs/rejudge-2026-10-08 eval/runs/rejudge-2026-10-08-r2   --pairs 4hsn2:vks4c                                  # eval/runs/three-judging-2026-10-08-hosted-variance.txt
+python eval/density_check.py --runs 4hsn2 vks4c --pairs 4hsn2:vks4c   # eval/runs/density-2026-10-08-hosted-variance.txt
+python eval/rag_refusals.py --runs 4hsn2 vks4c
+```
+
 ### Reranking A/B, pre-registered (2026-10-08, before any run)
 
 **Question:** should cross-encoder reranking (20 cosine candidates reranked

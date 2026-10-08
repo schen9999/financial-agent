@@ -1,0 +1,8 @@
+Judge-independent: numbers stated in the audited text
+  4hsn2    mean  6.45 per brief (40 briefs)
+  vks4c    mean  6.42 per brief (40 briefs)
+  4hsn2 - vks4c: +0.03 (95% bootstrap CI -0.57 to +0.65); 4hsn2 more on 12, equal 13, vks4c more 15; sign p = 0.7011
+Judge-independent, conservative: figures bound to a stock-data field
+  4hsn2    mean  4.47 per brief (40 briefs)
+  vks4c    mean  4.33 per brief (40 briefs)
+  4hsn2 - vks4c: +0.15 (95% bootstrap CI -0.38 to +0.68); 4hsn2 more on 13, equal 15, vks4c more 12; sign p = 1.0000
