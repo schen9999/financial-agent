@@ -1,5 +1,5 @@
 """scripts/tf_provided.sh: Terraform in terraform/oci-provided/ is import and
-plan only — apply, destroy, CLI import, state writes, saved plans and
+plan only — apply, destroy, state writes other than import, saved plans and
 -auto-approve are refused before terraform runs."""
 import shutil
 import subprocess
@@ -12,7 +12,7 @@ BASH = shutil.which("bash")
 
 
 @pytest.mark.skipif(BASH is None, reason="bash not available")
-@pytest.mark.parametrize("args", [["apply"], ["destroy"], ["import", "a.b", "ocid1.x"], ["refresh"],
+@pytest.mark.parametrize("args", [["apply"], ["destroy"], ["refresh"],
                                   ["taint", "a.b"], ["state", "rm", "a.b"], ["state", "push", "x"],
                                   ["plan", "-out=p.tfplan"], ["plan", "-out", "p"], ["console"],
                                   ["plan", "-auto-approve"], ["force-unlock", "id"]])
@@ -23,5 +23,5 @@ def test_refused(args):
 
 def test_allowed_commands_are_the_documented_ones():
     src = SCRIPT.read_text(encoding="utf-8")
-    assert "init|fmt|validate|plan|show|providers) ;;" in src
+    assert "init|fmt|validate|plan|show|providers|import) ;;" in src
     assert "list|show) ;;" in src
