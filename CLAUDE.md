@@ -21,7 +21,11 @@ standby/fallback only. Single topology statement: docs/architecture.md,
 "Deployed topology (October 2026)". kind stays the local equivalence
 baseline, with probes and resource bounds.
 
-## Goal
+## Goal (the original plan)
+What was actually built differs (a provided OKE cluster, CPU-only, plus a
+GPU llama.cpp endpoint on a k3s A10 VM; the fine-tune is measured and
+declined): docs/architecture.md, "Deployed topology (October 2026)".
+The plan as written:
 Migrate to OCI, with a live demo of the result (first week of November 2026):
 - OKE basic cluster, created via Terraform (cluster creation is part of the deliverable)
 - App node pool: 2x VM.Standard.E4.Flex, 4 OCPUs / 32 GB each (1 OCPU = 2 vCPUs;
