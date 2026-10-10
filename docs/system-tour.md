@@ -134,9 +134,12 @@ fine-tune", 2026-09-05/06, judge v2):
 | baseline (hosted) | `grounding-eval-extended-j4cnp` | 12/392 = **3.06%** | 1.8–5.3% | PASSED | $2.36 |
 | local-model (in-cluster vLLM fine-tune, 2 sections) | `grounding-eval-extended-local-lsnnc` | 30/368 = **8.15%** | 5.8–11.4% | FAILED | $2.44 |
 
-Fisher exact **p = 0.0023**. The intervals are disjoint and the local
-arm's interval sits entirely above the gate; this is the first A/B that
-separates the arms on its own.
+Fisher exact **p = 0.0023**, claim-level. The intervals are disjoint and
+the local arm's interval sits entirely above the gate. At the ticker level
+(claims cluster within briefs; `eval/finetune_ab_ticker_level.py`) the
+paired interval on ticker-averaged rates (8.68% vs 2.32%) is +2.08 to
++10.95 points and the sign test p = 0.078: the decision rests on the gate
+failure, not on one p-value.
 
 **Where the failure lives** (numbers-of-record, "Per-section attribution
 of the 40-ticker A/B", 2026-09-05/06, judge v2; `eval/section_attribution.py`).
@@ -148,7 +151,7 @@ heuristic over paraphrased text, coverage ~78–79%):
 |---|---|---|---|
 | baseline | 1/202 = 0.50% (0.1–2.8%) | 3/104 = 2.88% (1.0–8.1%) | 8/86 = 9.30% (4.8–17.3%) |
 | local-model | **22/111 = 19.82%** (13.5–28.2%) | 2/180 = 1.11% (0.3–4.0%) | 6/77 = 7.79% (3.6–16.0%) |
-| Fisher exact | **p = 4.6e-10** | p = 0.36 | p = 0.79 |
+| Fisher exact (claim-level) | **p = 4.6e-10** | p = 0.36 | p = 0.79 |
 | *Sensitivity: reweighted true-rate estimate, baseline vs local-model* | *3.6% (1.5–7.9%) vs 14.6% (9.5–20.0%)* | *5.0% (2.8–9.2%) vs 4.1% (2.0–8.3%)* | *11.2% (7.3–18.3%) vs 9.0% (6.0–13.8%)* |
 
 The headline is the judge-flagged comparison above (0.50% vs 19.82%,

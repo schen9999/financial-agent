@@ -111,12 +111,16 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
 4. Celery stays request-time async; Argo owns eval orchestration. Do not merge them.
-5. SETTLED, now on a clearly separated 40-ticker A/B (2026-09-05/06, judge
+5. SETTLED, on the 40-ticker A/B's gate failure (2026-09-05/06, judge
    v2, same image and index both arms): the fine-tune serves in-cluster but
    FAILS the grounding gate — 8.15% unsupported (30/368, CI 5.8–11.4%) vs
-   baseline 3.06% (12/392, CI 1.8–5.3%), Fisher p = 0.0023; the failure
+   baseline 3.06% (12/392, CI 1.8–5.3%), claim-level Fisher p = 0.0023
+   (ticker-level, 2026-10-09: ticker-averaged 8.68% vs 2.32%, paired CI
+   +2.08 to +10.95 points, sign test p = 0.078,
+   eval/finetune_ab_ticker_level.py); the failure
    concentrates in the two sections the fine-tune owns (attributed FH+RF
-   claims 19.82% vs 0.50%, p = 4.6e-10, eval/section_attribution.py). The
+   claims 19.82% vs 0.50%, claim-level p = 4.6e-10,
+   eval/section_attribution.py). The
    earlier 10-ticker judge-v1 A/B (12.31% vs 3.03%, p = 0.054) agrees in
    direction but could not separate the arms alone. USE_LOCAL_MODEL
    therefore ships off and hosted models remain the production path; Ollama

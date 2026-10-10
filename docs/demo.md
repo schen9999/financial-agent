@@ -323,14 +323,21 @@ compartment for it yet.
 
 **Why does the fine-tuned model from the first demo ship disabled?** In
 the 40-ticker A/B it had 8.15% unsupported claims against hosted's 3.06%
-(Fisher p = 0.0023, judge v2), failing the 5% gate, with the excess in the
-two sections it writes. That result stands; the self-served model here is
+(judge v2), failing the 5% gate, with the excess in the two sections it
+writes. Claim-level Fisher gives p = 0.0023; at the ticker level the paired
+interval on ticker-averaged rates (8.68% vs 2.32%) is +2.08 to +10.95
+points, and the sign test gives p = 0.078. That result stands; the self-served model here is
 a different, larger model writing the whole brief.
 
-**Is n = 40 enough?** Enough to separate the fine-tune (p = 0.0023) and the
-density gap (figures bound to stock data, sign test p = 0.0001); not enough to detect a difference of a
-point or two in the unsupported rate. Say "not detected", never
-"equivalent".
+**Is n = 40 enough?** For the density gap, yes (figures bound to stock
+data, sign test p = 0.0001). For the fine-tune, only partly: claim-level
+Fisher gives p = 0.0023, but claims cluster within briefs. At the ticker
+level the paired interval excludes zero (+2.08 to +10.95 points on
+ticker-averaged rates) while the sign test does not reach 0.05 (p = 0.078).
+The ship-off decision rests on the gate failure (8.15% against the 5% gate)
+and the concentration in the sections the fine-tune writes, not on one
+p-value. Not enough to detect a difference of a point or two in the
+unsupported rate. Say "not detected", never "equivalent".
 
 **What would you fix first in the app plane?** Four gaps, all found by
 reading the code for [reliability.md](reliability.md), none yet hit in a

@@ -116,12 +116,16 @@ context (verified from the archived contexts: every RAG field
 | `local-model` (in-cluster vLLM fine-tune, 2 sections) | grounding-eval-extended-local-lsnnc | 368 | 324/30/14 | **8.15%** (5.8–11.4%) | **FAILED** | $2.44 |
 
 Fisher exact (two-sided) on 12/392 vs 30/368: **p = 0.0023**
-(`eval/stats.py`). Unlike the 10-ticker A/B of 2026-09-03 (p = 0.054),
-**this A/B separates the arms on its own**: the intervals are disjoint
-and the local arm's interval sits entirely above the gate. The ship-off
-decision for `USE_LOCAL_MODEL` now rests on this clearly separated
-40-ticker A/B (the earlier, underpowered measurements agree in
-direction). Calibration: these are judge-flagged rates (judge v2
+(`eval/stats.py`). The intervals are disjoint and the local arm's
+interval sits entirely above the gate. Fisher treats the claims as
+independent; they cluster within briefs (known limitation 16). At the
+ticker level (2026-10-09, `eval/finetune_ab_ticker_level.py`) the paired
+bootstrap on per-ticker rates gives ticker-averaged 8.68% vs 2.32%,
++6.36 points (CI +2.08 to +10.95), excluding zero, while the exact sign
+test does not reach 0.05 (p = 0.078). The ship-off decision for
+`USE_LOCAL_MODEL` rests on this A/B's gate failure (8.15% against the 5%
+gate) and the concentration in the fine-tune's own sections, not on one
+p-value (the earlier, underpowered measurements agree in direction). Calibration: these are judge-flagged rates (judge v2
 September calibration (2026-09-24): precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED)). Reweighted true-rate estimates (`eval/reweight_calibration.py`):
 `j4cnp` 5.7% (CI 3.5–9.9%), `lsnnc` 8.3% (CI 5.5–12.5%). The A/B
 direction (3.06% vs 8.15%, p = 0.0023) and the per-section attribution
@@ -142,7 +146,7 @@ overall A/B above is the measured result, the buckets are diagnostic):
 |---|---|---|---|
 | `baseline` | 1/202 = 0.50% (0.1–2.8%) | 3/104 = 2.88% (1.0–8.1%) | 8/86 = 9.30% (4.8–17.3%) |
 | `local-model` | **22/111 = 19.82%** (13.5–28.2%) | 2/180 = 1.11% (0.3–4.0%) | 6/77 = 7.79% (3.6–16.0%) |
-| Fisher exact | **p = 4.6e-10** | p = 0.36 | p = 0.79 |
+| Fisher exact (claim-level) | **p = 4.6e-10** | p = 0.36 | p = 0.79 |
 | *Sensitivity: reweighted true-rate estimate, baseline vs local-model* | *3.6% (1.5–7.9%) vs 14.6% (9.5–20.0%)* | *5.0% (2.8–9.2%) vs 4.1% (2.0–8.3%)* | *11.2% (7.3–18.3%) vs 9.0% (6.0–13.8%)* |
 
 The headline is the judge-flagged comparison above (0.50% vs 19.82%,
@@ -2858,8 +2862,9 @@ the arms on its own.** The decision to ship `USE_LOCAL_MODEL` off rests
 on the direction agreeing across independent measurements (85.4% vs
 88.6% at training time, 86.2% vs 77.8% in the Aug 2026 re-measure, and
 this run), not on one 10-ticker pass. **Superseded 2026-09-06**: the
-40-ticker A/B (above) separates the arms at p = 0.0023 and now carries
-the decision. These are dated run records from the committed harness.
+40-ticker A/B (above), claim-level p = 0.0023 with a ticker-level
+interval excluding zero (sign test p = 0.078), now carries the decision
+through its gate failure. These are dated run records from the committed harness.
 
 ## Statistical power
 
@@ -2872,8 +2877,10 @@ observed rate against a 5% gate** — the Wilson 95% interval for 2/66 is
 is fully consistent with a true rate above 5% (and a mild fail with one
 below it). Distinguishing 3% from 5% with useful power needs claims in
 the several-hundreds — the motivation for the extended benchmark, which
-delivered exactly that: at N = 392 vs 368 the 40-ticker A/B separates
-3.06% from 8.15% at p = 0.0023 where the 10-ticker pass could not
+delivered exactly that: at N = 392 vs 368 the 40-ticker A/B gives
+3.06% vs 8.15% at claim-level p = 0.0023 where the 10-ticker pass could not
+(at the ticker level, known limitation 16: paired CI +2.08 to +10.95 points,
+sign test p = 0.078)
 (judge-flagged v2 rates; reweighted estimates 5.7% vs 8.3%, see the
 held-out validation; direction unaffected, both arms share the judge).
 
