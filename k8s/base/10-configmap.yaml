@@ -6,8 +6,10 @@
 # flag surface stays visible in cluster config, and toggling one is a
 # ConfigMap edit + rollout, not an image rebuild. Defaults preserved from the
 # Phase 0 audit — reranking and the multi-agent graph ship off because evals
-# showed no grounding gain; the local model ships off (85.4% vs 88.6%
-# grounding). Do not flip them here without re-running the evals.
+# showed no grounding gain; the local model ships off because the 40-ticker
+# A/B failed the 5% gate (2026-09-05/06, judge v2: fine-tune 8.15% vs hosted
+# 3.06% unsupported; docs/numbers-of-record.md). Do not flip them here
+# without re-running the evals.
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -30,4 +32,4 @@ data:
   CRITIC_MAX_UNSUPPORTED_PCT: "5"
   MAX_REVISIONS: "2"
   # LOCAL_MODEL_URL is intentionally unset while USE_LOCAL_MODEL=false.
-  # Phase 3 points it at the vLLM Service.
+  # The k3s overlay points it at the in-cluster vLLM Service for A/B runs.

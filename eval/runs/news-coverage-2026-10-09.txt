@@ -1,0 +1,189 @@
+# python eval/news_coverage.py 4hsn2 nstp9 vks4c 2mzdd 9jzmj xgtxx j4cnp kcf7s   (2026-10-09)
+Rule: an article names the company if its title or description contains the short name (first word of company_name, '.com' and trailing punctuation removed, case-insensitive) or the ticker (whole word, case-sensitive)
+4hsn2: 32/40 tickers with zero articles; 26 articles; 20/26 do not name the company
+  zero articles: AFRM, BABA, BEAM, BLNK, BYND, CALM, CHGG, CRBU, EDIT, EVGO, JPM, LCID, MSFT, NTLA, NVDA, OCGN, OMER, PTON, RDFN, RIVN, ROKU, SANA, SAP, SFIX, SNAP, TM, TSLA, TSM, UNH, UPST, VERV, XOM
+  not named: AAPL: Nothing debuts $399 ‘Pro’ headphones with glass, metal design
+  not named: AAPL: Regarding the Provenance of Charm Within Meta
+  not named: AAPL: Dixon Technologies sets sights on global top five as it expands beyond smartphones
+  not named: AMZN: Nothing debuts $399 ‘Pro’ headphones with glass, metal design
+  not named: AMZN: New data centres worth $68 billion disrupted in US, data show
+  not named: AMZN: Meta-tied data centre draws blowout demand for debut junk bond
+  not named: AMZN: EQT plans $50 billion India investment, including Adani Connex
+  not named: COIN: Bitcoin drops below $80,000 as US jobs data spurs Fed-hike bets
+  not named: GOOGL: Google fights EU attempt to prise open Android to rival AI bots
+  not named: GOOGL: Alibaba to add data centres in Europe, Middle East in AI push
+  not named: GOOGL: New data centres worth $68 billion disrupted in US, data show
+  not named: GOOGL: EQT plans $50 billion India investment, including Adani Connex
+  not named: GOOGL: Google DeepMind staffer says AI may ‘kill us all’ in exit post
+  not named: META: New data centres worth $68 billion disrupted in US, data show
+  not named: META: Stocks, bonds hold ground before Fed; oil slips: Markets wrap
+  not named: V: AT&T CFO Pascal Desroches reflects on a nearly 40-year finance career before retiring
+  not named: V: When it comes to rate hikes, CFOs aren’t counting on a ‘one-and-done’
+  not named: V: India eyes AI for next finance leap after digital payments boom
+  not named: WMT: India launches trade portal to help exporters reach US buyers
+  not named: WMT: Paytm expands into agentic AI with new enterprise service Pi
+nstp9: 33/40 tickers with zero articles; 25 articles; 20/25 do not name the company
+  zero articles: AFRM, BABA, BEAM, BLNK, BYND, CALM, CHGG, CRBU, EDIT, EVGO, JPM, LCID, MSFT, NTLA, NVDA, NVO, OCGN, OMER, PTON, RDFN, RIVN, ROKU, SANA, SAP, SFIX, SNAP, TM, TSLA, TSM, UNH, UPST, VERV, XOM
+  not named: AAPL: Nothing debuts $399 ‘Pro’ headphones with glass, metal design
+  not named: AAPL: Regarding the Provenance of Charm Within Meta
+  not named: AAPL: Dixon Technologies sets sights on global top five as it expands beyond smartphones
+  not named: AMZN: Nothing debuts $399 ‘Pro’ headphones with glass, metal design
+  not named: AMZN: New data centres worth $68 billion disrupted in US, data show
+  not named: AMZN: Meta-tied data centre draws blowout demand for debut junk bond
+  not named: AMZN: EQT plans $50 billion India investment, including Adani Connex
+  not named: COIN: Bitcoin drops below $80,000 as US jobs data spurs Fed-hike bets
+  not named: GOOGL: Google fights EU attempt to prise open Android to rival AI bots
+  not named: GOOGL: Alibaba to add data centres in Europe, Middle East in AI push
+  not named: GOOGL: New data centres worth $68 billion disrupted in US, data show
+  not named: GOOGL: EQT plans $50 billion India investment, including Adani Connex
+  not named: GOOGL: Google DeepMind staffer says AI may ‘kill us all’ in exit post
+  not named: META: New data centres worth $68 billion disrupted in US, data show
+  not named: META: Stocks, bonds hold ground before Fed; oil slips: Markets wrap
+  not named: V: AT&T CFO Pascal Desroches reflects on a nearly 40-year finance career before retiring
+  not named: V: When it comes to rate hikes, CFOs aren’t counting on a ‘one-and-done’
+  not named: V: India eyes AI for next finance leap after digital payments boom
+  not named: WMT: India launches trade portal to help exporters reach US buyers
+  not named: WMT: Paytm expands into agentic AI with new enterprise service Pi
+vks4c: 34/40 tickers with zero articles; 24 articles; 19/24 do not name the company
+  zero articles: AFRM, BABA, BEAM, BLNK, BYND, CALM, CHGG, COIN, CRBU, EDIT, EVGO, JPM, LCID, MSFT, NTLA, NVDA, NVO, OCGN, OMER, PTON, RDFN, RIVN, ROKU, SANA, SAP, SFIX, SNAP, TM, TSLA, TSM, UNH, UPST, VERV, XOM
+  not named: AAPL: Nothing debuts $399 ‘Pro’ headphones with glass, metal design
+  not named: AAPL: Regarding the Provenance of Charm Within Meta
+  not named: AAPL: Dixon Technologies sets sights on global top five as it expands beyond smartphones
+  not named: AMZN: Nothing debuts $399 ‘Pro’ headphones with glass, metal design
+  not named: AMZN: New data centres worth $68 billion disrupted in US, data show
+  not named: AMZN: Meta-tied data centre draws blowout demand for debut junk bond
+  not named: AMZN: EQT plans $50 billion India investment, including Adani Connex
+  not named: GOOGL: Google fights EU attempt to prise open Android to rival AI bots
+  not named: GOOGL: Alibaba to add data centres in Europe, Middle East in AI push
+  not named: GOOGL: New data centres worth $68 billion disrupted in US, data show
+  not named: GOOGL: EQT plans $50 billion India investment, including Adani Connex
+  not named: GOOGL: Google DeepMind staffer says AI may ‘kill us all’ in exit post
+  not named: META: Moonshot said to eye early 2027 IPO after value hits $50 billion
+  not named: META: New data centres worth $68 billion disrupted in US, data show
+  not named: V: AT&T CFO Pascal Desroches reflects on a nearly 40-year finance career before retiring
+  not named: V: When it comes to rate hikes, CFOs aren’t counting on a ‘one-and-done’
+  not named: V: India eyes AI for next finance leap after digital payments boom
+  not named: WMT: India launches trade portal to help exporters reach US buyers
+  not named: WMT: Paytm expands into agentic AI with new enterprise service Pi
+2mzdd: 34/40 tickers with zero articles; 24 articles; 19/24 do not name the company
+  zero articles: AFRM, BABA, BEAM, BLNK, BYND, CALM, CHGG, COIN, CRBU, EDIT, EVGO, JPM, LCID, MSFT, NTLA, NVDA, NVO, OCGN, OMER, PTON, RDFN, RIVN, ROKU, SANA, SAP, SFIX, SNAP, TM, TSLA, TSM, UNH, UPST, VERV, XOM
+  not named: AAPL: Nothing debuts $399 ‘Pro’ headphones with glass, metal design
+  not named: AAPL: Regarding the Provenance of Charm Within Meta
+  not named: AAPL: Dixon Technologies sets sights on global top five as it expands beyond smartphones
+  not named: AMZN: Nothing debuts $399 ‘Pro’ headphones with glass, metal design
+  not named: AMZN: New data centres worth $68 billion disrupted in US, data show
+  not named: AMZN: Meta-tied data centre draws blowout demand for debut junk bond
+  not named: AMZN: EQT plans $50 billion India investment, including Adani Connex
+  not named: GOOGL: Google fights EU attempt to prise open Android to rival AI bots
+  not named: GOOGL: Alibaba to add data centres in Europe, Middle East in AI push
+  not named: GOOGL: New data centres worth $68 billion disrupted in US, data show
+  not named: GOOGL: EQT plans $50 billion India investment, including Adani Connex
+  not named: GOOGL: Google DeepMind staffer says AI may ‘kill us all’ in exit post
+  not named: META: Moonshot said to eye early 2027 IPO after value hits $50 billion
+  not named: META: New data centres worth $68 billion disrupted in US, data show
+  not named: V: AT&T CFO Pascal Desroches reflects on a nearly 40-year finance career before retiring
+  not named: V: When it comes to rate hikes, CFOs aren’t counting on a ‘one-and-done’
+  not named: V: India eyes AI for next finance leap after digital payments boom
+  not named: WMT: India launches trade portal to help exporters reach US buyers
+  not named: WMT: Paytm expands into agentic AI with new enterprise service Pi
+9jzmj: 32/40 tickers with zero articles; 26 articles; 20/26 do not name the company
+  zero articles: AFRM, BABA, BEAM, BLNK, BYND, CALM, CHGG, CRBU, EDIT, EVGO, JPM, LCID, MSFT, NTLA, NVDA, OCGN, OMER, PTON, RDFN, RIVN, ROKU, SANA, SAP, SFIX, SNAP, TM, TSLA, TSM, UNH, UPST, VERV, XOM
+  not named: AAPL: Nothing debuts $399 ‘Pro’ headphones with glass, metal design
+  not named: AAPL: Regarding the Provenance of Charm Within Meta
+  not named: AAPL: Dixon Technologies sets sights on global top five as it expands beyond smartphones
+  not named: AMZN: Nothing debuts $399 ‘Pro’ headphones with glass, metal design
+  not named: AMZN: New data centres worth $68 billion disrupted in US, data show
+  not named: AMZN: Meta-tied data centre draws blowout demand for debut junk bond
+  not named: AMZN: EQT plans $50 billion India investment, including Adani Connex
+  not named: COIN: Bitcoin drops below $80,000 as US jobs data spurs Fed-hike bets
+  not named: GOOGL: Google fights EU attempt to prise open Android to rival AI bots
+  not named: GOOGL: Alibaba to add data centres in Europe, Middle East in AI push
+  not named: GOOGL: New data centres worth $68 billion disrupted in US, data show
+  not named: GOOGL: EQT plans $50 billion India investment, including Adani Connex
+  not named: GOOGL: Google DeepMind staffer says AI may ‘kill us all’ in exit post
+  not named: META: New data centres worth $68 billion disrupted in US, data show
+  not named: META: Stocks, bonds hold ground before Fed; oil slips: Markets wrap
+  not named: V: AT&T CFO Pascal Desroches reflects on a nearly 40-year finance career before retiring
+  not named: V: When it comes to rate hikes, CFOs aren’t counting on a ‘one-and-done’
+  not named: V: India eyes AI for next finance leap after digital payments boom
+  not named: WMT: India launches trade portal to help exporters reach US buyers
+  not named: WMT: Paytm expands into agentic AI with new enterprise service Pi
+xgtxx: 32/40 tickers with zero articles; 26 articles; 20/26 do not name the company
+  zero articles: AFRM, BABA, BEAM, BLNK, BYND, CALM, CHGG, CRBU, EDIT, EVGO, JPM, LCID, MSFT, NTLA, NVDA, OCGN, OMER, PTON, RDFN, RIVN, ROKU, SANA, SAP, SFIX, SNAP, TM, TSLA, TSM, UNH, UPST, VERV, XOM
+  not named: AAPL: Nothing debuts $399 ‘Pro’ headphones with glass, metal design
+  not named: AAPL: Regarding the Provenance of Charm Within Meta
+  not named: AAPL: Dixon Technologies sets sights on global top five as it expands beyond smartphones
+  not named: AMZN: Nothing debuts $399 ‘Pro’ headphones with glass, metal design
+  not named: AMZN: New data centres worth $68 billion disrupted in US, data show
+  not named: AMZN: Meta-tied data centre draws blowout demand for debut junk bond
+  not named: AMZN: EQT plans $50 billion India investment, including Adani Connex
+  not named: COIN: Bitcoin drops below $80,000 as US jobs data spurs Fed-hike bets
+  not named: GOOGL: Google fights EU attempt to prise open Android to rival AI bots
+  not named: GOOGL: Alibaba to add data centres in Europe, Middle East in AI push
+  not named: GOOGL: New data centres worth $68 billion disrupted in US, data show
+  not named: GOOGL: EQT plans $50 billion India investment, including Adani Connex
+  not named: GOOGL: Google DeepMind staffer says AI may ‘kill us all’ in exit post
+  not named: META: Moonshot said to eye early 2027 IPO after value hits $50 billion
+  not named: META: New data centres worth $68 billion disrupted in US, data show
+  not named: V: AT&T CFO Pascal Desroches reflects on a nearly 40-year finance career before retiring
+  not named: V: When it comes to rate hikes, CFOs aren’t counting on a ‘one-and-done’
+  not named: V: India eyes AI for next finance leap after digital payments boom
+  not named: WMT: India launches trade portal to help exporters reach US buyers
+  not named: WMT: Paytm expands into agentic AI with new enterprise service Pi
+j4cnp: 28/40 tickers with zero articles; 39 articles; 27/39 do not name the company
+  zero articles: AFRM, BABA, BEAM, BLNK, BYND, CALM, CHGG, CRBU, EDIT, EVGO, MSFT, NTLA, NVDA, NVO, OCGN, OMER, PTON, RDFN, ROKU, SANA, SAP, SFIX, TM, TSM, UNH, UPST, VERV, XOM
+  not named: AAPL: Phil Schiller Steps Down From Running App Store and Product Events
+  not named: AAPL: Trump backlash adds new risks to the stocks the government owns
+  not named: AAPL: Nvidia customers notified about AI-related price hikes above 15%
+  not named: AMZN: Wall Street bets on shielding Indian real estate from climate disaster
+  not named: AMZN: Nvidia in talks to buy AI startup Hugging Face, reports say
+  not named: COIN: Bitcoin leaps past $75,000 as crypto rally continues in Asia
+  not named: COIN: Bitcoin roars past $70,000 as yields sink, Trump sparks optimism
+  not named: COIN: New York City probes Kalshi and Polymarket over social harms
+  not named: GOOGL: Google Maps changes Lake Ontario label to Lake America in U.S.
+  not named: GOOGL: OpenAI data centre executive Chris Malone departs the AI startup
+  not named: GOOGL: Alibaba AI models hit 3 billion downloads, passing Meta, Google
+  not named: LCID: Uber to cut 3,300 jobs in company overhaul to reduce management layers
+  not named: META: AI firms debate putting cyber tests online after model hacks
+  not named: META: Apple gears up to launch its first new Mac Mini in two years
+  not named: RIVN: Uber to cut 3,300 jobs in company overhaul to reduce management layers
+  not named: RIVN: AI giants are quiet on climate in sign of post-ESG Wall Street
+  not named: SNAP: Meta says it’s shut down 7,50,000 under-16 accounts in Australia
+  not named: TSLA: SpaceX is hiring in natural gas trading for energy needs
+  not named: TSLA: AI’s volatile power demand is damaging its own data centers
+  not named: TSLA: AI’s volatile power demand is damaging its own data centers
+  not named: TSLA: SpaceX’s first earnings offer a chance to reverse stock’s plunge
+  not named: V: Vietnam restates readiness for ‘constructive’ US trade talks
+  not named: V: Trump’s stock disclosure shows more than 1,000 trades in June
+  not named: V: India’s NPCI targets 15-20 overseas markets to expand UPI globally
+  not named: WMT: Intuit hits a record milestone of $20 billion in revenue—and sets the stage for a strategic pullback
+  not named: WMT: Stocks fall, oil gains on West Asia uncertainty: Markets wrap
+  not named: WMT: From milk to snack foods, more products are going ‘regenerative’
+kcf7s: 28/40 tickers with zero articles; 35 articles; 26/35 do not name the company
+  zero articles: AFRM, BABA, BEAM, BLNK, BYND, CALM, CHGG, CRBU, EDIT, EVGO, MSFT, NTLA, NVDA, OCGN, OMER, PTON, RDFN, ROKU, SANA, SAP, SFIX, SNAP, TM, TSM, UNH, UPST, VERV, XOM
+  not named: AAPL: Meta ran over 300 ads with suspected AI child abuse, NGO says
+  not named: AAPL: Nvidia partner Hon Hai’s sales climb 52% with AI server momentum
+  not named: AAPL: Phil Schiller Steps Down From Running App Store and Product Events
+  not named: AMZN: New data centres worth $68 billion disrupted in US, data show
+  not named: AMZN: Meta-tied data centre draws blowout demand for debut junk bond
+  not named: AMZN: EQT plans $50 billion India investment, including Adani Connex
+  not named: AMZN: Wall Street bets on shielding Indian real estate from climate disaster
+  not named: COIN: Bitcoin drops below $80,000 as US jobs data spurs Fed-hike bets
+  not named: GOOGL: New data centres worth $68 billion disrupted in US, data show
+  not named: GOOGL: EQT plans $50 billion India investment, including Adani Connex
+  not named: GOOGL: Google DeepMind staffer says AI may ‘kill us all’ in exit post
+  not named: GOOGL: Google Maps changes Lake Ontario label to Lake America in U.S.
+  not named: GOOGL: OpenAI data centre executive Chris Malone departs the AI startup
+  not named: LCID: Uber to cut 3,300 jobs in company overhaul to reduce management layers
+  not named: META: New data centres worth $68 billion disrupted in US, data show
+  not named: META: Stocks, bonds hold ground before Fed; oil slips: Markets wrap
+  not named: RIVN: Uber to cut 3,300 jobs in company overhaul to reduce management layers
+  not named: TSLA: SpaceX is hiring in natural gas trading for energy needs
+  not named: V: AT&T CFO Pascal Desroches reflects on a nearly 40-year finance career before retiring
+  not named: V: When it comes to rate hikes, CFOs aren’t counting on a ‘one-and-done’
+  not named: V: India eyes AI for next finance leap after digital payments boom
+  not named: V: Vietnam restates readiness for ‘constructive’ US trade talks
+  not named: V: Trump’s stock disclosure shows more than 1,000 trades in June
+  not named: WMT: India launches trade portal to help exporters reach US buyers
+  not named: WMT: Paytm expands into agentic AI with new enterprise service Pi
+  not named: WMT: Intuit hits a record milestone of $20 billion in revenue—and sets the stage for a strategic pullback

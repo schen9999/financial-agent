@@ -58,10 +58,6 @@ eval/judge_validation/calibration_batch_key.csv
 # Answer key for the judge-UNSUPPORTED/INFERENCE relabel sample
 eval/judge_validation/relabel_UI_key.csv
 
-# Answer key for the three-judging calibration sample (all three verdicts,
-# strata, weights); eval/build_threejudge_calibration.py writes it here
-eval/judge_validation/threejudge_key.csv
-
 # Public Streamlit UI: the IP allowlist and the files rendered from it (the
 # Service patch carries the LB subnet and NSG OCIDs) stay out of git
 k8s/overlays/oke-provided-public-ui/allowlist.txt

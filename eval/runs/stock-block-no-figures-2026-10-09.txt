@@ -1,0 +1,68 @@
+# python eval/stock_block.py <every committed findings dir>   (2026-10-09)
+  Findings dir                             Files Empty Unknown  Empty-block files
+  eval\runs\raw\2mzdd-findings                40     0       0  -
+  eval\runs\raw\2nh8v-findings                10     0       0  -
+  eval\runs\raw\4hsn2-findings                40     0       0  -
+  eval\runs\raw\4kkgm-findings                40     0       0  -
+  eval\runs\raw\4nfsm-findings                40     0       0  -
+  eval\runs\raw\5bdz5-findings                40     0       0  -
+  eval\runs\raw\5jvhh-findings                10     0       0  -
+  eval\runs\raw\6z5xz-findings                40     0       0  -
+  eval\runs\raw\7c66k-findings                10     0       0  -
+  eval\runs\raw\8vpq6-findings                40     0       0  -
+  eval\runs\raw\9j2dj-findings                40     0       0  -
+  eval\runs\raw\9jddz-findings                10     0       0  -
+  eval\runs\raw\9jzmj-findings                40     0       0  -
+  eval\runs\raw\cnkp2-findings                40     0       0  -
+  eval\runs\raw\dvvxk-findings                40     0       0  -
+  eval\runs\raw\hm527-findings                10     0       0  -
+  eval\runs\raw\j4cnp-findings                40     0       0  -
+  eval\runs\raw\k6zxd-findings                10     0       0  -
+  eval\runs\raw\kcf7s-findings                40     0       0  -
+  eval\runs\raw\lsnnc-findings                40     0       0  -
+  eval\runs\raw\m7qvv-findings                10     0       0  -
+  eval\runs\raw\nb6r6-findings                10     0       0  -
+  eval\runs\raw\nstp9-findings                40     0       0  -
+  eval\runs\raw\p9jr2-findings                40     0       0  -
+  eval\runs\raw\r5nzh-findings                40     0       0  -
+  eval\runs\raw\v924f-findings                40     0       0  -
+  eval\runs\raw\vks4c-findings                40     0       0  -
+  eval\runs\raw\wnrjr-findings                10     0       0  -
+  eval\runs\raw\x2cx8-findings                10     0       0  -
+  eval\runs\raw\xgtxx-findings                40     0       0  -
+  eval\runs\raw\xnwjm-findings                10     0       0  -
+
+# python eval/stock_block.py --no-figures <every committed findings dir>
+Rule: no figures — a STOCK DATA block holding none of the nine numeric fields (agent.numeric_check.FIELDS) counts as empty
+  Findings dir                             Files Empty Unknown  Empty-block files
+  eval\runs\raw\2mzdd-findings                40     2       0  RDFN_rerank3, VERV_rerank3
+  eval\runs\raw\2nh8v-findings                10     0       0  -
+  eval\runs\raw\4hsn2-findings                40     2       0  RDFN_baseline, VERV_baseline
+  eval\runs\raw\4kkgm-findings                40     2       0  RDFN_slm-full-cpu, VERV_slm-full-cpu
+  eval\runs\raw\4nfsm-findings                40     2       0  RDFN_local-model, VERV_local-model
+  eval\runs\raw\5bdz5-findings                40     2       0  RDFN_slm-full-cpu, VERV_slm-full-cpu
+  eval\runs\raw\5jvhh-findings                10     0       0  -
+  eval\runs\raw\6z5xz-findings                40     2       0  RDFN_slm-full-gpu, VERV_slm-full-gpu
+  eval\runs\raw\7c66k-findings                10     0       0  -
+  eval\runs\raw\8vpq6-findings                40     2       0  RDFN_slm-full-cpu, VERV_slm-full-cpu
+  eval\runs\raw\9j2dj-findings                40     2       0  RDFN_baseline, VERV_baseline
+  eval\runs\raw\9jddz-findings                10     0       0  -
+  eval\runs\raw\9jzmj-findings                40     2       0  RDFN_baseline, VERV_baseline
+  eval\runs\raw\cnkp2-findings                40     2       0  RDFN_local-model, VERV_local-model
+  eval\runs\raw\dvvxk-findings                40     2       0  RDFN_baseline, VERV_baseline
+  eval\runs\raw\hm527-findings                10     0       0  -
+  eval\runs\raw\j4cnp-findings                40     2       0  RDFN_baseline, VERV_baseline
+  eval\runs\raw\k6zxd-findings                10     0       0  -
+  eval\runs\raw\kcf7s-findings                40     2       0  RDFN_baseline, VERV_baseline
+  eval\runs\raw\lsnnc-findings                40     2       0  RDFN_local-model, VERV_local-model
+  eval\runs\raw\m7qvv-findings                10     0       0  -
+  eval\runs\raw\nb6r6-findings                10     0       0  -
+  eval\runs\raw\nstp9-findings                40     2       0  RDFN_slm-full-gpu, VERV_slm-full-gpu
+  eval\runs\raw\p9jr2-findings                40     2       0  RDFN_slm-full-gpu, VERV_slm-full-gpu
+  eval\runs\raw\r5nzh-findings                40     2       0  RDFN_local-model, VERV_local-model
+  eval\runs\raw\v924f-findings                40     2       0  RDFN_local-model, VERV_local-model
+  eval\runs\raw\vks4c-findings                40     2       0  RDFN_baseline, VERV_baseline
+  eval\runs\raw\wnrjr-findings                10     0       0  -
+  eval\runs\raw\x2cx8-findings                10     0       0  -
+  eval\runs\raw\xgtxx-findings                40     2       0  RDFN_slm-full-gpu, VERV_slm-full-gpu
+  eval\runs\raw\xnwjm-findings                10     0       0  -

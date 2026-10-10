@@ -1,0 +1,7 @@
+# python eval/finetune_ab_ticker_level.py   (2026-10-09)
+Pooled (claim-level): lsnnc 30/368 = 8.15% vs j4cnp 12/392 = 3.06%; exact two-sided Fisher p = 0.0023
+Paired ticker-level bootstrap on per-ticker rates (multi_arm_stats.paired, seed 0, 10,000 resamples), 40 tickers:
+  ticker-averaged 8.68% vs 2.32%; difference +6.36 pts (95% bootstrap CI +2.08 to +10.95)
+  lsnnc higher on 15 tickers, equal on 19, j4cnp higher on 6; exact two-sided sign test p = 0.0784
+Leave-one-ticker-out Fisher (claim-level), 40 drops: p from 0.0004 to 0.0279; the largest p drops WMT (9/16 vs 2/12): 21/352 vs 10/380
+  drops leaving p >= 0.01: WMT

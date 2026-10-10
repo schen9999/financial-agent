@@ -8,7 +8,7 @@ import pathlib
 import pytest
 
 from eval.label import render_findings_md
-from eval.stock_block import main, scan_findings_dir, stock_block_empty
+from eval.stock_block import main, scan_findings_dir, stock_block_empty, stock_block_no_figures
 
 _REPO = pathlib.Path(__file__).resolve().parents[1]
 _spec = importlib.util.spec_from_file_location(
@@ -46,6 +46,17 @@ def test_missing_or_unparseable_is_unknown(text):
     assert stock_block_empty(text) is None
 
 
+def test_no_figures_rule():
+    # RDFN's block since 9j2dj: identifiers only, no quote from yfinance.
+    ids_only = {"ticker": "RDFN", "company_name": "N/A", "currency": "USD",
+                "financial_currency": "USD"}
+    assert stock_block_empty(_context(ids_only)) is False
+    assert stock_block_no_figures(_context(ids_only)) is True
+    assert stock_block_no_figures(_context({})) is True
+    assert stock_block_no_figures(_context({"ticker": "AAPL", "week_52_low": 1.0})) is False
+    assert stock_block_no_figures("no stock block here") is None
+
+
 def test_harness_layout_still_matches():
     # Drift guard without importing the harness (it mutates env at import):
     # run_arm must still emit the two labels this module keys on, in order.
@@ -73,6 +84,10 @@ def test_scan_findings_dir(tmp_path, capsys):
     assert main([str(tmp_path)]) == 0
     out = capsys.readouterr().out
     assert "TSLA_baseline" in out and "unknown (no parseable STOCK DATA block): JUNK_baseline" in out
+    r = scan_findings_dir(tmp_path, stock_block_no_figures)
+    assert r["empty"] == ["AAPL_baseline", "TSLA_baseline"]
+    assert main(["--no-figures", str(tmp_path)]) == 0
+    assert "Rule: no figures" in capsys.readouterr().out
 
 
 def test_scan_per_ticker_subdirs(tmp_path):

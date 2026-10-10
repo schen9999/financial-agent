@@ -1039,9 +1039,9 @@ token with a different request. **Fix: a Service with a fresh UID** —
 passed and the checks gave:
 
 - security list `pub_lb-tbhcuw`: exactly one ingress rule, TCP 443 from
-  99.164.75.62/32;
+  <allowlisted-ip>/32;
 - load balancer: flexible 10 Mbps, no NSG, one listener, 443 with TLS;
-- from 99.164.75.62: 401 without credentials and with a wrong password, 200
+- from <allowlisted-ip>: 401 without credentials and with a wrong password, 200
   with them; `/_stcore/health` 200; the websocket upgrade answers 101;
   ports 80 and 8501 do not answer; certificate SHA-256 fingerprint
   90:5B:E5:28:…:6A:7C, as issued;
@@ -1049,7 +1049,7 @@ passed and the checks gave:
 - generating a cached ticker in the page needs a browser (no headless
   browser on the laptop): done by the project owner.
 
-URL: https://129.80.19.30/ (user `reviewer`; the password stays on the
+URL: https://<public-ui-ip>/ (basic-auth user and password on the
 operator).
 
 **Fallback: join the owner's LB NSG** (security-rule management `None`,
@@ -1391,7 +1391,8 @@ smoke, then the extended runs with their same-image hosted baseline
    UTC, 40/40 tickers on the first attempt, 0 retries, TRAFFIC PROOF: EXACT
    (270 calls, 350,290 + 98,232 tokens), 6/245 = 2.45% unsupported (CI
    1.1–5.2%), numeric 3/155 = 1.94% (CI 0.7–5.5%), no
-   Trunc/Loop/Parse/Fmt/Retry/Err on any call, stock block empty 0/40,
+   Trunc/Loop/Parse/Fmt/Retry/Err on any call, stock block empty
+   0/40 (2/40 with no figures, RDFN and VERV: corrected 2026-10-09),
    gate passed — a dated, citable run, served all-GPU (alias without
    `-hybrid`). An nvidia-smi sampler ran on node 2 every 5 s from 02:51:49
    to 03:50:49 UTC across the tool-use check and both runs
@@ -1694,6 +1695,12 @@ then, stop and keep the current numbers of record.
 - Any ticker whose stock block is empty in a new run (`stock block empty`
   in the aggregate, `eval/stock_block.py`) is excluded from the
   before/after the same way, and listed.
+  Correction (2026-10-09, cold-read review): the in-pod count flags only an
+  empty dict, so RDFN's block (ticker, company_name "N/A" and currency,
+  no figures) passed it in every run; RDFN was not excluded. The offline
+  rule `python eval/stock_block.py --no-figures` counts RDFN and VERV in
+  every committed 40-ticker run (`eval/runs/stock-block-no-figures-2026-10-09.txt`).
+  The before/after was not recomputed without RDFN.
 - The currency before/after uses the same check on both sides: the old
   runs with `numeric_backtest.py --financial-currency` and this preflight
   file, the new runs as they are.
@@ -1761,10 +1768,10 @@ then, stop and keep the current numbers of record.
    **Extended chain (2026-10-06, EXECUTED; stopped at the CPU run):**
    - Hosted `grounding-eval-extended-4hsn2`: Succeeded, 0 retries;
      15/399 = 3.76% unsupported (CI 2.3–6.1%), numeric 3/270; stock
-     block empty 0/40; gate passed; 26.7 s per ticker; est. $4.1162.
+     block empty 0/40 (2/40 with no figures, RDFN and VERV: corrected 2026-10-09); gate passed; 26.7 s per ticker; est. $4.1162.
    - GPU `grounding-eval-extended-slm-gpu-nstp9`: Succeeded, 0 retries,
      TRAFFIC PROOF: EXACT; 10/267 = 3.75% (CI 2.0–6.8%), numeric 4/166;
-     stock block empty 0/40; gate passed; 34.6 s per ticker; est.
+     stock block empty 0/40 (2/40 with no figures, RDFN and VERV: corrected 2026-10-09); gate passed; 34.6 s per ticker; est.
      $3.3433. nvidia-smi on node 2 every 5 s, 04:49:42–08:24:
      `eval/runs/gpu-nvsmi-ext-f304375.csv`.
    - CPU `grounding-eval-extended-slm-cpu-5bdz5`: every eval pod on its
@@ -1809,7 +1816,7 @@ then, stop and keep the current numbers of record.
    **CPU extended re-run result (2026-10-06):**
    `grounding-eval-extended-slm-cpu-4kkgm`, 17:52–20:19Z. Run-time check
    PASS (projected worst 2h51m). Every eval pod on its first attempt, 0
-   retries, no failed attempts; stock block empty 0/40. **GATE FAILED**
+   retries, no failed attempts; stock block empty 0/40 (2/40 with no figures, RDFN and VERV: corrected 2026-10-09). **GATE FAILED**
    (15/282 = 5.32%, CI 3.2–8.6%; numeric 2/166) and **TRAFFIC PROOF:
    FAIL** — the server counted 4 prompt tokens FEWER than the harness
    logged (353,897 against 353,901; completion 99,078 on both; 270 calls,
@@ -1897,7 +1904,7 @@ python3 scripts/traffic_proof_tasks.py --endpoint slm-gpu     --server-log eval/
    one re-run of the P=4 GPU eval, the first run judged by the per-request
    proof: `grounding-eval-extended-slm-gpu-p4-xgtxx` (01:44–02:08Z, balance
    check and run-time check PASS). 40/40 first attempt, 0 retries, stock
-   block empty 0/40, gate passed. Proof: 270 server tasks matched the 270
+   block empty 0/40 (2/40 with no figures, RDFN and VERV: corrected 2026-10-09), gate passed. Proof: 270 server tasks matched the 270
    calls one for one (353,205 prompt + 97,762 completion tokens; 2,032 from
    a cached prefix), none incomplete; the counter (reported, not deciding)
    was 3 prompt tokens low and the old counter proof printed FAIL. Three

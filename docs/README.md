@@ -15,6 +15,7 @@ the dates, and use it as evidence rather than as current instructions).
 | What does the API look like? | [api.md](api.md): all routes with request/response shapes and examples | reference |
 | Something broke. What do I check? | [operations.md](operations.md), "Troubleshooting" (incidents that actually happened) | reference |
 | What does the OKE Terraform create? | [terraform/oci/README.md](../terraform/oci/README.md) (written and validated, never applied) | reference |
+| Is the provided cluster in Terraform? | [terraform/oci-provided/README.md](../terraform/oci-provided/README.md): imported on the operator host with a zero-diff plan, never applied; the generated configuration is not committed because it holds OCIDs (the repo has only `providers.tf` and `variables.tf`) | reference |
 | How do I run it locally? | [README](../README.md): "Running Locally"; [k8s/README.md](../k8s/README.md) for the kind cluster | reference |
 | What is the architecture? | [architecture.md](architecture.md), including the pipeline and Kubernetes diagrams and the Celery vs Argo split (moved from the README, 2026-10-08) | reference |
 | What are the results, and which numbers can I quote? | [numbers-of-record.md](numbers-of-record.md): [current](numbers-of-record.md#current), [dated run records](numbers-of-record.md#dated-run-records), [retired](numbers-of-record.md#retired); summary table in the [README](../README.md) "Key results" | reference |
@@ -65,4 +66,5 @@ the dates, and use it as evidence rather than as current instructions).
 | [k8s/README.md](../k8s/README.md) | Kubernetes manifest layout and the kind workflow | reference |
 | [infra/README.md](../infra/README.md) | AWS Terraform: apply, secrets, teardown | reference |
 | [terraform/oci/README.md](../terraform/oci/README.md) | OCI Terraform: what it creates and how to apply it | reference |
+| [terraform/oci-provided/README.md](../terraform/oci-provided/README.md) | The provided OKE cluster, imported on the operator host (zero-diff plan, never applied); generated config not committed | reference |
 | [CLAUDE.md](../CLAUDE.md) | Working constraints and documentation rules used while building the project | reference |

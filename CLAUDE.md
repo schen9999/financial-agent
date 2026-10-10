@@ -21,7 +21,11 @@ standby/fallback only. Single topology statement: docs/architecture.md,
 "Deployed topology (October 2026)". kind stays the local equivalence
 baseline, with probes and resource bounds.
 
-## Goal
+## Goal (the original plan)
+What was actually built differs (a provided OKE cluster, CPU-only, plus a
+GPU llama.cpp endpoint on a k3s A10 VM; the fine-tune is measured and
+declined): docs/architecture.md, "Deployed topology (October 2026)".
+The plan as written:
 Migrate to OCI, with a live demo of the result (first week of November 2026):
 - OKE basic cluster, created via Terraform (cluster creation is part of the deliverable)
 - App node pool: 2x VM.Standard.E4.Flex, 4 OCPUs / 32 GB each (1 OCPU = 2 vCPUs;
@@ -90,7 +94,7 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
   allowlist + basic auth, k8s/overlays/oke-provided-public-ui; runbook
   "Public Streamlit UI"), security-list management mode since 2026-10-08
   (the controller may not create NSGs); LIVE and verified 2026-10-08
-  03:12Z, allowlist 99.164.75.62/32 only, status in the runbook.
+  03:12Z, allowlist <allowlisted-ip>/32 only, status in the runbook.
   Every change in the financial-agent namespace goes through the repo's
   overlays and scripts only (an outside change exposed Streamlit without
   auth on 2026-10-08, about 02:05–02:19 and 02:22–02:31Z). Access by
@@ -106,17 +110,21 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (7502 lines, 610 tests collected: 609 passed + 1 skipped,
-   the credit-gated judge test, as of 2026-10-06) must pass on every commit. Canonical
+3. The pytest suite (7518 lines, 611 tests collected: 610 passed + 1 skipped,
+   the credit-gated judge test, as of 2026-10-09) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
 4. Celery stays request-time async; Argo owns eval orchestration. Do not merge them.
-5. SETTLED, now on a clearly separated 40-ticker A/B (2026-09-05/06, judge
+5. SETTLED, on the 40-ticker A/B's gate failure (2026-09-05/06, judge
    v2, same image and index both arms): the fine-tune serves in-cluster but
    FAILS the grounding gate — 8.15% unsupported (30/368, CI 5.8–11.4%) vs
-   baseline 3.06% (12/392, CI 1.8–5.3%), Fisher p = 0.0023; the failure
+   baseline 3.06% (12/392, CI 1.8–5.3%), claim-level Fisher p = 0.0023
+   (ticker-level, 2026-10-09: ticker-averaged 8.68% vs 2.32%, paired CI
+   +2.08 to +10.95 points, sign test p = 0.078,
+   eval/finetune_ab_ticker_level.py); the failure
    concentrates in the two sections the fine-tune owns (attributed FH+RF
-   claims 19.82% vs 0.50%, p = 4.6e-10, eval/section_attribution.py). The
+   claims 19.82% vs 0.50%, claim-level p = 4.6e-10,
+   eval/section_attribution.py). The
    earlier 10-ticker judge-v1 A/B (12.31% vs 3.03%, p = 0.054) agrees in
    direction but could not separate the arms alone. USE_LOCAL_MODEL
    therefore ships off and hosted models remain the production path; Ollama

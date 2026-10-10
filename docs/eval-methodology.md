@@ -116,12 +116,16 @@ context (verified from the archived contexts: every RAG field
 | `local-model` (in-cluster vLLM fine-tune, 2 sections) | grounding-eval-extended-local-lsnnc | 368 | 324/30/14 | **8.15%** (5.8–11.4%) | **FAILED** | $2.44 |
 
 Fisher exact (two-sided) on 12/392 vs 30/368: **p = 0.0023**
-(`eval/stats.py`). Unlike the 10-ticker A/B of 2026-09-03 (p = 0.054),
-**this A/B separates the arms on its own**: the intervals are disjoint
-and the local arm's interval sits entirely above the gate. The ship-off
-decision for `USE_LOCAL_MODEL` now rests on this clearly separated
-40-ticker A/B (the earlier, underpowered measurements agree in
-direction). Calibration: these are judge-flagged rates (judge v2
+(`eval/stats.py`). The intervals are disjoint and the local arm's
+interval sits entirely above the gate. Fisher treats the claims as
+independent; they cluster within briefs (known limitation 16). At the
+ticker level (2026-10-09, `eval/finetune_ab_ticker_level.py`) the paired
+bootstrap on per-ticker rates gives ticker-averaged 8.68% vs 2.32%,
++6.36 points (CI +2.08 to +10.95), excluding zero, while the exact sign
+test does not reach 0.05 (p = 0.078). The ship-off decision for
+`USE_LOCAL_MODEL` rests on this A/B's gate failure (8.15% against the 5%
+gate) and the concentration in the fine-tune's own sections, not on one
+p-value (the earlier, underpowered measurements agree in direction). Calibration: these are judge-flagged rates (judge v2
 September calibration (2026-09-24): precision 60% (9/15, CI 35.7–80.2%); population-weighted recall 32.5% on the baseline run (CI 16.0–52.4%), with the judge-SUPPORTED stratum from a blind relabel of 123 claims (4 human-UNSUPPORTED)). Reweighted true-rate estimates (`eval/reweight_calibration.py`):
 `j4cnp` 5.7% (CI 3.5–9.9%), `lsnnc` 8.3% (CI 5.5–12.5%). The A/B
 direction (3.06% vs 8.15%, p = 0.0023) and the per-section attribution
@@ -142,7 +146,7 @@ overall A/B above is the measured result, the buckets are diagnostic):
 |---|---|---|---|
 | `baseline` | 1/202 = 0.50% (0.1–2.8%) | 3/104 = 2.88% (1.0–8.1%) | 8/86 = 9.30% (4.8–17.3%) |
 | `local-model` | **22/111 = 19.82%** (13.5–28.2%) | 2/180 = 1.11% (0.3–4.0%) | 6/77 = 7.79% (3.6–16.0%) |
-| Fisher exact | **p = 4.6e-10** | p = 0.36 | p = 0.79 |
+| Fisher exact (claim-level) | **p = 4.6e-10** | p = 0.36 | p = 0.79 |
 | *Sensitivity: reweighted true-rate estimate, baseline vs local-model* | *3.6% (1.5–7.9%) vs 14.6% (9.5–20.0%)* | *5.0% (2.8–9.2%) vs 4.1% (2.0–8.3%)* | *11.2% (7.3–18.3%) vs 9.0% (6.0–13.8%)* |
 
 The headline is the judge-flagged comparison above (0.50% vs 19.82%,
@@ -1701,7 +1705,7 @@ from the pods' logs by `scripts/results_from_pod_log.py`.
 | Unsupported (judge-flagged, v2) | 7/411 = 1.70% (Wilson 95% CI 0.8–3.5%) |
 | Numeric claims (co-primary) | 277 = 6.9/ticker (min 1, RDFN); unsupported 2/277 = 0.72% (CI 0.2–2.6%) |
 | Claims per ticker | mean 10.3, min 2 (AMZN) |
-| Tickers | 40 completed, 0 skipped, stock block empty 0/40, 0 Argo retries |
+| Tickers | 40 completed, 0 skipped, stock block empty 0/40 (2/40 with no figures, RDFN and VERV: corrected 2026-10-09), 0 Argo retries |
 | Unsupported by ticker | LCID 3, AFRM 2, CHGG 1, NVO 1 |
 | Agent LLM calls | 270 (35 tickers × 7, and 5 tickers × 4 with no RAG answer: BABA, NVO, SAP, TM, TSM); no truncation, loop, parse, format or error flags |
 | RAG answers | 70; longest 786 tokens (above the old 512 cap) |
@@ -1929,7 +1933,8 @@ harness's timers include that path. Workflow Succeeded 03:13:00–03:48:12
 UTC; 40 of 40 tickers on the first attempt, 0 Argo retries; **TRAFFIC
 PROOF: EXACT** (270 calls, 350,290 prompt + 98,232 completion tokens on the
 harness and on the server); no truncation, loop, parse, format, retry or
-error flag on any call; stock block empty on 0 of 40; gate passed. A dated,
+error flag on any call; stock block empty on 0 of 40 (2 of 40 with no
+figures, RDFN and VERV: corrected 2026-10-09); gate passed. A dated,
 citable SLM run. The GPU smoke on the same image that fed the run-time gate
 is `k6zxd` (below).
 
@@ -2410,7 +2415,7 @@ cross-encoder runs in the pod) and is not a criterion.
 Runs on image `f3043751`, 40 tickers each, submitted together at 03:24Z:
 baseline `grounding-eval-extended-vks4c` and rerank3
 `grounding-eval-extended-rerank3-2mzdd`; both 40/40 on the first attempt,
-0 retries, stock block empty 0/40, gates passed. The one-ticker memory smoke
+0 retries, stock block empty 0/40 (2/40 with no figures, RDFN and VERV: corrected 2026-10-09) in each, gates passed. The one-ticker memory smoke
 (`grounding-eval-rerank3-smoke-262mz`) peaked at 1,487 MiB of the eval pod's
 2,048 MiB with the cross-encoder loaded and the pod at its 1.5-CPU limit; the
 limit was kept, and no eval pod of the A/B was killed or retried.
@@ -2569,7 +2574,8 @@ python eval/density_check.py --runs 9jzmj 8vpq6 p9jr2 4hsn2 nstp9 5bdz5 \
 
 **Runs.** Image `f3043751` (stock-data fix plus currency-labelling prompt
 rule), 40 tickers, judge v2: hosted `grounding-eval-extended-4hsn2`
-(Succeeded, 0 retries, stock block empty 0/40, 26.7 s per ticker) and GPU
+(Succeeded, 0 retries, stock block empty 0/40 (2/40 with no figures, RDFN and VERV: corrected 2026-10-09), 26.7 s per
+ticker) and GPU
 SLM `grounding-eval-extended-slm-gpu-nstp9` (Succeeded, 0 retries, traffic
 proof EXACT, 34.6 s per ticker; node 2's A10, all layers on the GPU). Both
 CPU runs on this image failed their traffic proofs (`5bdz5` +1 token,
@@ -2856,8 +2862,9 @@ the arms on its own.** The decision to ship `USE_LOCAL_MODEL` off rests
 on the direction agreeing across independent measurements (85.4% vs
 88.6% at training time, 86.2% vs 77.8% in the Aug 2026 re-measure, and
 this run), not on one 10-ticker pass. **Superseded 2026-09-06**: the
-40-ticker A/B (above) separates the arms at p = 0.0023 and now carries
-the decision. These are dated run records from the committed harness.
+40-ticker A/B (above), claim-level p = 0.0023 with a ticker-level
+interval excluding zero (sign test p = 0.078), now carries the decision
+through its gate failure. These are dated run records from the committed harness.
 
 ## Statistical power
 
@@ -2870,8 +2877,10 @@ observed rate against a 5% gate** — the Wilson 95% interval for 2/66 is
 is fully consistent with a true rate above 5% (and a mild fail with one
 below it). Distinguishing 3% from 5% with useful power needs claims in
 the several-hundreds — the motivation for the extended benchmark, which
-delivered exactly that: at N = 392 vs 368 the 40-ticker A/B separates
-3.06% from 8.15% at p = 0.0023 where the 10-ticker pass could not
+delivered exactly that: at N = 392 vs 368 the 40-ticker A/B gives
+3.06% vs 8.15% at claim-level p = 0.0023 where the 10-ticker pass could not
+(at the ticker level, known limitation 16: paired CI +2.08 to +10.95 points,
+sign test p = 0.078)
 (judge-flagged v2 rates; reweighted estimates 5.7% vs 8.3%, see the
 held-out validation; direction unaffected, both arms share the judge).
 
@@ -3259,6 +3268,115 @@ only (the weekly Sunday schedule was removed 2026-09-28), never on push, PR
 or a schedule because it spends judge credits, and asserts recall ≥ 0.8;
 the bar does not move if it
 regresses — the number gets reported instead.
+
+## Known limitations from the cold-read review (2026-10-09)
+
+A cold read of `main` at `8c0fd87` raised seven findings. Each one was
+re-checked against the code and the committed run artifacts before being
+written here; every count below comes from a committed offline script, and
+its output is in `eval/runs/`. They continue the numbered known
+limitations 1–9 above. None is fixed: each fix changes the pipeline or the
+image (`f3043751` stays the deployed and measured image), so they are
+recorded, post-demo work, like 1–9.
+
+10. **RAG answers both queries from one risk-factor window.**
+    `agent/tools/rag.py:191` indexes one 15,000-character window of one
+    filing per ticker (the latest 10-K, else the 10-Q):
+    `skip_front_matter` (`agent/tools/sec_common.py:164-194`) anchors it on
+    Item 1A Risk Factors and falls back to Item 7 MD&A only when no Item 1A
+    anchor is found. The "SEC Filing Highlights" query ("key takeaways from
+    the latest 10-K and 10-Q") is therefore answered from risk-factor text,
+    plus whatever follows Item 1A inside 15,000 characters. It never reaches
+    the financial statements of a filer whose Item 1A is longer than that.
+    By proxy, the same filing's SEC summary goes through the same anchor
+    (`agent/tools/sec.py:136`), and it starts at Item 1A for 34 of 40
+    tickers' 10-Ks and for XOM's 10-Q. The other 5, the ADRs, have no
+    10-K or 10-Q (`eval/rag_window_anchor.py`, output
+    `eval/runs/rag-window-anchor-2026-10-09.txt`, `4hsn2` and `j4cnp`).
+    Example: AAPL's highlights chunks in `4hsn2` are the pandemic and
+    competition risk factors (`eval/runs/raw/4hsn2-findings/AAPL_baseline.ragf.json`).
+    This is the likely cause of limitation 2, the refused filing-highlights
+    answers.
+11. **Pinecone namespaces hold duplicate vectors.** In the committed
+    `.ragf.json` files, a query's retrieved chunks contain the same text
+    twice in 9 of 70 queries in `4hsn2`, 12 in `nstp9`, 14 each in `vks4c`,
+    `2mzdd` and `xgtxx`, and 8 in `9jzmj`. ROKU's chunks for both queries
+    are one chunk three times in every one of these runs, and so are EVGO's
+    in `vks4c`, `2mzdd` and `xgtxx` (`eval/rag_chunk_duplicates.py`, output
+    `eval/runs/rag-chunk-duplicates-2026-10-09.txt`). The likely mechanism,
+    from reading the code (not reproduced): `agent/core.py:122-131` runs the
+    two RAG queries in two threads, and `agent/tools/rag.py:283-319`
+    indexes the filing whenever the cache query raises (bare `except` at
+    :295) or answers in 50 characters or fewer. So two threads on a new
+    ticker, or any failed query, can index the same filing twice.
+    Namespaces are also never refreshed when a new filing appears.
+12. **Most tickers get no news, and much of what arrives is not about the
+    company.** 32 of 40 tickers had zero articles in `4hsn2` (28 of 40 in
+    `j4cnp` and `kcf7s`, 32–34 in the other October runs). Of the 26
+    articles `4hsn2` did receive, 20 do not name the company. The rule: the
+    title or description contains the company's short name (the first word
+    of `company_name`) or the ticker. Under that rule an Alphabet article
+    that says only "Google" counts as not naming it, which is 2 of the 20
+    (`eval/news_coverage.py`, output `eval/runs/news-coverage-2026-10-09.txt`,
+    rule printed with the result). Code: `agent/tools/news.py:23-30`
+    restricts the search to five outlets (`sources`) and sends
+    `"<name>" stock OR earnings OR investor` without parentheses, so an
+    article matching only "earnings" or "investor" probably qualifies
+    (operator precedence inferred from the results, not tested against
+    NewsAPI).
+13. **RDFN and VERV ran with no stock data in every committed 40-ticker
+    run** (all 21, `9j2dj` through `xgtxx`). yfinance returns no quote, so
+    the stock block holds only ticker, company_name "N/A" and currency. The
+    in-pod rule (`eval/stock_block.py` `stock_block_empty`) flags only an
+    empty dict, so those runs recorded "stock block empty 0/40" when 2/40
+    had no figures. The offline rule `python eval/stock_block.py
+    --no-figures` (a block with none of the nine numeric fields) counts
+    both in every 40-ticker run and none in any 10-ticker run (output
+    `eval/runs/stock-block-no-figures-2026-10-09.txt`); the runbook and
+    the run records above now carry the 2/40. Every arm of every
+    comparison includes the two tickers, so they weigh on both arms alike;
+    the recorded rates include them. The in-pod count switches to the
+    stricter rule with the next image.
+14. **The fine-tune was trained to write risks absent from its input.**
+    The training inputs carry the first 500 characters of the filing's
+    Risk Factors text (`scripts/build_dataset.py` `SEC_CONTEXT_CAP`). By
+    the committed predicate `is_toc_listing_chunk`, that slice is a
+    table-of-contents listing in 19 of 26 Risk Factors pairs and 70 of 78
+    Financial Health pairs in `data/sections_dataset.jsonl`, and in 70 of
+    78 rows of `data/raw_research.jsonl` (secondary: 66 of 78 on each
+    row's full stored risk-factors text). The Risk Factors targets are real
+    Item 1A sentences drawn from the whole text (`build_risk_factors`), so
+    the model learned to state risks its input did not contain
+    (`eval/training_context_toc.py`, output
+    `eval/runs/training-context-toc-2026-10-09.txt`). This is a concrete,
+    plausible cause of the excess unsupported claims in the two sections
+    the fine-tune owns (attributed FH + RF 19.82% vs 0.50%), not a tested
+    one. It does not change the decision: the fine-tune ships off.
+15. **The judge and the hosted synthesis are the same model.** The hosted
+    Executive Summary and Outlook, the sections the judge audits, are
+    written by `claude-sonnet-4-6` (`agent/core.py:24`), and the grounding
+    judge is `claude-sonnet-4-6` at temperature 0
+    (`agent/grounding.py:194`). The judge may favor text from its own
+    model, which would bias judge-flagged comparisons toward the hosted
+    arm. This has not been measured. The mitigation is the judge-free
+    layer, which leads every comparison: the deterministic numeric check
+    and the density count (`eval/density_check.py`) do not involve the
+    judge.
+16. **Claim-level Fisher overstates significance.** The fine-tune A/B's
+    p = 0.0023 (`j4cnp` 12/392 vs `lsnnc` 30/368) treats the 760 claims as
+    independent, but claims cluster within briefs. At the ticker level
+    (`eval/finetune_ab_ticker_level.py`, output
+    `eval/runs/finetune-ab-ticker-level-2026-10-09.txt`), the paired
+    bootstrap on per-ticker rates (`eval/multi_arm_stats.py` `paired`,
+    seeded) gives ticker-averaged rates of 8.68% vs 2.32%, a difference of
+    +6.36 points (95% CI +2.08 to +10.95). The interval excludes zero, but
+    the exact sign test does not reach 0.05: `lsnnc` is higher on 15
+    tickers, `j4cnp` on 6, with 19 equal (p = 0.078). Claim-level Fisher
+    with each ticker left out in turn ranges from p = 0.0004 to 0.028; the
+    0.028 comes from dropping WMT alone (9/16 vs 2/12). The per-section
+    p = 4.6e-10 is claim-level too and has the same issue. The ship-off
+    decision rests on the gate failure (8.15% against the 5% gate) and the
+    concentration in the fine-tune's own sections, not on one p-value.
 
 ## Boundary
 

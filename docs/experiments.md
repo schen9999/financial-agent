@@ -19,7 +19,7 @@ I built an evaluation framework that audits the quantitative and forward-looking
 
 *Former numbers of record:* the one-judging three-way on image `1f51dad` (2026-10-05 to 2026-10-07: `9jzmj` 1.70%, `8vpq6` 3.63%, `p9jr2` 2.45%), and before it (2026-09-06 to 2026-10-05) hosted `j4cnp` 12/392 = 3.06% (CI 1.8–5.3%), judge v2, reweighted true-rate estimate 5.7% (CI 3.5–9.9%). It ran under a 512-token RAG answer cap, so it is a different pipeline from the later runs; it is not a before/after with them. It stays the hosted arm of the fine-tune A/B below.
 
-**The fine-tune A/B: 8.15% vs 3.06%, Fisher p = 0.0023 (judge v2).** On the same image and index, with the QLoRA fine-tune writing two of the four sections, the local-model arm `lsnnc` measured 30/368 = 8.15% unsupported (CI 5.8–11.4%) against `j4cnp`'s 3.06%. It fails the 5% gate, the excess sits in the two sections the fine-tune writes, and it ships disabled ([details below](#qlora-fine-tuning-experiment)).
+**The fine-tune A/B: 8.15% vs 3.06% (judge v2), failing the 5% gate.** Claim-level Fisher p = 0.0023; at the ticker level the paired interval on ticker-averaged rates (8.68% vs 2.32%) is +2.08 to +10.95 points and the sign test p = 0.078. On the same image and index, with the QLoRA fine-tune writing two of the four sections, the local-model arm `lsnnc` measured 30/368 = 8.15% unsupported (CI 5.8–11.4%) against `j4cnp`'s 3.06%. It fails the 5% gate, the excess sits in the two sections the fine-tune writes, and it ships disabled ([details below](#qlora-fine-tuning-experiment)).
 
 *Judge-version note:* every unsupported rate in this README names its judge prompt version. **v1** rates are lower bounds (2026-09-04 human validation: v1 recall on UNSUPPORTED 1/9). **v2** rates are judge-flagged rates. The calibration of record is the 2026-10-07 one above, measured on the current runs; the September calibration (2026-09-24: kappa 0.580, precision 60%, CI 35.7–80.2%; population-weighted recall 32.5% on the baseline run, CI 16.0–52.4%) is a dated record and applies to the runs of its time, with their reweighted true-rate estimates. A/B directions are unaffected when both arms share the judge ([docs/eval-methodology.md](eval-methodology.md)).
 
@@ -152,11 +152,12 @@ fine-tune pinned to one A10 on an OCI VM -- plain Docker (2026-09-02), then
 in-cluster on single-node k3s (2026-09-03) -- and the gated eval DAG ran a
 40-ticker A/B against it (2026-09-05/06, judge v2, same image and index both
 arms): **8.15% unsupported (`lsnnc`, 30/368, CI 5.8–11.4%) vs the hosted
-baseline 3.06% (`j4cnp`, 12/392, CI 1.8–5.3%), Fisher p = 0.0023** -- the
-local-model arm fails the 5% gate, the hosted baseline passes, and
+baseline 3.06% (`j4cnp`, 12/392, CI 1.8–5.3%)** (claim-level Fisher
+p = 0.0023; ticker-level paired CI +2.08 to +10.95 points on ticker-averaged
+rates, sign test p = 0.078) -- the local-model arm fails the 5% gate, the hosted baseline passes, and
 per-section attribution places the excess entirely in the two
 fine-tune-owned sections (**19.82%, 22/111, CI 13.5–28.2% vs 0.50%, 1/202,
-CI 0.1–2.8%**, p = 4.6e-10). An earlier 10-ticker pass agreed in direction
+CI 0.1–2.8%**, claim-level p = 4.6e-10). An earlier 10-ticker pass agreed in direction
 but could not separate the arms (dated records in
 [docs/eval-methodology.md](eval-methodology.md)). A measured negative
 result, and the reason `USE_LOCAL_MODEL` ships off.
@@ -263,7 +264,7 @@ is not worth its cost.
 | Grounding, dated (2026-08-24, 10 tickers, judge v1, pre-retrieval-fix) | 49% pre-fix → 0/84 unsupported (CI 0.0–4.4%) — a lower bound on an exhibit-indexing pipeline; retired as current |
 | Cost/brief, hosted (exact API tokens + RAG estimate) | **$0.0366** (2026-09-06, post-retrieval-fix; re-runnable: `make cost-report`) |
 | Grounding (supported share), hosted vs local-hybrid (9-ticker balanced A/B, Aug 2026, judge v1, pre-retrieval-fix, local run — no workflow run ID) | 86.2% (56/65, CI 75.7–92.5%) vs 77.8% (56/72, CI 66.9–85.8%) — expected regression, local stays default-off |
-| Grounding, hosted vs in-cluster vLLM fine-tune (40-ticker A/B, 2026-09-05/06, judge v2) | `j4cnp` 3.06% (12/392, CI 1.8–5.3%) vs `lsnnc` 8.15% (30/368, CI 5.8–11.4%) unsupported, Fisher p = 0.0023 — local-model arm fails the 5% gate; ships default-off. Per-section: 0.50% (1/202, CI 0.1–2.8%) vs 19.82% (22/111, CI 13.5–28.2%) on fine-tune-owned claims (p = 4.6e-10). Judge-flagged rates; reweighted true-rate estimates 5.7% vs 8.3%, direction unaffected (same judge); see [docs/eval-methodology.md](eval-methodology.md) |
+| Grounding, hosted vs in-cluster vLLM fine-tune (40-ticker A/B, 2026-09-05/06, judge v2) | `j4cnp` 3.06% (12/392, CI 1.8–5.3%) vs `lsnnc` 8.15% (30/368, CI 5.8–11.4%) unsupported, claim-level Fisher p = 0.0023 (ticker-level paired CI +2.08 to +10.95 points on ticker-averaged rates, sign test p = 0.078) — local-model arm fails the 5% gate; ships default-off. Per-section: 0.50% (1/202, CI 0.1–2.8%) vs 19.82% (22/111, CI 13.5–28.2%) on fine-tune-owned claims (claim-level p = 4.6e-10). Judge-flagged rates; reweighted true-rate estimates 5.7% vs 8.3%, direction unaffected (same judge); see [docs/eval-methodology.md](eval-methodology.md) |
 | Four-arm comparison (2026-09-23, 40 tickers, judge v2, identical pinned sampling) — a dated comparison set, not numbers of record | Unsupported: hosted `kcf7s` 1.04% (4/383, CI 0.4–2.7%) and its same-image rerun `dvvxk` 1.80% (7/389, CI 0.9–3.7%); fine-tune `v924f` 6.49% (25/385, CI 4.4–9.4%); untuned Qwen2.5-1.5B `4nfsm` 7.75% (31/400, CI 5.5–10.8%); untuned Qwen2.5-7B `cnkp2` 4.58% (18/393, CI 2.9–7.1%). Fine-tune vs its base p = 0.58; 1.5B vs 7B p = 0.076 (borderline); 7B vs hosted p = 0.0039 |
 | Judge v2 calibration of record (2026-10-07, on `4hsn2` + `nstp9`) | precision on UNSUPPORTED 29.4% (CI 8.3–52.9%), population-weighted recall 11.4% (CI 3.1–27.9%), majority of three judgings; v2 rates are judge-flagged rates |
 | Judge v2 September calibration (2026-09-24), a dated record since 2026-10-07 | kappa 0.580; UNSUPPORTED precision 60.0% (35.7–80.2%), population-weighted recall 32.5% on `j4cnp` (16.0–52.4%), judge-SUPPORTED stratum from a blind relabel of 123 claims; v2 rates are judge-flagged rates |
