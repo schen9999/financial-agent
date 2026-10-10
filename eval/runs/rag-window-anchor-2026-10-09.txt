@@ -1,0 +1,9 @@
+# python eval/rag_window_anchor.py 4hsn2 j4cnp   (2026-10-09)
+4hsn2: filing summary starts at, per ticker (40 tickers):
+  Item 1A (10-K)           34  AAPL, AFRM, AMZN, BEAM, BLNK, BYND, CALM, CHGG, COIN, CRBU, EDIT, EVGO, GOOGL, JPM, LCID, META, MSFT, NTLA, NVDA, OCGN, OMER, PTON, RDFN, RIVN, ROKU, SANA, SFIX, SNAP, TSLA, UNH, UPST, V, VERV, WMT
+  no 10-K or 10-Q summary   5  BABA, NVO, SAP, TM, TSM
+  Item 1A (10-Q)            1  XOM
+j4cnp: filing summary starts at, per ticker (40 tickers):
+  Item 1A (10-K)           34  AAPL, AFRM, AMZN, BEAM, BLNK, BYND, CALM, CHGG, COIN, CRBU, EDIT, EVGO, GOOGL, JPM, LCID, META, MSFT, NTLA, NVDA, OCGN, OMER, PTON, RDFN, RIVN, ROKU, SANA, SFIX, SNAP, TSLA, UNH, UPST, V, VERV, WMT
+  no 10-K or 10-Q summary   5  BABA, NVO, SAP, TM, TSM
+  Item 1A (10-Q)            1  XOM

@@ -25,6 +25,8 @@ Measured on OCI in October 2026, 40 tickers per run, image `f3043751`. Determini
 - **Turned off, each for a measured reason:** the fine-tuned Qwen2.5-1.5B (**8.15% vs 3.06%** unsupported, Fisher p = 0.0023 — it fails the 5% gate), cross-encoder reranking (no drop in refused filing answers, **+11.0 s per ticker**, 41.5% against a 20% limit, on criteria fixed before the runs), and the multi-agent critic (no headroom to show).
 - **Two eval layers, because each misses what the other catches.** The judge accepted Toyota's revenue written in dollars from a figure in the filer's reporting currency (yen, inferred from its magnitude) labelled USD; the deterministic numeric check flagged it. The check cannot see a correct figure under the wrong label; the judge flagged those. ([The limits of each layer](docs/debugging-story.md#the-limits-of-each-layer))
 
+- **Some briefs run on thin context:** of the 40 tickers, the 5 ADRs (20-F filers) run without SEC context, 2 (RDFN, VERV) without stock data, and 32 without news in `4hsn2` ([known limitations](docs/eval-methodology.md#known-limitations-from-the-cold-read-review-2026-10-09)).
+
 Self-served models' runs count only when a traffic proof shows the model, and nothing else, produced them: since 2026-10-07, every request in the server's own log must match a harness call ([method](docs/eval-methodology.md#traffic-proof-by-per-request-match-declared-2026-10-07)).
 
 ## Next steps

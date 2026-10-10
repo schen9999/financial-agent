@@ -3262,6 +3262,115 @@ or a schedule because it spends judge credits, and asserts recall ≥ 0.8;
 the bar does not move if it
 regresses — the number gets reported instead.
 
+## Known limitations from the cold-read review (2026-10-09)
+
+A cold read of `main` at `8c0fd87` raised seven findings. Each one was
+re-checked against the code and the committed run artifacts before being
+written here; every count below comes from a committed offline script, and
+its output is in `eval/runs/`. They continue the numbered known
+limitations 1–9 above. None is fixed: each fix changes the pipeline or the
+image (`f3043751` stays the deployed and measured image), so they are
+recorded, post-demo work, like 1–9.
+
+10. **RAG answers both queries from one risk-factor window.**
+    `agent/tools/rag.py:191` indexes one 15,000-character window of one
+    filing per ticker (the latest 10-K, else the 10-Q):
+    `skip_front_matter` (`agent/tools/sec_common.py:164-194`) anchors it on
+    Item 1A Risk Factors and falls back to Item 7 MD&A only when no Item 1A
+    anchor is found. The "SEC Filing Highlights" query ("key takeaways from
+    the latest 10-K and 10-Q") is therefore answered from risk-factor text,
+    plus whatever follows Item 1A inside 15,000 characters. It never reaches
+    the financial statements of a filer whose Item 1A is longer than that.
+    By proxy, the same filing's SEC summary goes through the same anchor
+    (`agent/tools/sec.py:136`), and it starts at Item 1A for 34 of 40
+    tickers' 10-Ks and for XOM's 10-Q. The other 5, the ADRs, have no
+    10-K or 10-Q (`eval/rag_window_anchor.py`, output
+    `eval/runs/rag-window-anchor-2026-10-09.txt`, `4hsn2` and `j4cnp`).
+    Example: AAPL's highlights chunks in `4hsn2` are the pandemic and
+    competition risk factors (`eval/runs/raw/4hsn2-findings/AAPL_baseline.ragf.json`).
+    This is the likely cause of limitation 2, the refused filing-highlights
+    answers.
+11. **Pinecone namespaces hold duplicate vectors.** In the committed
+    `.ragf.json` files, a query's retrieved chunks contain the same text
+    twice in 9 of 70 queries in `4hsn2`, 12 in `nstp9`, 14 each in `vks4c`,
+    `2mzdd` and `xgtxx`, and 8 in `9jzmj`. ROKU's chunks for both queries
+    are one chunk three times in every one of these runs, and so are EVGO's
+    in `vks4c`, `2mzdd` and `xgtxx` (`eval/rag_chunk_duplicates.py`, output
+    `eval/runs/rag-chunk-duplicates-2026-10-09.txt`). The likely mechanism,
+    from reading the code (not reproduced): `agent/core.py:122-131` runs the
+    two RAG queries in two threads, and `agent/tools/rag.py:283-319`
+    indexes the filing whenever the cache query raises (bare `except` at
+    :295) or answers in 50 characters or fewer. So two threads on a new
+    ticker, or any failed query, can index the same filing twice.
+    Namespaces are also never refreshed when a new filing appears.
+12. **Most tickers get no news, and much of what arrives is not about the
+    company.** 32 of 40 tickers had zero articles in `4hsn2` (28 of 40 in
+    `j4cnp` and `kcf7s`, 32–34 in the other October runs). Of the 26
+    articles `4hsn2` did receive, 20 do not name the company. The rule: the
+    title or description contains the company's short name (the first word
+    of `company_name`) or the ticker. Under that rule an Alphabet article
+    that says only "Google" counts as not naming it, which is 2 of the 20
+    (`eval/news_coverage.py`, output `eval/runs/news-coverage-2026-10-09.txt`,
+    rule printed with the result). Code: `agent/tools/news.py:23-30`
+    restricts the search to five outlets (`sources`) and sends
+    `"<name>" stock OR earnings OR investor` without parentheses, so an
+    article matching only "earnings" or "investor" probably qualifies
+    (operator precedence inferred from the results, not tested against
+    NewsAPI).
+13. **RDFN and VERV ran with no stock data in every committed 40-ticker
+    run** (all 21, `9j2dj` through `xgtxx`). yfinance returns no quote, so
+    the stock block holds only ticker, company_name "N/A" and currency. The
+    in-pod rule (`eval/stock_block.py` `stock_block_empty`) flags only an
+    empty dict, so those runs recorded "stock block empty 0/40" when 2/40
+    had no figures. The offline rule `python eval/stock_block.py
+    --no-figures` (a block with none of the nine numeric fields) counts
+    both in every 40-ticker run and none in any 10-ticker run (output
+    `eval/runs/stock-block-no-figures-2026-10-09.txt`); the runbook and
+    the run records above now carry the 2/40. Every arm of every
+    comparison includes the two tickers, so they weigh on both arms alike;
+    the recorded rates include them. The in-pod count switches to the
+    stricter rule with the next image.
+14. **The fine-tune was trained to write risks absent from its input.**
+    The training inputs carry the first 500 characters of the filing's
+    Risk Factors text (`scripts/build_dataset.py` `SEC_CONTEXT_CAP`). By
+    the committed predicate `is_toc_listing_chunk`, that slice is a
+    table-of-contents listing in 19 of 26 Risk Factors pairs and 70 of 78
+    Financial Health pairs in `data/sections_dataset.jsonl`, and in 70 of
+    78 rows of `data/raw_research.jsonl` (secondary: 66 of 78 on each
+    row's full stored risk-factors text). The Risk Factors targets are real
+    Item 1A sentences drawn from the whole text (`build_risk_factors`), so
+    the model learned to state risks its input did not contain
+    (`eval/training_context_toc.py`, output
+    `eval/runs/training-context-toc-2026-10-09.txt`). This is a concrete,
+    plausible cause of the excess unsupported claims in the two sections
+    the fine-tune owns (attributed FH + RF 19.82% vs 0.50%), not a tested
+    one. It does not change the decision: the fine-tune ships off.
+15. **The judge and the hosted synthesis are the same model.** The hosted
+    Executive Summary and Outlook, the sections the judge audits, are
+    written by `claude-sonnet-4-6` (`agent/core.py:24`), and the grounding
+    judge is `claude-sonnet-4-6` at temperature 0
+    (`agent/grounding.py:194`). The judge may favor text from its own
+    model, which would bias judge-flagged comparisons toward the hosted
+    arm. This has not been measured. The mitigation is the judge-free
+    layer, which leads every comparison: the deterministic numeric check
+    and the density count (`eval/density_check.py`) do not involve the
+    judge.
+16. **Claim-level Fisher overstates significance.** The fine-tune A/B's
+    p = 0.0023 (`j4cnp` 12/392 vs `lsnnc` 30/368) treats the 760 claims as
+    independent, but claims cluster within briefs. At the ticker level
+    (`eval/finetune_ab_ticker_level.py`, output
+    `eval/runs/finetune-ab-ticker-level-2026-10-09.txt`), the paired
+    bootstrap on per-ticker rates (`eval/multi_arm_stats.py` `paired`,
+    seeded) gives ticker-averaged rates of 8.68% vs 2.32%, a difference of
+    +6.36 points (95% CI +2.08 to +10.95). The interval excludes zero, but
+    the exact sign test does not reach 0.05: `lsnnc` is higher on 15
+    tickers, `j4cnp` on 6, with 19 equal (p = 0.078). Claim-level Fisher
+    with each ticker left out in turn ranges from p = 0.0004 to 0.028; the
+    0.028 comes from dropping WMT alone (9/16 vs 2/12). The per-section
+    p = 4.6e-10 is claim-level too and has the same issue. The ship-off
+    decision rests on the gate failure (8.15% against the 5% gate) and the
+    concentration in the fine-tune's own sections, not on one p-value.
+
 ## Boundary
 
 Argo owns eval orchestration; Celery owns request-time async. The eval

@@ -1,0 +1,7 @@
+# python eval/training_context_toc.py   (2026-10-09)
+Predicate: agent.tools.sec_common.is_toc_listing_chunk; slice SEC_CONTEXT_CAP = 500
+data/sections_dataset.jsonl, Risk Factors context in the training input (what the model saw):
+  ### Financial Health     70/78 pairs with a TOC listing as risk context
+  ### Risk Factors         19/26 pairs with a TOC listing as risk context
+data/raw_research.jsonl, risk_factors[:500]: 70/78 rows read as a TOC listing
+  secondary, full stored risk_factors text: 66/78 rows
