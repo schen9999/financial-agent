@@ -1039,9 +1039,9 @@ token with a different request. **Fix: a Service with a fresh UID** —
 passed and the checks gave:
 
 - security list `pub_lb-tbhcuw`: exactly one ingress rule, TCP 443 from
-  99.164.75.62/32;
+  <allowlisted-ip>/32;
 - load balancer: flexible 10 Mbps, no NSG, one listener, 443 with TLS;
-- from 99.164.75.62: 401 without credentials and with a wrong password, 200
+- from <allowlisted-ip>: 401 without credentials and with a wrong password, 200
   with them; `/_stcore/health` 200; the websocket upgrade answers 101;
   ports 80 and 8501 do not answer; certificate SHA-256 fingerprint
   90:5B:E5:28:…:6A:7C, as issued;
@@ -1049,7 +1049,7 @@ passed and the checks gave:
 - generating a cached ticker in the page needs a browser (no headless
   browser on the laptop): done by the project owner.
 
-URL: https://129.80.19.30/ (user `reviewer`; the password stays on the
+URL: https://<public-ui-ip>/ (basic-auth user and password on the
 operator).
 
 **Fallback: join the owner's LB NSG** (security-rule management `None`,

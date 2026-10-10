@@ -2,6 +2,7 @@
 wide or malformed, the OCI rule and nginx come from the same list, and the
 committed files carry no allowlist entry or OCID."""
 import json
+import re
 import subprocess
 
 import pytest
@@ -12,13 +13,13 @@ OV = pr.OVERLAY
 
 
 def test_allowlist_parsing_and_refusals():
-    assert pr.read_allowlist("# home\n99.164.75.62/32\n\n198.51.100.0/24  # office\n") == \
-        ["99.164.75.62/32", "198.51.100.0/24"]
+    assert pr.read_allowlist("# home\n203.0.113.62/32\n\n198.51.100.0/24  # office\n") == \
+        ["203.0.113.62/32", "198.51.100.0/24"]
     for bad, msg in (("", "empty"), ("# only a comment\n", "empty"), ("0.0.0.0/0", "wider"),
-                     ("10.0.0.0/16", "wider"), ("99.164.75.62", None), ("not-an-ip", "not an IPv4"),
-                     ("99.164.75.1/24", "not an IPv4")):
+                     ("10.0.0.0/16", "wider"), ("203.0.113.62", None), ("not-an-ip", "not an IPv4"),
+                     ("203.0.113.1/24", "not an IPv4")):
         if msg is None:
-            assert pr.read_allowlist(bad) == ["99.164.75.62/32"]   # a bare address is a /32
+            assert pr.read_allowlist(bad) == ["203.0.113.62/32"]   # a bare address is a /32
             continue
         with pytest.raises(SystemExit, match=msg):
             pr.read_allowlist(bad)
@@ -63,7 +64,7 @@ def test_nothing_identifying_is_committed():
     assert not any("allowlist.txt" in f or "/generated/" in f for f in files)
     for name in ("kustomization.yaml", "nginx.conf"):
         text = (OV / name).read_text(encoding="utf-8")
-        assert "ocid1." not in text and "99.164" not in text
+        assert "ocid1." not in text and not re.search(r"\b\d{1,3}(?:\.\d{1,3}){3}/32\b", text)
     ignored = subprocess.run(["git", "check-ignore", str(OV / "allowlist.txt"), str(OV / "generated" / "x")],
                              capture_output=True, text=True, cwd=pr.ROOT).stdout.splitlines()
     assert len(ignored) == 2
@@ -113,15 +114,15 @@ def _rule(src, proto="6", lo=None, hi=None):
 
 
 def test_security_list_guard_refuses_anything_wider_than_the_allowlist():
-    allow = ["99.164.75.62/32"]
-    ok = {"data": {"ingress-security-rules": [_rule("99.164.75.62/32", lo=443, hi=443),
+    allow = ["203.0.113.62/32"]
+    ok = {"data": {"ingress-security-rules": [_rule("203.0.113.62/32", lo=443, hi=443),
                                               _rule("0.0.0.0/0", lo=22, hi=22)]}}
     assert pg.sl_violations(ok, allow, 443, require=True) == []
     for bad in (_rule("0.0.0.0/0", lo=443, hi=443), _rule("0.0.0.0/0", lo=1, hi=65535),
-                _rule("0.0.0.0/0"), _rule("10.0.0.0/8", proto="all"), _rule("99.164.75.0/24", lo=443, hi=443)):
+                _rule("0.0.0.0/0"), _rule("10.0.0.0/8", proto="all"), _rule("203.0.113.0/24", lo=443, hi=443)):
         assert pg.sl_violations({"ingress-security-rules": [bad]}, allow, 443)
     assert pg.sl_violations({"ingress-security-rules": []}, allow, 443, require=True) == \
-        ["no ingress rule for allowlist entry 99.164.75.62/32 on port 443"]
+        ["no ingress rule for allowlist entry 203.0.113.62/32 on port 443"]
 
 
 def test_lb_guard_wants_no_nsg_and_only_a_tls_listener_on_443():

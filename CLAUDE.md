@@ -90,7 +90,7 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
   allowlist + basic auth, k8s/overlays/oke-provided-public-ui; runbook
   "Public Streamlit UI"), security-list management mode since 2026-10-08
   (the controller may not create NSGs); LIVE and verified 2026-10-08
-  03:12Z, allowlist 99.164.75.62/32 only, status in the runbook.
+  03:12Z, allowlist <allowlisted-ip>/32 only, status in the runbook.
   Every change in the financial-agent namespace goes through the repo's
   overlays and scripts only (an outside change exposed Streamlit without
   auth on 2026-10-08, about 02:05–02:19 and 02:22–02:31Z). Access by
@@ -106,7 +106,7 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (7517 lines, 611 tests collected: 610 passed + 1 skipped,
+3. The pytest suite (7518 lines, 611 tests collected: 610 passed + 1 skipped,
    the credit-gated judge test, as of 2026-10-09) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
