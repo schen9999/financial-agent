@@ -297,7 +297,7 @@ Health          Dev.        High.   Factors
    └───────────────┴───────────┴───────┘
                    │
        ┌───────────▼───────────┐
-       │  Sonnet: Exec Summary │  streams to browser
+       │  Sonnet: Exec Summary │  brief rendered once, when complete
        │  + Outlook            │
        └───────────────────────┘
 ```

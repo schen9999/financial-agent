@@ -10,7 +10,7 @@ An AI agent that researches stocks and answers follow-up questions using live fi
 
 ## What it does
 
-- **Generate Brief:** enter a ticker. The app fetches stock data (yfinance), news (NewsAPI) and SEC filing summaries (EDGAR), and grounds the SEC Filing Highlights and Risk Factors sections in filing text with Pinecone RAG. Claude Haiku writes the four middle sections in parallel, then Claude Sonnet streams the Executive Summary and Outlook. The brief is cached in Redis (exact key `research:{TICKER}`) and PostgreSQL.
+- **Generate Brief:** enter a ticker. The app fetches stock data (yfinance), news (NewsAPI) and SEC filing summaries (EDGAR), and grounds the SEC Filing Highlights and Risk Factors sections in filing text with Pinecone RAG. Claude Haiku writes the four middle sections in parallel, then Claude Sonnet writes the Executive Summary and Outlook; the UI renders the finished brief once, in one block. The brief is cached in Redis (exact key `research:{TICKER}`) and PostgreSQL.
 - **Ask a follow-up:** a LangGraph ReAct agent answers free-form questions, picking the tools it needs (stock data, news, SEC filings, or RAG search).
 - **Two execution paths:** the Streamlit UI runs the `agent/` pipeline in-process, and the FastAPI app runs the same code behind REST endpoints (the app Kubernetes deploys).
 
