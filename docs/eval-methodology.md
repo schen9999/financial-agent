@@ -1701,7 +1701,7 @@ from the pods' logs by `scripts/results_from_pod_log.py`.
 | Unsupported (judge-flagged, v2) | 7/411 = 1.70% (Wilson 95% CI 0.8–3.5%) |
 | Numeric claims (co-primary) | 277 = 6.9/ticker (min 1, RDFN); unsupported 2/277 = 0.72% (CI 0.2–2.6%) |
 | Claims per ticker | mean 10.3, min 2 (AMZN) |
-| Tickers | 40 completed, 0 skipped, stock block empty 0/40, 0 Argo retries |
+| Tickers | 40 completed, 0 skipped, stock block empty 0/40 (2/40 with no figures, RDFN and VERV: corrected 2026-10-09), 0 Argo retries |
 | Unsupported by ticker | LCID 3, AFRM 2, CHGG 1, NVO 1 |
 | Agent LLM calls | 270 (35 tickers × 7, and 5 tickers × 4 with no RAG answer: BABA, NVO, SAP, TM, TSM); no truncation, loop, parse, format or error flags |
 | RAG answers | 70; longest 786 tokens (above the old 512 cap) |
@@ -1929,7 +1929,8 @@ harness's timers include that path. Workflow Succeeded 03:13:00–03:48:12
 UTC; 40 of 40 tickers on the first attempt, 0 Argo retries; **TRAFFIC
 PROOF: EXACT** (270 calls, 350,290 prompt + 98,232 completion tokens on the
 harness and on the server); no truncation, loop, parse, format, retry or
-error flag on any call; stock block empty on 0 of 40; gate passed. A dated,
+error flag on any call; stock block empty on 0 of 40 (2 of 40 with no
+figures, RDFN and VERV: corrected 2026-10-09); gate passed. A dated,
 citable SLM run. The GPU smoke on the same image that fed the run-time gate
 is `k6zxd` (below).
 
@@ -2410,7 +2411,7 @@ cross-encoder runs in the pod) and is not a criterion.
 Runs on image `f3043751`, 40 tickers each, submitted together at 03:24Z:
 baseline `grounding-eval-extended-vks4c` and rerank3
 `grounding-eval-extended-rerank3-2mzdd`; both 40/40 on the first attempt,
-0 retries, stock block empty 0/40, gates passed. The one-ticker memory smoke
+0 retries, stock block empty 0/40 (2/40 with no figures, RDFN and VERV: corrected 2026-10-09) in each, gates passed. The one-ticker memory smoke
 (`grounding-eval-rerank3-smoke-262mz`) peaked at 1,487 MiB of the eval pod's
 2,048 MiB with the cross-encoder loaded and the pod at its 1.5-CPU limit; the
 limit was kept, and no eval pod of the A/B was killed or retried.
@@ -2569,7 +2570,8 @@ python eval/density_check.py --runs 9jzmj 8vpq6 p9jr2 4hsn2 nstp9 5bdz5 \
 
 **Runs.** Image `f3043751` (stock-data fix plus currency-labelling prompt
 rule), 40 tickers, judge v2: hosted `grounding-eval-extended-4hsn2`
-(Succeeded, 0 retries, stock block empty 0/40, 26.7 s per ticker) and GPU
+(Succeeded, 0 retries, stock block empty 0/40 (2/40 with no figures, RDFN and VERV: corrected 2026-10-09), 26.7 s per
+ticker) and GPU
 SLM `grounding-eval-extended-slm-gpu-nstp9` (Succeeded, 0 retries, traffic
 proof EXACT, 34.6 s per ticker; node 2's A10, all layers on the GPU). Both
 CPU runs on this image failed their traffic proofs (`5bdz5` +1 token,
