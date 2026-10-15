@@ -1988,7 +1988,8 @@ bash scripts/tf_provided.sh plan -input=false -detailed-exitcode   # exit 0: "No
 matches the configuration." What is codified and what is not:
 `terraform/oci-provided/README.md`.
 
-**[EXECUTED 2026-10-15 — configuration committed, zero diff]** The
+**[EXECUTED 2026-10-15 — configuration committed, zero diff; plan rerun
+on the committed files, exit 0]** The
 generated configuration is now reviewable in the repo:
 `scripts/tf_provided_codify.py` turned it into `network.tf`, `cluster.tf`,
 `nodepool.tf` and `variables.tf`, with every OCID a reference or a
@@ -2037,7 +2038,9 @@ Recorded as provisioned, not changed, and deferred until after the demo
 because the demo depends on the current configuration: the API endpoint
 has a public IP (`is_public_ip_enabled = true`), with kube-apiserver TCP
 6443 open to 0.0.0.0/0 (the private endpoint, 10.140.0.3, is the node
-pools' `apiserver_host` in `nodepool.tf`); SSH to the bastion is open to 0.0.0.0/0; and the `pub_lb`
+pools' `apiserver_host` in `nodepool.tf`; `oci ce cluster get --query
+'data.endpoints'` on 2026-10-15 lists both a private and a public
+endpoint); SSH to the bastion is open to 0.0.0.0/0; and the `pub_lb`
 NSG admits TCP 443 and 80 from 0.0.0.0/0. Details:
 `terraform/oci-provided/README.md`, "Known limitations".
 

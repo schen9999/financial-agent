@@ -69,7 +69,10 @@ deferred until after the demo:
   (`nsg_cp_tbhcuw_rule_04`, "Allow TCP ingress to kube-apiserver from
   0.0.0.0/0"). Kubernetes authentication still applies. The private
   endpoint is 10.140.0.3: both node pools set it as
-  `node_metadata.apiserver_host` in `nodepool.tf`.
+  `node_metadata.apiserver_host` in `nodepool.tf`. Confirmed 2026-10-15
+  with `oci ce cluster get --query 'data.endpoints'` (read-only): the
+  cluster has both a private endpoint (10.140.0.3:6443) and a public
+  endpoint on 6443. The public address is not recorded here.
 - **SSH to the bastion is open to 0.0.0.0/0** (`nsg_bastion_tbhcuw_rule_03`,
   TCP 22).
 - **The `pub_lb` NSG admits TCP 443 and 80 from 0.0.0.0/0**
