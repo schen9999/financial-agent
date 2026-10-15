@@ -55,8 +55,8 @@ run IDs and links lead to the full record.
   measured alternative, not an adopted one. The fine-tuned 1.5B model from
   the first demo still ships disabled: it failed the grounding gate.
 - **Not done:** a citable CPU run on the current image (both failed their
-  traffic proofs under the counter method; one run under the per-request
-  method is planned), the Terraform-created OKE cluster (written, never
+  traffic proofs under the counter method; a third run was declined under
+  the rule recorded before the second: no third attempt), the Terraform-created OKE cluster (written, never
   applied: no compartment yet), vLLM serving on OKE, and the pipeline fixes
   recorded as known limitations, which wait until after the demo.
 
@@ -374,9 +374,9 @@ a deadline and an honest status. Fourth, the Anthropic client runs with no
 request timeout. Each fix gets a test that reproduces the failure first.
 Ranked by what a user would notice, the worker crash comes first.
 
-**What would you do next?** Run the CPU arm once on the current image
-under the per-request proof; fix the recorded pipeline limitations, with
-new baselines on every arm; apply the OKE Terraform when a compartment exists. The
+**What would you do next?** Fix the recorded pipeline limitations, with
+new baselines on every arm, the CPU arm among them under the per-request
+proof; apply the OKE Terraform when a compartment exists. The
 full list is in the README's "Next steps".
 
 ## Where the evidence is
