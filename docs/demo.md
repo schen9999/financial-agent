@@ -393,6 +393,19 @@ image (0.19.x defaults to 12.9, 0.20 and later to 13.0). The
 same Q4_K_M file runs entirely on the A10 under llama.cpp's CUDA 12.8
 build, using 20,488 of 23,028 MiB.
 
+**Why Qwen3.6-35B-A3B and not MiniMax or a smaller Qwen?** By file size,
+computed and not booted
+([fit table](gpu-inference.md#why-qwen36-35b-a3b-and-not-minimax-or-a-smaller-qwen-computed-not-booted-2026-10-15)):
+no MiniMax open-weight build fits the A10's 24 GB. The smallest M2.5 and
+M2.7 builds, at about 2 bits per weight, just fit an E5 node's ~58 GiB
+(6.06 and 1.47 GiB to spare), and MiniMax-M3 fits neither in any build.
+Qwen3.6-35B-A3B at Q4_K_M is 19.02 GiB and runs whole on the A10. It
+computes with about 3B parameters per token, and on the E5 node it
+generates about 13 tok/s at 4, 8 and 15 vCPU alike (2026-10-08). The
+smaller Qwens (27B dense, 9B, 4B) also fit both budgets, but none was run
+here, so I make no claim about their speed or quality. Serving MiniMax
+or another Qwen would be a new arm with its own runs and traffic proofs.
+
 **What does the Toyota case show about the judge?** That an LLM judge
 reasons about plausibility and can accept a wrong figure with a confident
 explanation. The stock data held Toyota's revenue as 51,957,024,686,080 —
