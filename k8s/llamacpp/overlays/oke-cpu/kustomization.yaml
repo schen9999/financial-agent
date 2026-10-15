@@ -68,6 +68,13 @@ patches:
       - op: replace
         path: /spec/template/spec/containers/0/startupProbe/failureThreshold
         value: 180
+      # The Deployment's own progress deadline (default 600 s) is separate
+      # from the probe: on 2026-10-15 the rollout was marked failed at 600 s
+      # while the pod kept loading. 2400 s = 40 minutes, longer than the
+      # 30-minute startup window; make oke-llamacpp waits up to 3600 s.
+      - op: add
+        path: /spec/progressDeadlineSeconds
+        value: 2400
       - op: add
         path: /spec/template/spec/containers/0/resources
         value:

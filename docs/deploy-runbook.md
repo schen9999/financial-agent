@@ -1864,15 +1864,15 @@ core scaling".
 
 ## CPU endpoint startup probe (2026-10-15)
 
-**[NOT YET EXECUTED]** The cold load of the 20.4 GB GGUF from the block
-volume took about 15 minutes on 2026-10-08, the whole of the base's startup
+**[FIRST APPLY 2026-10-15: rollout failed at the progress deadline;
+RE-APPLY NOT YET EXECUTED]** The cold load of the 20.4 GB GGUF from the
+block volume took about 15 minutes on 2026-10-08, the whole of the base's startup
 window (90 × 10 s), and the endpoint was killed once mid-load. The oke-cpu
 overlay now sets the startup probe's `failureThreshold` to 180 (30 minutes,
 twice the observed load); readiness and liveness are unchanged, and
 liveness only starts once the startup probe passes. Only the oke-cpu render
 changes (`scripts/render_diff.py`: kind app and Argo renders and the
-k3s-gpu render identical). Apply before the CPU rerun, with no workflow
-running (operator):
+k3s-gpu render identical). Apply with no workflow running (operator):
 
 ```bash
 ssh oke-operator
@@ -1883,11 +1883,35 @@ make oke-llamacpp                                                   # apply -k o
 
 The apply restarts the pod (Recreate), so the rollout is itself a load from
 the volume; if the node's page cache still holds the GGUF it will be warm and
-quicker, which does not exercise the 30 minutes. Evidence to paste:
+quicker, which does not exercise the 30 minutes.
+
+**First apply, 2026-10-15: `make oke-llamacpp` failed with "exceeded its
+progress deadline"** while the pod kept loading. The Deployment's own
+`progressDeadlineSeconds` (default 600 s) is separate from the startup
+probe and shorter than the ~15-minute cold load, so the rollout was marked
+failed at 600 s although the probe allowed 30 minutes. The oke-cpu overlay
+now also sets `progressDeadlineSeconds: 2400` (40 minutes, longer than the
+startup window; `make oke-llamacpp` waits up to 3600 s). Only the oke-cpu
+render changes (`scripts/render_diff.py`: kind app and Argo, and k3s-gpu,
+identical). Re-apply (operator, after this change is merged):
+
+```bash
+cd ~/financial-agent && git fetch && git checkout main && git pull --ff-only
+kubectl -n financial-agent get workflows | grep -w Running          # expect no output
+make oke-llamacpp
+```
+
+`progressDeadlineSeconds` is in the Deployment spec, not the pod template,
+so the re-apply does not restart the pod: the rollout completes when the
+pod already loading (or loaded) is Ready, and it does not test a second
+cold load. Evidence to paste:
 
 ```bash
 kubectl -n financial-agent get deploy llamacpp \
   -o jsonpath='{.spec.template.spec.containers[0].startupProbe.failureThreshold}{"\n"}'   # 180
+kubectl -n financial-agent get deploy llamacpp -o jsonpath='{.spec.progressDeadlineSeconds}{"\n"}'   # 2400
+kubectl -n financial-agent get deploy llamacpp \
+  -o jsonpath='{.status.conditions[?(@.type=="Progressing")].reason}{"\n"}'          # NewReplicaSetAvailable
 kubectl -n financial-agent get pods -l app.kubernetes.io/name=llamacpp -o wide              # 1/1 Running, RESTARTS 0
 kubectl -n financial-agent get pod -l app.kubernetes.io/name=llamacpp -o jsonpath='{.items[0].status.containerStatuses[?(@.name=="llama-server")].state.running.startedAt} -> {.items[0].status.conditions[?(@.type=="Ready")].lastTransitionTime}{"\n"}'   # load time
 kubectl -n financial-agent get events --sort-by=.lastTimestamp | grep -i llamacpp | tail -n 15   # no "Startup probe failed ... will be restarted"
