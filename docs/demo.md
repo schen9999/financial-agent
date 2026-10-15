@@ -66,9 +66,10 @@ run IDs and links lead to the full record.
 
 Sanjay Basu's
 [Harness Engineering using OCI CPU & OKE](https://blogs.oracle.com/cloud-infrastructure/harness-engineering-using-oci-cpu-oke)
-(OCI blog, 2026-09-28) argues that an agent harness, meaning an agent loop
-with tools composed into larger programs, spends its time waiting on
-inference served somewhere else. Its limits are CPU, memory bandwidth and
+(OCI blog, 2026-09-28) defines a harness as one agent loop with tools, and
+harness orchestration as composing harnesses into larger programs. It
+argues that a harness spends its time waiting on inference served
+somewhere else. Its limits are CPU, memory bandwidth and
 latency, not accelerators. So the harness belongs on CPU nodes in OKE,
 inference is sized separately, and GPUs should not sit idle behind the
 harness. The post sketches a layout: an E6 control plane; reasoners fanned
@@ -77,7 +78,7 @@ finished traces as a separate batch job; OCI Queue or Streaming triggers
 behind an approval gate; egress limited to model endpoints; and API keys
 in OCI Vault. It reports no benchmark of a harness on any shape.
 
-| His term | Ours | Where |
+| The post's term | Ours | Where |
 |---|---|---|
 | Harness: an agent loop with tools | The ReAct `/ask` agent, a LangGraph loop over four tools (stock data, news, SEC filings, filing retrieval). The brief pipeline, which is what the eval measures, has no loop: it fetches the data, writes four sections in parallel, then the synthesis | [agent/react_agent.py](../agent/react_agent.py), `/ask` in [api.py](../api.py); [agent/core.py](../agent/core.py) `run_research_checked` |
 | Hand-wired DAG: fixed and auditable | The Argo eval workflow: one pod per ticker, two at a time, then the aggregate and the gate. The brief pipeline is hand-wired in the same sense | [argo/base/eval-workflow.yaml](../argo/base/eval-workflow.yaml) |
@@ -212,7 +213,7 @@ fills the wait. If time is short, cut step 6 and shorten step 5.
 
 | Step | Minutes | What | Shows |
 |---|---|---|---|
-| 0 | 1 | His post, and what we measured against it | [the mapping above](#how-this-maps-to-harness-engineering-on-oci-cpu): his terms to ours, and the A10's idle share and the CPU's batch-only speed as our measurements |
+| 0 | 1 | The post, and what we measured against it | [the mapping above](#how-this-maps-to-harness-engineering-on-oci-cpu): the post's terms to ours, and the A10's utilization (about 36%) and the CPU's batch-only speed as our measurements |
 | 1 | 2 | Conclusions (above) | the answer first: the harness and the model on CPU on OKE |
 | 2 | 1 | Launch the GPU smoke live | the one command, and why the live run is the A10's (below) |
 | 3 | 3 | The harness on OKE CPU while it runs | [architecture.md, "Deployed topology"](architecture.md#deployed-topology-october-2026): what runs where; the Argo UI over a port-forward (fan-out per ticker, aggregate, gate); the CPU endpoint and its 8 vCPU sizing |
