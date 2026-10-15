@@ -2482,9 +2482,10 @@ counter rule and stay not citable; they are not re-scored. The CPU arm of
 record stays `8vpq6` (image `1f51dad`, counter proof EXACT). Runs before
 2026-10-07 with an EXACT counter proof keep it.
 
-**Verdicts under this method, stated 2026-10-15 before the CPU rerun on
-`f3043751`** (a statement of the 2026-10-07 rule, not a change to it; it
-applies to SLM runs created after 2026-10-07, both endpoints):
+**Verdicts under this method, stated 2026-10-15** (a statement of the
+2026-10-07 rule, not a change to it; it applies to SLM runs created after
+2026-10-07, both endpoints; the third CPU run on `f3043751` it was written
+for was declined under the 2026-10-06 no-third-attempt rule, runbook):
 
 - **EXACT** means TASK-EXACT: every task in the endpoint's llama-server log
   from the workflow's `creationTimestamp` to the capture right after the

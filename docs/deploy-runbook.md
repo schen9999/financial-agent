@@ -1864,15 +1864,15 @@ core scaling".
 
 ## CPU endpoint startup probe (2026-10-15)
 
-**[NOT YET EXECUTED]** The cold load of the 20.4 GB GGUF from the block
-volume took about 15 minutes on 2026-10-08, the whole of the base's startup
+**[FIRST APPLY 2026-10-15: rollout failed at the progress deadline;
+RE-APPLY NOT YET EXECUTED]** The cold load of the 20.4 GB GGUF from the
+block volume took about 15 minutes on 2026-10-08, the whole of the base's startup
 window (90 × 10 s), and the endpoint was killed once mid-load. The oke-cpu
 overlay now sets the startup probe's `failureThreshold` to 180 (30 minutes,
 twice the observed load); readiness and liveness are unchanged, and
 liveness only starts once the startup probe passes. Only the oke-cpu render
 changes (`scripts/render_diff.py`: kind app and Argo renders and the
-k3s-gpu render identical). Apply before the CPU rerun, with no workflow
-running (operator):
+k3s-gpu render identical). Apply with no workflow running (operator):
 
 ```bash
 ssh oke-operator
@@ -1883,44 +1883,50 @@ make oke-llamacpp                                                   # apply -k o
 
 The apply restarts the pod (Recreate), so the rollout is itself a load from
 the volume; if the node's page cache still holds the GGUF it will be warm and
-quicker, which does not exercise the 30 minutes. Evidence to paste:
+quicker, which does not exercise the 30 minutes.
+
+**First apply, 2026-10-15: `make oke-llamacpp` failed with "exceeded its
+progress deadline"** while the pod kept loading. The Deployment's own
+`progressDeadlineSeconds` (default 600 s) is separate from the startup
+probe and shorter than the ~15-minute cold load, so the rollout was marked
+failed at 600 s although the probe allowed 30 minutes. The oke-cpu overlay
+now also sets `progressDeadlineSeconds: 2400` (40 minutes, longer than the
+startup window; `make oke-llamacpp` waits up to 3600 s). Only the oke-cpu
+render changes (`scripts/render_diff.py`: kind app and Argo, and k3s-gpu,
+identical). Re-apply (operator, after this change is merged):
+
+```bash
+cd ~/financial-agent && git fetch && git checkout main && git pull --ff-only
+kubectl -n financial-agent get workflows | grep -w Running          # expect no output
+make oke-llamacpp
+```
+
+`progressDeadlineSeconds` is in the Deployment spec, not the pod template,
+so the re-apply does not restart the pod: the rollout completes when the
+pod already loading (or loaded) is Ready, and it does not test a second
+cold load. Evidence to paste:
 
 ```bash
 kubectl -n financial-agent get deploy llamacpp \
   -o jsonpath='{.spec.template.spec.containers[0].startupProbe.failureThreshold}{"\n"}'   # 180
+kubectl -n financial-agent get deploy llamacpp -o jsonpath='{.spec.progressDeadlineSeconds}{"\n"}'   # 2400
+kubectl -n financial-agent get deploy llamacpp \
+  -o jsonpath='{.status.conditions[?(@.type=="Progressing")].reason}{"\n"}'          # NewReplicaSetAvailable
 kubectl -n financial-agent get pods -l app.kubernetes.io/name=llamacpp -o wide              # 1/1 Running, RESTARTS 0
 kubectl -n financial-agent get pod -l app.kubernetes.io/name=llamacpp -o jsonpath='{.items[0].status.containerStatuses[?(@.name=="llama-server")].state.running.startedAt} -> {.items[0].status.conditions[?(@.type=="Ready")].lastTransitionTime}{"\n"}'   # load time
 kubectl -n financial-agent get events --sort-by=.lastTimestamp | grep -i llamacpp | tail -n 15   # no "Startup probe failed ... will be restarted"
 ```
 
-## CPU extended run on `f3043751` under the per-request proof (2026-10-15)
+## CPU extended run on `f3043751`: considered and declined (2026-10-15)
 
-**Rules recorded 2026-10-15, before it starts.**
-
-- This is the third CPU extended run on `f3043751`. `5bdz5` and `4kkgm`
-  stay failed records (counter proof FAIL, gate failed) and are listed
-  beside this run wherever it is quoted. The 2026-10-06 rule "no third
-  attempt" was set under the counter method; this run is the owner's
-  decision (2026-10-15) to run the CPU arm once under the per-request
-  method declared 2026-10-07, not a re-scoring of either earlier run.
-- One attempt. Citable only on TASK-EXACT (eval-methodology, "Verdicts
-  under this method"). On FAIL it is recorded as failed, the CPU arm on
-  `f3043751` has no citable run, the CPU arm of record stays `8vpq6`
-  (`1f51dad`), and there is no fourth attempt.
-- Its grounding rate is the CPU arm's result whatever the gate says (as
-  for `4kkgm`). A gate failure is recorded, not a reason to re-run.
-- Same protocol as `4kkgm`: the startup probe applied first; the balance
-  check (`make anthropic-estimate`); `make run-time-check` against the CPU
-  smoke `xnwjm` (from its committed workflow object; the live one has
-  expired); `make slm-eval-run ENDPOINT=cpu`; `kubectl top` every 15 s;
-  nothing else on the CPU endpoint (the app's `SLM_FULL` false, no other
-  workflow). Then three judgings, density, the numeric check, cost per
-  brief from `scripts/cost_per_brief_slm.py`, compared with `4hsn2` and
-  `nstp9` on the same image as the `1f51dad` three-way was.
-
-1. **[NOT YET EXECUTED]** Run and per-request proof (operator).
-2. **[NOT YET EXECUTED]** Capture into `eval/runs/` (laptop).
-3. **[NOT YET EXECUTED]** Re-judges 1 and 2 (laptop, about $1.76).
+**[NOT RUN — declined 2026-10-15]** A third CPU extended run on
+`f3043751`, judged by the per-request proof (declared 2026-10-07), was
+considered on 2026-10-15 and declined by the owner under the rule recorded
+on 2026-10-06 before `4kkgm` started: if its traffic proof was not EXACT,
+the CPU arm's after side is not citable and there is no third attempt.
+That rule stands. `5bdz5` and `4kkgm` stay failed records (counter proof
+FAIL, gate failed); the CPU arm of record stays `8vpq6` on image
+`1f51dad`. Nothing was submitted.
 
 ## Reranking A/B (2026-10-08)
 

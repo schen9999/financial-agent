@@ -24,8 +24,10 @@ run IDs and links lead to the full record.
   (model cost only, run `8vpq6`, previous image `1f51dad`): $0.0107 a
   brief and 355 s, against hosted's $0.0370 and 26 s (13.7× faster than
   the CPU) and the A10's $0.0293 at most and 31 s, on the same image. Cheapest, and
-  batch work, not interactive. Both CPU runs on the current image failed
-  their traffic proofs, so the CPU's citable numbers are on `1f51dad`.
+  batch work, not interactive. Two CPU runs on the current image (`5bdz5`,
+  `4kkgm`) are not citable: each failed the traffic proof in force when it
+  ran and the 5% gate; a third run was declined under the no-third-attempt
+  rule. The CPU's citable numbers are on `1f51dad`.
 - **On CPU the model writes what it writes on the A10, and fewer figures
   than hosted** (`1f51dad`, judged three times): unsupported 2.89% CPU,
   2.25% A10, 2.16% hosted (means), no difference detected on either pair;
@@ -55,8 +57,8 @@ run IDs and links lead to the full record.
   measured alternative, not an adopted one. The fine-tuned 1.5B model from
   the first demo still ships disabled: it failed the grounding gate.
 - **Not done:** a citable CPU run on the current image (both failed their
-  traffic proofs under the counter method; one run under the per-request
-  method is planned), the Terraform-created OKE cluster (written, never
+  traffic proofs under the counter method; a third run was declined under
+  the rule recorded before the second: no third attempt), the Terraform-created OKE cluster (written, never
   applied: no compartment yet), vLLM serving on OKE, and the pipeline fixes
   recorded as known limitations, which wait until after the demo.
 
@@ -284,6 +286,16 @@ run of record `nstp9` was EXACT under the counter (270 calls, 352,522
 prompt and 98,665 completion tokens), and the A10 run at parallelism 4
 (`xgtxx`) was the first judged by the per-request match: 270 of 270.
 
+**Why aren't there CPU numbers on the current image?** Two CPU runs on
+`f3043751` (`5bdz5`, `4kkgm`, 2026-10-06) are not citable: each failed the
+traffic proof in force when it ran, the server's `/metrics` counter, by +1
+and −4 prompt tokens, and each failed the 5% grounding gate. Checked
+afterwards against the server's own log, all 270 requests of each matched
+a harness call; that check became the rule on 2026-10-07, after both runs,
+so their verdicts stand and no figure from them is quoted. A third run was
+declined under the rule set before the second: no third attempt. The CPU's
+citable numbers are on the previous image, `1f51dad` (`8vpq6`).
+
 **Why llama.cpp and not vLLM for this model?** From the records, computed
 and not booted ([dated finding](eval-methodology.md#dated-finding-computed-not-booted-no-4-bit-qwen36-35b-a3b-fits-one-a10-under-vllm-2026-10-02)):
 Qwen publishes Qwen3.6-35B-A3B in BF16 and FP8 only, and FP8 has no
@@ -374,9 +386,9 @@ a deadline and an honest status. Fourth, the Anthropic client runs with no
 request timeout. Each fix gets a test that reproduces the failure first.
 Ranked by what a user would notice, the worker crash comes first.
 
-**What would you do next?** Run the CPU arm once on the current image
-under the per-request proof; fix the recorded pipeline limitations, with
-new baselines on every arm; apply the OKE Terraform when a compartment exists. The
+**What would you do next?** Fix the recorded pipeline limitations, with
+new baselines on every arm, the CPU arm among them under the per-request
+proof; apply the OKE Terraform when a compartment exists. The
 full list is in the README's "Next steps".
 
 ## Where the evidence is
