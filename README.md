@@ -1,5 +1,9 @@
 # 📈 Financial Research Agent
 
+[![CI](https://github.com/schen9999/financial-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/schen9999/financial-agent/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
 An AI agent that researches stocks and answers follow-up questions using live financial data, news, and SEC filings, with an evaluation harness that measures how far its briefs can be trusted.
 
 **Live Demo:** [financial-research-agent.streamlit.app](https://financial-research-agent.streamlit.app) | **Built with Claude Code**
