@@ -119,7 +119,30 @@ rehearsal's own run.
 
 ## The rehearsal (the day before only)
 
-- [ ] **12. Launch** (operator, at a recorded time)
+- [ ] **12. Launch** (operator, at a recorded time), **with the screen
+  recorded**. Start the recording before the launch and stop it after
+  check 14's last line. It becomes the first fallback on the day
+  ([demo.md, "Fallback if the live run fails"](demo.md#fallback-if-the-live-run-fails)).
+  Capture, in this order on screen:
+  - the operator pane running the command below, from submit to the last line;
+  - the Argo UI graph (`https://localhost:32746`, check 11): ten eval
+    pods, two at a time, then the aggregate;
+  - the node 2 pane with `watch -n 2 nvidia-smi`, the A10 moving with the
+    calls;
+  - the second operator pane with the live CPU ask (check 13), from the
+    command to its `LIVE CPU ASK:` line;
+  - at the end of the run: the aggregate table, the gate line,
+    `stock block empty`, the call table and the attempts block;
+  - the laptop pane for check 14, ending on
+    `TRAFFIC PROOF (per-request): TASK-EXACT`.
+
+  Keys and secrets stay off screen, as in check 11: no
+  `kubectl get secret … -o yaml|json`, no `kubectl exec … env`, no
+  `env`/`printenv`, no `/proc/<pid>/environ`, no `cat .env`, and no
+  Streamlit basic-auth prompt with the password typed in view. Scrollback
+  cleared in every recorded pane first. Watch the recording through once
+  before storing it. The file stays out of the repo (size): store it
+  where demo.md's fallback list points, not under the working tree.
   ```bash
   make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-slm-gpu-smoke.yaml 2>&1 | tee ~/rehearsal-$(date -u +%F).log
   ```
