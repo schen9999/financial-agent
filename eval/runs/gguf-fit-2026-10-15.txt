@@ -1,0 +1,26 @@
+== ggml-org/Qwen3.6-35B-A3B-GGUF @baec3eb
+   Q4_K_M         20,419,565,568 B    19.02 GiB   1 file(s)  A10: fits file (+3.47 GiB)  E5-node: fits file (+38.98 GiB)  cpu-pod: fits file (+10.98 GiB)
+   Q8_0           36,903,139,328 B    34.37 GiB   1 file(s)  A10: exceeds (-11.88 GiB)  E5-node: fits file (+23.63 GiB)  cpu-pod: exceeds (-4.37 GiB)
+== ggml-org/Qwen3.6-27B-GGUF @8a7ee08
+   Q4_K_M         19,095,766,304 B    17.78 GiB   1 file(s)  A10: fits file (+4.71 GiB)  E5-node: fits file (+40.22 GiB)  cpu-pod: fits file (+12.22 GiB)
+   Q8_0           28,595,762,464 B    26.63 GiB   1 file(s)  A10: exceeds (-4.14 GiB)  E5-node: fits file (+31.37 GiB)  cpu-pod: fits file (+3.37 GiB)
+== unsloth/Qwen3.5-9B-GGUF @3885219
+   UD-IQ2_XXS      3,190,613,216 B     2.97 GiB   1 file(s)  A10: fits file (+19.52 GiB)  E5-node: fits file (+55.03 GiB)  cpu-pod: fits file (+27.03 GiB)
+   Q4_K_M          5,680,522,464 B     5.29 GiB   1 file(s)  A10: fits file (+17.20 GiB)  E5-node: fits file (+52.71 GiB)  cpu-pod: fits file (+24.71 GiB)
+   Q8_0            9,527,502,048 B     8.87 GiB   1 file(s)  A10: fits file (+13.62 GiB)  E5-node: fits file (+49.13 GiB)  cpu-pod: fits file (+21.13 GiB)
+== unsloth/Qwen3.5-4B-GGUF @e87f176
+   UD-IQ2_XXS      1,520,217,248 B     1.42 GiB   1 file(s)  A10: fits file (+21.07 GiB)  E5-node: fits file (+56.58 GiB)  cpu-pod: fits file (+28.58 GiB)
+   Q4_K_M          2,740,937,888 B     2.55 GiB   1 file(s)  A10: fits file (+19.94 GiB)  E5-node: fits file (+55.45 GiB)  cpu-pod: fits file (+27.45 GiB)
+   Q8_0            4,482,403,488 B     4.17 GiB   1 file(s)  A10: fits file (+18.32 GiB)  E5-node: fits file (+53.83 GiB)  cpu-pod: fits file (+25.83 GiB)
+== unsloth/MiniMax-M2.7-GGUF @d2a05cc
+   UD-IQ1_M       60,700,770,496 B    56.53 GiB   3 file(s)  A10: exceeds (-34.04 GiB)  E5-node: fits file (+1.47 GiB)  cpu-pod: exceeds (-26.53 GiB)
+   UD-Q4_K_M     140,169,905,504 B   130.54 GiB   4 file(s)  A10: exceeds (-108.05 GiB)  E5-node: exceeds (-72.54 GiB)  cpu-pod: exceeds (-100.54 GiB)
+   Q8_0          243,136,872,992 B   226.44 GiB   6 file(s)  A10: exceeds (-203.95 GiB)  E5-node: exceeds (-168.44 GiB)  cpu-pod: exceeds (-196.44 GiB)
+== unsloth/MiniMax-M2.5-GGUF @7c50dca
+   UD-TQ1_0       55,765,943,424 B    51.94 GiB   1 file(s)  A10: exceeds (-29.45 GiB)  E5-node: fits file (+6.06 GiB)  cpu-pod: exceeds (-21.94 GiB)
+   Q4_K_M        138,342,385,216 B   128.84 GiB   4 file(s)  A10: exceeds (-106.35 GiB)  E5-node: exceeds (-70.84 GiB)  cpu-pod: exceeds (-98.84 GiB)
+   Q8_0          243,136,873,280 B   226.44 GiB   6 file(s)  A10: exceeds (-203.95 GiB)  E5-node: exceeds (-168.44 GiB)  cpu-pod: exceeds (-196.44 GiB)
+== unsloth/MiniMax-M3-GGUF @abdce34
+   UD-IQ1_M      129,313,886,816 B   120.43 GiB   4 file(s)  A10: exceeds (-97.94 GiB)  E5-node: exceeds (-62.43 GiB)  cpu-pod: exceeds (-90.43 GiB)
+   UD-Q4_K_M     264,928,402,400 B   246.73 GiB   7 file(s)  A10: exceeds (-224.24 GiB)  E5-node: exceeds (-188.73 GiB)  cpu-pod: exceeds (-216.73 GiB)
+   Q8_0          453,611,165,056 B   422.46 GiB  11 file(s)  A10: exceeds (-399.97 GiB)  E5-node: exceeds (-364.46 GiB)  cpu-pod: exceeds (-392.46 GiB)
