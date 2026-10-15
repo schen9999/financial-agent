@@ -1968,6 +1968,88 @@ That rule stands. `5bdz5` and `4kkgm` stay failed records (counter proof
 FAIL, gate failed); the CPU arm of record stays `8vpq6` on image
 `1f51dad`. Nothing was submitted.
 
+## Cross-shape llama-bench on node 2: Xeon CPU and the A10 (before the rehearsal)
+
+The node 2 mirror of the 2026-10-08 E5 sweep, so the same model file has a
+llama-bench record on an Intel CPU, an AMD CPU and an Nvidia GPU.
+`scripts/llama_bench_node2.sh` runs `scripts/llama_bench_cpu.sh`'s method
+on node 2's k3s: llama.cpp b11347, the endpoint's own GGUF (hostPath),
+`-p 512,2048 -n 128 -r 3 -o json`, one Job per level with request = limit
+and `-t` = the level.
+
+- **CPU levels 4, 8, 15** (the E5 sweep's) **and `max`** (node 2's free
+  vCPU: allocatable minus every running pod's requests, printed beside
+  `nproc`; VM.GPU.A10.1 has 15 OCPU = 30 vCPU, and the September app plane
+  still holds some): the **same `full` CPU image** as the E5 run, an
+  identical binary. That build has no GPU backend, so nothing can be
+  offloaded to the A10. That is stronger than `-ngl 0` on the CUDA build,
+  which can still offload prompt-processing matrix multiplies to the GPU.
+- **GPU level** (`gpu`): `full-cuda12-b11347` (CUDA 12.8.1, the same base
+  as the endpoint's `server-cuda12` image), one A10, `-ngl 99`, `-t 8` (the
+  endpoint's `--threads`).
+- The GPU endpoint is scaled to 0 for the whole run: it holds about 20.5 GB
+  of the A10, and a CPU sweep beside it would share the memory bandwidth it
+  measures. It is restored to 1 on exit, even on failure (`trap`). vLLM
+  must be at 0 already and stays there (CLAUDE.md, Targets). The script
+  refuses if the endpoint started a task in the last 15 minutes.
+- The host record (`host.txt`): `nproc`, `lscpu`, `free -g`, the GPU, the
+  OCI shape and `shapeConfig` from instance metadata (no IPs or OCIDs), and
+  the GGUF's size.
+- Time: not measured on node 2. The E5 levels took about 19 minutes each,
+  mostly a cold 15-minute load from the block volume; node 2 reads the
+  GGUF from its local disk and then from page cache. Allow an hour, and
+  never on rehearsal day.
+
+1. **[NOT YET EXECUTED]** Nothing is using the GPU endpoint (operator).
+   ```bash
+   kubectl -n financial-agent get workflows | grep -w Running                                     # expect no output
+   kubectl -n financial-agent get configmap app-config -o jsonpath='{.data.SLM_FULL}{"\n"}'      # expect false
+   ```
+2. **[NOT YET EXECUTED]** Copy the script and record the endpoint's state
+   before (laptop, then node 2; preflight check 8).
+   ```bash
+   scp scripts/llama_bench_node2.sh oci2:/tmp/          # laptop, from this branch
+   ssh oci2
+   curl -s localhost:30880/health; echo                                   # {"status":"ok"}
+   curl -s -o /dev/null -w '%{http_code}\n' localhost:30880/v1/models     # 401
+   nvidia-smi --query-compute-apps=pid,process_name,used_memory --format=csv   # llama-server near 20488 MiB
+   kubectl -n financial-agent get deploy vllm llamacpp                    # vllm 0/0, llamacpp 1/1
+   ```
+3. **[NOT YET EXECUTED]** The bench (node 2, in tmux so an ssh drop does not
+   cut it).
+   ```bash
+   tmux new -s bench
+   bash /tmp/llama_bench_node2.sh 4 8 15 max gpu
+   ```
+   Expected in `~/llama-bench-node2-<YYYYMMDD>/run.log`: `host recorded:`
+   with the Xeon model name and `nproc 30`; `scaling llamacpp to 0`;
+   `max resolves to <n> free vCPU (nproc 30)`; for each CPU level a `done:`
+   line with three tests (512, 0), (2048, 0), (0, 128), threads equal to
+   the level, GPU layers `-1` and backend `CPU`; for `gpu` the same tests
+   with GPU layers `99` and backend `CUDA`; then `restoring llamacpp to 1`,
+   `deployment "llamacpp" successfully rolled out`, a `llama-server` line
+   from nvidia-smi near 20488 MiB, and `vllm replicas: 0`. A level that
+   does not complete prints its Job's last lines and stops; the endpoint is
+   still restored.
+4. **[NOT YET EXECUTED]** The endpoint is back, keyed, and serving OKE:
+   preflight check 8 again on node 2 (same expected lines as step 2), then
+   preflight check 9 (laptop, then operator): `HTTP 401` without the key,
+   `HTTP 200` with it, alias `qwen3.6-35b-a3b-q4km` with no `-hybrid`, and
+   `server_facts` printing the same alias and no error.
+5. **[NOT YET EXECUTED]** Capture and table (laptop).
+   ```bash
+   D=eval/runs/llama-bench-<YYYY-MM-DD>; mkdir -p $D
+   scp 'oci2:~/llama-bench-node2-<YYYYMMDD>/*' $D/
+   E=eval/runs/llama-bench-cpu-2026-10-08
+   python scripts/llama_bench_table.py \
+     $E/P4.json="E5 (OKE), 4 vCPU" $E/P8.json="E5 (OKE), 8 vCPU" $E/P15.json="E5 (OKE), 15 vCPU" \
+     $D/cpu-P4.json="A10.1 host (k3s), 4 vCPU" $D/cpu-P8.json="A10.1 host (k3s), 8 vCPU" \
+     $D/cpu-P15.json="A10.1 host (k3s), 15 vCPU" $D/cpu-P<max>.json="A10.1 host (k3s), <max> vCPU" \
+     $D/gpu.json="A10 (k3s), all layers"
+   ```
+   Paste `run.log`, `host.txt` and the table. Results then go to
+   gpu-inference.md and eval-methodology.md as a dated measurement.
+
 ## Reranking A/B (2026-10-08)
 
 **[EXECUTED 2026-10-08 — decision DON'T SHIP]** Pre-registered in
