@@ -69,8 +69,12 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
   refuses anything but init, fmt, validate, plan, show, providers,
   import (local state only) and state list/show. Zero-diff plan REACHED
   2026-10-07: 94 resources (VCN networking, the cluster, 2 node pools)
-  imported into local state, plan "No changes"; config and state stay on
-  the operator (OCIDs); terraform/oci-provided/README.md. OKE v1.34.1,
+  imported into local state, plan "No changes"; since 2026-10-15 the
+  config is committed (scripts/tf_provided_codify.py: OCIDs to references
+  or variables, real values in the gitignored terraform.tfvars; the two
+  security lists whose rules the cloud controller owns for the public
+  Streamlit LB ignore their rules), still zero diff; state stays on the
+  operator; terraform/oci-provided/README.md. OKE v1.34.1,
   4x VM.Standard.E5.Flex amd64 at 16 vCPU (two ~28 GiB,
   two ~58 GiB allocatable), no GPUs, cri-o (no image import), default
   StorageClass oci-bv. CPU-only harness: no vLLM or GPU resources,
