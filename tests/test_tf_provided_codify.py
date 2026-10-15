@@ -177,3 +177,29 @@ def test_leak_scan_catches_each_kind():
 def test_unknown_resource_type_refused():
     with pytest.raises(ValueError):
         cz.Codifier({}).codify('resource "oci_identity_policy" "p" {\n  name = "x"\n}\n')
+
+
+def test_controller_managed_list_ignores_only_its_rules():
+    c = cz.Codifier(cz.import_refs(IMPORTS), {"sl_lb"})
+    net = cz.render(c, c.codify(GEN))["network.tf"]
+    sl = net[net.index('resource "oci_core_security_list" "sl_lb"'):]
+    assert "ignore_changes = [ingress_security_rules, egress_security_rules]" in sl
+    assert "Kubernetes owns" in sl
+    assert net.count("lifecycle {") == 1
+
+
+def test_controller_managed_refuses_unknown_or_wrong_type():
+    with pytest.raises(ValueError, match="no such resource"):
+        cz.Codifier({}, {"sl_typo"}).codify(GEN)
+    with pytest.raises(ValueError, match="not a security list"):
+        cz.Codifier({}, {"subnet_workers"}).codify(GEN)
+
+
+def test_foreign_tfvars_carried_over_and_conflicts_refused(out):
+    c, _ = out
+    real = cz.tfvars(c, 'region = "us-ashburn-1"\n# note\ncompartment_ocid = "' + CPT + '"\n')
+    assert real.count("compartment_ocid") == 1
+    assert 'region = "us-ashburn-1"' in real and "carried over" in real
+    with pytest.raises(ValueError, match="compartment_ocid"):
+        cz.tfvars(c, 'compartment_ocid = "ocid1.compartment.oc1..other"\n')
+    assert "carried over" not in cz.tfvars(c, cz.tfvars(c))

@@ -19,6 +19,12 @@ What it does, and nothing else:
     and the generator's comments (they repeat each OCID);
   - splits the resources into network.tf (oci_core_*), cluster.tf and
     nodepool.tf, and rewrites variables.tf (region kept as it was);
+  - with --controller-managed sl_a,sl_b, adds lifecycle ignore_changes on
+    the rules of those security lists only: the OKE cloud controller owns
+    the Streamlit LoadBalancer's rules there, so they are not copied into
+    HCL (every other diff is fixed in HCL);
+  - carries over the assignments of a terraform.tfvars it did not write
+    (back it up first), refusing one that conflicts;
   - refuses to write anything if an OCID, an email address, an AD name or a
     public address is left in a committable file.
 
@@ -55,6 +61,15 @@ REGION = '''variable "region" {
   default     = "us-ashburn-1"
 }
 '''
+
+CONTROLLER_LIFECYCLE = """
+  # Kubernetes owns this list's rules: the OKE cloud controller adds and
+  # removes them for the Streamlit LoadBalancer (security-list management
+  # mode, k8s/overlays/oke-provided-public-ui). The rules above are the
+  # import-time snapshot (2026-10-07); the plan does not compare them.
+  lifecycle {
+    ignore_changes = [ingress_security_rules, egress_security_rules]
+  }"""
 
 DROP_KEYS = {"defined_tags", "freeform_tags"}
 VAR_KEYS = {"ssh_public_key"}
@@ -118,8 +133,10 @@ def _ident(s: str) -> str:
 
 
 class Codifier:
-    def __init__(self, refs: dict[str, str]):
+    def __init__(self, refs: dict[str, str], controller_managed: set[str] = frozenset()):
         self.refs = refs
+        self.controller_managed = set(controller_managed)
+        self.seen_managed: set[str] = set()
         self.vars: dict[str, dict] = {}       # name -> {value, kind, res, key}
         self.by_value: dict[str, str] = {}
         self.n_refs = 0
@@ -193,8 +210,16 @@ class Codifier:
                 continue
             rtype, name = m.groups()
             body, i = self._block(lines, i + 1, name)
+            if name in self.controller_managed:
+                if rtype != "oci_core_security_list":
+                    raise ValueError(f"--controller-managed {name}: a {rtype}, not a security list")
+                body.append(CONTROLLER_LIFECYCLE)
+                self.seen_managed.add(name)
             block = f'resource "{rtype}" "{name}" {{\n' + "".join(l + "\n" for l in body) + "}\n"
             out.setdefault(target_file(rtype), []).append(block)
+        missing = self.controller_managed - self.seen_managed
+        if missing:
+            raise ValueError(f"--controller-managed: no such resource {', '.join(sorted(missing))}")
         return out
 
 
@@ -252,21 +277,41 @@ def leaks(text: str) -> list[str]:
     return hits
 
 
-def tfvars(c: Codifier) -> str:
+def tfvars(c: Codifier, existing: str | None = None) -> str:
+    """The real values. A terraform.tfvars this script did not write (back it
+    up first) has its assignments carried over; one that sets a generated
+    variable to a different value is refused."""
     lines = [f"{TFVARS_HEAD} — gitignored, real values. Do not commit.\n"]
     lines += [f'{n} = "{c.vars[n]["value"]}"\n' for n in sorted(c.vars)]
+    if existing and not existing.startswith(TFVARS_HEAD):
+        kept = []
+        for line in existing.splitlines():
+            m = re.match(r'^\s*([A-Za-z0-9_]+)\s*=\s*"?([^"]*)"?\s*$', line)
+            if m and m.group(1) in c.vars:
+                if m.group(2) != c.vars[m.group(1)]["value"]:
+                    raise ValueError(f"terraform.tfvars sets {m.group(1)} to another value")
+                continue
+            if line.strip() and not line.lstrip().startswith("#"):
+                kept.append(line + "\n")
+        if kept:
+            lines += ["\n# carried over from the previous terraform.tfvars\n", *kept]
     return "".join(lines)
 
 
 def main() -> int:
+    import argparse
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap.add_argument("--controller-managed", default="",
+                    help="comma-separated security-list names whose rules the OKE cloud "
+                         "controller owns: their rules get lifecycle ignore_changes")
+    args = ap.parse_args()
     src = GEN if GEN.exists() else ORIG
     if not src.exists():
         print(f"neither {GEN.name} nor {ORIG.name} exists: run the generate step first")
         return 2
-    if TFVARS.exists() and not TFVARS.read_text(encoding="utf-8").startswith(TFVARS_HEAD):
-        print(f"{TFVARS.name} exists and was not written by this script: move it aside first")
-        return 2
-    c = Codifier(import_refs(IMPORTS.read_text(encoding="utf-8")))
+    existing = TFVARS.read_text(encoding="utf-8") if TFVARS.exists() else None
+    managed = {n.strip() for n in args.controller_managed.split(",") if n.strip()}
+    c = Codifier(import_refs(IMPORTS.read_text(encoding="utf-8")), managed)
     out = render(c, c.codify(src.read_text(encoding="utf-8")))
     bad = {name: h for name, text in out.items() if (h := leaks(text))}
     if bad:
@@ -274,9 +319,10 @@ def main() -> int:
             print(f"LEAK {name}: {', '.join(h[:10])}{' ...' if len(h) > 10 else ''}")
         print("nothing written")
         return 1
+    real = tfvars(c, existing)
     for name, text in out.items():
         (DIR / name).write_text(text, encoding="utf-8")
-    TFVARS.write_text(tfvars(c), encoding="utf-8")
+    TFVARS.write_text(real, encoding="utf-8")
     if src == GEN:
         GEN.rename(ORIG)
     for name, text in out.items():
