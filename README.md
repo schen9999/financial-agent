@@ -10,6 +10,30 @@ An AI agent that researches stocks and answers follow-up questions using live fi
 
 **Documentation:** start at [docs/README.md](docs/README.md), which maps each question a reviewer might ask to the document that answers it. Every number below comes from a committed, re-runnable harness; run IDs, intervals and the rules for quoting them are in [docs/numbers-of-record.md](docs/numbers-of-record.md).
 
+Where it runs for the November 2026 demo ([full topology](docs/architecture.md#deployed-topology-october-2026)):
+
+```mermaid
+flowchart LR
+    subgraph oke ["Provided OKE cluster: 4 CPU nodes, no GPU"]
+        app["App plane<br/>api · worker · streamlit · mcp<br/>redis · postgres"]
+        argo["Argo eval harness<br/>pod per ticker, aggregate, 5% gate"]
+        cpu["llama.cpp CPU endpoint<br/>Qwen3.6-35B-A3B Q4_K_M"]
+    end
+    subgraph node2 ["A10 GPU VM"]
+        gpu["llama.cpp GPU endpoint<br/>same model file"]
+    end
+    subgraph ext ["Outside services"]
+        anthropic["Anthropic API<br/>hosted models, the judge"]
+        data["Data sources<br/>Yahoo · SEC · NewsAPI · Pinecone"]
+    end
+    argo -. "SLM_FULL (default off)" .-> cpu
+    argo -. "SLM_FULL (default off):<br/>one keyed port, cluster egress only" .-> gpu
+    app --> ext
+    argo --> ext
+```
+
+Dotted lines are the self-served arms, off by default (`SLM_FULL=false`): the app and the default eval runs use the hosted models, and the judge is Claude on every arm.
+
 ---
 
 ## What it does
