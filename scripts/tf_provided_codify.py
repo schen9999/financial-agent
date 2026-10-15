@@ -65,11 +65,12 @@ REGION = '''variable "region" {
 CONTROLLER_LIFECYCLE = """
   # Kubernetes owns this list's rules: the OKE cloud controller adds and
   # removes them for the Streamlit LoadBalancer (security-list management
-  # mode, k8s/overlays/oke-provided-public-ui). The rules above are the
-  # import-time snapshot (2026-10-07); the plan does not compare them.
-  lifecycle {
+  # mode, k8s/overlays/oke-provided-public-ui). {snapshot}
+  lifecycle {{
     ignore_changes = [ingress_security_rules, egress_security_rules]
-  }"""
+  }}"""
+SNAPSHOT_RULES = ("The rules above are the\n  # import-time snapshot (2026-10-07); the plan does not compare them.")
+SNAPSHOT_EMPTY = ("It held no rules at\n  # import (2026-10-07), so none are written here; the plan does not compare them.")
 
 DROP_KEYS = {"defined_tags", "freeform_tags"}
 VAR_KEYS = {"ssh_public_key"}
@@ -213,7 +214,9 @@ class Codifier:
             if name in self.controller_managed:
                 if rtype != "oci_core_security_list":
                     raise ValueError(f"--controller-managed {name}: a {rtype}, not a security list")
-                body.append(CONTROLLER_LIFECYCLE)
+                has_rules = any(re.match(r"\s*(ingress|egress)_security_rules\s*\{", l) for l in body)
+                body.append(CONTROLLER_LIFECYCLE.format(
+                    snapshot=SNAPSHOT_RULES if has_rules else SNAPSHOT_EMPTY))
                 self.seen_managed.add(name)
             block = f'resource "{rtype}" "{name}" {{\n' + "".join(l + "\n" for l in body) + "}\n"
             out.setdefault(target_file(rtype), []).append(block)

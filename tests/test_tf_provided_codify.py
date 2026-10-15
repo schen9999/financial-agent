@@ -203,3 +203,11 @@ def test_foreign_tfvars_carried_over_and_conflicts_refused(out):
     with pytest.raises(ValueError, match="compartment_ocid"):
         cz.tfvars(c, 'compartment_ocid = "ocid1.compartment.oc1..other"\n')
     assert "carried over" not in cz.tfvars(c, cz.tfvars(c))
+
+
+def test_controller_managed_comment_says_whether_rules_are_written():
+    empty = 'resource "oci_core_security_list" "sl_e" {\n  display_name = "e"\n}\n'
+    out = "".join(cz.Codifier({}, {"sl_e"}).codify(empty)["network.tf"])
+    assert "It held no rules" in out and "rules above" not in out
+    out = "".join(cz.Codifier({}, {"sl_lb"}).codify(GEN)["network.tf"])
+    assert "The rules above are the" in out

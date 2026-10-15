@@ -1,0 +1,9 @@
+# terraform/oci-provided: placeholders only. The real terraform.tfvars is
+# written beside it by scripts/tf_provided_codify.py on the operator
+# (gitignored: it holds the OCIDs).
+availability_domain_1 = "<tenancy-prefix>:US-ASHBURN-AD-1"
+compartment_ocid = "ocid1.compartment.oc1..<compartment-ocid>"
+nat_nat_gateway_public_ip_id = "ocid1.publicip.oc1..<publicip-ocid>"
+pool_oke_cpu_image_id = "ocid1.image.oc1..<image-ocid>"
+pool_oke_cpu_ssh_public_key = "ssh-rsa <public key>"
+sgw_service_gateway_service_id = "ocid1.service.oc1..<service-ocid>"
