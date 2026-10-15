@@ -1,0 +1,178 @@
+# Demo preflight checklist
+
+Run it the day before (2026-10-24 or 25, ending with the rehearsal and the
+freeze tag) and again 30 minutes before the demo (checks 1–11 only). In
+order; **stop at the first check whose output differs from the expected
+line** and take its branch in
+[deploy-runbook.md, "Failure branches"](deploy-runbook.md#failure-branches).
+
+Shells: **laptop** is WSL in the repo; **operator** is `ssh oke-operator`
+(ProxyJump `oke-bastion`), in `~/financial-agent`; **node 2** is `ssh oci2`.
+Nothing here sends a completion to either model endpoint before the
+rehearsal's own run.
+
+## Checks
+
+- [ ] **1. Repo at the commit to be frozen** (laptop and operator)
+  ```bash
+  git fetch && git checkout main && git pull --ff-only && git status -sb && git log -1 --oneline
+  ```
+  Expected: `## main...origin/main`, no changes, the same commit on both.
+
+- [ ] **2. Tests** (laptop; the day before only)
+  ```bash
+  python -m pytest tests/ -q
+  ```
+  Expected: `... passed, 1 skipped` (the credit-gated judge test), no
+  failures.
+
+- [ ] **3. Anthropic credit** (laptop; no API call)
+  ```bash
+  make anthropic-estimate RUNS="argo/eval-run-slm-gpu-smoke.yaml argo/eval-run-slm-gpu-smoke.yaml argo/eval-run-slm-gpu-smoke.yaml"
+  ```
+  Expected: `ESTIMATE : $2.71` and `BUDGET : $4.06` (rehearsal, demo, one
+  spare smoke; each smoke $0.90, from `m7qvv` on this image). The console's
+  billing page shows at least the BUDGET line. 30 minutes before: the demo
+  smoke and the spare, `BUDGET : $2.71`. A low balance fails the run
+  mid-run (`eval/runtime_guards.py`).
+
+- [ ] **4. OKE nodes and pods** (operator)
+  ```bash
+  kubectl get nodes
+  kubectl -n financial-agent get pods
+  kubectl -n argo get pods
+  ```
+  Expected: 4 nodes `Ready`; `api`, `worker`, `streamlit`, `mcp`, `redis`,
+  `postgres`, `llamacpp` all `Running` with ready containers;
+  `workflow-controller` and `argo-server` `Running`.
+
+- [ ] **5. Nightly CronWorkflow suspended, nothing running** (operator)
+  ```bash
+  kubectl -n financial-agent get cronworkflow grounding-eval-nightly -o jsonpath='{.spec.suspend}{"\n"}'
+  kubectl -n financial-agent get workflows | grep -w Running
+  ```
+  Expected: `true`, then no output.
+
+- [ ] **6. Image pin `f3043751`** (operator)
+  ```bash
+  python3 scripts/pin_oke_image.py --overlay oke-provided --check
+  kubectl -n financial-agent get deploy api -o jsonpath='{.spec.template.spec.containers[0].image}{"\n"}'
+  kubectl -n financial-agent get workflowtemplate grounding-eval -o jsonpath='{.spec.templates[*].container.image}{"\n"}'
+  ```
+  Expected: the check passes with tag `f3043751…`; the api image and every
+  template image end in `:f3043751eb51083b8c674d23ad4ff1da91cbdeac`.
+
+- [ ] **7. The app does not call a model endpoint** (operator)
+  ```bash
+  kubectl -n financial-agent get configmap app-config -o jsonpath='{.data.SLM_FULL}{"\n"}'
+  ```
+  Expected: `false` (the public UI uses hosted models, so it cannot put
+  traffic in the proof's window).
+
+- [ ] **8. Node 2: endpoint, key, GPU, vLLM at 0** (node 2)
+  ```bash
+  curl -s localhost:30880/health; echo
+  curl -s -o /dev/null -w '%{http_code}\n' localhost:30880/v1/models
+  nvidia-smi --query-compute-apps=pid,process_name,used_memory --format=csv
+  kubectl -n financial-agent get deploy vllm llamacpp
+  ```
+  Expected: `{"status":"ok"}`; `401`; `llama-server` near `20488 MiB`;
+  vllm `0/0`, llamacpp `1/1`. If vLLM serves on 30880: `make vm-llamacpp`
+  at once and tell the tenancy owner (runbook, "Demo live run").
+
+- [ ] **9. 30880 from OKE, and the harness's own path** (laptop, then operator)
+  ```bash
+  scp scripts/gpu_exposure_check.sh oke-operator:/tmp/ && \
+    ssh -T -n oke-operator 'bash -ic "bash /tmp/gpu_exposure_check.sh"'
+  # operator:
+  kubectl -n financial-agent exec deploy/api -- env SLM_FULL=true SLM_ENDPOINT=gpu python -c \
+    "import json; from agent.tools.slm import server_facts; print(json.dumps(server_facts(), indent=1))"
+  ```
+  Expected: `HTTP 401` without the key, `HTTP 200` with it, alias
+  `qwen3.6-35b-a3b-q4km` (no `-hybrid`), as in
+  `eval/runs/gpu-exposure-check-2026-10-05.txt`; `server_facts` prints the
+  same alias and no error.
+
+- [ ] **10. Yahoo from the cluster** (operator; one request)
+  ```bash
+  kubectl -n financial-agent exec deploy/api -- python -c \
+    "import yfinance as yf; print(yf.Ticker('AAPL').fast_info['lastPrice'])"
+  ```
+  Expected: a price. A 429 or an error: no run today shows stock figures;
+  fallback for the numbers.
+
+- [ ] **11. Screens and tunnels** (operator, then laptop)
+  ```bash
+  # operator
+  nohup kubectl -n argo port-forward svc/argo-server 2746:2746 >/tmp/pf-argo.log 2>&1 &
+  nohup kubectl -n financial-agent port-forward svc/streamlit 8501:8501 >/tmp/pf-streamlit.log 2>&1 &
+  # laptop
+  ssh -N -L 32746:localhost:2746 -L 32501:localhost:8501 oke-operator
+  ```
+  Expected: `https://localhost:32746` lists the workflows;
+  `http://localhost:32501` loads. The shared terminals (operator, node 2,
+  laptop) are open with scrollback cleared (`clear && printf '\e[3J'`).
+  Never on a shared screen: `kubectl get secret … -o yaml|json`,
+  `kubectl exec … env`, `env`/`printenv`, `/proc/<pid>/environ`,
+  `cat .env`. The exposure script, `server_facts` and the run's output
+  print no key.
+
+## The rehearsal (the day before only)
+
+- [ ] **12. Launch** (operator, at a recorded time)
+  ```bash
+  make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-slm-gpu-smoke.yaml 2>&1 | tee ~/rehearsal-$(date -u +%F).log
+  ```
+  Expected, in about 10 minutes (`m7qvv` 9 min 56 s): 11/11 nodes
+  Succeeded; `stock block empty : 0/10`; Trunc, Loop, Parse, Fmt, Err all
+  0; the attempts block shows 0 retries; a gate line (a smoke may fail it
+  on qualitative watch-items, as `m7qvv` did: recorded, not re-run). The
+  last line `TRAFFIC PROOF: …` is the `/metrics` counter, **reported, not
+  deciding**: it has drifted by a few tokens on both endpoints. Note the
+  workflow name `WF` it prints.
+
+- [ ] **13. The deciding proof: per-request match** (operator, then laptop)
+  ```bash
+  # operator: the window's start
+  kubectl -n financial-agent get workflow $WF -o jsonpath='{.metadata.creationTimestamp}{"\n"}'
+  # laptop, right after the run (T0 = the timestamp above, ID = the last part of WF)
+  mkdir -p eval/runs/slm-proof-$ID
+  ssh oci2 "kubectl -n financial-agent logs deploy/llamacpp -c llama-server --since-time=$T0" \
+    > eval/runs/slm-proof-$ID/llamacpp-server-window.log
+  scp "oke-operator:~/slm-proof/$WF*" eval/runs/slm-proof-$ID/
+  python3 scripts/traffic_proof_tasks.py --endpoint slm-gpu \
+    --server-log eval/runs/slm-proof-$ID/llamacpp-server-window.log \
+    --log eval/runs/slm-proof-$ID/$WF.log \
+    --before eval/runs/slm-proof-$ID/$WF-before.json --after eval/runs/slm-proof-$ID/$WF-after.json \
+    --json-out eval/runs/slm-proof-$ID/proof-tasks.json
+  ```
+  Expected: `unmatched: server 0, harness 0`, `0 incomplete`, and
+  `TRAFFIC PROOF (per-request): TASK-EXACT` (70 calls on a smoke).
+  Anything else: the run is not citable; say so on the day and use the
+  fallback.
+
+- [ ] **14. Record the timings** for the running order: the smoke's wall
+  time, and how long checks 4–11 took.
+
+- [ ] **15. Freeze** — only after 12 and 13 pass: [Freeze](#freeze), below.
+
+## Freeze
+
+The tag `demo-freeze-2026-10` goes on the final commit of `main` after the
+rehearsal (CLAUDE.md, constraint 6). If the rehearsal's capture is
+committed, it goes in through a PR like any change; the tag goes on `main`
+once that PR is merged. Laptop:
+
+```bash
+git fetch origin && git checkout main && git pull --ff-only
+git status -sb                                   # ## main...origin/main, clean
+git log -1 --oneline                             # the commit to freeze: the rehearsal's capture merge, or the commit it ran from
+python -m pytest tests/ -q                       # passes on exactly this commit
+git tag -l demo-freeze-2026-10                   # no output: the tag does not exist yet
+git tag -a demo-freeze-2026-10 -m "Demo freeze after the rehearsal on <date>: image f3043751, rehearsal <wf>"
+git push origin demo-freeze-2026-10
+git ls-remote --tags origin demo-freeze-2026-10  # one line, the tag object's sha
+git rev-parse demo-freeze-2026-10^{}             # the frozen commit, equal to git rev-parse main
+```
+
+Post-demo work branches from the tag: `git checkout -b <branch> demo-freeze-2026-10`.

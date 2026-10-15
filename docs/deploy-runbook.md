@@ -1436,7 +1436,8 @@ smoke, then the extended runs with their same-image hosted baseline
 **[NOT YET EXECUTED]** The live part of the demo (docs/demo.md, "The live
 run"): one GPU smoke, `argo/eval-run-slm-gpu-smoke.yaml`, from the OKE
 harness against node 2's llama.cpp endpoint, with the traffic proof. It is
-a new dated run on image `1f51dad`; capture it like `k6zxd`. Nothing here
+a new dated run on image `f3043751`; capture it like `m7qvv`, plus the
+per-request proof's server log (demo-preflight check 13). Nothing here
 changes a manifest.
 
 **Network facts this section depends on.** The VCN security list is the
@@ -1456,87 +1457,14 @@ rule first.
 
 ### Preflight — the day before, and again 30 minutes before
 
-Run every check from the shell named; stop at the first failure and take
-its branch below. Nothing in the preflight sends tokens to the GPU
-endpoint, and all of it finishes before the run's first traffic-proof
-snapshot.
-
-1. **Anthropic balance** (console, billing page): the judge is Sonnet on
-   every arm; the smoke's harness estimate was $0.9463 (`k6zxd`). Keep
-   enough for the rehearsal, the demo run and a re-run. A low balance
-   fails the run loudly (`eval/runtime_guards.py`), mid-run.
-2. **OKE nodes and pods Ready** (operator):
-   ```bash
-   kubectl get nodes                                   # 4 Ready
-   kubectl -n financial-agent get pods                 # api, worker, streamlit, mcp, redis, postgres, llamacpp Running
-   kubectl -n argo get pods                            # workflow-controller, argo-server Running
-   ```
-3. **CronWorkflow still suspended** (operator):
-   ```bash
-   kubectl -n financial-agent get cronworkflow grounding-eval-nightly -o jsonpath='{.spec.suspend}{"\n"}'   # true
-   ```
-4. **Image pin** (operator, repo at the pushed `slm-harness`):
-   ```bash
-   python3 scripts/pin_oke_image.py --overlay oke-provided --check     # pinned app image tag: f3043751…
-   kubectl -n financial-agent get deploy api -o jsonpath='{.spec.template.spec.containers[0].image}{"\n"}'   # same tag
-   ```
-5. **Node 2 endpoint and GPU** (node 2, `ssh oci2`):
-   ```bash
-   curl -s localhost:30880/health                                     # {"status":"ok"}
-   curl -s -o /dev/null -w '%{http_code}\n' localhost:30880/v1/models # 401: key enforced
-   nvidia-smi --query-compute-apps=pid,process_name,used_memory --format=csv   # llama-server ~20,488 MiB
-   ```
-   And vLLM is at 0 (`kubectl -n financial-agent get deploy vllm` shows
-   `0/0`). If vLLM is serving on 30880, that is the unkeyed exposure this
-   section rules out: run `make vm-llamacpp` at once (it scales vLLM to 0
-   and takes the port back), then tell the tenancy owner.
-6. **30880 from OKE** (operator, whose egress is the cluster's,
-   129.80.187.92): `scripts/gpu_exposure_check.sh` (how to run it is in
-   its header) prints HTTP 401 without the key and HTTP 200 with it,
-   serving the plain alias `qwen3.6-35b-a3b-q4km`, as in
-   `eval/runs/gpu-exposure-check-2026-10-05.txt`. Then the harness's own
-   path:
-   ```bash
-   kubectl -n financial-agent exec deploy/api -- env SLM_FULL=true SLM_ENDPOINT=gpu python -c \
-     "import json; from agent.tools.slm import server_facts; print(json.dumps(server_facts(), indent=1))"
-   ```
-7. **Yahoo from the cluster** (operator; one request — yfinance has
-   answered 429 from this egress IP):
-   ```bash
-   kubectl -n financial-agent exec deploy/api -- python -c \
-     "import yfinance as yf; print(yf.Ticker('AAPL').fast_info['lastPrice'])"   # a price, not an error
-   ```
-8. **Screen sharing: nothing shown prints a key.** What the demo shows is
-   safe: `scripts/gpu_exposure_check.sh` reads the key into a 0600 header
-   file and prints only the endpoint's responses; `server_facts()` returns
-   no key; `make slm-eval-run` writes its snapshots to files and its
-   recipe is silent; llama-server takes its key from an environment
-   variable, not an argument, so `ps` does not show it. On a shared screen
-   never run `kubectl get secret … -o yaml|json`, `kubectl exec … env`,
-   `printenv`/`env` in a pod or on node 2, `cat /proc/<pid>/environ`, or
-   `cat .env` on the laptop; `kubectl describe secret` shows sizes only.
-   The run's output shows node 2's public IP and the operator's private
-   addresses — not credentials (30880 admits only the OKE egress IP).
-   Pre-open the terminals to be shared (operator, node 2, laptop), clear
-   their scrollback (`clear && printf '\e[3J'`, or tmux `clear-history`),
-   and run the preflight in other terminals.
-9. **Port-forwards and tunnels up** (operator, then laptop):
-   ```bash
-   # operator
-   nohup kubectl -n argo port-forward svc/argo-server 2746:2746 >/tmp/pf-argo.log 2>&1 &
-   nohup kubectl -n financial-agent port-forward svc/streamlit 8501:8501 >/tmp/pf-streamlit.log 2>&1 &
-   # laptop (WSL)
-   ssh -N -L 32746:localhost:2746 -L 32501:localhost:8501 oke-operator
-   # Argo UI: https://localhost:32746 (check that it loads and lists the
-   # workflows; argo-server's auth mode decides whether it asks for a token)
-   # Streamlit: http://localhost:32501
-   ```
-
-**The day before only: a full rehearsal.** Run the launch below once,
-end to end, and capture it. It measures the timings this section leaves
-open (the swap's model load, the smoke's wall time on the day) and
-proves the path. A rehearsal is a dated smoke like any other; it is not
-an arm comparison.
+**[NOT YET EXECUTED]** The checklist, with each check's command and
+expected output in order, is [demo-preflight.md](demo-preflight.md) (moved
+there 2026-10-15 so there is one copy). Stop at the first failure and take
+its branch below. Nothing in it sends a completion to the GPU endpoint
+before the rehearsal's own run. The day before, it ends with a full
+rehearsal (checks 12–14), the per-request proof of that run, and the
+freeze tag. A rehearsal is a dated smoke like any other; it is not an arm
+comparison.
 
 ### Launch (operator)
 
@@ -1548,21 +1476,29 @@ make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-slm-gpu-smoke.yaml
 The target snapshots the endpoint's counters from the api pod, submits
 and follows the workflow (`[hh:mm:ss] phase=Running progress=n/11`),
 captures every pod's log into `~/slm-proof/<wf>.log`, snapshots again and
-prints the aggregate, the attempts block and `TRAFFIC PROOF: EXACT |
-LOWER-BOUND | FAIL`. `k6zxd` took 9 min 40 s. Nothing else may call the
-GPU endpoint until it finishes: other traffic fails the proof.
+prints the aggregate, the attempts block and the `/metrics` counter
+proof's `TRAFFIC PROOF: EXACT | LOWER-BOUND | FAIL`, which since 2026-10-07
+is reported and does not decide (it drifts by a few tokens on both
+endpoints). The deciding proof is the per-request match right after it
+(demo-preflight check 13: the window from node 2, then
+`scripts/traffic_proof_tasks.py --endpoint slm-gpu`). `m7qvv` took 9 min
+56 s. Nothing else may call the GPU endpoint until the window is captured:
+other traffic fails the proof.
 
 On screen while it runs: the operator pane with the target's progress;
 the Argo UI graph (ten eval pods, two at a time, then the aggregate); a
 node 2 pane with `watch -n 2 nvidia-smi` (the A10's utilization moving
 with the calls, ~20.5 GB held). At the end: the aggregate table, the gate
 line, `stock block empty`, the LLM-call table (Trunc, Loop, Parse, Fmt,
-Err all 0), the attempts block (0 retries) and `TRAFFIC PROOF: EXACT`.
+Err all 0), the attempts block (0 retries) and `TRAFFIC PROOF
+(per-request): TASK-EXACT`.
 
 ### Failure branches
 
 Every branch ends at the recorded runs: `eval/runs/gpu-smoke.log`
-(`k6zxd`, the smoke) and `eval/runs/gpu-extended.log` (`p9jr2`, the A10
+(`k6zxd`, the smoke on `1f51dad`), `eval/runs/gpu-smoke-f304375.log`
+(`m7qvv`, the smoke on `f3043751`) and `eval/runs/gpu-extended-f304375.log`
+(`nstp9`, the A10
 run of record), open on the laptop before the demo starts. Say what
 failed; do not debug live beyond the first check named.
 
@@ -1579,7 +1515,7 @@ failed; do not debug live beyond the first check named.
   does not, the pod is down or restarting: `kubectl -n financial-agent get
   pods -l app.kubernetes.io/name=llamacpp`; if it is not Running within a
   minute or two, fallback.
-- **Yahoo 429** (preflight 7 errors, or the aggregate's `stock block
+- **Yahoo 429** (preflight check 10 errors, or the aggregate's `stock block
   empty` is above 0/10): the run still completes, but those briefs had no
   stock data, so their figures say nothing about the model. Show the
   count, do not quote the run's rate, do not retry (the 429 is on the
@@ -1589,11 +1525,13 @@ failed; do not debug live beyond the first check named.
   one ticker — `7c66k` failed at 7.92% on MSFT alone, `k6zxd` passed at
   4.76% with all three on AAPL. Show which ticker holds the unsupported
   claims and that the numeric column is 0; arms are compared on the
-  40-ticker runs, so go to `p9jr2`. Do not re-run to get a pass.
+  40-ticker runs, so go to `nstp9`. Do not re-run to get a pass.
 - **The balance runs out mid-run** (the run fails on the credit-balance
   error; retries appear in the attempts block): fallback; the proof may
   not be citable.
-- **TRAFFIC PROOF: FAIL or LOWER-BOUND**: say what the proof caught
+- **Counter proof FAIL with per-request TASK-EXACT**: the counter's
+  known drift; the per-request verdict decides and the run stands.
+- **Per-request proof FAIL**: say what the proof caught
   (traffic the harness did not log, or a failed attempt) — that is the
   proof working. The run is not citable. Fallback.
 
@@ -1619,7 +1557,7 @@ demo, in this order, all of it finished before the rehearsal:
 4. **Re-open 30880 for the OKE egress IP only:** `sudo ufw allow from
    129.80.187.92 to any port 30880 proto tcp` on node 2, and ask the
    tenancy owner to re-add the security-list rule (129.80.187.92/32,
-   never a range). Then preflight 5 and 6.
+   never a range). Then preflight checks 8 and 9 (demo-preflight.md).
 
 Time: the Kubernetes steps take a minute or two each. Loading the 20.4 GB
 GGUF into the A10 is not recorded — `make vm-llamacpp` waits up to an
@@ -1923,6 +1861,66 @@ tok/s at 4 / 8 / 15 vCPU (16 not schedulable). The endpoint was killed once
 during its cold reload (exit 137 at 06:17Z) and came up on the second
 start; `/health` ok. Results: [gpu-inference.md](gpu-inference.md), "CPU
 core scaling".
+
+## CPU endpoint startup probe (2026-10-15)
+
+**[NOT YET EXECUTED]** The cold load of the 20.4 GB GGUF from the block
+volume took about 15 minutes on 2026-10-08, the whole of the base's startup
+window (90 × 10 s), and the endpoint was killed once mid-load. The oke-cpu
+overlay now sets the startup probe's `failureThreshold` to 180 (30 minutes,
+twice the observed load); readiness and liveness are unchanged, and
+liveness only starts once the startup probe passes. Only the oke-cpu render
+changes (`scripts/render_diff.py`: kind app and Argo renders and the
+k3s-gpu render identical). Apply before the CPU rerun, with no workflow
+running (operator):
+
+```bash
+ssh oke-operator
+cd ~/financial-agent && git fetch && git checkout main && git pull --ff-only
+kubectl -n financial-agent get workflows | grep -w Running          # expect no output
+make oke-llamacpp                                                   # apply -k oke-cpu, rollout (up to 60 min), server_facts
+```
+
+The apply restarts the pod (Recreate), so the rollout is itself a load from
+the volume; if the node's page cache still holds the GGUF it will be warm and
+quicker, which does not exercise the 30 minutes. Evidence to paste:
+
+```bash
+kubectl -n financial-agent get deploy llamacpp \
+  -o jsonpath='{.spec.template.spec.containers[0].startupProbe.failureThreshold}{"\n"}'   # 180
+kubectl -n financial-agent get pods -l app.kubernetes.io/name=llamacpp -o wide              # 1/1 Running, RESTARTS 0
+kubectl -n financial-agent get pod -l app.kubernetes.io/name=llamacpp -o jsonpath='{.items[0].status.containerStatuses[?(@.name=="llama-server")].state.running.startedAt} -> {.items[0].status.conditions[?(@.type=="Ready")].lastTransitionTime}{"\n"}'   # load time
+kubectl -n financial-agent get events --sort-by=.lastTimestamp | grep -i llamacpp | tail -n 15   # no "Startup probe failed ... will be restarted"
+```
+
+## CPU extended run on `f3043751` under the per-request proof (2026-10-15)
+
+**Rules recorded 2026-10-15, before it starts.**
+
+- This is the third CPU extended run on `f3043751`. `5bdz5` and `4kkgm`
+  stay failed records (counter proof FAIL, gate failed) and are listed
+  beside this run wherever it is quoted. The 2026-10-06 rule "no third
+  attempt" was set under the counter method; this run is the owner's
+  decision (2026-10-15) to run the CPU arm once under the per-request
+  method declared 2026-10-07, not a re-scoring of either earlier run.
+- One attempt. Citable only on TASK-EXACT (eval-methodology, "Verdicts
+  under this method"). On FAIL it is recorded as failed, the CPU arm on
+  `f3043751` has no citable run, the CPU arm of record stays `8vpq6`
+  (`1f51dad`), and there is no fourth attempt.
+- Its grounding rate is the CPU arm's result whatever the gate says (as
+  for `4kkgm`). A gate failure is recorded, not a reason to re-run.
+- Same protocol as `4kkgm`: the startup probe applied first; the balance
+  check (`make anthropic-estimate`); `make run-time-check` against the CPU
+  smoke `xnwjm` (from its committed workflow object; the live one has
+  expired); `make slm-eval-run ENDPOINT=cpu`; `kubectl top` every 15 s;
+  nothing else on the CPU endpoint (the app's `SLM_FULL` false, no other
+  workflow). Then three judgings, density, the numeric check, cost per
+  brief from `scripts/cost_per_brief_slm.py`, compared with `4hsn2` and
+  `nstp9` on the same image as the `1f51dad` three-way was.
+
+1. **[NOT YET EXECUTED]** Run and per-request proof (operator).
+2. **[NOT YET EXECUTED]** Capture into `eval/runs/` (laptop).
+3. **[NOT YET EXECUTED]** Re-judges 1 and 2 (laptop, about $1.76).
 
 ## Reranking A/B (2026-10-08)
 

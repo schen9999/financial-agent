@@ -18,7 +18,7 @@ ENV_FILE  ?= .env
         argo-install argo-deploy eval-run cost-report \
         vm-images vm-up vm-eval vm-vllm oke-images oke-up \
         vm-llamacpp vm-llamacpp-down oke-llamacpp oke-llamacpp-down oke-slm-app slm-eval-run \
-        run-time-check
+        run-time-check anthropic-estimate
 
 cluster-up: ## Create the single-node kind cluster (or restart its stopped node)
 	@if kind get clusters 2>/dev/null | grep -qx $(CLUSTER); then \
@@ -356,6 +356,10 @@ slm-eval-run: ## (operator) Snapshot the endpoint, run EVAL_RUN_FILE, capture lo
 run-time-check: ## (operator) Gate a long run on a finished smoke's measured per-ticker time: WF=<smoke workflow> NEXT=<run file>
 	@test -n "$(WF)" -a -n "$(NEXT)" || { echo "usage: make run-time-check WF=<finished smoke workflow> NEXT=argo/<run file>"; exit 1; }
 	kubectl -n $(NAMESPACE) get workflow $(WF) -o json | python3 scripts/run_time_projection.py --next $(NEXT)
+
+anthropic-estimate: ## Estimated Anthropic spend of planned runs, no API call: RUNS="argo/<file>.yaml[:judgings] ..."
+	@test -n "$(RUNS)" || { echo 'usage: make anthropic-estimate RUNS="argo/eval-run-extended-slm-cpu.yaml:3 argo/eval-run-slm-gpu-smoke.yaml"'; exit 1; }
+	python3 scripts/anthropic_cost_estimate.py $(RUNS)
 
 # ── vLLM (CPU mode — backs the default-off USE_LOCAL_MODEL flag) ─────────────
 

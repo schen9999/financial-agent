@@ -7,34 +7,43 @@ run IDs and links lead to the full record.
 
 ## Conclusions
 
-- **Measured without the judge, the self-served model gets stock figures
-  wrong about as rarely as hosted, and states fewer of them.** Qwen3.6-35B-A3B
-  on llama.cpp on an A10, against hosted Claude, same image (`f3043751`),
-  40 tickers. Wrong stock figures per checked number: 1/565 hosted, 1/432
-  on the A10, not separated. Currency-label errors: 22 and 11 before the
-  stock-data fix, 0 and 0 after. Figures bound to stock data: 4.47 per
-  brief hosted against 3.05, +1.43 (CI +0.93 to +1.93).
-- **Judge-flagged grounding, secondary: no difference detected.** Each
-  run judged three times: hosted 2.55%, A10 3.57% unsupported (means; no
-  difference detected, which is not the same as equivalent). Read it with
-  the judge's limits: the same briefs re-judged moved by up to 2×, and on
-  these runs the judge's precision is about 29% and its recall about 11%.
-  The same model on CPU (previous image) was indistinguishable from the A10
-  there.
-- **The eval harness runs on OKE as a gated Argo workflow.** One command
-  runs a model across 40 tickers, has a Claude judge check every brief
-  against its sources, fails the run above 5% unsupported, and proves
-  from the model server's own counters that the self-served model, and
-  nothing else, produced the run.
+- **The eval harness and a self-served model run on CPU on OKE.** The
+  provided OKE cluster (four E5 CPU nodes, no GPUs) runs the app, the
+  Argo eval harness and a llama.cpp endpoint serving Qwen3.6-35B-A3B
+  (Q4_K_M) on 8 vCPU and 30 GiB, in-cluster only. One command runs a model
+  across 40 tickers, has a Claude judge check every brief against its
+  sources, fails the run above 5% unsupported, and proves from the model
+  server's own per-request log that the self-served model, and nothing
+  else, produced the run.
 - **CPU serving is sized right at 8 vCPU.** On the OKE node, prompt
   processing speeds up 1.8× from 4 to 8 vCPU and then not at all;
   generation runs at about 13 tok/s at every level (llama-bench,
   2026-10-08). More throughput would come from more replicas on separate
   nodes — an inference, not measured.
-- **Cost per brief, model only:** hosted $0.0357, A10 at most $0.0303
-  (image `f3043751`); CPU $0.0107 (previous image). The CPU is cheapest but
-  takes about 6 minutes a brief, so it suits batch work. The A10 takes 35 s
-  against hosted's 27 s and ran at 36% utilization, so $0.030 is a ceiling.
+- **On CPU a brief costs about 1.1 cents and takes about 6 minutes**
+  (model cost only, run `8vpq6`, previous image `1f51dad`): $0.0107 a
+  brief and 355 s, against hosted's $0.0370 and 26 s (13.7× faster than
+  the CPU) and the A10's $0.0293 at most and 31 s, on the same image. Cheapest, and
+  batch work, not interactive. Both CPU runs on the current image failed
+  their traffic proofs, so the CPU's citable numbers are on `1f51dad`.
+- **On CPU the model writes what it writes on the A10, and fewer figures
+  than hosted** (`1f51dad`, judged three times): unsupported 2.89% CPU,
+  2.25% A10, 2.16% hosted (means), no difference detected on either pair;
+  figures bound to stock data 3.00 per brief on CPU against 4.62 hosted
+  (hosted +1.62, CI +1.02 to +2.23) and 2.83 on the A10 (+0.17, CI −0.28 to
+  +0.62). Moving the model from CPU to GPU changed its speed, not
+  detectably what it writes.
+- **The comparison on the current image (`f3043751`): A10 against hosted,
+  measured without the judge first.** Wrong stock figures per checked
+  number: 1/565 hosted, 1/432 on the A10, not separated. Currency-label
+  errors: 22 and 11 before the stock-data fix, 0 and 0 after. Figures
+  bound to stock data: 4.47 per brief hosted against 3.05, +1.43 (CI +0.93
+  to +1.93).
+- **Judge-flagged grounding, secondary: no difference detected.** Each
+  run judged three times: hosted 2.55%, A10 3.57% unsupported (means; no
+  difference detected, which is not the same as equivalent). Read it with
+  the judge's limits: the same briefs re-judged moved by up to 2×, and on
+  these runs the judge's precision is about 29% and its recall about 11%.
 - **Two eval layers, because each misses what the other catches.** The
   judge accepted Toyota's revenue as "$52.0 billion" from a source value
   of 51.96 trillion in the filer's reporting currency (yen by its
@@ -45,16 +54,37 @@ run IDs and links lead to the full record.
 - **Hosted stays the production path.** The self-served model is a
   measured alternative, not an adopted one. The fine-tuned 1.5B model from
   the first demo still ships disabled: it failed the grounding gate.
-- **Not done:** the Terraform-created OKE cluster (written, never applied:
-  no compartment yet), vLLM serving on OKE, a citable CPU run on the
-  current image (both failed their traffic proofs), and the pipeline fixes
+- **Not done:** a citable CPU run on the current image (both failed their
+  traffic proofs under the counter method; one run under the per-request
+  method is planned), the Terraform-created OKE cluster (written, never
+  applied: no compartment yet), vLLM serving on OKE, and the pipeline fixes
   recorded as known limitations, which wait until after the demo.
 
 ## The numbers
 
-Image `f3043751` (stock-data fix plus currency-labelling prompt rule),
-same 40 tickers, judge v2 judged three times, October 2026. Deterministic
-measures first.
+**The CPU arm, previous image `1f51dad`** (40 tickers, judge v2 judged
+three times; both CPU runs on `f3043751` failed their traffic proofs, so
+the CPU is compared only within this image):
+
+| | CPU `8vpq6` | A10 `p9jr2` | Hosted `9jzmj` |
+|---|---|---|---|
+| Where | OKE, 8 vCPU E5 | VM.GPU.A10.1, k3s | Anthropic API |
+| Time per brief (pipeline) | 355.1 s | 31.1 s | 25.9 s |
+| Model cost per brief | $0.0107 | $0.0293, a ceiling | $0.0370 (n = 3) |
+| Figures bound to stock data per brief | 3.00 | 2.83 | 4.62 |
+| Unsupported, three judgings: mean | 2.89% (2.13–3.63%) | 2.25% | 2.16% |
+| Traffic proof | EXACT | EXACT | n/a |
+
+Against hosted, the CPU's judge-flagged rate shows no difference detected
+(hosted − CPU −0.74 points, CI −2.67 to +1.03); against the A10, +0.16
+points (CI −1.96 to +2.26). Hosted states more figures (+1.62 bound per
+brief, CI +1.02 to +2.23); the CPU and the A10 do not differ (+0.17, CI
+−0.28 to +0.62). Source:
+[eval-methodology.md, the three-way comparison](eval-methodology.md#gpu-slm-extended-run-p9jr2-2026-10-05-the-three-way-comparison-with-hosted-9jzmj-and-cpu-8vpq6).
+
+**The comparison on the current image `f3043751`** (stock-data fix plus
+currency-labelling prompt rule), same 40 tickers, judge v2 judged three
+times, October 2026. Deterministic measures first.
 
 | | Hosted Claude | Qwen3.6-35B-A3B, A10 |
 |---|---|---|
@@ -77,81 +107,58 @@ about 29% (CI 8.3–52.9%), recall about 11% (CI 3.1–27.9%), majority vote,
 180 blind labels. Source:
 [eval-methodology.md, the current runs](eval-methodology.md#numbers-of-record-on-the-stock-data-fix-image-three-judgings-per-run-and-the-judge-v2-calibration-on-those-runs-2026-10-0607).
 
-**The CPU arm, previous image `1f51dad`** (the former numbers of record,
-one judging each; both CPU runs on `f3043751` failed their traffic proofs):
-
-| | Hosted `9jzmj` | CPU `8vpq6` | A10 `p9jr2` |
-|---|---|---|---|
-| Unsupported, three judgings: mean | 2.16% | 2.89% | 2.25% |
-| Figures bound to stock data per brief | 4.62 | 3.00 | 2.83 |
-| Time per brief (pipeline) | 25.9 s | 355.1 s | 31.1 s |
-| Model cost per brief | $0.0370 (n = 3) | $0.0107 | $0.0293, a ceiling |
-
-On that image the CPU and A10 runs of the same model do not differ in what
-they write (figures bound +0.17 per brief, CI −0.28 to +0.62; grounding
-+0.16 points, CI −1.96 to +2.26): moving the model from CPU to GPU changed
-its speed, not detectably what it writes. Source:
-[eval-methodology.md, the three-way comparison](eval-methodology.md#gpu-slm-extended-run-p9jr2-2026-10-05-the-three-way-comparison-with-hosted-9jzmj-and-cpu-8vpq6).
-
 **In plain terms, for cost and capacity**
 
 - **Cost to produce one brief** (model only; the harness, storage and the
   judge are excluded): about 1.1 cents on CPU (previous image), at most 3.0
   cents on an A10, 3.6 cents through the hosted API.
 - **Throughput measured on one machine** (two briefs at a time, the run's
-  setting): one A10 produced 66 briefs an hour while busy only 36% of the
-  time; one 4-OCPU slice of an E5 node produced 17 an hour at full load
-  (previous image).
-  Higher A10 throughput has not been measured and is not projected.
+  setting): one 4-OCPU slice of an E5 node produced 17 briefs an hour at
+  full load (previous image); one A10 produced 66 an hour while busy only
+  36% of the time. Higher A10 throughput has not been measured and is not
+  projected.
 - **Prices:** OCI list prices read from Oracle's price API on 2026-10-05:
-  A10 $2.00 per hour for the whole VM, E5 $0.03 per OCPU-hour and $0.002
-  per GB-hour ([cost.md](cost.md)).
+  E5 $0.03 per OCPU-hour and $0.002 per GB-hour, A10 $2.00 per hour for
+  the whole VM ([cost.md](cost.md)).
 
 ## Running order
 
-About 20 minutes plus questions. The GPU smoke takes about 10 minutes (the
-last one, `k6zxd`, took 9 min 40 s), so it starts first and the middle of
-the demo fills the wait. If time is short, cut step 5 and shorten step 3.
+About 20 minutes plus questions. The GPU smoke takes about 10 minutes
+(`m7qvv` took 9 min 56 s), so it starts first and the middle of the demo
+fills the wait. If time is short, cut step 6 and shorten step 5.
 
 | Step | Minutes | What | Shows |
 |---|---|---|---|
-| 1 | 3 | Conclusions (above) | the answer first |
-| 2 | 1 | Launch the GPU smoke live | the one command; the traffic-proof snapshot taken before it |
-| 3 | 3 | The topology and the Argo workflow while it runs | [architecture.md, "Deployed topology"](architecture.md#deployed-topology-october-2026); the Argo UI over a port-forward: fan-out per ticker, aggregate, gate |
-| 4 | 4 | The numbers | the deterministic measures first, then the judge with its noise and calibration; why "not detected" is not "equivalent" |
-| 5 | 2 | The Toyota case | the judge's reasoning, then the numeric-check flag |
-| 6 | 2 | Cost and capacity | the plain-terms block above |
-| 7 | 3 | Back to the live run | the aggregate table, the gate line, TRAFFIC PROOF, the attempts block |
+| 1 | 3 | Conclusions (above) | the answer first: the harness and the model on CPU on OKE |
+| 2 | 1 | Launch the GPU smoke live | the one command, and why the live run is the A10's (below) |
+| 3 | 3 | The harness on OKE CPU while it runs | [architecture.md, "Deployed topology"](architecture.md#deployed-topology-october-2026): what runs where; the Argo UI over a port-forward (fan-out per ticker, aggregate, gate); the CPU endpoint and its 8 vCPU sizing |
+| 4 | 3 | CPU cost and time, with the A10 and hosted beside it | the `1f51dad` table and the plain-terms block |
+| 5 | 3 | The comparison on the current image | the deterministic measures first, then the judge with its noise and calibration; why "not detected" is not "equivalent" |
+| 6 | 2 | The Toyota case | the judge's reasoning, then the numeric-check flag |
+| 7 | 3 | Back to the live run | the aggregate table, the gate line, the attempts block, and the per-request traffic proof |
 | 8 | 2 | Limitations and next steps | the README's "Next steps"; the known limitations |
 
 ## The live run
 
 One GPU smoke: ten tickers, the self-served model on node 2's A10, judged
-by Claude, gated, with the traffic proof. Every command is in
+by Claude, gated, with the traffic proof. A CPU smoke takes about 6
+minutes per brief, 38 minutes for the ten (`xnwjm`), and does not fit the
+call; the A10 runs the same model file and engine in about 10. Every
+command is in
 [deploy-runbook.md, "Demo live run"](deploy-runbook.md#demo-live-run-november-2026-gpu-smoke-from-the-oke-harness).
 
-**Preflight, the day before and 30 minutes before** (stop at the first
-failure and take its branch):
-
-1. Anthropic balance covers the run (the smoke's estimate: about $0.95).
-2. OKE: four nodes Ready; the app, database, cache and CPU-endpoint pods
-   Running; Argo's controller and server Running.
-3. The nightly CronWorkflow is still suspended.
-4. The deployed image is the pinned `f3043751`.
-5. Node 2: the endpoint's `/health` is ok, it answers 401 without the key,
-   and llama-server holds about 20.5 GB of the A10.
-6. From OKE: 401 without the key, 200 with it and the plain model alias;
-   the harness reads the endpoint's facts.
-7. One Yahoo price request from the cluster succeeds.
-8. Screen sharing: no command to be shown prints a key (the exposure
-   script, `server_facts` and the run's output do not; secret dumps,
-   `env` in a pod, `.env` are never run on the shared screen); the
-   terminals to be shared are pre-opened with their scrollback cleared.
-9. Port-forwards and tunnels up: the Argo UI and Streamlit open on the
-   laptop.
-
-The day before, the preflight ends with a full rehearsal run, which also
-measures the day's timings.
+**Preflight, the day before and 30 minutes before:**
+[demo-preflight.md](demo-preflight.md), each check's command and expected
+output in order, stopping at the first failure. In short: the Anthropic
+balance covers the runs (`make anthropic-estimate`: $0.90 a smoke on this
+image; the day before, rehearsal + demo + one spare, $2.71, budget $4.06
+with margin); OKE nodes and pods Ready; the nightly CronWorkflow
+suspended and nothing running; the image is the pinned `f3043751`; the
+app's `SLM_FULL` is off; node 2's endpoint healthy and keyed, holding
+about 20.5 GB of the A10, vLLM at 0; 401 and 200 from OKE; one Yahoo
+price from the cluster; no key on a shared screen; tunnels up. The day
+before, the preflight ends with a full rehearsal run, its per-request
+proof, and then the freeze tag.
 
 **Launch** (operator), at step 2 of the running order:
 
@@ -159,15 +166,20 @@ measures the day's timings.
 make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-slm-gpu-smoke.yaml
 ```
 
-About 10 minutes. Nothing else may call the GPU endpoint until it
-finishes: other traffic fails the proof, by design.
+About 10 minutes. Nothing else may call the GPU endpoint until the proof's
+log is captured: other traffic fails the proof, by design.
 
 **On screen while it runs:** the operator pane with the run's progress;
 the Argo UI graph (ten eval pods, two at a time, then the aggregate); a
 node 2 pane with `watch -n 2 nvidia-smi`, the A10 moving with the calls.
 At step 7: the aggregate table, the gate line, `stock block empty: 0/10`,
 the call table with no truncation, loop, parse, format or error flags,
-the attempts block (0 retries) and `TRAFFIC PROOF: EXACT`.
+the attempts block (0 retries), then the per-request proof
+(`scripts/traffic_proof_tasks.py`, preflight check 13):
+`TRAFFIC PROOF (per-request): TASK-EXACT`. The make target's last line is
+the `/metrics` counter proof, which is reported and does not decide: the
+counter has drifted by a few tokens on both endpoints with every request
+matched, so it may print FAIL on a clean run.
 
 **If something fails** — each case ends at the fallback below; say what
 failed, and debug no further than the first check:
@@ -178,9 +190,10 @@ failed, and debug no further than the first check:
 | The endpoint answers 401 to the harness | the key in OKE's Secret vs node 2's | fallback (re-keying is not a live step) |
 | No HTTP answer (000) from OKE | `/health` on node 2 itself | answers there: the network rule — fallback; does not: pod restarting — wait a minute or two, else fallback |
 | Yahoo 429 (`stock block empty` above 0) | the preflight's price request | show the count, quote nothing from the run, no retry — fallback for the numbers |
-| The smoke fails its gate | which ticker holds the unsupported claims | smoke variance from judge listing (`7c66k` failed on MSFT alone); arms are compared on 40-ticker runs — go to `nstp9`; no re-run for a pass |
+| The smoke fails its gate | which ticker holds the unsupported claims | smoke variance from judge listing (`m7qvv` failed on NVDA and MSFT watch-items); arms are compared on 40-ticker runs — go to `nstp9`; no re-run for a pass |
 | The Anthropic balance runs out | the attempts block | fallback |
-| TRAFFIC PROOF: FAIL or LOWER-BOUND | what the proof reports | the proof doing its job; the run is not citable — fallback |
+| Per-request proof FAIL | the unmatched pairs it lists | the proof doing its job; the run is not citable — fallback |
+| Counter proof FAIL, per-request TASK-EXACT | both lines | the counter's known drift; the per-request verdict decides — the run stands |
 
 **vLLM stays at 0 on node 2 until after the demo**, with llama.cpp
 running there: vLLM answers on the same port without a key, ufw does not
@@ -199,14 +212,15 @@ answers from OKE; only then restore vLLM if wanted.
 
 Show the recorded GPU smoke and extended run instead, and say what failed.
 
+- `eval/runs/gpu-smoke-f304375.log`: the current image's GPU smoke
+  `m7qvv` (10 tickers, 4/60 unsupported, gate failed on qualitative
+  watch-items, numeric 0/30, TRAFFIC PROOF: EXACT).
 - `eval/runs/gpu-smoke.log`: the `k6zxd` aggregate, gate and traffic proof
-  (10 tickers, 3/63 unsupported, TRAFFIC PROOF: EXACT).
+  (previous image `1f51dad`, 10 tickers, 3/63 unsupported, TRAFFIC PROOF:
+  EXACT).
 - `eval/runs/gpu-extended-f304375.log`: the `nstp9` run of record for the
   A10 arm (40 tickers, image `f3043751`, 10/267 on its first judging,
   TRAFFIC PROOF: EXACT).
-- `eval/runs/gpu-smoke.log` is from the previous image `1f51dad`; the
-  current image's GPU smoke `m7qvv` failed its gate on qualitative
-  watch-items (4/60, numeric 0/30, proof EXACT), smoke variance.
 - A smoke is a platform check, not a comparison: its rate varies run to
   run with how many qualitative claims the judge lists (`k6zxd`'s three
   unsupported claims were all AAPL watch-items). Compare arms only on the
@@ -254,14 +268,21 @@ brief). To answer the question properly would take a larger labelled
 sample per arm and a pre-stated test.
 
 **How do you know the self-served model actually produced the run?** The
-traffic proof. Before and after each run the harness reads the llama.cpp
-server's own token counters; the tokens the harness logged must equal the
-server's difference exactly, and any other traffic on the endpoint fails
-the proof. The A10 run of record was EXACT: 270 calls, 352,522 prompt and
-98,665 completion tokens, identical on both sides. Both CPU runs on the
-current image failed it, by 1 and 4 tokens: every one of their 270
-requests matched the server's own log, but the server's counter drifted,
-and the rule does not bend for an explained miss.
+traffic proof. Since 2026-10-07 it matches the llama.cpp server's own log,
+request by request, against the calls the harness logged: every task the
+server ran from the workflow's start to the capture after the run must
+match a harness call on its prompt and completion tokens, and every call a
+task, or the run is not citable. Any other traffic on the endpoint leaves
+an unmatched task. Before that date the proof compared the harness's token
+totals with the server's `/metrics` counters. That counter drifts by a few
+tokens with nothing else on the endpoint (measured in a controlled replay:
+1, 2 and 2 tokens short of exact per-request sums), and it failed both CPU
+runs on the current image, by 1 and 4 tokens, although every one of their
+270 requests matched the server's log. They were judged under the rule in
+force when they ran, so they stay failed; they are not re-scored. The A10
+run of record `nstp9` was EXACT under the counter (270 calls, 352,522
+prompt and 98,665 completion tokens), and the A10 run at parallelism 4
+(`xgtxx`) was the first judged by the per-request match: 270 of 270.
 
 **Why llama.cpp and not vLLM for this model?** From the records, computed
 and not booted ([dated finding](eval-methodology.md#dated-finding-computed-not-booted-no-4-bit-qwen36-35b-a3b-fits-one-a10-under-vllm-2026-10-02)):
@@ -298,11 +319,11 @@ only when a brief's figure departs from the mislabelled field: the CPU
 arm's faithful copy, "$51.96 trillion", passed both layers
 ([debugging story](debugging-story.md#the-limits-of-each-layer)).
 
-**What does a brief cost, and what is excluded?** Model cost only: at most
-$0.0303 on an A10 (the whole VM at $2.00 an hour, divided over the briefs
-the run produced) and $0.0357 through the hosted API (n = 3), both on
-image `f3043751`; $0.0107 on a 4-OCPU slice of an E5 node, on the previous
-image. The cost of record stays $0.0366 from September. The harness pods, storage and the judge are excluded on every
+**What does a brief cost, and what is excluded?** Model cost only: $0.0107
+on a 4-OCPU slice of an E5 node (the CPU endpoint's request, on the
+previous image `1f51dad`); at most $0.0303 on an A10 (the whole VM at
+$2.00 an hour, divided over the briefs the run produced) and $0.0357
+through the hosted API (n = 3), both on image `f3043751`. The cost of record stays $0.0366 from September. The harness pods, storage and the judge are excluded on every
 arm.
 
 **Why was the A10 only 36–38% busy, and how fast could it go?** The run kept
@@ -310,9 +331,11 @@ two briefs in flight at a time, and each eval pod also spends time outside
 the model — fetching data, retrieving filings, waiting on the judge; that
 is the likely reason, not a measured breakdown. At that setting
 the A10 averaged 36% utilization and produced 66 briefs an hour (38% and
-68 on the previous image). It was
-not run at higher concurrency, so no faster figure is claimed; that is a
-next step.
+68 on the previous image). At four briefs in flight (`xgtxx`, 2026-10-08,
+per-request proof TASK-EXACT) it produced 100.8 an hour at 45% mean
+utilization, $0.0198 a brief, still a ceiling, and what it wrote did not
+change measurably (figures bound to stock data 3.10 vs 3.05 per brief).
+Nothing faster than that has been run, so nothing faster is claimed.
 
 **Is this on OKE?** The harness, the app and the CPU model endpoint run on
 a provided OKE cluster. The A10 endpoint runs on a GPU VM with single-node
@@ -351,9 +374,9 @@ a deadline and an honest status. Fourth, the Anthropic client runs with no
 request timeout. Each fix gets a test that reproduces the failure first.
 Ranked by what a user would notice, the worker crash comes first.
 
-**What would you do next?** Record per-request token counts so a CPU run
-can pass the traffic proof, and rerun the CPU arm on the current image;
-measure the A10 at higher concurrency; apply the OKE Terraform when a compartment exists. The
+**What would you do next?** Run the CPU arm once on the current image
+under the per-request proof; fix the recorded pipeline limitations, with
+new baselines on every arm; apply the OKE Terraform when a compartment exists. The
 full list is in the README's "Next steps".
 
 ## Where the evidence is
