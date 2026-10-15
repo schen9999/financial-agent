@@ -353,6 +353,16 @@ slm-eval-run: ## (operator) Snapshot the endpoint, run EVAL_RUN_FILE, capture lo
 	fi; \
 	echo "eval-run exit $$rc, traffic proof exit $$prc"; test $$rc -eq 0 -a $$prc -eq 0
 
+ALT ?= 0
+
+live-cpu-ask: ## (operator) One /ask question by the ReAct agent on the CPU endpoint only (ALT=0|1|2); a demonstration, not a citable run
+	@# The pinned image predates the script, so it goes in as python -c's
+	@# argument (never on stdin: the oci credential plugin consumes it). The
+	@# GPU URL and key are blanked for this process; LangSmith tracing is off.
+	kubectl -n $(NAMESPACE) exec deploy/api -c api -- env SLM_FULL=true SLM_ENDPOINT=cpu \
+		SLM_GPU_URL= SLM_GPU_API_KEY= LANGCHAIN_TRACING_V2=false LANGSMITH_TRACING=false \
+		python -c "$$(cat scripts/live_cpu_ask.py)" --alt $(ALT)
+
 run-time-check: ## (operator) Gate a long run on a finished smoke's measured per-ticker time: WF=<smoke workflow> NEXT=<run file>
 	@test -n "$(WF)" -a -n "$(NEXT)" || { echo "usage: make run-time-check WF=<finished smoke workflow> NEXT=argo/<run file>"; exit 1; }
 	kubectl -n $(NAMESPACE) get workflow $(WF) -o json | python3 scripts/run_time_projection.py --next $(NEXT)
