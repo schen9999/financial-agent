@@ -39,6 +39,7 @@ Self-served models' runs count only when a traffic proof shows the model, and no
 - **Traffic proof:** make `make slm-eval-run` capture the endpoint's log window and decide on the per-request match (`scripts/traffic_proof_tasks.py`). Today the target prints and exits on the `/metrics` counter verdict, which since 2026-10-07 is reported only, and the deciding per-request proof is a separate manual step ([checklist, check 13](docs/demo-preflight.md)). The ledger already records each response's own token counts (`agent/tools/slm.py`).
 - **App plane** ([docs/reliability.md](docs/reliability.md)): late acknowledgement for Celery tasks with an idempotent `research_task`; persist async briefs; a deadline for lost jobs; a timeout on the Anthropic client.
 - **Infrastructure:** apply the OKE Terraform when a compartment exists; switch the numeric check from warn to block.
+- **Harness on OCI CPU** ([mapped against Sanjay Basu's post](docs/demo.md#how-this-maps-to-harness-engineering-on-oci-cpu)): KEDA scaling of the Celery worker on Redis queue depth; API keys from OCI Vault instead of hand-made Kubernetes Secrets; separate node pools (E6 control plane, A2 reasoners, which need multi-arch images); pod egress restricted to the model endpoints and data sources, since no NetworkPolicy exists today. Blast-radius metering, an approval gate and Queue or Streaming triggers are directions for just-in-time generated graphs; this system stays hand-wired.
 
 ---
 
