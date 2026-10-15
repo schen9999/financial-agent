@@ -159,7 +159,7 @@ The MCP server (the agent's tools over the Model Context Protocol, for Claude De
 
 | What | Command | Notes |
 |---|---|---|
-| Unit and integration tests | `python -m pytest tests/` | 610 collected: 609 passed + 1 skipped (as of 2026-10-08). Runs in CI on every pull request and push to `main`. A fresh clone needs `REDIS_URL` and `ANTHROPIC_API_KEY` set for the suite to collect; dummy values are fine. Three tests in `tests/test_tools.py` call yfinance live. |
+| Unit and integration tests | `python -m pytest tests/` | 635 collected: 634 passed + 1 skipped (as of 2026-10-15). Runs in CI on every pull request and push to `main`. A fresh clone needs `REDIS_URL` and `ANTHROPIC_API_KEY` set for the suite to collect; dummy values are fine. Three tests in `tests/test_tools.py` call yfinance live. |
 | Credit-gated judge test | `CRITIC_INJECTION=1 python -m pytest tests/test_critic_injection.py -q -s` | Calls the paid Sonnet judge, so it is skipped by default and runs only on manual dispatch (`critic-injection.yml`). |
 | Kubernetes smoke test | `make smoke-test` | On kind: a sync brief, a Celery async task, a cache hit and miss, and the MCP server. |
 | Manifest equivalence | `python3 scripts/render_diff.py LEFT RIGHT` | Semantic diff of two rendered manifest sets ([docs/verification.md](docs/verification.md)). |
