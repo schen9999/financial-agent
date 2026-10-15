@@ -209,19 +209,22 @@ about 29% (CI 8.3–52.9%), recall about 11% (CI 3.1–27.9%), majority vote,
 
 About 20 minutes plus questions. The GPU smoke takes about 10 minutes
 (`m7qvv` took 9 min 56 s), so it starts first and the middle of the demo
-fills the wait. If time is short, cut step 6 and shorten step 5.
+fills the wait. The live CPU ask starts in a second pane at the beginning
+of step 3 and is read out at step 4. If time is short, cut step 7 and
+shorten step 6.
 
 | Step | Minutes | What | Shows |
 |---|---|---|---|
 | 0 | 1 | The post, and what we measured against it | [the mapping above](#how-this-maps-to-harness-engineering-on-oci-cpu): the post's terms to ours, and the A10's utilization (about 36%) and the CPU's batch-only speed as our measurements |
 | 1 | 2 | Conclusions (above) | the answer first: the harness and the model on CPU on OKE |
 | 2 | 1 | Launch the GPU smoke live | the one command, and why the live run is the A10's (below) |
-| 3 | 3 | The harness on OKE CPU while it runs | [architecture.md, "Deployed topology"](architecture.md#deployed-topology-october-2026): what runs where; the Argo UI over a port-forward (fan-out per ticker, aggregate, gate); the CPU endpoint and its 8 vCPU sizing |
-| 4 | 3 | CPU cost and time, with the A10 and hosted beside it | the `1f51dad` table and the plain-terms block |
-| 5 | 3 | The comparison on the current image | the deterministic measures first, then the judge with its noise and calibration; why "not detected" is not "equivalent" |
-| 6 | 2 | The Toyota case | the judge's reasoning, then the numeric-check flag |
-| 7 | 3 | Back to the live run | the aggregate table, the gate line, the attempts block, and the per-request traffic proof |
-| 8 | 2 | Limitations and next steps | the README's "Next steps"; the known limitations |
+| 3 | 2 | The harness on OKE CPU while it runs; start the live CPU ask | [architecture.md, "Deployed topology"](architecture.md#deployed-topology-october-2026): what runs where; the Argo UI over a port-forward (fan-out per ticker, aggregate, gate); the CPU endpoint and its 8 vCPU sizing; `make live-cpu-ask` in the second pane |
+| 4 | 2 | The live CPU ask | [below](#live-cpu-one-ask-question-on-the-cpu-endpoint): the agent choosing two tools, the answer, every model call on `slm-cpu`, the wall time |
+| 5 | 2 | CPU cost and time, with the A10 and hosted beside it | the `1f51dad` table and the plain-terms block |
+| 6 | 3 | The comparison on the current image | the deterministic measures first, then the judge with its noise and calibration; why "not detected" is not "equivalent" |
+| 7 | 2 | The Toyota case | the judge's reasoning, then the numeric-check flag |
+| 8 | 3 | Back to the live run | the aggregate table, the gate line, the attempts block, and the per-request traffic proof |
+| 9 | 2 | Limitations and next steps | the README's "Next steps"; the known limitations |
 
 ## The live run
 
@@ -242,8 +245,8 @@ suspended and nothing running; the image is the pinned `f3043751`; the
 app's `SLM_FULL` is off; node 2's endpoint healthy and keyed, holding
 about 20.5 GB of the A10, vLLM at 0; 401 and 200 from OKE; one Yahoo
 price from the cluster; no key on a shared screen; tunnels up. The day
-before, the preflight ends with a full rehearsal run, its per-request
-proof, and then the freeze tag.
+before, the preflight ends with a full rehearsal run, the live CPU ask
+beside it, the run's per-request proof, and then the freeze tag.
 
 **Launch** (operator), at step 2 of the running order:
 
@@ -256,11 +259,12 @@ log is captured: other traffic fails the proof, by design.
 
 **On screen while it runs:** the operator pane with the run's progress;
 the Argo UI graph (ten eval pods, two at a time, then the aggregate); a
-node 2 pane with `watch -n 2 nvidia-smi`, the A10 moving with the calls.
-At step 7: the aggregate table, the gate line, `stock block empty: 0/10`,
+node 2 pane with `watch -n 2 nvidia-smi`, the A10 moving with the calls;
+from step 3, a second operator pane with the live CPU ask (below).
+At step 8: the aggregate table, the gate line, `stock block empty: 0/10`,
 the call table with no truncation, loop, parse, format or error flags,
 the attempts block (0 retries), then the per-request proof
-(`scripts/traffic_proof_tasks.py`, preflight check 13):
+(`scripts/traffic_proof_tasks.py`, preflight check 14):
 `TRAFFIC PROOF (per-request): TASK-EXACT`. The make target's last line is
 the `/metrics` counter proof, which is reported and does not decide: the
 counter has drifted by a few tokens on both endpoints with every request
@@ -279,6 +283,87 @@ failed, and debug no further than the first check:
 | The Anthropic balance runs out | the attempts block | fallback |
 | Per-request proof FAIL | the unmatched pairs it lists | the proof doing its job; the run is not citable — fallback |
 | Counter proof FAIL, per-request TASK-EXACT | both lines | the counter's known drift; the per-request verdict decides — the run stands |
+| Live CPU ask prints `refusing:` | the line names the setting | nothing was sent; skip the step, say so, show the recorded CPU tool-use pane instead (below) |
+| Live CPU ask: `FATAL: slm-cpu … unreachable` | preflight check 4 (`llamacpp` Running) | skip the step; the recorded pane |
+| Live CPU ask: `NOT OK — hosted Anthropic call attempted` | the tool it was in | the guard stopping a hosted call, by design; say so, no re-run |
+| Live CPU ask still running at step 4 | the pane's last tool line | go on to step 5, read it out at step 8 |
+| Live CPU ask: one tool only, or a weak answer | the tool lines | show it as it is: a single unjudged question, not a measurement |
+
+### Live CPU: one /ask question on the CPU endpoint
+
+The GPU smoke is the live eval; this is the live CPU moment. One question,
+answered by the ReAct `/ask` agent (the harness in the blog post's sense:
+one agent loop with tools) with every model call on the CPU llama.cpp
+endpoint in the OKE cluster. It runs from the api pod, the same way
+preflight check 9 runs `server_facts`:
+
+```bash
+make live-cpu-ask          # operator, second pane, at step 3
+```
+
+[scripts/live_cpu_ask.py](../scripts/live_cpu_ask.py) prints the endpoint
+and the alias the server reports, the question, each tool call and its
+result as the agent makes them, the answer, each model call's endpoint,
+alias, tokens and seconds, and a last line `LIVE CPU ASK: OK — wall <n> s,
+…`. The pinned image predates the script, so `make` passes the file in as
+`python -c`'s argument (not on stdin, which the operator's kubectl
+credential plugin consumes).
+
+- **The question** (default): Visa — "When was Visa's most recent 10-K
+  filed, and what does the filing say about competition?" It needs two
+  tools, `get_sec_filings` (EDGAR) and `query_sec_filing` (retrieval over
+  the filing, whose answer is itself written by the CPU model). It calls
+  no Yahoo: the smoke fetches Yahoo for ten tickers from the same egress
+  IP at the same time, and that IP has drawn 429s. Alternates, `ALT=1`
+  and `ALT=2`: Apple's P/E and its 10-K's main risk factors
+  (`get_stock_data` + `query_sec_filing`; uses Yahoo, so only outside the
+  smoke), and Microsoft's recent news and its latest 10-Q date
+  (`get_company_news` + `get_sec_filings`; NewsAPI returned nothing for 32
+  of 40 tickers in `4hsn2`, so the news half may come back empty).
+- **What routes to the CPU, from the code.** `make live-cpu-ask` sets
+  `SLM_FULL=true SLM_ENDPOINT=cpu` for that one process only. Under it
+  the ReAct model is `SLMChatModel` (`agent/react_agent.py`), and the
+  retrieval answer inside `query_sec_filing` goes to the same endpoint per
+  query (`agent/tools/rag.py`). Each request reads `SLM_ENDPOINT` and uses
+  `SLM_CPU_URL`, the in-cluster Service (`agent/tools/slm.py`). The api
+  server itself keeps `SLM_FULL=false` (preflight check 7).
+- **Hosted calls under that setting: none expected, and blocked.** The
+  only Anthropic objects on this path are constructed and never called:
+  the hosted ReAct model is not built, and llama_index's global
+  `Settings.llm` (Haiku) is bypassed by the per-query model. The script
+  makes every Anthropic SDK request raise for its whole run. If one were
+  attempted, it would print `NOT OK — hosted Anthropic call attempted` and
+  exit 1. It spends no Anthropic credit, so the budget lines are
+  unchanged. Not model calls, but outside the cluster: EDGAR and Pinecone
+  for the tools, and the Hugging Face hub, which the local embedding
+  model's loader fetches from or checks. LangSmith tracing is off for the
+  process.
+- **Why it cannot touch the GPU smoke's proof.** That proof matches every
+  task in node 2's llama-server log, from the smoke's creation to the
+  capture, against the smoke's own harness calls. The ask's process has
+  no address or key for node 2: `SLM_GPU_URL` and `SLM_GPU_API_KEY` are
+  blanked in its environment, and the script refuses to start unless they
+  are empty and the endpoint is `cpu`. Its requests go to a different
+  server with its own log, inside the cluster. It also exits NOT OK if
+  any model call is recorded against an endpoint other than `slm-cpu`. And
+  if something did reach node 2, the proof would show an unmatched task
+  and fail. It would not pass with the ask's traffic mixed in.
+- **What it is:** a demonstration, not a citable run. No judge, no traffic
+  proof, one question. Its wall time is one observation. The CPU's
+  citable numbers stay `8vpq6` on `1f51dad`. The 2026-10-05 tool-use
+  check took 33 s (`get_sec_filings`) and 67 s (`query_sec_filing`) as
+  separate one-tool questions on this endpoint, and the rehearsal (check
+  13) records this question's time.
+- **Not done: a 1-ticker CPU smoke beside the GPU smoke.** Considered and
+  not built. `make slm-eval-run` finds its workflow afterwards as the
+  newest one in the namespace, so with two running it would capture the
+  other run's logs and workflow into the GPU proof's inputs. It would also
+  add a second run's Yahoo fetches from the same egress, and judge
+  spend, to the live window.
+
+**Fallback for this step:** `eval/runs/tool-use-2026-10-05/tool_use_pane.txt`
+and `tool_use_cpu.json` (10 one-tool questions on the CPU route, every one
+completed on `slm-cpu`; dated, not under a traffic proof).
 
 **vLLM stays at 0 on node 2 until after the demo**, with llama.cpp
 running there: vLLM answers on the same port without a key, ufw does not
@@ -312,6 +397,12 @@ Show the recorded GPU smoke and extended run instead, and say what failed.
   40-ticker runs.
 
 ## Prepared answers
+
+**Is the live CPU answer a result?** No, a demonstration. It shows the
+agent loop choosing tools and the model answering on CPU in the cluster,
+in real time. It has no judge and no traffic proof, and it is one
+question. The CPU's measured numbers are the 40-ticker run `8vpq6`
+(previous image `1f51dad`): $0.0107 and 355 s a brief, model cost only.
 
 **Does the self-served model ground as well as hosted?** Start with what
 needs no judge: wrong stock figures 1/565 hosted vs 1/432 on the A10, and
