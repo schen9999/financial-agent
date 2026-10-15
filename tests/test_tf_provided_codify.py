@@ -203,3 +203,36 @@ def test_foreign_tfvars_carried_over_and_conflicts_refused(out):
     with pytest.raises(ValueError, match="compartment_ocid"):
         cz.tfvars(c, 'compartment_ocid = "ocid1.compartment.oc1..other"\n')
     assert "carried over" not in cz.tfvars(c, cz.tfvars(c))
+
+
+def test_controller_managed_comment_says_whether_rules_are_written():
+    empty = 'resource "oci_core_security_list" "sl_e" {\n  display_name = "e"\n}\n'
+    out = "".join(cz.Codifier({}, {"sl_e"}).codify(empty)["network.tf"])
+    assert "It held no rules" in out and "rules above" not in out
+    out = "".join(cz.Codifier({}, {"sl_lb"}).codify(GEN)["network.tf"])
+    assert "The rules above are the" in out
+
+
+def _cloud_init_b64():
+    import base64
+    import gzip
+    text = '"ssh_authorized_keys":\n- "ssh-ed25519 AAAAC3NzaC1 someone@example.com"\n'
+    return base64.b64encode(gzip.compress(text.encode())).decode()
+
+
+def test_user_data_becomes_a_variable():
+    blob = _cloud_init_b64()
+    src = ('resource "oci_containerengine_node_pool" "pool_a" {\n  node_metadata = {\n'
+           f'    user_data = "{blob}"\n  }}\n}}\n')
+    c = cz.Codifier({})
+    files = cz.render(c, c.codify(src))
+    assert "user_data = var.pool_a_user_data" in files["nodepool.tf"]
+    assert c.vars["pool_a_user_data"]["kind"] == "userdata"
+    assert 'pool_a_user_data = "<base64 gzip cloud-init>"' in files["terraform.tfvars.example"]
+    assert all(cz.leaks(t) == [] for t in files.values())
+
+
+def test_leak_scan_decodes_base64_and_gzip():
+    hits = cz.leaks(f'    user_data = "{_cloud_init_b64()}"')
+    assert "1: encoded email" in hits and "1: encoded SSH key" in hits
+    assert cz.leaks('  key = "ssh-rsa AAAAB3Nza x"') == ["1: SSH key"]

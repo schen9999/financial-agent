@@ -10,7 +10,8 @@ What it does, and nothing else:
     (`oci_core_subnet.subnet_workers.id`);
   - every other OCID (compartment, node images, the Oracle services
     network), availability-domain names (tenancy-prefixed), ssh public keys
-    and public CIDRs (an allowlisted address) become variables, valued in
+    public CIDRs (an allowlisted address) and node cloud-init user_data
+    (an SSH key with its owner's email, the cluster CA) become variables, valued in
     terraform.tfvars (written here, gitignored) with placeholders in
     terraform.tfvars.example (committed);
   - drops `defined_tags` and `freeform_tags` (Oracle-Tags record who created
@@ -35,6 +36,8 @@ does not load the resources twice; a re-run reads the .orig.
   bash scripts/tf_provided.sh fmt
   bash scripts/tf_provided.sh plan -input=false -detailed-exitcode   # 0 = zero diff
 """
+import base64
+import gzip
 import ipaddress
 import re
 import sys
@@ -65,14 +68,15 @@ REGION = '''variable "region" {
 CONTROLLER_LIFECYCLE = """
   # Kubernetes owns this list's rules: the OKE cloud controller adds and
   # removes them for the Streamlit LoadBalancer (security-list management
-  # mode, k8s/overlays/oke-provided-public-ui). The rules above are the
-  # import-time snapshot (2026-10-07); the plan does not compare them.
-  lifecycle {
+  # mode, k8s/overlays/oke-provided-public-ui). {snapshot}
+  lifecycle {{
     ignore_changes = [ingress_security_rules, egress_security_rules]
-  }"""
+  }}"""
+SNAPSHOT_RULES = ("The rules above are the\n  # import-time snapshot (2026-10-07); the plan does not compare them.")
+SNAPSHOT_EMPTY = ("It held no rules at\n  # import (2026-10-07), so none are written here; the plan does not compare them.")
 
 DROP_KEYS = {"defined_tags", "freeform_tags"}
-VAR_KEYS = {"ssh_public_key"}
+VAR_KEYS = {"ssh_public_key": "ssh", "user_data": "userdata"}
 OCID = re.compile(r"^ocid1\.[a-z0-9_]+\.[^\s\"]+$")
 AD = re.compile(r"^[A-Za-z0-9]+:[A-Z0-9]+(?:-[A-Z0-9]+)*-AD-(\d+)$")
 STR = re.compile(r'"((?:[^"\\]|\\.)*)"')
@@ -80,6 +84,8 @@ RES = re.compile(r'^resource "([a-z0-9_]+)" "([A-Za-z0-9_-]+)" \{\s*$')
 KEY = re.compile(r"^\s*([A-Za-z0-9_]+)\s*(?:=|\{)")
 NULL = re.compile(r"^\s*[A-Za-z0-9_]+\s*=\s*null\s*$")
 IPV4 = re.compile(r"\b\d{1,3}(?:\.\d{1,3}){3}(?:/\d{1,2})?\b")
+B64 = re.compile(r"^[A-Za-z0-9+/]+={0,2}$")
+SSH_KEY = re.compile(r"ssh-(?:rsa|ed25519|ecdsa)\S* AAAA")
 EMAIL = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
 
 
@@ -165,7 +171,7 @@ class Codifier:
         if a:
             return self._var(v, f"availability_domain_{a.group(1)}", "ad", res, key)
         if key in VAR_KEYS:
-            return self._var(v, f"{res}_{key}", "ssh", res, key)
+            return self._var(v, f"{res}_{key}", VAR_KEYS[key], res, key)
         if is_public(v):
             return self._var(v, f"{res}_{key}", "cidr", res, key)
         return m.group(0)
@@ -213,7 +219,9 @@ class Codifier:
             if name in self.controller_managed:
                 if rtype != "oci_core_security_list":
                     raise ValueError(f"--controller-managed {name}: a {rtype}, not a security list")
-                body.append(CONTROLLER_LIFECYCLE)
+                has_rules = any(re.match(r"\s*(ingress|egress)_security_rules\s*\{", l) for l in body)
+                body.append(CONTROLLER_LIFECYCLE.format(
+                    snapshot=SNAPSHOT_RULES if has_rules else SNAPSHOT_EMPTY))
                 self.seen_managed.add(name)
             block = f'resource "{rtype}" "{name}" {{\n' + "".join(l + "\n" for l in body) + "}\n"
             out.setdefault(target_file(rtype), []).append(block)
@@ -227,6 +235,7 @@ DESCRIPTIONS = {
     "ocid": "OCID: {key} of {res} (not a codified resource, so a variable).",
     "ad": "Availability-domain name (tenancy-prefixed).",
     "ssh": "SSH public key set on {res}.",
+    "userdata": "Node cloud-init (base64 gzip) set on {res}: an SSH key with its owner, the cluster CA.",
     "cidr": "Public address in {key} of {res}.",
 }
 
@@ -240,6 +249,8 @@ def placeholder(meta: dict) -> str:
         return f"<tenancy-prefix>:US-ASHBURN-AD-{AD.match(v).group(1)}"
     if meta["kind"] == "ssh":
         return "ssh-rsa <public key>"
+    if meta["kind"] == "userdata":
+        return "<base64 gzip cloud-init>"
     return "<address>/32"
 
 
@@ -260,10 +271,31 @@ def render(c: Codifier, files: dict[str, list[str]]) -> dict[str, str]:
     return out
 
 
+def _decoded(s: str) -> str | None:
+    """The text inside a base64 (optionally gzipped) string, else None."""
+    if len(s) < 40 or not B64.match(s):
+        return None
+    try:
+        raw = base64.b64decode(s, validate=True)
+        if raw[:2] == bytes([0x1F, 0x8B]):  # gzip magic
+            raw = gzip.decompress(raw)
+        return raw.decode("utf-8")
+    except (ValueError, OSError, UnicodeDecodeError):
+        return None
+
+
 def leaks(text: str) -> list[str]:
-    """Identifying values left in a committable file."""
+    """Identifying values left in a committable file, including inside
+    base64 or gzip-and-base64 strings (node cloud-init carries an SSH key
+    with its owner's email)."""
     hits = []
     for n, line in enumerate(text.splitlines(), 1):
+        if SSH_KEY.search(line):
+            hits.append(f"{n}: SSH key")
+        for s in STR.findall(line):
+            inner = _decoded(s)
+            if inner is not None:
+                hits += [f"{n}: encoded {h.split(': ', 1)[1]}" for h in leaks(inner)]
         if "ocid1." in line and "<" not in line:
             hits.append(f"{n}: OCID")
         if EMAIL.search(line):
