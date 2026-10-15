@@ -1986,8 +1986,63 @@ bash scripts/tf_provided.sh plan -input=false -detailed-exitcode   # exit 0: "No
 
 94 imported, 0 failed; the final plan: "No changes. Your infrastructure
 matches the configuration." What is codified and what is not:
-`terraform/oci-provided/README.md`. The generated configuration and state
-stay on the operator (OCIDs).
+`terraform/oci-provided/README.md`.
+
+**[EXECUTED 2026-10-15 — configuration committed, zero diff; plan rerun
+on the committed files, exit 0]** The
+generated configuration is now reviewable in the repo:
+`scripts/tf_provided_codify.py` turned it into `network.tf`, `cluster.tf`,
+`nodepool.tf` and `variables.tf`, with every OCID a reference or a
+variable (real values in the gitignored `terraform.tfvars` on the
+operator; placeholders in `terraform.tfvars.example`). Tags and nulls are
+dropped. No cloud write, no apply. Operator, repo root, after the steps
+above:
+
+```bash
+cp terraform/oci-provided/generated-config.tf ~/generated-config.tf.bak-$(date +%F)
+[ -f terraform/oci-provided/terraform.tfvars ] && cp terraform/oci-provided/terraform.tfvars ~/terraform.tfvars.bak-$(date +%F)
+python3 scripts/tf_provided_codify.py \
+  --controller-managed sl_default_security_list_for_oke_test_vcn_tbhcuw,sl_pub_lb_tbhcuw
+bash scripts/tf_provided.sh fmt
+bash scripts/tf_provided.sh validate
+bash scripts/tf_provided.sh plan -input=false -detailed-exitcode   # exit 0: "No changes"
+```
+
+The plan before codifying (the 2026-10-07 configuration against the
+cluster on 2026-10-15) had two diffs, both on security lists and both
+made only of rules the OKE cloud controller added for the public
+Streamlit LoadBalancer after the import (live 2026-10-08): on the VCN's
+default security list, ingress from the public LB subnet to the
+health-check port 10256 and the NodePort 30443; on `pub_lb`, egress to the
+workers on the same two ports and the allowlisted ingress on 443. The
+same two diffs appeared after codifying, so codifying added none. By the
+owner's decision those rules are not copied into HCL: Kubernetes owns
+them and changes them with the Service. The two lists carry
+`lifecycle { ignore_changes = [ingress_security_rules,
+egress_security_rules] }`, with a comment saying so; every other
+attribute and resource is still compared, and any other diff is fixed in
+HCL, never by changing the cluster. With that, the plan exits 0.
+
+Provenance, from the tags read 2026-10-15: the cluster's freeform tags
+(`role=cluster`, `state_id=tbhcuw`) and the node pools' (`role=worker`,
+`pool`, `state_id`, `cluster_autoscaler`) are the ones
+`oracle-terraform-modules/terraform-oci-oke` sets, so the cluster was most
+likely built with that module; the tags match, they do not prove it.
+
+Not covered: the bastion and operator compute instances, the public
+Streamlit LoadBalancer and its controller-managed rules, IAM policies and
+dynamic groups, and anything outside the VCN's compartment. State stays
+local and gitignored on the operator.
+
+Recorded as provisioned, not changed, and deferred until after the demo
+because the demo depends on the current configuration: the API endpoint
+has a public IP (`is_public_ip_enabled = true`), with kube-apiserver TCP
+6443 open to 0.0.0.0/0 (the private endpoint, 10.140.0.3, is the node
+pools' `apiserver_host` in `nodepool.tf`; `oci ce cluster get --query
+'data.endpoints'` on 2026-10-15 lists both a private and a public
+endpoint); SSH to the bastion is open to 0.0.0.0/0; and the `pub_lb`
+NSG admits TCP 443 and 80 from 0.0.0.0/0. Details:
+`terraform/oci-provided/README.md`, "Known limitations".
 
 ## OKE (OCI) — Phase 2
 

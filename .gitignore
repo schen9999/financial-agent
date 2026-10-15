@@ -38,6 +38,7 @@ infra/terraform.tfvars
 # terraform/oci-provided: OCIDs and the imported state stay local
 terraform/oci-provided/terraform.tfvars
 terraform/oci-provided/generated*.tf
+terraform/oci-provided/generated-config.tf.orig
 terraform/oci-provided/*.tfplan
 # keep .terraform.lock.hcl and *.tf committed
 .venv-wsl/
