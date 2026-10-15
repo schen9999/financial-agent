@@ -32,7 +32,7 @@ Self-served models' runs count only when a traffic proof shows the model, and no
 ## Next steps
 
 - **After the demo, pipeline fixes** (each changes the pipeline, so each means new baselines on every arm): the recorded limitations — watch-items the judge cannot ground, refused filing-highlights answers, unreconciled yfinance-vs-filing figures, truncated derived figures, the synthesis prompt's example leaking into watch-items, and the current price stated as the 52-week low; shrink the eval pod's output parameter; count "52-week" phrases as labels, not figures. ([Known limitations](docs/eval-methodology.md))
-- **CPU endpoint startup probe:** a cold load of the 20.4 GB model from the block volume takes about 15 minutes, longer than the startup probe allows, so a cold restart can be killed once before it comes up. Lengthen the probe (post-demo manifest change; nothing changed now).
+- **CPU endpoint startup probe:** a cold load of the 20.4 GB model from the block volume takes about 15 minutes, longer than the startup probe allows, so a cold restart can be killed once before it comes up. The probe is lengthened to 30 minutes in the oke-cpu overlay (2026-10-15), not yet applied on OKE ([runbook](docs/deploy-runbook.md#cpu-endpoint-startup-probe-2026-10-15)).
 - **Traffic proof:** record each response's own token counts in the LLM ledger, so the per-request proof needs no server log.
 - **App plane** ([docs/reliability.md](docs/reliability.md)): late acknowledgement for Celery tasks with an idempotent `research_task`; persist async briefs; a deadline for lost jobs; a timeout on the Anthropic client.
 - **Infrastructure:** apply the OKE Terraform when a compartment exists; switch the numeric check from warn to block.

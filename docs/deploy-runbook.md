@@ -1924,6 +1924,37 @@ during its cold reload (exit 137 at 06:17Z) and came up on the second
 start; `/health` ok. Results: [gpu-inference.md](gpu-inference.md), "CPU
 core scaling".
 
+## CPU endpoint startup probe (2026-10-15)
+
+**[NOT YET EXECUTED]** The cold load of the 20.4 GB GGUF from the block
+volume took about 15 minutes on 2026-10-08, the whole of the base's startup
+window (90 × 10 s), and the endpoint was killed once mid-load. The oke-cpu
+overlay now sets the startup probe's `failureThreshold` to 180 (30 minutes,
+twice the observed load); readiness and liveness are unchanged, and
+liveness only starts once the startup probe passes. Only the oke-cpu render
+changes (`scripts/render_diff.py`: kind app and Argo renders and the
+k3s-gpu render identical). Apply before the CPU rerun, with no workflow
+running (operator):
+
+```bash
+ssh oke-operator
+cd ~/financial-agent && git fetch && git checkout main && git pull --ff-only
+kubectl -n financial-agent get workflows | grep -w Running          # expect no output
+make oke-llamacpp                                                   # apply -k oke-cpu, rollout (up to 60 min), server_facts
+```
+
+The apply restarts the pod (Recreate), so the rollout is itself a load from
+the volume; if the node's page cache still holds the GGUF it will be warm and
+quicker, which does not exercise the 30 minutes. Evidence to paste:
+
+```bash
+kubectl -n financial-agent get deploy llamacpp \
+  -o jsonpath='{.spec.template.spec.containers[0].startupProbe.failureThreshold}{"\n"}'   # 180
+kubectl -n financial-agent get pods -l app.kubernetes.io/name=llamacpp -o wide              # 1/1 Running, RESTARTS 0
+kubectl -n financial-agent get pod -l app.kubernetes.io/name=llamacpp -o jsonpath='{.items[0].status.containerStatuses[?(@.name=="llama-server")].state.running.startedAt} -> {.items[0].status.conditions[?(@.type=="Ready")].lastTransitionTime}{"\n"}'   # load time
+kubectl -n financial-agent get events --sort-by=.lastTimestamp | grep -i llamacpp | tail -n 15   # no "Startup probe failed ... will be restarted"
+```
+
 ## Reranking A/B (2026-10-08)
 
 **[EXECUTED 2026-10-08 — decision DON'T SHIP]** Pre-registered in

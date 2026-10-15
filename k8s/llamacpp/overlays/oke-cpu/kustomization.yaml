@@ -60,6 +60,14 @@ patches:
         value:
           name: slm-endpoints
           key: SLM_CPU_API_KEY
+      # Cold start: loading the 20.4 GB GGUF from the block volume took about
+      # 15 minutes (2026-10-08), the whole of the base's 90 x 10 s window, and
+      # the endpoint was killed once mid-load (exit 137, not OOM). 180 x 10 s
+      # = 30 minutes, twice the observed load. Liveness starts only after the
+      # startup probe passes, so its behavior is unchanged.
+      - op: replace
+        path: /spec/template/spec/containers/0/startupProbe/failureThreshold
+        value: 180
       - op: add
         path: /spec/template/spec/containers/0/resources
         value:
