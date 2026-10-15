@@ -1864,8 +1864,8 @@ core scaling".
 
 ## CPU endpoint startup probe (2026-10-15)
 
-**[FIRST APPLY 2026-10-15: rollout failed at the progress deadline;
-RE-APPLY NOT YET EXECUTED]** The cold load of the 20.4 GB GGUF from the
+**[EXECUTED 2026-10-15 — first apply failed at the progress deadline,
+re-apply green; result below]** The cold load of the 20.4 GB GGUF from the
 block volume took about 15 minutes on 2026-10-08, the whole of the base's startup
 window (90 × 10 s), and the endpoint was killed once mid-load. The oke-cpu
 overlay now sets the startup probe's `failureThreshold` to 180 (30 minutes,
@@ -1914,8 +1914,22 @@ kubectl -n financial-agent get deploy llamacpp \
   -o jsonpath='{.status.conditions[?(@.type=="Progressing")].reason}{"\n"}'          # NewReplicaSetAvailable
 kubectl -n financial-agent get pods -l app.kubernetes.io/name=llamacpp -o wide              # 1/1 Running, RESTARTS 0
 kubectl -n financial-agent get pod -l app.kubernetes.io/name=llamacpp -o jsonpath='{.items[0].status.containerStatuses[?(@.name=="llama-server")].state.running.startedAt} -> {.items[0].status.conditions[?(@.type=="Ready")].lastTransitionTime}{"\n"}'   # load time
-kubectl -n financial-agent get events --sort-by=.lastTimestamp | grep -i llamacpp | tail -n 15   # no "Startup probe failed ... will be restarted"
+kubectl -n financial-agent get events --sort-by=.lastTimestamp | grep -i llamacpp | grep -E "Killing|will be restarted"   # no output
 ```
+
+`Unhealthy` events with HTTP 503 are expected on every cold load and are
+not a failure: llama-server answers 503 on `/health` until the model is
+loaded, so the startup probe fails every 10 s until then (the last one
+about 15 minutes into the pod's age). What would show the probe killing the
+load is a `Killing` / "will be restarted" event and a RESTARTS count above 0.
+
+**Result, 2026-10-15 (EXECUTED).** After the re-apply:
+`progressDeadlineSeconds` 2400, startup probe `failureThreshold` 180,
+Progressing reason `NewReplicaSetAvailable`, the pod 1/1 Running with 0
+restarts. The cold load took **15 min 15 s** by the llama-server log
+(`load_model` at 0:00.010, "model loaded" and "listening" at 15:14.68), so
+the old 90 × 10 s window would have been exceeded by about 15 s; the new
+30-minute window holds it with about 15 minutes to spare.
 
 ## CPU extended run on `f3043751`: considered and declined (2026-10-15)
 

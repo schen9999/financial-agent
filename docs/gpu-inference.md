@@ -162,6 +162,10 @@ vCPU was not schedulable (node allocatable 15,783m), so the top level is
   once at 06:17Z (exit 137, not OOM) before its cold load finished, then
   came up from page cache and reports healthy. A cold restart of the CPU
   endpoint can therefore take two attempts; no manifest was changed.
+  Follow-up, 2026-10-15: the oke-cpu overlay now gives the startup probe
+  30 minutes and the rollout a 40-minute progress deadline; a cold load
+  measured 15 min 15 s under it, with 0 restarts (runbook, "CPU endpoint
+  startup probe").
 
 ## Capacity at higher parallelism
 
