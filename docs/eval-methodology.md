@@ -2482,6 +2482,34 @@ counter rule and stay not citable; they are not re-scored. The CPU arm of
 record stays `8vpq6` (image `1f51dad`, counter proof EXACT). Runs before
 2026-10-07 with an EXACT counter proof keep it.
 
+**Verdicts under this method, stated 2026-10-15 before the CPU rerun on
+`f3043751`** (a statement of the 2026-10-07 rule, not a change to it; it
+applies to SLM runs created after 2026-10-07, both endpoints):
+
+- **EXACT** means TASK-EXACT: every task in the endpoint's llama-server log
+  from the workflow's `creationTimestamp` to the capture right after the
+  run is complete, and the (prompt, completion) multiset of those tasks
+  equals the harness's over every `EVAL_LLM_CALL` of every eval pod and
+  every attempt. The only citable verdict.
+- **LOWER-BOUND** does not exist under this method. Under the counter
+  method it let excess server tokens be attributed to calls the harness
+  logged as failed; per request, a call that failed on the client side
+  (timeout, HTTP error: tokens unrecorded) leaves its server task
+  unmatched, and that is FAIL, however well explained.
+- **FAIL** is everything else: an unmatched task or call on either side,
+  an incomplete task in the window, or an empty window. The run is not
+  citable and is not re-run silently; it is recorded as failed.
+
+The harness side needs no image change: since before `f3043751` each call's
+`EVAL_LLM_CALL` line carries the response's own `usage.prompt_tokens` and
+`usage.completion_tokens` (`agent/tools/slm.py`, `agent/llm_ledger.py`),
+and the proof runs host-side (`scripts/traffic_proof_tasks.py`, stdlib).
+The CPU build's log format (chunked "prompt processing, progress" lines
+before each task's timings) parses the same way; the tests pin it, with a
+−4 counter drift that does not decide and a timed-out call that fails
+(`tests/test_traffic_proof_tasks.py`). `SLM_TIMEOUT` stays 900 s on the
+CPU arm; no call in `8vpq6`, `5bdz5` or `4kkgm` errored.
+
 ### Dated finding: the judge's run-to-run noise on identical inputs, and density without the judge (2026-10-06)
 
 **Why it was measured.** On the stock-data-fix image (`f3043751`) the
