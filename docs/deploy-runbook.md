@@ -1955,6 +1955,35 @@ kubectl -n financial-agent get pod -l app.kubernetes.io/name=llamacpp -o jsonpat
 kubectl -n financial-agent get events --sort-by=.lastTimestamp | grep -i llamacpp | tail -n 15   # no "Startup probe failed ... will be restarted"
 ```
 
+## CPU extended run on `f3043751` under the per-request proof (2026-10-15)
+
+**Rules recorded 2026-10-15, before it starts.**
+
+- This is the third CPU extended run on `f3043751`. `5bdz5` and `4kkgm`
+  stay failed records (counter proof FAIL, gate failed) and are listed
+  beside this run wherever it is quoted. The 2026-10-06 rule "no third
+  attempt" was set under the counter method; this run is the owner's
+  decision (2026-10-15) to run the CPU arm once under the per-request
+  method declared 2026-10-07, not a re-scoring of either earlier run.
+- One attempt. Citable only on TASK-EXACT (eval-methodology, "Verdicts
+  under this method"). On FAIL it is recorded as failed, the CPU arm on
+  `f3043751` has no citable run, the CPU arm of record stays `8vpq6`
+  (`1f51dad`), and there is no fourth attempt.
+- Its grounding rate is the CPU arm's result whatever the gate says (as
+  for `4kkgm`). A gate failure is recorded, not a reason to re-run.
+- Same protocol as `4kkgm`: the startup probe applied first; the balance
+  check (`make anthropic-estimate`); `make run-time-check` against the CPU
+  smoke `xnwjm` (from its committed workflow object; the live one has
+  expired); `make slm-eval-run ENDPOINT=cpu`; `kubectl top` every 15 s;
+  nothing else on the CPU endpoint (the app's `SLM_FULL` false, no other
+  workflow). Then three judgings, density, the numeric check, cost per
+  brief from `scripts/cost_per_brief_slm.py`, compared with `4hsn2` and
+  `nstp9` on the same image as the `1f51dad` three-way was.
+
+1. **[NOT YET EXECUTED]** Run and per-request proof (operator).
+2. **[NOT YET EXECUTED]** Capture into `eval/runs/` (laptop).
+3. **[NOT YET EXECUTED]** Re-judges 1 and 2 (laptop, about $1.76).
+
 ## Reranking A/B (2026-10-08)
 
 **[EXECUTED 2026-10-08 — decision DON'T SHIP]** Pre-registered in
