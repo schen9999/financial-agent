@@ -1,0 +1,44 @@
+# scripts/render_diff.py, every kustomize overlay at origin/main 0309a3f (before) vs the working tree on keda-worker-scaling (after: worker terminationGracePeriodSeconds), 2026-10-16T20:20:01Z
+argo_overlays_k3s.yaml                        IDENTICAL: 7 resources match semantically
+argo_overlays_kind.yaml                       IDENTICAL: 7 resources match semantically
+argo_overlays_oke-provided.yaml               IDENTICAL: 7 resources match semantically
+argo_overlays_oke.yaml                        IDENTICAL: 7 resources match semantically
+NEW: k8s_keda_overlays_kind.yaml
+NEW: k8s_keda_overlays_oke-provided.yaml
+k8s_llamacpp_overlays_k3s-gpu.yaml            IDENTICAL: 2 resources match semantically
+k8s_llamacpp_overlays_oke-cpu.yaml            IDENTICAL: 3 resources match semantically
+k8s_overlays_k3s.yaml                         IDENTICAL: 14 resources match semantically
+k8s_overlays_oke.yaml                         IDENTICAL: 14 resources match semantically
+k8s_vllm_overlays_k3s-gpu.yaml                IDENTICAL: 2 resources match semantically
+k8s_vllm_overlays_kind-cpu.yaml               IDENTICAL: 2 resources match semantically
+k8s_vllm_overlays_oke-gpu.yaml                IDENTICAL: 2 resources match semantically
+
+## k8s/overlays/kind
+DIFF: apps/v1/Deployment/financial-agent/worker
+--- /tmp/render-before/k8s_overlays_kind.yaml apps/v1/Deployment/financial-agent/worker
++++ /tmp/render-after/k8s_overlays_kind.yaml apps/v1/Deployment/financial-agent/worker
+@@ -71,3 +71,4 @@
+           failureThreshold: 30
+           periodSeconds: 10
+           timeoutSeconds: 15
++      terminationGracePeriodSeconds: 120
+
+## k8s/overlays/oke-provided
+DIFF: apps/v1/Deployment/financial-agent/worker
+--- /tmp/render-before/k8s_overlays_oke-provided.yaml apps/v1/Deployment/financial-agent/worker
++++ /tmp/render-after/k8s_overlays_oke-provided.yaml apps/v1/Deployment/financial-agent/worker
+@@ -76,3 +76,4 @@
+           timeoutSeconds: 15
+       imagePullSecrets:
+       - name: ghcr-pull-secret
++      terminationGracePeriodSeconds: 120
+
+## k8s/overlays/oke-provided-public-ui
+DIFF: apps/v1/Deployment/financial-agent/worker
+--- /tmp/render-before/k8s_overlays_oke-provided-public-ui.yaml apps/v1/Deployment/financial-agent/worker
++++ /tmp/render-after/k8s_overlays_oke-provided-public-ui.yaml apps/v1/Deployment/financial-agent/worker
+@@ -76,3 +76,4 @@
+           timeoutSeconds: 15
+       imagePullSecrets:
+       - name: ghcr-pull-secret
++      terminationGracePeriodSeconds: 120

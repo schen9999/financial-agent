@@ -99,7 +99,7 @@ def test_reads_celerys_queue_in_redis_url_db():
 def test_app_overlays_do_not_need_keda():
     """kind, oke, k3s and the provided-cluster overlays apply without KEDA."""
     for k in (ROOT / "k8s" / "overlays").glob("*/kustomization.yaml"):
-        text = k.read_text()
+        text = "\n".join(l for l in k.read_text().splitlines() if not l.lstrip().startswith("#"))
         assert "keda" not in text.lower() and "ScaledObject" not in text, k
     for f in (ROOT / "k8s" / "base").glob("*.yaml"):
         assert "keda.sh" not in f.read_text(), f
@@ -128,3 +128,34 @@ def test_chart_is_pinned_by_version_and_digest():
     assert "sha256sum -c" in mk
     values = yaml.safe_load((KEDA / "install" / "values.yaml").read_text())
     assert values == {"watchNamespace": "financial-agent"}
+
+
+def _worker_grace(overlay):
+    k = yaml.safe_load((ROOT / "k8s" / "overlays" / overlay / "kustomization.yaml").read_text())
+    found = []
+    for p in k.get("patches", []):
+        doc = yaml.safe_load(p["patch"])
+        if isinstance(doc, dict) and doc.get("kind") == "Deployment" and doc["metadata"]["name"] == "worker":
+            grace = doc["spec"]["template"]["spec"].get("terminationGracePeriodSeconds")
+            if grace is not None:
+                found.append(grace)
+    return found
+
+
+def test_worker_grace_covers_the_slowest_hosted_brief():
+    """Where KEDA can scale the worker down (kind, oke-provided and the
+    public-UI overlay built on it), SIGTERM must leave time for the brief in
+    flight: 33.1 s slowest hosted brief on record + 19.3 s first-task import."""
+    assert _worker_grace("kind") == _worker_grace("oke-provided") == [120]
+    assert 120 > 2 * (33.1 + 19.3)
+    assert "terminationGracePeriodSeconds" not in (ROOT / "k8s" / "base" / "31-worker.yaml").read_text()
+
+
+def test_shutdown_probe_stays_on_its_own_queue():
+    script = (ROOT / "scripts" / "worker_shutdown_test.sh").read_text()
+    code = "\n".join(l for l in script.splitlines() if not l.lstrip().startswith("#"))
+    assert re.findall(r"send_task\('([^']+)', args=\[\$SLEEP\], queue='\$Q'\)", code) == ["shutdown_probe.sleep"]
+    assert "Q=worker-shutdown-probe" in code
+    assert '"-Q", "$Q"' in code  # the probe worker consumes only the probe queue
+    assert "research_task" not in code and "apply_async" not in code and ".delay(" not in code
+    assert "trap cleanup EXIT" in code

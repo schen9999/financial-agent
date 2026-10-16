@@ -1,6 +1,7 @@
 # kind overlay — reconstructs the pre-kustomize manifests exactly (verified by
 # scripts/render_diff.py): kind-loaded image is never pulled, and services are
-# NodePorts matched to kind-config.yaml's host port mappings.
+# NodePorts matched to kind-config.yaml's host port mappings. One deliberate
+# delta since 2026-10-16: the worker's terminationGracePeriodSeconds (below).
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -57,6 +58,19 @@ patches:
             containers:
               - name: mcp
                 imagePullPolicy: Never
+
+  # ── Worker shutdown grace: the oke-provided value and reasoning (that
+  #    overlay's comment); kind runs the same KEDA tree, so it scales down too.
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: worker
+        namespace: financial-agent
+      spec:
+        template:
+          spec:
+            terminationGracePeriodSeconds: 120
 
   # ── NodePorts mapped to the host by kind-config.yaml
   - patch: |-

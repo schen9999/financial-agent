@@ -1133,11 +1133,16 @@ yet. Each worker (`--concurrency=1`, Celery's default prefetch multiplier
 4) takes up to 4 messages off the list, so tasks that are running or
 prefetched are not in the count.
 
-**Scale-down can lose a brief.** The HPA removes at most one pod per
-minute, after 5 minutes at a lower desired count. The pod gets SIGTERM.
-Celery finishes the running task only within the 30 s grace period, and
-tasks are acknowledged early (reliability.md), so a brief still running
-past that is lost. This is not tested.
+**Scale-down and a running brief.** The HPA removes at most one pod per
+minute, after 5 minutes at a lower desired count. The pod gets SIGTERM,
+and Celery's warm shutdown finishes the running task before the pod
+exits. Tasks are acknowledged early, so this works only within the
+worker's grace period. That period is 120 s in the kind and oke-provided
+overlays (30 s in base). 120 s covers the slowest hosted brief on record
+(33.1 s) plus a fresh pod's first-task import (up to 19.3 s); the
+reasoning is in the overlay comment. A brief longer than that is lost:
+the CPU SLM route, or a hung call. Shown by `make worker-shutdown-test` on
+kind (step 5). Applied on OKE only by step 5.
 
 **Spend.** More workers change when queued briefs are written, not how
 many: each one costs the same Anthropic spend it would have at one
@@ -1208,6 +1213,43 @@ scales it back to its desired count on its next sync.
    ```bash
    make keda-check    # fails on "unable to retrieve the complete list of server APIs" or any unavailable APIService
    ```
+5. **[NOT YET EXECUTED on OKE; kind PASS 2026-10-16]** The worker's
+   shutdown grace (`terminationGracePeriodSeconds: 120`). The live
+   namespace runs the public-UI overlay, so apply it through
+   `scripts/public_ui_up.sh`: it renders that overlay (oke-provided plus
+   the LB), diffs it, applies it, and re-runs the LB and security-list
+   guards. Plain `kubectl apply -k k8s/overlays/oke-provided` would put
+   Streamlit back to ClusterIP. Run it with no eval running (the script
+   refuses otherwise) and no async brief in flight: the worker restarts,
+   and the old pod still has the old 30 s grace.
+   ```bash
+   # operator, repo root, on the branch with the change
+   git fetch && git checkout keda-worker-scaling && git pull --ff-only && git log -1 --oneline
+   bash scripts/public_ui_up.sh --diff 2>&1 | python3 scripts/redact.py   # expect: deployment worker only, 30 -> 120 (plus generation lines)
+   bash scripts/public_ui_up.sh 2>&1 | python3 scripts/redact.py          # apply + guards; ends "public UI up at https://<streamlit-lb-ip>/ (guards passed)"
+   kubectl -n financial-agent rollout status deploy/worker --timeout=900s
+   kubectl -n financial-agent get deploy worker -o jsonpath='{.spec.template.spec.terminationGracePeriodSeconds}{"\n"}'   # 120
+   make keda-check                                                        # DISCOVERY CHECK (installed): PASS
+   ```
+   If the diff shows any object other than the worker Deployment, stop;
+   do not apply. Optional, about 6 minutes, no credit: `make
+   worker-shutdown-test` on the operator runs the same probe as on kind
+   (it starts one pod from the pinned GHCR image).
+
+   kind: `kubectl apply -k k8s/overlays/kind`, then `make
+   worker-shutdown-test`, PASSED. Case A (grace 120 s): a 45 s in-flight
+   task SUCCEEDED after SIGTERM, the pod exited 39 s after SIGTERM, and
+   the prefetched task, which was not counted in `LLEN` while prefetched,
+   returned to the queue. Case B (grace 10 s): the task was killed and
+   stayed STARTED. Capture: `eval/runs/keda/kind-6-worker-shutdown.txt`.
+   One earlier run failed in case B, before any task was sent: the
+   probe's ping loop gave up while the second probe pod was still
+   starting. The probe now has a readiness probe (ping) and waits up to
+   600 s. Case B then passed alone, and A and B passed together, which is
+   the capture.
+   render_diff: only the worker Deployment changes, by that one field, in
+   the kind, oke-provided and oke-provided-public-ui renders; everything
+   else is IDENTICAL (`eval/runs/keda/render-diff-grace.txt`).
 
 **kind (the equivalence baseline), the same targets** (`HELM=` names the
 helm binary there; kind v1.36.1, commit `3fe14fa`, 2026-10-16 20:02Z to
@@ -1679,6 +1721,16 @@ Every branch ends at the recorded runs: `eval/runs/gpu-smoke.log`
 run of record), open on the laptop before the demo starts. Say what
 failed; do not debug live beyond the first check named.
 
+- **`make keda-check` fails** (preflight check 4: "unable to retrieve the
+  complete list of server APIs", an APIService not Available, or a KEDA
+  Deployment not available): do not debug it before the demo. Uninstall
+  KEDA ("KEDA", Uninstall: `make keda-uninstall
+  KEDA_OVERLAY=oke-provided`), which must end with `DISCOVERY CHECK
+  (uninstalled): PASS`, then re-run checks 1–4. The worker goes back to
+  one fixed replica, as it was before 2026-10-16; the demo needs nothing
+  from KEDA. If the uninstall's own check fails, stop and tell the
+  cluster owner: a leftover `v1beta1.external.metrics.k8s.io` breaks
+  discovery for every client on the cluster.
 - **Node 2 down** (`ssh oci2` fails, or `/health` does not answer on the
   node): a stopped VM is restarted by the tenancy owner in the console,
   and the model's load time is not one to wait out live. Fallback.

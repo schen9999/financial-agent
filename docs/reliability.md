@@ -46,7 +46,7 @@ scales from 1 to 4 replicas on the depth of its Redis queue
 | Failure | Behaviour | Evidence |
 |---|---|---|
 | **Worker crash mid-task** | Kubernetes restarts the pod (startup, readiness and liveness probes run `celery inspect ping`). The task is not re-run: `task_acks_late` is not set, so the message was acknowledged when the worker took it **(library default, inferred)**, and with `task_track_started=True` its status keeps reading "processing" until the result record expires **(library default, inferred)**. Other queued tasks wait for the restarted worker. | `celery_worker.py`, `k8s/base/31-worker.yaml`; **not tested** |
-| **Worker pod removed on KEDA scale-down** | The HPA removes at most one pod a minute, after 5 minutes at a lower desired count. The pod gets SIGTERM, and Celery's warm shutdown finishes the running task only within the 30 s grace period. A brief still running after that is lost, the same way as in a crash, because the task was acknowledged early **(inferred)**. Tasks the pod had prefetched but not started go back to the queue **(library behaviour, inferred)**. | `k8s/keda/base/scaledobject.yaml`; the scale test covers scale-down with no task running; **not tested** with one running |
+| **Worker pod stopped by SIGTERM** (KEDA scale-down, a rollout, a node drain) | The HPA removes at most one pod a minute, after 5 minutes at a lower desired count. The pod gets SIGTERM, and Celery's warm shutdown finishes the running task, then the pod exits; an idle worker exits at once. The kind and oke-provided overlays give the worker `terminationGracePeriodSeconds: 120` (base and the Kubernetes default: 30 s). 120 s covers the slowest hosted brief on record, 33.1 s over 130 briefs in six runs, plus a fresh pod's first-task agent import, up to 19.3 s (kind) — about 52 s. It also covers the GPU SLM route (about 31 s a brief). Tasks the pod had prefetched but not started go back to the queue. **Still lost:** a brief running longer than the grace. It is SIGKILLed and, acknowledged early, never re-runs; its status stays "processing". That is the CPU SLM route (`make oke-slm-app ENDPOINT=cpu`, up to 391 s a brief), and any brief that hangs: the Anthropic client sets no request timeout (below). | `make worker-shutdown-test` on kind, 2026-10-16 (`eval/runs/keda/kind-6-worker-shutdown.txt`). It uses a probe worker with the worker's image, Celery app and grace and its own queue, plus a sleep task, with no model call. At 120 s, a 45 s in-flight task SUCCEEDED after SIGTERM, the pod exited 39 s after SIGTERM, and the prefetched task returned to the queue. At a 10 s grace, the task was killed and stayed STARTED. **On OKE: NOT YET APPLIED** (runbook "KEDA", step 5) |
 | **Redis restart (no volume)** | The brief cache empties and refills from the next requests. Queued Celery tasks and stored results are lost; a status query for a lost job reads "queued", because Celery reports an unknown ID as PENDING **(library default, inferred)**. While Redis is down, cache reads and writes fail open — logged, the request falls through to the LLM — but enqueueing an async job fails, and the API returns 500 **(inferred: the call is not caught)**. | `cache.py` (fail-open in code), `api.py`; **not tested** |
 | **Postgres pod restart** | The data survives on its volume. The Deployment uses `Recreate`, so two Postgres pods never share the ReadWriteOnce volume. While it is down, `save_brief` raises and `/research` returns 500 after the brief was generated; the brief was already cached in Redis, so a retry within 24 h is served from the cache. The SQLAlchemy engine has no `pool_pre_ping`, so a stale pooled connection can fail the first request after a restart **(inferred)**. `/history` endpoints return 500 while it is down. | `database.py`, `k8s/base/21-postgres.yaml`; **not tested** |
 | **API pod restart** | One replica, one uvicorn process: requests in flight are lost, including a synchronous `/research` (about 26 s for a hosted brief). Startup, readiness and liveness probes on `/health` keep traffic off the pod until it answers; an init container waits for Postgres. Async jobs are unaffected (they live in Redis and the worker). | `k8s/base/30-api.yaml`; **not tested** |
@@ -55,6 +55,24 @@ scales from 1 to 4 replicas on the depth of its Redis queue
 | **Upstream 429: yfinance** | `get_stock_data` catches every error and returns `{"error": …}`, which the trimming step drops: the brief is written from news and filings with an empty STOCK DATA block. No retry. Every eval aggregate counts these (`stock block empty`), and yfinance has answered 429 from the OKE egress IP. | `agent/tools/stock.py`, `eval/stock_block.py` (tested, `tests/test_stock_block.py`); runbook, "OKE (provided cluster)" |
 | **Upstream 429: NewsAPI, SEC EDGAR, Pinecone** | NewsAPI and EDGAR errors return an error item (EDGAR requests time out at 15 s); the brief is written without that data, no retry. A failed RAG retrieval returns nothing and the two filing sections fall back to the raw data context. | `agent/tools/news.py`, `agent/tools/sec.py`, `agent/core.py`; **not tested** |
 | **Upstream 429: Anthropic** | Covered by the library's two retries (above). | **not tested** |
+
+**In-flight async briefs, since KEDA (2026-10-16).** KEDA added a new way
+to stop a busy worker: scale-down. The worker's 120 s grace period covers
+it, and also rollouts and node drains, for any brief that finishes within
+120 s (tested on kind; not yet applied on OKE). It does not change
+anything that stops a worker without SIGTERM, or that loses the queue:
+
+- **A worker crash, an OOM kill or a lost node** still loses the running
+  brief, because the task was acknowledged early (row "Worker crash
+  mid-task").
+- **A Redis restart** still loses every queued task and every stored
+  result (row "Redis restart").
+- **A brief longer than the grace** (the CPU SLM route, or a hung call)
+  is SIGKILLed and lost.
+
+Late acknowledgement with an idempotent `research_task` (next steps)
+would close the crash and long-brief cases. It would not close the Redis
+restart case, which needs a broker with persistence.
 
 ## Part 2: the eval plane
 

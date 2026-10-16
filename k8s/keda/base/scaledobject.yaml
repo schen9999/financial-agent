@@ -17,9 +17,11 @@
 #
 # Scale-down: the HPA removes at most one pod per minute after five minutes
 # of a lower desired count. A pod chosen for removal gets SIGTERM; Celery's
-# warm shutdown finishes the running task only within the pod's 30 s grace
-# period, and tasks are acked early, so a brief still running past that is
-# lost (docs/reliability.md: late acknowledgement is a recorded next step).
+# warm shutdown finishes the running task, within the worker's
+# terminationGracePeriodSeconds (120 s in the kind and oke-provided app
+# overlays; base and Kubernetes default 30 s). Tasks are acked early, so a
+# brief still running past the grace is lost (make worker-shutdown-test;
+# docs/reliability.md: late acknowledgement is a recorded next step).
 #
 # Requires KEDA (make keda-install). Not part of any app overlay, so
 # k8s/overlays/* render and apply unchanged without it.

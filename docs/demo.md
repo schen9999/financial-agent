@@ -143,8 +143,11 @@ separately from the harness, but it does not prove it.
   healthy before, during and after. The same test passed on kind (1 to
   2 to 1), and so did the uninstall. Not measured: request-time load,
   i.e. real briefs. The metric counts only tasks no worker has taken
-  yet, while each worker holds up to 4. A brief that is running when its
-  pod is removed on scale-down can be lost (not tested).
+  yet, while each worker holds up to 4. On scale-down, a running brief is
+  finished before the pod exits if it finishes within the worker's 120 s
+  grace period, which was tested on kind with a probe task. A longer
+  brief, which means the CPU SLM route or a hung call, is lost. The grace
+  period is not yet applied on OKE (runbook "KEDA", step 5).
   [Runbook, "KEDA"](deploy-runbook.md#keda-worker-scaling-on-queue-depth).
 
 **Not built, as next steps:**

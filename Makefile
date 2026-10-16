@@ -19,7 +19,7 @@ ENV_FILE  ?= .env
         vm-images vm-up vm-eval vm-vllm oke-images oke-up \
         vm-llamacpp vm-llamacpp-down oke-llamacpp oke-llamacpp-down oke-slm-app slm-eval-run \
         run-time-check anthropic-estimate \
-        keda-install keda-worker keda-check keda-scale-test keda-uninstall
+        keda-install keda-worker keda-check keda-scale-test keda-uninstall worker-shutdown-test
 
 cluster-up: ## Create the single-node kind cluster (or restart its stopped node)
 	@if kind get clusters 2>/dev/null | grep -qx $(CLUSTER); then \
@@ -415,6 +415,9 @@ keda-check: ## Discovery health with KEDA installed: no "unable to retrieve the 
 
 keda-scale-test: ## Live scale test, no Anthropic credit: builtin celery.accumulate backlog, 1 -> N -> 1 replicas
 	bash scripts/keda_scale_test.sh
+
+worker-shutdown-test: ## Probe worker (own queue, sleep task, no credit): SIGTERM finishes the in-flight task within deploy/worker's grace
+	bash scripts/worker_shutdown_test.sh
 
 keda-uninstall: ## Remove the ScaledObject, return the worker to 1 replica, uninstall KEDA, check discovery
 	@# ScaledObject first, while the operator can still clear its finalizer and HPA

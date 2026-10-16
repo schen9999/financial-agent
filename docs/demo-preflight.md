@@ -45,10 +45,32 @@ rehearsal's own run.
   kubectl get nodes
   kubectl -n financial-agent get pods
   kubectl -n argo get pods
+  kubectl -n financial-agent get scaledobject worker
+  make keda-check
   ```
   Expected: 4 nodes `Ready`; `api`, `worker`, `streamlit`, `mcp`, `redis`,
-  `postgres`, `llamacpp` all `Running` with ready containers;
-  `workflow-controller` and `argo-server` `Running`.
+  `postgres`, `llamacpp` all `Running` with ready containers, and exactly
+  one `worker` pod (KEDA's minimum; more means queued async work, so wait
+  for it to drain); `workflow-controller` and `argo-server` `Running`.
+  The ScaledObject shows `MIN 1`, `MAX 4`, `READY True`. `make
+  keda-check` ends with `DISCOVERY CHECK (installed): PASS`, and every
+  line above it is `OK`:
+  ```
+    OK    api-resources complete (exit 0, no discovery error on stderr)
+    OK    all 27 APIServices Available
+    OK    served by keda/keda-operator-metrics-apiserver
+    OK    GET /apis/external.metrics.k8s.io/v1beta1 answers
+    OK    deploy/keda-operator available (1)
+    OK    deploy/keda-operator-metrics-apiserver available (1)
+    OK    deploy/keda-admission-webhooks available (1)
+  ```
+  (27 is the count on 2026-10-16. A different count with every line `OK`
+  is not a failure; note it.) **If any line is `FAIL`**, in particular
+  "unable to retrieve the complete list of server APIs", **do not debug
+  it**: uninstall KEDA per the runbook (`make keda-uninstall
+  KEDA_OVERLAY=oke-provided`, ending `DISCOVERY CHECK (uninstalled):
+  PASS`) and re-run checks 1–4. Failure branch: "`make keda-check`
+  fails".
 
 - [ ] **5. Nightly CronWorkflow suspended, nothing running** (operator)
   ```bash
