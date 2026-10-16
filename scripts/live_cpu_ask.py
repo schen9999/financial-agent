@@ -23,20 +23,35 @@ went to slm-cpu, and no hosted call was attempted.
 """
 import argparse
 import os
+import re
 import sys
 import time
 
 # (ticker, question, tools a correct agent needs). The default avoids Yahoo:
 # the GPU smoke fetches Yahoo for ten tickers at the same time from the same
-# egress IP, which has answered 429 before.
+# egress IP, which has answered 429 before. It asks about a filing that
+# cannot change before the demo: get_sec_filings always returns the LATEST
+# 10-K, query_sec_filing answers from the 10-K indexed in Pinecone (all
+# namespaces rebuilt 2026-09-04, scripts/reindex_filings.py), and the two
+# agree only while no newer 10-K exists. Walmart's fiscal year ends 31 Jan;
+# its 10-K of 2026-03-13 predates the reindex and the next is due about
+# March 2027. (Visa, the first default, files in November: inside the demo
+# window.) Apple files in late October, so its alternate names the fiscal
+# 2025 10-K, the indexed one, and does not ask for a filing date.
 QUESTIONS = [
-    ("V", "When was Visa's most recent 10-K filed, and what does the filing say "
-          "about competition?", ("get_sec_filings", "query_sec_filing")),
-    ("AAPL", "What is Apple's current P/E ratio, and what does its latest 10-K "
-             "say are its main risk factors?", ("get_stock_data", "query_sec_filing")),
+    ("WMT", "When was Walmart's most recent 10-K filed, and what does that 10-K "
+            "list as the main risk factors?", ("get_sec_filings", "query_sec_filing")),
+    ("AAPL", "What is Apple's current P/E ratio, and what risk factors does its "
+             "fiscal 2025 10-K list?", ("get_stock_data", "query_sec_filing")),
     ("MSFT", "What has been in the news about Microsoft recently, and when was "
              "its latest 10-Q filed?", ("get_company_news", "get_sec_filings")),
 ]
+
+# The 10-K each default ticker's Pinecone namespace was built from (EDGAR
+# filing date). If get_sec_filings reports another 10-K, the two tools would
+# describe different filings on screen: the run is NOT OK.
+INDEXED_10K = {"WMT": "2026-03-13"}
+_TEN_K_DATE = re.compile(r"""form_type['"]:\s*['"]10-K['"],\s*['"]filing_date['"]:\s*['"](\d{4}-\d{2}-\d{2})""")
 
 RESULT_CHARS = 240
 
@@ -98,7 +113,7 @@ def run(ticker: str, question: str, out=print) -> dict:
     llm_ledger.drain()
     graph = react_agent._build_graph(react_agent._route())
     t0 = time.perf_counter()
-    tools, answer = [], None
+    tools, answer, results = [], None, {}
     stream = graph.stream(
         {"messages": [HumanMessage(content=f"Ticker: {ticker.upper()}. {question}")]},
         config={"recursion_limit": react_agent.RECURSION_LIMIT}, stream_mode="updates")
@@ -111,11 +126,19 @@ def run(ticker: str, question: str, out=print) -> dict:
                         tools.append(c["name"])
                         out(f"  {t:6.1f}s  tool call   {c['name']}({_short(c['args'], 120)})")
                 elif isinstance(m, ToolMessage):
+                    results[m.name] = str(m.content)
                     out(f"  {t:6.1f}s  tool result {m.name}: {_short(m.content)}")
                 elif isinstance(m, AIMessage) and isinstance(m.content, str) and m.content.strip():
                     answer = m.content.strip()
     wall = time.perf_counter() - t0
     recs = llm_ledger.drain()
+    filing_ok = True
+    if ticker in INDEXED_10K and "get_sec_filings" in results:
+        m = _TEN_K_DATE.search(results["get_sec_filings"])
+        got, want = (m.group(1) if m else None), INDEXED_10K[ticker]
+        filing_ok = got == want
+        out(f"10-K check  get_sec_filings: {got or 'no 10-K date in the result'}; "
+            f"indexed filing: {want} -> {'same filing' if filing_ok else 'MISMATCH'}")
     out("answer")
     out(answer or "(no answer)")
     out("model calls")
@@ -126,16 +149,18 @@ def run(ticker: str, question: str, out=print) -> dict:
     return {"wall_s": round(wall, 1), "tools": tools, "answer": answer, "calls": recs,
             "endpoints": sorted({r["endpoint"] for r in recs}),
             "aliases": sorted({r["model"] for r in recs if r.get("model")}),
-            "served_alias": facts["slm_served_name"]}
+            "served_alias": facts["slm_served_name"], "filing_ok": filing_ok}
 
 
 def verdict(res: dict, hosted_attempts: int) -> tuple[bool, str]:
     ok = (bool(res["answer"]) and len(set(res["tools"])) >= 2
           and res["endpoints"] == ["slm-cpu"] and hosted_attempts == 0
-          and not any(r.get("error") for r in res["calls"]))
+          and not any(r.get("error") for r in res["calls"])
+          and res.get("filing_ok", True))
     line = (f"LIVE CPU ASK: {'OK' if ok else 'NOT OK'} — wall {res['wall_s']} s, "
             f"tools {res['tools']}, {len(res['calls'])} model calls on {res['endpoints']}, "
-            f"alias {res['aliases']}, hosted calls attempted {hosted_attempts}. "
+            f"alias {res['aliases']}, hosted calls attempted {hosted_attempts}"
+            f"{'' if res.get('filing_ok', True) else ', 10-K MISMATCH'}. "
             f"A demonstration, not a citable run.")
     return ok, line
 

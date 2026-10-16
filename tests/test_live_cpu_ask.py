@@ -84,11 +84,12 @@ def _completion(content="", tool_calls=None):
 @pytest.fixture
 def stub_endpoint(cpu_env, monkeypatch):
     queue = [
-        _completion(tool_calls=[_tool_call("get_sec_filings", {"ticker": "V"}, "a")]),
-        _completion(tool_calls=[_tool_call("query_sec_filing", {"input": "V: competition"}, "b")]),
-        _completion(content="Visa filed its 10-K on 2025-11-13; it names Mastercard and others."),
+        _completion(tool_calls=[_tool_call("get_sec_filings", {"ticker": "WMT"}, "a")]),
+        _completion(tool_calls=[_tool_call("query_sec_filing", {"input": "WMT: risk factors"}, "b")]),
+        _completion(content="Walmart filed its 10-K on 2026-03-13; it lists competition and more."),
     ]
     urls = []
+    filed = {"10-K": "2026-03-13"}  # what EDGAR reports; a test may move it
 
     def post(url, json=None, headers=None, timeout=None):
         urls.append(url)
@@ -97,14 +98,15 @@ def stub_endpoint(cpu_env, monkeypatch):
     monkeypatch.setattr(slm.requests, "post", post)
 
     @tool
-    def get_sec_filings(ticker: str) -> str:
+    def get_sec_filings(ticker: str) -> dict:
         """Latest 10-K and 10-Q filing summaries from EDGAR."""
-        return "10-K filed 2025-11-13"
+        return {"10-K": {"form_type": "10-K", "filing_date": filed["10-K"], "url": "u", "summary": "s"},
+                "10-Q": {"form_type": "10-Q", "filing_date": "2026-08-28", "url": "u", "summary": "s"}}
 
     @tool
     def query_sec_filing(input: str) -> str:
         """RAG search over SEC filings. Input 'TICKER: question'."""
-        return "Competitors include Mastercard, American Express."
+        return "Risk factors include competition, economic conditions and supply chains."
 
     @tool
     def get_stock_data(ticker: str) -> str:
@@ -122,23 +124,37 @@ def stub_endpoint(cpu_env, monkeypatch):
     monkeypatch.setattr(news, "get_company_news", get_company_news)
     monkeypatch.setattr(slm, "server_facts", lambda: {
         "slm_endpoint": "slm-cpu", "slm_served_name": CFG["SLM_MODEL_NAME"], "slm_build": "b11347"})
-    return urls
+    return urls, filed
 
 
 def test_whole_ask_on_the_stubbed_cpu_endpoint(stub_endpoint):
     lines = []
     attempts = lca.block_hosted()
-    res = lca.run("V", lca.QUESTIONS[0][1], out=lines.append)
+    urls, _ = stub_endpoint
+    res = lca.run("WMT", lca.QUESTIONS[0][1], out=lines.append)
     assert res["tools"] == ["get_sec_filings", "query_sec_filing"]
-    assert res["answer"].startswith("Visa filed")
+    assert res["answer"].startswith("Walmart filed")
     assert res["endpoints"] == ["slm-cpu"] and res["aliases"] == [CFG["SLM_MODEL_NAME"]]
     assert len(res["calls"]) == 3
-    assert all(u == "http://slm-cpu:8080/v1/chat/completions" for u in stub_endpoint)
+    assert all(u == "http://slm-cpu:8080/v1/chat/completions" for u in urls)
     text = "\n".join(lines)
     assert "tool call   get_sec_filings" in text and "tool result query_sec_filing" in text
     assert "served alias qwen3.6-35b-a3b-q4km" in text
+    assert "10-K check  get_sec_filings: 2026-03-13; indexed filing: 2026-03-13 -> same filing" in text
     ok, line = lca.verdict(res, attempts["n"])
     assert ok and line.startswith("LIVE CPU ASK: OK") and "not a citable run" in line
+
+
+def test_a_newer_10k_than_the_indexed_one_is_not_ok(stub_endpoint):
+    _, filed = stub_endpoint
+    filed["10-K"] = "2027-03-12"  # Walmart files its next 10-K
+    lines = []
+    attempts = lca.block_hosted()
+    res = lca.run("WMT", lca.QUESTIONS[0][1], out=lines.append)
+    assert not res["filing_ok"]
+    assert "indexed filing: 2026-03-13 -> MISMATCH" in "\n".join(lines)
+    ok, line = lca.verdict(res, attempts["n"])
+    assert not ok and "10-K MISMATCH" in line
 
 
 def test_verdict_fails_on_one_tool_or_a_hosted_attempt():
@@ -156,3 +172,5 @@ def test_questions_each_need_two_tools():
     assert len(lca.QUESTIONS) == 3
     assert all(len(set(q[2])) == 2 for q in lca.QUESTIONS)
     assert "get_stock_data" not in lca.QUESTIONS[0][2]  # the default stays off Yahoo
+    assert lca.QUESTIONS[0][0] in lca.INDEXED_10K  # the default's filing is pinned
+    assert "fiscal 2025 10-K" in lca.QUESTIONS[1][1]  # Apple files again before the demo
