@@ -2012,8 +2012,10 @@ and `-t` = the level.
    kubectl -n financial-agent get workflows | grep -w Running                                     # expect no output
    kubectl -n financial-agent get configmap app-config -o jsonpath='{.data.SLM_FULL}{"\n"}'      # expect false
    ```
-2. **[EXECUTED 2026-10-16, on the owner's report]** Copy the script and
-   record the endpoint's state before (laptop, then node 2; preflight check 8).
+2. **[EXECUTED 2026-10-16, node 2 about 05:58Z, just before the run:
+   `/health` `{"status":"ok"}`, `/v1/models` without the key `401`,
+   nvidia-smi `/app/llama-server, 20534 MiB`, vllm `0/0`, llamacpp `1/1`]**
+   Copy the script and record the endpoint's state before (laptop, then node 2; preflight check 8).
    ```bash
    scp scripts/llama_bench_node2.sh oci2:/tmp/          # laptop, from this branch
    ssh oci2
