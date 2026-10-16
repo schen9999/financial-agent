@@ -10,7 +10,7 @@ the dates, and use it as evidence rather than as current instructions).
 | Question | Where to look | Type |
 |---|---|---|
 | What is this, and what does it do? | [README](../README.md): "What it does" and "Conclusions" | reference |
-| How is it deployed on OCI? | [architecture.md](architecture.md), "Deployed topology (October 2026)"; [README](../README.md): "Deployed on OCI"; the current procedure in [operations.md](operations.md); OKE steps in [deploy-runbook.md](deploy-runbook.md), "OKE (OCI)" | reference |
+| How is it deployed on OCI? | [architecture.md](architecture.md), "Deployed topology (October 2026)"; [README](../README.md): "Deployed on OCI"; the current procedure in [operations.md](operations.md); OKE steps in [deploy-runbook.md](deploy-runbook.md#oke-provided-cluster), "OKE (provided cluster)" (the never-applied Terraform path is "OKE (OCI) — Phase 2") | reference |
 | How do I configure it? | [configuration.md](configuration.md): every environment variable, its default, and where it is set | reference |
 | What does the API look like? | [api.md](api.md): all routes with request/response shapes and examples | reference |
 | Something broke. What do I check? | [operations.md](operations.md), "Troubleshooting" (incidents that actually happened) | reference |
