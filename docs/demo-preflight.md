@@ -235,3 +235,21 @@ git rev-parse demo-freeze-2026-10^{}             # the frozen commit, equal to g
 ```
 
 Post-demo work branches from the tag: `git checkout -b <branch> demo-freeze-2026-10`.
+
+## GitHub Release (after the tag exists)
+
+Only once `git ls-remote --tags origin demo-freeze-2026-10` prints the tag
+(Freeze, above). The notes are drafted in
+`notes/release-demo-freeze-2026-10.md` (gitignored); fill its rehearsal
+date and workflow name first. In the browser:
+
+1. The repo on GitHub → **Releases** → **Draft a new release**.
+2. **Choose a tag**: pick the existing `demo-freeze-2026-10`. Do not type a
+   new name: GitHub would create a new tag on the default branch's head.
+3. **Release title**: the `Title:` line of the notes file.
+4. **Description**: everything below the `---` line of the notes file.
+5. Leave "Set as a pre-release" off, then **Publish release**.
+
+Expected: the release page shows tag `demo-freeze-2026-10` and the short
+sha of `git rev-parse demo-freeze-2026-10^{}`; its three links open the
+README, demo.md and numbers-of-record.md at the tag.
