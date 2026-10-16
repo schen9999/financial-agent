@@ -25,6 +25,11 @@ variable "nat_nat_gateway_public_ip_id" {
   type        = string
 }
 
+variable "pool_oke_cpu_apiserver_host" {
+  description = "Private address of the cluster's API endpoint (apiserver_host of pool_oke_cpu)."
+  type        = string
+}
+
 variable "pool_oke_cpu_image_id" {
   description = "OCID: image_id of pool_oke_cpu (not a codified resource, so a variable)."
   type        = string

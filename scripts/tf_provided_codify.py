@@ -76,7 +76,9 @@ SNAPSHOT_RULES = ("The rules above are the\n  # import-time snapshot (2026-10-07
 SNAPSHOT_EMPTY = ("It held no rules at\n  # import (2026-10-07), so none are written here; the plan does not compare them.")
 
 DROP_KEYS = {"defined_tags", "freeform_tags"}
-VAR_KEYS = {"ssh_public_key": "ssh", "user_data": "userdata"}
+# apiserver_host: the private API endpoint address (2026-10-16, no IPs in
+# committed files; CLAUDE.md honesty rules).
+VAR_KEYS = {"ssh_public_key": "ssh", "user_data": "userdata", "apiserver_host": "host"}
 OCID = re.compile(r"^ocid1\.[a-z0-9_]+\.[^\s\"]+$")
 AD = re.compile(r"^[A-Za-z0-9]+:[A-Z0-9]+(?:-[A-Z0-9]+)*-AD-(\d+)$")
 STR = re.compile(r'"((?:[^"\\]|\\.)*)"')
@@ -125,6 +127,19 @@ def is_public(value: str) -> bool:
     except ValueError:
         return False
     return net.prefixlen > 0 and net.network_address.is_global
+
+
+def is_private_host(value: str) -> bool:
+    """A single private address (no prefix, or /32): a node or endpoint, not
+    a subnet. Subnet CIDRs stay in the committed config."""
+    addr, _, prefix = value.partition("/")
+    if prefix and prefix != "32":
+        return False
+    try:
+        ip = ipaddress.ip_address(addr)
+    except ValueError:
+        return False
+    return ip.is_private and not (ip.is_loopback or ip.is_unspecified or ip.is_link_local)
 
 
 def import_refs(text: str) -> dict[str, str]:
@@ -237,6 +252,7 @@ DESCRIPTIONS = {
     "ssh": "SSH public key set on {res}.",
     "userdata": "Node cloud-init (base64 gzip) set on {res}: an SSH key with its owner, the cluster CA.",
     "cidr": "Public address in {key} of {res}.",
+    "host": "Private address of the cluster's API endpoint ({key} of {res}).",
 }
 
 
@@ -251,6 +267,8 @@ def placeholder(meta: dict) -> str:
         return "ssh-rsa <public key>"
     if meta["kind"] == "userdata":
         return "<base64 gzip cloud-init>"
+    if meta["kind"] == "host":
+        return "<oke-api-private-ip>"
     return "<address>/32"
 
 
@@ -306,6 +324,8 @@ def leaks(text: str) -> list[str]:
         for ip in IPV4.findall(line):
             if is_public(ip if "/" in ip else ip + "/32"):
                 hits.append(f"{n}: public address")
+            elif is_private_host(ip):
+                hits.append(f"{n}: private host address")
     return hits
 
 

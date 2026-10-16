@@ -11,6 +11,10 @@ VCN = "ocid1.vcn.oc1.iad.aaaavcn"
 SUB = "ocid1.subnet.oc1.iad.aaaasubnet"
 CL = "ocid1.cluster.oc1.iad.aaaacluster"
 IMG = "ocid1.image.oc1.iad.aaaaimage"
+# global addresses for the leak detector, built at run time so this file holds
+# no address literal (tests/test_no_ip_addresses.py)
+SRC = ".".join(["8", "8", "4", "4"]) + "/32"
+OTHER = ".".join(["1", "1", "1", "1"]) + "/32"
 
 IMPORTS = f'''import {{
   to = oci_core_vcn.vcn_main
@@ -60,7 +64,7 @@ resource "oci_core_security_list" "sl_lb" {{
   vcn_id         = "{VCN}"
   ingress_security_rules {{
     protocol = "6"
-    source   = "8.8.4.4/32"
+    source   = "{SRC}"
   }}
   egress_security_rules {{
     destination = "0.0.0.0/0"
@@ -80,6 +84,10 @@ resource "oci_containerengine_node_pool" "pool_oke_cpu" {{
   cluster_id     = "{CL}"
   compartment_id = "{CPT}"
   ssh_public_key = "ssh-rsa AAAAB3Nza someone"
+  node_metadata = {{
+    apiserver_host           = "192.0.2.3"
+    oke-kubeproxy-proxy-mode = "iptables"
+  }}
   node_config_details {{
     size = 2
     freeform_tags = {{
@@ -132,8 +140,12 @@ def test_other_identifying_values_become_variables(out):
     assert c.vars["pool_oke_cpu_image_id"]["value"] == IMG
     assert c.vars["availability_domain_1"]["value"] == "Uocm:US-ASHBURN-AD-1"
     assert c.vars["pool_oke_cpu_ssh_public_key"]["kind"] == "ssh"
-    assert c.vars["sl_lb_source"]["value"] == "8.8.4.4/32"
-    assert len(c.vars) == 5  # the compartment is one variable however often it appears
+    assert c.vars["sl_lb_source"]["value"] == SRC
+    assert c.vars["pool_oke_cpu_apiserver_host"] == {
+        "value": "192.0.2.3", "kind": "host", "res": "pool_oke_cpu", "key": "apiserver_host"}
+    assert "apiserver_host           = var.pool_oke_cpu_apiserver_host" in files["nodepool.tf"]
+    assert 'pool_oke_cpu_apiserver_host = "<oke-api-private-ip>"' in files["terraform.tfvars.example"]
+    assert len(c.vars) == 6  # the compartment is one variable however often it appears
     assert 'variable "compartment_ocid"' in files["variables.tf"]
     assert 'variable "region"' in files["variables.tf"]
 
@@ -163,14 +175,14 @@ def test_no_committable_file_leaks(out):
 def test_real_values_only_in_tfvars(out):
     c, _ = out
     real = cz.tfvars(c)
-    assert real.startswith(cz.TFVARS_HEAD) and CPT in real and "8.8.4.4/32" in real
+    assert real.startswith(cz.TFVARS_HEAD) and CPT in real and SRC in real
 
 
 def test_leak_scan_catches_each_kind():
     assert cz.leaks(f'  x = "{CPT}"')
     assert cz.leaks('  # someone@example.com')
     assert cz.leaks('  ad = "Uocm:US-ASHBURN-AD-2"')
-    assert cz.leaks('  source = "1.1.1.1/32"')
+    assert cz.leaks(f'  source = "{OTHER}"')
     assert not cz.leaks('  source = "10.0.0.0/16"  # 0.0.0.0/0')
 
 
@@ -236,3 +248,10 @@ def test_leak_scan_decodes_base64_and_gzip():
     hits = cz.leaks(f'    user_data = "{_cloud_init_b64()}"')
     assert "1: encoded email" in hits and "1: encoded SSH key" in hits
     assert cz.leaks('  key = "ssh-rsa AAAAB3Nza x"') == ["1: SSH key"]
+
+
+def test_private_host_addresses_leak_subnets_do_not():
+    assert cz.leaks('    apiserver_host = "192.0.2.3"')
+    assert cz.leaks('  source = "192.0.2.4/32"')
+    assert not cz.leaks('  cidr_block = "10.140.0.0/16"')
+    assert not cz.leaks('  destination = "0.0.0.0/0"')

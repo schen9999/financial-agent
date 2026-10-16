@@ -10,7 +10,7 @@ resource "oci_containerengine_node_pool" "pool_oke_cpu" {
   kubernetes_version = "v1.34.1"
   name               = "oke-cpu"
   node_metadata = {
-    apiserver_host           = "10.140.0.3"
+    apiserver_host           = var.pool_oke_cpu_apiserver_host
     oke-kubeproxy-proxy-mode = "iptables"
     user_data                = var.pool_oke_cpu_user_data
   }
@@ -84,7 +84,7 @@ resource "oci_containerengine_node_pool" "pool_oke_system" {
   kubernetes_version = "v1.34.1"
   name               = "oke-system"
   node_metadata = {
-    apiserver_host           = "10.140.0.3"
+    apiserver_host           = var.pool_oke_cpu_apiserver_host
     oke-kubeproxy-proxy-mode = "iptables"
     user_data                = var.pool_oke_cpu_user_data
   }
