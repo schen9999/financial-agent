@@ -353,7 +353,14 @@ cluster. Pass it on the command line:
 ssh ubuntu@<vm-ip> 'KUBECONFIG=$HOME/.kube/config kubectl -n financial-agent get pods'
 ```
 
-### Model comparison — NOT YET EXECUTED
+### Model comparison (executed 2026-09-23/24 and 2026-09-29 on `vm-a10-inst-2`)
+
+**Executed** with `make vm-vllm` and no manifest change: the four-arm
+comparison of 2026-09-23 — hosted `kcf7s` (rerun `dvvxk` 2026-09-24),
+financial-lora `v924f`, Qwen2.5-1.5B-Instruct `4nfsm`, Qwen2.5-7B-Instruct
+`cnkp2` — and the GPTQ W4A16 fine-tune `r5nzh` on 2026-09-29. Results:
+numbers-of-record, dated run records ("Four-arm model comparison" and
+"Grounding, GPTQ W4A16 fine-tune vs BF16 fine-tune").
 
 Runs the eval's local-model arm against a different open-weight model with
 no hand-edited manifests. `make vm-vllm` renders the k3s-gpu overlay, swaps
