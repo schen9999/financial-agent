@@ -508,8 +508,16 @@ image (0.19.x defaults to 12.9, 0.20 and later to 13.0). The
 same Q4_K_M file runs entirely on the A10 under llama.cpp's CUDA 12.8
 build, using 20,488 of 23,028 MiB.
 
-**Why Qwen3.6-35B-A3B and not MiniMax or a smaller Qwen?** By memory as
-served, computed and not booted
+**Why Qwen3.6-35B-A3B and not MiniMax or a smaller Qwen?** The reason at
+selection time (2026-10-02, before any run, recorded in my planning notes
+after you said "you serve a minimax or qwen"): every open MiniMax model is
+a large MoE, which I estimated would not fit the A10 or the largest E5
+node; Qwen3.6-35B-A3B computes with about 3B parameters per token, chosen
+for CPU generation speed; one ~20 GB file fits both an E5 node and an A10,
+so the same model and harness compare CPU against GPU; and you named Qwen
+as acceptable. I did not explicitly weigh the dense Qwens then. What
+follows came afterwards and supports the choice; it was not the reasoning.
+By memory as served, computed and not booted
 ([fit table](gpu-inference.md#why-qwen36-35b-a3b-and-not-minimax-or-a-smaller-qwen-computed-not-booted-2026-10-15)):
 weights plus KV cache at the harness's context, about 8 requests of up to
 5k tokens. No MiniMax open-weight build fits the A10's 24 GB, even on

@@ -69,11 +69,28 @@ on the A10.
 
 ## Why Qwen3.6-35B-A3B and not MiniMax or a smaller Qwen (computed, not booted, 2026-10-15)
 
-**What the records say about the choice.** The commits that introduced the
-model (`1a417be`, `02ddf2e`, `eb7b1b9`, 2026-10-02) and the method section
-written that day record what was chosen and how it is pinned, not why. No
-motive is reconstructed here. What follows are fit facts, computed from
-the published files, and the measured speed of the one model that ran.
+**Why it was chosen, as recorded at selection time (2026-10-02, before
+any run).** The reason is in the owner's planning notes of 2026-10-02,
+written right after Sanjay Basu replied "you serve a minimax or qwen"; the
+commits that introduced the model (`1a417be`, `02ddf2e`, `eb7b1b9`) record
+what was chosen and how it is pinned, not why. The notes give four reasons:
+
+- **MiniMax:** every open MiniMax model is a large MoE (M2.5 230B total,
+  10B active; M2.7 about 108 GB at 4 bits; M3 428B), estimated then not to
+  fit the A10 (24 GB) or the largest E5 node (~58 GiB allocatable).
+- **Qwen3.6-35B-A3B:** about 3B active parameters per token, chosen for
+  CPU generation speed: the efficient-MoE profile MiniMax has, at a size
+  that can be served here.
+- **One file for both:** one ~20 GB Q4 file fits both one E5 node and one
+  A10, so the same model and harness compare CPU against GPU serving.
+- **Basu named Qwen as acceptable.**
+
+The dense Qwen models were not explicitly weighed at selection time. The
+fit table below and the measured CPU numbers came afterwards: they support
+the choice, they were not the reasoning behind it, and nothing here says
+how a dense model would have performed. What follows are fit facts,
+computed from the published files, and the measured speed of the one model
+that ran.
 
 **Fit, computed from the published files.** File sizes are each repo's
 GGUF files at a pinned revision, all shards summed, the vision projector
@@ -124,7 +141,8 @@ parameters each. Every M2.x layer is full attention (`attn_type_list` all
 ² M3's sparse-attention index keys are not counted; it is out of both
 budgets on its file alone.
 
-- **No MiniMax open-weight build fits either budget as served.** None fits
+- **No MiniMax open-weight build fits either budget as served** (the
+  2026-10-02 estimate, now computed). None fits
   the A10 even on weights. On an E5 node the smallest M2.5 and M2.7 builds
   (about 2 bits per weight on average: UD-TQ1_0 1.95, UD-IQ1_M 2.12, file
   bytes over parameters) fit on weights alone, with 6.06 and 1.47 GiB
