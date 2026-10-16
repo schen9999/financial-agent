@@ -6,7 +6,7 @@
 
 An AI agent that researches stocks and answers follow-up questions using live financial data, news, and SEC filings, with an evaluation harness that measures how far its briefs can be trusted.
 
-**Live Demo:** [financial-research-agent.streamlit.app](https://financial-research-agent.streamlit.app) | **Built with Claude Code**
+**Live Demo:** [financial-research-agent.streamlit.app](https://financial-research-agent.streamlit.app) (Streamlit Community Cloud, hosted Claude models; it sleeps when idle and takes a minute or two to wake; checked 2026-10-16). This public app runs the hosted-model path of `app.py` in-process: it is not the OCI deployment the results below come from — no OKE cluster, no Argo eval harness, no self-served model. | **Built with Claude Code**
 
 **Documentation:** start at [docs/README.md](docs/README.md), which maps each question a reviewer might ask to the document that answers it. Every number below comes from a committed, re-runnable harness; run IDs, intervals and the rules for quoting them are in [docs/numbers-of-record.md](docs/numbers-of-record.md).
 
