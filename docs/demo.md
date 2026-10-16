@@ -410,9 +410,33 @@ credential plugin consumes).
   mislabelled a category ("Legal, Tax, Regulatory…", then strategic
   risks). With the top three retrieved chunks, an open-ended "main risk
   factors" invites that, so the default now asks about the one risk that
-  retrieval returned cleanly. The narrowed question has not been timed
-  yet; the rehearsal (check 13) records its time. Neither trial is a
-  citable run.
+  retrieval returned cleanly. Neither trial is a citable run.
+- **Trials of the narrowed questions** (operator, 2026-10-16, image
+  `f3043751`, after the narrowing merged; dated, not citable runs):
+  - **Apple alternate** (`ALT=1`, about 19:06Z): `OK`, wall 95.8 s,
+    `get_stock_data` + `query_sec_filing`; ReAct 7.6 s, retrieval answer
+    58.8 s, ReAct 28.4 s; 0 hosted calls. The answer stayed on topic: the
+    P/E from Yahoo, and the outsourcing risk with detail
+    the question did not ask for, from the retrieved filing text (mainland
+    China, India, Japan, South Korea, Taiwan and Vietnam; single- or
+    limited-source components; natural disasters, public health, labor,
+    power and cyber disruptions). No drift.
+  - **Walmart default** (about 19:09Z): `OK`, wall 33.8 s, `10-K check`
+    same filing (2026-03-13); ReAct 6.1 s, retrieval answer 4.5 s, ReAct
+    22.5 s; 0 hosted calls. On topic: execution risk and the cost of the
+    omnichannel and eCommerce investments. **33.8 s is a warm time:** the
+    retrieval answer took 4.5 s against 35.2 s on the first Walmart run
+    20 minutes earlier, very likely llama.cpp reusing its prompt cache for
+    the same retrieved chunks (likely, not checked in the server log). The
+    cold time is about 70 s (the first Walmart run, 72.5 s). On the day
+    the endpoint will have served the smoke's other prompts in between, so
+    plan for cold.
+  - **A model addition to watch for:** the Walmart answer's closing line
+    mentions "Walmart+". That word is in none of the four chunks of
+    Walmart's Pinecone namespace and not in `get_sec_filings`' 10-K
+    summary (checked 2026-10-16 with read-only retrieval, no model call),
+    so the model added it from its own knowledge. Harmless here, but it is
+    not from the sources: if it comes up, say so.
 - **Not done: a 1-ticker CPU smoke beside the GPU smoke.** Considered and
   not built. `make slm-eval-run` finds its workflow afterwards as the
   newest one in the namespace, so with two running it would capture the
