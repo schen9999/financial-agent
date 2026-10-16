@@ -13,7 +13,9 @@ NS=financial-agent
 IMAGE=ghcr.io/ggml-org/llama.cpp@sha256:eecd2fa8525f683721848bf21df479515636bfd4f4448c3c85af1fec6ade7a13  # full-b11347
 MODEL=/models/Qwen3.6-35B-A3B-Q4_K_M.gguf
 OUT=~/llama-bench-cpu-$(date -u +%Y%m%d); mkdir -p "$OUT"
-log() { echo "[bench $(date -u +%FT%TZ)] $*" | tee -a "$OUT/run.log"; }
+# run.log is committed: node names on OKE are addresses, so lines go through
+# scripts/redact.py (placeholders from the gitignored .addresses.env).
+log() { echo "[bench $(date -u +%FT%TZ)] $*" | python3 scripts/redact.py | tee -a "$OUT/run.log"; }
 
 running=$(kubectl -n $NS get workflows --no-headers 2>/dev/null | awk '$2=="Running"{print $1}')
 [ -n "$running" ] && { echo "refusing: eval running: $running"; exit 1; }
