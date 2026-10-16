@@ -156,7 +156,21 @@ rehearsal's own run.
 
 - [ ] **13. The live CPU ask, while the smoke runs** (operator, a second
   pane, started a minute or two after check 12, as at step 3 of the
-  running order; no Anthropic spend)
+  running order; no Anthropic spend). First, before check 12, the two
+  things it needs from outside the cluster's model:
+  ```bash
+  # the embedding model loads from the image with the HF hub switched off
+  kubectl -n financial-agent exec deploy/api -c api -- env HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 python -c \
+    "from llama_index.embeddings.huggingface import HuggingFaceEmbedding as E; print(len(E(model_name='BAAI/bge-small-en-v1.5').get_text_embedding('ok')))"
+  # EDGAR answers from the cluster (one request, SEC's ticker map)
+  kubectl -n financial-agent exec deploy/api -c api -- python -c \
+    "from agent.tools.sec_common import lookup_cik; print(lookup_cik('V'))"
+  ```
+  Expected: `384` (bge-small's dimension). An error about the hub or a
+  missing file means the model is not in the image's cache: use `ALT=2`,
+  which needs no embedding, and say so. Then `0001403161`; `None` means
+  EDGAR did not answer: use the recorded pane, no live ask. Then, after
+  check 12:
   ```bash
   make live-cpu-ask 2>&1 | tee ~/rehearsal-cpu-ask-$(date -u +%F).log
   ```

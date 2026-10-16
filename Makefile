@@ -358,9 +358,12 @@ ALT ?= 0
 live-cpu-ask: ## (operator) One /ask question by the ReAct agent on the CPU endpoint only (ALT=0|1|2); a demonstration, not a citable run
 	@# The pinned image predates the script, so it goes in as python -c's
 	@# argument (never on stdin: the oci credential plugin consumes it). The
-	@# GPU URL and key are blanked for this process; LangSmith tracing is off.
+	@# GPU URL and key are blanked for this process; LangSmith tracing is off;
+	@# the embedding model loads from the image's baked cache (Dockerfile.k8s,
+	@# HF_HOME=/opt/hf-cache) with the Hugging Face hub switched off.
 	kubectl -n $(NAMESPACE) exec deploy/api -c api -- env SLM_FULL=true SLM_ENDPOINT=cpu \
 		SLM_GPU_URL= SLM_GPU_API_KEY= LANGCHAIN_TRACING_V2=false LANGSMITH_TRACING=false \
+		HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \
 		python -c "$$(cat scripts/live_cpu_ask.py)" --alt $(ALT)
 
 run-time-check: ## (operator) Gate a long run on a finished smoke's measured per-ticker time: WF=<smoke workflow> NEXT=<run file>

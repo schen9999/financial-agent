@@ -286,6 +286,8 @@ failed, and debug no further than the first check:
 | Live CPU ask prints `refusing:` | the line names the setting | nothing was sent; skip the step, say so, show the recorded CPU tool-use pane instead (below) |
 | Live CPU ask: `FATAL: slm-cpu … unreachable` | preflight check 4 (`llamacpp` Running) | skip the step; the recorded pane |
 | Live CPU ask: `NOT OK — hosted Anthropic call attempted` | the tool it was in | the guard stopping a hosted call, by design; say so, no re-run |
+| Live CPU ask: the `query_sec_filing` result is an error naming Hugging Face, `HF_HUB_OFFLINE` or a missing model file | check 13's embedding line | the model is not in the image's cache and the hub is switched off, by design; skip the step, or run `ALT=2` (no embedding) if time allows |
+| Live CPU ask: a tool result `Could not find SEC CIK …` or `SEC lookup failed …` | check 13's EDGAR line | EDGAR throttling, as on 2026-08-24, when MSFT's CIK lookups failed (commit `0aa2678`); show it as it is, no live retry; the recorded pane |
 | Live CPU ask still running at step 4 | the pane's last tool line | go on to step 5, read it out at step 8 |
 | Live CPU ask: one tool only, or a weak answer | the tool lines | show it as it is: a single unjudged question, not a measurement |
 
@@ -335,8 +337,14 @@ credential plugin consumes).
   attempted, it would print `NOT OK — hosted Anthropic call attempted` and
   exit 1. It spends no Anthropic credit, so the budget lines are
   unchanged. Not model calls, but outside the cluster: EDGAR and Pinecone
-  for the tools, and the Hugging Face hub, which the local embedding
-  model's loader fetches from or checks. LangSmith tracing is off for the
+  for the tools. The embedding model (`BAAI/bge-small-en-v1.5`) is baked
+  into the image by `Dockerfile.k8s` at `f3043751`, and `make
+  live-cpu-ask` runs with `HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1`, so
+  the ask does not contact Hugging Face. The image is private, so that is
+  read from the Dockerfile and confirmed in the pod by check 13, not by
+  inspecting the image from outside. EDGAR has throttled the harness
+  before: MSFT's CIK lookups failed in the 2026-08-24 run (commit
+  `0aa2678`), so check 13 makes one EDGAR request first. LangSmith tracing is off for the
   process.
 - **Why it cannot touch the GPU smoke's proof.** That proof matches every
   task in node 2's llama-server log, from the smoke's creation to the
