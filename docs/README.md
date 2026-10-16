@@ -19,7 +19,7 @@ the dates, and use it as evidence rather than as current instructions).
 | How do I run it locally? | [README](../README.md): "Running Locally"; [k8s/README.md](../k8s/README.md) for the kind cluster | reference |
 | What is the architecture? | [architecture.md](architecture.md), including the pipeline and Kubernetes diagrams and the Celery vs Argo split (moved from the README, 2026-10-08) | reference |
 | What are the results, and which numbers can I quote? | [numbers-of-record.md](numbers-of-record.md): [current](numbers-of-record.md#current), [dated run records](numbers-of-record.md#dated-run-records), [retired](numbers-of-record.md#retired); summary table in the [README](../README.md) "Key results" | reference |
-| How is grounding measured, and how reliable is the judge? | [eval-methodology.md](eval-methodology.md): "What is measured", "Rigor rules", the judge-validation sections; a guided version in [system-tour.md](system-tour.md), section 5 | dated log |
+| How is grounding measured, and how reliable is the judge? | [eval-methodology.md](eval-methodology.md): "What is measured", "Rigor rules", the judge-validation sections; a guided version as of September 2026 in [system-tour.md](system-tour.md), section 5 | dated log |
 | Can a self-served open-weight model write the whole brief, and at what cost? | [eval-methodology.md](eval-methodology.md): "GPU SLM extended run `p9jr2`" (the same-image three-way, cost per brief, numeric check); the full experiment records in [experiments.md](experiments.md); summary in the [README](../README.md) | dated log |
 | How was a real error traced, end to end? | [debugging-story.md](debugging-story.md): a currency error the judge accepted and the numeric check caught, traced to the stock data; three shorter cases | dated log |
 | What has run on the A10, how fast, at what cost? | [gpu-inference.md](gpu-inference.md): vLLM on the fine-tune (BF16 vs W4A16), why llama.cpp for Qwen3.6, CPU vs A10 | reference |
@@ -28,7 +28,7 @@ the dates, and use it as evidence rather than as current instructions).
 | Which model should write the sections: hosted, or open-weight on the A10? | [model-recommendation.md](model-recommendation.md): recommendation, four-arm results, and the A10 cost per brief (2026-09-28) | dated log |
 | Why does the fine-tuned model ship disabled? | [eval-methodology.md](eval-methodology.md): the 40-ticker A/B (2026-09-05/06) and the four-arm comparison (2026-09-23) | dated log |
 | How do I run the tests? | [README](../README.md): "Testing"; [verification.md](verification.md) for the manifest-equivalence proof | reference |
-| What are the known limitations? | [system-tour.md](system-tour.md): [known limitations and next steps](system-tour.md#known-limitations-and-next-steps) | reference |
+| What are the known limitations? | [eval-methodology.md](eval-methodology.md): [known limitations](eval-methodology.md#known-limitations-from-the-cold-read-review-2026-10-09) and the numbered limitations before it; the README's "Next steps"; the September view in [system-tour.md](system-tour.md#known-limitations-and-next-steps) | reference |
 | What does it cost? | Infrastructure list prices (OCI A10, AWS): [cost.md](cost.md); per-brief API cost: [numbers-of-record.md](numbers-of-record.md#current) | reference |
 | How do I tear it down? | [operations.md](operations.md), "Teardown": kind, a k3s node, the A10 VMs (tenancy owner, OCI console), ECS, OKE | reference |
 | How is the AWS deployment built? | [aws.md](aws.md) (moved from the README, 2026-10-08); [infra/README.md](../infra/README.md) | reference |
@@ -57,7 +57,7 @@ the dates, and use it as evidence rather than as current instructions).
 | [cost.md](cost.md) | Infrastructure list prices from the official OCI and AWS price APIs, with retrieval dates | reference |
 | [deploy-runbook.md](deploy-runbook.md) | How each deploy step was first executed and what broke (dated), plus the OKE steps; the current procedure is operations.md | dated log |
 | [numbers-of-record.md](numbers-of-record.md) | Every quotable number, its source harness, and the retired ones | reference |
-| [system-tour.md](system-tour.md) | Guided tour of the system, results, and limitations | reference |
+| [system-tour.md](system-tour.md) | Guided tour of the system, results, and limitations, as of September 2026 | dated log |
 | [verification.md](verification.md) | Proof that the kustomize overlays did not change the kind render | reference |
 | [model-recommendation.md](model-recommendation.md) | Hosted Haiku vs open-weight models for the section-writing role: recommendation, results and A10 cost, from the 2026-09-23 four-arm comparison | dated log |
 | [eval-methodology.md](eval-methodology.md) | How the eval works, and every dated experiment and validation | dated log |

@@ -1,5 +1,7 @@
 # System tour
 
+> **September 2026 snapshot.** Current numbers: [numbers-of-record.md](numbers-of-record.md); current known limitations: [eval-methodology.md](eval-methodology.md#known-limitations-from-the-cold-read-review-2026-10-09).
+
 A guided tour of the financial research agent for someone joining the
 project. It walks the system in six stops — what it is for, how it is
 deployed on the OCI A10 nodes, the one experiment that carries the biggest
@@ -95,8 +97,9 @@ request-time async only and Argo is eval orchestration only, never
 merged; and eval pods set `BYPASS_CACHE=true`, so an eval measures the
 pipeline, never the cache.
 
-The manifests are one kustomize base with three overlays — `kind`
-(local), `k3s` (this VM), `oke` (Phase 2) — and `scripts/render_diff.py`
+The manifests are one kustomize base with four overlays — `kind`
+(local), `k3s` (this VM), `oke` (Phase 2) and `oke-provided` (the
+provided OKE cluster, added 2026-10-02) — and `scripts/render_diff.py`
 proves the kind render never drifts when an overlay changes. The k3s
 overlay's deltas are environmental only: NodePorts behind ssh tunnels
 (mcp stays ClusterIP), an imported local image with `imagePullPolicy:
@@ -254,8 +257,8 @@ INFERENCE, which the gate does not count. Consequence: every judge-v1
 rate in this repository (0/84, 3.03%, 12.31%) is a lower bound on what a
 human reading would find.
 
-**Judge v2** (numbers-of-record, "Judge validation (v2, held-out, labeled
-2026-09-06)"). Five rules written from v1's failure modes and frozen
+**Judge v2** (numbers-of-record, "Judge v2 September calibration
+(2026-09-24)"). Five rules written from v1's failure modes and frozen
 before the sample existed; 50 claims drawn from the 40-ticker A/B runs
 with zero overlap with the dev set, labeled blind with no model
 consultation: kappa **0.580**; precision on UNSUPPORTED **9/15 =
@@ -482,8 +485,10 @@ labels, not the judge, are the ground truth.
    VM, then re-measure cost with `scripts/cost_report.py` before quoting
    any new figure; until then $0.0366 stands.
 4. OKE: apply the authored Terraform and run the same DAG there (Phase 2
-   in the runbook). Cost per brief on OCI and vLLM throughput on the A10
-   under OKE are to-be-measured cells in the record.
+   in the runbook). *Partly done since:* the DAG has run on the provided
+   OKE cluster since 2026-10-03, and cost per brief on OCI was measured
+   2026-10-05 and 2026-10-07 (numbers-of-record, dated run records); the
+   Terraform is still never applied, and vLLM serving on OKE: not run.
 5. The local model: the four-arm comparison (2026-09-23, dated set)
    points away from more training data — the fine-tune matched its
    untuned base (p = 0.58), so training was not the cause. Model size is
@@ -502,11 +507,17 @@ labels, not the judge, are the ground truth.
 6. Fix the two upstream stock-data defects (foreign-filer currency,
    profit margin as a raw fraction), then rerun the hosted eval before
    quoting new rates (`eval/numeric_check/upstream-findings.md`).
+   *Done 2026-10-06:* fixed in image `f3043751` and rerun on every arm
+   (currency-label findings 22 and 11 before, 0 and 0 after;
+   numbers-of-record, "Current").
 7. Switch the numeric check from warn to block once the data defects are
    fixed.
 8. Evaluate GGUF quantization quality on CPU; only W4A16 went through the
    grounding eval.
 9. Benchmark other CPU targets (AMD EPYC, AMX-capable Xeon), and add OCI
-   Generative AI as a hosted arm on the same harness.
+   Generative AI as a hosted arm on the same harness. *AMD EPYC done
+   2026-10-08* (llama-bench on the OKE E5 node, AMD EPYC 9J14; numbers-of-record,
+   "CPU core scaling"); an AMX-capable Xeon and OCI Generative AI have not
+   run.
 10. Test whether a multi-agent supervisor improves a small open-weight
     model on CPU.
