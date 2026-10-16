@@ -1,0 +1,40 @@
+# make keda-scale-test on the provided OKE cluster, commit 3fe14fa, start 20261016T200204Z
+bash scripts/keda_scale_test.sh
+[20:02:09Z] ScaledObject worker: min=1 max=4 list=celery db=0 listLength=2 hpa=keda-hpa-worker metric=s0-redis-celery
+[20:02:09Z] test: 8 x celery.accumulate -> expect 4 replicas
+[20:02:15Z] precondition ok: 1 idle worker (worker-ccb4b9465-jvmg9), queue empty, metric=0
+[20:02:17Z] 1. worker-ccb4b9465-jvmg9 stopped consuming 'celery'
+[20:02:18Z]    enqueued 8 celery.accumulate tasks; LLEN celery = 8
+[20:02:19Z] 2. external metric s0-redis-celery = 8
+[20:02:44Z] 3. scaled up: spec.replicas peak 4, 4 ready after 20s
+[20:02:45Z]    all 8 tasks SUCCESS, queue drained
+[20:02:47Z]    worker-ccb4b9465-47crn: 0 accumulate succeeded, 0 error lines
+[20:02:47Z]    worker-ccb4b9465-jvmg9: 0 accumulate succeeded, 0 error lines
+[20:02:48Z]    worker-ccb4b9465-nv77r: 8 accumulate succeeded, 0 error lines
+[20:02:49Z]    worker-ccb4b9465-qxctb: 0 accumulate succeeded, 0 error lines
+[20:02:49Z]    results forgotten (Redis keys removed)
+[20:02:51Z] restore: add_consumer celery on worker-ccb4b9465-jvmg9
+[20:02:53Z] 4. worker-ccb4b9465-jvmg9 consumes 'celery' again; waiting for scale-down to 1
+[20:09:27Z]    back to 1 replica, removed pods gone, after 375s
+[20:09:29Z] 5. remaining worker worker-ccb4b9465-jvmg9 consumes 'celery'
+[20:09:36Z]    discovery check: PASS
+
+KEDA SCALE TEST: PASS — 8 tasks, metric 8, 1 -> 4 -> 1 replicas, 441s
+exit=0
+
+# make keda-check, 2026-10-16T20:09:37Z
+bash scripts/keda_discovery_check.sh installed
+== 1. discovery: kubectl api-resources (full list, stderr captured)
+  OK    api-resources complete (exit 0, no discovery error on stderr)
+== 2. every APIService Available=True
+  OK    all 27 APIServices Available
+== 3. v1beta1.external.metrics.k8s.io
+  OK    served by keda/keda-operator-metrics-apiserver
+  OK    GET /apis/external.metrics.k8s.io/v1beta1 answers
+  OK    deploy/keda-operator available (1)
+  OK    deploy/keda-operator-metrics-apiserver available (1)
+  OK    deploy/keda-admission-webhooks available (1)
+  info  v1beta1.metrics.k8s.io (resource metrics, not KEDA's) backed by kube-system/metrics-server
+
+DISCOVERY CHECK (installed): PASS
+exit=0

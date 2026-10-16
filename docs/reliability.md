@@ -34,7 +34,10 @@ Redis (the Celery result backend, and the brief cache), and
 write to Postgres:** `research_task` never calls `save_brief`; only the
 synchronous route does.
 
-Every app Deployment runs one replica (`k8s/base/`). Postgres sits on a
+Every app Deployment runs one replica (`k8s/base/`). The exception, where
+KEDA is installed (the provided OKE cluster since 2026-10-16): the worker
+scales from 1 to 4 replicas on the depth of its Redis queue
+(`k8s/keda/`; runbook "KEDA"). Postgres sits on a
 50Gi persistent volume (`oci-bv` on OKE); Redis has no volume, by design
 — a rebuildable exact-key cache and short-lived Celery results.
 
@@ -43,6 +46,7 @@ Every app Deployment runs one replica (`k8s/base/`). Postgres sits on a
 | Failure | Behaviour | Evidence |
 |---|---|---|
 | **Worker crash mid-task** | Kubernetes restarts the pod (startup, readiness and liveness probes run `celery inspect ping`). The task is not re-run: `task_acks_late` is not set, so the message was acknowledged when the worker took it **(library default, inferred)**, and with `task_track_started=True` its status keeps reading "processing" until the result record expires **(library default, inferred)**. Other queued tasks wait for the restarted worker. | `celery_worker.py`, `k8s/base/31-worker.yaml`; **not tested** |
+| **Worker pod removed on KEDA scale-down** | The HPA removes at most one pod a minute, after 5 minutes at a lower desired count. The pod gets SIGTERM, and Celery's warm shutdown finishes the running task only within the 30 s grace period. A brief still running after that is lost, the same way as in a crash, because the task was acknowledged early **(inferred)**. Tasks the pod had prefetched but not started go back to the queue **(library behaviour, inferred)**. | `k8s/keda/base/scaledobject.yaml`; the scale test covers scale-down with no task running; **not tested** with one running |
 | **Redis restart (no volume)** | The brief cache empties and refills from the next requests. Queued Celery tasks and stored results are lost; a status query for a lost job reads "queued", because Celery reports an unknown ID as PENDING **(library default, inferred)**. While Redis is down, cache reads and writes fail open — logged, the request falls through to the LLM — but enqueueing an async job fails, and the API returns 500 **(inferred: the call is not caught)**. | `cache.py` (fail-open in code), `api.py`; **not tested** |
 | **Postgres pod restart** | The data survives on its volume. The Deployment uses `Recreate`, so two Postgres pods never share the ReadWriteOnce volume. While it is down, `save_brief` raises and `/research` returns 500 after the brief was generated; the brief was already cached in Redis, so a retry within 24 h is served from the cache. The SQLAlchemy engine has no `pool_pre_ping`, so a stale pooled connection can fail the first request after a restart **(inferred)**. `/history` endpoints return 500 while it is down. | `database.py`, `k8s/base/21-postgres.yaml`; **not tested** |
 | **API pod restart** | One replica, one uvicorn process: requests in flight are lost, including a synchronous `/research` (about 26 s for a hosted brief). Startup, readiness and liveness probes on `/health` keep traffic off the pod until it answers; an init container waits for Postgres. Async jobs are unaffected (they live in Redis and the worker). | `k8s/base/30-api.yaml`; **not tested** |

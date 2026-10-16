@@ -1,0 +1,21 @@
+# make keda-scale-test on kind (kind-financial-agent, Server Version: v1.36.1), commit 3fe14fa, 2026-10-16T20:02:58Z
+bash scripts/keda_scale_test.sh
+[20:03:02Z] ScaledObject worker: min=1 max=2 list=celery db=0 listLength=2 hpa=keda-hpa-worker metric=s0-redis-celery
+[20:03:02Z] test: 8 x celery.accumulate -> expect 2 replicas
+[20:03:07Z] precondition ok: 1 idle worker (worker-df5cb46b8-9nkh6), queue empty, metric=0
+[20:03:11Z] 1. worker-df5cb46b8-9nkh6 stopped consuming 'celery'
+[20:03:13Z]    enqueued 8 celery.accumulate tasks; LLEN celery = 8
+[20:03:14Z] 2. external metric s0-redis-celery = 8
+[20:03:37Z] 3. scaled up: spec.replicas peak 2, 2 ready after 20s
+[20:03:38Z]    all 8 tasks SUCCESS, queue drained
+[20:03:39Z]    worker-df5cb46b8-9nkh6: 0 accumulate succeeded, 0 error lines
+[20:03:39Z]    worker-df5cb46b8-bk8hq: 8 accumulate succeeded, 0 error lines
+[20:03:41Z]    results forgotten (Redis keys removed)
+[20:03:43Z] restore: add_consumer celery on worker-df5cb46b8-9nkh6
+[20:03:47Z] 4. worker-df5cb46b8-9nkh6 consumes 'celery' again; waiting for scale-down to 1
+[20:08:26Z]    back to 1 replica, removed pods gone, after 270s
+[20:08:28Z] 5. remaining worker worker-df5cb46b8-9nkh6 consumes 'celery'
+[20:08:32Z]    discovery check: PASS
+
+KEDA SCALE TEST: PASS — 8 tasks, metric 8, 1 -> 2 -> 1 replicas, 325s
+exit=0

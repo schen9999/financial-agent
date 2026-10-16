@@ -874,6 +874,7 @@ depends on:
     balancer is released before the namespace goes:
     ```bash
     pkill -f 'kubectl -n financial-agent port-forward'
+    make keda-uninstall KEDA_OVERLAY=oke-provided   # if "KEDA" below installed it; before the namespace goes
     kubectl delete -k argo/overlays/oke-provided
     kubectl delete -k k8s/overlays/oke-provided    # deletes the PVC
     kubectl get storageclass oci-bv -o jsonpath='{.reclaimPolicy}'   # Delete => the block volume and stored briefs go too
@@ -1088,6 +1089,156 @@ shred -u ~/public-ui/credentials; rm -f ~/public-ui/tls.crt
 
 Then confirm no load balancer is left:
 `oci lb load-balancer list --compartment-id <the VCN's compartment> --all` is empty.
+
+## KEDA: worker scaling on queue depth
+
+The Celery worker scales on the depth of its Redis queue, from 1 to 4
+replicas on the provided cluster (1 to 2 on kind). KEDA reads `LLEN
+celery` in Redis DB 0 and drives an HPA it owns: desired replicas =
+ceil(waiting tasks / 2), clamped to [1, max]. Files: `k8s/keda/`
+(`base/scaledobject.yaml`, overlays `kind` and `oke-provided`,
+`install/values.yaml`), `scripts/keda_discovery_check.sh`,
+`scripts/keda_scale_test.sh`, `tests/test_keda_worker.py`.
+
+**Cleared 2026-10-16 by the cluster owner.** KEDA is a cluster-level
+install. Before it, no `external.metrics` APIService existed and the
+cluster had only the argo, financial-agent and system namespaces, so
+nothing else was using that API. Only one external metrics adapter can
+hold `v1beta1.external.metrics.k8s.io`; `make keda-install` refuses to run
+if anything other than this release holds it.
+
+**What it installs** (chart `keda` 2.21.0 = KEDA 2.21.0, supported on
+Kubernetes 1.34–1.36; pinned by version and sha256 in the Makefile, and
+the install refuses other bytes): the `keda` namespace with three
+Deployments (operator, metrics apiserver, admission webhooks; each
+requests 100m / 100Mi and is limited to 1 CPU / 1000Mi); 6 `keda.sh` CRDs;
+the APIService `v1beta1.external.metrics.k8s.io`; the
+ValidatingWebhookConfiguration `keda-admission`, which validates `keda.sh`
+objects only, with `failurePolicy: Ignore`; 4 ClusterRoles and 4
+ClusterRoleBindings; and RoleBindings in `kube-system` for the metrics
+adapter. `watchNamespace: financial-agent`, so KEDA reconciles nothing
+anywhere else. It does not touch `v1beta1.metrics.k8s.io`
+(metrics-server's).
+
+**Why it is its own tree.** The ScaledObject needs the KEDA CRDs, so it
+is not in `k8s/overlays/*`: `make deploy`, `make oke-up` and the public-UI
+overlay apply unchanged with or without KEDA. `scripts/render_diff.py`
+showed all 14 existing overlay renders (app, argo, llamacpp, vllm trees)
+IDENTICAL before and after the change. The new tree renders exactly one
+object, the ScaledObject, and kind and oke-provided differ only in
+`maxReplicaCount`.
+
+**What the metric does not see.** It counts tasks no worker has taken
+yet. Each worker (`--concurrency=1`, Celery's default prefetch multiplier
+4) takes up to 4 messages off the list, so tasks that are running or
+prefetched are not in the count.
+
+**Scale-down can lose a brief.** The HPA removes at most one pod per
+minute, after 5 minutes at a lower desired count. The pod gets SIGTERM.
+Celery finishes the running task only within the 30 s grace period, and
+tasks are acknowledged early (reliability.md), so a brief still running
+past that is lost. This is not tested.
+
+**Spend.** More workers change when queued briefs are written, not how
+many: each one costs the same Anthropic spend it would have at one
+replica.
+
+`make oke-up` re-applies the worker Deployment at `replicas: 1`; the HPA
+scales it back to its desired count on its next sync.
+
+### Steps (operator)
+
+1. **[EXECUTED 2026-10-16 19:50Z, commit `a0de47e`]** Install, and check
+   discovery:
+   ```bash
+   cd ~/financial-agent && git pull
+   make keda-install          # discovery check first; then chart digest, helm --wait, APIService Available
+   ```
+   The target runs `scripts/keda_discovery_check.sh` in `discovery` mode
+   before installing and in `installed` mode after. Result: before, all
+   24 APIServices were Available. After, all 27 were Available, `kubectl
+   api-resources` exited 0 with nothing on stderr, `/apis/external.metrics.k8s.io/v1beta1`
+   answered, and the three KEDA Deployments were available.
+   Capture: `eval/runs/keda/oke-1-install.txt`.
+2. **[EXECUTED 2026-10-16 19:52Z, commit `8dc2ec1`]** The ScaledObject:
+   ```bash
+   make keda-worker KEDA_OVERLAY=oke-provided    # Ready=True; HPA keda-hpa-worker, min 1, max 4
+   ```
+   The first apply at `a0de47e` had `pollingInterval: 15`. KEDA's webhook
+   warned that it does not affect scaling at min 1, so it was removed and
+   the object re-applied.
+   Capture: `eval/runs/keda/oke-2-worker.txt`.
+3. **[EXECUTED 2026-10-16 20:02Z, commit `3fe14fa` — PASS]** Live scale test, which spends no Anthropic
+   credit:
+   ```bash
+   make keda-scale-test
+   ```
+   It sends 8 tasks of Celery's builtin `celery.accumulate`, which returns
+   its arguments: no agent code, no network, nothing a worker can fail on.
+   It never sends `research_task`. So that KEDA can see a backlog, the
+   test first cancels the original worker's consumer on the `celery`
+   queue, and it adds the consumer back on every exit (trap). If the
+   script is killed hard, run `kubectl -n financial-agent rollout
+   restart deployment/worker`. An async brief submitted during the test
+   waits for a new pod.
+
+   It passes only if all of these hold: the external metric reports the
+   backlog; the HPA sets min(max, ceil(8/2)) replicas; every task
+   SUCCEEDS on a new pod (none on the paused one); no worker log has an
+   error line; the worker returns to 1 replica; every remaining worker
+   consumes `celery`; and discovery is still healthy.
+   Result: the external metric read 8 one second after the enqueue. The
+   HPA set 4 replicas, and all 4 were Ready when the test next looked,
+   20 s later. All 8 tasks SUCCEEDED, every one on a single new pod, with
+   0 error lines in all four worker logs. After the consumer was
+   restored, the worker was back at 1 replica, with the removed pods
+   gone, 375 s later. The remaining worker consumed `celery`, and the
+   discovery check passed. The run took 441 s, and `make keda-check`
+   right after it passed.
+   Capture: `eval/runs/keda/oke-3-scale-test.txt`. A first run at
+   `8dc2ec1` (19:52Z) also printed PASS with the same numbers (back to 1
+   after 390 s). But that version of the test could still see a pod that
+   was terminating as a worker, and the same run on kind failed on
+   exactly that. The test was fixed at `3fe14fa` and rerun on both
+   clusters. The first run is kept, superseded:
+   `eval/runs/keda/oke-3a-scale-test-first-run-8dc2ec1.txt`.
+4. **[EXECUTED 2026-10-16 20:09Z — PASS, 27 APIServices Available]**
+   After any later cluster change, check
+   discovery again:
+   ```bash
+   make keda-check    # fails on "unable to retrieve the complete list of server APIs" or any unavailable APIService
+   ```
+
+**kind (the equivalence baseline), the same targets** (`HELM=` names the
+helm binary there; kind v1.36.1, commit `3fe14fa`, 2026-10-16 20:02Z to
+20:08Z): every target exited 0, in this order. `keda-install` passed the
+discovery check before and after. `keda-worker` (`KEDA_OVERLAY=kind`,
+max 2) came up Ready. `keda-check` passed. `keda-scale-test` passed:
+metric 8, 1 to 2 to 1 replicas, all 8 tasks on the new pod, 0 error
+lines, back to 1 after 270 s. `keda-uninstall` passed its check.
+Captures: `eval/runs/keda/kind-*.txt`. The render proof is
+`eval/runs/keda/render-diff.txt`.
+
+### Uninstall
+
+```bash
+make keda-uninstall KEDA_OVERLAY=oke-provided
+```
+
+The order matters. First the ScaledObject is deleted while KEDA is still
+running, so the operator clears the ScaledObject's finalizer and removes
+its HPA. Then the worker is scaled back to 1, because the Deployment keeps
+whatever count the HPA last set. Then `helm uninstall` (which removes the
+CRDs, the APIService, the webhook and the RBAC), then the `keda`
+namespace. Last, `scripts/keda_discovery_check.sh uninstalled` checks
+that discovery is complete, that every APIService is Available, and that
+no `v1beta1.external.metrics.k8s.io`, `keda.sh` CRD, `keda-admission`
+webhook, keda ClusterRole or Binding, `kube-system` RoleBinding or
+`keda` namespace is left. A dangling APIService would break discovery for
+every client. **[EXECUTED on kind 2026-10-16, twice: PASS]** The
+APIServices went from 25 to 22, all Available, with nothing left
+(`eval/runs/keda/kind-5-uninstall.txt`). **Not run on OKE**: KEDA stays
+installed there.
 
 ## SLM endpoints: Qwen3.6-35B-A3B on llama.cpp (CPU on OKE, GPU on node 2)
 

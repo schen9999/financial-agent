@@ -1,0 +1,26 @@
+# make keda-uninstall HELM=/root/bin/helm on kind (kind-financial-agent, Server Version: v1.36.1), commit 3fe14fa, 2026-10-16T20:08:35Z
+kubectl -n financial-agent delete scaledobject worker --ignore-not-found --wait --timeout=120s
+scaledobject.keda.sh "worker" deleted from financial-agent namespace
+kubectl -n financial-agent scale deployment/worker --replicas=1
+deployment.apps/worker scaled
+kubectl -n financial-agent rollout status deployment/worker --timeout=600s
+deployment "worker" successfully rolled out
+/root/bin/helm uninstall keda --namespace keda --wait --timeout 5m
+release "keda" uninstalled
+kubectl delete namespace keda --ignore-not-found --wait --timeout=180s
+namespace "keda" deleted
+bash scripts/keda_discovery_check.sh uninstalled
+== 1. discovery: kubectl api-resources (full list, stderr captured)
+  OK    api-resources complete (exit 0, no discovery error on stderr)
+== 2. every APIService Available=True
+  OK    all 22 APIServices Available
+== 3. KEDA remnants
+  OK    v1beta1.external.metrics.k8s.io absent
+  OK    no keda.sh CRDs left
+  OK    ValidatingWebhookConfiguration keda-admission absent
+  OK    no keda ClusterRoles/Bindings left
+  OK    no keda RoleBinding left in kube-system
+  OK    namespace keda gone
+
+DISCOVERY CHECK (uninstalled): PASS
+exit=0

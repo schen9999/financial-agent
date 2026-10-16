@@ -1,0 +1,33 @@
+# scripts/render_diff.py, every kustomize overlay rendered at origin/main 0309a3f (before) vs commit 3fe14fa (after), kubectl kustomize v5.8.1, 2026-10-16T20:10:30Z
+argo_overlays_k3s.yaml                        IDENTICAL: 7 resources match semantically
+argo_overlays_kind.yaml                       IDENTICAL: 7 resources match semantically
+argo_overlays_oke-provided.yaml               IDENTICAL: 7 resources match semantically
+argo_overlays_oke.yaml                        IDENTICAL: 7 resources match semantically
+NEW: k8s_keda_overlays_kind.yaml
+kind: ScaledObject
+  name: worker
+NEW: k8s_keda_overlays_oke-provided.yaml
+kind: ScaledObject
+  name: worker
+k8s_llamacpp_overlays_k3s-gpu.yaml            IDENTICAL: 2 resources match semantically
+k8s_llamacpp_overlays_oke-cpu.yaml            IDENTICAL: 3 resources match semantically
+k8s_overlays_k3s.yaml                         IDENTICAL: 14 resources match semantically
+k8s_overlays_kind.yaml                        IDENTICAL: 14 resources match semantically
+k8s_overlays_oke-provided-public-ui.yaml      IDENTICAL: 16 resources match semantically
+k8s_overlays_oke-provided.yaml                IDENTICAL: 14 resources match semantically
+k8s_overlays_oke.yaml                         IDENTICAL: 14 resources match semantically
+k8s_vllm_overlays_k3s-gpu.yaml                IDENTICAL: 2 resources match semantically
+k8s_vllm_overlays_kind-cpu.yaml               IDENTICAL: 2 resources match semantically
+k8s_vllm_overlays_oke-gpu.yaml                IDENTICAL: 2 resources match semantically
+DIFF: keda.sh/v1alpha1/ScaledObject/financial-agent/worker
+--- /tmp/render-after/k8s_keda_overlays_kind.yaml keda.sh/v1alpha1/ScaledObject/financial-agent/worker
++++ /tmp/render-after/k8s_keda_overlays_oke-provided.yaml keda.sh/v1alpha1/ScaledObject/financial-agent/worker
+@@ -16,7 +16,7 @@
+             type: Pods
+             value: 1
+           stabilizationWindowSeconds: 300
+-  maxReplicaCount: 2
++  maxReplicaCount: 4
+   minReplicaCount: 1
+   scaleTargetRef:
+     apiVersion: apps/v1

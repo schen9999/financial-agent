@@ -104,7 +104,7 @@ flowchart LR
 
     subgraph oke ["OKE, provided cluster: v1.34.1, 4x VM.Standard.E5.Flex (16 vCPU), cri-o"]
         subgraph ns ["namespace financial-agent (every Service ClusterIP except streamlit)"]
-            app["api · worker · streamlit · mcp<br/>image ghcr.io/…:f3043751 (pinned by git sha)"]
+            app["api · worker (1–4, KEDA on queue depth) · streamlit · mcp<br/>image ghcr.io/…:f3043751 (pinned by git sha)"]
             redis[("redis<br/>no volume")]
             pg[("postgres<br/>50Gi oci-bv PVC")]
             argo["Argo v3.7.18: grounding-eval<br/>WorkflowTemplate, eval pods (parallelism 2),<br/>aggregate + gate; CronWorkflow suspended"]
@@ -145,6 +145,13 @@ flowchart LR
   (`make eval-run`, `make slm-eval-run` with the traffic proof). The
   controller may create ConfigMaps in the namespace for oversized templates
   (eval-methodology, "template offload").
+- KEDA 2.21.0 (namespace `keda`, watching only `financial-agent`;
+  installed 2026-10-16 with the cluster owner's clearance) scales the
+  Celery worker from 1 to 4 replicas on the depth of its Redis queue. The
+  ScaledObject is the separate tree `k8s/keda`, so the app overlays apply
+  with or without it. It is verified with a scale test that uses only a
+  builtin Celery task; request-time load has not been measured. Runbook
+  "KEDA".
 - The CPU SLM endpoint: llama.cpp b11347 serving Qwen3.6-35B-A3B Q4_K_M,
   8 CPU / 30Gi requested and limited, so it lands on a ~58 GiB node; the
   GGUF sits on a 50Gi `oci-bv` PVC. Keyed; reached only in-cluster.
