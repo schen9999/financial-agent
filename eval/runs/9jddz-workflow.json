@@ -125,7 +125,7 @@
                 ],
                 "displayName": "eval-ticker(5:AMZN)(0)",
                 "finishedAt": "2026-10-03T21:52:11Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-slm-cpu-9jddz-1304585807",
                 "inputs": {
                     "parameters": [
@@ -170,7 +170,7 @@
                 ],
                 "displayName": "eval-ticker(3:MSFT)(0)",
                 "finishedAt": "2026-10-03T21:45:21Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-slm-cpu-9jddz-1337071589",
                 "inputs": {
                     "parameters": [
@@ -215,7 +215,7 @@
                 ],
                 "displayName": "eval-ticker(6:META)(0)",
                 "finishedAt": "2026-10-03T21:52:30Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-slm-cpu-9jddz-1598757019",
                 "inputs": {
                     "parameters": [
@@ -300,7 +300,7 @@
                 ],
                 "displayName": "eval-ticker(0:AAPL)(0)",
                 "finishedAt": "2026-10-03T21:30:40Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-slm-cpu-9jddz-1834548194",
                 "inputs": {
                     "parameters": [
@@ -385,7 +385,7 @@
                 ],
                 "displayName": "eval-ticker(1:NVDA)(1)",
                 "finishedAt": "2026-10-03T21:37:51Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-slm-cpu-9jddz-1996671923",
                 "inputs": {
                     "parameters": [
@@ -510,7 +510,7 @@
                 ],
                 "displayName": "eval-ticker(8:V)(0)",
                 "finishedAt": "2026-10-03T22:00:20Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-slm-cpu-9jddz-2516466634",
                 "inputs": {
                     "parameters": [
@@ -592,7 +592,7 @@
                 "boundaryID": "grounding-eval-slm-cpu-9jddz",
                 "displayName": "eval-ticker(1:NVDA)(0)",
                 "finishedAt": "2026-10-03T21:31:12Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-slm-cpu-9jddz-2600813302",
                 "inputs": {
                     "parameters": [
@@ -637,7 +637,7 @@
                 ],
                 "displayName": "eval-ticker(9:WMT)(0)",
                 "finishedAt": "2026-10-03T22:05:06Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-slm-cpu-9jddz-2606811347",
                 "inputs": {
                     "parameters": [
@@ -832,7 +832,7 @@
                 ],
                 "displayName": "eval-ticker(4:GOOGL)(0)",
                 "finishedAt": "2026-10-03T21:44:44Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-slm-cpu-9jddz-3970011208",
                 "inputs": {
                     "parameters": [
@@ -877,7 +877,7 @@
                 ],
                 "displayName": "eval-ticker(2:JPM)(0)",
                 "finishedAt": "2026-10-03T21:37:04Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-slm-cpu-9jddz-4124292359",
                 "inputs": {
                     "parameters": [
@@ -919,7 +919,7 @@
                 "boundaryID": "grounding-eval-slm-cpu-9jddz",
                 "displayName": "aggregate",
                 "finishedAt": "2026-10-03T22:05:19Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-slm-cpu-9jddz-688498108",
                 "inputs": {
                     "artifacts": [
@@ -961,7 +961,7 @@
                 ],
                 "displayName": "eval-ticker(7:TSLA)(0)",
                 "finishedAt": "2026-10-03T21:59:57Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-slm-cpu-9jddz-753391677",
                 "inputs": {
                     "parameters": [

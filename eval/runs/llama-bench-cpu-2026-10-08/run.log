@@ -1,4 +1,4 @@
-[bench 2026-10-08T05:04:30Z] endpoint node 10.140.47.66; scaling llamacpp to 0
+[bench 2026-10-08T05:04:30Z] endpoint node <oke-node-4>; scaling llamacpp to 0
 [bench 2026-10-08T05:04:34Z] level 4 vCPU
 [bench 2026-10-08T05:24:29Z] level 4 done: [(512, 0, 45.7), (2048, 0, 61.06), (0, 128, 12.93)]
 [bench 2026-10-08T05:24:29Z] level 8 vCPU
