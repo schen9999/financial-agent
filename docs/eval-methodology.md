@@ -2871,6 +2871,51 @@ python scripts/hf_safetensors_breakdown.py palmfuture/Qwen3.6-35B-A3B-GPTQ-Int4 
 # cyankiwi/Qwen3.6-35B-A3B-AWQ-4bit @00fcea2d3bcf5389b518d4fc082e5590e0ba4844
 ```
 
+### Dated measurement: the same GGUF on an Intel CPU, an AMD CPU and an Nvidia A10 (llama-bench, 2026-10-08 and 2026-10-16)
+
+No judge, not a number of record, no eval run: llama-bench rates for the
+self-served model's file on three OCI shapes. Same GGUF (Qwen3.6-35B-A3B
+Q4_K_M @`baec3eb`), same llama.cpp build (b11347, `5fc4f3c` in every
+result file), same settings (`-p 512,2048 -n 128 -r 3`, CPU request =
+limit, `-t` = the level). AMD EPYC 9J14 on an OKE VM.Standard.E5.Flex node,
+2026-10-08 (`scripts/llama_bench_cpu.sh`, endpoint scaled to 0). Intel
+Xeon Platinum 8358 and the A10 on node 2's VM.GPU.A10.1, 2026-10-16
+(`scripts/llama_bench_node2.sh`, the same CPU-only image for the CPU
+levels, the CUDA 12.8.1 build with all layers on the A10 for the GPU level,
+the GPU endpoint scaled to 0 and restored, checks 8 and 9 passing after).
+
+| Shape (where) | Threads | Prompt, 2,048 tokens (tok/s) | Prompt, 512 tokens (tok/s) | Generation, 128 tokens (tok/s) |
+|---|---|---|---|---|
+| AMD EPYC 9J14, VM.Standard.E5.Flex (OKE pod) | 4 | 61.1 (±0.03) | not quoted (cold) | 12.9 (±0.02) |
+| | 8 | 109.8 (±0.09) | not quoted (cold) | 13.3 (±0.01) |
+| | 15 | 103.6 (±0.26) | not quoted (cold) | 12.8 (±0.02) |
+| Intel Xeon Platinum 8358, VM.GPU.A10.1 host (k3s pod) | 4 | 43.8 (±0.04) | 44.3 (±0.25) | 10.8 (±0.01) |
+| | 8 | 80.4 (±0.16) | 81.5 (±0.32) | 15.9 (±0.01) |
+| | 15 | 122.5 (±1.23) | 122.8 (±3.18) | 20.8 (±0.10) |
+| | 28 | 116.3 (±0.91) | 119.6 (±0.66) | 22.1 (±0.05) |
+| NVIDIA A10, all layers (k3s pod, VM.GPU.A10.1) | 8 | 2,299.5 (±5.71) | 2,289.3 (±81.90) | 110.4 (±0.34) |
+
+It compares OCI shapes, not chips: the core and thread layouts (E5 node 16
+vCPU = 8 OCPU; A10.1 VM 30 vCPU = 15 cores × 2 threads), the memory, an
+OKE node against a single-node k3s VM, and the neighbouring pods all
+differ, and memory bandwidth was not measured. The E5's 512-token prompt
+cells are excluded (cold first repetition). Observations: Xeon generation
+rises with threads (10.8 to 22.1 tok/s) where the E5 stayed about 13; Xeon
+prompt processing flattens past 15 threads, plausibly the VM's 15 physical
+cores, which was not measured; the A10 is about 5× the best CPU on
+generation and about 19× on 2,048-token prompts. Single-request rates,
+not served throughput.
+
+```bash
+E=eval/runs/llama-bench-cpu-2026-10-08; D=eval/runs/llama-bench-2026-10-16
+python scripts/llama_bench_table.py \
+  $E/P4.json="AMD EPYC 9J14 (OKE E5), 4 vCPU" $E/P8.json="AMD EPYC 9J14 (OKE E5), 8 vCPU" \
+  $E/P15.json="AMD EPYC 9J14 (OKE E5), 15 vCPU" \
+  $D/cpu-P4.json="Intel Xeon 8358 (A10.1 host), 4 vCPU" $D/cpu-P8.json="Intel Xeon 8358 (A10.1 host), 8 vCPU" \
+  $D/cpu-P15.json="Intel Xeon 8358 (A10.1 host), 15 vCPU" $D/cpu-P28.json="Intel Xeon 8358 (A10.1 host), 28 vCPU" \
+  $D/gpu.json="NVIDIA A10, all layers"      # = $D/table.md
+```
+
 ## Dated A/B on the single-VM target (2026-09-03)
 
 Same VM, same harness, same judge (v1), ~40 minutes apart, 10/10

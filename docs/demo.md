@@ -102,13 +102,23 @@ own caveats:
   model cost only, at 355 s per ticker against hosted's 26 s (13.7×). The
   endpoint was saturating its 8 vCPU. It suits batch work, not
   interactive work. The CPU's citable numbers are on that image only.
-- **More cores on one node stop helping at 8 vCPU** (llama-bench on the
+- **On the E5 node, more cores stop helping at 8 vCPU** (llama-bench on the
   OKE E5 node, 2026-10-08, a dated measurement with no judge). Prompt
   processing speeds up 1.8× from 4 to 8 vCPU, then not at all. Generation
   stays at about 13 tok/s at every level. Memory bandwidth is the usual
   limit on generation, but that is an inference: this run does not
   measure it. More replicas on separate nodes might add throughput, which
   is also an inference and not measured.
+- **The same model file on three OCI shapes** (llama-bench, 2026-10-16,
+  a dated measurement with no judge;
+  [gpu-inference.md](gpu-inference.md#same-model-file-on-an-intel-cpu-an-amd-cpu-and-an-nvidia-gpu-2026-10-16-llama-bench-no-judge)).
+  On node 2's Intel Xeon (VM.GPU.A10.1), generation rises with threads,
+  10.8 to 22.1 tok/s from 4 to 28, where the AMD E5 stayed about 13;
+  Xeon prompt processing flattens past 15 threads, plausibly the VM's 15
+  physical cores, which was not measured. The A10 is about 5× the best
+  CPU on generation and about 19× on prompt processing. This compares
+  OCI shapes, not chips: core layouts, memory, an OKE node against a k3s
+  VM all differ, and memory bandwidth was not measured.
 - **The instruction set decides whether an engine runs at all.** vLLM's
   prebuilt CPU image needs AVX-512. It crashed with SIGILL on the AVX2-only
   dev laptop ([benchmarks.md](../benchmarks.md)), and its CPU backend ran on

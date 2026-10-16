@@ -164,6 +164,10 @@ is an inference, as in the core-scaling section. Per generated token, the
 other models compute with 10B (MiniMax M2.x), ~23B (M3), 27B, 9.7B or 4.7B
 parameters against this model's 3B. That is a count of weights touched,
 not a speed: none of them was run, so no tok/s is given for any of them.
+The flat ~13 tok/s is the E5 shape's figure: the same file on node 2's
+Xeon generated 10.8 to 22.1 tok/s, rising with threads from 4 to 28
+([below](#same-model-file-on-an-intel-cpu-an-amd-cpu-and-an-nvidia-gpu-2026-10-16-llama-bench-no-judge),
+2026-10-16, a comparison of shapes, not chips).
 
 Reproduce:
 
@@ -287,6 +291,63 @@ vCPU was not schedulable (node allocatable 15,783m), so the top level is
   30 minutes and the rollout a 40-minute progress deadline; a cold load
   measured 15 min 15 s under it, with 0 restarts (runbook, "CPU endpoint
   startup probe").
+
+## Same model file on an Intel CPU, an AMD CPU and an Nvidia GPU (2026-10-16, llama-bench, no judge)
+
+A dated measurement with no judge, not a number of record. The same GGUF
+(Qwen3.6-35B-A3B Q4_K_M, `ggml-org` @`baec3eb`), the same llama.cpp
+release (b11347, `5fc4f3c`) and the same llama-bench settings (`-p
+512,2048 -n 128 -r 3`, one Job per level, CPU request = limit, `-t` = the
+level) on three OCI shapes. The AMD rows are the 2026-10-08 sweep above
+(`scripts/llama_bench_cpu.sh`). The Intel and A10 rows are
+`scripts/llama_bench_node2.sh` on node 2, 2026-10-16 05:59–06:12Z, with
+the GPU endpoint scaled to 0 for the run and restored after it (llama-server
+back at 20,488 MiB, key enforced, alias unchanged; runbook "Cross-shape
+llama-bench on node 2"). The Intel levels use the same CPU-only image as
+the AMD run, a build with no GPU backend. The A10 level uses the CUDA 12.8.1
+build of the same release, all layers on the GPU. Mean (± standard
+deviation over the three repetitions); results in
+`eval/runs/llama-bench-2026-10-16/` (table: `table.md`, from
+`scripts/llama_bench_table.py`) and `eval/runs/llama-bench-cpu-2026-10-08/`.
+
+| Shape (where) | Threads | Prompt, 2,048 tokens (tok/s) | Prompt, 512 tokens (tok/s) | Generation, 128 tokens (tok/s) |
+|---|---|---|---|---|
+| AMD EPYC 9J14, VM.Standard.E5.Flex (OKE pod) | 4 | 61.1 (±0.03) | not quoted (cold) | 12.9 (±0.02) |
+| | 8 | 109.8 (±0.09) | not quoted (cold) | 13.3 (±0.01) |
+| | 15 | 103.6 (±0.26) | not quoted (cold) | 12.8 (±0.02) |
+| Intel Xeon Platinum 8358, VM.GPU.A10.1 host (k3s pod) | 4 | 43.8 (±0.04) | 44.3 (±0.25) | 10.8 (±0.01) |
+| | 8 | 80.4 (±0.16) | 81.5 (±0.32) | 15.9 (±0.01) |
+| | 15 | 122.5 (±1.23) | 122.8 (±3.18) | 20.8 (±0.10) |
+| | 28 | 116.3 (±0.91) | 119.6 (±0.66) | 22.1 (±0.05) |
+| NVIDIA A10, all layers (k3s pod, VM.GPU.A10.1) | 8 | 2,299.5 (±5.71) | 2,289.3 (±81.90) | 110.4 (±0.34) |
+
+**It compares OCI shapes, not chips.** The two CPU rows differ in more than
+the processor: a 16-vCPU E5 node (8 OCPU) in OKE against a 30-vCPU
+VM.GPU.A10.1 (15 cores, 2 threads each, `lscpu`), different memory sizes
+and, unmeasured, different memory bandwidth, each pod sharing its host with
+whatever else ran there. A thread count is a pod's CPU limit, not a number
+of physical cores. The E5's 512-token prompt figures are not quoted: their
+first repetition was a cold load (spread ±27 to ±56 tok/s); its 2,048-token
+figures are the prompt comparison.
+
+What the numbers show, and no more:
+
+- **On the Xeon, generation rises with threads, from 10.8 to 22.1 tok/s
+  (4 to 28); on the E5 it stayed about 13 at every level.** Why is not
+  measured.
+- **Xeon prompt processing flattens past 15 threads** (122.5 at 15, 116.3
+  at 28). The VM has 15 physical cores with 2 threads each, which is a
+  likely explanation, not a measured one.
+- **At the same thread count**, prompt processing is lower on the Xeon at 4
+  and 8 threads (43.8 and 80.4 against 61.1 and 109.8) and higher at 15
+  (122.5 against 103.6); generation is lower at 4 (10.8 against 12.9) and
+  higher at 8 and 15 (15.9 and 20.8 against 13.3 and 12.8).
+- **The A10 is about 5× the best CPU on generation** (110.4 against 22.1,
+  the Xeon at 28 threads) **and about 19× on prompt processing** (2,299.5
+  against 122.5, the Xeon at 15 threads, 2,048 tokens).
+- These are single-request llama-bench rates, not served throughput: the
+  endpoint's capacity under the eval's concurrency is the replay sweep
+  below, and the eval-measured runs are in the sections above.
 
 ## Capacity at higher parallelism
 
