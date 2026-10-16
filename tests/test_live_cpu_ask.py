@@ -173,4 +173,7 @@ def test_questions_each_need_two_tools():
     assert all(len(set(q[2])) == 2 for q in lca.QUESTIONS)
     assert "get_stock_data" not in lca.QUESTIONS[0][2]  # the default stays off Yahoo
     assert lca.QUESTIONS[0][0] in lca.INDEXED_10K  # the default's filing is pinned
+    # narrowed after the open-ended "main risk factors" answer drifted (2026-10-16)
+    assert "omnichannel and eCommerce" in lca.QUESTIONS[0][1]
+    assert "main risk factors" not in lca.QUESTIONS[0][1]
     assert "fiscal 2025 10-K" in lca.QUESTIONS[1][1]  # Apple files again before the demo
