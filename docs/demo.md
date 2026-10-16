@@ -29,8 +29,10 @@ run IDs and links lead to the full record.
   ran and the 5% gate; a third run was declined under the no-third-attempt
   rule. The CPU's citable numbers are on `1f51dad`.
 - **On CPU the model writes what it writes on the A10, and fewer figures
-  than hosted** (`1f51dad`, judged three times): unsupported 2.89% CPU,
-  2.25% A10, 2.16% hosted (means), no difference detected on either pair;
+  than hosted** (`1f51dad`, judged three times): unsupported 2.89% CPU `8vpq6`,
+  2.25% A10 `p9jr2`, 2.16% hosted `9jzmj` (means of pooled rates; not the
+  `4hsn2` ticker-averaged 2.16% on the current image), no difference
+  detected on either pair;
   figures bound to stock data 3.00 per brief on CPU against 4.62 hosted
   (hosted +1.62, CI +1.02 to +2.23) and 2.83 on the A10 (+0.17, CI −0.28 to
   +0.62). Moving the model from CPU to GPU changed its speed, not
