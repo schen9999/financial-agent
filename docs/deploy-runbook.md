@@ -2040,6 +2040,8 @@ and `-t` = the level.
    ```bash
    D=eval/runs/llama-bench-<YYYY-MM-DD>; mkdir -p $D
    scp 'oci2:~/llama-bench-node2-<YYYYMMDD>/*' $D/
+   python3 scripts/redact.py $D/*        # placeholders before anything is committed (CLAUDE.md)
+   python3 scripts/redact.py --check $D/* && echo "no addresses"
    E=eval/runs/llama-bench-cpu-2026-10-08
    python scripts/llama_bench_table.py \
      $E/P4.json="E5 (OKE), 4 vCPU" $E/P8.json="E5 (OKE), 8 vCPU" $E/P15.json="E5 (OKE), 15 vCPU" \
