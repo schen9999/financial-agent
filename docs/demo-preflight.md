@@ -1,7 +1,8 @@
 # Demo preflight checklist
 
-Run it the day before (2026-10-24 or 25, ending with the rehearsal and the
-freeze tag) and again 30 minutes before the demo (checks 1–11 only). In
+Run it in full on the rehearsal day (rehearsal and freeze 2026-10-24,
+spare day 2026-10-25), ending with the rehearsal and the freeze tag, and
+again 30 minutes before the demo (checks 1–11 only). In
 order; **stop at the first check whose output differs from the expected
 line** and take its branch in
 [deploy-runbook.md, "Failure branches"](deploy-runbook.md#failure-branches).
@@ -23,7 +24,7 @@ rehearsal's own run.
   ```
   Expected: `## main...origin/main`, no changes, the same commit on both.
 
-- [ ] **2. Tests** (laptop; the day before only)
+- [ ] **2. Tests** (laptop; rehearsal day only)
   ```bash
   python -m pytest tests/ -q
   ```
@@ -143,7 +144,7 @@ rehearsal's own run.
   `cat .env`. The exposure script, `server_facts` and the run's output
   print no key.
 
-## The rehearsal (the day before only)
+## The rehearsal (rehearsal day only)
 
 - [ ] **12. Launch** (operator, at a recorded time), **with the screen
   recorded**. Start the recording before the launch and stop it after

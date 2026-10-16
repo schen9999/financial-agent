@@ -1719,13 +1719,13 @@ unkeyed model to that IP. The default path never swaps; the one way vLLM
 comes back before the demo is the contingency below, which closes the
 rule first.
 
-### Preflight — the day before, and again 30 minutes before
+### Preflight — the rehearsal day, and again 30 minutes before
 
 **[NOT YET EXECUTED]** The checklist, with each check's command and
 expected output in order, is [demo-preflight.md](demo-preflight.md) (moved
 there 2026-10-15 so there is one copy). Stop at the first failure and take
 its branch below. Nothing in it sends a completion to the GPU endpoint
-before the rehearsal's own run. The day before, it ends with a full
+before the rehearsal's own run. On the rehearsal day (rehearsal and freeze 2026-10-24, spare day 2026-10-25), it ends with a full
 rehearsal (checks 12–15), the per-request proof of that run, and the
 freeze tag. A rehearsal is a dated smoke like any other; it is not an arm
 comparison.

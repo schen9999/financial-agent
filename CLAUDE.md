@@ -143,7 +143,7 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
 6. Branches: work on `slm-harness` until it is merged into `main` (PR, merged
    by the owner on GitHub); after that, short-lived branches into `main`
    via PR. The tag `demo-freeze-2026-10` goes on the final commit at the
-   2026-10-25 freeze, after the rehearsal; post-demo work branches from
+   freeze, after the rehearsal (rehearsal and freeze 2026-10-24, spare day 2026-10-25); post-demo work branches from
    that tag. Small commits, imperative messages.
 7. Judge-calling tests spend Anthropic credits: they run ONLY under an
    explicit env flag (CRITIC_INJECTION=1 today; the same pattern for any

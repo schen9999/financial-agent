@@ -265,17 +265,17 @@ call; the A10 runs the same model file and engine in about 10. Every
 command is in
 [deploy-runbook.md, "Demo live run"](deploy-runbook.md#demo-live-run-november-2026-gpu-smoke-from-the-oke-harness).
 
-**Preflight, the day before and 30 minutes before:**
+**Preflight, on the rehearsal day (rehearsal and freeze 2026-10-24, spare day 2026-10-25) and 30 minutes before:**
 [demo-preflight.md](demo-preflight.md), each check's command and expected
 output in order, stopping at the first failure. In short: the Anthropic
 balance covers the runs (`make anthropic-estimate`: $0.90 a smoke on this
-image; the day before, rehearsal + demo + one spare, $2.71, budget $4.06
+image; on the rehearsal day, rehearsal + demo + one spare, $2.71, budget $4.06
 with margin); OKE nodes and pods Ready; the nightly CronWorkflow
 suspended and nothing running; the image is the pinned `f3043751`; the
 app's `SLM_FULL` is off; node 2's endpoint healthy and keyed, holding
 about 20.5 GB of the A10, vLLM at 0; 401 and 200 from OKE; one Yahoo
-price from the cluster; no key on a shared screen; tunnels up. The day
-before, the preflight ends with a full rehearsal run, the live CPU ask
+price from the cluster; no key on a shared screen; tunnels up. On the
+rehearsal day, the preflight ends with a full rehearsal run, the live CPU ask
 beside it, the run's per-request proof, and then the freeze tag.
 
 **Launch** (operator), at step 2 of the running order:
