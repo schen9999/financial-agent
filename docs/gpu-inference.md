@@ -67,6 +67,127 @@ Computed from the published artifacts, **not booted**
 llama.cpp's CUDA 12.8.1 build serves the same Q4_K_M GGUF with all layers
 on the A10.
 
+## Why Qwen3.6-35B-A3B and not MiniMax or a smaller Qwen (computed, not booted, 2026-10-15)
+
+**What the records say about the choice.** The commits that introduced the
+model (`1a417be`, `02ddf2e`, `eb7b1b9`, 2026-10-02) and the method section
+written that day record what was chosen and how it is pinned, not why. No
+motive is reconstructed here. What follows are fit facts, computed from
+the published files, and the measured speed of the one model that ran.
+
+**Fit, computed from the published files.** File sizes are each repo's
+GGUF files at a pinned revision, all shards summed, the vision projector
+and draft-model files excluded (`scripts/hf_gguf_fit.py`, output
+`eval/runs/gguf-fit-2026-10-15.txt`). Parameter counts are from each
+model card (linked), and the totals were checked against the safetensors
+metadata. Budgets: the A10's 23,028 MiB (22.49 GiB) as nvidia-smi reports
+it; the largest allocatable memory on an OKE E5 node, about 58 GiB; the
+CPU endpoint's pod limit today, 30 GiB.
+
+**Every "fits" below is as served, not weights only.** "As served" means
+the file plus what llama.cpp allocates for the harness's context, about 8
+concurrent requests of up to about 5k tokens, taken as 8 × 5,120 = 40,960
+tokens (`scripts/kv_state_fit.py`, output
+`eval/runs/kv-state-fit-2026-10-15.txt`, from each model's `config.json`
+at a pinned revision):
+
+- the KV cache of every full-attention layer, at f16 (llama.cpp's default);
+- the recurrent state of every linear-attention (Gated DeltaNet) layer,
+  at f32, per request (the Qwen3.5/3.6 models are hybrids, with three
+  linear layers to each full one);
+- a 1 GiB allowance for compute buffers and the CUDA context. This is an
+  **assumption**, not measured per model.
+
+A build whose file fits but which does not fit with the rest is marked
+**weights only: does not fit as served**. Cross-check on the one deployed
+configuration: for the GPU endpoint as deployed (4 slots sharing 32,768
+tokens), the file plus KV plus state comes to 20,367 MiB, against the
+20,488 MiB llama-server held (2026-10-03). The difference is 121 MiB, and
+the 1 GiB allowance is above it.
+
+| Model (card) | Total / active parameters | Quantized build @ revision | Smallest build | Q4_K_M | Q8_0 | KV + state at 8 × 5,120 tokens | The A10 (22.49 GiB), as served | An E5 node (~58 GiB), as served |
+|---|---|---|---|---|---|---|---|---|
+| [Qwen3.6-35B-A3B](https://huggingface.co/Qwen/Qwen3.6-35B-A3B) (MoE) | 35B / 3B | [`ggml-org/Qwen3.6-35B-A3B-GGUF`](https://huggingface.co/ggml-org/Qwen3.6-35B-A3B-GGUF) @`baec3eb` | — | **19.02 GiB** | 34.37 GiB | 0.78 + 0.49 GiB | Q4_K_M fits as served, 1.20 GiB left (ran: 20,488 MiB held at 4 × 8,192 tokens); Q8_0 no (file exceeds) | Q4_K_M and Q8_0 fit as served (36.71 and 21.36 GiB left) |
+| [Qwen3.6-27B](https://huggingface.co/Qwen/Qwen3.6-27B) (dense) | 27B / 27B | [`ggml-org/Qwen3.6-27B-GGUF`](https://huggingface.co/ggml-org/Qwen3.6-27B-GGUF) @`8a7ee08` | — | 17.78 GiB | 26.63 GiB | 2.50 + 1.17 GiB | Q4_K_M **marginal**: 0.04 GiB left, inside the uncertainty of the assumed allowance; Q8_0 no (file exceeds) | Q4_K_M and Q8_0 fit as served (35.55 and 26.70 GiB left) |
+| [Qwen3.5-9B](https://huggingface.co/Qwen/Qwen3.5-9B) (dense) | 9.7B / 9.7B | [`unsloth/Qwen3.5-9B-GGUF`](https://huggingface.co/unsloth/Qwen3.5-9B-GGUF) @`3885219` | UD-IQ2_XXS 2.97 GiB | 5.29 GiB | 8.87 GiB | 1.25 + 0.39 GiB | every build listed fits as served (Q8_0: 10.97 GiB left) | every build listed fits as served |
+| [Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) (dense) | 4.7B / 4.7B | [`unsloth/Qwen3.5-4B-GGUF`](https://huggingface.co/unsloth/Qwen3.5-4B-GGUF) @`e87f176` | UD-IQ2_XXS 1.42 GiB | 2.55 GiB | 4.17 GiB | 1.25 + 0.39 GiB | every build listed fits as served (Q8_0: 15.67 GiB left) | every build listed fits as served |
+| [MiniMax-M2.7](https://huggingface.co/MiniMaxAI/MiniMax-M2.7) (MoE) | 229B / 10B ¹ | [`unsloth/MiniMax-M2.7-GGUF`](https://huggingface.co/unsloth/MiniMax-M2.7-GGUF) @`d2a05cc` | UD-IQ1_M 56.53 GiB | 130.54 GiB (UD-Q4_K_M) | 226.44 GiB | 9.69 GiB (KV only) | no build (the smallest file exceeds by 34.04 GiB) | UD-IQ1_M **weights only: does not fit as served** (9.22 GiB short) |
+| [MiniMax-M2.5](https://huggingface.co/MiniMaxAI/MiniMax-M2.5) (MoE) | 229B / 10B ¹ | [`unsloth/MiniMax-M2.5-GGUF`](https://huggingface.co/unsloth/MiniMax-M2.5-GGUF) @`7c50dca` | UD-TQ1_0 51.94 GiB | 128.84 GiB | 226.44 GiB | 9.69 GiB (KV only) | no build (the smallest file exceeds by 29.45 GiB) | UD-TQ1_0 **weights only: does not fit as served** (4.62 GiB short) |
+| [MiniMax-M3](https://huggingface.co/MiniMaxAI/MiniMax-M3) (MoE, multimodal) | ~428B / ~23B | [`unsloth/MiniMax-M3-GGUF`](https://huggingface.co/unsloth/MiniMax-M3-GGUF) @`abdce34` | UD-IQ1_M 120.43 GiB | 246.73 GiB (UD-Q4_K_M) | 422.46 GiB | 4.69 GiB (KV only ²) | no build | no build (the smallest file exceeds by 62.43 GiB) |
+
+¹ The [MiniMax-M2 card](https://huggingface.co/MiniMaxAI/MiniMax-M2) states
+230B total and 10B active; the M2.5 and M2.7 cards state neither, but their
+`config.json` files match M2's in every size field (62 layers, hidden size
+3,072, 256 experts, 8 per token) and their safetensors totals are 228.7B
+parameters each. Every M2.x layer is full attention (`attn_type_list` all
+1), so their KV cache at this context is large: 248 KiB per token.
+² M3's sparse-attention index keys are not counted; it is out of both
+budgets on its file alone.
+
+- **No MiniMax open-weight build fits either budget as served.** None fits
+  the A10 even on weights. On an E5 node the smallest M2.5 and M2.7 builds
+  (about 2 bits per weight on average: UD-TQ1_0 1.95, UD-IQ1_M 2.12, file
+  bytes over parameters) fit on weights alone, with 6.06 and 1.47 GiB
+  left. Their KV cache at the harness's context takes 9.69 GiB, so they
+  fall 4.62 and 9.22 GiB short as served. A smaller context or fewer
+  concurrent requests would change that; no such configuration was
+  computed or run. None fits the CPU endpoint's 30 GiB pod even on
+  weights. The M2.x Q4_K_M builds (about 129–131 GiB) are under node 2's
+  240 GB of host memory, so they could run there only with most experts in
+  host RAM: a **hybrid** layout in this project's terms. None of this was
+  booted.
+- **The smaller Qwens fit both budgets as served at Q4_K_M, the 27B on the
+  A10 only marginally** (0.04 GiB left, less than the uncertainty in the
+  assumed 1 GiB allowance, so it may not fit). The 9B and 4B have room to
+  spare at Q8_0. In the 30 GiB CPU pod, every Qwen Q4_K_M fits as served;
+  the 27B's Q8_0 is weights only (1.30 GiB short). None was served or
+  evaluated in this project, so nothing is said about its speed or what it
+  would write.
+- **The model that ran fits the A10 as served with 1.20 GiB left** at 8 ×
+  5,120 tokens (computed). As deployed, at 4 × 8,192 tokens, it held
+  20,488 MiB (measured).
+- MiniMax-M3 is above both budgets in every build, the 1-bit-class ones
+  included.
+
+**What 3B active means for CPU generation, measured on the one model that
+ran.** On the OKE E5 node (AMD EPYC 9J14, llama-bench, 2026-10-08,
+[below](#cpu-core-scaling-2026-10-08-llama-bench-no-judge)) the model
+generates 12.8–13.3 tok/s at 4, 8 and 15 vCPU, while prompt processing
+goes from 61.1 to 109.8 tok/s between 4 and 8 vCPU. Computed from those
+numbers: the Q4_K_M file averages 4.71 bits per weight (20,419,565,568
+bytes over the 34,660,610,688 parameters in its GGUF metadata), so the
+~3B parameters active per token are roughly 1.8 GB of weights, and at
+13.3 tok/s that is roughly 23 GB/s of weight reads — an average-based
+approximation (the tensors are quantized unevenly), not a measured memory
+bandwidth. Generation not scaling with cores fits a memory-bound limit; that
+is an inference, as in the core-scaling section. Per generated token, the
+other models compute with 10B (MiniMax M2.x), ~23B (M3), 27B, 9.7B or 4.7B
+parameters against this model's 3B. That is a count of weights touched,
+not a speed: none of them was run, so no tok/s is given for any of them.
+
+Reproduce:
+
+```bash
+# file sizes (weights only)
+python scripts/hf_gguf_fit.py --budget A10=22.49 --budget E5-node=58 --budget cpu-pod=30 \
+  --quants Q4_K_M UD-Q4_K_M Q8_0 --smallest \
+  ggml-org/Qwen3.6-35B-A3B-GGUF@baec3ebee244827cda0f4557eafa8b28f7545fa6 \
+  ggml-org/Qwen3.6-27B-GGUF@8a7ee08e8b9bfb857107ecc25a5599d2f38b76f8 \
+  unsloth/Qwen3.5-9B-GGUF@3885219b6810b007914f3a7950a8d1b469d598a5 \
+  unsloth/Qwen3.5-4B-GGUF@e87f176479d0855a907a41277aca2f8ee7a09523 \
+  unsloth/MiniMax-M2.7-GGUF@d2a05ccf69491b03db0cc40b335aec14bdaf7198 \
+  unsloth/MiniMax-M2.5-GGUF@7c50dca0e5592483ad308ecffc876aecac725660 \
+  unsloth/MiniMax-M3-GGUF@abdce34b5ab2e7dd9260130415c01a1f25561210
+# as served: + KV cache and recurrent state at 8 x 5,120 tokens + 1 GiB allowance
+# (one "CONFIG_REPO@REV|GGUF_REPO@REV|QUANT" per build; the 11 builds of the
+# committed output are in eval/runs/kv-state-fit-2026-10-15.txt)
+python -m scripts.kv_state_fit --seqs 8 --tokens 5120 --budget A10=22.49 --budget E5-node=58 --budget cpu-pod=30 \
+  "Qwen/Qwen3.6-35B-A3B@995ad96eacd98c81ed38be0c5b274b04031597b0|ggml-org/Qwen3.6-35B-A3B-GGUF@baec3ebee244827cda0f4557eafa8b28f7545fa6|Q4_K_M" \
+  "Qwen/Qwen3.6-27B@6a9e13bd6fc8f0983b9b99948120bc37f49c13e9|ggml-org/Qwen3.6-27B-GGUF@8a7ee08e8b9bfb857107ecc25a5599d2f38b76f8|Q4_K_M" \
+  "MiniMaxAI/MiniMax-M2.7@d494266a4affc0d2995ba1fa35c8481cbd84294b|unsloth/MiniMax-M2.7-GGUF@d2a05ccf69491b03db0cc40b335aec14bdaf7198|UD-IQ1_M" \
+  "MiniMaxAI/MiniMax-M2.5@f710177d938eff80b684d42c5aa84b382612f21f|unsloth/MiniMax-M2.5-GGUF@7c50dca0e5592483ad308ecffc876aecac725660|UD-TQ1_0"
+```
+
 ## The A10 against hosted, image `f3043751` (current)
 
 The A10 run of record on the current image (stock-data fix plus

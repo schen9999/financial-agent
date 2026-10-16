@@ -1,0 +1,74 @@
+context: 8 sequences x 5120 tokens; KV f16, recurrent state f32; runtime allowance 1.0 GiB (assumed)
+== Qwen/Qwen3.6-35B-A3B @995ad96 + ggml-org/Qwen3.6-35B-A3B-GGUF @baec3eb Q4_K_M
+   layers: 10 full attention, 30 linear; KV 20,480 B/token; recurrent 65,863,680 B/sequence
+   file 19.02 + KV 0.78 + recurrent 0.49 + allowance 1.00 = 21.29 GiB
+   A10 (22.49 GiB): fits as served (+1.20 GiB as served)
+   E5-node (58.0 GiB): fits as served (+36.71 GiB as served)
+   cpu-pod (30.0 GiB): fits as served (+8.71 GiB as served)
+== Qwen/Qwen3.6-35B-A3B @995ad96 + ggml-org/Qwen3.6-35B-A3B-GGUF @baec3eb Q8_0
+   layers: 10 full attention, 30 linear; KV 20,480 B/token; recurrent 65,863,680 B/sequence
+   file 34.37 + KV 0.78 + recurrent 0.49 + allowance 1.00 = 36.64 GiB
+   A10 (22.49 GiB): no (-14.15 GiB as served)
+   E5-node (58.0 GiB): fits as served (+21.36 GiB as served)
+   cpu-pod (30.0 GiB): no (-6.64 GiB as served)
+== Qwen/Qwen3.6-27B @6a9e13b + ggml-org/Qwen3.6-27B-GGUF @8a7ee08 Q4_K_M
+   layers: 16 full attention, 48 linear; KV 65,536 B/token; recurrent 156,893,184 B/sequence
+   file 17.78 + KV 2.50 + recurrent 1.17 + allowance 1.00 = 22.45 GiB
+   A10 (22.49 GiB): fits as served (+0.04 GiB as served)
+   E5-node (58.0 GiB): fits as served (+35.55 GiB as served)
+   cpu-pod (30.0 GiB): fits as served (+7.55 GiB as served)
+== Qwen/Qwen3.6-27B @6a9e13b + ggml-org/Qwen3.6-27B-GGUF @8a7ee08 Q8_0
+   layers: 16 full attention, 48 linear; KV 65,536 B/token; recurrent 156,893,184 B/sequence
+   file 26.63 + KV 2.50 + recurrent 1.17 + allowance 1.00 = 31.30 GiB
+   A10 (22.49 GiB): no (-8.81 GiB as served)
+   E5-node (58.0 GiB): fits as served (+26.70 GiB as served)
+   cpu-pod (30.0 GiB): weights only (-1.30 GiB as served)
+== Qwen/Qwen3.5-9B @c202236 + unsloth/Qwen3.5-9B-GGUF @3885219 Q4_K_M
+   layers: 8 full attention, 24 linear; KV 32,768 B/token; recurrent 52,690,944 B/sequence
+   file 5.29 + KV 1.25 + recurrent 0.39 + allowance 1.00 = 7.93 GiB
+   A10 (22.49 GiB): fits as served (+14.56 GiB as served)
+   E5-node (58.0 GiB): fits as served (+50.07 GiB as served)
+   cpu-pod (30.0 GiB): fits as served (+22.07 GiB as served)
+== Qwen/Qwen3.5-9B @c202236 + unsloth/Qwen3.5-9B-GGUF @3885219 Q8_0
+   layers: 8 full attention, 24 linear; KV 32,768 B/token; recurrent 52,690,944 B/sequence
+   file 8.87 + KV 1.25 + recurrent 0.39 + allowance 1.00 = 11.52 GiB
+   A10 (22.49 GiB): fits as served (+10.97 GiB as served)
+   E5-node (58.0 GiB): fits as served (+46.48 GiB as served)
+   cpu-pod (30.0 GiB): fits as served (+18.48 GiB as served)
+== Qwen/Qwen3.5-4B @851bf6e + unsloth/Qwen3.5-4B-GGUF @e87f176 Q4_K_M
+   layers: 8 full attention, 24 linear; KV 32,768 B/token; recurrent 52,690,944 B/sequence
+   file 2.55 + KV 1.25 + recurrent 0.39 + allowance 1.00 = 5.20 GiB
+   A10 (22.49 GiB): fits as served (+17.29 GiB as served)
+   E5-node (58.0 GiB): fits as served (+52.80 GiB as served)
+   cpu-pod (30.0 GiB): fits as served (+24.80 GiB as served)
+== Qwen/Qwen3.5-4B @851bf6e + unsloth/Qwen3.5-4B-GGUF @e87f176 Q8_0
+   layers: 8 full attention, 24 linear; KV 32,768 B/token; recurrent 52,690,944 B/sequence
+   file 4.17 + KV 1.25 + recurrent 0.39 + allowance 1.00 = 6.82 GiB
+   A10 (22.49 GiB): fits as served (+15.67 GiB as served)
+   E5-node (58.0 GiB): fits as served (+51.18 GiB as served)
+   cpu-pod (30.0 GiB): fits as served (+23.18 GiB as served)
+== MiniMaxAI/MiniMax-M2.7 @d494266 + unsloth/MiniMax-M2.7-GGUF @d2a05cc UD-IQ1_M
+   layers: 62 full attention, 0 linear; KV 253,952 B/token; recurrent 0 B/sequence
+   file 56.53 + KV 9.69 + recurrent 0.00 + allowance 1.00 = 67.22 GiB
+   A10 (22.49 GiB): no (-44.73 GiB as served)
+   E5-node (58.0 GiB): weights only (-9.22 GiB as served)
+   cpu-pod (30.0 GiB): no (-37.22 GiB as served)
+== MiniMaxAI/MiniMax-M2.5 @f710177 + unsloth/MiniMax-M2.5-GGUF @7c50dca UD-TQ1_0
+   layers: 62 full attention, 0 linear; KV 253,952 B/token; recurrent 0 B/sequence
+   file 51.94 + KV 9.69 + recurrent 0.00 + allowance 1.00 = 62.62 GiB
+   A10 (22.49 GiB): no (-40.13 GiB as served)
+   E5-node (58.0 GiB): weights only (-4.62 GiB as served)
+   cpu-pod (30.0 GiB): no (-32.62 GiB as served)
+== MiniMaxAI/MiniMax-M3 @f0e1c1e + unsloth/MiniMax-M3-GGUF @abdce34 UD-IQ1_M
+   layers: 60 full attention, 0 linear; KV 122,880 B/token; recurrent 0 B/sequence
+   file 120.43 + KV 4.69 + recurrent 0.00 + allowance 1.00 = 126.12 GiB
+   A10 (22.49 GiB): no (-103.63 GiB as served)
+   E5-node (58.0 GiB): no (-68.12 GiB as served)
+   cpu-pod (30.0 GiB): no (-96.12 GiB as served)
+
+# cross-check against the deployed GPU endpoint (4 slots sharing 32,768 tokens; measured 20,488 MiB held by llama-server, 2026-10-03), allowance 0:
+context: 4 sequences x 8192 tokens; KV f16, recurrent state f32; runtime allowance 0.0 GiB (assumed)
+== Qwen/Qwen3.6-35B-A3B @995ad96 + ggml-org/Qwen3.6-35B-A3B-GGUF @baec3eb Q4_K_M
+   layers: 10 full attention, 30 linear; KV 20,480 B/token; recurrent 65,863,680 B/sequence
+   file 19.02 + KV 0.62 + recurrent 0.25 + allowance 0.00 = 19.89 GiB
+   A10 (22.49 GiB): fits as served (+2.60 GiB as served)
