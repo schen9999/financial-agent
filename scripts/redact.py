@@ -11,12 +11,16 @@ shell assignment per line, e.g.
   STREAMLIT_LB_IP=...      ->  <streamlit-lb-ip>
   OKE_API_PRIVATE_IP=...   ->  <oke-api-private-ip>
   OKE_NODE_1=...           ->  <oke-node-1>   (and so on per node)
+  OKE_OPERATOR_HOST=...    ->  <oke-operator-host>   (hostnames too)
+  OKE_VCN_DOMAIN=...       ->  <oke-vcn-domain>
 
 The placeholder is the variable name in lower case with hyphens. Runbook
 commands source the same file, so it is the one place the values are kept
 (template: addresses.env.example). Any other address not on the allowlist
 becomes <public-ip> or <private-ip>, so an unknown one is never written
-out. Addresses inside base64 blobs (base64 gzip text, as in Argo's
+out. Hostnames from the file are replaced as whole names (also as the end
+of a longer FQDN); --check cannot find an unknown hostname, only an
+address. Addresses inside base64 blobs (base64 gzip text, as in Argo's
 status.compressedNodes, and base64 tar.gz, as in the eval pods' findings
 dumps) are redacted inside and the blob re-encoded; base64 that is not
 gzip is not opened.
@@ -57,7 +61,8 @@ ALWAYS = [ipaddress.ip_network(n) for n in (
     "192.0.2.0/24", "198.51.100.0/24", "203.0.113.0/24")]
 PRIVATE = [ipaddress.ip_network(n) for n in ("10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16",
                                               "100.64.0.0/10")]
-ASSIGN = re.compile(r"^\s*(?:export\s+)?([A-Z][A-Z0-9_]*)\s*=\s*['\"]?([0-9.]+)['\"]?\s*(?:#.*)?$")
+ASSIGN = re.compile(r"^\s*(?:export\s+)?([A-Z][A-Z0-9_]*)\s*=\s*['\"]?([A-Za-z0-9.-]+)['\"]?\s*(?:#.*)?$")
+HOSTNAME = re.compile(r"^(?=.*[A-Za-z])[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*$")
 
 
 def placeholder_for(var: str) -> str:
@@ -69,7 +74,8 @@ def address_file() -> Path:
 
 
 def load_map(path: Path | None = None) -> dict[str, str]:
-    """{address: placeholder} from the address file; {} if it is absent."""
+    """{address or hostname: placeholder} from the address file; {} if it is
+    absent."""
     path = path or address_file()
     if not path.is_file():
         return {}
@@ -80,7 +86,8 @@ def load_map(path: Path | None = None) -> dict[str, str]:
             try:
                 ipaddress.ip_address(m.group(2))
             except ValueError:
-                continue
+                if not HOSTNAME.match(m.group(2)):
+                    continue
             out[m.group(2)] = placeholder_for(m.group(1))
     return out
 
@@ -122,7 +129,17 @@ def _generic(addr: str) -> str:
     return "<public-ip>" if ip.is_global else "<private-ip>"
 
 
+def _sub_hosts(text: str, mapping: dict[str, str]) -> str:
+    names = sorted((k for k in mapping if HOSTNAME.match(k)), key=len, reverse=True)
+    if not names:
+        return text
+    pat = re.compile(r"(?<![A-Za-z0-9-])(?:" + "|".join(map(re.escape, names)) + r")(?![A-Za-z0-9-])")
+    return pat.sub(lambda m: mapping[m.group(0)], text)
+
+
 def _sub_text(text: str, mapping: dict[str, str]) -> str:
+    text = _sub_hosts(text, mapping)
+
     def rep(m: re.Match) -> str:
         addr, prefix = m.group(1), m.group(2) or ""
         if not _is_candidate(text, m):

@@ -17,7 +17,7 @@ MAP = {PUB: "<node2-public-ip>", NODE: "<oke-node-2>"}
 
 def test_load_map_from_the_address_file(tmp_path):
     f = tmp_path / ".addresses.env"
-    f.write_text(f"# comment\nNODE2_PUBLIC_IP={PUB}\nexport OKE_NODE_2='{NODE}'  # n2\nNOT_AN_IP=abc\n")
+    f.write_text(f"# comment\nNODE2_PUBLIC_IP={PUB}\nexport OKE_NODE_2='{NODE}'  # n2\nNOT_A_NAME=has spaces\n")
     assert rd.load_map(f) == MAP
     assert rd.load_map(tmp_path / "missing") == {}
 
@@ -84,3 +84,12 @@ def test_cli_filter_and_in_place(tmp_path, monkeypatch, capsys):
     f.write_text(f"c {PUB}\n")
     assert rd.main(["--check", str(f)]) == 1
     assert PUB in capsys.readouterr().out
+
+
+def test_hostnames_from_the_address_file(tmp_path):
+    f = tmp_path / ".addresses.env"
+    f.write_text("OKE_OPERATOR_HOST=o-abcdef\nOKE_VCN_DOMAIN=abcdef.oraclevcn.com\nBAD=not a host\n")
+    m = rd.load_map(f)
+    assert m == {"o-abcdef": "<oke-operator-host>", "abcdef.oraclevcn.com": "<oke-vcn-domain>"}
+    out = rd.redact("ubuntu@o-abcdef:~$ x; node-1.sub.abcdef.oraclevcn.com; no-abcdef; o-abcdefg", m)
+    assert out == "ubuntu@<oke-operator-host>:~$ x; node-1.sub.<oke-vcn-domain>; no-abcdef; o-abcdefg"
