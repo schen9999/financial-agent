@@ -1,0 +1,76 @@
+# Operator, 2026-10-16 ~20:43-20:46Z, branch keda-worker-scaling at 5f75311. Pasted from the operator's terminal by the owner; already redacted at capture time. The unchanged last-applied-configuration context line in the diff is omitted.
+$ bash scripts/public_ui_up.sh --diff 2>&1 | python3 scripts/redact.py
+GUARD sl: ok
+rendered 1 allowlist entry into /home/ubuntu/financial-agent/k8s/overlays/oke-provided-public-ui/generated
+diff -u -N /tmp/LIVE-4232777209/apps.v1.Deployment.financial-agent.worker /tmp/MERGED-3945182028/apps.v1.Deployment.financial-agent.worker
+@@ -6,7 +6,7 @@
+   creationTimestamp: "2026-10-03T17:37:14Z"
+-  generation: 13
++  generation: 14
+@@ -103,7 +103,7 @@
+-      terminationGracePeriodSeconds: 30
++      terminationGracePeriodSeconds: 120
+
+$ bash scripts/public_ui_up.sh 2>&1 | python3 scripts/redact.py
+GUARD sl: ok
+rendered 1 allowlist entry into /home/ubuntu/financial-agent/k8s/overlays/oke-provided-public-ui/generated
+(same diff as above)
+namespace/financial-agent unchanged
+configmap/app-config unchanged
+configmap/streamlit-nginx-allow-4hddd5228f unchanged
+configmap/streamlit-nginx-gggg98226d unchanged
+service/api unchanged
+service/mcp unchanged
+service/postgres unchanged
+service/redis unchanged
+service/streamlit unchanged
+persistentvolumeclaim/postgres-data unchanged
+deployment.apps/api unchanged
+deployment.apps/mcp configured
+deployment.apps/postgres configured
+deployment.apps/redis unchanged
+deployment.apps/streamlit unchanged
+deployment.apps/worker configured
+deployment "streamlit" successfully rolled out
+external IP: <public-ui-lb-ip>
+GUARD sl: ok
+GUARD lb: ok
+public UI up at https://<public-ui-lb-ip>/ (guards passed)
+
+$ kubectl -n financial-agent rollout status deploy/worker --timeout=900s
+deployment "worker" successfully rolled out
+
+$ kubectl -n financial-agent get deploy worker -o jsonpath='{.spec.template.spec.terminationGracePeriodSeconds}{"\n"}'
+120
+
+$ make keda-check
+bash scripts/keda_discovery_check.sh installed
+== 1. discovery: kubectl api-resources (full list, stderr captured)
+  OK    api-resources complete (exit 0, no discovery error on stderr)
+== 2. every APIService Available=True
+  OK    all 27 APIServices Available
+== 3. v1beta1.external.metrics.k8s.io
+  OK    served by keda/keda-operator-metrics-apiserver
+  OK    GET /apis/external.metrics.k8s.io/v1beta1 answers
+  OK    deploy/keda-operator available (1)
+  OK    deploy/keda-operator-metrics-apiserver available (1)
+  OK    deploy/keda-admission-webhooks available (1)
+  info  v1beta1.metrics.k8s.io (resource metrics, not KEDA's) backed by kube-system/metrics-server
+
+DISCOVERY CHECK (installed): PASS
+
+$ kubectl -n financial-agent get deploy mcp postgres worker -o custom-columns=NAME:.metadata.name,GEN:.metadata.generation,OBSERVED:.status.observedGeneration,READY:.status.readyReplicas
+NAME       GEN   OBSERVED   READY
+mcp        5     5          1
+postgres   1     1          1
+worker     14    14         1
+
+$ kubectl -n financial-agent get pods
+NAME                        READY   STATUS    RESTARTS   AGE
+api-6df7d49fd7-s6nx6        1/1     Running   0          10d
+llamacpp-6cfb95c86d-5cxc7   1/1     Running   0          38h
+mcp-85f69f875f-m8tqk        1/1     Running   0          10d
+postgres-6697f6d957-7jb46   1/1     Running   0          13d
+redis-bd6fb5fbb-z9cs7       1/1     Running   0          13d
+streamlit-788b6b5b8-rvbkj   2/2     Running   0          8d
+worker-857b7955bf-fdlfn     1/1     Running   0          2m11s

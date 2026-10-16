@@ -198,7 +198,7 @@ restated in only 3 claims, so its row is almost entirely Financial Health.
 price is the OCI list price, $2.00 per GPU-hour (part B95909, retrieved
 2026-09-24, [cost.md](cost.md)). Boot volume and any other charges are
 excluded. These are estimates derived from the 2026-09-23 benchmark, not
-a measured cost on OCI (still "to be measured in Phase 2").
+a measured cost (full-brief cost per brief on OCI was measured later, numbers-of-record dated rows 2026-10-05 and 2026-10-07; vLLM serving on OKE: not run).
 
 With H = A10 dollars per hour:
 

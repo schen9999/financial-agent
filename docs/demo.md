@@ -12,9 +12,9 @@ run IDs and links lead to the full record.
   Argo eval harness and a llama.cpp endpoint serving Qwen3.6-35B-A3B
   (Q4_K_M) on 8 vCPU and 30 GiB, in-cluster only. One command runs a model
   across 40 tickers, has a Claude judge check every brief against its
-  sources, fails the run above 5% unsupported, and proves from the model
-  server's own per-request log that the self-served model, and nothing
-  else, produced the run.
+  sources and fails the run above 5% unsupported; a per-request match
+  against the model server's own log, a separate step today, shows that
+  the self-served model, and nothing else, produced the run.
 - **CPU serving is sized right at 8 vCPU.** On the OKE node, prompt
   processing speeds up 1.8× from 4 to 8 vCPU and then not at all;
   generation runs at about 13 tok/s at every level (llama-bench,
@@ -29,8 +29,10 @@ run IDs and links lead to the full record.
   ran and the 5% gate; a third run was declined under the no-third-attempt
   rule. The CPU's citable numbers are on `1f51dad`.
 - **On CPU the model writes what it writes on the A10, and fewer figures
-  than hosted** (`1f51dad`, judged three times): unsupported 2.89% CPU,
-  2.25% A10, 2.16% hosted (means), no difference detected on either pair;
+  than hosted** (`1f51dad`, judged three times): unsupported 2.89% CPU `8vpq6`,
+  2.25% A10 `p9jr2`, 2.16% hosted `9jzmj` (means of pooled rates; not the
+  `4hsn2` ticker-averaged 2.16% on the current image), no difference
+  detected on either pair;
   figures bound to stock data 3.00 per brief on CPU against 4.62 hosted
   (hosted +1.62, CI +1.02 to +2.23) and 2.83 on the A10 (+0.17, CI −0.28 to
   +0.62). Moving the model from CPU to GPU changed its speed, not
@@ -263,17 +265,17 @@ call; the A10 runs the same model file and engine in about 10. Every
 command is in
 [deploy-runbook.md, "Demo live run"](deploy-runbook.md#demo-live-run-november-2026-gpu-smoke-from-the-oke-harness).
 
-**Preflight, the day before and 30 minutes before:**
+**Preflight, on the rehearsal day (rehearsal and freeze 2026-10-24, spare day 2026-10-25) and 30 minutes before:**
 [demo-preflight.md](demo-preflight.md), each check's command and expected
 output in order, stopping at the first failure. In short: the Anthropic
 balance covers the runs (`make anthropic-estimate`: $0.90 a smoke on this
-image; the day before, rehearsal + demo + one spare, $2.71, budget $4.06
+image; on the rehearsal day, rehearsal + demo + one spare, $2.71, budget $4.06
 with margin); OKE nodes and pods Ready; the nightly CronWorkflow
 suspended and nothing running; the image is the pinned `f3043751`; the
 app's `SLM_FULL` is off; node 2's endpoint healthy and keyed, holding
 about 20.5 GB of the A10, vLLM at 0; 401 and 200 from OKE; one Yahoo
-price from the cluster; no key on a shared screen; tunnels up. The day
-before, the preflight ends with a full rehearsal run, the live CPU ask
+price from the cluster; no key on a shared screen; tunnels up. On the
+rehearsal day, the preflight ends with a full rehearsal run, the live CPU ask
 beside it, the run's per-request proof, and then the freeze tag.
 
 **Launch** (operator), at step 2 of the running order:
@@ -591,15 +593,17 @@ image (0.19.x defaults to 12.9, 0.20 and later to 13.0). The
 same Q4_K_M file runs entirely on the A10 under llama.cpp's CUDA 12.8
 build, using 20,488 of 23,028 MiB.
 
-**Why Qwen3.6-35B-A3B and not MiniMax or a smaller Qwen?** The reason at
-selection time (2026-10-02, before any run, recorded in my planning notes
-after you said "you serve a minimax or qwen"): every open MiniMax model is
-a large MoE, which I estimated would not fit the A10 or the largest E5
-node; Qwen3.6-35B-A3B computes with about 3B parameters per token, chosen
-for CPU generation speed; one ~20 GB file fits both an E5 node and an A10,
-so the same model and harness compare CPU against GPU; and you named Qwen
-as acceptable. I did not explicitly weigh the dense Qwens then. What
-follows came afterwards and supports the choice; it was not the reasoning.
+**Why Qwen3.6-35B-A3B and not MiniMax or a smaller Qwen?** What follows
+first is the author's reasoning at selection time (2026-10-02), recorded
+here; the original notes are not in the repo. The brief was to
+serve a MiniMax or a Qwen model. Every open MiniMax model is a large MoE,
+which the author estimated would not fit the A10 or the largest E5 node;
+Qwen3.6-35B-A3B computes with about 3B parameters per token, chosen for
+CPU generation speed; one ~20 GB file fits both an E5 node and an A10, so
+the same model and harness compare CPU against GPU; and Qwen was named as
+acceptable in the brief. The dense Qwens were not explicitly weighed then.
+What follows came afterwards and supports the choice; it was not the
+reasoning.
 By memory as served, computed and not booted
 ([fit table](gpu-inference.md#why-qwen36-35b-a3b-and-not-minimax-or-a-smaller-qwen-computed-not-booted-2026-10-15)):
 weights plus KV cache at the harness's context, about 8 requests of up to
@@ -612,7 +616,7 @@ with about 1.2 GiB to spare, and runs whole on it (20,488 MiB held as
 deployed). It computes with about 3B parameters per token, and on the E5
 node it generates about 13 tok/s at 4, 8 and 15 vCPU alike (2026-10-08).
 The smaller Qwens also fit as served, though the 27B dense fits the A10
-only marginally. None of them was run here, so I make no claim about their
+only marginally. None of them was run here, so no claim is made about their
 speed or quality. Serving MiniMax
 or another Qwen would be a new arm with its own runs and traffic proofs.
 

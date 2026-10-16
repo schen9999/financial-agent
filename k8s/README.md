@@ -56,7 +56,7 @@ project's dev machine that environment is a WSL2 Ubuntu 24.04 distro named
 ```bash
 # From Windows, enter the distro at the repo:
 wsl -d financial-agent
-cd "/mnt/c/Users/Samuel Chen/Documents/Projects/financial-agent"
+cd "<repo>"    # the repo under /mnt/c/..., e.g. /mnt/c/Users/<you>/.../financial-agent
 ```
 
 ## Workflow

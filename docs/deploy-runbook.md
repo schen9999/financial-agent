@@ -353,7 +353,14 @@ cluster. Pass it on the command line:
 ssh ubuntu@<vm-ip> 'KUBECONFIG=$HOME/.kube/config kubectl -n financial-agent get pods'
 ```
 
-### Model comparison — NOT YET EXECUTED
+### Model comparison (executed 2026-09-23/24 and 2026-09-29 on `vm-a10-inst-2`)
+
+**Executed** with `make vm-vllm` and no manifest change: the four-arm
+comparison of 2026-09-23 — hosted `kcf7s` (rerun `dvvxk` 2026-09-24),
+financial-lora `v924f`, Qwen2.5-1.5B-Instruct `4nfsm`, Qwen2.5-7B-Instruct
+`cnkp2` — and the GPTQ W4A16 fine-tune `r5nzh` on 2026-09-29. Results:
+numbers-of-record, dated run records ("Four-arm model comparison" and
+"Grounding, GPTQ W4A16 fine-tune vs BF16 fine-tune").
 
 Runs the eval's local-model arm against a different open-weight model with
 no hand-edited manifests. `make vm-vllm` renders the k3s-gpu overlay, swaps
@@ -630,7 +637,9 @@ depends on:
    filled during a build and WSL then failed to start. Clean tree on the
    pushed commit to deploy: `slm-harness`, which carries everything on
    `oke-deploy` plus the SLM work, so one image serves the hosted smoke,
-   every SLM run and the hosted baseline. GHCR login needs a PAT with
+   every SLM run and the hosted baseline. (Historical: `slm-harness` was
+   merged into `main` in PR #19 on 2026-10-08; build from `main` now.)
+   GHCR login needs a PAT with
    `write:packages` (a separate one from the cluster's read-only PAT):
    ```bash
    # node 2
@@ -657,7 +666,7 @@ depends on:
    ```bash
    ssh oke-operator
    git clone https://github.com/schen9999/financial-agent.git && cd financial-agent
-   git checkout slm-harness         # the branch carrying the pin; or git pull, if already cloned
+   git checkout slm-harness         # 2026-10-03, historical: the branch then carrying the pin (merged into main, PR #19, 2026-10-08; use main now); or git pull, if already cloned
    python3 scripts/pin_oke_image.py --check     # must print the sha just pinned
    kubectl get nodes -o wide && kubectl get storageclass   # 4 nodes; oci-bv (default)
    ```
@@ -1207,14 +1216,17 @@ scales it back to its desired count on its next sync.
    exactly that. The test was fixed at `3fe14fa` and rerun on both
    clusters. The first run is kept, superseded:
    `eval/runs/keda/oke-3a-scale-test-first-run-8dc2ec1.txt`.
-4. **[EXECUTED 2026-10-16 20:09Z — PASS, 27 APIServices Available]**
-   After any later cluster change, check
+4. **[EXECUTED 2026-10-16 20:09Z — PASS, 27 APIServices Available;
+   re-run PASS after step 5's apply, ~20:46Z, capture
+   `eval/runs/keda/oke-4-5-apply.txt`]** The 20:09Z run itself has no
+   committed capture. After any later cluster change, check
    discovery again:
    ```bash
    make keda-check    # fails on "unable to retrieve the complete list of server APIs" or any unavailable APIService
    ```
 5. **[EXECUTED on OKE 2026-10-16 ~20:43–20:46Z, by the owner, branch at
-   `5f75311`; kind PASS 2026-10-16]** The worker's
+   `5f75311`, capture `eval/runs/keda/oke-4-5-apply.txt`; kind PASS
+   2026-10-16]** The worker's
    shutdown grace (`terminationGracePeriodSeconds: 120`). The live
    namespace runs the public-UI overlay, so apply it through
    `scripts/public_ui_up.sh`: it renders that overlay (oke-provided plus
@@ -1232,14 +1244,18 @@ scales it back to its desired count on its next sync.
    kubectl -n financial-agent get deploy worker -o jsonpath='{.spec.template.spec.terminationGracePeriodSeconds}{"\n"}'   # 120
    make keda-check                                                        # DISCOVERY CHECK (installed): PASS
    ```
-   **Result on OKE** (the owner's run and report, 2026-10-16):
+   **Result on OKE** (the owner's run, 2026-10-16; capture
+   `eval/runs/keda/oke-4-5-apply.txt`, pasted from the operator's terminal
+   by the owner, redacted at capture time):
    - `--diff`: only the worker Deployment changed, generation 13 → 14
      and `terminationGracePeriodSeconds` 30 → 120.
    - Apply: the guards passed before and after (`GUARD sl ok`, then
      `GUARD sl ok`, `GUARD lb ok`), and Streamlit rolled out. The output
-     ended "public UI up at https://<public-ip>/ (guards passed)": the
-     generic placeholder, because `PUBLIC_UI_LB_IP` was not yet in
-     `.addresses.env` (see "Two load balancers", below).
+     ended "public UI up at https://<public-ip>/ (guards passed)" in the
+     terminal: the generic placeholder, because `PUBLIC_UI_LB_IP` was not
+     yet in `.addresses.env` (see "Two load balancers", below). The
+     committed capture names it `<public-ui-lb-ip>`, the live LB's own
+     placeholder.
    - `rollout status deploy/worker`: rolled out, with a new worker pod,
      the only pod restart. The grace read back as `120`.
    - `make keda-check`: `api-resources` complete, all 27 APIServices
@@ -1251,7 +1267,7 @@ scales it back to its desired count on its next sync.
    diff showed nothing for them. This is harmless. Their spec did not
    change: `generation` equalled `observedGeneration` and was unchanged
    (`mcp` 5/5, `postgres` 1/1), and their pods were not touched (still 10
-   and 13 days old). A rollout needs a spec change, which bumps
+   and 13 days old; both in the capture). A rollout needs a spec change, which bumps
    generation. "configured" therefore came from a metadata-only update
    that `kubectl diff` does not show, most likely the
    `last-applied-configuration` annotation. The same two Deployments
@@ -1719,13 +1735,13 @@ unkeyed model to that IP. The default path never swaps; the one way vLLM
 comes back before the demo is the contingency below, which closes the
 rule first.
 
-### Preflight — the day before, and again 30 minutes before
+### Preflight — the rehearsal day, and again 30 minutes before
 
 **[NOT YET EXECUTED]** The checklist, with each check's command and
 expected output in order, is [demo-preflight.md](demo-preflight.md) (moved
 there 2026-10-15 so there is one copy). Stop at the first failure and take
 its branch below. Nothing in it sends a completion to the GPU endpoint
-before the rehearsal's own run. The day before, it ends with a full
+before the rehearsal's own run. On the rehearsal day (rehearsal and freeze 2026-10-24, spare day 2026-10-25), it ends with a full
 rehearsal (checks 12–15), the per-request proof of that run, and the
 freeze tag. A rehearsal is a dated smoke like any other; it is not an arm
 comparison.
@@ -2522,4 +2538,4 @@ everything for real on the demo tenancy.
   forked manifests. Equivalence proof: [verification.md](verification.md).
 - The Argo eval DAG and nightly cron must keep passing; Celery stays
   request-time async (they are never merged).
-- `python -m pytest tests/` (663 tests collected as of 2026-10-16) must pass on every commit.
+- `python -m pytest tests/` (676 tests collected as of 2026-10-16) must pass on every commit.
