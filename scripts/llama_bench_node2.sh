@@ -39,7 +39,8 @@ recent=$(kubectl -n $NS logs deploy/llamacpp -c llama-server --since=15m 2>/dev/
 {
   echo "## date"; date -u +%FT%TZ
   echo "## nproc"; nproc
-  echo "## lscpu"; lscpu
+  echo "## lscpu (Vulnerability lines dropped: not needed, and they list the VM's disabled mitigations)"
+  lscpu | grep -v '^Vulnerability'
   echo "## free -g"; free -g
   echo "## nvidia-smi"; nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv
   echo "## OCI shape"; curl -s -m 5 -H "Authorization: Bearer Oracle" http://169.254.169.254/opc/v2/instance/shape; echo
