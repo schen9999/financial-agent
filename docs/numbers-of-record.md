@@ -88,7 +88,7 @@ records, not headline numbers of record.
 | Cost per brief, pre-retrieval-fix (Aug 2026, 3-ticker mean) | $0.0316 — the former cost of record, measured on the pre-retrieval-fix pipeline (exhibit/TOC-weighted contexts); superseded 2026-09-06 by the $0.0366 re-measure on the fixed pipeline, same N and tickers | `scripts/cost_report.py`, benchmarks.md |
 | Cost, hosted vs hybrid | $0.0316 vs $0.0321 per brief (pre-retrieval-fix pipeline) — sections saving within run-to-run variance | `scripts/cost_report.py`, benchmarks.md |
 | Cost harness, early run (2026-08-24, 3-ticker mean) | $0.0336/brief = $0.0272 exact (4 Haiku sections + Sonnet synthesis) + $0.0064 RAG-internal estimate — a dated run record of the pre-retrieval-fix pipeline | `scripts/cost_report.py` |
-| First nightly gate fire (2026-08) | 5.62% unsupported (judge v1), one NVDA outlier draft; re-measure 0/10 → variance, threshold kept at 5% | Argo run + NVDA re-measure, README red-night playbook |
+| First nightly gate fire (2026-08) | 5.62% unsupported (judge v1), one NVDA outlier draft; re-measure 0/10 → variance, threshold kept at 5% | Argo run + NVDA re-measure; red-night playbook in [architecture.md](architecture.md#kubernetes-and-the-celery-vs-argo-split) ("Kubernetes, and the Celery vs. Argo split") |
 | Local CPU serving (environment-limited) | ~7.7 tok/s aggregate saturation; p50 13.3s→74.1s at concurrency 1→8; not comparable to GPU/hosted | `scripts/vllm_benchmark.py`, benchmarks.md |
 | Pipeline latency | 26.29s mean (~26s) per brief | `grounding_check.py` pipeline timing, Phase 0 re-measure |
 | K8s smoke test | 13/13 assertions | `scripts/k8s_smoke_test.sh` |
