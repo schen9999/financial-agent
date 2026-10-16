@@ -147,7 +147,8 @@ separately from the harness, but it does not prove it.
   finished before the pod exits if it finishes within the worker's 120 s
   grace period, which was tested on kind with a probe task. A longer
   brief, which means the CPU SLM route or a hung call, is lost. The grace
-  period is not yet applied on OKE (runbook "KEDA", step 5).
+  period has been applied on OKE since 2026-10-16 (runbook "KEDA",
+  step 5).
   [Runbook, "KEDA"](deploy-runbook.md#keda-worker-scaling-on-queue-depth).
 
 **Not built, as next steps:**

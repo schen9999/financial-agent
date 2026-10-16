@@ -1142,7 +1142,7 @@ overlays (30 s in base). 120 s covers the slowest hosted brief on record
 (33.1 s) plus a fresh pod's first-task import (up to 19.3 s); the
 reasoning is in the overlay comment. A brief longer than that is lost:
 the CPU SLM route, or a hung call. Shown by `make worker-shutdown-test` on
-kind (step 5). Applied on OKE only by step 5.
+kind (step 5). Applied on OKE 2026-10-16 (step 5).
 
 **Spend.** More workers change when queued briefs are written, not how
 many: each one costs the same Anthropic spend it would have at one
@@ -1213,7 +1213,8 @@ scales it back to its desired count on its next sync.
    ```bash
    make keda-check    # fails on "unable to retrieve the complete list of server APIs" or any unavailable APIService
    ```
-5. **[NOT YET EXECUTED on OKE; kind PASS 2026-10-16]** The worker's
+5. **[EXECUTED on OKE 2026-10-16 ~20:43–20:46Z, by the owner, branch at
+   `5f75311`; kind PASS 2026-10-16]** The worker's
    shutdown grace (`terminationGracePeriodSeconds: 120`). The live
    namespace runs the public-UI overlay, so apply it through
    `scripts/public_ui_up.sh`: it renders that overlay (oke-provided plus
@@ -1231,6 +1232,32 @@ scales it back to its desired count on its next sync.
    kubectl -n financial-agent get deploy worker -o jsonpath='{.spec.template.spec.terminationGracePeriodSeconds}{"\n"}'   # 120
    make keda-check                                                        # DISCOVERY CHECK (installed): PASS
    ```
+   **Result on OKE** (the owner's run and report, 2026-10-16):
+   - `--diff`: only the worker Deployment changed, generation 13 → 14
+     and `terminationGracePeriodSeconds` 30 → 120.
+   - Apply: the guards passed before and after (`GUARD sl ok`, then
+     `GUARD sl ok`, `GUARD lb ok`), and Streamlit rolled out. The output
+     ended "public UI up at https://<public-ip>/ (guards passed)": the
+     generic placeholder, because `PUBLIC_UI_LB_IP` was not yet in
+     `.addresses.env` (see "Two load balancers", below).
+   - `rollout status deploy/worker`: rolled out, with a new worker pod,
+     the only pod restart. The grace read back as `120`.
+   - `make keda-check`: `api-resources` complete, all 27 APIServices
+     Available, external.metrics served by
+     `keda/keda-operator-metrics-apiserver`, all three KEDA Deployments
+     available: `DISCOVERY CHECK (installed): PASS`.
+
+   **Note: `mcp` and `postgres` also printed "configured"**, although the
+   diff showed nothing for them. This is harmless. Their spec did not
+   change: `generation` equalled `observedGeneration` and was unchanged
+   (`mcp` 5/5, `postgres` 1/1), and their pods were not touched (still 10
+   and 13 days old). A rollout needs a spec change, which bumps
+   generation. "configured" therefore came from a metadata-only update
+   that `kubectl diff` does not show, most likely the
+   `last-applied-configuration` annotation. The same two Deployments
+   printed "configured" on kind when the kind overlay was applied that
+   day. `make worker-shutdown-test` was not run on OKE (optional).
+
    If the diff shows any object other than the worker Deployment, stop;
    do not apply. Optional, about 6 minutes, no credit: `make
    worker-shutdown-test` on the operator runs the same probe as on kind
@@ -1321,7 +1348,10 @@ Until `PUBLIC_UI_LB_IP` was added to `.addresses.env` on all three hosts
 the generic `<public-ip>`, so nothing leaked, but the capture could not
 say which LB it was. The live address is in no current file (checked
 2026-10-16). Like the other addresses, it is in the history from before
-2026-10-16, which was not rewritten. `tests/test_redact.py` keeps the two apart and checks that
+2026-10-16, which was not rewritten. **Decision (owner, 2026-10-16):
+no rotation.** The address grants nothing by itself: the LB admits only
+the security-list allowlist, nginx enforces the allowlist again, and
+basic auth sits behind both. `tests/test_redact.py` keeps the two apart and checks that
 every address placeholder in the repo is one the example file defines.
 
 The self-served SLM behind the `slm-full-*` arms and `SLM_FULL`
