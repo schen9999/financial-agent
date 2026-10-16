@@ -75,9 +75,10 @@ written right after Sanjay Basu replied "you serve a minimax or qwen"; the
 commits that introduced the model (`1a417be`, `02ddf2e`, `eb7b1b9`) record
 what was chosen and how it is pinned, not why. The notes give four reasons:
 
-- **MiniMax:** every open MiniMax model is a large MoE (M2.5 230B total,
-  10B active; M2.7 about 108 GB at 4 bits; M3 428B), estimated then not to
-  fit the A10 (24 GB) or the largest E5 node (~58 GiB allocatable).
+- **MiniMax:** every open MiniMax model is a large MoE (M2.5 and M2.7
+  230B total, 10B active; M3 about 428B total, 23B active, per the model
+  cards), estimated then not to fit the A10 (24 GB) or the largest E5 node
+  (~58 GiB allocatable). The build sizes are in the fit table below.
 - **Qwen3.6-35B-A3B:** about 3B active parameters per token, chosen for
   CPU generation speed: the efficient-MoE profile MiniMax has, at a size
   that can be served here.
