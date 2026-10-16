@@ -103,7 +103,13 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
   overlays and scripts only (an outside change exposed Streamlit without
   auth on 2026-10-08, about 02:05–02:19 and 02:22–02:31Z). Access by
   port-forward behind
-  ssh -L; nightly CronWorkflow suspended. Runbook "OKE (provided
+  ssh -L; nightly CronWorkflow suspended. KEDA 2.21.0 (chart pinned by
+  sha256, cleared by the cluster owner 2026-10-16) scales the Celery
+  worker 1-4 on Redis queue depth: ScaledObject in its own tree
+  k8s/keda (app overlays untouched), make keda-install / keda-worker /
+  keda-check / keda-scale-test / keda-uninstall; runbook "KEDA". Only
+  the builtin-task scale test has run (no request-time load measured).
+  Runbook "OKE (provided
   cluster)". Yahoo has returned 429 from its egress IP: check the
   aggregate's "stock block empty" count on every run there.
 - OKE (Phase 2, once the compartment lands): the Terraform-created cluster
@@ -114,7 +120,7 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
    Helm values (kind vs oke), never fork the manifests.
 2. The Argo eval DAG and nightly CronWorkflow must keep passing. The eval harness
    is the centerpiece of the demo, not the Streamlit UI.
-3. The pytest suite (8289 lines, 663 tests collected: 662 passed + 1 skipped,
+3. The pytest suite (676 tests collected: 675 passed + 1 skipped,
    the credit-gated judge test, as of 2026-10-16) must pass on every commit. Canonical
    command: `python -m pytest tests/` (pytest.ini scopes bare `pytest` to
    tests/ as well).
@@ -589,7 +595,8 @@ Phase 3 — demo polish:
 - No IP addresses, OCIDs, or resolvable hostnames/FQDNs in committed
   files, captures included (since 2026-10-16; the repo is public). The
   aliases vm-a10-inst-*, oke-operator and oke-bastion stay. Use the
-  placeholders (<node2-public-ip>, <oke-egress-ip>, <streamlit-lb-ip>,
+  placeholders (<node2-public-ip>, <oke-egress-ip>, <streamlit-lb-ip> (the
+  2026-10-08 incident LB only), <public-ui-lb-ip> (the live public-UI LB),
   <oke-api-private-ip>, <oke-node-N>, <oke-operator-host>,
   <oke-vcn-domain>), read real values from the gitignored
   .addresses.env, and pass captures through scripts/redact.py;

@@ -1,0 +1,18 @@
+# Provided OKE cluster: four E5 nodes (two ~28 GiB, two ~58 GiB allocatable),
+# so up to 4 workers (4 x 2Gi limit). The one delta from base. Every extra
+# worker runs briefs that would otherwise wait, so it changes when hosted-
+# model spend happens, not how much: each queued brief costs the same.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+
+patches:
+  - patch: |-
+      apiVersion: keda.sh/v1alpha1
+      kind: ScaledObject
+      metadata:
+        name: worker
+        namespace: financial-agent
+      spec:
+        maxReplicaCount: 4

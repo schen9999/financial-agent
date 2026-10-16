@@ -44,6 +44,26 @@ patches:
         value:
           - name: ghcr-pull-secret
 
+  # ── Worker shutdown: on SIGTERM (KEDA scale-down, rollout, drain) Celery's
+  #    warm shutdown finishes the running brief, but only within the grace
+  #    period; tasks are acked early, so a brief cut off is lost. 120 s:
+  #    the slowest hosted brief on record is 33.1 s (pipeline_s, 150 briefs:
+  #    4hsn2, vks4c, 9jzmj, hm527, x2cx8, 5jvhh), plus up to 19.3 s for a fresh worker's first-task agent import,
+  #    so about 52 s; 120 s is over 2x that. Covers the GPU SLM route too
+  #    (31 s/brief). NOT the CPU SLM route (`make oke-slm-app ENDPOINT=cpu`,
+  #    up to 391 s/brief). Idle workers exit at once; only a pod with a
+  #    running task waits. Same value in the kind overlay. docs/reliability.md.
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: worker
+        namespace: financial-agent
+      spec:
+        template:
+          spec:
+            terminationGracePeriodSeconds: 120
+
   - patch: |-
       apiVersion: v1
       kind: PersistentVolumeClaim

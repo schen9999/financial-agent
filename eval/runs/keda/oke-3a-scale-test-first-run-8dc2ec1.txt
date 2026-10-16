@@ -1,0 +1,37 @@
+# make keda-scale-test, commit 8dc2ec1, start 20261016T195219Z
+bash scripts/keda_scale_test.sh
+[19:52:30Z] ScaledObject worker: min=1 max=4 list=celery db=0 listLength=2 hpa=keda-hpa-worker metric=s0-redis-celery
+[19:52:30Z] test: 8 x celery.accumulate -> expect 4 replicas
+[19:52:35Z] precondition ok: 1 idle worker (worker-ccb4b9465-jvmg9), queue empty, metric=0
+[19:52:37Z] 1. worker-ccb4b9465-jvmg9 stopped consuming 'celery'
+[19:52:39Z]    enqueued 8 celery.accumulate tasks; LLEN celery = 8
+[19:52:40Z] 2. external metric s0-redis-celery = 8
+[19:53:05Z] 3. scaled up: spec.replicas peak 4, 4 ready after 20s
+[19:53:06Z]    all 8 tasks SUCCESS, queue drained
+[19:53:07Z]    worker-ccb4b9465-82phx: 0 accumulate succeeded, 0 error lines
+[19:53:08Z]    worker-ccb4b9465-jvmg9: 0 accumulate succeeded, 0 error lines
+[19:53:09Z]    worker-ccb4b9465-pcmt5: 8 accumulate succeeded, 0 error lines
+[19:53:09Z]    worker-ccb4b9465-zfv8j: 0 accumulate succeeded, 0 error lines
+[19:53:10Z]    results forgotten (Redis keys removed)
+[19:53:12Z] restore: add_consumer celery on worker-ccb4b9465-jvmg9
+[19:53:14Z] 4. worker-ccb4b9465-jvmg9 consumes 'celery' again; waiting for scale-down to 1
+[20:00:03Z]    back to 1 replica after 390s
+[20:00:05Z] 5. remaining worker worker-ccb4b9465-jvmg9 consumes 'celery'
+[20:00:11Z]    discovery check: PASS
+
+KEDA SCALE TEST: PASS — 8 tasks, metric 8, 1 -> 4 -> 1 replicas, 456s
+exit=0
+bash scripts/keda_discovery_check.sh installed
+== 1. discovery: kubectl api-resources (full list, stderr captured)
+  OK    api-resources complete (exit 0, no discovery error on stderr)
+== 2. every APIService Available=True
+  OK    all 27 APIServices Available
+== 3. v1beta1.external.metrics.k8s.io
+  OK    served by keda/keda-operator-metrics-apiserver
+  OK    GET /apis/external.metrics.k8s.io/v1beta1 answers
+  OK    deploy/keda-operator available (1)
+  OK    deploy/keda-operator-metrics-apiserver available (1)
+  OK    deploy/keda-admission-webhooks available (1)
+  info  v1beta1.metrics.k8s.io (resource metrics, not KEDA's) backed by kube-system/metrics-server
+
+DISCOVERY CHECK (installed): PASS

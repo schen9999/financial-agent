@@ -131,10 +131,28 @@ also serves a model in-cluster on CPU. Our measurements say in-cluster CPU
 inference suits batch work. That is consistent with sizing inference
 separately from the harness, but it does not prove it.
 
+**Built since (2026-10-16):**
+
+- **KEDA scaling of the Celery worker on Redis queue depth.** KEDA 2.21.0
+  on the provided OKE cluster scales the worker from 1 to 4 replicas,
+  one replica per 2 waiting tasks. What was verified, and only this: a
+  backlog of 8 tasks of Celery's builtin `celery.accumulate` (no model
+  call, no Anthropic credit). KEDA's metric read 8, the HPA set 4
+  replicas, a new pod ran all 8 with no errors, and the worker was back
+  at 1 replica 375 s after the backlog cleared. API discovery was
+  healthy before, during and after. The same test passed on kind (1 to
+  2 to 1), and so did the uninstall. Not measured: request-time load,
+  i.e. real briefs. The metric counts only tasks no worker has taken
+  yet, while each worker holds up to 4. On scale-down, a running brief is
+  finished before the pod exits if it finishes within the worker's 120 s
+  grace period, which was tested on kind with a probe task. A longer
+  brief, which means the CPU SLM route or a hung call, is lost. The grace
+  period has been applied on OKE since 2026-10-16 (runbook "KEDA",
+  step 5).
+  [Runbook, "KEDA"](deploy-runbook.md#keda-worker-scaling-on-queue-depth).
+
 **Not built, as next steps:**
 
-- **KEDA scaling of the Celery worker on Redis queue depth.** The worker
-  runs one replica, and request-time load has not been measured.
 - **API keys from OCI Vault instead of Kubernetes Secrets.** Today the
   operator creates the Secrets by hand from a temp file that is shredded
   afterwards. Vault would remove that step and add rotation and audit.

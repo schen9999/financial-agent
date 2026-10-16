@@ -874,6 +874,7 @@ depends on:
     balancer is released before the namespace goes:
     ```bash
     pkill -f 'kubectl -n financial-agent port-forward'
+    make keda-uninstall KEDA_OVERLAY=oke-provided   # if "KEDA" below installed it; before the namespace goes
     kubectl delete -k argo/overlays/oke-provided
     kubectl delete -k k8s/overlays/oke-provided    # deletes the PVC
     kubectl get storageclass oci-bv -o jsonpath='{.reclaimPolicy}'   # Delete => the block volume and stored briefs go too
@@ -1049,7 +1050,7 @@ passed and the checks gave:
 - generating a cached ticker in the page needs a browser (no headless
   browser on the laptop): done by the project owner.
 
-URL: https://<public-ui-ip>/ (basic-auth user and password on the
+URL: https://<public-ui-lb-ip>/ (basic-auth user and password on the
 operator).
 
 **Fallback: join the owner's LB NSG** (security-rule management `None`,
@@ -1089,12 +1090,231 @@ shred -u ~/public-ui/credentials; rm -f ~/public-ui/tls.crt
 Then confirm no load balancer is left:
 `oci lb load-balancer list --compartment-id <the VCN's compartment> --all` is empty.
 
+## KEDA: worker scaling on queue depth
+
+The Celery worker scales on the depth of its Redis queue, from 1 to 4
+replicas on the provided cluster (1 to 2 on kind). KEDA reads `LLEN
+celery` in Redis DB 0 and drives an HPA it owns: desired replicas =
+ceil(waiting tasks / 2), clamped to [1, max]. Files: `k8s/keda/`
+(`base/scaledobject.yaml`, overlays `kind` and `oke-provided`,
+`install/values.yaml`), `scripts/keda_discovery_check.sh`,
+`scripts/keda_scale_test.sh`, `tests/test_keda_worker.py`.
+
+**Cleared 2026-10-16 by the cluster owner.** KEDA is a cluster-level
+install. Before it, no `external.metrics` APIService existed and the
+cluster had only the argo, financial-agent and system namespaces, so
+nothing else was using that API. Only one external metrics adapter can
+hold `v1beta1.external.metrics.k8s.io`; `make keda-install` refuses to run
+if anything other than this release holds it.
+
+**What it installs** (chart `keda` 2.21.0 = KEDA 2.21.0, supported on
+Kubernetes 1.34–1.36; pinned by version and sha256 in the Makefile, and
+the install refuses other bytes): the `keda` namespace with three
+Deployments (operator, metrics apiserver, admission webhooks; each
+requests 100m / 100Mi and is limited to 1 CPU / 1000Mi); 6 `keda.sh` CRDs;
+the APIService `v1beta1.external.metrics.k8s.io`; the
+ValidatingWebhookConfiguration `keda-admission`, which validates `keda.sh`
+objects only, with `failurePolicy: Ignore`; 4 ClusterRoles and 4
+ClusterRoleBindings; and RoleBindings in `kube-system` for the metrics
+adapter. `watchNamespace: financial-agent`, so KEDA reconciles nothing
+anywhere else. It does not touch `v1beta1.metrics.k8s.io`
+(metrics-server's).
+
+**Why it is its own tree.** The ScaledObject needs the KEDA CRDs, so it
+is not in `k8s/overlays/*`: `make deploy`, `make oke-up` and the public-UI
+overlay apply unchanged with or without KEDA. `scripts/render_diff.py`
+showed all 14 existing overlay renders (app, argo, llamacpp, vllm trees)
+IDENTICAL before and after the change. The new tree renders exactly one
+object, the ScaledObject, and kind and oke-provided differ only in
+`maxReplicaCount`.
+
+**What the metric does not see.** It counts tasks no worker has taken
+yet. Each worker (`--concurrency=1`, Celery's default prefetch multiplier
+4) takes up to 4 messages off the list, so tasks that are running or
+prefetched are not in the count.
+
+**Scale-down and a running brief.** The HPA removes at most one pod per
+minute, after 5 minutes at a lower desired count. The pod gets SIGTERM,
+and Celery's warm shutdown finishes the running task before the pod
+exits. Tasks are acknowledged early, so this works only within the
+worker's grace period. That period is 120 s in the kind and oke-provided
+overlays (30 s in base). 120 s covers the slowest hosted brief on record
+(33.1 s) plus a fresh pod's first-task import (up to 19.3 s); the
+reasoning is in the overlay comment. A brief longer than that is lost:
+the CPU SLM route, or a hung call. Shown by `make worker-shutdown-test` on
+kind (step 5). Applied on OKE 2026-10-16 (step 5).
+
+**Spend.** More workers change when queued briefs are written, not how
+many: each one costs the same Anthropic spend it would have at one
+replica.
+
+`make oke-up` re-applies the worker Deployment at `replicas: 1`; the HPA
+scales it back to its desired count on its next sync.
+
+### Steps (operator)
+
+1. **[EXECUTED 2026-10-16 19:50Z, commit `a0de47e`]** Install, and check
+   discovery:
+   ```bash
+   cd ~/financial-agent && git pull
+   make keda-install          # discovery check first; then chart digest, helm --wait, APIService Available
+   ```
+   The target runs `scripts/keda_discovery_check.sh` in `discovery` mode
+   before installing and in `installed` mode after. Result: before, all
+   24 APIServices were Available. After, all 27 were Available, `kubectl
+   api-resources` exited 0 with nothing on stderr, `/apis/external.metrics.k8s.io/v1beta1`
+   answered, and the three KEDA Deployments were available.
+   Capture: `eval/runs/keda/oke-1-install.txt`.
+2. **[EXECUTED 2026-10-16 19:52Z, commit `8dc2ec1`]** The ScaledObject:
+   ```bash
+   make keda-worker KEDA_OVERLAY=oke-provided    # Ready=True; HPA keda-hpa-worker, min 1, max 4
+   ```
+   The first apply at `a0de47e` had `pollingInterval: 15`. KEDA's webhook
+   warned that it does not affect scaling at min 1, so it was removed and
+   the object re-applied.
+   Capture: `eval/runs/keda/oke-2-worker.txt`.
+3. **[EXECUTED 2026-10-16 20:02Z, commit `3fe14fa` — PASS]** Live scale test, which spends no Anthropic
+   credit:
+   ```bash
+   make keda-scale-test
+   ```
+   It sends 8 tasks of Celery's builtin `celery.accumulate`, which returns
+   its arguments: no agent code, no network, nothing a worker can fail on.
+   It never sends `research_task`. So that KEDA can see a backlog, the
+   test first cancels the original worker's consumer on the `celery`
+   queue, and it adds the consumer back on every exit (trap). If the
+   script is killed hard, run `kubectl -n financial-agent rollout
+   restart deployment/worker`. An async brief submitted during the test
+   waits for a new pod.
+
+   It passes only if all of these hold: the external metric reports the
+   backlog; the HPA sets min(max, ceil(8/2)) replicas; every task
+   SUCCEEDS on a new pod (none on the paused one); no worker log has an
+   error line; the worker returns to 1 replica; every remaining worker
+   consumes `celery`; and discovery is still healthy.
+   Result: the external metric read 8 one second after the enqueue. The
+   HPA set 4 replicas, and all 4 were Ready when the test next looked,
+   20 s later. All 8 tasks SUCCEEDED, every one on a single new pod, with
+   0 error lines in all four worker logs. After the consumer was
+   restored, the worker was back at 1 replica, with the removed pods
+   gone, 375 s later. The remaining worker consumed `celery`, and the
+   discovery check passed. The run took 441 s, and `make keda-check`
+   right after it passed.
+   Capture: `eval/runs/keda/oke-3-scale-test.txt`. A first run at
+   `8dc2ec1` (19:52Z) also printed PASS with the same numbers (back to 1
+   after 390 s). But that version of the test could still see a pod that
+   was terminating as a worker, and the same run on kind failed on
+   exactly that. The test was fixed at `3fe14fa` and rerun on both
+   clusters. The first run is kept, superseded:
+   `eval/runs/keda/oke-3a-scale-test-first-run-8dc2ec1.txt`.
+4. **[EXECUTED 2026-10-16 20:09Z — PASS, 27 APIServices Available]**
+   After any later cluster change, check
+   discovery again:
+   ```bash
+   make keda-check    # fails on "unable to retrieve the complete list of server APIs" or any unavailable APIService
+   ```
+5. **[EXECUTED on OKE 2026-10-16 ~20:43–20:46Z, by the owner, branch at
+   `5f75311`; kind PASS 2026-10-16]** The worker's
+   shutdown grace (`terminationGracePeriodSeconds: 120`). The live
+   namespace runs the public-UI overlay, so apply it through
+   `scripts/public_ui_up.sh`: it renders that overlay (oke-provided plus
+   the LB), diffs it, applies it, and re-runs the LB and security-list
+   guards. Plain `kubectl apply -k k8s/overlays/oke-provided` would put
+   Streamlit back to ClusterIP. Run it with no eval running (the script
+   refuses otherwise) and no async brief in flight: the worker restarts,
+   and the old pod still has the old 30 s grace.
+   ```bash
+   # operator, repo root, on the branch with the change
+   git fetch && git checkout keda-worker-scaling && git pull --ff-only && git log -1 --oneline
+   bash scripts/public_ui_up.sh --diff 2>&1 | python3 scripts/redact.py   # expect: deployment worker only, 30 -> 120 (plus generation lines)
+   bash scripts/public_ui_up.sh 2>&1 | python3 scripts/redact.py          # apply + guards; ends "public UI up at https://<public-ui-lb-ip>/ (guards passed)"
+   kubectl -n financial-agent rollout status deploy/worker --timeout=900s
+   kubectl -n financial-agent get deploy worker -o jsonpath='{.spec.template.spec.terminationGracePeriodSeconds}{"\n"}'   # 120
+   make keda-check                                                        # DISCOVERY CHECK (installed): PASS
+   ```
+   **Result on OKE** (the owner's run and report, 2026-10-16):
+   - `--diff`: only the worker Deployment changed, generation 13 → 14
+     and `terminationGracePeriodSeconds` 30 → 120.
+   - Apply: the guards passed before and after (`GUARD sl ok`, then
+     `GUARD sl ok`, `GUARD lb ok`), and Streamlit rolled out. The output
+     ended "public UI up at https://<public-ip>/ (guards passed)": the
+     generic placeholder, because `PUBLIC_UI_LB_IP` was not yet in
+     `.addresses.env` (see "Two load balancers", below).
+   - `rollout status deploy/worker`: rolled out, with a new worker pod,
+     the only pod restart. The grace read back as `120`.
+   - `make keda-check`: `api-resources` complete, all 27 APIServices
+     Available, external.metrics served by
+     `keda/keda-operator-metrics-apiserver`, all three KEDA Deployments
+     available: `DISCOVERY CHECK (installed): PASS`.
+
+   **Note: `mcp` and `postgres` also printed "configured"**, although the
+   diff showed nothing for them. This is harmless. Their spec did not
+   change: `generation` equalled `observedGeneration` and was unchanged
+   (`mcp` 5/5, `postgres` 1/1), and their pods were not touched (still 10
+   and 13 days old). A rollout needs a spec change, which bumps
+   generation. "configured" therefore came from a metadata-only update
+   that `kubectl diff` does not show, most likely the
+   `last-applied-configuration` annotation. The same two Deployments
+   printed "configured" on kind when the kind overlay was applied that
+   day. `make worker-shutdown-test` was not run on OKE (optional).
+
+   If the diff shows any object other than the worker Deployment, stop;
+   do not apply. Optional, about 6 minutes, no credit: `make
+   worker-shutdown-test` on the operator runs the same probe as on kind
+   (it starts one pod from the pinned GHCR image).
+
+   kind: `kubectl apply -k k8s/overlays/kind`, then `make
+   worker-shutdown-test`, PASSED. Case A (grace 120 s): a 45 s in-flight
+   task SUCCEEDED after SIGTERM, the pod exited 39 s after SIGTERM, and
+   the prefetched task, which was not counted in `LLEN` while prefetched,
+   returned to the queue. Case B (grace 10 s): the task was killed and
+   stayed STARTED. Capture: `eval/runs/keda/kind-6-worker-shutdown.txt`.
+   One earlier run failed in case B, before any task was sent: the
+   probe's ping loop gave up while the second probe pod was still
+   starting. The probe now has a readiness probe (ping) and waits up to
+   600 s. Case B then passed alone, and A and B passed together, which is
+   the capture.
+   render_diff: only the worker Deployment changes, by that one field, in
+   the kind, oke-provided and oke-provided-public-ui renders; everything
+   else is IDENTICAL (`eval/runs/keda/render-diff-grace.txt`).
+
+**kind (the equivalence baseline), the same targets** (`HELM=` names the
+helm binary there; kind v1.36.1, commit `3fe14fa`, 2026-10-16 20:02Z to
+20:08Z): every target exited 0, in this order. `keda-install` passed the
+discovery check before and after. `keda-worker` (`KEDA_OVERLAY=kind`,
+max 2) came up Ready. `keda-check` passed. `keda-scale-test` passed:
+metric 8, 1 to 2 to 1 replicas, all 8 tasks on the new pod, 0 error
+lines, back to 1 after 270 s. `keda-uninstall` passed its check.
+Captures: `eval/runs/keda/kind-*.txt`. The render proof is
+`eval/runs/keda/render-diff.txt`.
+
+### Uninstall
+
+```bash
+make keda-uninstall KEDA_OVERLAY=oke-provided
+```
+
+The order matters. First the ScaledObject is deleted while KEDA is still
+running, so the operator clears the ScaledObject's finalizer and removes
+its HPA. Then the worker is scaled back to 1, because the Deployment keeps
+whatever count the HPA last set. Then `helm uninstall` (which removes the
+CRDs, the APIService, the webhook and the RBAC), then the `keda`
+namespace. Last, `scripts/keda_discovery_check.sh uninstalled` checks
+that discovery is complete, that every APIService is Available, and that
+no `v1beta1.external.metrics.k8s.io`, `keda.sh` CRD, `keda-admission`
+webhook, keda ClusterRole or Binding, `kube-system` RoleBinding or
+`keda` namespace is left. A dangling APIService would break discovery for
+every client. **[EXECUTED on kind 2026-10-16, twice: PASS]** The
+APIServices went from 25 to 22, all Available, with nothing left
+(`eval/runs/keda/kind-5-uninstall.txt`). **Not run on OKE**: KEDA stays
+installed there.
+
 ## SLM endpoints: Qwen3.6-35B-A3B on llama.cpp (CPU on OKE, GPU on node 2)
 
 **Addresses (since 2026-10-16).** No IP address is committed: files use
 the placeholders `<node2-public-ip>`, `<oke-egress-ip>`,
-`<streamlit-lb-ip>`, `<oke-api-private-ip>` and `<oke-node-1>` to
-`<oke-node-4>`, and for names `<oke-operator-host>` (the operator
+`<streamlit-lb-ip>`, `<public-ui-lb-ip>`, `<oke-api-private-ip>` and
+`<oke-node-1>` to `<oke-node-4>`, and for names `<oke-operator-host>` (the operator
 instance's OCI-generated hostname) and `<oke-vcn-domain>` (the VCN's DNS
 domain); the `vm-a10-inst-*`, `oke-operator` and `oke-bastion` aliases
 stay. In `terraform/oci-provided/` the API endpoint address and the VCN
@@ -1115,6 +1335,24 @@ bytes per ticker more than on the originals (the placeholder is two
 characters longer than the address, in each row's `slm_url`); the CPU and
 hosted runs, and the cited sizes (`8vpq6` 301,083, `9jzmj` 198,065
 bytes), are unchanged.
+
+**Two load balancers, two placeholders (since 2026-10-16).**
+`STREAMLIT_LB_IP` → `<streamlit-lb-ip>` is the address of the 2026-10-08
+*incident* load balancer: created outside the project's scripts and
+deleted at 02:52:24Z ("Third outside exposure", above). It appears only
+in that incident's record. `PUBLIC_UI_LB_IP` → `<public-ui-lb-ip>` is
+the *live* public-UI load balancer that `scripts/public_ui_up.sh` created
+(live since 03:12Z the same day), and the address its output prints.
+Until `PUBLIC_UI_LB_IP` was added to `.addresses.env` on all three hosts
+(2026-10-16), the redactor did not know the live address: it wrote it as
+the generic `<public-ip>`, so nothing leaked, but the capture could not
+say which LB it was. The live address is in no current file (checked
+2026-10-16). Like the other addresses, it is in the history from before
+2026-10-16, which was not rewritten. **Decision (owner, 2026-10-16):
+no rotation.** The address grants nothing by itself: the LB admits only
+the security-list allowlist, nginx enforces the allowlist again, and
+basic auth sits behind both. `tests/test_redact.py` keeps the two apart and checks that
+every address placeholder in the repo is one the example file defines.
 
 The self-served SLM behind the `slm-full-*` arms and `SLM_FULL`
 (`agent/tools/slm.py`; method: [eval-methodology.md](eval-methodology.md),
@@ -1153,7 +1391,7 @@ smoke, then the extended runs with their same-image hosted baseline
    kubectl -n financial-agent create secret generic slm-endpoints \
      --from-literal=SLM_CPU_API_KEY=$(openssl rand -hex 32) \
      --from-file=SLM_GPU_API_KEY=$HOME/slm-gpu.key \
-     --from-literal=SLM_GPU_URL=http://<node-2-public-ip>:30880
+     --from-literal=SLM_GPU_URL=http://<node2-public-ip>:30880
    shred -u ~/slm-gpu.key
    kubectl -n financial-agent rollout restart deployment/api deployment/worker deployment/streamlit deployment/mcp
    ```
@@ -1528,6 +1766,16 @@ Every branch ends at the recorded runs: `eval/runs/gpu-smoke.log`
 run of record), open on the laptop before the demo starts. Say what
 failed; do not debug live beyond the first check named.
 
+- **`make keda-check` fails** (preflight check 4: "unable to retrieve the
+  complete list of server APIs", an APIService not Available, or a KEDA
+  Deployment not available): do not debug it before the demo. Uninstall
+  KEDA ("KEDA", Uninstall: `make keda-uninstall
+  KEDA_OVERLAY=oke-provided`), which must end with `DISCOVERY CHECK
+  (uninstalled): PASS`, then re-run checks 1–4. The worker goes back to
+  one fixed replica, as it was before 2026-10-16; the demo needs nothing
+  from KEDA. If the uninstall's own check fails, stop and tell the
+  cluster owner: a leftover `v1beta1.external.metrics.k8s.io` breaks
+  discovery for every client on the cluster.
 - **Node 2 down** (`ssh oci2` fails, or `/health` does not answer on the
   node): a stopped VM is restarted by the tenancy owner in the console,
   and the model's load time is not one to wait out live. Fallback.

@@ -1,0 +1,12 @@
+# make keda-worker KEDA_OVERLAY=kind on kind (kind-financial-agent, Server Version: v1.36.1), commit 3fe14fa, 2026-10-16T20:02:48Z
+kubectl apply -k k8s/keda/overlays/kind
+scaledobject.keda.sh/worker created
+kubectl -n financial-agent wait --for=condition=Ready scaledobject/worker --timeout=120s
+scaledobject.keda.sh/worker condition met
+kubectl -n financial-agent get scaledobject worker
+NAME     SCALETARGETKIND      SCALETARGETNAME   MIN   MAX   READY   ACTIVE    FALLBACK   PAUSED   TRIGGERS   AUTHENTICATIONS   AGE
+worker   apps/v1.Deployment   worker            1     2     True    Unknown   False      False    redis                        1s
+kubectl -n financial-agent get hpa $(kubectl -n financial-agent get scaledobject worker -o jsonpath='{.status.hpaName}')
+NAME              REFERENCE           TARGETS             MINPODS   MAXPODS   REPLICAS   AGE
+keda-hpa-worker   Deployment/worker   <unknown>/2 (avg)   1         2         0          1s
+exit=0

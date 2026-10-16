@@ -1,0 +1,16 @@
+# make keda-check on kind (kind-financial-agent, Server Version: v1.36.1), commit 3fe14fa, 2026-10-16T20:02:52Z
+bash scripts/keda_discovery_check.sh installed
+== 1. discovery: kubectl api-resources (full list, stderr captured)
+  OK    api-resources complete (exit 0, no discovery error on stderr)
+== 2. every APIService Available=True
+  OK    all 25 APIServices Available
+== 3. v1beta1.external.metrics.k8s.io
+  OK    served by keda/keda-operator-metrics-apiserver
+  OK    GET /apis/external.metrics.k8s.io/v1beta1 answers
+  OK    deploy/keda-operator available (1)
+  OK    deploy/keda-operator-metrics-apiserver available (1)
+  OK    deploy/keda-admission-webhooks available (1)
+  info  v1beta1.metrics.k8s.io (resource metrics, not KEDA's) backed by <absent>
+
+DISCOVERY CHECK (installed): PASS
+exit=0

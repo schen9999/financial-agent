@@ -1,0 +1,14 @@
+# make worker-shutdown-test on kind (kind-financial-agent, Server Version: v1.36.1), branch keda-worker-scaling working tree (grace patch, uncommitted), 2026-10-16T20:37:08Z
+bash scripts/worker_shutdown_test.sh
+[20:37:10Z] deploy/worker: terminationGracePeriodSeconds=120 image=financial-agent-app:local
+[20:37:11Z] A. probe worker, grace 120s; 2 x sleep(45s)
+[20:37:36Z]    running: aa811557-0ee1-42f5-8d44-3d4e954a2640 STARTED; prefetched: 799a9318-4eef-4167-9a84-96843be32a8f PENDING; queue worker-shutdown-probe LLEN 0 (prefetched tasks are off the list)
+[20:37:37Z]    SIGTERM sent (pod deleted)
+[20:38:18Z]    pod gone after 39s; aa811557-0ee1-42f5-8d44-3d4e954a2640 SUCCESS; 799a9318-4eef-4167-9a84-96843be32a8f PENDING; queue LLEN 1
+[20:38:18Z] A. PASS: in-flight task finished under SIGTERM; pod exited 39s after SIGTERM, inside the 120s grace; the prefetched task (not in LLEN while prefetched) returned to the queue
+[20:38:18Z] B. probe worker, grace 10s; 1 x sleep(45s)
+[20:39:39Z]    pod gone after 11s; 63f38a62-4a56-449e-b1ed-eab9c2397952 STARTED 45s later; queue LLEN 0
+[20:39:39Z] B. PASS: a task longer than the grace is killed and lost (state STARTED, not requeued)
+
+WORKER SHUTDOWN TEST (A B): PASS — grace 120s covers a 45s in-flight task; a task past the grace is lost
+exit=0

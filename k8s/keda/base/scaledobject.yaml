@@ -1,0 +1,61 @@
+# KEDA ScaledObject: the Celery worker scaled on Redis queue depth.
+#
+# What KEDA reads: LLEN of the Celery default queue, the Redis list "celery"
+# in DB 0 (REDIS_URL in k8s/base/10-configmap.yaml; task_default_queue in
+# celery_worker.py — tests/test_keda_worker.py pins both). That counts
+# messages no worker has taken yet. It does NOT count a worker's running or
+# prefetched tasks: with --concurrency=1 and Celery's default prefetch
+# multiplier of 4, each worker holds up to 4 messages off the list. So the
+# metric is the waiting backlog beyond what the running workers have taken.
+#
+# Desired replicas = ceil(LLEN / listLength), clamped to [min, max] —
+# a backlog of 2 waiting briefs per extra worker.
+#
+# minReplicaCount 1: never scale to zero. The worker's startup (heavy image,
+# startupProbe up to 300 s) would put a cold start in front of the first
+# async brief, and the live demo app must answer.
+#
+# Scale-down: the HPA removes at most one pod per minute after five minutes
+# of a lower desired count. A pod chosen for removal gets SIGTERM; Celery's
+# warm shutdown finishes the running task, within the worker's
+# terminationGracePeriodSeconds (120 s in the kind and oke-provided app
+# overlays; base and Kubernetes default 30 s). Tasks are acked early, so a
+# brief still running past the grace is lost (make worker-shutdown-test;
+# docs/reliability.md: late acknowledgement is a recorded next step).
+#
+# Requires KEDA (make keda-install). Not part of any app overlay, so
+# k8s/overlays/* render and apply unchanged without it.
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: worker
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/name: worker
+    app.kubernetes.io/part-of: financial-agent
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: worker
+  minReplicaCount: 1
+  maxReplicaCount: 2 # kind: one memory-bound node; overlays size it per cluster
+  # No pollingInterval: with minReplicaCount >= 1 the HPA queries KEDA's
+  # metrics server on its own sync (15 s), and KEDA's admission webhook
+  # warns that pollingInterval does not affect scaling.
+  advanced:
+    horizontalPodAutoscalerConfig:
+      behavior:
+        scaleDown:
+          stabilizationWindowSeconds: 300
+          policies:
+            - type: Pods
+              value: 1
+              periodSeconds: 60
+  triggers:
+    - type: redis
+      metadata:
+        address: redis.financial-agent.svc.cluster.local:6379
+        databaseIndex: "0"
+        listName: celery
+        listLength: "2"

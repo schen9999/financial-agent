@@ -1,0 +1,24 @@
+# make keda-worker KEDA_OVERLAY=oke-provided, 2026-10-16T19:51:34Z
+kubectl apply -k k8s/keda/overlays/oke-provided
+Warning: PollingInterval is configured but is not relevant for scaling. It only affects scaling when minReplicaCount = 0, idleReplicaCount is set, or useCachedMetrics is enabled, but it still controls how often KEDA refreshes the ScaledObject status conditions and events
+scaledobject.keda.sh/worker created
+kubectl -n financial-agent wait --for=condition=Ready scaledobject/worker --timeout=120s
+scaledobject.keda.sh/worker condition met
+kubectl -n financial-agent get scaledobject worker
+NAME     SCALETARGETKIND      SCALETARGETNAME   MIN   MAX   READY   ACTIVE   FALLBACK   PAUSED   TRIGGERS   AUTHENTICATIONS   AGE
+worker   apps/v1.Deployment   worker            1     4     True    False    False      False    redis                        2s
+kubectl -n financial-agent get hpa $(kubectl -n financial-agent get scaledobject worker -o jsonpath='{.status.hpaName}')
+NAME              REFERENCE           TARGETS             MINPODS   MAXPODS   REPLICAS   AGE
+keda-hpa-worker   Deployment/worker   <unknown>/2 (avg)   1         4         0          2s
+
+# make keda-worker KEDA_OVERLAY=oke-provided (re-apply at 8dc2ec1), 20261016T195219Z
+kubectl apply -k k8s/keda/overlays/oke-provided
+scaledobject.keda.sh/worker configured
+kubectl -n financial-agent wait --for=condition=Ready scaledobject/worker --timeout=120s
+scaledobject.keda.sh/worker condition met
+kubectl -n financial-agent get scaledobject worker
+NAME     SCALETARGETKIND      SCALETARGETNAME   MIN   MAX   READY   ACTIVE   FALLBACK   PAUSED   TRIGGERS   AUTHENTICATIONS   AGE
+worker   apps/v1.Deployment   worker            1     4     True    False    False      False    redis                        48s
+kubectl -n financial-agent get hpa $(kubectl -n financial-agent get scaledobject worker -o jsonpath='{.status.hpaName}')
+NAME              REFERENCE           TARGETS     MINPODS   MAXPODS   REPLICAS   AGE
+keda-hpa-worker   Deployment/worker   0/2 (avg)   1         4         1          48s
