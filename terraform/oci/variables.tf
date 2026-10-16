@@ -49,13 +49,13 @@ variable "kubernetes_version" {
 }
 
 variable "api_allowed_cidr" {
-  description = "CIDR allowed to reach the public Kubernetes API endpoint (6443). Tighten to your IP (e.g. 1.2.3.4/32) in terraform.tfvars for the demo."
+  description = "CIDR allowed to reach the public Kubernetes API endpoint (6443). Tighten to your IP (e.g. 203.0.113.4/32) in terraform.tfvars for the demo."
   type        = string
   default     = "0.0.0.0/0"
 }
 
 variable "lb_allowed_cidrs" {
-  description = "CIDRs allowed to reach the public LoadBalancers (streamlit/api, ports 80+443). DEFAULT EMPTY = deny all: the LBs serve nothing until you allowlist (e.g. [\"1.2.3.4/32\"]) in terraform.tfvars. Trade-off documented in docs/deploy-runbook.md."
+  description = "CIDRs allowed to reach the public LoadBalancers (streamlit/api, ports 80+443). DEFAULT EMPTY = deny all: the LBs serve nothing until you allowlist (e.g. [\"203.0.113.4/32\"]) in terraform.tfvars. Trade-off documented in docs/deploy-runbook.md."
   type        = list(string)
   default     = []
 }

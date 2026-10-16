@@ -8,6 +8,10 @@ line** and take its branch in
 
 Shells: **laptop** is WSL in the repo; **operator** is `ssh oke-operator`
 (ProxyJump `oke-bastion`), in `~/financial-agent`; **node 2** is `ssh oci2`.
+Each of the three has `~/financial-agent/.addresses.env` (gitignored,
+from `addresses.env.example`): check 9 reads node 2's address from it,
+and `scripts/redact.py` uses it to write placeholders, not addresses,
+into every capture. No address is typed into a command or committed.
 Nothing here sends a completion to either model endpoint before the
 rehearsal's own run.
 
@@ -196,7 +200,7 @@ rehearsal's own run.
   # laptop, right after the run (T0 = the timestamp above, ID = the last part of WF)
   mkdir -p eval/runs/slm-proof-$ID
   ssh oci2 "kubectl -n financial-agent logs deploy/llamacpp -c llama-server --since-time=$T0" \
-    > eval/runs/slm-proof-$ID/llamacpp-server-window.log
+    | python3 scripts/redact.py > eval/runs/slm-proof-$ID/llamacpp-server-window.log
   scp "oke-operator:~/slm-proof/$WF*" eval/runs/slm-proof-$ID/
   python3 scripts/traffic_proof_tasks.py --endpoint slm-gpu \
     --server-log eval/runs/slm-proof-$ID/llamacpp-server-window.log \

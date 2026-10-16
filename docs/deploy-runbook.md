@@ -1018,7 +1018,7 @@ until the namespace has a single operator.
 restore, the `streamlit` Service was recreated outside the project's
 scripts (02:47:28Z) and made a LoadBalancer again (02:48:41Z): TCP
 listener on 8501, the `pub_lb-tbhcuw` security list admitting 0.0.0.0/0 on
-8501, Streamlit answering 200 without authentication at 129.159.168.142.
+8501, Streamlit answering 200 without authentication at <streamlit-lb-ip>.
 Closed by `kubectl apply -k k8s/overlays/oke-provided` at 02:52:04Z; the
 LB was deleted at 02:52:24Z and the rule removed. Exposure about
 02:48:41–02:52:24Z; no brief was cached in it. The tenancy owner then
@@ -1090,6 +1090,31 @@ Then confirm no load balancer is left:
 `oci lb load-balancer list --compartment-id <the VCN's compartment> --all` is empty.
 
 ## SLM endpoints: Qwen3.6-35B-A3B on llama.cpp (CPU on OKE, GPU on node 2)
+
+**Addresses (since 2026-10-16).** No IP address is committed: files use
+the placeholders `<node2-public-ip>`, `<oke-egress-ip>`,
+`<streamlit-lb-ip>`, `<oke-api-private-ip>` and `<oke-node-1>` to
+`<oke-node-4>`, and for names `<oke-operator-host>` (the operator
+instance's OCI-generated hostname) and `<oke-vcn-domain>` (the VCN's DNS
+domain); the `vm-a10-inst-*`, `oke-operator` and `oke-bastion` aliases
+stay. In `terraform/oci-provided/` the API endpoint address and the VCN
+domain are variables (`pool_oke_cpu_apiserver_host`,
+`dhcp_default_dhcp_options_for_oke_test_vcn_tbhcuw_search_domain_names`)
+whose values go in the operator's gitignored `terraform.tfvars`. The real
+values live in `~/financial-agent/.addresses.env`
+on each host that needs them (gitignored; template
+`addresses.env.example`), commands read them with `set -a; .
+~/financial-agent/.addresses.env; set +a`, and captures pass through
+`scripts/redact.py` at write time. CI fails on any address outside the
+allowlist (`tests/test_no_ip_addresses.py`). Commits before 2026-10-16
+contain these addresses: history was not rewritten, because image tags and
+the docs cite commit shas. One measurable effect of the redaction:
+`scripts/aggregate_template_size.py` on the six GPU runs' workflow
+objects (`k6zxd`, `m7qvv`, `nstp9`, `p9jr2`, `6z5xz`, `xgtxx`) reads 12
+bytes per ticker more than on the originals (the placeholder is two
+characters longer than the address, in each row's `slm_url`); the CPU and
+hosted runs, and the cited sizes (`8vpq6` 301,083, `9jzmj` 198,065
+bytes), are unchanged.
 
 The self-served SLM behind the `slm-full-*` arms and `SLM_FULL`
 (`agent/tools/slm.py`; method: [eval-methodology.md](eval-methodology.md),
@@ -1195,7 +1220,7 @@ smoke, then the extended runs with their same-image hosted baseline
    curl -s localhost:30880/health                                          # {"status":"ok"} (public by design)
    ```
 4. **[EXECUTED — ufw and security-list rules in place; evidence captured
-   2026-10-05 22:32 UTC from the operator, whose egress is 129.80.187.92:
+   2026-10-05 22:32 UTC from the operator, whose egress is <oke-egress-ip>:
    `GET http://<node 2>:30880/v1/models` without a key → HTTP 401
    `Invalid API Key`, with `SLM_GPU_API_KEY` → HTTP 200 serving the plain
    alias `qwen3.6-35b-a3b-q4km` (no `-hybrid` suffix), n_ctx 32768
@@ -1207,9 +1232,10 @@ smoke, then the extended runs with their same-image hosted baseline
    (k3s NodePorts route around ufw — see the single-VM network baseline);
    ufw is defense in depth:
    ```bash
-   sudo ufw allow from 129.80.187.92 to any port 30880 proto tcp   # node 2
+   set -a; . ~/financial-agent/.addresses.env; set +a                     # node 2: OKE_EGRESS_IP (gitignored)
+   sudo ufw allow from "$OKE_EGRESS_IP" to any port 30880 proto tcp
    ```
-   Then the security-list rule: TCP 30880 from 129.80.187.92/32 only — never
+   Then the security-list rule: TCP 30880 from <oke-egress-ip>/32 only — never
    a range (node 2's app NodePorts 30080/30501 have no auth). The financial-
    lora vLLM (unkeyed) is at 0 replicas with no Service, so nothing unkeyed
    answers on 30880. From the OKE side:
@@ -1443,7 +1469,7 @@ changes a manifest.
 **Network facts this section depends on.** The VCN security list is the
 boundary for node 2's NodePorts: k3s NodePorts route around ufw, which is
 defense in depth only (SLM step 4). The security-list rule admitting TCP
-30880 from 129.80.187.92/32 stays in place until after the demo. The
+30880 from <oke-egress-ip>/32 stays in place until after the demo. The
 financial-lora vLLM, when `make vm-vllm` restores it, also answers on
 30880 **without a key**.
 
@@ -1541,10 +1567,10 @@ Not part of the default path. If vLLM must serve on node 2 before the
 demo, in this order, all of it finished before the rehearsal:
 
 1. **Close 30880 first.** Ask the tenancy owner to remove the
-   security-list rule (TCP 30880 from 129.80.187.92/32); on node 2,
-   `sudo ufw delete allow from 129.80.187.92 to any port 30880 proto tcp`;
-   from the operator, `curl -s -m 10 -o /dev/null -w '%{http_code}\n'
-   http://<node 2>:30880/health` prints `000`.
+   security-list rule (TCP 30880 from <oke-egress-ip>/32); on node 2,
+   `set -a; . ~/financial-agent/.addresses.env; set +a; sudo ufw delete allow from "$OKE_EGRESS_IP" to any port 30880 proto tcp`;
+   from the operator, `set -a; . ~/financial-agent/.addresses.env; set +a; curl -s -m 10 -o /dev/null -w '%{http_code}\n'
+   "http://$NODE2_PUBLIC_IP:30880/health"` prints `000`.
 2. **Then vLLM** (node 2): `make vm-llamacpp-down && make vm-vllm`
    (rollout waits up to 15 minutes, then polls the model for up to 2).
 3. **Swap back to llama.cpp** (node 2):
@@ -1554,9 +1580,9 @@ demo, in this order, all of it finished before the rehearsal:
    make vm-llamacpp            # scales vLLM to 0, deletes its Service, takes 30880; the GGUF is already on disk
    curl -s localhost:30880/health && curl -s -o /dev/null -w '%{http_code}\n' localhost:30880/v1/models   # ok, 401
    ```
-4. **Re-open 30880 for the OKE egress IP only:** `sudo ufw allow from
-   129.80.187.92 to any port 30880 proto tcp` on node 2, and ask the
-   tenancy owner to re-add the security-list rule (129.80.187.92/32,
+4. **Re-open 30880 for the OKE egress IP only:** `set -a; . ~/financial-agent/.addresses.env; set +a;
+   sudo ufw allow from "$OKE_EGRESS_IP" to any port 30880 proto tcp` on node 2, and ask the
+   tenancy owner to re-add the security-list rule (<oke-egress-ip>/32,
    never a range). Then preflight checks 8 and 9 (demo-preflight.md).
 
 Time: the Kubernetes steps take a minute or two each. Loading the 20.4 GB
@@ -1582,10 +1608,10 @@ guard k3s NodePorts:
    `pkill -f 'kubectl -n argo port-forward'; pkill -f 'kubectl -n
    financial-agent port-forward'`; close the laptop's `ssh -N`.
 4. **Close ufw 30880** (node 2):
-   `sudo ufw delete allow from 129.80.187.92 to any port 30880 proto tcp`.
+   `set -a; . ~/financial-agent/.addresses.env; set +a; sudo ufw delete allow from "$OKE_EGRESS_IP" to any port 30880 proto tcp`.
 5. **Ask the tenancy owner to remove the security-list rule** TCP 30880
-   from 129.80.187.92/32. Then confirm from the operator:
-   `curl -s -m 10 -o /dev/null -w '%{http_code}\n' http://<node 2>:30880/health`
+   from <oke-egress-ip>/32. Then confirm from the operator:
+   `set -a; . ~/financial-agent/.addresses.env; set +a; curl -s -m 10 -o /dev/null -w '%{http_code}\n' "http://$NODE2_PUBLIC_IP:30880/health"`
    prints `000`.
 6. **Only then, if wanted, restore vLLM** (node 2):
    `make vm-llamacpp-down && make vm-vllm`.
@@ -2037,7 +2063,7 @@ local and gitignored on the operator.
 Recorded as provisioned, not changed, and deferred until after the demo
 because the demo depends on the current configuration: the API endpoint
 has a public IP (`is_public_ip_enabled = true`), with kube-apiserver TCP
-6443 open to 0.0.0.0/0 (the private endpoint, 10.140.0.3, is the node
+6443 open to 0.0.0.0/0 (the private endpoint, <oke-api-private-ip>, is the node
 pools' `apiserver_host` in `nodepool.tf`; `oci ce cluster get --query
 'data.endpoints'` on 2026-10-15 lists both a private and a public
 endpoint); SSH to the bastion is open to 0.0.0.0/0; and the `pub_lb`

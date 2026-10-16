@@ -4,9 +4,9 @@
 # capacity.memory is what the kernel sees, below the shape's configured memory, so a
 # whole-node figure from it is approximate. The llamacpp pod is the one in eval/runs/top-cpu-ext.txt (8vpq6).
 NODE            CPU   MEM          ALLOC_MEM
-10.140.41.238   16    32853944Ki   29503416Ki
-10.140.46.187   16    65834916Ki   60387236Ki
-10.140.46.95    16    32853936Ki   29503408Ki
-10.140.47.66    16    65834908Ki   60387228Ki
+<oke-node-1>   16    32853944Ki   29503416Ki
+<oke-node-2>   16    65834916Ki   60387236Ki
+<oke-node-3>    16    32853936Ki   29503408Ki
+<oke-node-4>    16    65834908Ki   60387228Ki
 POD                         NODE
-llamacpp-548f6b8bc6-dgxrf   10.140.47.66
+llamacpp-548f6b8bc6-dgxrf   <oke-node-4>

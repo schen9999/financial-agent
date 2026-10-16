@@ -73,7 +73,7 @@
                 ],
                 "displayName": "eval-ticker(1:NVDA)(0)",
                 "finishedAt": "2026-10-03T21:15:27Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-hm527-1188643488",
                 "inputs": {
                     "parameters": [
@@ -158,7 +158,7 @@
                 ],
                 "displayName": "eval-ticker(8:V)(0)",
                 "finishedAt": "2026-10-03T21:21:37Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-hm527-1389021628",
                 "inputs": {
                     "parameters": [
@@ -243,7 +243,7 @@
                 ],
                 "displayName": "eval-ticker(4:GOOGL)(0)",
                 "finishedAt": "2026-10-03T21:18:16Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-hm527-146270182",
                 "inputs": {
                     "parameters": [
@@ -288,7 +288,7 @@
                 ],
                 "displayName": "eval-ticker(9:WMT)(0)",
                 "finishedAt": "2026-10-03T21:21:05Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-hm527-1509610461",
                 "inputs": {
                     "parameters": [
@@ -450,7 +450,7 @@
                 "boundaryID": "grounding-eval-hm527",
                 "displayName": "aggregate",
                 "finishedAt": "2026-10-03T21:21:49Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-hm527-2798083342",
                 "inputs": {
                     "artifacts": [
@@ -572,7 +572,7 @@
                 ],
                 "displayName": "eval-ticker(5:AMZN)(0)",
                 "finishedAt": "2026-10-03T21:18:16Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-hm527-3387673193",
                 "inputs": {
                     "parameters": [
@@ -687,7 +687,7 @@
                 ],
                 "displayName": "eval-ticker(7:TSLA)(0)",
                 "finishedAt": "2026-10-03T21:19:53Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-hm527-3846610031",
                 "inputs": {
                     "parameters": [
@@ -732,7 +732,7 @@
                 ],
                 "displayName": "eval-ticker(6:META)(0)",
                 "finishedAt": "2026-10-03T21:19:54Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-hm527-3935148401",
                 "inputs": {
                     "parameters": [
@@ -777,7 +777,7 @@
                 ],
                 "displayName": "eval-ticker(3:MSFT)(0)",
                 "finishedAt": "2026-10-03T21:16:58Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-hm527-394286291",
                 "inputs": {
                     "parameters": [
@@ -862,7 +862,7 @@
                 ],
                 "displayName": "eval-ticker(2:JPM)(0)",
                 "finishedAt": "2026-10-03T21:16:44Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-hm527-502290909",
                 "inputs": {
                     "parameters": [
@@ -907,7 +907,7 @@
                 ],
                 "displayName": "eval-ticker(0:AAPL)(0)",
                 "finishedAt": "2026-10-03T21:15:32Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-hm527-550588052",
                 "inputs": {
                     "parameters": [

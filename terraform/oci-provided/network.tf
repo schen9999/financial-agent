@@ -340,7 +340,7 @@ resource "oci_core_dhcp_options" "dhcp_default_dhcp_options_for_oke_test_vcn_tbh
   vcn_id           = oci_core_vcn.vcn_oke_test_vcn_tbhcuw.id
   options {
     custom_dns_servers  = []
-    search_domain_names = ["tbhcuw.oraclevcn.com"]
+    search_domain_names = [var.dhcp_default_dhcp_options_for_oke_test_vcn_tbhcuw_search_domain_names]
     type                = "SearchDomain"
   }
   options {

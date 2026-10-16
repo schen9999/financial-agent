@@ -234,7 +234,9 @@ def cmd_run(args) -> int:
     out.mkdir(parents=True, exist_ok=True)
     pool = ep.tokenize(plan["text_pool"])
     print(f"plan: {len(plan['calls'])} calls from {plan['run']}; text pool {len(pool)} tokens", flush=True)
-    summary = {"run": plan["run"], "url_host": urllib.parse.urlparse(args.url).hostname,
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from redact import redact  # the summary is committed: no addresses (CLAUDE.md)
+    summary = {"run": plan["run"], "url_host": redact(urllib.parse.urlparse(args.url).hostname or ""),
                "calls": len(plan["calls"]), "levels": []}
     for p in args.levels:
         print(f"level P={p} start {datetime.now(timezone.utc):%H:%M:%S}Z", flush=True)

@@ -73,7 +73,7 @@
                 ],
                 "displayName": "eval-ticker(9:WMT)(0)",
                 "finishedAt": "2026-10-03T17:53:41Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-x2cx8-1566369327",
                 "inputs": {
                     "parameters": [
@@ -155,7 +155,7 @@
                 "boundaryID": "grounding-eval-x2cx8",
                 "displayName": "aggregate",
                 "finishedAt": "2026-10-03T17:54:16Z",
-                "hostNodeName": "10.140.47.66",
+                "hostNodeName": "<oke-node-4>",
                 "id": "grounding-eval-x2cx8-190278048",
                 "inputs": {
                     "artifacts": [
@@ -197,7 +197,7 @@
                 ],
                 "displayName": "eval-ticker(5:AMZN)(0)",
                 "finishedAt": "2026-10-03T17:50:49Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-x2cx8-1976077779",
                 "inputs": {
                     "parameters": [
@@ -242,7 +242,7 @@
                 ],
                 "displayName": "eval-ticker(8:V)(0)",
                 "finishedAt": "2026-10-03T17:54:03Z",
-                "hostNodeName": "10.140.47.66",
+                "hostNodeName": "<oke-node-4>",
                 "id": "grounding-eval-x2cx8-221137414",
                 "inputs": {
                     "parameters": [
@@ -287,7 +287,7 @@
                 ],
                 "displayName": "eval-ticker(4:GOOGL)(0)",
                 "finishedAt": "2026-10-03T17:50:52Z",
-                "hostNodeName": "10.140.47.66",
+                "hostNodeName": "<oke-node-4>",
                 "id": "grounding-eval-x2cx8-2292499852",
                 "inputs": {
                     "parameters": [
@@ -372,7 +372,7 @@
                 ],
                 "displayName": "eval-ticker(3:MSFT)(0)",
                 "finishedAt": "2026-10-03T17:49:24Z",
-                "hostNodeName": "10.140.47.66",
+                "hostNodeName": "<oke-node-4>",
                 "id": "grounding-eval-x2cx8-3001277433",
                 "inputs": {
                     "parameters": [
@@ -417,7 +417,7 @@
                 ],
                 "displayName": "eval-ticker(6:META)(0)",
                 "finishedAt": "2026-10-03T17:52:26Z",
-                "hostNodeName": "10.140.47.66",
+                "hostNodeName": "<oke-node-4>",
                 "id": "grounding-eval-x2cx8-3032724983",
                 "inputs": {
                     "parameters": [
@@ -542,7 +542,7 @@
                 ],
                 "displayName": "eval-ticker(0:AAPL)(0)",
                 "finishedAt": "2026-10-03T17:48:13Z",
-                "hostNodeName": "10.140.47.66",
+                "hostNodeName": "<oke-node-4>",
                 "id": "grounding-eval-x2cx8-3562649622",
                 "inputs": {
                     "parameters": [
@@ -627,7 +627,7 @@
                 ],
                 "displayName": "eval-ticker(7:TSLA)(0)",
                 "finishedAt": "2026-10-03T17:52:30Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-x2cx8-3665939937",
                 "inputs": {
                     "parameters": [
@@ -712,7 +712,7 @@
                 ],
                 "displayName": "eval-ticker(2:JPM)(0)",
                 "finishedAt": "2026-10-03T17:49:23Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-x2cx8-3982011987",
                 "inputs": {
                     "parameters": [
@@ -907,7 +907,7 @@
                 ],
                 "displayName": "eval-ticker(1:NVDA)(0)",
                 "finishedAt": "2026-10-03T17:48:00Z",
-                "hostNodeName": "10.140.46.187",
+                "hostNodeName": "<oke-node-2>",
                 "id": "grounding-eval-x2cx8-970948202",
                 "inputs": {
                     "parameters": [

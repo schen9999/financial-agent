@@ -7,7 +7,7 @@ arm: slm-full-gpu
 judge_prompt_version: v2
 context_sha256: dc39d75ba91fc835a89d79fe23f49a2284baa03b5dbad006e8da7c6c22007e12
 slm_endpoint: slm-gpu
-slm_url: http://132.145.161.150:30880
+slm_url: http://<node2-public-ip>:30880
 slm_served_name: qwen3.6-35b-a3b-q4km
 slm_artifact: ggml-org/Qwen3.6-35B-A3B-GGUF@baec3ebee244827cda0f4557eafa8b28f7545fa6:Qwen3.6-35B-A3B-Q4_K_M.gguf sha256:671e47e0ec53c665d048b98c3ecbfd5236b5ca9c3e02ed19fc8f81f7b85140c7
 slm_build: b11347-5fc4f3c8c

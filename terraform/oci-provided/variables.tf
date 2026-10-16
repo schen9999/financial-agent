@@ -20,8 +20,18 @@ variable "compartment_ocid" {
   type        = string
 }
 
+variable "dhcp_default_dhcp_options_for_oke_test_vcn_tbhcuw_search_domain_names" {
+  description = "The VCN's DNS search domain (search_domain_names of dhcp_default_dhcp_options_for_oke_test_vcn_tbhcuw)."
+  type        = string
+}
+
 variable "nat_nat_gateway_public_ip_id" {
   description = "OCID: public_ip_id of nat_nat_gateway (not a codified resource, so a variable)."
+  type        = string
+}
+
+variable "pool_oke_cpu_apiserver_host" {
+  description = "Private address of the cluster's API endpoint (apiserver_host of pool_oke_cpu)."
   type        = string
 }
 

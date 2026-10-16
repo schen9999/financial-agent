@@ -123,7 +123,7 @@ flowchart LR
 
     ext["Anthropic API (judge always; hosted arm)<br/>NewsAPI · SEC EDGAR · yfinance · Pinecone"]
     argo -->|"slm-full-cpu"| cpu
-    argo -->|"slm-full-gpu, from egress 129.80.187.92 only"| gpu
+    argo -->|"slm-full-gpu, from the cluster egress IP only"| gpu
     argo --> ext
     app --> ext
     build -->|"GHCR"| app
@@ -176,7 +176,7 @@ single-node k3s.
 - The GPU SLM endpoint: llama.cpp b11347 (CUDA build) serving the same
   GGUF with all layers on the A10 (alias `qwen3.6-35b-a3b-q4km`, never
   hybrid), keyed, on NodePort 30880. The VCN security list admits 30880
-  from the OKE cluster's egress IP (129.80.187.92/32) only; ufw repeats
+  from the OKE cluster's egress IP (<oke-egress-ip>/32) only; ufw repeats
   the rule. Without the key it answers 401.
 - The financial-lora vLLM deployment is scaled to 0 with no Service while
   the GPU endpoint holds the A10 (`make vm-llamacpp`); `make vm-vllm`

@@ -18,6 +18,13 @@ jobs:
         with:
           python-version: "3.13"
 
+      # The repo is public: no IP address in any tracked file outside the
+      # allowlist (scripts/redact.py; CLAUDE.md honesty rules). Runs before
+      # the dependencies install, so a leak fails fast; the same check is
+      # tests/test_no_ip_addresses.py inside the suite.
+      - name: Check tracked files for IP addresses
+        run: git ls-files -z | xargs -0 python scripts/redact.py --check
+
       - name: Install dependencies
         run: pip install -r requirements.txt
 
