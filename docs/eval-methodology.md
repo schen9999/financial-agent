@@ -326,7 +326,7 @@ financial-lora and its base serve identically (same architecture; the LoRA
 is merged). The 7B runs at about 27% of the 1.5B's output throughput, and
 its mean end-to-end latency per 256-token request is about 3.7× higher, on
 the same GPU and batch limit. These are dated measurements on k3s. The
-OKE serving benchmark in numbers-of-record stays "to be measured in Phase 2".
+OKE serving benchmark: vLLM serving on OKE: not run.
 These runs warmed up on their own timed prompts, so the first 16 of each
 were already in vLLM's prefix cache. A clean rerun of financial-lora on
 2026-09-28 gave 708.3 output tok/s (0.5% lower) and a mean TTFT of 198 ms
