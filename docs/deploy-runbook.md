@@ -1437,7 +1437,7 @@ smoke, then the extended runs with their same-image hosted baseline
 run"): one GPU smoke, `argo/eval-run-slm-gpu-smoke.yaml`, from the OKE
 harness against node 2's llama.cpp endpoint, with the traffic proof. It is
 a new dated run on image `f3043751`; capture it like `m7qvv`, plus the
-per-request proof's server log (demo-preflight check 13). Nothing here
+per-request proof's server log (demo-preflight check 14). Nothing here
 changes a manifest.
 
 **Network facts this section depends on.** The VCN security list is the
@@ -1462,7 +1462,7 @@ expected output in order, is [demo-preflight.md](demo-preflight.md) (moved
 there 2026-10-15 so there is one copy). Stop at the first failure and take
 its branch below. Nothing in it sends a completion to the GPU endpoint
 before the rehearsal's own run. The day before, it ends with a full
-rehearsal (checks 12–14), the per-request proof of that run, and the
+rehearsal (checks 12–15), the per-request proof of that run, and the
 freeze tag. A rehearsal is a dated smoke like any other; it is not an arm
 comparison.
 
@@ -1480,7 +1480,7 @@ prints the aggregate, the attempts block and the `/metrics` counter
 proof's `TRAFFIC PROOF: EXACT | LOWER-BOUND | FAIL`, which since 2026-10-07
 is reported and does not decide (it drifts by a few tokens on both
 endpoints). The deciding proof is the per-request match right after it
-(demo-preflight check 13: the window from node 2, then
+(demo-preflight check 14: the window from node 2, then
 `scripts/traffic_proof_tasks.py --endpoint slm-gpu`). `m7qvv` took 9 min
 56 s. Nothing else may call the GPU endpoint until the window is captured:
 other traffic fails the proof.

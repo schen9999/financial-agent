@@ -131,7 +131,42 @@ rehearsal's own run.
   deciding**: it has drifted by a few tokens on both endpoints. Note the
   workflow name `WF` it prints.
 
-- [ ] **13. The deciding proof: per-request match** (operator, then laptop)
+- [ ] **13. The live CPU ask, while the smoke runs** (operator, a second
+  pane, started a minute or two after check 12, as at step 3 of the
+  running order; no Anthropic spend). First, before check 12, the two
+  things it needs from outside the cluster's model:
+  ```bash
+  # the embedding model loads from the image with the HF hub switched off
+  kubectl -n financial-agent exec deploy/api -c api -- env HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 python -c \
+    "from llama_index.embeddings.huggingface import HuggingFaceEmbedding as E; print(len(E(model_name='BAAI/bge-small-en-v1.5').get_text_embedding('ok')))"
+  # EDGAR answers from the cluster (one request, SEC's ticker map)
+  kubectl -n financial-agent exec deploy/api -c api -- python -c \
+    "from agent.tools.sec_common import lookup_cik; print(lookup_cik('V'))"
+  ```
+  Expected: `384` (bge-small's dimension). An error about the hub or a
+  missing file means the model is not in the image's cache: use `ALT=2`,
+  which needs no embedding, and say so. Then `0001403161`; `None` means
+  EDGAR did not answer: use the recorded pane, no live ask. Then, after
+  check 12:
+  ```bash
+  make live-cpu-ask 2>&1 | tee ~/rehearsal-cpu-ask-$(date -u +%F).log
+  ```
+  Expected: `endpoint  slm-cpu  served alias qwen3.6-35b-a3b-q4km  build
+  b11347-…`; the question; `tool call   get_sec_filings(…)` then
+  `tool call   query_sec_filing(…)`, each followed by its `tool result`;
+  a non-empty answer; three or more model
+  calls, every one `slm-cpu` with alias `qwen3.6-35b-a3b-q4km` and no
+  `ERROR`; last line `LIVE CPU ASK: OK — wall <n> s, … hosted calls
+  attempted 0. A demonstration, not a citable run.` Wall time: not yet
+  measured; the 2026-10-05 tool-use check took 33 s and 67 s for these two
+  tools as separate one-tool questions on the CPU, so expect about 1–3
+  minutes. A `refusing:` line means the exec's environment is wrong
+  (nothing was sent). `NOT OK` with `hosted Anthropic call attempted`
+  means the guard stopped a hosted call: record it, do not re-run, and drop
+  the step from the demo until it is understood. Check 14's proof must
+  still come out TASK-EXACT: the ask has no address or key for node 2.
+
+- [ ] **14. The deciding proof: per-request match** (operator, then laptop)
   ```bash
   # operator: the window's start
   kubectl -n financial-agent get workflow $WF -o jsonpath='{.metadata.creationTimestamp}{"\n"}'
@@ -151,10 +186,11 @@ rehearsal's own run.
   Anything else: the run is not citable; say so on the day and use the
   fallback.
 
-- [ ] **14. Record the timings** for the running order: the smoke's wall
-  time, and how long checks 4–11 took.
+- [ ] **15. Record the timings** for the running order: the smoke's wall
+  time, the live CPU ask's wall time (check 13), and how long checks 4–11
+  took.
 
-- [ ] **15. Freeze** — only after 12 and 13 pass: [Freeze](#freeze), below.
+- [ ] **16. Freeze** — only after 12, 13 and 14 pass: [Freeze](#freeze), below.
 
 ## Freeze
 
