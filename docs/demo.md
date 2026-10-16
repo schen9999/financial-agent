@@ -323,7 +323,8 @@ alias, tokens and seconds, and a last line `LIVE CPU ASK: OK — wall <n> s,
 credential plugin consumes).
 
 - **The question** (default): Walmart — "When was Walmart's most recent
-  10-K filed, and what does that 10-K list as the main risk factors?" It
+  10-K filed, and what does it say about the risks of its omnichannel and
+  eCommerce investments?" It
   needs two tools, `get_sec_filings` (EDGAR) and `query_sec_filing`
   (retrieval over the filing, whose answer is itself written by the CPU
   model). It calls no Yahoo: the smoke fetches Yahoo for ten tickers from
@@ -343,11 +344,16 @@ credential plugin consumes).
   prints `10-K check … indexed filing: 2026-03-13 -> same filing`; any
   other date prints `MISMATCH` and fails the run (`NOT OK … 10-K
   MISMATCH`).
-- **Alternates**, `ALT=1` and `ALT=2`: Apple's P/E and the risk factors in
-  its fiscal 2025 10-K (`get_stock_data` + `query_sec_filing`; uses Yahoo,
-  so only outside the smoke; named by fiscal year because Apple files its
-  next 10-K around the end of October, and its index holds the fiscal 2025
-  one), and Microsoft's recent news and its latest 10-Q date
+- **Alternates**, `make live-cpu-ask ALT=1` and `ALT=2`. `ALT=1`: "What
+  is Apple's current P/E ratio, and what does its fiscal 2025 10-K say
+  about the risks of relying on outsourcing partners, located in a few
+  places, mostly in Asia, to manufacture its products?"
+  (`get_stock_data` + `query_sec_filing`). It uses Yahoo, so only outside
+  the smoke. It is named by fiscal year, with no filing-date part, because
+  Apple files its next 10-K around the end of October and its index holds
+  the fiscal 2025 one. It asks for one risk the 10-K states directly, as
+  the default does, not an open-ended list. `ALT=2`: Microsoft's recent
+  news and its latest 10-Q date
   (`get_company_news` + `get_sec_filings`; NewsAPI returned nothing for 32
   of 40 tickers in `4hsn2`, so the news half may come back empty).
 - **What routes to the CPU, from the code.** `make live-cpu-ask` sets
@@ -392,8 +398,21 @@ credential plugin consumes).
   wall 93.3 s, `get_sec_filings` then `query_sec_filing`, three model calls
   all on `slm-cpu` (ReAct 13.4 s, retrieval answer 40.7 s, ReAct 38.3 s),
   hosted calls attempted 0. About 95 s fits easily inside the GPU smoke's
-  ~10 minutes. The Walmart question uses the same two tools and has not
-  been timed yet; the rehearsal (check 13) records its time.
+  ~10 minutes.
+- **A second dated trial, and why the wording changed** (operator,
+  2026-10-16 about 18:49Z, the Walmart question in its first wording,
+  "…what does that 10-K list as the main risk factors?"): `OK`, wall
+  72.5 s, `10-K check` 2026-03-13 against the indexed 2026-03-13, same
+  filing; model calls ReAct 6.0 s, retrieval answer 35.2 s, ReAct 30.4 s;
+  0 hosted calls. The answer drifted: only its omnichannel/eCommerce
+  point was a real risk factor. It recast Walmart's "Shared Value"
+  framework (Opportunity, Sustainability, Community) as risks and
+  mislabelled a category ("Legal, Tax, Regulatory…", then strategic
+  risks). With the top three retrieved chunks, an open-ended "main risk
+  factors" invites that, so the default now asks about the one risk that
+  retrieval returned cleanly. The narrowed question has not been timed
+  yet; the rehearsal (check 13) records its time. Neither trial is a
+  citable run.
 - **Not done: a 1-ticker CPU smoke beside the GPU smoke.** Considered and
   not built. `make slm-eval-run` finds its workflow afterwards as the
   newest one in the namespace, so with two running it would capture the

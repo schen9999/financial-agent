@@ -38,11 +38,20 @@ import time
 # March 2027. (Visa, the first default, files in November: inside the demo
 # window.) Apple files in late October, so its alternate names the fiscal
 # 2025 10-K, the indexed one, and does not ask for a filing date.
+# The default asks about one risk the top-3 retrieval returns cleanly. The
+# open-ended "main risk factors" (trial 2026-10-16) drifted: with three
+# chunks the answer recast Walmart's "Shared Value" framework as risks and
+# mislabelled a category; only its omnichannel/eCommerce point was a risk
+# factor.
 QUESTIONS = [
-    ("WMT", "When was Walmart's most recent 10-K filed, and what does that 10-K "
-            "list as the main risk factors?", ("get_sec_filings", "query_sec_filing")),
-    ("AAPL", "What is Apple's current P/E ratio, and what risk factors does its "
-             "fiscal 2025 10-K list?", ("get_stock_data", "query_sec_filing")),
+    ("WMT", "When was Walmart's most recent 10-K filed, and what does it say about "
+            "the risks of its omnichannel and eCommerce investments?",
+     ("get_sec_filings", "query_sec_filing")),
+    # narrowed like the default: one risk the 10-K states directly
+    ("AAPL", "What is Apple's current P/E ratio, and what does its fiscal 2025 10-K "
+             "say about the risks of relying on outsourcing partners, located in a "
+             "few places, mostly in Asia, to manufacture its products?",
+     ("get_stock_data", "query_sec_filing")),
     ("MSFT", "What has been in the news about Microsoft recently, and when was "
              "its latest 10-Q filed?", ("get_company_news", "get_sec_filings")),
 ]
