@@ -390,6 +390,12 @@ answers from OKE; only then restore vLLM if wanted.
 
 Show the recorded GPU smoke and extended run instead, and say what failed.
 
+- **The rehearsal's screen recording** (preflight check 12, recorded
+  <REHEARSAL DATE>): the launch, the Argo graph, the A10 under
+  `nvidia-smi`, the live CPU ask, the aggregate and gate lines, and the
+  per-request proof's TASK-EXACT line. Stored at <WHERE THE FILE IS>, not
+  in the repo (size). Play it from the start of the run, and say it is
+  the rehearsal of <REHEARSAL DATE>, not today's run.
 - `eval/runs/gpu-smoke-f304375.log`: the current image's GPU smoke
   `m7qvv` (10 tickers, 4/60 unsupported, gate failed on qualitative
   watch-items, numeric 0/30, TRAFFIC PROOF: EXACT).

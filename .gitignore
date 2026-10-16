@@ -63,3 +63,9 @@ eval/judge_validation/relabel_UI_key.csv
 # Service patch carries the LB subnet and NSG OCIDs) stay out of git
 k8s/overlays/oke-provided-public-ui/allowlist.txt
 k8s/overlays/oke-provided-public-ui/generated/
+
+# Screen recordings (rehearsal, demo): stored outside the repo
+*.mp4
+*.mov
+*.mkv
+*.webm
