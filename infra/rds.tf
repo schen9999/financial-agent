@@ -24,7 +24,7 @@ resource "aws_db_instance" "postgres" {
   password = random_password.db.result
 
   db_subnet_group_name   = aws_db_subnet_group.main.name
-  vpc_security_group_ids  = [aws_security_group.rds.id]
+  vpc_security_group_ids = [aws_security_group.rds.id]
   publicly_accessible    = false # only the ECS task SG can reach it
   multi_az               = false # single-AZ for free tier
   skip_final_snapshot    = true  # demo project — no final snapshot on destroy
