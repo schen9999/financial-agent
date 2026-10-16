@@ -181,13 +181,16 @@ rehearsal's own run.
   Expected: `endpoint  slm-cpu  served alias qwen3.6-35b-a3b-q4km  build
   b11347-…`; the question; `tool call   get_sec_filings(…)` then
   `tool call   query_sec_filing(…)`, each followed by its `tool result`;
-  a non-empty answer; three or more model
+  a non-empty answer; `10-K check  get_sec_filings: 2026-03-13; indexed
+  filing: 2026-03-13 -> same filing`; three or more model
   calls, every one `slm-cpu` with alias `qwen3.6-35b-a3b-q4km` and no
   `ERROR`; last line `LIVE CPU ASK: OK — wall <n> s, … hosted calls
-  attempted 0. A demonstration, not a citable run.` Wall time: not yet
-  measured; the 2026-10-05 tool-use check took 33 s and 67 s for these two
-  tools as separate one-tool questions on the CPU, so expect about 1–3
-  minutes. A `refusing:` line means the exec's environment is wrong
+  attempted 0. A demonstration, not a citable run.` Wall time: about 95 s
+  on the dated trial of 2026-10-16 (93.3 s, the Visa question then the
+  default, the same two tools; not a citable run); the Walmart question's
+  time is recorded here for the first time. A `MISMATCH` on the 10-K line
+  means a newer Walmart 10-K than the indexed one: drop the step (demo.md,
+  failure table). A `refusing:` line means the exec's environment is wrong
   (nothing was sent). `NOT OK` with `hosted Anthropic call attempted`
   means the guard stopped a hosted call: record it, do not re-run, and drop
   the step from the demo until it is understood. Check 14's proof must

@@ -298,6 +298,7 @@ failed, and debug no further than the first check:
 | Live CPU ask: `NOT OK — hosted Anthropic call attempted` | the tool it was in | the guard stopping a hosted call, by design; say so, no re-run |
 | Live CPU ask: the `query_sec_filing` result is an error naming Hugging Face, `HF_HUB_OFFLINE` or a missing model file | check 13's embedding line | the model is not in the image's cache and the hub is switched off, by design; skip the step, or run `ALT=2` (no embedding) if time allows |
 | Live CPU ask: a tool result `Could not find SEC CIK …` or `SEC lookup failed …` | check 13's EDGAR line | EDGAR throttling, as on 2026-08-24, when MSFT's CIK lookups failed (commit `0aa2678`); show it as it is, no live retry; the recorded pane |
+| Live CPU ask: `10-K check … MISMATCH` and `NOT OK … 10-K MISMATCH` | the two dates on the line | a newer Walmart 10-K than the indexed one (not expected before about March 2027); the filing date and the risk factors would come from different filings, so do not show the answer; say why, and use the recorded pane |
 | Live CPU ask still running at step 4 | the pane's last tool line | go on to step 5, read it out at step 8 |
 | Live CPU ask: one tool only, or a weak answer | the tool lines | show it as it is: a single unjudged question, not a measurement |
 
@@ -321,15 +322,32 @@ alias, tokens and seconds, and a last line `LIVE CPU ASK: OK — wall <n> s,
 `python -c`'s argument (not on stdin, which the operator's kubectl
 credential plugin consumes).
 
-- **The question** (default): Visa — "When was Visa's most recent 10-K
-  filed, and what does the filing say about competition?" It needs two
-  tools, `get_sec_filings` (EDGAR) and `query_sec_filing` (retrieval over
-  the filing, whose answer is itself written by the CPU model). It calls
-  no Yahoo: the smoke fetches Yahoo for ten tickers from the same egress
-  IP at the same time, and that IP has drawn 429s. Alternates, `ALT=1`
-  and `ALT=2`: Apple's P/E and its 10-K's main risk factors
-  (`get_stock_data` + `query_sec_filing`; uses Yahoo, so only outside the
-  smoke), and Microsoft's recent news and its latest 10-Q date
+- **The question** (default): Walmart — "When was Walmart's most recent
+  10-K filed, and what does that 10-K list as the main risk factors?" It
+  needs two tools, `get_sec_filings` (EDGAR) and `query_sec_filing`
+  (retrieval over the filing, whose answer is itself written by the CPU
+  model). It calls no Yahoo: the smoke fetches Yahoo for ten tickers from
+  the same egress IP at the same time, and that IP has drawn 429s.
+- **Why Walmart: both tools describe the same filing until March 2027.**
+  `get_sec_filings` always returns the latest 10-K; `query_sec_filing`
+  answers from the 10-K indexed in Pinecone, and every namespace was
+  rebuilt on 2026-09-04 (`scripts/reindex_filings.py`; Walmart passed its
+  risk-factor verification). Walmart's latest 10-K was filed on 2026-03-13
+  for the year to 31 January 2026, before the reindex, and the next is due
+  about March 2027 (EDGAR, read 2026-10-16). The first default, Visa, would
+  not hold: its fiscal year ends 30 September, its 10-K of 2025-11-06 is
+  the indexed one, and its next is likely in the first half of November,
+  inside the demo window. Then the filing date on screen would come from
+  the new 10-K and the risk-factor answer from the old one. The script
+  checks this: it reads the 10-K date from `get_sec_filings`' result and
+  prints `10-K check … indexed filing: 2026-03-13 -> same filing`; any
+  other date prints `MISMATCH` and fails the run (`NOT OK … 10-K
+  MISMATCH`).
+- **Alternates**, `ALT=1` and `ALT=2`: Apple's P/E and the risk factors in
+  its fiscal 2025 10-K (`get_stock_data` + `query_sec_filing`; uses Yahoo,
+  so only outside the smoke; named by fiscal year because Apple files its
+  next 10-K around the end of October, and its index holds the fiscal 2025
+  one), and Microsoft's recent news and its latest 10-Q date
   (`get_company_news` + `get_sec_filings`; NewsAPI returned nothing for 32
   of 40 tickers in `4hsn2`, so the news half may come back empty).
 - **What routes to the CPU, from the code.** `make live-cpu-ask` sets
@@ -368,10 +386,14 @@ credential plugin consumes).
   and fail. It would not pass with the ask's traffic mixed in.
 - **What it is:** a demonstration, not a citable run. No judge, no traffic
   proof, one question. Its wall time is one observation. The CPU's
-  citable numbers stay `8vpq6` on `1f51dad`. The 2026-10-05 tool-use
-  check took 33 s (`get_sec_filings`) and 67 s (`query_sec_filing`) as
-  separate one-tool questions on this endpoint, and the rehearsal (check
-  13) records this question's time.
+  citable numbers stay `8vpq6` on `1f51dad`.
+- **How long it takes, from a dated trial** (operator, 2026-10-16 about
+  18:31Z, image `f3043751`, the Visa question this step then used): `OK`,
+  wall 93.3 s, `get_sec_filings` then `query_sec_filing`, three model calls
+  all on `slm-cpu` (ReAct 13.4 s, retrieval answer 40.7 s, ReAct 38.3 s),
+  hosted calls attempted 0. About 95 s fits easily inside the GPU smoke's
+  ~10 minutes. The Walmart question uses the same two tools and has not
+  been timed yet; the rehearsal (check 13) records its time.
 - **Not done: a 1-ticker CPU smoke beside the GPU smoke.** Considered and
   not built. `make slm-eval-run` finds its workflow afterwards as the
   newest one in the namespace, so with two running it would capture the
