@@ -69,3 +69,6 @@ k8s/overlays/oke-provided-public-ui/generated/
 *.mov
 *.mkv
 *.webm
+
+# Real IP addresses for scripts/redact.py and runbook commands (template: addresses.env.example)
+.addresses.env
