@@ -637,7 +637,9 @@ depends on:
    filled during a build and WSL then failed to start. Clean tree on the
    pushed commit to deploy: `slm-harness`, which carries everything on
    `oke-deploy` plus the SLM work, so one image serves the hosted smoke,
-   every SLM run and the hosted baseline. GHCR login needs a PAT with
+   every SLM run and the hosted baseline. (Historical: `slm-harness` was
+   merged into `main` in PR #19 on 2026-10-08; build from `main` now.)
+   GHCR login needs a PAT with
    `write:packages` (a separate one from the cluster's read-only PAT):
    ```bash
    # node 2
@@ -664,7 +666,7 @@ depends on:
    ```bash
    ssh oke-operator
    git clone https://github.com/schen9999/financial-agent.git && cd financial-agent
-   git checkout slm-harness         # the branch carrying the pin; or git pull, if already cloned
+   git checkout slm-harness         # 2026-10-03, historical: the branch then carrying the pin (merged into main, PR #19, 2026-10-08; use main now); or git pull, if already cloned
    python3 scripts/pin_oke_image.py --check     # must print the sha just pinned
    kubectl get nodes -o wide && kubectl get storageclass   # 4 nodes; oci-bv (default)
    ```
