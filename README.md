@@ -10,9 +10,9 @@ An AI agent that researches stocks and answers follow-up questions using live fi
 
 **Documentation:** start at [docs/README.md](docs/README.md), which maps each question a reviewer might ask to the document that answers it. Every number below comes from a committed, re-runnable harness; run IDs, intervals and the rules for quoting them are in [docs/numbers-of-record.md](docs/numbers-of-record.md).
 
-**Context:** the November demo maps this system against Sanjay Basu's post [Harness Engineering using OCI CPU & OKE](https://blogs.oracle.com/cloud-infrastructure/harness-engineering-using-oci-cpu-oke) (OCI blog, 2026-09-28); [docs/demo.md](docs/demo.md#how-this-maps-to-harness-engineering-on-oci-cpu) puts the post's terms beside ours and adds the measurements the post does not report.
+This system is mapped against Sanjay Basu's post [Harness Engineering using OCI CPU & OKE](https://blogs.oracle.com/cloud-infrastructure/harness-engineering-using-oci-cpu-oke) (OCI blog, 2026-09-28); [docs/demo.md](docs/demo.md#how-this-maps-to-harness-engineering-on-oci-cpu) puts the post's terms beside ours and adds the measurements the post does not report.
 
-Where it runs for the November 2026 demo ([full topology](docs/architecture.md#deployed-topology-october-2026)):
+Where it runs (October 2026) ([full topology](docs/architecture.md#deployed-topology-october-2026)):
 
 ```mermaid
 flowchart LR
