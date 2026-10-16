@@ -186,12 +186,15 @@ rehearsal's own run.
   filing: 2026-03-13 -> same filing`; three or more model
   calls, every one `slm-cpu` with alias `qwen3.6-35b-a3b-q4km` and no
   `ERROR`; last line `LIVE CPU ASK: OK — wall <n> s, … hosted calls
-  attempted 0. A demonstration, not a citable run.` Wall time, dated
-  trials of 2026-10-16 with the same two tools (not citable runs): 93.3 s
-  (the Visa question, then the default) and 72.5 s (Walmart, first
-  wording; its open-ended answer drifted, demo.md); expect about 1–1.5
-  minutes. The narrowed question's time is recorded here for the first
-  time. A `MISMATCH` on the 10-K line
+  attempted 0. A demonstration, not a citable run.` Wall time: **expect
+  about 70 s cold.** Dated trials of 2026-10-16 (not citable runs): the
+  narrowed Walmart question 33.8 s, but warm (its retrieval answer took
+  4.5 s, very likely the prompt cache from a run 20 minutes earlier); the
+  first Walmart wording 72.5 s cold (retrieval answer 35.2 s); the Apple
+  alternate 95.8 s; the old Visa question 93.3 s. Record whether the
+  retrieval answer took about 35 s (cold) or a few seconds (warm). A
+  mention of "Walmart+" in the answer is the model's own addition, not in
+  the sources (demo.md). A `MISMATCH` on the 10-K line
   means a newer Walmart 10-K than the indexed one: drop the step (demo.md,
   failure table). A `refusing:` line means the exec's environment is wrong
   (nothing was sent). `NOT OK` with `hosted Anthropic call attempted`
