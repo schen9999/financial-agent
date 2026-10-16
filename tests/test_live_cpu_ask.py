@@ -177,3 +177,5 @@ def test_questions_each_need_two_tools():
     assert "omnichannel and eCommerce" in lca.QUESTIONS[0][1]
     assert "main risk factors" not in lca.QUESTIONS[0][1]
     assert "fiscal 2025 10-K" in lca.QUESTIONS[1][1]  # Apple files again before the demo
+    assert "outsourcing partners" in lca.QUESTIONS[1][1]  # one named risk, not a list
+    assert "filed" not in lca.QUESTIONS[1][1]  # no filing date: its next 10-K may land first
