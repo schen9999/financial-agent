@@ -1094,14 +1094,27 @@ Then confirm no load balancer is left:
 **Addresses (since 2026-10-16).** No IP address is committed: files use
 the placeholders `<node2-public-ip>`, `<oke-egress-ip>`,
 `<streamlit-lb-ip>`, `<oke-api-private-ip>` and `<oke-node-1>` to
-`<oke-node-4>`. The real values live in `~/financial-agent/.addresses.env`
+`<oke-node-4>`, and for names `<oke-operator-host>` (the operator
+instance's OCI-generated hostname) and `<oke-vcn-domain>` (the VCN's DNS
+domain); the `vm-a10-inst-*`, `oke-operator` and `oke-bastion` aliases
+stay. In `terraform/oci-provided/` the API endpoint address and the VCN
+domain are variables (`pool_oke_cpu_apiserver_host`,
+`dhcp_default_dhcp_options_for_oke_test_vcn_tbhcuw_search_domain_names`)
+whose values go in the operator's gitignored `terraform.tfvars`. The real
+values live in `~/financial-agent/.addresses.env`
 on each host that needs them (gitignored; template
 `addresses.env.example`), commands read them with `set -a; .
 ~/financial-agent/.addresses.env; set +a`, and captures pass through
 `scripts/redact.py` at write time. CI fails on any address outside the
 allowlist (`tests/test_no_ip_addresses.py`). Commits before 2026-10-16
 contain these addresses: history was not rewritten, because image tags and
-the docs cite commit shas.
+the docs cite commit shas. One measurable effect of the redaction:
+`scripts/aggregate_template_size.py` on the six GPU runs' workflow
+objects (`k6zxd`, `m7qvv`, `nstp9`, `p9jr2`, `6z5xz`, `xgtxx`) reads 12
+bytes per ticker more than on the originals (the placeholder is two
+characters longer than the address, in each row's `slm_url`); the CPU and
+hosted runs, and the cited sizes (`8vpq6` 301,083, `9jzmj` 198,065
+bytes), are unchanged.
 
 The self-served SLM behind the `slm-full-*` arms and `SLM_FULL`
 (`agent/tools/slm.py`; method: [eval-methodology.md](eval-methodology.md),

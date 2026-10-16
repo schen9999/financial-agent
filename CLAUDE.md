@@ -586,11 +586,14 @@ Phase 3 — demo polish:
   conservative figure, all numbers stated beside it; judge-based numeric
   claims per ticker only as corroboration.
 - Any new number in docs must come from a committed, re-runnable harness.
-- No IP addresses, hostnames or OCIDs in committed files, captures
-  included (since 2026-10-16; the repo is public). Use the placeholders
-  (<node2-public-ip>, <oke-egress-ip>, <streamlit-lb-ip>,
-  <oke-api-private-ip>, <oke-node-N>), read real values from the
-  gitignored .addresses.env, and pass captures through
-  scripts/redact.py; tests/test_no_ip_addresses.py fails CI on any
-  address outside its allowlist. Commits before 2026-10-16 contain
-  addresses; history is not rewritten (shas are cited throughout).
+- No IP addresses, OCIDs, or resolvable hostnames/FQDNs in committed
+  files, captures included (since 2026-10-16; the repo is public). The
+  aliases vm-a10-inst-*, oke-operator and oke-bastion stay. Use the
+  placeholders (<node2-public-ip>, <oke-egress-ip>, <streamlit-lb-ip>,
+  <oke-api-private-ip>, <oke-node-N>, <oke-operator-host>,
+  <oke-vcn-domain>), read real values from the gitignored
+  .addresses.env, and pass captures through scripts/redact.py;
+  tests/test_no_ip_addresses.py fails CI on any address outside its
+  allowlist (it cannot detect an unknown hostname). Commits before
+  2026-10-16 contain these values; history is not rewritten (shas are
+  cited throughout).
