@@ -2272,4 +2272,4 @@ everything for real on the demo tenancy.
   forked manifests. Equivalence proof: [verification.md](verification.md).
 - The Argo eval DAG and nightly cron must keep passing; Celery stays
   request-time async (they are never merged).
-- `python -m pytest tests/` (635 tests collected as of 2026-10-15) must pass on every commit.
+- `python -m pytest tests/` (662 tests collected as of 2026-10-16) must pass on every commit.
