@@ -55,7 +55,11 @@ metric() { kubectl get --raw "/apis/external.metrics.k8s.io/v1beta1/namespaces/$
              | python3 -c 'import json,sys; i=json.load(sys.stdin)["items"]; print(i[0]["value"] if i else "none")'; }
 spec_replicas()  { jget deploy worker -o jsonpath='{.spec.replicas}'; }
 ready_replicas() { r=$(jget deploy worker -o jsonpath='{.status.readyReplicas}'); echo "${r:-0}"; }
-worker_pods()    { jget pods -l app.kubernetes.io/name=worker --field-selector=status.phase=Running -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'; }
+# Running and not terminating: a pod being removed keeps phase Running until it exits
+worker_pods()    { jget pods -l app.kubernetes.io/name=worker -o json | python3 -c 'import json,sys
+for p in json.load(sys.stdin)["items"]:
+    if p["status"].get("phase") == "Running" and not p["metadata"].get("deletionTimestamp"): print(p["metadata"]["name"])'; }
+all_worker_pods() { jget pods -l app.kubernetes.io/name=worker --no-headers | wc -l; }
 # queues a worker consumes, as a space-separated list ("" = none)
 queues_of() { kubectl -n "$NS" exec "$1" -c worker -- "${CELERY[@]}" inspect active_queues --json -d "celery@$1" --timeout 10 2>/dev/null \
                 | python3 -c 'import json,sys; d=json.load(sys.stdin); print(" ".join(q["name"] for v in d.values() for q in v))'; }
@@ -138,11 +142,11 @@ from celery_worker import celery_app
 restore
 [[ " $(queues_of "$POD") " == *" $LIST "* ]] || die "$POD does not consume '$LIST' after restore"
 say "4. $POD consumes '$LIST' again; waiting for scale-down to $MIN"
-t=0; while [ "$(spec_replicas)" != "$MIN" ] || [ "$(ready_replicas)" != "$MIN" ]; do
+t=0; while [ "$(spec_replicas)" != "$MIN" ] || [ "$(ready_replicas)" != "$MIN" ] || [ "$(all_worker_pods)" != "$MIN" ]; do
   [ "$t" -ge "$DOWN_TIMEOUT" ] && die "still at $(spec_replicas) replicas after ${DOWN_TIMEOUT}s"
   sleep 15; t=$((t + 15))
 done
-say "   back to $MIN replica after ${t}s"
+say "   back to $MIN replica, removed pods gone, after ${t}s"
 
 # ── 5. what is left consumes the queue; nothing queued; discovery healthy ──
 for p in $(worker_pods); do
