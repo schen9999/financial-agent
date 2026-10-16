@@ -1968,6 +1968,114 @@ That rule stands. `5bdz5` and `4kkgm` stay failed records (counter proof
 FAIL, gate failed); the CPU arm of record stays `8vpq6` on image
 `1f51dad`. Nothing was submitted.
 
+## Cross-shape llama-bench on node 2: Xeon CPU and the A10 (2026-10-16)
+
+The node 2 mirror of the 2026-10-08 E5 sweep, so the same model file has a
+llama-bench record on an Intel CPU, an AMD CPU and an Nvidia GPU.
+`scripts/llama_bench_node2.sh` runs `scripts/llama_bench_cpu.sh`'s method
+on node 2's k3s: llama.cpp b11347, the endpoint's own GGUF (hostPath),
+`-p 512,2048 -n 128 -r 3 -o json`, one Job per level with request = limit
+and `-t` = the level.
+
+- **CPU levels 4, 8, 15** (the E5 sweep's) **and `max`** (node 2's free
+  vCPU: allocatable minus every running pod's requests, printed beside
+  `nproc`; VM.GPU.A10.1 has 15 OCPU = 30 vCPU, and the September app plane
+  still holds some): the **same `full` CPU image** as the E5 run, an
+  identical binary. That build has no GPU backend, so nothing can be
+  offloaded to the A10. That is stronger than `-ngl 0` on the CUDA build,
+  which can still offload prompt-processing matrix multiplies to the GPU.
+- **GPU level** (`gpu`): `full-cuda12-b11347` (CUDA 12.8.1, the same base
+  as the endpoint's `server-cuda12` image), one A10, `-ngl 99`, `-t 8` (the
+  endpoint's `--threads`).
+- The GPU endpoint is scaled to 0 for the whole run: it holds about 20.5 GB
+  of the A10, and a CPU sweep beside it would share the memory bandwidth it
+  measures. It is restored to 1 on exit, even on failure (`trap`). vLLM
+  must be at 0 already and stays there (CLAUDE.md, Targets). The script
+  refuses if the endpoint started a task in the last 15 minutes.
+- The host record (`host.txt`): `nproc`, `lscpu`, `free -g`, the GPU, the
+  OCI shape and `shapeConfig` from instance metadata (no IPs or OCIDs), and
+  the GGUF's size. `lscpu`'s `Vulnerability …` lines are dropped: they are
+  not needed, and they list the VM's disabled mitigations. The script drops
+  them at write time since 2026-10-16; the 2026-10-16 capture was run
+  before that change, and its 14 lines were removed before it was
+  committed.
+- Time: 13 minutes on 2026-10-16 (05:59–06:12Z, restore done 06:12:42Z):
+  about 5 minutes for the 4-thread level, 2–3 for each of the others, under
+  a minute for the A10. The E5 levels took about 19 minutes each, mostly a
+  cold 15-minute load from the block volume.
+
+1. **[EXECUTED 2026-10-16, on the owner's report; the script's own guards
+   passed: it refuses unless vLLM is at 0 and the endpoint ran no task in
+   the previous 15 minutes, and `run.log` shows it went ahead]** Nothing
+   is using the GPU endpoint (operator).
+   ```bash
+   kubectl -n financial-agent get workflows | grep -w Running                                     # expect no output
+   kubectl -n financial-agent get configmap app-config -o jsonpath='{.data.SLM_FULL}{"\n"}'      # expect false
+   ```
+2. **[EXECUTED 2026-10-16, node 2 about 05:58Z, just before the run:
+   `/health` `{"status":"ok"}`, `/v1/models` without the key `401`,
+   nvidia-smi `/app/llama-server, 20534 MiB`, vllm `0/0`, llamacpp `1/1`]**
+   Copy the script and record the endpoint's state before (laptop, then node 2; preflight check 8).
+   ```bash
+   scp scripts/llama_bench_node2.sh oci2:/tmp/          # laptop, from this branch
+   ssh oci2
+   curl -s localhost:30880/health; echo                                   # {"status":"ok"}
+   curl -s -o /dev/null -w '%{http_code}\n' localhost:30880/v1/models     # 401
+   nvidia-smi --query-compute-apps=pid,process_name,used_memory --format=csv   # llama-server near 20488 MiB
+   kubectl -n financial-agent get deploy vllm llamacpp                    # vllm 0/0, llamacpp 1/1
+   ```
+3. **[EXECUTED 2026-10-16, 05:59–06:12Z; all levels completed]** The bench
+   (node 2, in tmux so an ssh drop does not cut it). `run.log`: host
+   `Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz`, `nproc 30`; `max`
+   resolved to 28 free vCPU; each CPU level backend `CPU`, GPU layers
+   `-1`; `gpu` backend `CUDA`, GPU layers `99`; then `deployment
+   "llamacpp" successfully rolled out`, `/app/llama-server, 20488 MiB`,
+   `vllm replicas: 0`. Every result file is build b11347 (`5fc4f3c`) on
+   the same 20,408,576,512-byte model (llama-bench's count; the GGUF on
+   disk is 20,419,565,568 bytes, as pinned).
+   ```bash
+   tmux new -s bench
+   bash /tmp/llama_bench_node2.sh 4 8 15 max gpu
+   ```
+   Expected in `~/llama-bench-node2-<YYYYMMDD>/run.log`: `host recorded:`
+   with the Xeon model name and `nproc 30`; `scaling llamacpp to 0`;
+   `max resolves to <n> free vCPU (nproc 30)`; for each CPU level a `done:`
+   line with three tests (512, 0), (2048, 0), (0, 128), threads equal to
+   the level, GPU layers `-1` and backend `CPU`; for `gpu` the same tests
+   with GPU layers `99` and backend `CUDA`; then `restoring llamacpp to 1`,
+   `deployment "llamacpp" successfully rolled out`, a `llama-server` line
+   from nvidia-smi near 20488 MiB, and `vllm replicas: 0`. A level that
+   does not complete prints its Job's last lines and stops; the endpoint is
+   still restored.
+4. **[EXECUTED 2026-10-16, on the owner's report: check 8 `ok`, 401, vllm
+   0/0, llamacpp 1/1; check 9 HTTP 401 without the key, HTTP 200 with it,
+   alias `qwen3.6-35b-a3b-q4km`, no `-hybrid`]** The endpoint is back,
+   keyed, and serving OKE:
+   preflight check 8 again on node 2 (same expected lines as step 2), then
+   preflight check 9 (laptop, then operator): `HTTP 401` without the key,
+   `HTTP 200` with it, alias `qwen3.6-35b-a3b-q4km` with no `-hybrid`, and
+   `server_facts` printing the same alias and no error.
+5. **[EXECUTED 2026-10-16: captured into `eval/runs/llama-bench-2026-10-16/`,
+   redacted, `redact.py --check` clean, `Vulnerability` lines removed from
+   `host.txt`; the table below is `table.md` there]** Capture and table
+   (laptop).
+   ```bash
+   D=eval/runs/llama-bench-<YYYY-MM-DD>; mkdir -p $D
+   scp 'oci2:~/llama-bench-node2-<YYYYMMDD>/*' $D/
+   python3 scripts/redact.py $D/*        # placeholders before anything is committed (CLAUDE.md)
+   python3 scripts/redact.py --check $D/* && echo "no addresses"
+   E=eval/runs/llama-bench-cpu-2026-10-08; D=eval/runs/llama-bench-2026-10-16
+   python scripts/llama_bench_table.py \
+     $E/P4.json="AMD EPYC 9J14 (OKE E5), 4 vCPU" $E/P8.json="AMD EPYC 9J14 (OKE E5), 8 vCPU" \
+     $E/P15.json="AMD EPYC 9J14 (OKE E5), 15 vCPU" \
+     $D/cpu-P4.json="Intel Xeon 8358 (A10.1 host), 4 vCPU" $D/cpu-P8.json="Intel Xeon 8358 (A10.1 host), 8 vCPU" \
+     $D/cpu-P15.json="Intel Xeon 8358 (A10.1 host), 15 vCPU" $D/cpu-P28.json="Intel Xeon 8358 (A10.1 host), 28 vCPU" \
+     $D/gpu.json="NVIDIA A10, all layers" > $D/table.md
+   ```
+   Results: [gpu-inference.md, "Same model file on an Intel CPU, an AMD
+   CPU and an Nvidia GPU"](gpu-inference.md#same-model-file-on-an-intel-cpu-an-amd-cpu-and-an-nvidia-gpu-2026-10-16-llama-bench-no-judge),
+   and eval-methodology.md, a dated measurement.
+
 ## Reranking A/B (2026-10-08)
 
 **[EXECUTED 2026-10-08 — decision DON'T SHIP]** Pre-registered in
@@ -2166,4 +2274,4 @@ everything for real on the demo tenancy.
   forked manifests. Equivalence proof: [verification.md](verification.md).
 - The Argo eval DAG and nightly cron must keep passing; Celery stays
   request-time async (they are never merged).
-- `python -m pytest tests/` (635 tests collected as of 2026-10-15) must pass on every commit.
+- `python -m pytest tests/` (662 tests collected as of 2026-10-16) must pass on every commit.
