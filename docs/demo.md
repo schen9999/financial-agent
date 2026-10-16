@@ -344,11 +344,16 @@ credential plugin consumes).
   prints `10-K check … indexed filing: 2026-03-13 -> same filing`; any
   other date prints `MISMATCH` and fails the run (`NOT OK … 10-K
   MISMATCH`).
-- **Alternates**, `ALT=1` and `ALT=2`: Apple's P/E and the risk factors in
-  its fiscal 2025 10-K (`get_stock_data` + `query_sec_filing`; uses Yahoo,
-  so only outside the smoke; named by fiscal year because Apple files its
-  next 10-K around the end of October, and its index holds the fiscal 2025
-  one), and Microsoft's recent news and its latest 10-Q date
+- **Alternates**, `make live-cpu-ask ALT=1` and `ALT=2`. `ALT=1`: "What
+  is Apple's current P/E ratio, and what does its fiscal 2025 10-K say
+  about the risks of relying on outsourcing partners, located in a few
+  places, mostly in Asia, to manufacture its products?"
+  (`get_stock_data` + `query_sec_filing`). It uses Yahoo, so only outside
+  the smoke. It is named by fiscal year, with no filing-date part, because
+  Apple files its next 10-K around the end of October and its index holds
+  the fiscal 2025 one. It asks for one risk the 10-K states directly, as
+  the default does, not an open-ended list. `ALT=2`: Microsoft's recent
+  news and its latest 10-Q date
   (`get_company_news` + `get_sec_filings`; NewsAPI returned nothing for 32
   of 40 tickers in `4hsn2`, so the news half may come back empty).
 - **What routes to the CPU, from the code.** `make live-cpu-ask` sets
