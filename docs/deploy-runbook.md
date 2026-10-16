@@ -1216,14 +1216,17 @@ scales it back to its desired count on its next sync.
    exactly that. The test was fixed at `3fe14fa` and rerun on both
    clusters. The first run is kept, superseded:
    `eval/runs/keda/oke-3a-scale-test-first-run-8dc2ec1.txt`.
-4. **[EXECUTED 2026-10-16 20:09Z — PASS, 27 APIServices Available]**
-   After any later cluster change, check
+4. **[EXECUTED 2026-10-16 20:09Z — PASS, 27 APIServices Available;
+   re-run PASS after step 5's apply, ~20:46Z, capture
+   `eval/runs/keda/oke-4-5-apply.txt`]** The 20:09Z run itself has no
+   committed capture. After any later cluster change, check
    discovery again:
    ```bash
    make keda-check    # fails on "unable to retrieve the complete list of server APIs" or any unavailable APIService
    ```
 5. **[EXECUTED on OKE 2026-10-16 ~20:43–20:46Z, by the owner, branch at
-   `5f75311`; kind PASS 2026-10-16]** The worker's
+   `5f75311`, capture `eval/runs/keda/oke-4-5-apply.txt`; kind PASS
+   2026-10-16]** The worker's
    shutdown grace (`terminationGracePeriodSeconds: 120`). The live
    namespace runs the public-UI overlay, so apply it through
    `scripts/public_ui_up.sh`: it renders that overlay (oke-provided plus
@@ -1241,14 +1244,18 @@ scales it back to its desired count on its next sync.
    kubectl -n financial-agent get deploy worker -o jsonpath='{.spec.template.spec.terminationGracePeriodSeconds}{"\n"}'   # 120
    make keda-check                                                        # DISCOVERY CHECK (installed): PASS
    ```
-   **Result on OKE** (the owner's run and report, 2026-10-16):
+   **Result on OKE** (the owner's run, 2026-10-16; capture
+   `eval/runs/keda/oke-4-5-apply.txt`, pasted from the operator's terminal
+   by the owner, redacted at capture time):
    - `--diff`: only the worker Deployment changed, generation 13 → 14
      and `terminationGracePeriodSeconds` 30 → 120.
    - Apply: the guards passed before and after (`GUARD sl ok`, then
      `GUARD sl ok`, `GUARD lb ok`), and Streamlit rolled out. The output
-     ended "public UI up at https://<public-ip>/ (guards passed)": the
-     generic placeholder, because `PUBLIC_UI_LB_IP` was not yet in
-     `.addresses.env` (see "Two load balancers", below).
+     ended "public UI up at https://<public-ip>/ (guards passed)" in the
+     terminal: the generic placeholder, because `PUBLIC_UI_LB_IP` was not
+     yet in `.addresses.env` (see "Two load balancers", below). The
+     committed capture names it `<public-ui-lb-ip>`, the live LB's own
+     placeholder.
    - `rollout status deploy/worker`: rolled out, with a new worker pod,
      the only pod restart. The grace read back as `120`.
    - `make keda-check`: `api-resources` complete, all 27 APIServices
@@ -1260,7 +1267,7 @@ scales it back to its desired count on its next sync.
    diff showed nothing for them. This is harmless. Their spec did not
    change: `generation` equalled `observedGeneration` and was unchanged
    (`mcp` 5/5, `postgres` 1/1), and their pods were not touched (still 10
-   and 13 days old). A rollout needs a spec change, which bumps
+   and 13 days old; both in the capture). A rollout needs a spec change, which bumps
    generation. "configured" therefore came from a metadata-only update
    that `kubectl diff` does not show, most likely the
    `last-applied-configuration` annotation. The same two Deployments
