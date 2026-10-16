@@ -205,15 +205,17 @@ critic loop. Critic threshold: 5% unsupported. A dated record: Jun 2026,
 judge v1, pre-retrieval-fix, local runs (pre-Argo, no workflow run IDs);
 intervals from `eval/stats.py`.
 
-| Path | Claims | Unsupported (judge v1, Wilson 95% CI) | Latency/brief | Revisions/brief |
-|---|---:|---:|---:|---:|
-| Single-agent (control) | 73 | 1/73 = 1.4% (0.2–7.4%) | 26.1s | 0.00 |
-| Multi-agent | 71 | 0/71 = 0.0% (0.0–5.1%) | 43.9s | 0.00 |
-| Delta | | -1.4 pts | +68% | n/a |
+| Path | Claims | Unsupported (judge v1, Wilson 95% CI) | Revisions/brief |
+|---|---:|---:|---:|
+| Single-agent (control) | 73 | 1/73 = 1.4% (0.2–7.4%) | 0.00 |
+| Multi-agent | 71 | 0/71 = 0.0% (0.0–5.1%) | 0.00 |
+| Delta | | -1.4 pts | n/a |
 
-The multi-agent path also costs more per brief (an extra Haiku planner call
-and a Sonnet critic call on every brief). The cost ratio this experiment
-recorded came from an uncommitted harness, so it is kept only as a historical
+The multi-agent path is also slower and costs more per brief (an extra
+Haiku planner call and a Sonnet critic call on every brief). The latency
+and cost ratios this experiment recorded came from an uncommitted harness
+(`grounding_check.py` has no multi-agent arm, and no run output was
+committed), so they are kept only as a historical
 note in [docs/PHASE0_AUDIT.md](PHASE0_AUDIT.md) and not quoted here; the
 current re-runnable cost of record for the single-agent pipeline is
 **$0.0366/brief** (2026-09-06, post-retrieval-fix; `scripts/cost_report.py`).
