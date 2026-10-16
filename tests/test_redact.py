@@ -93,3 +93,56 @@ def test_hostnames_from_the_address_file(tmp_path):
     assert m == {"o-abcdef": "<oke-operator-host>", "abcdef.oraclevcn.com": "<oke-vcn-domain>"}
     out = rd.redact("ubuntu@o-abcdef:~$ x; node-1.sub.abcdef.oraclevcn.com; no-abcdef; o-abcdefg", m)
     assert out == "ubuntu@<oke-operator-host>:~$ x; node-1.sub.<oke-vcn-domain>; no-abcdef; o-abcdefg"
+
+
+EXAMPLE = rd.REPO / "addresses.env.example"
+LIVE_LB = ".".join(["9", "9", "9", "9"])     # stands in for the live public-UI LB
+INCIDENT_LB = ".".join(["1", "0", "0", "1"])  # stands in for the 2026-10-08 incident LB
+
+
+def test_example_defines_both_load_balancers_apart():
+    """STREAMLIT_LB_IP is the deleted 2026-10-08 incident LB; PUBLIC_UI_LB_IP
+    is the live one public_ui_up.sh created. Two variables, two placeholders."""
+    m = rd.load_map(EXAMPLE)
+    assert m["203.0.113.30"] == "<streamlit-lb-ip>"
+    assert m["203.0.113.40"] == "<public-ui-lb-ip>"
+
+
+def test_live_lb_redacts_to_its_own_placeholder(tmp_path):
+    line = f"external IP: {LIVE_LB}\npublic UI up at https://{LIVE_LB}/ (guards passed)\nincident {INCIDENT_LB}:8501"
+    f = tmp_path / ".addresses.env"
+    f.write_text(f"STREAMLIT_LB_IP={INCIDENT_LB}\nPUBLIC_UI_LB_IP={LIVE_LB}\n")
+    assert rd.redact(line, rd.load_map(f)) == (
+        "external IP: <public-ui-lb-ip>\npublic UI up at https://<public-ui-lb-ip>/ (guards passed)\n"
+        "incident <streamlit-lb-ip>:8501")
+    # without PUBLIC_UI_LB_IP (the state before 2026-10-16) it was only generic
+    f.write_text(f"STREAMLIT_LB_IP={INCIDENT_LB}\n")
+    assert "https://<public-ip>/" in rd.redact(line, rd.load_map(f))
+
+
+def test_every_address_placeholder_in_the_repo_is_defined():
+    """Each <...-ip> / <oke-node-N> placeholder in a tracked file comes from a
+    variable in addresses.env.example, is redact.py's generic one, or is a
+    hand-written stand-in for "whichever host" — so a misspelt or invented
+    placeholder (as public-ui-ip and node-2-public-ip were) fails here."""
+    import re
+    import subprocess
+    import pytest
+    try:
+        files = subprocess.run(["git", "ls-files", "-z"], cwd=rd.REPO, capture_output=True,
+                               check=True).stdout.decode().split("\0")
+    except (OSError, subprocess.CalledProcessError):
+        pytest.skip("git not available")
+    defined = set(rd.load_map(EXAMPLE).values()) | {"<public-ip>", "<private-ip>"}
+    hand_written = {"<vm-ip>", "<node-ip>", "<allowlisted-ip>"}
+    pat = re.compile(rb"<(?:[a-z0-9-]+-ip|oke-node-\d+)>")
+    bad = {}
+    for name in filter(None, files):
+        try:
+            data = (rd.REPO / name).read_bytes()
+        except OSError:
+            continue
+        for p in set(pat.findall(data)):
+            if p.decode() not in defined | hand_written:
+                bad.setdefault(p.decode(), []).append(name)
+    assert not bad, bad

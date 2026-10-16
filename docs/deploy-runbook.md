@@ -1050,7 +1050,7 @@ passed and the checks gave:
 - generating a cached ticker in the page needs a browser (no headless
   browser on the laptop): done by the project owner.
 
-URL: https://<public-ui-ip>/ (basic-auth user and password on the
+URL: https://<public-ui-lb-ip>/ (basic-auth user and password on the
 operator).
 
 **Fallback: join the owner's LB NSG** (security-rule management `None`,
@@ -1226,7 +1226,7 @@ scales it back to its desired count on its next sync.
    # operator, repo root, on the branch with the change
    git fetch && git checkout keda-worker-scaling && git pull --ff-only && git log -1 --oneline
    bash scripts/public_ui_up.sh --diff 2>&1 | python3 scripts/redact.py   # expect: deployment worker only, 30 -> 120 (plus generation lines)
-   bash scripts/public_ui_up.sh 2>&1 | python3 scripts/redact.py          # apply + guards; ends "public UI up at https://<streamlit-lb-ip>/ (guards passed)"
+   bash scripts/public_ui_up.sh 2>&1 | python3 scripts/redact.py          # apply + guards; ends "public UI up at https://<public-ui-lb-ip>/ (guards passed)"
    kubectl -n financial-agent rollout status deploy/worker --timeout=900s
    kubectl -n financial-agent get deploy worker -o jsonpath='{.spec.template.spec.terminationGracePeriodSeconds}{"\n"}'   # 120
    make keda-check                                                        # DISCOVERY CHECK (installed): PASS
@@ -1286,8 +1286,8 @@ installed there.
 
 **Addresses (since 2026-10-16).** No IP address is committed: files use
 the placeholders `<node2-public-ip>`, `<oke-egress-ip>`,
-`<streamlit-lb-ip>`, `<oke-api-private-ip>` and `<oke-node-1>` to
-`<oke-node-4>`, and for names `<oke-operator-host>` (the operator
+`<streamlit-lb-ip>`, `<public-ui-lb-ip>`, `<oke-api-private-ip>` and
+`<oke-node-1>` to `<oke-node-4>`, and for names `<oke-operator-host>` (the operator
 instance's OCI-generated hostname) and `<oke-vcn-domain>` (the VCN's DNS
 domain); the `vm-a10-inst-*`, `oke-operator` and `oke-bastion` aliases
 stay. In `terraform/oci-provided/` the API endpoint address and the VCN
@@ -1308,6 +1308,21 @@ bytes per ticker more than on the originals (the placeholder is two
 characters longer than the address, in each row's `slm_url`); the CPU and
 hosted runs, and the cited sizes (`8vpq6` 301,083, `9jzmj` 198,065
 bytes), are unchanged.
+
+**Two load balancers, two placeholders (since 2026-10-16).**
+`STREAMLIT_LB_IP` → `<streamlit-lb-ip>` is the address of the 2026-10-08
+*incident* load balancer: created outside the project's scripts and
+deleted at 02:52:24Z ("Third outside exposure", above). It appears only
+in that incident's record. `PUBLIC_UI_LB_IP` → `<public-ui-lb-ip>` is
+the *live* public-UI load balancer that `scripts/public_ui_up.sh` created
+(live since 03:12Z the same day), and the address its output prints.
+Until `PUBLIC_UI_LB_IP` was added to `.addresses.env` on all three hosts
+(2026-10-16), the redactor did not know the live address: it wrote it as
+the generic `<public-ip>`, so nothing leaked, but the capture could not
+say which LB it was. The live address is in no current file (checked
+2026-10-16). Like the other addresses, it is in the history from before
+2026-10-16, which was not rewritten. `tests/test_redact.py` keeps the two apart and checks that
+every address placeholder in the repo is one the example file defines.
 
 The self-served SLM behind the `slm-full-*` arms and `SLM_FULL`
 (`agent/tools/slm.py`; method: [eval-methodology.md](eval-methodology.md),
@@ -1346,7 +1361,7 @@ smoke, then the extended runs with their same-image hosted baseline
    kubectl -n financial-agent create secret generic slm-endpoints \
      --from-literal=SLM_CPU_API_KEY=$(openssl rand -hex 32) \
      --from-file=SLM_GPU_API_KEY=$HOME/slm-gpu.key \
-     --from-literal=SLM_GPU_URL=http://<node-2-public-ip>:30880
+     --from-literal=SLM_GPU_URL=http://<node2-public-ip>:30880
    shred -u ~/slm-gpu.key
    kubectl -n financial-agent rollout restart deployment/api deployment/worker deployment/streamlit deployment/mcp
    ```

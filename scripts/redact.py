@@ -8,7 +8,8 @@ shell assignment per line, e.g.
 
   NODE2_PUBLIC_IP=...      ->  <node2-public-ip>
   OKE_EGRESS_IP=...        ->  <oke-egress-ip>
-  STREAMLIT_LB_IP=...      ->  <streamlit-lb-ip>
+  STREAMLIT_LB_IP=...      ->  <streamlit-lb-ip>   (the 2026-10-08 incident LB, deleted)
+  PUBLIC_UI_LB_IP=...      ->  <public-ui-lb-ip>   (the live public-UI LB)
   OKE_API_PRIVATE_IP=...   ->  <oke-api-private-ip>
   OKE_NODE_1=...           ->  <oke-node-1>   (and so on per node)
   OKE_OPERATOR_HOST=...    ->  <oke-operator-host>   (hostnames too)

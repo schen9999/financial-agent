@@ -595,7 +595,8 @@ Phase 3 — demo polish:
 - No IP addresses, OCIDs, or resolvable hostnames/FQDNs in committed
   files, captures included (since 2026-10-16; the repo is public). The
   aliases vm-a10-inst-*, oke-operator and oke-bastion stay. Use the
-  placeholders (<node2-public-ip>, <oke-egress-ip>, <streamlit-lb-ip>,
+  placeholders (<node2-public-ip>, <oke-egress-ip>, <streamlit-lb-ip> (the
+  2026-10-08 incident LB only), <public-ui-lb-ip> (the live public-UI LB),
   <oke-api-private-ip>, <oke-node-N>, <oke-operator-host>,
   <oke-vcn-domain>), read real values from the gitignored
   .addresses.env, and pass captures through scripts/redact.py;
