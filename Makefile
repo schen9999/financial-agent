@@ -18,7 +18,8 @@ ENV_FILE  ?= .env
         argo-install argo-deploy eval-run cost-report \
         vm-images vm-up vm-eval vm-vllm oke-images oke-up \
         vm-llamacpp vm-llamacpp-down oke-llamacpp oke-llamacpp-down oke-slm-app slm-eval-run \
-        run-time-check anthropic-estimate
+        run-time-check anthropic-estimate \
+        keda-install keda-worker keda-check keda-scale-test keda-uninstall
 
 cluster-up: ## Create the single-node kind cluster (or restart its stopped node)
 	@if kind get clusters 2>/dev/null | grep -qx $(CLUSTER); then \
@@ -375,6 +376,55 @@ run-time-check: ## (operator) Gate a long run on a finished smoke's measured per
 anthropic-estimate: ## Estimated Anthropic spend of planned runs, no API call: RUNS="argo/<file>.yaml[:judgings] ..."
 	@test -n "$(RUNS)" || { echo 'usage: make anthropic-estimate RUNS="argo/eval-run-extended-slm-cpu.yaml:3 argo/eval-run-slm-gpu-smoke.yaml"'; exit 1; }
 	python3 scripts/anthropic_cost_estimate.py $(RUNS)
+
+# ── KEDA: Celery worker scaled on Redis queue depth (runbook "KEDA") ─────────
+# A cluster-level install (CRDs, the external.metrics APIService, a webhook
+# for keda.sh objects): on a shared cluster, only with the owner's clearance.
+# The chart is pinned by version AND sha256; the install refuses any other
+# bytes. 2.21.0 supports Kubernetes 1.34–1.36 (OKE 1.34.1, kind 1.36.1).
+KEDA_CHART_VERSION ?= 2.21.0
+KEDA_CHART_SHA256  ?= a7da56bf41a33dad9d2fc82a6fdecee552fff947d80bf1e1dbcf4db0f9e26dee
+KEDA_NAMESPACE     ?= keda
+KEDA_OVERLAY       ?= kind
+HELM               ?= helm
+KEDA_APISVC        := v1beta1.external.metrics.k8s.io
+
+keda-install: ## Install KEDA (pinned chart, digest-checked) into $(KEDA_NAMESPACE), then check discovery
+	@if kubectl get apiservice $(KEDA_APISVC) >/dev/null 2>&1 && \
+	   [ "$$(kubectl get apiservice $(KEDA_APISVC) -o jsonpath='{.metadata.annotations.meta\.helm\.sh/release-name}')" != keda ]; then \
+		echo "ERROR: $(KEDA_APISVC) is already registered by something other than this KEDA release:"; \
+		kubectl get apiservice $(KEDA_APISVC); echo "Only one external metrics adapter can hold it. Stop."; exit 1; fi
+	@bash scripts/keda_discovery_check.sh discovery || { echo "ERROR: discovery is not healthy BEFORE the install — not KEDA's doing; fix that first"; exit 1; }
+	@T=$$(mktemp -d); \
+	curl -fsSL -o $$T/keda-$(KEDA_CHART_VERSION).tgz https://kedacore.github.io/charts/keda-$(KEDA_CHART_VERSION).tgz && \
+	echo "$(KEDA_CHART_SHA256)  $$T/keda-$(KEDA_CHART_VERSION).tgz" | sha256sum -c - && \
+	$(HELM) upgrade --install keda $$T/keda-$(KEDA_CHART_VERSION).tgz --namespace $(KEDA_NAMESPACE) --create-namespace \
+		-f k8s/keda/install/values.yaml --wait --timeout 5m; rc=$$?; rm -rf $$T; exit $$rc
+	kubectl wait --for=condition=Available apiservice/$(KEDA_APISVC) --timeout=180s
+	bash scripts/keda_discovery_check.sh installed
+
+keda-worker: ## Apply the worker's ScaledObject (KEDA_OVERLAY=kind|oke-provided) and show its HPA
+	@kubectl get crd scaledobjects.keda.sh >/dev/null 2>&1 || { echo "ERROR: KEDA is not installed — make keda-install first"; exit 1; }
+	kubectl apply -k k8s/keda/overlays/$(KEDA_OVERLAY)
+	kubectl -n $(NAMESPACE) wait --for=condition=Ready scaledobject/worker --timeout=120s
+	kubectl -n $(NAMESPACE) get scaledobject worker
+	kubectl -n $(NAMESPACE) get hpa $$(kubectl -n $(NAMESPACE) get scaledobject worker -o jsonpath='{.status.hpaName}')
+
+keda-check: ## Discovery health with KEDA installed: no "unable to retrieve the complete list of server APIs"
+	bash scripts/keda_discovery_check.sh installed
+
+keda-scale-test: ## Live scale test, no Anthropic credit: builtin celery.accumulate backlog, 1 -> N -> 1 replicas
+	bash scripts/keda_scale_test.sh
+
+keda-uninstall: ## Remove the ScaledObject, return the worker to 1 replica, uninstall KEDA, check discovery
+	@# ScaledObject first, while the operator can still clear its finalizer and HPA
+	kubectl -n $(NAMESPACE) delete scaledobject worker --ignore-not-found --wait --timeout=120s
+	@# the HPA is gone; the worker keeps whatever count it had — put it back at 1
+	kubectl -n $(NAMESPACE) scale deployment/worker --replicas=1
+	kubectl -n $(NAMESPACE) rollout status deployment/worker --timeout=600s
+	$(HELM) uninstall keda --namespace $(KEDA_NAMESPACE) --wait --timeout 5m
+	kubectl delete namespace $(KEDA_NAMESPACE) --ignore-not-found --wait --timeout=180s
+	bash scripts/keda_discovery_check.sh uninstalled
 
 # ── vLLM (CPU mode — backs the default-off USE_LOCAL_MODEL flag) ─────────────
 

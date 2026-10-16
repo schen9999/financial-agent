@@ -1,0 +1,10 @@
+# KEDA-scaled Celery worker. Applied apart from the app overlays (like
+# k8s/llamacpp and k8s/vllm) because it needs the KEDA CRDs: the app plane
+# deploys and runs at one worker replica without it.
+#   make keda-install          # once per cluster, pinned chart
+#   make keda-worker           # kubectl apply -k k8s/keda/overlays/$(KEDA_OVERLAY)
+# Runbook: docs/deploy-runbook.md "KEDA: worker scaling on queue depth".
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - scaledobject.yaml

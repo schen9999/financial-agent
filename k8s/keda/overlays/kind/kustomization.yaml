@@ -1,0 +1,6 @@
+# kind: the base as is (maxReplicaCount 2 — one node, memory-bound; each
+# worker requests 900Mi and may use 2Gi).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
