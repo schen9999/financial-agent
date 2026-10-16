@@ -11,7 +11,7 @@ variable "project" {
 }
 
 variable "allowed_ip" {
-  description = "Your public IP in CIDR form (e.g. 1.2.3.4/32) allowed to reach the API. Set in terraform.tfvars (gitignored) so it never lands in the public repo."
+  description = "Your public IP in CIDR form (e.g. 203.0.113.4/32) allowed to reach the API. Set in terraform.tfvars (gitignored) so it never lands in the public repo."
   type        = string
   # no default on purpose — must be provided via terraform.tfvars or -var
 }

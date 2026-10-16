@@ -52,7 +52,7 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
   preinstalled), rebuilt from the runbook 2026-09-23 (bootstrap, vm-images,
   vm-up green on both; runbook "Rebuild on fresh nodes, 2026-09-23").
   Constraints: ssh access only (VCN seclist admits 22, plus node 2's
-  30880 from the OKE egress IP 129.80.187.92/32 only; everything else
+  30880 from the OKE egress IP <oke-egress-ip>/32 only; everything else
   reached via ssh -L tunnels, nothing else bound publicly); no OKE compartment,
   OCIR, or Object Storage bucket exists yet. Runs single-node k3s with the
   k3s overlays. The Sep 2 VM.GPU.A10.2 (Phase 1.75 validation box, where
@@ -586,3 +586,11 @@ Phase 3 — demo polish:
   conservative figure, all numbers stated beside it; judge-based numeric
   claims per ticker only as corroboration.
 - Any new number in docs must come from a committed, re-runnable harness.
+- No IP addresses, hostnames or OCIDs in committed files, captures
+  included (since 2026-10-16; the repo is public). Use the placeholders
+  (<node2-public-ip>, <oke-egress-ip>, <streamlit-lb-ip>,
+  <oke-api-private-ip>, <oke-node-N>), read real values from the
+  gitignored .addresses.env, and pass captures through
+  scripts/redact.py; tests/test_no_ip_addresses.py fails CI on any
+  address outside its allowlist. Commits before 2026-10-16 contain
+  addresses; history is not rewritten (shas are cited throughout).

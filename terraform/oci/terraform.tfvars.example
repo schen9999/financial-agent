@@ -11,7 +11,7 @@ compartment_ocid = "ocid1.compartment.oc1..aaaa..."
 # private_key_path = "~/.oci/oci_api_key.pem"
 
 # Tighten the API endpoint to your IP for the demo:
-# api_allowed_cidr = "1.2.3.4/32"
+# api_allowed_cidr = "203.0.113.4/32"
 
 # If VM.GPU.A10.1 hits "out of host capacity" in the default AD:
 # gpu_availability_domain = "Uocm:US-ASHBURN-AD-2"
