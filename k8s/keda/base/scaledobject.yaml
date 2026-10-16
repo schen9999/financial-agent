@@ -38,7 +38,9 @@ spec:
     name: worker
   minReplicaCount: 1
   maxReplicaCount: 2 # kind: one memory-bound node; overlays size it per cluster
-  pollingInterval: 15
+  # No pollingInterval: with minReplicaCount >= 1 the HPA queries KEDA's
+  # metrics server on its own sync (15 s), and KEDA's admission webhook
+  # warns that pollingInterval does not affect scaling.
   advanced:
     horizontalPodAutoscalerConfig:
       behavior:
