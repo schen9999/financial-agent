@@ -72,6 +72,15 @@ resource "oci_core_security_list" "sl_lb" {{
   }}
 }}
 
+resource "oci_core_dhcp_options" "dhcp_default" {{
+  compartment_id = "{CPT}"
+  vcn_id         = "{VCN}"
+  options {{
+    search_domain_names = ["abcdef.oraclevcn.com"]
+    type                = "SearchDomain"
+  }}
+}}
+
 resource "oci_containerengine_cluster" "cluster_oke" {{
   compartment_id = "{CPT}"
   vcn_id         = "{VCN}"
@@ -145,7 +154,9 @@ def test_other_identifying_values_become_variables(out):
         "value": "192.0.2.3", "kind": "host", "res": "pool_oke_cpu", "key": "apiserver_host"}
     assert "apiserver_host           = var.pool_oke_cpu_apiserver_host" in files["nodepool.tf"]
     assert 'pool_oke_cpu_apiserver_host = "<oke-api-private-ip>"' in files["terraform.tfvars.example"]
-    assert len(c.vars) == 6  # the compartment is one variable however often it appears
+    assert c.vars["dhcp_default_search_domain_names"]["kind"] == "domain"
+    assert "search_domain_names = [var.dhcp_default_search_domain_names]" in files["network.tf"]
+    assert len(c.vars) == 7  # the compartment is one variable however often it appears
     assert 'variable "compartment_ocid"' in files["variables.tf"]
     assert 'variable "region"' in files["variables.tf"]
 
@@ -255,3 +266,8 @@ def test_private_host_addresses_leak_subnets_do_not():
     assert cz.leaks('  source = "192.0.2.4/32"')
     assert not cz.leaks('  cidr_block = "10.140.0.0/16"')
     assert not cz.leaks('  destination = "0.0.0.0/0"')
+
+
+def test_vcn_domain_leaks():
+    assert cz.leaks('    search_domain_names = ["abcdef.oraclevcn.com"]')
+    assert not cz.leaks('    search_domain_names = [var.x]')

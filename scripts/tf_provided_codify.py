@@ -76,9 +76,11 @@ SNAPSHOT_RULES = ("The rules above are the\n  # import-time snapshot (2026-10-07
 SNAPSHOT_EMPTY = ("It held no rules at\n  # import (2026-10-07), so none are written here; the plan does not compare them.")
 
 DROP_KEYS = {"defined_tags", "freeform_tags"}
-# apiserver_host: the private API endpoint address (2026-10-16, no IPs in
-# committed files; CLAUDE.md honesty rules).
-VAR_KEYS = {"ssh_public_key": "ssh", "user_data": "userdata", "apiserver_host": "host"}
+# apiserver_host: the private API endpoint address; search_domain_names: the
+# VCN's DNS domain (2026-10-16: no IPs or resolvable FQDNs in committed
+# files; CLAUDE.md honesty rules).
+VAR_KEYS = {"ssh_public_key": "ssh", "user_data": "userdata", "apiserver_host": "host",
+            "search_domain_names": "domain"}
 OCID = re.compile(r"^ocid1\.[a-z0-9_]+\.[^\s\"]+$")
 AD = re.compile(r"^[A-Za-z0-9]+:[A-Z0-9]+(?:-[A-Z0-9]+)*-AD-(\d+)$")
 STR = re.compile(r'"((?:[^"\\]|\\.)*)"')
@@ -88,6 +90,7 @@ NULL = re.compile(r"^\s*[A-Za-z0-9_]+\s*=\s*null\s*$")
 IPV4 = re.compile(r"\b\d{1,3}(?:\.\d{1,3}){3}(?:/\d{1,2})?\b")
 B64 = re.compile(r"^[A-Za-z0-9+/]+={0,2}$")
 SSH_KEY = re.compile(r"ssh-(?:rsa|ed25519|ecdsa)\S* AAAA")
+VCN_FQDN = re.compile(r"\b[a-z0-9-]+\.oraclevcn\.com\b")
 EMAIL = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
 
 
@@ -253,6 +256,7 @@ DESCRIPTIONS = {
     "userdata": "Node cloud-init (base64 gzip) set on {res}: an SSH key with its owner, the cluster CA.",
     "cidr": "Public address in {key} of {res}.",
     "host": "Private address of the cluster's API endpoint ({key} of {res}).",
+    "domain": "The VCN's DNS search domain ({key} of {res}).",
 }
 
 
@@ -269,6 +273,8 @@ def placeholder(meta: dict) -> str:
         return "<base64 gzip cloud-init>"
     if meta["kind"] == "host":
         return "<oke-api-private-ip>"
+    if meta["kind"] == "domain":
+        return "<oke-vcn-domain>"
     return "<address>/32"
 
 
@@ -318,6 +324,8 @@ def leaks(text: str) -> list[str]:
             hits.append(f"{n}: OCID")
         if EMAIL.search(line):
             hits.append(f"{n}: email")
+        if VCN_FQDN.search(line):
+            hits.append(f"{n}: VCN domain")
         for s in STR.findall(line):
             if AD.match(s):
                 hits.append(f"{n}: AD name")
