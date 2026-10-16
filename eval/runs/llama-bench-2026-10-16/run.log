@@ -1,0 +1,17 @@
+[bench 2026-10-16T05:59:11Z] host recorded: Model name: Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz, nproc 30
+[bench 2026-10-16T05:59:11Z] scaling llamacpp to 0 (vllm stays 0)
+[bench 2026-10-16T05:59:12Z] level cpu-P4 (-t 4)
+[bench 2026-10-16T06:04:22Z] level cpu-P4 done: [(512, 0, 4, -1, 'CPU', 44.3), (2048, 0, 4, -1, 'CPU', 43.79), (0, 128, 4, -1, 'CPU', 10.75)]
+[bench 2026-10-16T06:04:22Z] level cpu-P8 (-t 8)
+[bench 2026-10-16T06:07:15Z] level cpu-P8 done: [(512, 0, 8, -1, 'CPU', 81.53), (2048, 0, 8, -1, 'CPU', 80.38), (0, 128, 8, -1, 'CPU', 15.87)]
+[bench 2026-10-16T06:07:15Z] level cpu-P15 (-t 15)
+[bench 2026-10-16T06:09:19Z] level cpu-P15 done: [(512, 0, 15, -1, 'CPU', 122.82), (2048, 0, 15, -1, 'CPU', 122.51), (0, 128, 15, -1, 'CPU', 20.81)]
+[bench 2026-10-16T06:09:19Z] max resolves to 28 free vCPU (nproc 30)
+[bench 2026-10-16T06:09:19Z] level cpu-P28 (-t 28)
+[bench 2026-10-16T06:11:26Z] level cpu-P28 done: [(512, 0, 28, -1, 'CPU', 119.6), (2048, 0, 28, -1, 'CPU', 116.3), (0, 128, 28, -1, 'CPU', 22.07)]
+[bench 2026-10-16T06:11:26Z] level gpu (-t 8)
+[bench 2026-10-16T06:12:13Z] level gpu done: [(512, 0, 8, 99, 'CUDA', 2289.35), (2048, 0, 8, 99, 'CUDA', 2299.49), (0, 128, 8, 99, 'CUDA', 110.42)]
+[bench 2026-10-16T06:12:13Z] restoring llamacpp to 1
+deployment "llamacpp" successfully rolled out
+/app/llama-server, 20488 MiB
+[bench 2026-10-16T06:12:42Z] vllm replicas: 0
