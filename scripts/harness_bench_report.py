@@ -97,6 +97,26 @@ def restarts(pods_json: dict) -> dict:
     return out
 
 
+_MEM_UNITS = {"Ki": 2**10, "Mi": 2**20, "Gi": 2**30, "Ti": 2**40}
+
+
+def top_max_mem(text: str, prefix: str = "worker-") -> int | None:
+    """Highest memory any `prefix` pod showed in the cell's `kubectl top
+    pods` samples (every 15 s), in bytes. The fallback peak where the node
+    kernel has no cgroup memory.peak: a sampled maximum, so a lower bound."""
+    best = None
+    for line in text.splitlines():
+        parts = line.split()
+        if len(parts) != 3 or not parts[0].startswith(prefix):
+            continue
+        m = parts[2]
+        unit = m[-2:]
+        if unit in _MEM_UNITS and m[:-2].isdigit():
+            v = int(m[:-2]) * _MEM_UNITS[unit]
+            best = v if best is None else max(best, v)
+    return best
+
+
 def pct(xs: list, q: float) -> float | None:
     if not xs:
         return None
@@ -157,6 +177,10 @@ def analyze_repeat(d: Path) -> dict:
     out["in_flight_little"] = l_little
     out["little_gap"] = (abs(l_little - s["capacity"]) / s["capacity"]
                          if l_little is not None else None)
+    # A window of a few brief-lengths cannot support the Little's-law check:
+    # briefs that started before it dominate the mean latency.
+    out["window_s"] = window
+    out["window_short"] = bool(out["latency_p95"] and window < 10 * out["latency_p95"])
 
     # CPU and memory from the cgroup snapshots
     before = parse_cgroup((d / "cgroup-before.txt").read_text()) if (d / "cgroup-before.txt").exists() else {}
@@ -184,6 +208,19 @@ def analyze_repeat(d: Path) -> dict:
     w = out["cpu_s_per_brief"].get("worker")
     out["worker_cpu_over_wall"] = (w / out["latency_p50"]) if w and out["latency_p50"] else None
     out["throttled_frac"] = thr_thr / thr_periods if thr_periods else None
+    out["mem_peak_source"] = "cgroup memory.peak" if peaks else None
+    if not peaks:
+        # No memory.peak on this kernel: the largest of the sampled kubectl
+        # top maximum and memory.current at the end of the cell.
+        cands = [a["mem_current"] for p, a in after.items()
+                 if role(p) == "worker" and a.get("mem_current")]
+        top = d / "top.txt"
+        t = top_max_mem(top.read_text()) if top.exists() else None
+        if t:
+            cands.append(t)
+        if cands:
+            peaks = [max(cands)]
+            out["mem_peak_source"] = "sampled (kubectl top max / memory.current), a lower bound"
     out["mem_peak_per_process_mib"] = (max(peaks) / out["concurrency"] / 2**20) if peaks else None
 
     # validity
@@ -343,9 +380,17 @@ def render(repeats: list, agg: dict, rules: dict) -> str:
                  f"{fmt(c['little_gap'] * 100 if c['little_gap'] is not None else None, 0)}% |")
     L += ["", "## Reading rules (pre-registered)", "", "```",
           json.dumps(rules, indent=1, default=str), "```", ""]
+    short = {r["cell"] for r in repeats if r.get("window_short")}
     gaps = [c["cell"] for c in agg.values() if c["little_gap"] and c["little_gap"] > LITTLE_GAP]
-    if gaps:
-        L.append(f"Little's-law gap above 10% (queueing inside the harness): {', '.join(gaps)}")
+    real = [g for g in gaps if g not in short]
+    if real:
+        L.append(f"Little's-law gap above 10% (queueing inside the harness): {', '.join(real)}")
+    if short:
+        L.append("Measurement window under 10x the p95 latency (Little's-law check not "
+                 f"supported, throughput imprecise): {', '.join(sorted(short))}")
+    srcs = {r.get("mem_peak_source") for r in repeats if r.get("mem_peak_source")}
+    if srcs:
+        L.append(f"Peak memory source: {'; '.join(sorted(srcs))}")
     return "\n".join(L) + "\n"
 
 

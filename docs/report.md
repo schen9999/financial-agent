@@ -105,7 +105,7 @@ The self-served arms are off by default (`SLM_FULL=false`). One kustomize
 base carries kind, k3s, OKE and provided-OKE overlays, and
 `scripts/render_diff.py` proves an overlay change never alters the kind
 render. The provided cluster is codified with `terraform import` to a
-zero-diff plan. The test suite is 691 tests. How to deploy it:
+zero-diff plan. The test suite is 692 tests. How to deploy it:
 [deploy-oci.md](deploy-oci.md). Full topology:
 [architecture.md](architecture.md#deployed-topology-october-2026).
 
