@@ -33,8 +33,9 @@ the rest are model-side measurements of one system:
   brief's wall time, in every cell. Throughput grows from 199 to 3,063
   briefs an hour as briefs in flight go from 1 to 16, with no saturation,
   at about 0.25 to 0.36 vCPU per 1,000 briefs an hour (0.46 to 0.85 at
-  four processes per pod, most likely PyTorch thread oversubscription,
-  untested) and 586 to 826 MiB per process. With the model delay removed
+  four processes per pod; a follow-up traced that to PyTorch thread
+  oversubscription, and one thread per process brought it back to the
+  one-process level) and 586 to 826 MiB per process. With the model delay removed
   a brief costs 1.0 s and 0.65 CPU-seconds, nearly all live data fetches
   and retrieval. One shape, against a stub with no capacity limit.
 

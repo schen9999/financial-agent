@@ -602,10 +602,12 @@ Phase 3 — demo polish:
   busy 5–16% of wall (waiting), 199 -> 3,063 briefs/h from 1 to 16 in
   flight, no saturation; 0.25–0.36 vCPU per 1,000 briefs/h at 1–2
   processes per pod, 0.46–0.85 at 4; memory 586–826 MiB per process,
-  SAMPLED lower bound (no memory.peak on the nodes). The c=4 CPU cost is
-  "most likely PyTorch thread oversubscription, untested" until a run
-  shows it; any OMP_NUM_THREADS run is exploratory, reported beside the
-  results. L0 throughput at high capacity is imprecise (short windows);
+  SAMPLED lower bound (no memory.peak on the nodes). The c=4 CPU cost: the
+  exploratory follow-up (2026-10-20, eval/runs/harness-bench-2026-10-20-omp1,
+  declared beforehand, 4/4 valid, torch threads 1) SUPPORTS PyTorch thread
+  oversubscription: L1 (4,4) 3.06 -> 1.08 CPU-s/brief, throttling 6% -> 0%;
+  always labelled exploratory, beside the pre-registered results; the
+  deployed worker still runs the default threads (post-demo change). L0 throughput at high capacity is imprecise (short windows);
   never quote L0 (4,4)'s 25,415/h alone.
 - Any new number in docs must come from a committed, re-runnable harness.
 - No IP addresses, OCIDs, or resolvable hostnames/FQDNs in committed

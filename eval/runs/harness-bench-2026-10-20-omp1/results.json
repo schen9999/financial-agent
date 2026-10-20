@@ -1,0 +1,269 @@
+{
+ "repeats": [
+  {
+   "dir": "L0-r4-c4-r1",
+   "valid": true,
+   "reasons": [],
+   "profile": "L0",
+   "keda": false,
+   "replicas": 4,
+   "concurrency": 4,
+   "repeat": 1,
+   "cell": "L0-r4-c4",
+   "capacity": 16,
+   "completed": 116,
+   "measured": 40,
+   "errors": 0,
+   "bad_briefs": 0,
+   "throughput_per_h": 61550.39173957932,
+   "latency_p50": 1.0392875671386719,
+   "latency_p95": 1.5713656783103935,
+   "latency_mean": 1.1885895490646363,
+   "response_p50": 9.411362051963806,
+   "queue_max": 0,
+   "in_flight_obs": 16.0,
+   "in_flight_little": 20.32170898958286,
+   "little_gap": 0.2701068118489287,
+   "window_s": 2.3395464420318604,
+   "window_short": true,
+   "cpu_s_per_brief": {
+    "api": 0.0017293448275862012,
+    "model-stub": 0.003476896551724138,
+    "redis": 0.001667767241377956,
+    "worker": 1.0612068706896551
+   },
+   "worker_cpu_over_wall": 1.0210907012111485,
+   "throttled_frac": 0.0,
+   "mem_peak_source": "sampled (kubectl top max / memory.current), a lower bound",
+   "mem_peak_per_process_mib": 553.5400390625,
+   "stub": {
+    "requests": 790,
+    "expected": 790,
+    "unmatched": 0,
+    "errors": 0,
+    "max_in_flight": 1,
+    "stock_block_empty": 0,
+    "stock_block_unknown": 116
+   }
+  },
+  {
+   "dir": "L0-r4-c4-r2",
+   "valid": true,
+   "reasons": [],
+   "profile": "L0",
+   "keda": false,
+   "replicas": 4,
+   "concurrency": 4,
+   "repeat": 2,
+   "cell": "L0-r4-c4",
+   "capacity": 16,
+   "completed": 116,
+   "measured": 40,
+   "errors": 0,
+   "bad_briefs": 0,
+   "throughput_per_h": 107033.63467382091,
+   "latency_p50": 0.5372068881988525,
+   "latency_p95": 0.8059694766998291,
+   "latency_mean": 0.5553581058979035,
+   "response_p50": 8.151897549629211,
+   "queue_max": 0,
+   "in_flight_obs": 16.0,
+   "in_flight_little": 16.51166572772815,
+   "little_gap": 0.0319791079830094,
+   "window_s": 1.3453714847564697,
+   "window_short": true,
+   "cpu_s_per_brief": {
+    "api": 0.0014721293103448325,
+    "model-stub": 0.003582413793103449,
+    "redis": 0.0016180775862094693,
+    "worker": 1.013308474137931
+   },
+   "worker_cpu_over_wall": 1.8862536881002254,
+   "throttled_frac": 0.0,
+   "mem_peak_source": "sampled (kubectl top max / memory.current), a lower bound",
+   "mem_peak_per_process_mib": 539.630859375,
+   "stub": {
+    "requests": 790,
+    "expected": 790,
+    "unmatched": 0,
+    "errors": 0,
+    "max_in_flight": 1,
+    "stock_block_empty": 0,
+    "stock_block_unknown": 116
+   }
+  },
+  {
+   "dir": "L1-r4-c4-r1",
+   "valid": true,
+   "reasons": [],
+   "profile": "L1",
+   "keda": false,
+   "replicas": 4,
+   "concurrency": 4,
+   "repeat": 1,
+   "cell": "L1-r4-c4",
+   "capacity": 16,
+   "completed": 118,
+   "measured": 40,
+   "errors": 0,
+   "bad_briefs": 0,
+   "throughput_per_h": 2797.502585819612,
+   "latency_p50": 18.084582448005676,
+   "latency_p95": 21.107720017433167,
+   "latency_mean": 17.53963354229927,
+   "response_p50": 54.78495466709137,
+   "queue_max": 0,
+   "in_flight_obs": 16.0,
+   "in_flight_little": 13.629769496919613,
+   "little_gap": 0.1481394064425242,
+   "window_s": 51.474483251571655,
+   "window_short": true,
+   "cpu_s_per_brief": {
+    "api": 0.002872288135593216,
+    "model-stub": 0.004561474576271187,
+    "redis": 0.008000059322026666,
+    "worker": 1.082903533898305
+   },
+   "worker_cpu_over_wall": 0.05987993015662493,
+   "throttled_frac": 0.0,
+   "mem_peak_source": "sampled (kubectl top max / memory.current), a lower bound",
+   "mem_peak_per_process_mib": 539.373046875,
+   "stub": {
+    "requests": 800,
+    "expected": 800,
+    "unmatched": 0,
+    "errors": 0,
+    "max_in_flight": 42,
+    "stock_block_empty": 0,
+    "stock_block_unknown": 118
+   }
+  },
+  {
+   "dir": "L1-r4-c4-r2",
+   "valid": true,
+   "reasons": [],
+   "profile": "L1",
+   "keda": false,
+   "replicas": 4,
+   "concurrency": 4,
+   "repeat": 2,
+   "cell": "L1-r4-c4",
+   "capacity": 16,
+   "completed": 119,
+   "measured": 40,
+   "errors": 0,
+   "bad_briefs": 0,
+   "throughput_per_h": 2783.8070184134444,
+   "latency_p50": 18.08581256866455,
+   "latency_p95": 21.10630476474762,
+   "latency_mean": 17.546144568920134,
+   "response_p50": 54.66559088230133,
+   "queue_max": 0,
+   "in_flight_obs": 15.99509896668537,
+   "in_flight_little": 13.568077888071334,
+   "little_gap": 0.1519951319955416,
+   "window_s": 51.727723598480225,
+   "window_short": true,
+   "cpu_s_per_brief": {
+    "api": 0.0027850924369747935,
+    "model-stub": 0.004533815126050419,
+    "redis": 0.007101907563029432,
+    "worker": 1.0823278319327732
+   },
+   "worker_cpu_over_wall": 0.059844025687184915,
+   "throttled_frac": 0.0,
+   "mem_peak_source": "sampled (kubectl top max / memory.current), a lower bound",
+   "mem_peak_per_process_mib": 536.11328125,
+   "stub": {
+    "requests": 805,
+    "expected": 805,
+    "unmatched": 0,
+    "errors": 0,
+    "max_in_flight": 44,
+    "stock_block_empty": 0,
+    "stock_block_unknown": 119
+   }
+  }
+ ],
+ "cells": {
+  "L0-r4-c4": {
+   "cell": "L0-r4-c4",
+   "profile": "L0",
+   "keda": false,
+   "replicas": 4,
+   "concurrency": 4,
+   "capacity": 16,
+   "repeats": 2,
+   "valid_repeats": 2,
+   "throughput_per_h": 84292.01320670011,
+   "throughput_each": [
+    61550.39173957932,
+    107033.63467382091
+   ],
+   "latency_p50": 0.7882472276687622,
+   "latency_p95": 1.1886675775051114,
+   "worker_cpu_s_per_brief": 1.037257672413793,
+   "api_cpu_s_per_brief": 0.001600737068965517,
+   "redis_cpu_s_per_brief": 0.0016429224137937126,
+   "worker_cpu_over_wall": 1.453672194655687,
+   "throttled_frac": 0.0,
+   "mem_peak_per_process_mib": 553.5400390625,
+   "little_gap": 0.15104295991596906
+  },
+  "L1-r4-c4": {
+   "cell": "L1-r4-c4",
+   "profile": "L1",
+   "keda": false,
+   "replicas": 4,
+   "concurrency": 4,
+   "capacity": 16,
+   "repeats": 2,
+   "valid_repeats": 2,
+   "throughput_per_h": 2790.654802116528,
+   "throughput_each": [
+    2797.502585819612,
+    2783.8070184134444
+   ],
+   "latency_p50": 18.085197508335114,
+   "latency_p95": 21.107012391090393,
+   "worker_cpu_s_per_brief": 1.0826156829155391,
+   "api_cpu_s_per_brief": 0.0028286902862840048,
+   "redis_cpu_s_per_brief": 0.00755098344252805,
+   "worker_cpu_over_wall": 0.059861977921904924,
+   "throttled_frac": 0.0,
+   "mem_peak_per_process_mib": 539.373046875,
+   "little_gap": 0.1500672692190329
+  }
+ },
+ "reading_rules": {
+  "Q1_overhead": "not measured: L0 (1,1) has no valid repeat",
+  "Q2_wait_vs_work": {
+   "(4,4)": {
+    "cpu_over_wall": 0.059861977921904924,
+    "reading": "waiting (supports the post)"
+   }
+  },
+  "Q3_saturation": {
+   "L0": {
+    "doubling_gains": {
+     "(4,4)": {}
+    },
+    "saturation_at": "not reached within the sweep"
+   },
+   "L1": {
+    "doubling_gains": {
+     "(4,4)": {}
+    },
+    "saturation_at": "not reached within the sweep"
+   }
+  },
+  "Q4_sizing": {
+   "(4,4)": {
+    "briefs_per_h": 2790.654802116528,
+    "worker_vcpu": 0.8392240706596983,
+    "worker_cpu_s_per_brief": 1.0826156829155391,
+    "mem_peak_per_in_flight_brief_mib": 539.373046875
+   }
+  }
+ }
+}

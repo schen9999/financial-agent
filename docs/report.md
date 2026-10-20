@@ -227,8 +227,10 @@ all 40 repeats valid, no Anthropic spend:
   saturation in the sweep, at about 0.25 to 0.36 vCPU per 1,000 briefs an
   hour and 586 to 826 MiB per worker process.
 - Four Celery processes per pod cost 2 to 3 times the CPU per brief of one
-  or two, most likely PyTorch thread oversubscription (8 threads per
-  process); not yet tested.
+  or two. A follow-up run (exploratory, declared beforehand) traced it to
+  PyTorch starting 8 threads in each process: with one thread per process
+  the cost fell from 3.06 to 1.08 CPU-seconds per brief and throttling to
+  zero.
 - At CPU-speed model latency the same 16 slots give 286 briefs an hour:
   the model, not the harness, sets the rate.
 
@@ -318,9 +320,9 @@ separate arms whose difference is small.
 
 ## Next steps
 
-- Test the PyTorch-thread explanation for the CPU cost of four processes
-  per pod (one run with `OMP_NUM_THREADS=1`), then run the same harness
-  benchmark on E6, A2 and X12 node pools.
+- Set one PyTorch thread per worker process in the deployed overlay (the
+  follow-up measured the saving; check the single-process embedding time
+  first), then run the same harness benchmark on E6, A2 and X12 node pools.
 - Pipeline fixes from the recorded limitations, each followed by new
   baselines on every arm.
 - Fold the per-request traffic proof into the eval target instead of a

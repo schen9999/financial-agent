@@ -2454,7 +2454,7 @@ worker gets `OMP_NUM_THREADS=1` and `MKL_NUM_THREADS=1` for these cells
 only (a later cell without `TORCH_THREADS` removes them, and so does
 `bench-stub-off`).
 
-1. **[NOT YET EXECUTED]** On the operator:
+1. **[EXECUTED 2026-10-20 19:26–19:38Z, main at `15245a4`]** On the operator:
    ```bash
    cd ~/financial-agent && git pull
    make bench-stub-on
@@ -2463,6 +2463,10 @@ only (a later cell without `TORCH_THREADS` removes them, and so does
    make bench-report BENCH_DIR=~/harness-bench/2026-10-20-omp1 > ~/bench-report-omp1.md 2>&1
    ```
    About 25 minutes. Each cell log should show `torch threads: 1`.
+   Result: 4/4 repeats valid, `torch threads: 1` in every cell log (`nproc`
+   printed 1 there too: GNU nproc honours OMP_NUM_THREADS). Supported:
+   plan, "Follow-up result". Captures committed as
+   `eval/runs/harness-bench-2026-10-20-omp1/`.
 
 ## Terraform: the provided cluster (import and plan only)
 
