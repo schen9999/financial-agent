@@ -4,6 +4,9 @@
 #
 #   scripts/harness_bench_cell.sh PROFILE R C REPEAT [OUT_ROOT]
 #   KEDA=1 scripts/harness_bench_cell.sh L1 4 1 1      # autoscaler run, 1..4 pods
+#   TORCH_THREADS=1 scripts/harness_bench_cell.sh L1 4 4 1 ~/harness-bench/<date>-omp1
+#                      # exploratory follow-up: OMP/MKL threads per worker process
+#                      # (unset: the deployed default, and any earlier setting is removed)
 #
 # Needs `make bench-stub-on` first. For the cell it:
 #   1. sets the worker to C Celery processes and R replicas (KEDA paused at R
@@ -25,6 +28,7 @@ OUT_ROOT=${5:-$HOME/harness-bench/$(date -u +%Y-%m-%d)}
 NS=${NAMESPACE:-financial-agent}
 BRIEFS=${BRIEFS:-40}; WARMUP=${WARMUP:-5}
 KEDA=${KEDA:-0}
+TORCH_THREADS=${TORCH_THREADS:-}
 REPO=$(cd "$(dirname "$0")/.." && pwd)
 
 if [ "$KEDA" = 1 ]; then CELL="${PROFILE}-keda-c${C}"; else CELL="${PROFILE}-r${R}-c${C}"; fi
@@ -56,6 +60,11 @@ if [ "$HAS_SO" = 1 ]; then
   fi
 fi
 [ "$KEDA" = 1 ] || kubectl -n "$NS" scale deployment/worker --replicas="$R" >/dev/null
+if [ -n "$TORCH_THREADS" ]; then
+  kubectl -n "$NS" set env deployment/worker OMP_NUM_THREADS="$TORCH_THREADS" MKL_NUM_THREADS="$TORCH_THREADS" >/dev/null
+else
+  kubectl -n "$NS" set env deployment/worker OMP_NUM_THREADS- MKL_NUM_THREADS- >/dev/null
+fi
 kubectl -n "$NS" rollout restart deployment/worker >/dev/null
 kubectl -n "$NS" rollout status deployment/worker --timeout=900s | tail -1 | tee -a "$OUT/cell.log"
 if [ "$KEDA" != 1 ]; then
@@ -70,6 +79,10 @@ fi
 # The new pods must reach the stub through the app's own client.
 kubectl -n "$NS" exec deploy/worker -- python -c \
   "import json; from agent.tools.slm import server_facts; f=server_facts(); assert f['slm_served_name']=='model-stub', f; print('stub reachable from worker:', f['slm_url'])" \
+  | tee -a "$OUT/cell.log"
+# What PyTorch will use in each Celery process (it reads OMP_NUM_THREADS at import).
+kubectl -n "$NS" exec deploy/worker -- sh -c \
+  'echo "torch threads: $(python -c "import torch; print(torch.get_num_threads())") (OMP_NUM_THREADS=${OMP_NUM_THREADS:-unset}, nproc $(nproc))"' \
   | tee -a "$OUT/cell.log"
 
 # ── 2. snapshots ────────────────────────────────────────────────────────────

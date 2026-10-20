@@ -7,6 +7,8 @@
 #   scripts/harness_bench_sweep.sh core    # L0 and L1 at (1,1) (4,1) (4,4)
 #   scripts/harness_bench_sweep.sh rest    # every other planned cell
 #   scripts/harness_bench_sweep.sh all     # core then rest
+#   scripts/harness_bench_sweep.sh omp1    # exploratory follow-up: L0 and L1 at (4,4) with
+#                                          # one PyTorch thread per process, into <date>-omp1/
 #
 # Cells already captured under OUT_ROOT with a BENCH_SUMMARY are skipped, so
 # an interrupted sweep resumes where it stopped.
@@ -25,7 +27,9 @@ REST="$REST L2:4:4 KEDA:4:1"
 
 case "$WHICH" in
   core) CELLS=$CORE ;; rest) CELLS=$REST ;; all) CELLS="$CORE $REST" ;;
-  *) echo "usage: $0 core|rest|all"; exit 2 ;;
+  omp1) CELLS="L0:4:4 L1:4:4"; export TORCH_THREADS=1
+        OUT_ROOT=${OUT_ROOT_OMP:-$HOME/harness-bench/$(date -u +%Y-%m-%d)-omp1} ;;
+  *) echo "usage: $0 core|rest|all|omp1"; exit 2 ;;
 esac
 
 mkdir -p "$OUT_ROOT"
