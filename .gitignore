@@ -20,7 +20,7 @@ eval/runs/raw/*.log
 # Cached SEC filing text
 sec_filings/
 
-# Fine-tuned model artifacts (large — produced by fine_tune_financial.ipynb)
+# Fine-tuned model artifacts (large — produced by notebooks/fine_tune_financial.ipynb)
 adapters/
 *.gguf
 *-merged/

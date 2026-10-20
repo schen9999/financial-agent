@@ -24,7 +24,7 @@ kube-proxy programs NodePorts directly in iptables.
 
 ```bash
 git clone https://github.com/schen9999/financial-agent.git && cd financial-agent
-git checkout oci-migration
+git checkout main
 bash scripts/vm_bootstrap.sh
 ```
 

@@ -4,13 +4,19 @@
 ![Python](https://img.shields.io/badge/python-3.13%20(CI)-blue)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-An AI agent that researches stocks and answers follow-up questions using live financial data, news, and SEC filings, with an evaluation harness that measures how far its briefs can be trusted.
+An AI agent that writes sourced research briefs on public companies, deployed on Oracle Cloud Infrastructure with an evaluation harness that measures how far its briefs can be trusted.
 
-**Live Demo:** [financial-research-agent.streamlit.app](https://financial-research-agent.streamlit.app) (Streamlit Community Cloud, hosted Claude models; it sleeps when idle and takes a minute or two to wake; checked 2026-10-16). This public app runs the hosted-model path of `app.py` in-process: it is not the OCI deployment the results below come from — no OKE cluster, no Argo eval harness, no self-served model. | **Built with Claude Code**
+**Recommendation (October 2026):** hosted Claude stays the production path. Qwen3.6-35B-A3B, self-served on OCI, is a measured alternative: it gets stock figures wrong about as rarely as hosted, states fewer of them, and costs less per brief on CPU at 13.7× the latency. The full evaluation and recommendation: [docs/report.md](docs/report.md).
 
-**Documentation:** start at [docs/README.md](docs/README.md), which maps each question a reviewer might ask to the document that answers it. Every number below comes from a committed, re-runnable harness; run IDs, intervals and the rules for quoting them are in [docs/numbers-of-record.md](docs/numbers-of-record.md).
+| To… | Read |
+|---|---|
+| Understand the result and the recommendation | [docs/report.md](docs/report.md) |
+| Deploy it on OCI | [docs/deploy-oci.md](docs/deploy-oci.md) |
+| Check where any number comes from | [docs/numbers-of-record.md](docs/numbers-of-record.md) |
+| See it mapped against [Harness Engineering using OCI CPU & OKE](https://blogs.oracle.com/cloud-infrastructure/harness-engineering-using-oci-cpu-oke) | [docs/harness-mapping.md](docs/harness-mapping.md) |
+| Find anything else | [docs/README.md](docs/README.md) |
 
-This system is mapped against Sanjay Basu's post [Harness Engineering using OCI CPU & OKE](https://blogs.oracle.com/cloud-infrastructure/harness-engineering-using-oci-cpu-oke) (OCI blog, 2026-09-28); [docs/harness-mapping.md](docs/harness-mapping.md) puts the post's terms beside ours and adds the measurements the post does not report.
+Every number in this repository comes from a committed, re-runnable harness. A public demo of the hosted path runs at [financial-research-agent.streamlit.app](https://financial-research-agent.streamlit.app) (Streamlit Community Cloud; it sleeps when idle; not the OCI deployment). Built with Claude Code.
 
 Where it runs (October 2026) ([full topology](docs/architecture.md#deployed-topology-october-2026)):
 

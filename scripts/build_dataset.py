@@ -16,7 +16,7 @@ The INPUT for each example is the same `_data_context(...)`-style string the liv
 pipeline feeds Haiku, except the SEC portion is the raw `_fetch_filing_text`
 narrative (Claude-free) rather than RAG chunks — matching the training intent.
 
-These functions are mirrored verbatim in fine_tune_financial.ipynb so the
+These functions are mirrored verbatim in notebooks/fine_tune_financial.ipynb so the
 notebook shows the construction inline; this module lets the same pipeline run
 from the CLI and be unit-tested.
 """

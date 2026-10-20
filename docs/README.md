@@ -5,10 +5,21 @@ are marked **reference** (describes the system as it is now; kept current) or
 **dated log** (a record of what was measured or done on a given date; read
 the dates, and use it as evidence rather than as current instructions).
 
+## Start here
+
+| Reader | Start with |
+|---|---|
+| Deciding what to adopt | [report.md](report.md): the evaluation and the recommendation |
+| Deploying or operating it on OCI | [deploy-oci.md](deploy-oci.md), then [operations.md](operations.md) |
+| Checking a figure | [numbers-of-record.md](numbers-of-record.md): every quotable number, its run ID and the command that produced it |
+| Comparing with Harness Engineering on OCI CPU | [harness-mapping.md](harness-mapping.md) |
+
 ## Reader questions
 
 | Question | Where to look | Type |
 |---|---|---|
+| What was found, and what is recommended? | [report.md](report.md): the evaluation report and recommendation (2026-10-19) | reference |
+| How do I deploy it on OCI from scratch? | [deploy-oci.md](deploy-oci.md): resources, the OKE app plane and eval harness, the CPU and GPU model endpoints, verification, teardown | reference |
 | What is this, and what does it do? | [README](../README.md): "What it does" and "Conclusions" | reference |
 | How is it deployed on OCI? | [architecture.md](architecture.md), "Deployed topology (October 2026)"; [README](../README.md): "Deployed on OCI"; the current procedure in [operations.md](operations.md); OKE steps in [deploy-runbook.md](deploy-runbook.md#oke-provided-cluster), "OKE (provided cluster)" (the never-applied Terraform path is "OKE (OCI) — Phase 2") | reference |
 | How do I configure it? | [configuration.md](configuration.md): every environment variable, its default, and where it is set | reference |
@@ -41,32 +52,58 @@ the dates, and use it as evidence rather than as current instructions).
 
 ## All documents
 
+### Core documents
+
 | Document | What it is | Type |
 |---|---|---|
+| [report.md](report.md) | The evaluation report and recommendation: results, method, limitations, next steps | reference |
 | [README.md](../README.md) | Overview, conclusions, OCI deployment, key results, decisions, how to run and test | reference |
-| [experiments.md](experiments.md) | The experiment records moved from the README (2026-10-08) | dated log |
-| [aws.md](aws.md) | The AWS ECS deployment (secondary) | reference |
-| [mcp.md](mcp.md) | The MCP server: tools, running it, Claude Desktop | reference |
-| [architecture.md](architecture.md) | Topology diagram, the deployed topology (October 2026) and deploy targets | reference |
-| [debugging-story.md](debugging-story.md) | One error traced end to end (Toyota's currency), the limits of each eval layer, three shorter cases | dated log |
-| [gpu-inference.md](gpu-inference.md) | A10 serving: what ran, serving speed, CPU vs GPU for Qwen3.6, what has not run | reference |
-| [reliability.md](reliability.md) | App-plane request flow and failure behaviour; eval-plane traffic proof, attempts, gates, stop rules | reference |
-| [demo.md](demo.md) | The November demo: conclusions, the numbers, the live run | reference |
+| [deploy-oci.md](deploy-oci.md) | How to deploy on OCI as it runs today: resources, steps, verification, teardown | reference |
 | [harness-mapping.md](harness-mapping.md) | This system mapped against the post Harness Engineering using OCI CPU & OKE | reference |
+
+### Deploy and operate
+
+| Document | What it is | Type |
+|---|---|---|
 | [operations.md](operations.md) | Current procedure for an OCI A10 node, teardown for every target, troubleshooting | reference |
+| [architecture.md](architecture.md) | Topology diagram, the deployed topology (October 2026) and deploy targets | reference |
 | [configuration.md](configuration.md) | Every environment variable: default, purpose, where it is set | reference |
 | [api.md](api.md) | All API routes with request/response shapes and examples | reference |
+| [reliability.md](reliability.md) | App-plane request flow and failure behaviour; eval-plane traffic proof, attempts, gates, stop rules | reference |
 | [cost.md](cost.md) | Infrastructure list prices from the official OCI and AWS price APIs, with retrieval dates | reference |
-| [deploy-runbook.md](deploy-runbook.md) | How each deploy step was first executed and what broke (dated), plus the OKE steps; the current procedure is operations.md | dated log |
-| [numbers-of-record.md](numbers-of-record.md) | Every quotable number, its source harness, and the retired ones | reference |
-| [system-tour.md](system-tour.md) | Guided tour of the system, results, and limitations, as of September 2026 | dated log |
 | [verification.md](verification.md) | Proof that the kustomize overlays did not change the kind render | reference |
-| [model-recommendation.md](model-recommendation.md) | Hosted Haiku vs open-weight models for the section-writing role: recommendation, results and A10 cost, from the 2026-09-23 four-arm comparison | dated log |
+| [terraform/oci-provided/README.md](../terraform/oci-provided/README.md) | The provided OKE cluster, codified via terraform import (zero-diff plan, never applied); configuration committed without OCIDs | reference |
+| [terraform/oci/README.md](../terraform/oci/README.md) | OCI Terraform: what it creates and how to apply it | reference |
+| [k8s/README.md](../k8s/README.md) | Kubernetes manifest layout and the kind workflow | reference |
+| [mcp.md](mcp.md) | The MCP server: tools, running it, Claude Desktop | reference |
+| [aws.md](aws.md) | The AWS ECS deployment (secondary) | reference |
+| [infra/README.md](../infra/README.md) | AWS Terraform: apply, secrets, teardown | reference |
+
+### Evidence and results
+
+| Document | What it is | Type |
+|---|---|---|
+| [numbers-of-record.md](numbers-of-record.md) | Every quotable number, its source harness, and the retired ones | reference |
 | [eval-methodology.md](eval-methodology.md) | How the eval works, and every dated experiment and validation | dated log |
+| [gpu-inference.md](gpu-inference.md) | A10 serving: what ran, serving speed, CPU vs GPU for Qwen3.6, what has not run | reference |
+| [experiments.md](experiments.md) | The experiment records moved from the README (2026-10-08) | dated log |
+| [debugging-story.md](debugging-story.md) | One error traced end to end (Toyota's currency), the limits of each eval layer, three shorter cases | dated log |
+| [harness-benchmark-plan.md](harness-benchmark-plan.md) | Pre-registered plan for benchmarking the harness itself on OCI CPU (not yet run) | reference |
+| [model-recommendation.md](model-recommendation.md) | Hosted Haiku vs open-weight models for the section-writing role: recommendation, results and A10 cost, from the 2026-09-23 four-arm comparison | dated log |
+
+### The November demo
+
+| Document | What it is | Type |
+|---|---|---|
+| [demo.md](demo.md) | The November demo: conclusions, the numbers, the live run | reference |
+
+### Dated logs
+
+| Document | What it is | Type |
+|---|---|---|
+| [deploy-runbook.md](deploy-runbook.md) | How each deploy step was first executed and what broke (dated), plus the OKE steps; the current procedure is operations.md | dated log |
+| [system-tour.md](system-tour.md) | Guided tour of the system, results, and limitations, as of September 2026 | dated log |
 | [PHASE0_AUDIT.md](PHASE0_AUDIT.md) | Repository audit before the Kubernetes work (2026-08-24) | dated log |
 | [benchmarks.md](../benchmarks.md) | Earlier benchmark runs and their caveats | dated log |
-| [k8s/README.md](../k8s/README.md) | Kubernetes manifest layout and the kind workflow | reference |
-| [infra/README.md](../infra/README.md) | AWS Terraform: apply, secrets, teardown | reference |
-| [terraform/oci/README.md](../terraform/oci/README.md) | OCI Terraform: what it creates and how to apply it | reference |
-| [terraform/oci-provided/README.md](../terraform/oci-provided/README.md) | The provided OKE cluster, codified via terraform import (zero-diff plan, never applied); configuration committed without OCIDs | reference |
-| [CLAUDE.md](../CLAUDE.md) | Working constraints and documentation rules used while building the project | reference |
+
+`CLAUDE.md` at the repository root is the working-constraints file for the AI coding assistant used to build the project. It is not part of the documentation.

@@ -1,6 +1,6 @@
 """Local fine-tuned model client — a drop-in for Haiku on the section generators.
 
-The QLoRA-fine-tuned Qwen2.5-1.5B (see fine_tune_financial.ipynb) is served by
+The QLoRA-fine-tuned Qwen2.5-1.5B (see notebooks/fine_tune_financial.ipynb) is served by
 Ollama; `LocalChat` wraps Ollama's chat endpoint behind the same minimal
 interface the agent uses for Haiku: `.invoke(messages).content`.
 
