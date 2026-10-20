@@ -297,3 +297,17 @@ def test_restarts_sums_multi_container_pods():
         {"restartCount": 2, "lastState": {}}]}},
         {"metadata": {"name": "api-y"}, "status": {}}]}
     assert report.restarts(pods) == {"llamacpp-x": (3, "OOMKilled"), "api-y": (0, None)}
+
+
+def test_top_max_mem_and_fallback(tmp_path):
+    txt = ("--- 1\nworker-a-1 900m 1500Mi\napi-b-1 10m 300Mi\n<oke-node-1> 2000m 12% 9Gi 30%\n"
+           "--- 2\nworker-a-1 1200m 2Gi\n")
+    assert report.top_max_mem(txt) == 2 * 2**30
+    d = _write_repeat(tmp_path, "L1-r1-c1-r1")
+    for f in ("cgroup-before.txt", "cgroup-after.txt"):
+        p = d / f
+        p.write_text(p.read_text().replace(f"memory.peak {1024 * 2**20}", f"memory.current {512 * 2**20}"))
+    (d / "top.txt").write_text(txt)
+    r = report.analyze_repeat(d)
+    assert r["mem_peak_per_process_mib"] == pytest.approx(2048)
+    assert r["mem_peak_source"].startswith("sampled")
