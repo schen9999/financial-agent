@@ -1,0 +1,46 @@
+# One repeat of one benchmark cell: scripts/harness_bench.py as a Job.
+# Rendered and created by scripts/harness_bench_cell.sh (harness-bench-l1-r1-c1-r2-030937, ghcr.io/schen9999/financial-agent-app:f3043751eb51083b8c674d23ad4ff1da91cbdeac
+# and "--cell","L1-r1-c1","--repeat","2","--profile","L1","--replicas","1","--concurrency","1","--briefs","40","--warmup","5" replaced at run time); never applied by hand.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: harness-bench-l1-r1-c1-r2-030937
+  namespace: financial-agent
+  labels:
+    app.kubernetes.io/name: harness-bench
+    app.kubernetes.io/part-of: financial-agent-bench
+spec:
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 86400
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: harness-bench
+        app.kubernetes.io/part-of: financial-agent-bench
+    spec:
+      restartPolicy: Never
+      imagePullSecrets:
+        - name: ghcr-pull-secret
+      containers:
+        - name: driver
+          image: ghcr.io/schen9999/financial-agent-app:f3043751eb51083b8c674d23ad4ff1da91cbdeac
+          imagePullPolicy: IfNotPresent
+          command: ["python", "-u", "/bench/harness_bench.py", "--cell","L1-r1-c1","--repeat","2","--profile","L1","--replicas","1","--concurrency","1","--briefs","40","--warmup","5"]
+          envFrom:
+            - configMapRef:
+                name: app-config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          volumeMounts:
+            - name: bench
+              mountPath: /bench
+              readOnly: true
+      volumes:
+        - name: bench
+          configMap:
+            name: bench-files

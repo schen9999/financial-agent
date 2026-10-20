@@ -1,0 +1,8 @@
+[05:29:57] cell L1-r2-c4 repeat 1: R=2 C=4 profile=L1 keda=0 image=ghcr.io/schen9999/financial-agent-app:f3043751eb51083b8c674d23ad4ff1da91cbdeac
+deployment "worker" successfully rolled out
+stub reachable from worker: http://model-stub.financial-agent.svc:8080
+[05:30:47] snapshot before: 5 pods
+[05:30:48] driver job harness-bench-l1-r2-c4-r1-053047 started
+[05:34:21] driver job harness-bench-l1-r2-c4-r1-053047 succeeded
+BENCH_SUMMARY {"bad_briefs": 0, "briefs": 40, "capacity": 8, "cell": "L1-r2-c4", "completed": 79, "concurrency": 4, "errors": 0, "measure_end": 1792474371.7967315, "measure_start": 1792474285.7457025, "measured": 40, "outstanding_target": 32, "profile": "L1", "queue_samples": [{"llen": 0, "t": 1792474249.6517222}, {"llen": 0, "t": 1792474264.6809692}, {"llen": 0, "t": 1792474279.7269027}, {"llen":
+[05:34:33] done: /home/ubuntu/harness-bench/2026-10-20/L1-r2-c4-r1

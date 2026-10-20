@@ -107,8 +107,10 @@ Migrate to OCI, with a live demo of the result (first week of November 2026):
   sha256, cleared by the cluster owner 2026-10-16) scales the Celery
   worker 1-4 on Redis queue depth: ScaledObject in its own tree
   k8s/keda (app overlays untouched), make keda-install / keda-worker /
-  keda-check / keda-scale-test / keda-uninstall; runbook "KEDA". Only
-  the builtin-task scale test has run (no request-time load measured).
+  keda-check / keda-scale-test / keda-uninstall; runbook "KEDA". The
+  builtin-task scale test ran 2026-10-16; under brief load, the harness
+  benchmark's KEDA run (2026-10-20, stub model, L1): 704 briefs/h, 86% of
+  fixed 4 replicas.
   Runbook "OKE (provided
   cluster)". Yahoo has returned 429 from its egress IP: check the
   aggregate's "stock block empty" count on every run there.
@@ -591,6 +593,20 @@ Phase 3 — demo polish:
   (eval/density_check.py): figures bound to a stock-data field as the
   conservative figure, all numbers stated beside it; judge-based numeric
   claims per ticker only as corroboration.
+- Harness benchmark (2026-10-20, pre-registered, docs/harness-benchmark-plan.md;
+  captures eval/runs/harness-bench-2026-10-20, 40/40 repeats valid, $0
+  Anthropic): model replaced by scripts/model_stub.py (nstp9's recorded
+  outputs, delays L0 none / L1 A10 / L2 E5 8 vCPU). Quote ALWAYS as a stub
+  measurement on one shape (E5, image f3043751): it measures the harness,
+  never a model endpoint, and the stub has no capacity limit. L1: worker
+  busy 5–16% of wall (waiting), 199 -> 3,063 briefs/h from 1 to 16 in
+  flight, no saturation; 0.25–0.36 vCPU per 1,000 briefs/h at 1–2
+  processes per pod, 0.46–0.85 at 4; memory 586–826 MiB per process,
+  SAMPLED lower bound (no memory.peak on the nodes). The c=4 CPU cost is
+  "most likely PyTorch thread oversubscription, untested" until a run
+  shows it; any OMP_NUM_THREADS run is exploratory, reported beside the
+  results. L0 throughput at high capacity is imprecise (short windows);
+  never quote L0 (4,4)'s 25,415/h alone.
 - Any new number in docs must come from a committed, re-runnable harness.
 - No IP addresses, OCIDs, or resolvable hostnames/FQDNs in committed
   files, captures included (since 2026-10-16; the repo is public). The

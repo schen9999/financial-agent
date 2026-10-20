@@ -1,0 +1,52 @@
+--- 1792469474
+api-8d66c46f6-cq6jj           1m    486Mi     
+llamacpp-6cfb95c86d-5cxc7     1m    29381Mi   
+mcp-85f69f875f-m8tqk          1m    290Mi     
+model-stub-6fd86d869c-lrqzx   1m    15Mi      
+postgres-6697f6d957-7jb46     2m    36Mi      
+redis-bd6fb5fbb-z9cs7         4m    13Mi      
+streamlit-788b6b5b8-rvbkj     2m    66Mi      
+<private-ip>   29m    0%    3662Mi    12%   
+<private-ip>   161m   1%    5126Mi    8%    
+<private-ip>    93m    0%    4222Mi    14%   
+<private-ip>    34m    0%    32842Mi   55%   
+--- 1792469490
+api-8d66c46f6-cq6jj           2m     486Mi     
+llamacpp-6cfb95c86d-5cxc7     1m     29381Mi   
+mcp-85f69f875f-m8tqk          1m     290Mi     
+model-stub-6fd86d869c-lrqzx   1m     15Mi      
+postgres-6697f6d957-7jb46     3m     36Mi      
+redis-bd6fb5fbb-z9cs7         4m     13Mi      
+streamlit-788b6b5b8-rvbkj     2m     66Mi      
+worker-7bff7cf65c-rt6gc       286m   267Mi     
+<private-ip>   58m    0%    3688Mi    12%   
+<private-ip>   88m    0%    5126Mi    8%    
+<private-ip>    760m   4%    5055Mi    17%   
+<private-ip>    18m    0%    32841Mi   55%   
+--- 1792469506
+api-8d66c46f6-cq6jj           2m      486Mi     
+llamacpp-6cfb95c86d-5cxc7     1m      29381Mi   
+mcp-85f69f875f-m8tqk          1m      290Mi     
+model-stub-6fd86d869c-lrqzx   1m      15Mi      
+postgres-6697f6d957-7jb46     3m      36Mi      
+redis-bd6fb5fbb-z9cs7         7m      13Mi      
+streamlit-788b6b5b8-rvbkj     2m      66Mi      
+worker-7bff7cf65c-rt6gc       5017m   2130Mi    
+<private-ip>   28m     0%    3693Mi    12%   
+<private-ip>   152m    0%    5126Mi    8%    
+<private-ip>    4965m   31%   6164Mi    21%   
+<private-ip>    26m     0%    32842Mi   55%   
+--- 1792469523
+api-8d66c46f6-cq6jj                      4m      486Mi     
+harness-bench-l0-r1-c4-r2-041114-7jcqq   3m      28Mi      
+llamacpp-6cfb95c86d-5cxc7                1m      29381Mi   
+mcp-85f69f875f-m8tqk                     1m      290Mi     
+model-stub-6fd86d869c-lrqzx              6m      15Mi      
+postgres-6697f6d957-7jb46                2m      36Mi      
+redis-bd6fb5fbb-z9cs7                    5m      13Mi      
+streamlit-788b6b5b8-rvbkj                3m      66Mi      
+worker-7bff7cf65c-rt6gc                  5201m   2464Mi    
+<private-ip>   35m     0%    3692Mi    12%   
+<private-ip>   41m     0%    5127Mi    8%    
+<private-ip>    6323m   40%   6425Mi    22%   
+<private-ip>    21m     0%    32844Mi   55%   

@@ -1,0 +1,331 @@
+{
+ "items": [
+  {
+   "metadata": {
+    "name": "api-8d66c46f6-cq6jj"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "api",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "harness-bench-l0-r1-c1-r1-025002-59vhr"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "driver",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "harness-bench-l0-r1-c1-r2-025156-5gnzb"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "driver",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "harness-bench-l0-r4-c1-r1-032541-hfhd8"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "driver",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "harness-bench-l0-r4-c1-r2-032734-j85mt"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "driver",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "harness-bench-l0-r4-c4-r1-034148-bcvjn"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "driver",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "harness-bench-l0-r4-c4-r2-034424-qfz8s"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "driver",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "harness-bench-l1-r1-c1-r1-025351-sp722"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "driver",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "harness-bench-l1-r1-c1-r2-030937-k5w4c"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "driver",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "harness-bench-l1-r4-c1-r1-032928-szxjv"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "driver",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "harness-bench-l1-r4-c1-r2-033538-wczpl"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "driver",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "harness-bench-l1-r4-c4-r1-034700-7wk8s"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "driver",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "harness-bench-l1-r4-c4-r2-035102-qwnc2"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "driver",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "llamacpp-6cfb95c86d-5cxc7"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "llama-server",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "mcp-85f69f875f-m8tqk"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "mcp",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "model-stub-6fd86d869c-lrqzx"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "stub",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "postgres-6697f6d957-7jb46"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "postgres",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "redis-bd6fb5fbb-z9cs7"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "redis",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "streamlit-788b6b5b8-rvbkj"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "nginx",
+      "restartCount": 0,
+      "lastState": {}
+     },
+     {
+      "name": "streamlit",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "worker-7488f8945f-c2jht"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "worker",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "worker-7488f8945f-js8dq"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "worker",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "worker-7488f8945f-khjvd"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "worker",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "worker-7488f8945f-nfhfz"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "worker",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  }
+ ]
+}
