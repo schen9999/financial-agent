@@ -149,7 +149,7 @@ rehearsal's own run.
 - [ ] **12. Launch** (operator, at a recorded time), **with the screen
   recorded**. Start the recording before the launch and stop it after
   check 14's last line. It becomes the first fallback on the day
-  ([demo.md, "Fallback if the live run fails"](demo.md#fallback-if-the-live-run-fails)).
+  (the fallback list in the local presenter notes, not in the repo).
   Capture, in this order on screen:
   - the operator pane running the command below, from submit to the last line;
   - the Argo UI graph (`https://localhost:32746`, check 11): ten eval
@@ -169,7 +169,7 @@ rehearsal's own run.
   Streamlit basic-auth prompt with the password typed in view. Scrollback
   cleared in every recorded pane first. Watch the recording through once
   before storing it. The file stays out of the repo (size): store it
-  where demo.md's fallback list points, not under the working tree.
+  where the presenter notes' fallback list points, not under the working tree.
   ```bash
   make slm-eval-run ENDPOINT=gpu EVAL_RUN_FILE=argo/eval-run-slm-gpu-smoke.yaml 2>&1 | tee ~/rehearsal-$(date -u +%F).log
   ```
