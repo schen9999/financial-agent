@@ -304,6 +304,18 @@ idle CPU llama.cpp pod stayed deployed on the cluster.
 would test the PyTorch-thread explanation. If run, it is reported as
 exploratory, beside these results, never in place of them.
 
+Declared 2026-10-20, before it runs (`scripts/harness_bench_sweep.sh
+omp1`): L0 and L1 at (4,4), two repeats each, same stub, image and limits,
+with `OMP_NUM_THREADS=1` and `MKL_NUM_THREADS=1` on the worker; the cell
+log records `torch.get_num_threads()` from a worker. Same validity checks.
+Reading: the explanation is supported if worker CPU-seconds per brief at
+L1 (4,4) fall to 1.3 or less (the c = 1 level, (4,1)) and throttling
+falls; partly supported if they fall but stay above 1.3; not supported if
+they do not fall. L0 is reported beside it, with its short-window caveat.
+Throughput is reported but is not the test: at L1 it is set by the model
+delay. One thread per process may slow the embedding step at c = 1, which
+this run does not measure.
+
 ## Beyond this plan
 
 The same plan, unchanged, run on E6, A2 (which needs multi-arch images) and

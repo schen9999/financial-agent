@@ -465,7 +465,7 @@ bench-stub-on: ## (operator) Deploy the model stub and route the worker through 
 	@echo "Stub on. Run: scripts/harness_bench_sweep.sh core   (results under $(BENCH_OUT))"
 
 bench-stub-off: ## (operator) Restore the committed overlay (+ KEDA tree if installed) and remove the stub
-	kubectl -n $(NAMESPACE) set env deployment/worker BYPASS_CACHE- ANTHROPIC_API_KEY-
+	kubectl -n $(NAMESPACE) set env deployment/worker BYPASS_CACHE- ANTHROPIC_API_KEY- OMP_NUM_THREADS- MKL_NUM_THREADS-
 	-kubectl -n $(NAMESPACE) annotate scaledobject worker autoscaling.keda.sh/paused-replicas- 2>/dev/null
 	kubectl apply -k k8s/overlays/$(OKE_OVERLAY)
 	@# apply restores keys the overlay sets but keeps keys it never set: drop the one bench-stub-on added

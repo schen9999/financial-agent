@@ -2447,6 +2447,23 @@ ScaledObject exists, `k8s/keda/overlays/oke-provided`.
    committed captures reproduces the operator's report exactly
    (`report.md` beside them).
 
+### Follow-up: one PyTorch thread per process (exploratory)
+
+Declared in the plan ("Results", follow-up) before it runs. Same stub; the
+worker gets `OMP_NUM_THREADS=1` and `MKL_NUM_THREADS=1` for these cells
+only (a later cell without `TORCH_THREADS` removes them, and so does
+`bench-stub-off`).
+
+1. **[NOT YET EXECUTED]** On the operator:
+   ```bash
+   cd ~/financial-agent && git pull
+   make bench-stub-on
+   scripts/harness_bench_sweep.sh omp1 2>&1 | tee -a ~/harness-bench/sweep-omp1.log
+   make bench-stub-off
+   make bench-report BENCH_DIR=~/harness-bench/2026-10-20-omp1 > ~/bench-report-omp1.md 2>&1
+   ```
+   About 25 minutes. Each cell log should show `torch threads: 1`.
+
 ## Terraform: the provided cluster (import and plan only)
 
 **[EXECUTED 2026-10-07 — zero diff]** Under the owner's exception
