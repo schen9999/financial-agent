@@ -400,8 +400,8 @@ python eval/reweight_calibration.py \
   --run lsnnc eval/runs/lsnnc-claims.jsonl eval/runs/raw/lsnnc-findings
 ```
 
-**Tests.** `python -m pytest tests/`: 8799 lines, 690 tests collected:
-689 passed + 1 skipped, the credit-gated judge test that runs only under
+**Tests.** `python -m pytest tests/`: 8807 lines, 691 tests collected:
+690 passed + 1 skipped, the credit-gated judge test that runs only under
 `CRITIC_INJECTION=1` (as of 2026-10-19).
 
 ## Known limitations and next steps

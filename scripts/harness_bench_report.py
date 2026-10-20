@@ -85,12 +85,15 @@ def role(pod: str) -> str:
 
 
 def restarts(pods_json: dict) -> dict:
+    """{pod: (restarts summed over its containers, a last-termination reason)}."""
     out = {}
     for p in pods_json.get("items", []):
         name = p["metadata"]["name"]
+        total, reason = 0, None
         for cs in (p.get("status") or {}).get("containerStatuses") or []:
-            last = ((cs.get("lastState") or {}).get("terminated") or {}).get("reason")
-            out[name] = (out.get(name, 0) + cs.get("restartCount", 0), last)
+            total += cs.get("restartCount", 0)
+            reason = ((cs.get("lastState") or {}).get("terminated") or {}).get("reason") or reason
+        out[name] = (total, reason)
     return out
 
 

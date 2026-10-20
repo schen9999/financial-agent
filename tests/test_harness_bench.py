@@ -289,3 +289,11 @@ def test_saturation_rule():
     q3 = report.reading_rules(agg)["Q3_saturation"]["L1"]
     assert q3["saturation_at"] == ["(1,2)", "(2,1)"]
     assert q3["doubling_gains"]["(1,1)"]["2x replicas"] == pytest.approx(0.95)
+
+
+def test_restarts_sums_multi_container_pods():
+    pods = {"items": [{"metadata": {"name": "llamacpp-x"}, "status": {"containerStatuses": [
+        {"restartCount": 1, "lastState": {"terminated": {"reason": "OOMKilled"}}},
+        {"restartCount": 2, "lastState": {}}]}},
+        {"metadata": {"name": "api-y"}, "status": {}}]}
+    assert report.restarts(pods) == {"llamacpp-x": (3, "OOMKilled"), "api-y": (0, None)}
