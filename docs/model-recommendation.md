@@ -1,5 +1,10 @@
 # Model recommendation: who writes the sections
 
+> **Dated record (2026-09-28).** This recommendation covers the four-arm
+> comparison of Qwen2.5 writers for two sections. The current
+> recommendation, on Qwen3.6-35B-A3B serving the whole brief, is in
+> [report.md](report.md).
+
 2026-09-28. Every figure below comes from
 [numbers-of-record.md](numbers-of-record.md),
 [eval-methodology.md](eval-methodology.md), or the committed script named
