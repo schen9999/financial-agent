@@ -316,6 +316,31 @@ Throughput is reported but is not the test: at L1 it is set by the model
 delay. One thread per process may slow the embedding step at c = 1, which
 this run does not measure.
 
+**Follow-up result (2026-10-20, 19:26 to 19:38 UTC; exploratory, reported
+beside the pre-registered results, never in place of them).** Captures in
+`eval/runs/harness-bench-2026-10-20-omp1/`. All four repeats valid, and
+every cell log shows `torch threads: 1`. **Supported:**
+
+| (4,4) | Worker CPU-s per brief | Throttled periods | p50 / p95 s | Briefs/h | Memory per process (MiB, sampled) |
+|---|---|---|---|---|---|
+| L1, deployed default (8 threads) | 3.06 | 6% | 18.6 / 21.5 | 3,063 | 602 |
+| L1, one thread | 1.08 | 0% | 18.1 / 21.1 | 2,791 | 539 |
+| L0, deployed default | 9.03 | 53% | 0.9 / 22.3 | 25,415 | 592 |
+| L0, one thread | 1.04 | 0% | 0.8 / 1.2 | 84,292 | 554 |
+
+At L1, CPU per brief falls to 1.08, under the declared 1.3 (the (4,1)
+level), and throttling to zero: with one thread per process, four
+processes per pod cost about what one does. That puts the harness at about
+0.30 vCPU per 1,000 briefs an hour at (4,4), against 0.85 as deployed. At
+L0 the p95 tail disappears (22.3 s to 1.2 s). Throughput is not the test:
+at L1 it is set by the model delay, and the 9% difference (2,791 vs 3,063)
+is within what a 50-second window resolves (briefs in flight averaged 16.0
+in both). The L0 throughput figures carry the short-window caveat (the two
+one-thread repeats measured 61,550 and 107,034). Not measured: whether one
+thread slows the embedding step at one process per pod. The deployed
+worker still runs the default; changing it is an image or overlay change,
+post-demo.
+
 ## Beyond this plan
 
 The same plan, unchanged, run on E6, A2 (which needs multi-arch images) and

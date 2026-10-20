@@ -1,0 +1,32 @@
+--- 1792524533
+api-54f586b98b-sd2z4          1m     483Mi     
+llamacpp-6cfb95c86d-5cxc7     1m     29381Mi   
+mcp-68748b8c7f-4vpkc          1m     289Mi     
+model-stub-77b8d8ffbc-dw467   1m     11Mi      
+postgres-6697f6d957-7jb46     2m     36Mi      
+redis-bd6fb5fbb-z9cs7         5m     27Mi      
+streamlit-77494d7c86-m7qzf    2m     63Mi      
+worker-5bf7f558bd-cj2z4       2m     136Mi     
+worker-5bf7f558bd-hx5js       2m     136Mi     
+worker-5bf7f558bd-ljf2w       2m     136Mi     
+worker-5bf7f558bd-npg98       261m   169Mi     
+<private-ip>   21m    0%    3872Mi    13%   
+<private-ip>   96m    0%    5507Mi    9%    
+<private-ip>    219m   1%    4438Mi    15%   
+<private-ip>    146m   0%    32939Mi   55%   
+--- 1792524549
+api-54f586b98b-sd2z4          2m      483Mi     
+llamacpp-6cfb95c86d-5cxc7     1m      29381Mi   
+mcp-68748b8c7f-4vpkc          1m      289Mi     
+model-stub-77b8d8ffbc-dw467   1m      11Mi      
+postgres-6697f6d957-7jb46     2m      36Mi      
+redis-bd6fb5fbb-z9cs7         6m      27Mi      
+streamlit-77494d7c86-m7qzf    2m      63Mi      
+worker-5bf7f558bd-cj2z4       2m      136Mi     
+worker-5bf7f558bd-hx5js       20m     136Mi     
+worker-5bf7f558bd-ljf2w       1441m   1768Mi    
+worker-5bf7f558bd-npg98       1338m   1939Mi    
+<private-ip>   1186m   7%    5627Mi    19%   
+<private-ip>   1518m   9%    6263Mi    10%   
+<private-ip>    1154m   7%    5862Mi    20%   
+<private-ip>    20m     0%    32930Mi   55%   

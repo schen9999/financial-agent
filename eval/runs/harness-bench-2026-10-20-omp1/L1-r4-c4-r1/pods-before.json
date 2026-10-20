@@ -1,0 +1,186 @@
+{
+ "items": [
+  {
+   "metadata": {
+    "name": "api-54f586b98b-sd2z4"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "api",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "harness-bench-l0-r4-c4-r1-192719-tngbc"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "driver",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "harness-bench-l0-r4-c4-r2-192853-h7xhw"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "driver",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "llamacpp-6cfb95c86d-5cxc7"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "llama-server",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "mcp-68748b8c7f-4vpkc"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "mcp",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "model-stub-77b8d8ffbc-dw467"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "stub",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "postgres-6697f6d957-7jb46"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "postgres",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "redis-bd6fb5fbb-z9cs7"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "redis",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "streamlit-77494d7c86-m7qzf"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "streamlit",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "worker-758cfbbbb6-7mncx"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "worker",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "worker-758cfbbbb6-bkft6"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "worker",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "worker-758cfbbbb6-fhmsh"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "worker",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  },
+  {
+   "metadata": {
+    "name": "worker-758cfbbbb6-xb6tb"
+   },
+   "status": {
+    "containerStatuses": [
+     {
+      "name": "worker",
+      "restartCount": 0,
+      "lastState": {}
+     }
+    ]
+   }
+  }
+ ]
+}
