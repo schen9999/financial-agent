@@ -227,8 +227,10 @@ make keda-scale-test                              # no model calls: a builtin ta
 make keda-check                                   # API discovery healthy with KEDA installed
 ```
 
-Only the builtin-task scale test has run; scaling under real brief load is
-not measured.
+The builtin-task scale test ran 2026-10-16. Under brief load, with the
+model replaced by a stub at A10-speed latency, KEDA delivered 704 briefs an
+hour, 86% of a fixed four replicas
+([harness-benchmark-plan.md](harness-benchmark-plan.md)).
 
 ## Verify
 
