@@ -88,7 +88,7 @@ the dates, and use it as evidence rather than as current instructions).
 | [gpu-inference.md](gpu-inference.md) | A10 serving: what ran, serving speed, CPU vs GPU for Qwen3.6, what has not run | reference |
 | [experiments.md](experiments.md) | The experiment records moved from the README (2026-10-08) | dated log |
 | [debugging-story.md](debugging-story.md) | One error traced end to end (Toyota's currency), the limits of each eval layer, three shorter cases | dated log |
-| [harness-benchmark-plan.md](harness-benchmark-plan.md) | Pre-registered plan for benchmarking the harness itself on OCI CPU (not yet run) | reference |
+| [harness-benchmark-plan.md](harness-benchmark-plan.md) | Pre-registered plan and results (2026-10-20) of the harness benchmark on OCI CPU | reference |
 | [model-recommendation.md](model-recommendation.md) | Hosted Haiku vs open-weight models for the section-writing role: recommendation, results and A10 cost, from the 2026-09-23 four-arm comparison | dated log |
 
 ### The November demo

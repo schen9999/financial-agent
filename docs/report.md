@@ -193,10 +193,8 @@ The OKE CPU endpoint is sized right at 8 vCPU: prompt processing gains 1.8×
 from 4 to 8 vCPU and nothing after, and generation stays near 13 tok/s at
 every level.
 
-These figures measure model inference on CPU, not harness orchestration;
-the harness itself is the subject of a pre-registered benchmark not yet
-run ([harness-benchmark-plan.md](harness-benchmark-plan.md)). All figures
-below are llama-bench on the same Q4_K_M GGUF, single request, 2,048-token
+These figures measure model inference on CPU. The harness itself was
+benchmarked separately (below). All figures in this table are llama-bench on the same Q4_K_M GGUF, single request, 2,048-token
 prompt and 128-token generation, no judge (dated 2026-10-08 and
 2026-10-16).
 
@@ -215,10 +213,29 @@ set also decides whether an engine runs at all: vLLM's prebuilt CPU image
 requires AVX-512 and crashes on AVX2-only hosts, which bears on the post's
 X12 condition. Details: [gpu-inference.md](gpu-inference.md).
 
-**Scaling the workers.** KEDA now scales the Celery worker on Redis queue
-depth, 1 to 4 replicas on the OKE cluster. A test backlog of 8 tasks that
-make no model call scaled it to 4 and back to 1. Scaling under real request
-load has not been measured.
+**The harness itself (2026-10-20).** A pre-registered benchmark
+([harness-benchmark-plan.md](harness-benchmark-plan.md)) replaced the model
+with an in-cluster stub that answers with recorded outputs after a set
+delay, so the harness, not the model, is what is measured. On the E5 nodes,
+all 40 repeats valid, no Anthropic spend:
+
+- With the model delay removed, a brief costs the harness 1.0 s and 0.65
+  CPU-seconds, almost all of it live data fetches and retrieval.
+- At A10-speed model latency the worker is busy 5% to 16% of each brief's
+  wall time: it waits, as the post predicts. Throughput grows from 199 to
+  3,063 briefs an hour as briefs in flight go from 1 to 16, with no
+  saturation in the sweep, at about 0.25 to 0.36 vCPU per 1,000 briefs an
+  hour and 586 to 826 MiB per worker process.
+- Four Celery processes per pod cost 2 to 3 times the CPU per brief of one
+  or two, most likely PyTorch thread oversubscription (8 threads per
+  process); not yet tested.
+- At CPU-speed model latency the same 16 slots give 286 briefs an hour:
+  the model, not the harness, sets the rate.
+
+**Scaling the workers.** KEDA scales the Celery worker on Redis queue
+depth, 1 to 4 replicas on the OKE cluster. Under the benchmark's brief load
+at A10-speed latency it delivered 704 briefs an hour, 86% of a fixed four
+replicas, the gap being the time spent scaling up.
 
 ## What was turned off, and why
 
@@ -289,9 +306,9 @@ separate arms whose difference is small.
   record.
 - Judge recall is about 11% with a wide interval, so judge-flagged rates
   are lower bounds and "no difference detected" is not "no difference".
-- The harness itself has not been benchmarked: every CPU figure above is
-  model inference. The plan is pre-registered in
-  [harness-benchmark-plan.md](harness-benchmark-plan.md).
+- The harness benchmark ran on one shape (E5) against a stub with no
+  capacity limit; it says nothing about another shape or about a real
+  endpoint under that load.
 - Only one closed-source model family (Claude) has been compared.
 - vLLM serving on OKE has not run. The OKE Terraform for a cluster with an
   A10 pool is validated but never applied; the provided cluster is
@@ -301,8 +318,9 @@ separate arms whose difference is small.
 
 ## Next steps
 
-- Run the harness benchmark: harness throughput and CPU use on E5 with the
-  model removed as the bottleneck.
+- Test the PyTorch-thread explanation for the CPU cost of four processes
+  per pod (one run with `OMP_NUM_THREADS=1`), then run the same harness
+  benchmark on E6, A2 and X12 node pools.
 - Pipeline fixes from the recorded limitations, each followed by new
   baselines on every arm.
 - Fold the per-request traffic proof into the eval target instead of a

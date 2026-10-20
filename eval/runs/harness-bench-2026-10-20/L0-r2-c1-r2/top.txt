@@ -1,0 +1,42 @@
+--- 1792469710
+api-8d66c46f6-cq6jj           1m    486Mi     
+llamacpp-6cfb95c86d-5cxc7     1m    29381Mi   
+mcp-85f69f875f-m8tqk          1m    290Mi     
+model-stub-6fd86d869c-lrqzx   1m    15Mi      
+postgres-6697f6d957-7jb46     3m    36Mi      
+redis-bd6fb5fbb-z9cs7         5m    14Mi      
+streamlit-788b6b5b8-rvbkj     2m    66Mi      
+worker-5567bdfcb6-glrt4       2m    58Mi      
+<private-ip>   21m    0%    3667Mi    12%   
+<private-ip>   134m   0%    5187Mi    8%    
+<private-ip>    38m    0%    4162Mi    14%   
+<private-ip>    33m    0%    32840Mi   55%   
+--- 1792469726
+api-8d66c46f6-cq6jj           1m     486Mi     
+llamacpp-6cfb95c86d-5cxc7     1m     29381Mi   
+mcp-85f69f875f-m8tqk          1m     290Mi     
+model-stub-6fd86d869c-lrqzx   1m     15Mi      
+postgres-6697f6d957-7jb46     2m     36Mi      
+redis-bd6fb5fbb-z9cs7         5m     14Mi      
+streamlit-788b6b5b8-rvbkj     2m     66Mi      
+worker-5567bdfcb6-glrt4       268m   91Mi      
+worker-5567bdfcb6-z7mkm       252m   394Mi     
+<private-ip>   30m    0%    3666Mi    12%   
+<private-ip>   427m   2%    5636Mi    9%    
+<private-ip>    367m   2%    4165Mi    14%   
+<private-ip>    22m    0%    32845Mi   55%   
+--- 1792469742
+api-8d66c46f6-cq6jj                      3m     486Mi     
+harness-bench-l0-r2-c1-r2-041510-vcq8j   15m    28Mi      
+llamacpp-6cfb95c86d-5cxc7                1m     29381Mi   
+mcp-85f69f875f-m8tqk                     1m     290Mi     
+model-stub-6fd86d869c-lrqzx              5m     15Mi      
+postgres-6697f6d957-7jb46                3m     36Mi      
+redis-bd6fb5fbb-z9cs7                    5m     14Mi      
+streamlit-788b6b5b8-rvbkj                2m     66Mi      
+worker-5567bdfcb6-glrt4                  518m   680Mi     
+worker-5567bdfcb6-z7mkm                  675m   628Mi     
+<private-ip>   39m    0%    3670Mi    12%   
+<private-ip>   784m   4%    5756Mi    9%    
+<private-ip>    713m   4%    4792Mi    16%   
+<private-ip>    23m    0%    32848Mi   55%   

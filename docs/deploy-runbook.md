@@ -2391,12 +2391,15 @@ ScaledObject exists, `k8s/keda/overlays/oke-provided`.
 
 ### Steps (operator)
 
-1. **[NOT YET EXECUTED]** Stub on:
+1. **[EXECUTED 2026-10-20 ~02:48Z, main at `007b505`]** Stub on:
    ```bash
    cd ~/financial-agent && git checkout main && git pull
    make bench-stub-on        # ends by printing server_facts() from a worker: slm_served_name model-stub
    ```
-2. **[NOT YET EXECUTED]** Core cells first (L0 and L1 at (1,1), (4,1),
+   Result: the worker reached the stub through the app's own client
+   (`slm_served_name` model-stub). `slm_artifact` still names the Qwen
+   GGUF: it comes from app-config, not the server, and nothing reads it.
+2. **[EXECUTED 2026-10-20 02:49–03:54Z]** Core cells first (L0 and L1 at (1,1), (4,1),
    (4,4), two repeats each; about an hour), in tmux so an ssh drop does not
    stop it:
    ```bash
@@ -2406,27 +2409,43 @@ ScaledObject exists, `k8s/keda/overlays/oke-provided`.
    Each repeat lands in `~/harness-bench/<date>/<cell>-r<n>/`. A failed cell
    is logged and skipped; rerunning the sweep resumes, skipping captured
    repeats.
-3. **[NOT YET EXECUTED]** Read the core result before the rest:
+3. **[EXECUTED 2026-10-20]** Read the core result before the rest:
    ```bash
    make bench-report BENCH_DIR=~/harness-bench/<date>
    ```
    Check the validity table first: stub requests equal expected, stock
    block empty 0 (Yahoo has returned 429 from this egress IP), errors under
-   1%, no restarts or node-pressure events.
-4. **[NOT YET EXECUTED]** The rest of the sweep (the other L0/L1 cells, L2
+   1%, no restarts or node-pressure events. Result: all 12 core repeats
+   valid. The first report run crashed on a multi-container pod (fixed in
+   `d9032ad`, PR #47); the nodes have no cgroup `memory.peak`, so peak
+   memory falls back to a sampled value (PR #48).
+4. **[EXECUTED 2026-10-20 04:05–06:55Z]** The rest of the sweep (the other L0/L1 cells, L2
    at (4,4), and the KEDA run at L1):
    ```bash
    scripts/harness_bench_sweep.sh rest 2>&1 | tee -a ~/harness-bench/sweep-rest.log
    ```
-5. **[NOT YET EXECUTED]** Stub off, and check the restore:
+   Result: all 28 repeats valid; 40 of 40 in the sweep.
+5. **[EXECUTED 2026-10-20]** Stub off, and check the restore:
    ```bash
    make bench-stub-off       # prints SLM_FULL=false, the llamacpp URL, --concurrency=1, worker env without the two overrides
    ```
-6. **[NOT YET EXECUTED]** Capture: copy the sweep directory to the laptop,
+   Result: `SLM_FULL=false`, `SLM_CPU_URL` back at the llamacpp Service,
+   the worker at `--concurrency=1` with no env overrides, the stub
+   Deployment and Service gone. One leftover: `kubectl apply` keeps
+   ConfigMap keys the overlay never set, so `SLM_CPU_MODEL_NAME=model-stub`
+   stayed in app-config (it would break the CPU SLM route when switched
+   on). Removed by hand on the operator; `bench-stub-off` now removes it.
+6. **[EXECUTED 2026-10-20]** Capture: copy the sweep directory to the laptop,
    pass it through `scripts/redact.py`, commit it as
    `eval/runs/harness-bench-<date>/`, run `make bench-report
    BENCH_DIR=eval/runs/harness-bench-<date>`, then record the results in
-   numbers-of-record and the plan's status line.
+   numbers-of-record and the plan's status line. Committed slimmed: per
+   repeat the driver log, cgroup snapshots, `kubectl top` samples, Job
+   spec and cell log in full; pod and event JSON cut to restart counts and
+   event reasons; the stub log and the worker's timing lines gzipped; node
+   JSON and full worker logs not committed. The report run on the
+   committed captures reproduces the operator's report exactly
+   (`report.md` beside them).
 
 ## Terraform: the provided cluster (import and plan only)
 

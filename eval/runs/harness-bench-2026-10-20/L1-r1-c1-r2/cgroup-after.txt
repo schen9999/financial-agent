@@ -1,0 +1,40 @@
+=== pod api-8d66c46f6-cq6jj t=1792466675.856375497
+cgroup v2
+usage_usec 8267211
+user_usec 7527676
+system_usec 739534
+nr_periods 3685
+nr_throttled 4
+throttled_usec 2947841
+memory.current 509054976
+memory.max 2147483648
+=== pod model-stub-6fd86d869c-lrqzx t=1792466677.149133705
+cgroup v2
+usage_usec 1239053
+user_usec 848134
+system_usec 390919
+nr_periods 1587
+nr_throttled 0
+throttled_usec 0
+memory.current 13860864
+memory.max 1073741824
+=== pod redis-bd6fb5fbb-z9cs7 t=1792466678.594929297
+cgroup v2
+usage_usec 5076580290
+user_usec 3720793975
+system_usec 1355786315
+nr_periods 6871655
+nr_throttled 0
+throttled_usec 0
+memory.current 8306688
+memory.max 268435456
+=== pod worker-5bc8c7c664-fp2cl t=1792466680.059024951
+cgroup v2
+usage_usec 50542912
+user_usec 47252261
+system_usec 3290651
+nr_periods 3502
+nr_throttled 111
+throttled_usec 74116425
+memory.current 854077440
+memory.max 2147483648

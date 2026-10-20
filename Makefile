@@ -468,13 +468,15 @@ bench-stub-off: ## (operator) Restore the committed overlay (+ KEDA tree if inst
 	kubectl -n $(NAMESPACE) set env deployment/worker BYPASS_CACHE- ANTHROPIC_API_KEY-
 	-kubectl -n $(NAMESPACE) annotate scaledobject worker autoscaling.keda.sh/paused-replicas- 2>/dev/null
 	kubectl apply -k k8s/overlays/$(OKE_OVERLAY)
+	@# apply restores keys the overlay sets but keeps keys it never set: drop the one bench-stub-on added
+	-kubectl -n $(NAMESPACE) patch configmap app-config --type json -p '[{"op":"remove","path":"/data/SLM_CPU_MODEL_NAME"}]' 2>/dev/null
 	@if kubectl -n $(NAMESPACE) get scaledobject worker >/dev/null 2>&1; then kubectl apply -k k8s/keda/overlays/$(OKE_OVERLAY); fi
 	kubectl -n $(NAMESPACE) delete deployment/model-stub service/model-stub configmap/bench-files --ignore-not-found
 	kubectl -n $(NAMESPACE) delete job -l app.kubernetes.io/name=harness-bench --ignore-not-found
 	kubectl -n $(NAMESPACE) rollout restart deployment/worker deployment/api
 	kubectl -n $(NAMESPACE) rollout status deployment/worker --timeout=900s
 	kubectl -n $(NAMESPACE) rollout status deployment/api --timeout=900s
-	@kubectl -n $(NAMESPACE) get configmap app-config -o jsonpath='SLM_FULL={.data.SLM_FULL} SLM_CPU_URL={.data.SLM_CPU_URL}{"\n"}'
+	@kubectl -n $(NAMESPACE) get configmap app-config -o jsonpath='SLM_FULL={.data.SLM_FULL} SLM_CPU_URL={.data.SLM_CPU_URL} SLM_CPU_MODEL_NAME={.data.SLM_CPU_MODEL_NAME} (empty is right){"\n"}'
 	@kubectl -n $(NAMESPACE) get deploy/worker -o jsonpath='worker command: {.spec.template.spec.containers[0].command}{"\n"}worker env: {.spec.template.spec.containers[0].env}{"\n"}'
 
 bench-report: ## Tables, validity checks and reading rules from a captured sweep: BENCH_DIR=eval/runs/harness-bench-<date>

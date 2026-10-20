@@ -1,0 +1,3084 @@
+{
+ "items": [
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r2-c2-r1-041657-tw4ph"
+   },
+   "lastTimestamp": "2026-10-20T04:16:59Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r2-c2-r1-041657-tw4ph"
+   },
+   "lastTimestamp": "2026-10-20T04:16:59Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r2-c2-r1-041657-tw4ph"
+   },
+   "lastTimestamp": "2026-10-20T04:16:59Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l0-r2-c2-r1-041657"
+   },
+   "lastTimestamp": "2026-10-20T04:16:58Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Completed",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l0-r2-c2-r1-041657"
+   },
+   "lastTimestamp": "2026-10-20T04:17:23Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r2-c2-r2-041845-5f42b"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:18:45.990910Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r2-c2-r2-041845-5f42b"
+   },
+   "lastTimestamp": "2026-10-20T04:18:46Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r2-c2-r2-041845-5f42b"
+   },
+   "lastTimestamp": "2026-10-20T04:18:46Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r2-c2-r2-041845-5f42b"
+   },
+   "lastTimestamp": "2026-10-20T04:18:46Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l0-r2-c2-r2-041845"
+   },
+   "lastTimestamp": "2026-10-20T04:18:45Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Completed",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l0-r2-c2-r2-041845"
+   },
+   "lastTimestamp": "2026-10-20T04:19:11Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r2-c4-r1-042032-979mf"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:20:33.772770Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r2-c4-r1-042032-979mf"
+   },
+   "lastTimestamp": "2026-10-20T04:20:34Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r2-c4-r1-042032-979mf"
+   },
+   "lastTimestamp": "2026-10-20T04:20:34Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r2-c4-r1-042032-979mf"
+   },
+   "lastTimestamp": "2026-10-20T04:20:34Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l0-r2-c4-r1-042032"
+   },
+   "lastTimestamp": "2026-10-20T04:20:33Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Completed",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l0-r2-c4-r1-042032"
+   },
+   "lastTimestamp": "2026-10-20T04:21:36Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r2-c4-r2-042242-5frwl"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:22:43.378934Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r2-c4-r2-042242-5frwl"
+   },
+   "lastTimestamp": "2026-10-20T04:22:44Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r2-c4-r2-042242-5frwl"
+   },
+   "lastTimestamp": "2026-10-20T04:22:44Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r2-c4-r2-042242-5frwl"
+   },
+   "lastTimestamp": "2026-10-20T04:22:44Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l0-r2-c4-r2-042242"
+   },
+   "lastTimestamp": "2026-10-20T04:22:43Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Completed",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l0-r2-c4-r2-042242"
+   },
+   "lastTimestamp": "2026-10-20T04:23:34Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r4-c2-r1-042454-pmjps"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:24:55.185895Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r4-c2-r1-042454-pmjps"
+   },
+   "lastTimestamp": "2026-10-20T04:24:55Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r4-c2-r1-042454-pmjps"
+   },
+   "lastTimestamp": "2026-10-20T04:24:55Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r4-c2-r1-042454-pmjps"
+   },
+   "lastTimestamp": "2026-10-20T04:24:55Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l0-r4-c2-r1-042454"
+   },
+   "lastTimestamp": "2026-10-20T04:24:55Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Completed",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l0-r4-c2-r1-042454"
+   },
+   "lastTimestamp": "2026-10-20T04:25:22Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r4-c2-r2-042647-b9565"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:26:48.600367Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r4-c2-r2-042647-b9565"
+   },
+   "lastTimestamp": "2026-10-20T04:26:49Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r4-c2-r2-042647-b9565"
+   },
+   "lastTimestamp": "2026-10-20T04:26:49Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l0-r4-c2-r2-042647-b9565"
+   },
+   "lastTimestamp": "2026-10-20T04:26:49Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l0-r4-c2-r2-042647"
+   },
+   "lastTimestamp": "2026-10-20T04:26:48Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Completed",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l0-r4-c2-r2-042647"
+   },
+   "lastTimestamp": "2026-10-20T04:27:27Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r1-c2-r1-042825-v75ps"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:28:26.116694Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r1-c2-r1-042825-v75ps"
+   },
+   "lastTimestamp": "2026-10-20T04:28:26Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r1-c2-r1-042825-v75ps"
+   },
+   "lastTimestamp": "2026-10-20T04:28:26Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r1-c2-r1-042825-v75ps"
+   },
+   "lastTimestamp": "2026-10-20T04:28:26Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l1-r1-c2-r1-042825"
+   },
+   "lastTimestamp": "2026-10-20T04:28:26Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Completed",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l1-r1-c2-r1-042825"
+   },
+   "lastTimestamp": "2026-10-20T04:36:25Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r1-c2-r2-043727-64vms"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:37:27.937311Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r1-c2-r2-043727-64vms"
+   },
+   "lastTimestamp": "2026-10-20T04:37:28Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r1-c2-r2-043727-64vms"
+   },
+   "lastTimestamp": "2026-10-20T04:37:28Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r1-c2-r2-043727-64vms"
+   },
+   "lastTimestamp": "2026-10-20T04:37:28Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l1-r1-c2-r2-043727"
+   },
+   "lastTimestamp": "2026-10-20T04:37:27Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Completed",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l1-r1-c2-r2-043727"
+   },
+   "lastTimestamp": "2026-10-20T04:45:23Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r1-c4-r1-044628-86ldx"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:46:29.717807Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r1-c4-r1-044628-86ldx"
+   },
+   "lastTimestamp": "2026-10-20T04:46:30Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r1-c4-r1-044628-86ldx"
+   },
+   "lastTimestamp": "2026-10-20T04:46:30Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r1-c4-r1-044628-86ldx"
+   },
+   "lastTimestamp": "2026-10-20T04:46:30Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l1-r1-c4-r1-044628"
+   },
+   "lastTimestamp": "2026-10-20T04:46:29Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Completed",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l1-r1-c4-r1-044628"
+   },
+   "lastTimestamp": "2026-10-20T04:51:51Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r1-c4-r2-045301-6pvxd"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:53:01.927898Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r1-c4-r2-045301-6pvxd"
+   },
+   "lastTimestamp": "2026-10-20T04:53:02Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r1-c4-r2-045301-6pvxd"
+   },
+   "lastTimestamp": "2026-10-20T04:53:02Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r1-c4-r2-045301-6pvxd"
+   },
+   "lastTimestamp": "2026-10-20T04:53:02Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l1-r1-c4-r2-045301"
+   },
+   "lastTimestamp": "2026-10-20T04:53:01Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Completed",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l1-r1-c4-r2-045301"
+   },
+   "lastTimestamp": "2026-10-20T04:58:05Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r2-c1-r1-045924-dqz7g"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:59:25.444800Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r2-c1-r1-045924-dqz7g"
+   },
+   "lastTimestamp": "2026-10-20T04:59:26Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r2-c1-r1-045924-dqz7g"
+   },
+   "lastTimestamp": "2026-10-20T04:59:26Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r2-c1-r1-045924-dqz7g"
+   },
+   "lastTimestamp": "2026-10-20T04:59:26Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l1-r2-c1-r1-045924"
+   },
+   "lastTimestamp": "2026-10-20T04:59:25Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Completed",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l1-r2-c1-r1-045924"
+   },
+   "lastTimestamp": "2026-10-20T05:07:34Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r2-c1-r2-050839-q5wxj"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T05:08:40.707065Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r2-c1-r2-050839-q5wxj"
+   },
+   "lastTimestamp": "2026-10-20T05:08:41Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r2-c1-r2-050839-q5wxj"
+   },
+   "lastTimestamp": "2026-10-20T05:08:41Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "harness-bench-l1-r2-c1-r2-050839-q5wxj"
+   },
+   "lastTimestamp": "2026-10-20T05:08:41Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l1-r2-c1-r2-050839"
+   },
+   "lastTimestamp": "2026-10-20T05:08:40Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Completed",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Job",
+    "name": "harness-bench-l1-r2-c1-r2-050839"
+   },
+   "lastTimestamp": "2026-10-20T05:17:00Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-5567bdfcb6-glrt4"
+   },
+   "lastTimestamp": "2026-10-20T04:16:33Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-556cdc869b-f7d4c"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:58:49.345651Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-556cdc869b-f7d4c"
+   },
+   "lastTimestamp": "2026-10-20T04:58:50Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-556cdc869b-f7d4c"
+   },
+   "lastTimestamp": "2026-10-20T04:58:50Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-556cdc869b-f7d4c"
+   },
+   "lastTimestamp": "2026-10-20T04:58:50Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-556cdc869b-f7d4c"
+   },
+   "lastTimestamp": "2026-10-20T05:08:04Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-556cdc869b-ljbrt"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:58:37.810788Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-556cdc869b-ljbrt"
+   },
+   "lastTimestamp": "2026-10-20T04:58:38Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-556cdc869b-ljbrt"
+   },
+   "lastTimestamp": "2026-10-20T04:58:38Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-556cdc869b-ljbrt"
+   },
+   "lastTimestamp": "2026-10-20T04:58:38Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-556cdc869b-ljbrt"
+   },
+   "lastTimestamp": "2026-10-20T05:08:15Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-556cdc869b"
+   },
+   "lastTimestamp": "2026-10-20T04:58:37Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-556cdc869b"
+   },
+   "lastTimestamp": "2026-10-20T04:58:49Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-556cdc869b"
+   },
+   "lastTimestamp": "2026-10-20T05:08:04Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-556cdc869b"
+   },
+   "lastTimestamp": "2026-10-20T05:08:15Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-5754c87d6f-4b7d5"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T05:07:53.316725Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-5754c87d6f-4b7d5"
+   },
+   "lastTimestamp": "2026-10-20T05:07:53Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-5754c87d6f-4b7d5"
+   },
+   "lastTimestamp": "2026-10-20T05:07:54Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-5754c87d6f-4b7d5"
+   },
+   "lastTimestamp": "2026-10-20T05:07:54Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-5754c87d6f-k2c79"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T05:08:04.344907Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-5754c87d6f-k2c79"
+   },
+   "lastTimestamp": "2026-10-20T05:08:04Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-5754c87d6f-k2c79"
+   },
+   "lastTimestamp": "2026-10-20T05:08:05Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-5754c87d6f-k2c79"
+   },
+   "lastTimestamp": "2026-10-20T05:08:05Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-5754c87d6f"
+   },
+   "lastTimestamp": "2026-10-20T05:07:53Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-5754c87d6f"
+   },
+   "lastTimestamp": "2026-10-20T05:08:04Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-58778cd844-q5n5m"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:58:35.794722Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-58778cd844-q5n5m"
+   },
+   "lastTimestamp": "2026-10-20T04:58:36Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-58778cd844-q5n5m"
+   },
+   "lastTimestamp": "2026-10-20T04:58:36Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-58778cd844-q5n5m"
+   },
+   "lastTimestamp": "2026-10-20T04:58:36Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-58778cd844-q5n5m"
+   },
+   "lastTimestamp": "2026-10-20T04:59:00Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-58778cd844-vr6hv"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:58:36.433339Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-58778cd844-vr6hv"
+   },
+   "lastTimestamp": "2026-10-20T04:58:37Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-58778cd844-vr6hv"
+   },
+   "lastTimestamp": "2026-10-20T04:58:37Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-58778cd844-vr6hv"
+   },
+   "lastTimestamp": "2026-10-20T04:58:37Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-58778cd844-vr6hv"
+   },
+   "lastTimestamp": "2026-10-20T04:58:38Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-58778cd844"
+   },
+   "lastTimestamp": "2026-10-20T04:58:35Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-58778cd844"
+   },
+   "lastTimestamp": "2026-10-20T04:58:36Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-58778cd844"
+   },
+   "lastTimestamp": "2026-10-20T04:58:37Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-58778cd844"
+   },
+   "lastTimestamp": "2026-10-20T04:59:00Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-9hvcm"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:24:04.491991Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-9hvcm"
+   },
+   "lastTimestamp": "2026-10-20T04:24:05Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-9hvcm"
+   },
+   "lastTimestamp": "2026-10-20T04:24:05Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-9hvcm"
+   },
+   "lastTimestamp": "2026-10-20T04:24:05Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-9hvcm"
+   },
+   "lastTimestamp": "2026-10-20T04:26:09Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-w4vpt"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:24:15.508989Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-w4vpt"
+   },
+   "lastTimestamp": "2026-10-20T04:24:16Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-w4vpt"
+   },
+   "lastTimestamp": "2026-10-20T04:24:16Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-w4vpt"
+   },
+   "lastTimestamp": "2026-10-20T04:24:16Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-w4vpt"
+   },
+   "lastTimestamp": "2026-10-20T04:26:08Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-wx8nm"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:24:04.473586Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-wx8nm"
+   },
+   "lastTimestamp": "2026-10-20T04:24:05Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-wx8nm"
+   },
+   "lastTimestamp": "2026-10-20T04:24:05Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-wx8nm"
+   },
+   "lastTimestamp": "2026-10-20T04:24:05Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-wx8nm"
+   },
+   "lastTimestamp": "2026-10-20T04:26:19Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-xjds5"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:24:15.597128Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-xjds5"
+   },
+   "lastTimestamp": "2026-10-20T04:24:16Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-xjds5"
+   },
+   "lastTimestamp": "2026-10-20T04:24:16Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-xjds5"
+   },
+   "lastTimestamp": "2026-10-20T04:24:16Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59994b5596-xjds5"
+   },
+   "lastTimestamp": "2026-10-20T04:25:57Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-59994b5596"
+   },
+   "lastTimestamp": "2026-10-20T04:24:04Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-59994b5596"
+   },
+   "lastTimestamp": "2026-10-20T04:24:04Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-59994b5596"
+   },
+   "lastTimestamp": "2026-10-20T04:24:15Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-59994b5596"
+   },
+   "lastTimestamp": "2026-10-20T04:24:15Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-59994b5596"
+   },
+   "lastTimestamp": "2026-10-20T04:25:57Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-59994b5596"
+   },
+   "lastTimestamp": "2026-10-20T04:26:08Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-59994b5596"
+   },
+   "lastTimestamp": "2026-10-20T04:26:09Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-59994b5596"
+   },
+   "lastTimestamp": "2026-10-20T04:26:19Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59f58654dc-kxrf2"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:24:03.058575Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59f58654dc-kxrf2"
+   },
+   "lastTimestamp": "2026-10-20T04:24:03Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59f58654dc-kxrf2"
+   },
+   "lastTimestamp": "2026-10-20T04:24:03Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59f58654dc-kxrf2"
+   },
+   "lastTimestamp": "2026-10-20T04:24:03Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59f58654dc-kxrf2"
+   },
+   "lastTimestamp": "2026-10-20T04:24:05Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59f58654dc-nr9k2"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:22:06.828813Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59f58654dc-nr9k2"
+   },
+   "lastTimestamp": "2026-10-20T04:22:07Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59f58654dc-nr9k2"
+   },
+   "lastTimestamp": "2026-10-20T04:22:07Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59f58654dc-nr9k2"
+   },
+   "lastTimestamp": "2026-10-20T04:22:07Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59f58654dc-nr9k2"
+   },
+   "lastTimestamp": "2026-10-20T04:24:15Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Unhealthy",
+   "type": "Warning",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59f58654dc-nr9k2"
+   },
+   "lastTimestamp": "2026-10-20T04:24:17Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59f58654dc-zfbxl"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:21:55.121521Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59f58654dc-zfbxl"
+   },
+   "lastTimestamp": "2026-10-20T04:21:55Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59f58654dc-zfbxl"
+   },
+   "lastTimestamp": "2026-10-20T04:21:55Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59f58654dc-zfbxl"
+   },
+   "lastTimestamp": "2026-10-20T04:21:55Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-59f58654dc-zfbxl"
+   },
+   "lastTimestamp": "2026-10-20T04:24:15Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-59f58654dc"
+   },
+   "lastTimestamp": "2026-10-20T04:21:55Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-59f58654dc"
+   },
+   "lastTimestamp": "2026-10-20T04:22:06Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-59f58654dc"
+   },
+   "lastTimestamp": "2026-10-20T04:24:03Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-59f58654dc"
+   },
+   "lastTimestamp": "2026-10-20T04:24:04Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-59f58654dc"
+   },
+   "lastTimestamp": "2026-10-20T04:24:15Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-59f58654dc"
+   },
+   "lastTimestamp": "2026-10-20T04:24:15Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-5d8476c589-h55wf"
+   },
+   "lastTimestamp": "2026-10-20T04:18:09Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-5d8476c589-nk2dc"
+   },
+   "lastTimestamp": "2026-10-20T04:18:20Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Unhealthy",
+   "type": "Warning",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-5d8476c589-nk2dc"
+   },
+   "lastTimestamp": "2026-10-20T04:18:22Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-5d8476c589"
+   },
+   "lastTimestamp": "2026-10-20T04:18:09Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-5d8476c589"
+   },
+   "lastTimestamp": "2026-10-20T04:18:20Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-6d845b8688-z5hvv"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:45:54.679718Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-6d845b8688-z5hvv"
+   },
+   "lastTimestamp": "2026-10-20T04:45:55Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-6d845b8688-z5hvv"
+   },
+   "lastTimestamp": "2026-10-20T04:45:55Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-6d845b8688-z5hvv"
+   },
+   "lastTimestamp": "2026-10-20T04:45:55Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-6d845b8688-z5hvv"
+   },
+   "lastTimestamp": "2026-10-20T04:52:38Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-6d845b8688"
+   },
+   "lastTimestamp": "2026-10-20T04:45:54Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-6d845b8688"
+   },
+   "lastTimestamp": "2026-10-20T04:52:38Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-757cdfcfdf-whs8b"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:45:52.353686Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-757cdfcfdf-whs8b"
+   },
+   "lastTimestamp": "2026-10-20T04:45:53Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-757cdfcfdf-whs8b"
+   },
+   "lastTimestamp": "2026-10-20T04:45:53Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-757cdfcfdf-whs8b"
+   },
+   "lastTimestamp": "2026-10-20T04:45:53Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-757cdfcfdf-whs8b"
+   },
+   "lastTimestamp": "2026-10-20T04:45:54Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-757cdfcfdf"
+   },
+   "lastTimestamp": "2026-10-20T04:45:52Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-757cdfcfdf"
+   },
+   "lastTimestamp": "2026-10-20T04:45:54Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-76c8c648dc-597vq"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:19:43.822513Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-76c8c648dc-597vq"
+   },
+   "lastTimestamp": "2026-10-20T04:19:44Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-76c8c648dc-597vq"
+   },
+   "lastTimestamp": "2026-10-20T04:19:44Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-76c8c648dc-597vq"
+   },
+   "lastTimestamp": "2026-10-20T04:19:44Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-76c8c648dc-597vq"
+   },
+   "lastTimestamp": "2026-10-20T04:19:47Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-76c8c648dc"
+   },
+   "lastTimestamp": "2026-10-20T04:19:43Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-76c8c648dc"
+   },
+   "lastTimestamp": "2026-10-20T04:19:45Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-4kg4h"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:26:09.332193Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-4kg4h"
+   },
+   "lastTimestamp": "2026-10-20T04:26:10Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-4kg4h"
+   },
+   "lastTimestamp": "2026-10-20T04:26:10Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-4kg4h"
+   },
+   "lastTimestamp": "2026-10-20T04:26:10Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-4kg4h"
+   },
+   "lastTimestamp": "2026-10-20T04:27:49Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Unhealthy",
+   "type": "Warning",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-4kg4h"
+   },
+   "lastTimestamp": "2026-10-20T04:27:50Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-4mfts"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:25:57.673325Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-4mfts"
+   },
+   "lastTimestamp": "2026-10-20T04:25:58Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-4mfts"
+   },
+   "lastTimestamp": "2026-10-20T04:25:58Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-4mfts"
+   },
+   "lastTimestamp": "2026-10-20T04:25:58Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-4mfts"
+   },
+   "lastTimestamp": "2026-10-20T04:27:49Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-rpn7z"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:26:08.754544Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-rpn7z"
+   },
+   "lastTimestamp": "2026-10-20T04:26:09Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-rpn7z"
+   },
+   "lastTimestamp": "2026-10-20T04:26:09Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-rpn7z"
+   },
+   "lastTimestamp": "2026-10-20T04:26:09Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-rpn7z"
+   },
+   "lastTimestamp": "2026-10-20T04:27:49Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-rqlg5"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:25:57.760887Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-rqlg5"
+   },
+   "lastTimestamp": "2026-10-20T04:25:58Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-rqlg5"
+   },
+   "lastTimestamp": "2026-10-20T04:25:58Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-rqlg5"
+   },
+   "lastTimestamp": "2026-10-20T04:25:58Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-7b44b4b497-rqlg5"
+   },
+   "lastTimestamp": "2026-10-20T04:28:02Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-7b44b4b497"
+   },
+   "lastTimestamp": "2026-10-20T04:25:57Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-7b44b4b497"
+   },
+   "lastTimestamp": "2026-10-20T04:25:57Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-7b44b4b497"
+   },
+   "lastTimestamp": "2026-10-20T04:26:08Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-7b44b4b497"
+   },
+   "lastTimestamp": "2026-10-20T04:26:09Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-7b44b4b497"
+   },
+   "lastTimestamp": "2026-10-20T04:27:49Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-7b44b4b497"
+   },
+   "lastTimestamp": "2026-10-20T04:27:49Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-7b44b4b497"
+   },
+   "lastTimestamp": "2026-10-20T04:27:49Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-7b44b4b497"
+   },
+   "lastTimestamp": "2026-10-20T04:28:02Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-855d664bcd-fxsr8"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:27:51.061933Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-855d664bcd-fxsr8"
+   },
+   "lastTimestamp": "2026-10-20T04:27:52Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-855d664bcd-fxsr8"
+   },
+   "lastTimestamp": "2026-10-20T04:27:52Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-855d664bcd-fxsr8"
+   },
+   "lastTimestamp": "2026-10-20T04:27:52Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-855d664bcd-fxsr8"
+   },
+   "lastTimestamp": "2026-10-20T04:37:04Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-855d664bcd"
+   },
+   "lastTimestamp": "2026-10-20T04:27:51Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-855d664bcd"
+   },
+   "lastTimestamp": "2026-10-20T04:37:04Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-8587c89b6c-rqhlg"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:52:26.546802Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-8587c89b6c-rqhlg"
+   },
+   "lastTimestamp": "2026-10-20T04:52:27Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-8587c89b6c-rqhlg"
+   },
+   "lastTimestamp": "2026-10-20T04:52:27Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-8587c89b6c-rqhlg"
+   },
+   "lastTimestamp": "2026-10-20T04:52:27Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-8587c89b6c-rqhlg"
+   },
+   "lastTimestamp": "2026-10-20T04:58:49Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-8587c89b6c"
+   },
+   "lastTimestamp": "2026-10-20T04:52:26Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-8587c89b6c"
+   },
+   "lastTimestamp": "2026-10-20T04:58:49Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-86f8765887-f6g2f"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:24:02.440383Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-86f8765887-f6g2f"
+   },
+   "lastTimestamp": "2026-10-20T04:24:03Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-86f8765887-f6g2f"
+   },
+   "lastTimestamp": "2026-10-20T04:24:03Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-86f8765887-f6g2f"
+   },
+   "lastTimestamp": "2026-10-20T04:24:03Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-86f8765887-f6g2f"
+   },
+   "lastTimestamp": "2026-10-20T04:24:26Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-86f8765887-l8rh7"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:24:03.081706Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-86f8765887-l8rh7"
+   },
+   "lastTimestamp": "2026-10-20T04:24:03Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-86f8765887-l8rh7"
+   },
+   "lastTimestamp": "2026-10-20T04:24:03Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-86f8765887-l8rh7"
+   },
+   "lastTimestamp": "2026-10-20T04:24:03Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-86f8765887-l8rh7"
+   },
+   "lastTimestamp": "2026-10-20T04:24:04Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-86f8765887"
+   },
+   "lastTimestamp": "2026-10-20T04:24:02Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-86f8765887"
+   },
+   "lastTimestamp": "2026-10-20T04:24:03Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-86f8765887"
+   },
+   "lastTimestamp": "2026-10-20T04:24:04Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-86f8765887"
+   },
+   "lastTimestamp": "2026-10-20T04:24:26Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-996c9d5f-bqkp2"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:17:58.518581Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-996c9d5f-bqkp2"
+   },
+   "lastTimestamp": "2026-10-20T04:17:59Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-996c9d5f-bqkp2"
+   },
+   "lastTimestamp": "2026-10-20T04:17:59Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-996c9d5f-bqkp2"
+   },
+   "lastTimestamp": "2026-10-20T04:17:59Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-996c9d5f-bqkp2"
+   },
+   "lastTimestamp": "2026-10-20T04:20:08Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Unhealthy",
+   "type": "Warning",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-996c9d5f-bqkp2"
+   },
+   "lastTimestamp": "2026-10-20T04:20:09Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-996c9d5f-pwl4s"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:18:09.640961Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-996c9d5f-pwl4s"
+   },
+   "lastTimestamp": "2026-10-20T04:18:10Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-996c9d5f-pwl4s"
+   },
+   "lastTimestamp": "2026-10-20T04:18:10Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-996c9d5f-pwl4s"
+   },
+   "lastTimestamp": "2026-10-20T04:18:10Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-996c9d5f-pwl4s"
+   },
+   "lastTimestamp": "2026-10-20T04:19:57Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-996c9d5f"
+   },
+   "lastTimestamp": "2026-10-20T04:17:58Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-996c9d5f"
+   },
+   "lastTimestamp": "2026-10-20T04:18:09Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-996c9d5f"
+   },
+   "lastTimestamp": "2026-10-20T04:19:57Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-996c9d5f"
+   },
+   "lastTimestamp": "2026-10-20T04:20:08Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-b485ddcf9-jxld9"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:19:46.038155Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-b485ddcf9-jxld9"
+   },
+   "lastTimestamp": "2026-10-20T04:19:46Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-b485ddcf9-jxld9"
+   },
+   "lastTimestamp": "2026-10-20T04:19:46Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-b485ddcf9-jxld9"
+   },
+   "lastTimestamp": "2026-10-20T04:19:46Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-b485ddcf9-jxld9"
+   },
+   "lastTimestamp": "2026-10-20T04:22:06Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-b485ddcf9-wrkzf"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:19:57.081764Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-b485ddcf9-wrkzf"
+   },
+   "lastTimestamp": "2026-10-20T04:19:57Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-b485ddcf9-wrkzf"
+   },
+   "lastTimestamp": "2026-10-20T04:19:57Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-b485ddcf9-wrkzf"
+   },
+   "lastTimestamp": "2026-10-20T04:19:57Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-b485ddcf9-wrkzf"
+   },
+   "lastTimestamp": "2026-10-20T04:22:18Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-b485ddcf9"
+   },
+   "lastTimestamp": "2026-10-20T04:19:46Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-b485ddcf9"
+   },
+   "lastTimestamp": "2026-10-20T04:19:57Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-b485ddcf9"
+   },
+   "lastTimestamp": "2026-10-20T04:22:06Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-b485ddcf9"
+   },
+   "lastTimestamp": "2026-10-20T04:22:18Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Scheduled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-b795db4f-zjkj6"
+   },
+   "lastTimestamp": null,
+   "eventTime": "2026-10-20T04:36:53.165280Z",
+   "count": null
+  },
+  {
+   "reason": "Pulled",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-b795db4f-zjkj6"
+   },
+   "lastTimestamp": "2026-10-20T04:36:53Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Created",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-b795db4f-zjkj6"
+   },
+   "lastTimestamp": "2026-10-20T04:36:53Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Started",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-b795db4f-zjkj6"
+   },
+   "lastTimestamp": "2026-10-20T04:36:53Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "Killing",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Pod",
+    "name": "worker-b795db4f-zjkj6"
+   },
+   "lastTimestamp": "2026-10-20T04:46:05Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulCreate",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-b795db4f"
+   },
+   "lastTimestamp": "2026-10-20T04:36:53Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "SuccessfulDelete",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "ReplicaSet",
+    "name": "worker-b795db4f"
+   },
+   "lastTimestamp": "2026-10-20T04:46:05Z",
+   "eventTime": null,
+   "count": 1
+  },
+  {
+   "reason": "ScalingReplicaSet",
+   "type": "Normal",
+   "involvedObject": {
+    "kind": "Deployment",
+    "name": "worker"
+   },
+   "lastTimestamp": "2026-10-20T05:07:53Z",
+   "eventTime": null,
+   "count": 135
+  }
+ ]
+}

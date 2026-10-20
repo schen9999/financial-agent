@@ -1,0 +1,57 @@
+--- 1792470032
+api-8d66c46f6-cq6jj           1m    486Mi     
+llamacpp-6cfb95c86d-5cxc7     1m    29381Mi   
+mcp-85f69f875f-m8tqk          1m    290Mi     
+model-stub-6fd86d869c-lrqzx   1m    15Mi      
+postgres-6697f6d957-7jb46     3m    36Mi      
+redis-bd6fb5fbb-z9cs7         5m    15Mi      
+streamlit-788b6b5b8-rvbkj     2m    66Mi      
+<private-ip>   64m    0%    3807Mi    13%   
+<private-ip>   506m   3%    5267Mi    8%    
+<private-ip>    89m    0%    4122Mi    14%   
+<private-ip>    60m    0%    32838Mi   55%   
+--- 1792470049
+api-8d66c46f6-cq6jj                      3m      486Mi     
+harness-bench-l0-r2-c4-r1-042032-979mf   15m     28Mi      
+llamacpp-6cfb95c86d-5cxc7                1m      29381Mi   
+mcp-85f69f875f-m8tqk                     1m      290Mi     
+model-stub-6fd86d869c-lrqzx              1m      15Mi      
+postgres-6697f6d957-7jb46                2m      36Mi      
+redis-bd6fb5fbb-z9cs7                    5m      15Mi      
+streamlit-788b6b5b8-rvbkj                2m      66Mi      
+worker-b485ddcf9-jxld9                   910m    1035Mi    
+worker-b485ddcf9-wrkzf                   1811m   2108Mi    
+<private-ip>   2686m   17%   5748Mi    19%   
+<private-ip>   3105m   19%   7240Mi    12%   
+<private-ip>    115m    0%    4154Mi    14%   
+<private-ip>    23m     0%    32836Mi   55%   
+--- 1792470065
+api-8d66c46f6-cq6jj                      2m      486Mi     
+harness-bench-l0-r2-c4-r1-042032-979mf   15m     28Mi      
+llamacpp-6cfb95c86d-5cxc7                1m      29381Mi   
+mcp-85f69f875f-m8tqk                     1m      290Mi     
+model-stub-6fd86d869c-lrqzx              1m      15Mi      
+postgres-6697f6d957-7jb46                2m      36Mi      
+redis-bd6fb5fbb-z9cs7                    5m      15Mi      
+streamlit-788b6b5b8-rvbkj                3m      66Mi      
+worker-b485ddcf9-jxld9                   4870m   2206Mi    
+worker-b485ddcf9-wrkzf                   6020m   2130Mi    
+<private-ip>   6281m   39%   5750Mi    19%   
+<private-ip>   5390m   34%   7327Mi    12%   
+<private-ip>    43m     0%    4153Mi    14%   
+<private-ip>    18m     0%    32843Mi   55%   
+--- 1792470081
+api-8d66c46f6-cq6jj                      4m      487Mi     
+harness-bench-l0-r2-c4-r1-042032-979mf   4m      28Mi      
+llamacpp-6cfb95c86d-5cxc7                1m      29381Mi   
+mcp-85f69f875f-m8tqk                     1m      290Mi     
+model-stub-6fd86d869c-lrqzx              12m     15Mi      
+postgres-6697f6d957-7jb46                3m      36Mi      
+redis-bd6fb5fbb-z9cs7                    5m      16Mi      
+streamlit-788b6b5b8-rvbkj                3m      66Mi      
+worker-b485ddcf9-jxld9                   5398m   2260Mi    
+worker-b485ddcf9-wrkzf                   4504m   2315Mi    
+<private-ip>   5178m   32%   5935Mi    20%   
+<private-ip>   3127m   19%   7389Mi    12%   
+<private-ip>    55m     0%    4154Mi    14%   
+<private-ip>    38m     0%    32845Mi   55%   

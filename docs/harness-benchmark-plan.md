@@ -1,10 +1,10 @@
-# Harness benchmark: pre-registered plan
+# Harness benchmark: pre-registered plan and results
 
-Status: **designed 2026-10-19; implemented 2026-10-19 (stub, driver, cell
-runner, report, tests), not yet run.** No result below is a
-measurement; every figure used to set parameters is cited to
-[numbers-of-record.md](numbers-of-record.md). Written before any run, so the
-reading rules cannot be fitted to the results.
+Status: **designed and implemented 2026-10-19; RUN 2026-10-20, 02:49 to
+06:55 UTC: all 40 cell repeats valid.** Results below, from the committed
+captures in `eval/runs/harness-bench-2026-10-20/` (`report.md` there is the
+report script's output on them). The plan text above "Results" is
+unchanged from before the run.
 
 ## Why
 
@@ -217,6 +217,92 @@ any cell runs so none can be fitted to results:
   capacity when replicas and concurrency tie.
 
 How to run it: [deploy-runbook.md](deploy-runbook.md), "Harness benchmark".
+
+## Results (2026-10-20)
+
+A dated measurement on one cluster (the provided OKE cluster, four
+VM.Standard.E5.Flex nodes at 16 vCPU), one image (f3043751), with the model
+replaced by the stub. It supports no claim about another shape, and none
+about a real model endpoint's capacity: the stub never saturates, a real
+endpoint does.
+
+**Validity.** All 40 repeats (20 cells, two each) passed every check: stub
+requests equal the calls their briefs should make (326 to 805 per repeat),
+stock block empty 0, errors 0, no container restart and no eviction or
+memory-pressure event. Anthropic spend $0.
+
+**Q1, overhead (L0 at (1,1)).** Median brief 1.0 s, 0.65 worker CPU-seconds
+per brief. The time is the live data path: stock data 0.2 to 0.4 s, news
+and SEC 0.5 to 0.7 s, retrieval 0.4 to 1.4 s per brief (worker timing
+lines).
+
+**Q2, wait vs work (L1, A10-speed model).** Worker CPU is 5% to 16% of
+brief wall time in all nine cells, under the 25% line: the harness is
+waiting, which supports the post. Median brief latency stays at 18.6 to
+19.1 s in every cell.
+
+**Q3, throughput and saturation.**
+
+| Capacity R × c | L1 briefs/h (cells) | L0 briefs/h (cells) |
+|---|---|---|
+| 1 | 199 (1,1) | 3,693 (1,1) |
+| 2 | 401 (1,2), 407 (2,1) | 7,614 (1,2), 7,308 (2,1) |
+| 4 | 798 (1,4), 810 (2,2), 817 (4,1) | 6,255 (1,4), 16,961 (2,2), 16,067 (4,1) |
+| 8 | 1,621 (2,4), 1,604 (4,2) | 14,072 (2,4), 16,124 (4,2) |
+| 16 | 3,063 (4,4) | 25,415 (4,4) |
+
+- At L1, throughput rises with capacity at 89% to 104% per doubling, so it
+  does not saturate within the sweep: (4,4) runs 15.4 times (1,1). The
+  two repeats of each L1 cell agree within 9%, and in every fixed L1 cell
+  the time-averaged number of briefs running equals R × c (Little's law
+  holds within 5%).
+- At L0, by the pre-registered rule, it saturates at (2,2) and (4,1),
+  about 16,000 to 17,000 briefs an hour. L0 throughput at high capacity
+  is imprecise: 40 briefs finish in seconds, and the two repeats of (4,4)
+  differ by 66%. The report flags these short windows.
+- **Four processes per pod cost CPU.** At c = 4, worker CPU-seconds per
+  brief rise to 1.64 to 3.06 at L1 and 3.2 to 9.0 at L0, with throttling
+  at 47% to 54% of periods at L0, and L0 (1,4) is slower than (1,2). The
+  likely cause, not yet tested: each Celery process starts 8 PyTorch
+  threads (`torch.get_num_threads()` on a 16-vCPU node), so four
+  processes run 32 threads in a 6-CPU pod.
+
+**Q4, sizing (L1).** vCPU = CPU-seconds per brief × briefs per hour /
+3,600:
+
+| Cell | Briefs/h | Worker CPU-s per brief | Worker vCPU | Memory per process (MiB, sampled) |
+|---|---|---|---|---|
+| (1,1) | 199 | 0.97 | 0.05 | 826 |
+| (2,2) | 810 | 1.11 | 0.25 | 648 |
+| (4,1) | 817 | 1.30 | 0.29 | 724 |
+| (4,2) | 1,604 | 2.26 | 1.01 | 639 |
+| (4,4) | 3,063 | 3.06 | 2.60 | 602 |
+
+At one or two processes per pod the harness needs about 0.25 to 0.36 vCPU
+per 1,000 briefs an hour; at four, 0.46 to 0.85, rising with the
+replica count. Memory is 586 to 826 MiB per
+process across all cells: the nodes' kernel has no cgroup `memory.peak`, so
+this is the larger of the `kubectl top` maximum (sampled every 15 s) and
+the end-of-cell `memory.current`, a lower bound. The API pod uses 0.02
+CPU-seconds per brief or less.
+
+**L2 (CPU-speed model) at (4,4).** 286 briefs an hour, median brief 178 s,
+worker CPU 2% of wall time: at CPU inference speed the model is the whole
+story. This is an upper bound on the harness side only; the stub has no
+capacity limit and one 8-vCPU llama.cpp endpoint does.
+
+**KEDA (1 to 4 replicas, c = 1, L1).** 704 briefs an hour, 86% of a fixed
+four replicas (817), with 3.0 to 4.0 briefs running on average while it
+scales up; the two repeats differ by 27%. The first measurement of the
+autoscaler under brief load.
+
+**Not measured.** The `/ask` ReAct path and the Argo eval harness (out of
+scope); a real endpoint under this load; any other shape. During the run the
+idle CPU llama.cpp pod stayed deployed on the cluster.
+
+**Follow-up, not pre-registered.** One (4,4) run with `OMP_NUM_THREADS=1`
+would test the PyTorch-thread explanation. If run, it is reported as
+exploratory, beside these results, never in place of them.
 
 ## Beyond this plan
 

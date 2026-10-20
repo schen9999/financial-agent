@@ -23,8 +23,20 @@ in OCI Vault. It reports no benchmark of a harness on any shape.
 | Restricted egress | Only the other direction, inbound to the model: the A10 endpoint requires a key, and its port admits only the OKE cluster's egress IP. The harness's own egress is not restricted (next steps, below) | [k8s/llamacpp/overlays/k3s-gpu](../k8s/llamacpp/overlays/k3s-gpu/kustomization.yaml); [deploy-runbook.md, "Demo live run"](deploy-runbook.md#demo-live-run-november-2026-gpu-smoke-from-the-oke-harness) |
 
 **What our measurements add.** The post reports no benchmark, so these
-are ours. All are model-side measurements of one system, and each has its
-own caveats:
+are ours, each with its own caveats. The first is of the harness itself;
+the rest are model-side measurements of one system:
+
+- **The harness waits, and uses little CPU** (pre-registered benchmark,
+  2026-10-20, E5 nodes, model replaced by a stub so the harness is what
+  is measured; [harness-benchmark-plan.md](harness-benchmark-plan.md)). At
+  A10-speed model latency the Celery worker is busy 5% to 16% of each
+  brief's wall time, in every cell. Throughput grows from 199 to 3,063
+  briefs an hour as briefs in flight go from 1 to 16, with no saturation,
+  at about 0.25 to 0.36 vCPU per 1,000 briefs an hour (0.46 to 0.85 at
+  four processes per pod, most likely PyTorch thread oversubscription,
+  untested) and 586 to 826 MiB per process. With the model delay removed
+  a brief costs 1.0 s and 0.65 CPU-seconds, nearly all live data fetches
+  and retrieval. One shape, against a stub with no capacity limit.
 
 - **A GPU behind this harness sits partly idle.** On the A10 run of record
   `nstp9` (image `f3043751`, two briefs in flight, the run's setting) the
@@ -77,8 +89,9 @@ separately from the harness, but it does not prove it.
   replicas, a new pod ran all 8 with no errors, and the worker was back
   at 1 replica 375 s after the backlog cleared. API discovery was
   healthy before, during and after. The same test passed on kind (1 to
-  2 to 1), and so did the uninstall. Not measured: request-time load,
-  i.e. real briefs. The metric counts only tasks no worker has taken
+  2 to 1), and so did the uninstall. Under brief load (the harness
+  benchmark, model replaced by a stub, A10-speed latency) it delivered
+  704 briefs an hour, 86% of a fixed four replicas. The metric counts only tasks no worker has taken
   yet, while each worker holds up to 4. On scale-down, a running brief is
   finished before the pod exits if it finishes within the worker's 120 s
   grace period, which was tested on kind with a probe task. A longer

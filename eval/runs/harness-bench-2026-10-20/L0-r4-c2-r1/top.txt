@@ -1,0 +1,48 @@
+--- 1792470294
+api-8d66c46f6-cq6jj           1m    487Mi     
+llamacpp-6cfb95c86d-5cxc7     1m    29381Mi   
+mcp-85f69f875f-m8tqk          1m    290Mi     
+model-stub-6fd86d869c-lrqzx   1m    15Mi      
+postgres-6697f6d957-7jb46     3m    36Mi      
+redis-bd6fb5fbb-z9cs7         5m    16Mi      
+streamlit-788b6b5b8-rvbkj     2m    66Mi      
+worker-59994b5596-9hvcm       90m   161Mi     
+worker-59994b5596-w4vpt       2m    84Mi      
+worker-59994b5596-wx8nm       2m    84Mi      
+worker-59994b5596-xjds5       2m    84Mi      
+<private-ip>   213m   1%    3760Mi    13%   
+<private-ip>   123m   0%    5303Mi    8%    
+<private-ip>    113m   0%    4236Mi    14%   
+<private-ip>    16m    0%    32849Mi   55%   
+--- 1792470310
+api-8d66c46f6-cq6jj           2m     487Mi     
+llamacpp-6cfb95c86d-5cxc7     1m     29381Mi   
+mcp-85f69f875f-m8tqk          1m     290Mi     
+model-stub-6fd86d869c-lrqzx   1m     15Mi      
+postgres-6697f6d957-7jb46     2m     36Mi      
+redis-bd6fb5fbb-z9cs7         5m     16Mi      
+streamlit-788b6b5b8-rvbkj     2m     66Mi      
+worker-59994b5596-9hvcm       200m   117Mi     
+worker-59994b5596-w4vpt       414m   719Mi     
+worker-59994b5596-wx8nm       21m    84Mi      
+worker-59994b5596-xjds5       404m   630Mi     
+<private-ip>   61m    0%    3796Mi    13%   
+<private-ip>   804m   5%    5572Mi    9%    
+<private-ip>    440m   2%    4718Mi    16%   
+<private-ip>    18m    0%    32850Mi   55%   
+--- 1792470327
+api-8d66c46f6-cq6jj           5m      487Mi     
+llamacpp-6cfb95c86d-5cxc7     1m      29381Mi   
+mcp-85f69f875f-m8tqk          1m      290Mi     
+model-stub-6fd86d869c-lrqzx   4m      15Mi      
+postgres-6697f6d957-7jb46     3m      36Mi      
+redis-bd6fb5fbb-z9cs7         5m      16Mi      
+streamlit-788b6b5b8-rvbkj     3m      66Mi      
+worker-59994b5596-9hvcm       1726m   1103Mi    
+worker-59994b5596-w4vpt       1139m   1249Mi    
+worker-59994b5596-wx8nm       2162m   1109Mi    
+worker-59994b5596-xjds5       2113m   1216Mi    
+<private-ip>   2226m   14%   4831Mi    16%   
+<private-ip>   4709m   29%   7403Mi    12%   
+<private-ip>    1361m   8%    5311Mi    18%   
+<private-ip>    32m     0%    32849Mi   55%   

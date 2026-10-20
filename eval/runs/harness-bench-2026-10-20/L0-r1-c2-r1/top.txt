@@ -1,0 +1,40 @@
+--- 1792469193
+api-8d66c46f6-cq6jj           1m    485Mi     
+llamacpp-6cfb95c86d-5cxc7     1m    29381Mi   
+mcp-85f69f875f-m8tqk          1m    290Mi     
+model-stub-6fd86d869c-lrqzx   1m    15Mi      
+postgres-6697f6d957-7jb46     2m    36Mi      
+redis-bd6fb5fbb-z9cs7         4m    11Mi      
+streamlit-788b6b5b8-rvbkj     2m    66Mi      
+<private-ip>   58m    0%    3645Mi    12%   
+<private-ip>   478m   3%    5216Mi    8%    
+<private-ip>    29m    0%    4087Mi    14%   
+<private-ip>    56m    0%    32848Mi   55%   
+--- 1792469209
+api-8d66c46f6-cq6jj                      3m     485Mi     
+harness-bench-l0-r1-c2-r1-040633-fmjnn   16m    28Mi      
+llamacpp-6cfb95c86d-5cxc7                1m     29381Mi   
+mcp-85f69f875f-m8tqk                     1m     290Mi     
+model-stub-6fd86d869c-lrqzx              1m     15Mi      
+postgres-6697f6d957-7jb46                3m     36Mi      
+redis-bd6fb5fbb-z9cs7                    5m     11Mi      
+streamlit-788b6b5b8-rvbkj                2m     66Mi      
+worker-6d66dc68c8-xffsr                  273m   236Mi     
+<private-ip>   31m     0%    3645Mi    12%   
+<private-ip>   1037m   6%    6261Mi    10%   
+<private-ip>    71m     0%    4113Mi    14%   
+<private-ip>    27m     0%    32845Mi   55%   
+--- 1792469225
+api-8d66c46f6-cq6jj                      5m      486Mi     
+harness-bench-l0-r1-c2-r1-040633-fmjnn   3m      28Mi      
+llamacpp-6cfb95c86d-5cxc7                1m      29381Mi   
+mcp-85f69f875f-m8tqk                     1m      290Mi     
+model-stub-6fd86d869c-lrqzx              7m      15Mi      
+postgres-6697f6d957-7jb46                3m      36Mi      
+redis-bd6fb5fbb-z9cs7                    5m      12Mi      
+streamlit-788b6b5b8-rvbkj                2m      66Mi      
+worker-6d66dc68c8-xffsr                  1294m   1261Mi    
+<private-ip>   32m     0%    3645Mi    12%   
+<private-ip>   1129m   7%    6350Mi    10%   
+<private-ip>    35m     0%    4114Mi    14%   
+<private-ip>    37m     0%    32846Mi   55%   

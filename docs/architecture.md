@@ -150,8 +150,10 @@ flowchart LR
   Celery worker from 1 to 4 replicas on the depth of its Redis queue. The
   ScaledObject is the separate tree `k8s/keda`, so the app overlays apply
   with or without it. It is verified with a scale test that uses only a
-  builtin Celery task; request-time load has not been measured. Runbook
-  "KEDA".
+  builtin Celery task, and under brief load in the harness benchmark
+  (2026-10-20, model replaced by a stub: 704 briefs an hour, 86% of a
+  fixed four replicas; [harness-benchmark-plan.md](harness-benchmark-plan.md)).
+  Runbook "KEDA".
 - The CPU SLM endpoint: llama.cpp b11347 serving Qwen3.6-35B-A3B Q4_K_M,
   8 CPU / 30Gi requested and limited, so it lands on a ~58 GiB node; the
   GGUF sits on a 50Gi `oci-bv` PVC. Keyed; reached only in-cluster.
