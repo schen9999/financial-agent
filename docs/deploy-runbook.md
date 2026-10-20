@@ -2425,10 +2425,16 @@ ScaledObject exists, `k8s/keda/overlays/oke-provided`.
    scripts/harness_bench_sweep.sh rest 2>&1 | tee -a ~/harness-bench/sweep-rest.log
    ```
    Result: all 28 repeats valid; 40 of 40 in the sweep.
-5. **[NOT YET EXECUTED]** Stub off, and check the restore:
+5. **[EXECUTED 2026-10-20]** Stub off, and check the restore:
    ```bash
    make bench-stub-off       # prints SLM_FULL=false, the llamacpp URL, --concurrency=1, worker env without the two overrides
    ```
+   Result: `SLM_FULL=false`, `SLM_CPU_URL` back at the llamacpp Service,
+   the worker at `--concurrency=1` with no env overrides, the stub
+   Deployment and Service gone. One leftover: `kubectl apply` keeps
+   ConfigMap keys the overlay never set, so `SLM_CPU_MODEL_NAME=model-stub`
+   stayed in app-config (it would break the CPU SLM route when switched
+   on). Removed by hand on the operator; `bench-stub-off` now removes it.
 6. **[EXECUTED 2026-10-20]** Capture: copy the sweep directory to the laptop,
    pass it through `scripts/redact.py`, commit it as
    `eval/runs/harness-bench-<date>/`, run `make bench-report
