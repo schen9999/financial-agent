@@ -24,7 +24,8 @@ the dates, and use it as evidence rather than as current instructions).
 | How was a real error traced, end to end? | [debugging-story.md](debugging-story.md): a currency error the judge accepted and the numeric check caught, traced to the stock data; three shorter cases | dated log |
 | What has run on the A10, how fast, at what cost? | [gpu-inference.md](gpu-inference.md): vLLM on the fine-tune (BF16 vs W4A16), why llama.cpp for Qwen3.6, CPU vs A10 | reference |
 | What happens when a component fails, and how are eval runs kept honest? | [reliability.md](reliability.md): app-plane failure behaviour (tested or not), eval-plane safeguards | reference |
-| What is the demo plan? | [demo.md](demo.md): conclusions, running order, the live run, prepared answers | reference |
+| What is the demo plan? | [demo.md](demo.md): conclusions, the numbers, the live run | reference |
+| How does this map to the post Harness Engineering using OCI CPU & OKE? | [harness-mapping.md](harness-mapping.md): the post's terms beside this system's, the measurements the post does not report, what is built and not built | reference |
 | Which model should write the sections: hosted, or open-weight on the A10? | [model-recommendation.md](model-recommendation.md): recommendation, four-arm results, and the A10 cost per brief (2026-09-28) | dated log |
 | Why does the fine-tuned model ship disabled? | [eval-methodology.md](eval-methodology.md): the 40-ticker A/B (2026-09-05/06) and the four-arm comparison (2026-09-23) | dated log |
 | How do I run the tests? | [README](../README.md): "Testing"; [verification.md](verification.md) for the manifest-equivalence proof | reference |
@@ -50,7 +51,8 @@ the dates, and use it as evidence rather than as current instructions).
 | [debugging-story.md](debugging-story.md) | One error traced end to end (Toyota's currency), the limits of each eval layer, three shorter cases | dated log |
 | [gpu-inference.md](gpu-inference.md) | A10 serving: what ran, serving speed, CPU vs GPU for Qwen3.6, what has not run | reference |
 | [reliability.md](reliability.md) | App-plane request flow and failure behaviour; eval-plane traffic proof, attempts, gates, stop rules | reference |
-| [demo.md](demo.md) | The November demo: conclusions, running order, live run, prepared answers | reference |
+| [demo.md](demo.md) | The November demo: conclusions, the numbers, the live run | reference |
+| [harness-mapping.md](harness-mapping.md) | This system mapped against the post Harness Engineering using OCI CPU & OKE | reference |
 | [operations.md](operations.md) | Current procedure for an OCI A10 node, teardown for every target, troubleshooting | reference |
 | [configuration.md](configuration.md) | Every environment variable: default, purpose, where it is set | reference |
 | [api.md](api.md) | All API routes with request/response shapes and examples | reference |

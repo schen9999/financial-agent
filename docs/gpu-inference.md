@@ -71,7 +71,7 @@ on the A10.
 
 **Why it was chosen, as recorded at selection time (2026-10-02, before
 any run).** The reason is in the owner's planning notes of 2026-10-02,
-written right after Sanjay Basu replied "you serve a minimax or qwen"; the
+written once the requirement for the self-served model named MiniMax or Qwen; the
 commits that introduced the model (`1a417be`, `02ddf2e`, `eb7b1b9`) record
 what was chosen and how it is pinned, not why. The notes give four reasons:
 
@@ -84,7 +84,7 @@ what was chosen and how it is pinned, not why. The notes give four reasons:
   that can be served here.
 - **One file for both:** one ~20 GB Q4 file fits both one E5 node and one
   A10, so the same model and harness compare CPU against GPU serving.
-- **Basu named Qwen as acceptable.**
+- **The requirement named Qwen as acceptable.**
 
 The dense Qwen models were not explicitly weighed at selection time. The
 fit table below and the measured CPU numbers came afterwards: they support
