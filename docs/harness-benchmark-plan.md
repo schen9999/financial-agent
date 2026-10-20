@@ -1,6 +1,7 @@
 # Harness benchmark: pre-registered plan
 
-Status: **designed 2026-10-19, not yet run.** No result below is a
+Status: **designed 2026-10-19; implemented 2026-10-19 (stub, driver, cell
+runner, report, tests), not yet run.** No result below is a
 measurement; every figure used to set parameters is cited to
 [numbers-of-record.md](numbers-of-record.md). Written before any run, so the
 reading rules cannot be fitted to the results.
@@ -142,13 +143,14 @@ autoscaler under real brief load, which has not been measured.
 ## Implementation
 
 1. `scripts/model_stub.py` and `k8s/model-stub/`: the stub server and its
-   Deployment and Service (ClusterIP), mounted from a ConfigMap on a public
-   Python base image, so the app image does not change.
+   Deployment and Service (ClusterIP), mounted from a ConfigMap on the
+   pinned app image, so no image changes or is pulled.
 2. `make bench-stub-on` and `make bench-stub-off`: point the self-served
    route at the stub and back, and fix replicas and concurrency per cell.
 3. `scripts/harness_bench.py`: the closed-loop driver, run as a Job in the
-   cluster; writes one JSON line per brief and a cgroup snapshot per pod per
-   cell.
+   cluster, one JSON line per brief; `scripts/harness_bench_cell.sh` sets
+   each cell and takes the cgroup snapshots, `scripts/harness_bench_sweep.sh`
+   runs the sweep.
 4. `scripts/harness_bench_report.py`: the tables, Little's-law check and
    reading rules above, from the committed run files.
 5. Run, capture to `eval/runs/harness-bench-<date>/`, then record the
@@ -157,6 +159,64 @@ autoscaler under real brief load, which has not been measured.
 Before step 1, confirm in the code: which call sites use structured output
 (the stub must return valid JSON there), and that the numeric check and
 retrieval need no hosted model under `SLM_FULL`.
+
+Confirmed 2026-10-19: the brief path makes no structured-output call (the
+only `structured()` caller is the multi-agent planner, off by default); its
+calls are two RAG answers (llama_index, through `llama_index_llm`), four
+sections and one synthesis, all through `chat_completion`. Retrieval embeds
+locally (HuggingFace) and queries Pinecone; the numeric check is
+deterministic. Foreign filers (BABA, NVO, SAP, TM, TSM) make no RAG call, so
+a brief costs 7 calls, or 5 for those five.
+
+## Implementation decisions (fixed 2026-10-19, before any run)
+
+Where the code had to choose, the choice and its reason, recorded before
+any cell runs so none can be fitted to results:
+
+- **Stub image and corpus.** The stub (`scripts/model_stub.py`, stdlib only)
+  runs on the pinned app image, which is already on the nodes, instead of a
+  public Python image: no new pull. Its corpus (`k8s/model-stub/corpus.json`,
+  built by `scripts/build_stub_corpus.py`) is GPU run `nstp9` on image
+  f3043751: the 270 recorded harness answers with their recorded token
+  counts, matching nstp9's traffic proof call for call. The synthesis answer
+  is the recorded Executive Summary and Outlook around the pre-written
+  sections copied from the live prompt, as the real model is told to write
+  it, so the synthesis format guard sees a well-formed brief.
+- **Delay from recorded counts.** Each request waits the profile's delay for
+  the recorded prompt and completion tokens of that ticker and site, not the
+  live prompt's: the stub has no tokenizer, and the same brief then costs the
+  same model time in every cell.
+- **Cache.** `BYPASS_CACHE=true` on the worker (the eval harness's own flag)
+  instead of deleting `research:*` keys: the cache is neither read nor
+  written, so concurrent briefs for one ticker cannot hit each other.
+- **No hosted traffic, enforced.** The worker's `ANTHROPIC_API_KEY` is
+  overridden with a non-key for the whole benchmark, so a hosted call cannot
+  succeed. The check: stub requests equal the calls the completed briefs
+  should make (7 or 5 each), and the stub logged no errors.
+- **Load and windows.** The driver keeps R × c × 4 briefs outstanding (3 ×
+  capacity waiting in the queue). Warm-up is the first max(5, R × c)
+  completions, so every Celery process has paid its first-task import; the
+  next 40 completions are measured while the loop is still full; briefs
+  still outstanding after that are drained and not measured. Task state is
+  read from the Celery result backend in Redis, not polled through the API
+  under test.
+- **Per-process budget.** Changing c changes the pod's process count, so the
+  pod's limits scale with it: 1.5 CPU and 2 GiB per process, the deployed
+  per-pod values. Without this, c = 2 and 4 would measure the memory limit
+  (each process loads the embedding model), not the harness. Requests are
+  unchanged.
+- **CPU-seconds per brief** = the worker pods' cgroup CPU usage from just
+  before the driver starts to just after it ends, divided by every brief
+  completed in that time (warm-up and tail included), so every CPU-second is
+  attributed. Pods are restarted at the start of each cell, so a counter
+  reset means a container restart and the repeat is invalid.
+- **Wait vs work (Q2)** compares that figure with the median brief latency
+  (start to finish, excluding queue time).
+- **Little's law** compares throughput × mean latency with R × c.
+- **Saturation (Q3)** lists every saturated cell at the smallest saturated
+  capacity when replicas and concurrency tie.
+
+How to run it: [deploy-runbook.md](deploy-runbook.md), "Harness benchmark".
 
 ## Beyond this plan
 

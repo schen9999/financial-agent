@@ -19,7 +19,8 @@ ENV_FILE  ?= .env
         vm-images vm-up vm-eval vm-vllm oke-images oke-up \
         vm-llamacpp vm-llamacpp-down oke-llamacpp oke-llamacpp-down oke-slm-app slm-eval-run \
         run-time-check anthropic-estimate \
-        keda-install keda-worker keda-check keda-scale-test keda-uninstall worker-shutdown-test
+        keda-install keda-worker keda-check keda-scale-test keda-uninstall worker-shutdown-test \
+        bench-stub-on bench-stub-off bench-report
 
 cluster-up: ## Create the single-node kind cluster (or restart its stopped node)
 	@if kind get clusters 2>/dev/null | grep -qx $(CLUSTER); then \
@@ -428,6 +429,56 @@ keda-uninstall: ## Remove the ScaledObject, return the worker to 1 replica, unin
 	$(HELM) uninstall keda --namespace $(KEDA_NAMESPACE) --wait --timeout 5m
 	kubectl delete namespace $(KEDA_NAMESPACE) --ignore-not-found --wait --timeout=180s
 	bash scripts/keda_discovery_check.sh uninstalled
+
+# ── Harness benchmark (docs/harness-benchmark-plan.md; runbook "Harness benchmark") ──
+# The model is replaced by an in-cluster stub (scripts/model_stub.py on the
+# app image) through the app's own self-served route; no Anthropic call can
+# succeed while it is on (the worker's ANTHROPIC_API_KEY is overridden), and
+# the brief cache is bypassed so every submission runs the whole pipeline.
+# bench-stub-off restores the committed overlay and removes everything.
+
+BENCH_OUT ?= $(HOME)/harness-bench/$(shell date -u +%Y-%m-%d)
+
+bench-stub-on: ## (operator) Deploy the model stub and route the worker through it (no hosted calls, cache bypassed)
+	@kubectl -n $(NAMESPACE) get secret slm-endpoints -o jsonpath='{.data.SLM_CPU_API_KEY}' 2>/dev/null | grep -q . || { \
+		echo "ERROR: slm-endpoints Secret with SLM_CPU_API_KEY missing (runbook, SLM step 1)"; exit 1; }
+	@test -s k8s/model-stub/corpus.json || { echo "ERROR: k8s/model-stub/corpus.json missing — python3 scripts/build_stub_corpus.py"; exit 1; }
+	@# delete + create, not apply: the corpus is too large for apply's last-applied annotation
+	kubectl -n $(NAMESPACE) delete configmap bench-files --ignore-not-found
+	kubectl -n $(NAMESPACE) create configmap bench-files \
+		--from-file=model_stub.py=scripts/model_stub.py \
+		--from-file=harness_bench.py=scripts/harness_bench.py \
+		--from-file=corpus.json=k8s/model-stub/corpus.json
+	@IMG=$$(kubectl -n $(NAMESPACE) get deploy/worker -o jsonpath='{.spec.template.spec.containers[0].image}'); \
+	T=$$(mktemp); sed "s|APP_IMAGE|$$IMG|" k8s/model-stub/model-stub.yaml > $$T; \
+	kubectl apply -f $$T; rc=$$?; rm -f $$T; exit $$rc
+	kubectl -n $(NAMESPACE) rollout restart deployment/model-stub
+	kubectl -n $(NAMESPACE) rollout status deployment/model-stub --timeout=600s
+	kubectl -n $(NAMESPACE) patch configmap app-config --type merge -p \
+		'{"data":{"SLM_FULL":"true","SLM_ENDPOINT":"cpu","SLM_CPU_URL":"http://model-stub.$(NAMESPACE).svc:8080","SLM_CPU_MODEL_NAME":"model-stub"}}'
+	kubectl -n $(NAMESPACE) set env deployment/worker BYPASS_CACHE=true ANTHROPIC_API_KEY=bench-no-hosted-calls
+	kubectl -n $(NAMESPACE) rollout restart deployment/worker deployment/api
+	kubectl -n $(NAMESPACE) rollout status deployment/worker --timeout=900s
+	kubectl -n $(NAMESPACE) rollout status deployment/api --timeout=900s
+	kubectl -n $(NAMESPACE) exec deploy/worker -- python -c \
+		"import json; from agent.tools.slm import server_facts; print(json.dumps(server_facts(), indent=1))"
+	@echo "Stub on. Run: scripts/harness_bench_sweep.sh core   (results under $(BENCH_OUT))"
+
+bench-stub-off: ## (operator) Restore the committed overlay (+ KEDA tree if installed) and remove the stub
+	kubectl -n $(NAMESPACE) set env deployment/worker BYPASS_CACHE- ANTHROPIC_API_KEY-
+	-kubectl -n $(NAMESPACE) annotate scaledobject worker autoscaling.keda.sh/paused-replicas- 2>/dev/null
+	kubectl apply -k k8s/overlays/$(OKE_OVERLAY)
+	@if kubectl -n $(NAMESPACE) get scaledobject worker >/dev/null 2>&1; then kubectl apply -k k8s/keda/overlays/$(OKE_OVERLAY); fi
+	kubectl -n $(NAMESPACE) delete deployment/model-stub service/model-stub configmap/bench-files --ignore-not-found
+	kubectl -n $(NAMESPACE) delete job -l app.kubernetes.io/name=harness-bench --ignore-not-found
+	kubectl -n $(NAMESPACE) rollout restart deployment/worker deployment/api
+	kubectl -n $(NAMESPACE) rollout status deployment/worker --timeout=900s
+	kubectl -n $(NAMESPACE) rollout status deployment/api --timeout=900s
+	@kubectl -n $(NAMESPACE) get configmap app-config -o jsonpath='SLM_FULL={.data.SLM_FULL} SLM_CPU_URL={.data.SLM_CPU_URL}{"\n"}'
+	@kubectl -n $(NAMESPACE) get deploy/worker -o jsonpath='worker command: {.spec.template.spec.containers[0].command}{"\n"}worker env: {.spec.template.spec.containers[0].env}{"\n"}'
+
+bench-report: ## Tables, validity checks and reading rules from a captured sweep: BENCH_DIR=eval/runs/harness-bench-<date>
+	python3 scripts/harness_bench_report.py $(or $(BENCH_DIR),$(BENCH_OUT))
 
 # ── vLLM (CPU mode — backs the default-off USE_LOCAL_MODEL flag) ─────────────
 

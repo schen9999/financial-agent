@@ -2360,6 +2360,74 @@ eval-methodology before any run.
    attempts records, `eval/runs/rr-ab-*-f304375.log`,
    `eval/runs/rerank-latency-*`, `eval/runs/rerank-ab-decision-2026-10-08.json`.
 
+## Harness benchmark (OKE provided cluster)
+
+The pre-registered plan is [harness-benchmark-plan.md](harness-benchmark-plan.md):
+it measures the harness itself (CPU, memory, throughput, saturation) with
+the model replaced by an in-cluster stub. **No Anthropic credit:** while the
+stub is on, the worker's `ANTHROPIC_API_KEY` is overridden, so a hosted call
+cannot succeed, and the report invalidates any cell whose stub request count
+differs from the calls its briefs should make. Not during the demo freeze.
+
+Files: `scripts/model_stub.py`, `scripts/build_stub_corpus.py`,
+`k8s/model-stub/` (stub Deployment and Service, driver Job template, the
+committed corpus from run `nstp9`), `scripts/harness_bench.py` (driver),
+`scripts/harness_bench_cell.sh` (one cell repeat),
+`scripts/harness_bench_sweep.sh`, `scripts/harness_bench_report.py`,
+`tests/test_harness_bench.py`. Make targets `bench-stub-on`,
+`bench-stub-off`, `bench-report`.
+
+What `make bench-stub-on` changes, all reverted by `make bench-stub-off`:
+the `bench-files` ConfigMap, the `model-stub` Deployment and Service
+(ClusterIP, on the pinned app image), app-config `SLM_FULL=true`,
+`SLM_ENDPOINT=cpu`, `SLM_CPU_URL` at the stub and `SLM_CPU_MODEL_NAME=model-stub`
+(the live UI's briefs come from the stub meanwhile), and on the worker
+`BYPASS_CACHE=true` and the overridden key. Each cell additionally sets the
+worker's `--concurrency`, its limits (1.5 CPU and 2 GiB per process), and
+its replicas (pausing the KEDA ScaledObject at R with
+`autoscaling.keda.sh/paused-replicas`, or un-pausing it for the KEDA run).
+`bench-stub-off` re-applies `k8s/overlays/oke-provided` and, when the
+ScaledObject exists, `k8s/keda/overlays/oke-provided`.
+
+### Steps (operator)
+
+1. **[NOT YET EXECUTED]** Stub on:
+   ```bash
+   cd ~/financial-agent && git checkout main && git pull
+   make bench-stub-on        # ends by printing server_facts() from a worker: slm_served_name model-stub
+   ```
+2. **[NOT YET EXECUTED]** Core cells first (L0 and L1 at (1,1), (4,1),
+   (4,4), two repeats each; about an hour), in tmux so an ssh drop does not
+   stop it:
+   ```bash
+   tmux new -s bench
+   scripts/harness_bench_sweep.sh core 2>&1 | tee -a ~/harness-bench/sweep-core.log
+   ```
+   Each repeat lands in `~/harness-bench/<date>/<cell>-r<n>/`. A failed cell
+   is logged and skipped; rerunning the sweep resumes, skipping captured
+   repeats.
+3. **[NOT YET EXECUTED]** Read the core result before the rest:
+   ```bash
+   make bench-report BENCH_DIR=~/harness-bench/<date>
+   ```
+   Check the validity table first: stub requests equal expected, stock
+   block empty 0 (Yahoo has returned 429 from this egress IP), errors under
+   1%, no restarts or node-pressure events.
+4. **[NOT YET EXECUTED]** The rest of the sweep (the other L0/L1 cells, L2
+   at (4,4), and the KEDA run at L1):
+   ```bash
+   scripts/harness_bench_sweep.sh rest 2>&1 | tee -a ~/harness-bench/sweep-rest.log
+   ```
+5. **[NOT YET EXECUTED]** Stub off, and check the restore:
+   ```bash
+   make bench-stub-off       # prints SLM_FULL=false, the llamacpp URL, --concurrency=1, worker env without the two overrides
+   ```
+6. **[NOT YET EXECUTED]** Capture: copy the sweep directory to the laptop,
+   pass it through `scripts/redact.py`, commit it as
+   `eval/runs/harness-bench-<date>/`, run `make bench-report
+   BENCH_DIR=eval/runs/harness-bench-<date>`, then record the results in
+   numbers-of-record and the plan's status line.
+
 ## Terraform: the provided cluster (import and plan only)
 
 **[EXECUTED 2026-10-07 — zero diff]** Under the owner's exception
@@ -2538,4 +2606,4 @@ everything for real on the demo tenancy.
   forked manifests. Equivalence proof: [verification.md](verification.md).
 - The Argo eval DAG and nightly cron must keep passing; Celery stays
   request-time async (they are never merged).
-- `python -m pytest tests/` (676 tests collected as of 2026-10-16) must pass on every commit.
+- `python -m pytest tests/` (690 tests collected as of 2026-10-19) must pass on every commit.
